@@ -9,6 +9,7 @@ import {CheckBox, FormLabel, FormInput, Button} from 'react-native-elements'; //
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
 import { getAge } from '../utils/Utils';
+// import Reactotron from 'reactotron-react-native'; 
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 const styles = {
@@ -19,45 +20,62 @@ const styles = {
   }
 };
 
+function maxDay() {
+  const now = new Date();
+  const nowYear = now.getFullYear();
+  const maxYear = nowYear - 18;
+
+  let maxDate = maxYear.toString() + '-' + now.getMonth().toString() + '-' + now.getDay().toString();
+  return maxDate;
+}
+
+
 export default class Signup extends Component {
 
   constructor(props) {
-      super(props);
-      const maxDay = () => {
-        const now = new Date();
-        const nowYear = now.getFullYear();
-        const maxYear = nowYear - 18;
-
-        let maxDate = maxYear.toString() + '-' + now.getMonth().toString() + '-' + now.getDay().toString();
-        return '1999-01-01';
-      };
-
-      this.state = {
-        size: {
-            width,
-            height
-        },
-        maxDate: maxDay,
-        email: '',
-        password: '',
-        nickname: '',
-        birthday: false,
-        loading: false,
-        allPass: false,
-        termsAgreed: false,
-        birthdayErr: false,
-        nickErr: false,
-        passErr: false,
-        emailErr: false,
-        termsErr: false,
-      };
+    super(props);
+    this.state = {
+      size: {
+          width,
+          height
+      },
+      maxDate: maxDay(),
+      email: '',
+      password: '',
+      nickname: '',
+      birthday: '',
+      loading: false,
+      termsAgreed: false,
+      birthdayErr: false,
+      nickErr: false,
+      passErr: false,
+      emailErr: false,
+      termsErr: false,
+    };
+    this.allCheck = this.allCheck.bind(this);
+    this.emailCheck = this.emailCheck.bind(this);
+    this.passwordCheck = this.passwordCheck.bind(this);
+    this.nicknameCheck = this.nicknameCheck.bind(this);
+    this.birthdayCheck = this.birthdayCheck.bind(this);
+    this.termsCheck = this.termsCheck.bind(this);
+    this.goNext = this.goNext.bind(this);
   }
+
+  maxDay = () => {
+    const now = new Date();
+    const nowYear = now.getFullYear();
+    const maxYear = nowYear - 18;
+
+    let maxDate = maxYear.toString() + '-' + now.getMonth().toString() + '-' + now.getDay().toString();
+    return maxDate;
+  };
 
   updateTermAgreement = () => {
     this.setState({
       termsAgreed: !this.state.termsAgreed,
       termsErr: false,
     });
+    this.termsCheck;
   }
 
   updateEmail = email => {
@@ -88,7 +106,7 @@ export default class Signup extends Component {
     });
   }
 
-  emailCheck = () => {
+  emailCheck() {
     if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)){
       return true;
     }
@@ -98,8 +116,8 @@ export default class Signup extends Component {
     return false;
   }
 
-  passwordCheck = () => {
-    const passw =  /^[A-Za-z0-9]\w{5,10}$/;
+  passwordCheck() {
+    const passw =  /^[A-Za-z0-9]{6,10}$/;
     if(this.state.password.match(passw))
     {
       return true;
@@ -111,9 +129,8 @@ export default class Signup extends Component {
     }
   }
 
-  nicknameCheck = () => {
-    let name = this.state.nickname;
-    if(name.length < 2) {
+  nicknameCheck() {
+    if(this.state.nickname.length < 2) {
       this.setState({
         nickErr: '請輸入2個字以上的名稱',
       })
@@ -122,23 +139,25 @@ export default class Signup extends Component {
     return true;
   }
 
-  birthdayCheck = () => {
-    if(this.state.birthday && getAge(this.state.birthday) < 18) {
+  birthdayCheck() {
+    //check birthday must not be ''
+    if(this.state.birthday == '') {
       this.setState({
-        birthdayErr: '本App僅提供滿18歲以上用戶使用',
+        birthdayErr: '請提供您的生日',
       })
       return false;
     }
-    if(!this.state.birthday) {
+    // Check age must be 18 and above
+    if(getAge(this.state.birthday) < 18) {
       this.setState({
-        birthdayErr: '請提供您的生日',
+        birthdayErr: '本App僅提供滿18歲以上用戶使用',
       })
       return false;
     }
     return true;
   }
 
-  termsCheck = () => {
+  termsCheck() {
     if(!this.state.termsAgreed) {
       this.setState({
         termsErr: '抱歉, 您必須先同意本App之所有條款後才能使用服務',
@@ -149,39 +168,34 @@ export default class Signup extends Component {
   }
 
   allCheck() {
-    this.emailCheck();
-    this.passwordCheck();
-    this.nicknameCheck();
-    this.birthdayCheck();
-    this.termsCheck();
-    if(this.state.termsErr || this.state.emailErr || this.state.passErr || this.state.nickErr || this.state.birthdayErr || this.state.termsErr) {
-        this.setState({
-          allPass: false,
-        })
-    } else {
-      this.setState({
-        allPass: true,
-      })
+    const emailOk = this.emailCheck();
+    const passwordOk = this.passwordCheck();
+    const nameOk = this.nicknameCheck();
+    const bdayOk = this.birthdayCheck();
+    const termsOk = this.termsCheck();
+    if(emailOk && passwordOk && nameOk && bdayOk && termsOk){
+      this.goNext();
+      return true;
     }
+    return false;
+  }
+
+  goNext() {
+    Actions.signup2({
+      email: this.state.email,
+      password: this.state.password,
+      nickname: this.state.nickname,
+      birthday: this.state.birthday,
+    });
   }
 
   handleSubmit = () => {
-    this.allCheck();
-    if(this.state.allPass) {
-      Actions.signup2({
-        email: this.state.email,
-        password: this.state.password,
-        nickname: this.state.nickname,
-        birthday: this.state.birthday,
-      });
-    }
+    this.allCheck()
   }
 
   render() {
     return (
       <View style={this.state.size}>
-        <Text>{this.state.allPass.toString()}
-          , birthday {this.state.birthday}, {this.state.maxDate} terms {this.state.termsAgreed.toString()}</Text>
         <FormLabel>帳號 Email</FormLabel>
         {
           this.state.emailErr &&
@@ -201,7 +215,7 @@ export default class Signup extends Component {
           onChangeText={
             email => this.updateEmail(email)
           }
-          onSubmitEditing={() => this.allCheck} />
+          onSubmitEditing={this.allCheck} />
         <FormLabel>密碼</FormLabel>
         {
           this.state.passErr &&
@@ -241,7 +255,7 @@ export default class Signup extends Component {
         }
         <DatePicker
           style={{alignSelf: 'center', marginTop: 5, width: this.state.size.width*0.9}}
-          date=''
+          date={this.state.birthday}
           mode="date"
           placeholder="您的生日"
           format="YYYY-MM-DD"
@@ -252,18 +266,18 @@ export default class Signup extends Component {
           showIcon={false}
           onDateChange={date => this.updateBirthday(date)}
         />
-        {
-          this.state.termsErr &&
-          <Text style={styles.errStyle}>
-          {this.state.termsErr}
-          </Text>
-        }
         <CheckBox
           title='我同意Hookup隱私權政策及使用條款'
           onBlur={this.termsCheck}
           checked={this.state.termsAgreed}
           onPress={this.updateTermAgreement}
         />
+        {
+          this.state.termsErr &&
+          <Text style={styles.errStyle}>
+          {this.state.termsErr}
+          </Text>
+        }
         <Button
           raised
           backgroundColor='#a022ae'

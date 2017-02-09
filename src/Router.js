@@ -6,7 +6,7 @@ import Signup2 from './containers/Signup2';
 import Signup3 from './containers/Signup3';
 
 // define this based on the styles/dimensions you use
-const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
+const getSceneStyle = (props, computedProps) => {
   const style = {
     flex: 1,
     backgroundColor: '#fff',
@@ -35,12 +35,14 @@ export default class RouterComponent extends Component {
           <Scene
             key='signup'
             component={Signup}
-            title='建立新帳號'
+            title='建立基本資料'
             hideTabBar/>
           <Scene
+            initial={true}
             key='signup2'
             component={Signup2}
-            title='設定顯示名稱'
+            title='常在城市'
+            onRight={()=>alert("Right button")} rightTitle="下一步"
             hideTabBar/>
           <Scene
             key='signup3'
