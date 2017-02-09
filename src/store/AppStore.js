@@ -1,17 +1,19 @@
 import {reaction, observable, observe, computed, autorun} from 'mobx'; // eslint-disable-line
 
 class AppStore {
-  @observable username = ''
-  @observable user = {}
-  @observable post_count = 0
-  //@observable posts = []
-  //@observable myposts = []
+  @observable user = '';
+  @observable profile = {};
+  @observable nearbys = [];
+  @observable recommands = [];
+  @observable settings = {};
+  @observable chats = [];
+
 }
 
-const appStore = new AppStore()
+const appStore = new AppStore();
 
 autorun(() => {
   console.log(appStore);
 })
 
-export default appStore
+export default appStore;

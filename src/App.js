@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Provider } from 'mobx-react/native'
 import firebase from 'firebase';
-import { dev_FirebaseConfig } from './configs/fbConfig'
-import appStore from './store/AppStore'
+import { dev_FirebaseConfig } from './config'
+import store from './stores'
 import RouterComponent from './Router';
 
 class App extends Component {
@@ -16,7 +16,7 @@ class App extends Component {
   render() {
 
     return (
-      <Provider store={appStore}>
+      <Provider store={store}>
         <RouterComponent />
       </Provider>
     );
