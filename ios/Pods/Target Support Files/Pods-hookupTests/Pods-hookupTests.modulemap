@@ -1,0 +1,6 @@
+framework module Pods_hookupTests {
+  umbrella header "Pods-hookupTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
