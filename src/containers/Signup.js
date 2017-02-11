@@ -194,19 +194,20 @@ export default class Signup extends Component {
   }
 
   render() {
+    const { email, password, nickname, birthday, termsAgreed, maxDate, birthdayErr, emailErr, termsErr, nickErr, passErr } = this.state;
     return (
       <View style={this.state.size}>
         <FormLabel>帳號 Email</FormLabel>
         {
-          this.state.emailErr &&
+          emailErr &&
           <Text style={styles.errStyle}>
-            {this.state.emailErr}
+            {emailErr}
           </Text>
         }
         <FormInput
           autoFocus={true}
           autoCorrect={false}
-          value={this.state.email}
+          value={email}
           placeholder='範例：sample@email.com'
           returnKeyType={'next'}
           keyboardType={'email-address'}
@@ -218,49 +219,49 @@ export default class Signup extends Component {
           onSubmitEditing={this.allCheck} />
         <FormLabel>密碼</FormLabel>
         {
-          this.state.passErr &&
+          passErr &&
           <Text style={styles.errStyle}>
-          {this.state.passErr}
+          {passErr}
           </Text>
         }
         <FormInput ref='passwrd'
         placeholder='請輸入6~10字英數組合密碼' secureTextEntry
         maxLength={10}
         onBlur={this.passwordCheck}
-        value={this.state.password}
+        value={password}
         returnKeyType={'next'}
         onChangeText={
           password => this.updatePassword(password)
         }/>
         <FormLabel>顯示名稱</FormLabel>
         {
-          this.state.nickErr &&
+          nickErr &&
           <Text style={styles.errStyle}>
-          {this.state.nickErr}
+          {nickErr}
           </Text>
         }
         <FormInput ref='nickname'
         placeholder='請輸入您的大名(2個字以上)'
-        value={this.state.nickname}
+        value={nickname}
         onBlur={this.nicknameCheck}
         returnKeyType={'next'}
         maxLength={20}
         onChangeText={nickname => this.updateNickname(nickname)}/>
         <FormLabel>生日</FormLabel>
         {
-          this.state.birthdayErr &&
+          birthdayErr &&
           <Text style={styles.errStyle}>
-          {this.state.birthdayErr}
+          {birthdayErr}
           </Text>
         }
         <DatePicker
           style={{alignSelf: 'center', marginTop: 5, width: this.state.size.width*0.9}}
-          date={this.state.birthday}
+          date={birthday}
           mode="date"
           placeholder="您的生日"
           format="YYYY-MM-DD"
           minDate="1950-01-01"
-          maxDate={this.state.maxDate}
+          maxDate={maxDate}
           confirmBtnText="完成"
           cancelBtnText="取消"
           showIcon={false}
@@ -269,13 +270,13 @@ export default class Signup extends Component {
         <CheckBox
           title='我同意Hookup隱私權政策及使用條款'
           onBlur={this.termsCheck}
-          checked={this.state.termsAgreed}
+          checked={termsAgreed}
           onPress={this.updateTermAgreement}
         />
         {
-          this.state.termsErr &&
+          termsErr &&
           <Text style={styles.errStyle}>
-          {this.state.termsErr}
+          {termsErr}
           </Text>
         }
         <Button

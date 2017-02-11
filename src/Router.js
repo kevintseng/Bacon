@@ -30,13 +30,6 @@ export default class RouterComponent extends Component {
       <Router getSceneStyle={getSceneStyle}>
         <Scene key='root'>
           <Scene
-            key='signup2'
-            component={Signup2}
-            title='常在城市'
-            rightTitle='下一步'
-            onRight={() => Actions.signup3()}
-            hideTabBa />
-          <Scene
             key='welcome'
             component={Welcome}
             title='Hookup'
@@ -46,6 +39,13 @@ export default class RouterComponent extends Component {
             component={Signup}
             title='建立基本資料'
             hideTabBar/>
+          <Scene
+            key='signup2'
+            component={Signup2}
+            title='常在城市'
+            rightTitle='下一步'
+            onRight={() => Actions.signup3()}
+            hideTabBa />
           <Scene
             key='signup3'
             component={Signup3}
