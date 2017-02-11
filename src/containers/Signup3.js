@@ -66,14 +66,15 @@ export default class Signup3 extends Component {
       alert('請選取您的性向');
       this.setState({disabled: true});
     } else {
-      return Actions.pop({popNum: 3});
+      // return Actions.pop({popNum: 3});
+      return Actions.meetcute({type:'reset'})
     }
   }
 
   render() {
     const genders = ['男', '女'];
     const {selectedGender} = this.state;
-    const sexOrientations = ['異性', '同性', '都好'];
+    const sexOrientations = ['男', '女', '皆可'];
     const {selectedSexOrientation} = this.state;
 
     return (
@@ -81,7 +82,7 @@ export default class Signup3 extends Component {
         <Text>{this.state.selectedGender}</Text>
         <Text>{this.state.selectedSexOrientation}</Text>
         <View style={{ marginBottom: 20 }}>
-          <FormLabel>性別</FormLabel>
+          <FormLabel>我的性別</FormLabel>
           <ButtonGroup
             containerStyle={{ height: 30 }}
             selectedBackgroundColor='#a022ae'
@@ -90,7 +91,7 @@ export default class Signup3 extends Component {
             selectedIndex={selectedGender}
             buttons={genders}
           />
-          <FormLabel>喜歡性向</FormLabel>
+          <FormLabel>找尋對象性別</FormLabel>
           <ButtonGroup
             containerStyle={{ height: 30 }}
             selectedBackgroundColor='#a022ae'
@@ -110,7 +111,7 @@ export default class Signup3 extends Component {
         {
           this.state.loading && <View>
             <ActivityIndicator />
-            <Button title={'back'} onPress={() => Actions.pop()}/>
+            <Button title={'back'} onPress={() => Alert('直接登入開始使用')}/>
           </View>
         }
       </View>

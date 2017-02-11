@@ -9,7 +9,7 @@ import {CheckBox, FormLabel, FormInput, Button} from 'react-native-elements'; //
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
 import { getAge } from '../utils/Utils';
-// import Reactotron from 'reactotron-react-native'; 
+// import Reactotron from 'reactotron-react-native';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 const styles = {
