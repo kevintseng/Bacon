@@ -8,8 +8,11 @@ import {
 import {CheckBox, FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
+import Reactotron from 'reactotron-react-native';
+
 import { getAge } from '../utils/Utils';
-// import Reactotron from 'reactotron-react-native';
+import { Header } from '../components/Header';
+
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 const styles = {
@@ -21,17 +24,19 @@ const styles = {
 };
 
 function maxDay() {
-  const now = new Date();
-  const nowYear = now.getFullYear();
-  const maxYear = nowYear - 18;
-
-  let maxDate = maxYear.toString() + '-' + now.getMonth().toString() + '-' + now.getDay().toString();
+  const today = new Date();
+  const nowYear = today.getFullYear();
+  const year = nowYear - 18;
+  const month = ('0' + (today.getMonth() + 1).toString()).slice(-2); // Jan = 0, Feb = 1.
+  const day = ('0' + today.getDate().toString()).slice(-2);
+  let maxDate = year.toString() + '-' + month.toString() + '-' + day;
+  let temp = new Date(maxDate);
+  Reactotron.log({'now': today.toString(), 'month': month, 'date': day, 'maxDate': maxDate, 'timestamp': temp.getTime()/1000});
   return maxDate;
 }
 
 
 export default class Signup extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -52,13 +57,13 @@ export default class Signup extends Component {
       emailErr: false,
       termsErr: false,
     };
-    this.allCheck = this.allCheck.bind(this);
+    // this.allCheck = this.allCheck.bind(this);
     this.emailCheck = this.emailCheck.bind(this);
     this.passwordCheck = this.passwordCheck.bind(this);
     this.nicknameCheck = this.nicknameCheck.bind(this);
     this.birthdayCheck = this.birthdayCheck.bind(this);
     this.termsCheck = this.termsCheck.bind(this);
-    this.goNext = this.goNext.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   maxDay = () => {
@@ -167,36 +172,58 @@ export default class Signup extends Component {
     return true;
   }
 
-  allCheck() {
+  // allCheck() {
+  //   const emailOk = this.emailCheck();
+  //   const passwordOk = this.passwordCheck();
+  //   const nameOk = this.nicknameCheck();
+  //   const bdayOk = this.birthdayCheck();
+  //   const termsOk = this.termsCheck();
+  //   if(emailOk && passwordOk && nameOk && bdayOk && termsOk){
+  //     this.goNext();
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  // goNext() {
+  //   Actions.signup2({
+  //     email: this.state.email,
+  //     password: this.state.password,
+  //     nickname: this.state.nickname,
+  //     birthday: this.state.birthday,
+  //   });
+  // }
+
+  handleSubmit() {
     const emailOk = this.emailCheck();
     const passwordOk = this.passwordCheck();
     const nameOk = this.nicknameCheck();
     const bdayOk = this.birthdayCheck();
     const termsOk = this.termsCheck();
     if(emailOk && passwordOk && nameOk && bdayOk && termsOk){
-      this.goNext();
-      return true;
+      Actions.signup2({
+        email: this.state.email,
+        password: this.state.password,
+        nickname: this.state.nickname,
+        birthday: this.state.birthday,
+
+      });
     }
-    return false;
   }
 
-  goNext() {
-    Actions.signup2({
-      email: this.state.email,
-      password: this.state.password,
-      nickname: this.state.nickname,
-      birthday: this.state.birthday,
-    });
-  }
 
-  handleSubmit = () => {
-    this.allCheck()
-  }
 
   render() {
-    const { email, password, nickname, birthday, termsAgreed, maxDate, birthdayErr, emailErr, termsErr, nickErr, passErr } = this.state;
+    const { email, password, nickname, birthday, termsAgreed, maxDate, birthdayErr, emailErr, termsErr, nickErr, passErr, loading, size } = this.state;
     return (
       <View style={this.state.size}>
+        <Header
+          headerText='建立新帳號'
+          rightButtonText='下一步'
+          onRight={this.handleSubmit}
+          leftColor='#007AFF'
+          onLeft={Actions.pop()}
+        />
         <FormLabel>帳號 Email</FormLabel>
         {
           emailErr &&
@@ -216,7 +243,7 @@ export default class Signup extends Component {
           onChangeText={
             email => this.updateEmail(email)
           }
-          onSubmitEditing={this.allCheck} />
+        />
         <FormLabel>密碼</FormLabel>
         {
           passErr &&
@@ -225,14 +252,14 @@ export default class Signup extends Component {
           </Text>
         }
         <FormInput ref='passwrd'
-        placeholder='請輸入6~10字英數組合密碼' secureTextEntry
-        maxLength={10}
-        onBlur={this.passwordCheck}
-        value={password}
-        returnKeyType={'next'}
-        onChangeText={
-          password => this.updatePassword(password)
-        }/>
+          placeholder='請輸入6~10字英數組合密碼' secureTextEntry
+          maxLength={10}
+          onBlur={this.passwordCheck}
+          value={password}
+          returnKeyType={'next'}
+          onChangeText={
+            password => this.updatePassword(password)
+          }/>
         <FormLabel>顯示名稱</FormLabel>
         {
           nickErr &&
@@ -241,12 +268,13 @@ export default class Signup extends Component {
           </Text>
         }
         <FormInput ref='nickname'
-        placeholder='請輸入您的大名(2個字以上)'
-        value={nickname}
-        onBlur={this.nicknameCheck}
-        returnKeyType={'next'}
-        maxLength={20}
-        onChangeText={nickname => this.updateNickname(nickname)}/>
+          placeholder='請輸入您的大名(2個字以上)'
+          value={nickname}
+          onBlur={this.nicknameCheck}
+          returnKeyType={'next'}
+          maxLength={20}
+          onChangeText={nickname => this.updateNickname(nickname)}
+        />
         <FormLabel>生日</FormLabel>
         {
           birthdayErr &&
@@ -255,7 +283,7 @@ export default class Signup extends Component {
           </Text>
         }
         <DatePicker
-          style={{alignSelf: 'center', marginTop: 5, width: this.state.size.width*0.9}}
+          style={{alignSelf: 'center', marginTop: 5, width: size.width*0.9}}
           date={birthday}
           mode="date"
           placeholder="您的生日"
@@ -280,13 +308,13 @@ export default class Signup extends Component {
           </Text>
         }
         <Button
-          raised
-          backgroundColor='#a022ae'
-          title={'送出'}
+          backgroundColor='transparent'
+          color='#007AFF'
+          title={'下一步'}
           onPress={this.handleSubmit}
         />
         {
-          this.state.loading && <ActivityIndicator />
+          loading && <ActivityIndicator />
         }
       </View>
     );

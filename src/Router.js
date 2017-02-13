@@ -18,7 +18,7 @@ const getSceneStyle = (props, computedProps) => {
     shadowRadius: null,
   };
   if (computedProps.isActive) {
-    style.marginTop = computedProps.hideNavBar ? 20 : 58;
+    style.marginTop = computedProps.hideNavBar ? 0 : 58;
     style.marginBottom = computedProps.hideTabBar ? 0 : 50;
   }
   return style;
@@ -36,21 +36,21 @@ export default class RouterComponent extends Component {
             hideTabBar/>
           <Scene
             key='signup'
-            component={Signup}
-            title='建立基本資料'
-            hideTabBar/>
-          <Scene
-            key='signup2'
-            component={Signup2}
-            title='常在城市'
-            rightTitle='下一步'
-            onRight={() => Actions.signup3()}
-            hideTabBa />
-          <Scene
-            key='signup3'
-            component={Signup3}
-            title='性向喜好'
-            hideTabBar/>
+            hideNavBar
+            hideTabBar>
+            <Scene
+              key='signup1'
+              component={Signup}
+            />
+            <Scene
+              key='signup2'
+              component={Signup2}
+            />
+            <Scene
+              key='signup3'
+              component={Signup3}
+            />
+          </Scene>
           <Scene
             key='meetcute'
             component={MeetCute}

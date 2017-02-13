@@ -1,12 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {
     View,
-    ActivityIndicator,
     Dimensions,
     Text,
 } from 'react-native';
 import {ButtonGroup, FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
+import { Header } from '../components/Header';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
@@ -22,7 +22,7 @@ export default class Signup3 extends Component {
     this.state = {
       size: {
           width,
-          height: 300
+          height: 600
       },
       disabled: true,
       email: this.props.email,
@@ -79,8 +79,11 @@ export default class Signup3 extends Component {
 
     return (
       <View style={this.state.size}>
-        <Text>{this.state.selectedGender}</Text>
-        <Text>{this.state.selectedSexOrientation}</Text>
+        <Header
+          headerText='性別及對象'
+          rightButtonText='完成'
+          onRight={this.checkInputs}
+        />
         <View style={{ marginBottom: 20 }}>
           <FormLabel>我的性別</FormLabel>
           <ButtonGroup
@@ -108,12 +111,6 @@ export default class Signup3 extends Component {
           disabled={this.state.disabled}
           onPress={this.checkInputs}
         />
-        {
-          this.state.loading && <View>
-            <ActivityIndicator />
-            <Button title={'back'} onPress={() => Alert('直接登入開始使用')}/>
-          </View>
-        }
       </View>
     );
   }
