@@ -5,7 +5,6 @@ import {
     Dimensions,
 } from 'react-native';
 import {FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
-// import Modal from 'react-native-modalbox';
 import { Actions } from 'react-native-router-flux';
 
 const {width, height} = Dimensions.get('window'); // eslint-disable-line

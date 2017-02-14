@@ -9,6 +9,7 @@ import { Actions } from 'react-native-router-flux';  // eslint-disable-line
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'; // eslint-disable-line
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import { Header } from '../common/Header';
+import DeviceInfo from 'react-native-device-info';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
@@ -33,12 +34,11 @@ export class Signup2 extends Component {
   }
 
   updatePlace = (data, details) => {
-    const disp = data.description;
-    const addr = data.address_components;
-    const placeID = data.place_id;
-    const geocode= data.geometry.location;
-    this.props.store.setCity(addr[0].long_name);
-    this.props.store.setCountry(addr[addr.length-1].short_name);
+    const disp = data.description ? data.description : data.formatted_address;
+    const placeID = details.place_id;
+    const geocode= details.geometry.location;
+    Reactotron.log(DeviceInfo.getDeviceCountry());
+    this.props.store.setCity(disp);
     this.props.store.setPlaceID(placeID);
     this.props.store.setGeocode(geocode);
     this.setState({
@@ -75,10 +75,10 @@ export class Signup2 extends Component {
           placeholder={placeholder}
           minLength={2}
           autoFocus={false}
-          listViewDisplayed={true}
-          fetchDetails={false}
+          listViewDisplayed={false}
+          fetchDetails={true}
           onPress={(data, details = null) => {
-            Reactotron.log({data: data, detail: details});
+            Reactotron.log({data, details});
             this.updatePlace(data, details);
           }}
           getDefaultValue={() => dispLocationName}
@@ -94,11 +94,11 @@ export class Signup2 extends Component {
             predefinedPlacesDescription: {
               color: '#1faadb',
             },
-          }}
+          }} 龍潭
           currentLocation={true}
           currentLocationLabel="現在所在位置城市"
           nearbyPlacesAPI='GoogleReverseGeocoding'
-          filterReverseGeocodingByTypes={['administrative_area_level_1', 'administrative_area_level_2', 'administrative_area_level_3']}
+          filterReverseGeocodingByTypes={['administrative_area_level_2', 'administrative_area_level_3']}
           predefinedPlacesAlwaysVisible={true}
         />
       </View>

@@ -10,12 +10,12 @@ export default class SignupStore {
   @observable birthday;
   @observable termsAgreed;
   @observable city;
-  @observable state;
-  @observable country;
   @observable gender;
   @observable sexOrientation;
   @observable geocode;
   @observable placeID;
+  @observable locale;
+  @observable country;
 
   constructor() {
     this.uid = '';
@@ -25,12 +25,12 @@ export default class SignupStore {
     this.birthday = '';
     this.termsAgreed = false;
     this.city = '';
-    this.state = '';
     this.country = '';
     this.gender = '';
     this.sexOrientation = '';
     this.geocode = null;
     this.placeID = '';
+    this.locale = '';
   }
 
   @action updateTermsAgreement() {
@@ -63,6 +63,10 @@ export default class SignupStore {
 
   @action setCountry(country) {
     this.country = country;
+  }
+
+  @action setLocale(locale) {
+    this.locale = locale;
   }
 
   @action setGender(gender) {

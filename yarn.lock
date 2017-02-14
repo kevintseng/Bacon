@@ -3618,13 +3618,6 @@ react-addons-pure-render-mixin@15.0.2, react-addons-pure-render-mixin@^15.0.2:
   version "15.0.2"
   resolved "https://registry.yarnpkg.com/react-addons-pure-render-mixin/-/react-addons-pure-render-mixin-15.0.2.tgz#b7731c5cc7f21214d68a78c84f40df3aefdf462f"
 
-react-addons-shallow-compare@latest:
-  version "15.4.2"
-  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.4.2.tgz#027ffd9720e3a1e0b328dcd8fc62e214a0d174a5"
-  dependencies:
-    fbjs "^0.8.4"
-    object-assign "^4.1.0"
-
 react-clone-referenced-element@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-clone-referenced-element/-/react-clone-referenced-element-1.0.1.tgz#2bba8c69404c5e4a944398600bcc4c941f860682"
@@ -3638,6 +3631,10 @@ react-native-datepicker@^1.4.4:
   resolved "https://registry.yarnpkg.com/react-native-datepicker/-/react-native-datepicker-1.4.4.tgz#465e2b792ad6b5ba1a86349f87552ece6cfa03a8"
   dependencies:
     moment "2.x.x"
+
+react-native-device-info@^0.9.9:
+  version "0.9.9"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.9.9.tgz#42490719b8be2b8ffe689f3c74d56884ca05c0d7"
 
 react-native-easy-grid@^0.1.8:
   version "0.1.8"
@@ -3677,10 +3674,6 @@ react-native-google-places-autocomplete@^1.2.7:
   dependencies:
     qs "^5.2.0"
 
-react-native-loading-spinner-overlay@latest:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-0.4.1.tgz#f1ebc7df6a7f8b9d06588fb51b5554565bb3cddb"
-
 react-native-looped-carousel@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/react-native-looped-carousel/-/react-native-looped-carousel-0.1.5.tgz#322ffe6cec208949113ed732bfd64d2d5107cbff"
@@ -3692,10 +3685,6 @@ react-native-mobx@^0.3.1:
     mobx "^2.2.0"
     mobx-react "^3.3.0"
     react-native-router-flux "^3.31.2"
-
-react-native-modalbox@latest:
-  version "1.3.8"
-  resolved "https://registry.yarnpkg.com/react-native-modalbox/-/react-native-modalbox-1.3.8.tgz#dc83bf90ded653288842a21153b5fca1af82e355"
 
 react-native-router-flux@^3.31.2, react-native-router-flux@^3.37.0:
   version "3.37.0"
@@ -3709,12 +3698,6 @@ react-native-router-flux@^3.31.2, react-native-router-flux@^3.37.0:
 react-native-side-menu@^0.20.1:
   version "0.20.1"
   resolved "https://registry.yarnpkg.com/react-native-side-menu/-/react-native-side-menu-0.20.1.tgz#df21b4bb9d8a1aa3bae53d74ddf8a739eb59bfc5"
-
-react-native-snap-carousel@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-snap-carousel/-/react-native-snap-carousel-2.0.0.tgz#5717ea1aaf01f08bb04b9880454228e15d68eebb"
-  dependencies:
-    react-addons-shallow-compare latest
 
 react-native-swipe-carousel@^0.1.7:
   version "0.1.7"
