@@ -26,7 +26,6 @@ export class Signup2 extends Component {
       },
       placeholder: '請輸入所在城市名稱',
       dispLocationName: '',
-      engLocationName: '',
       errMsg: false,
       disabled: true,
       loading: false,
@@ -34,12 +33,17 @@ export class Signup2 extends Component {
   }
 
   updatePlace = (data, details) => {
-    const disp = data.formatted_address;
-    const eng = details.formatted_address;
+    const disp = data.description;
+    const addr = data.address_components;
+    const placeID = data.place_id;
+    const geocode= data.geometry.location;
+    this.props.store.setCity(addr[0].long_name);
+    this.props.store.setCountry(addr[addr.length-1].short_name);
+    this.props.store.setPlaceID(placeID);
+    this.props.store.setGeocode(geocode);
     this.setState({
       placeholder: disp,
       dispLocationName: disp,
-      engLocationName: eng,
       errMsg: false,
       disabled: false,
     });
@@ -50,11 +54,7 @@ export class Signup2 extends Component {
       alert('請輸入您所在的城市');
     } else {
       Actions.signup3({
-        email: this.props.email,
-        password: this.props.password,
-        nickname: this.props.nickname,
-        birthday: this.props.birthday,
-        city: this.state.city,
+        store: this.props.store
       });
     }
   }
@@ -76,10 +76,10 @@ export class Signup2 extends Component {
           minLength={2}
           autoFocus={false}
           listViewDisplayed={true}
-          fetchDetails={true}
+          fetchDetails={false}
           onPress={(data, details = null) => {
-            this.updatePlace(data, details);
             Reactotron.log({data: data, detail: details});
+            this.updatePlace(data, details);
           }}
           getDefaultValue={() => dispLocationName}
           query={{
@@ -98,7 +98,7 @@ export class Signup2 extends Component {
           currentLocation={true}
           currentLocationLabel="現在所在位置城市"
           nearbyPlacesAPI='GoogleReverseGeocoding'
-          filterReverseGeocodingByTypes={['locality', 'administrative_area_level_1', 'administrative_area_level_2', 'administrative_area_level_3']}
+          filterReverseGeocodingByTypes={['administrative_area_level_1', 'administrative_area_level_2', 'administrative_area_level_3']}
           predefinedPlacesAlwaysVisible={true}
         />
       </View>

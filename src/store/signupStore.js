@@ -14,6 +14,8 @@ export default class SignupStore {
   @observable country;
   @observable gender;
   @observable sexOrientation;
+  @observable geocode;
+  @observable placeID;
 
   constructor() {
     this.uid = '';
@@ -27,7 +29,8 @@ export default class SignupStore {
     this.country = '';
     this.gender = '';
     this.sexOrientation = '';
-
+    this.geocode = null;
+    this.placeID = '';
   }
 
   @action updateTermsAgreement() {
@@ -64,6 +67,14 @@ export default class SignupStore {
 
   @action setGender(gender) {
     this.gender = gender;
+  }
+
+  @action setPlaceID(pid) {
+    this.placeID = pid;
+  }
+
+  @action setGeocode(geo) {
+    this.geocode = geo;
   }
 
   @action setSexOrientation(selected) {
