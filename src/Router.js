@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Router, Scene } from 'react-native-mobx';
-// import { Actions } from 'react-native-router-flux';  // eslint-disable-line
+// import { Router, Scene, Route } from 'react-native-mobx';
+import { Router, Route, Scene, Actions } from 'react-native-router-flux';  // eslint-disable-line
 import Welcome from './containers/Welcome';
-import Signup from './containers/Signup';
-import Signup2 from './containers/Signup2';
-import Signup3 from './containers/Signup3';
+import { Signup1, Signup2, Signup3 } from './components/signup';
 import MeetCute from './containers/MeetCute';
+import store from './store/AppStore';
 
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
@@ -27,7 +26,7 @@ const getSceneStyle = (props, computedProps) => {
 export default class RouterComponent extends Component {
   render() {
     return(
-      <Router getSceneStyle={getSceneStyle}>
+      <Router store={store} getSceneStyle={getSceneStyle}>
         <Scene key='root'>
           <Scene
             key='welcome'
@@ -40,22 +39,19 @@ export default class RouterComponent extends Component {
             hideTabBar>
             <Scene
               key='signup1'
-              component={Signup}
-            />
+              component={Signup1} />
             <Scene
               key='signup2'
-              component={Signup2}
-            />
+              component={Signup2} />
             <Scene
               key='signup3'
-              component={Signup3}
-            />
+              component={Signup3} />
           </Scene>
           <Scene
             key='meetcute'
             component={MeetCute}
             title='Hookup'
-            hideTabBar/>
+            hideTabBar />
         </Scene>
       </Router>
     );

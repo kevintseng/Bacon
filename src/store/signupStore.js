@@ -1,19 +1,19 @@
-import {reaction, observable, observe, computed, autorun} from 'mobx'; // eslint-disable-line
-import autobind from 'autobind-decorator';
+import { action, observable, computed } from 'mobx'; // eslint-disable-line
+// import autobind from 'autobind-decorator';
 
-@autobind
-class SignupStore {
+// @autobind
+export default class SignupStore {
   @observable uid;
   @observable email;
   @observable password;
-  @observable nickname;
+  @observable nicknamel;
   @observable birthday;
-  @observable termsagreed;
+  @observable termsAgreed;
   @observable city;
   @observable state;
   @observable country;
   @observable gender;
-  @observable selectedSexOrientation;
+  @observable sexOrientation;
 
   constructor() {
     this.uid = '';
@@ -23,9 +23,61 @@ class SignupStore {
     this.birthday = '';
     this.termsAgreed = false;
     this.city = '';
+    this.state = '';
     this.country = '';
     this.gender = '';
-    this.selectedSexOrientation = 0;
+    this.sexOrientation = '';
+
+  }
+
+  @action updateTermsAgreement() {
+    this.termsAgreed = !this.termsAgreed;
+  }
+
+  @action setEmail(email) {
+    this.email = email;
+  }
+
+  @action setPassword(pass) {
+    this.password = pass;
+  }
+
+  @action setBirthday(birthday) {
+    this.birthday = birthday;
+  }
+
+  @action setNickname(name) {
+    this.nickname = name;
+  }
+
+  @action setUid(id) {
+    this.uid = id;
+  }
+
+  @action setCity(city) {
+    this.city = city;
+  }
+
+  @action setCountry(country) {
+    this.country = country;
+  }
+
+  @action setGender(gender) {
+    this.gender = gender;
+  }
+
+  @action setSexOrientation(selected) {
+    switch(selected) {
+      case 0:
+      this.sexOrientation = 'm';
+      break;
+      case 1:
+      this.sexOrientation = 'f';
+      break;
+      case 3:
+      this.sexOrientation = 'b';
+      break;
+    }
   }
 
   @computed get birthdayTimestamp() {
@@ -33,27 +85,8 @@ class SignupStore {
     return temp;
   }
 
-  @computed get sexOrientation() {
-    switch(this.selectedSexOrientation) {
-      case 0:
-      return 'm';
-      case 1:
-      return 'f';
-      case 3:
-      return 'b';
-    }
+  @action getNewUid() {
+
   }
 
-
-
 }
-
-
-
-const signupStore = new SignupStore();
-
-autorun(() => {
-  console.log(signupStore);
-})
-
-export default signupStore;

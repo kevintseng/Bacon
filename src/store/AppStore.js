@@ -1,19 +1,14 @@
-import {reaction, observable, observe, computed, autorun} from 'mobx'; // eslint-disable-line
+import { observable, action, autorun } from 'mobx'; // eslint-disable-line
+// import autobind from 'autobind-decorator';
+import Reactotron from 'reactotron-react-native';
 
+// @autobind
 class AppStore {
-  @observable user = '';
-  @observable profile = {};
-  @observable nearbys = [];
-  @observable recommands = [];
-  @observable settings = {};
-  @observable chats = [];
 
 }
 
-const appStore = new AppStore();
-
 autorun(() => {
-  console.log(appStore);
+  Reactotron.log({AppStore});
 })
 
-export default appStore;
+export default AppStore;
