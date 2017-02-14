@@ -105,3 +105,18 @@ export class Signup2 extends Component {
     );
   }
 }
+
+// const addr = data.address_components;
+// const city = addr[0].long_name;
+// const placeID = data.place_id;
+// const geocode= data.geometry.location;
+// this.props.store.setCity(addr[0].long_name);
+// this.props.store.setCountry(addr[addr.length-1].short_name);
+// this.props.store.setPlaceID(placeID);
+// this.props.store.setGeocode(geocode);
+// this.setState({
+//   placeholder: city,
+//   dispLocationName: city,
+//   errMsg: false,
+//   disabled: false,
+// });
