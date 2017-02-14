@@ -27,7 +27,8 @@ export default class Signup2 extends Component {
         width,
         height:600,
       },
-      dispLocationName: '請輸入所在城市名稱',
+      placeholder: '請輸入所在城市名稱',
+      dispLocationName: '',
       engLocationName: '',
       errMsg: false,
       disabled: true,
@@ -39,6 +40,7 @@ export default class Signup2 extends Component {
     const disp = data.formatted_address;
     const eng = details.formatted_address;
     this.setState({
+      placeholder: disp,
       dispLocationName: disp,
       engLocationName: eng,
       errMsg: false,
@@ -47,38 +49,25 @@ export default class Signup2 extends Component {
   }
 
   goNext = () => {
-    Actions.signup3({
-      email: this.props.email,
-      password: this.props.password,
-      nickname: this.props.nickname,
-      birthday: this.props.birthday,
-      city: this.state.city,
-    });
+    if(this.state.dispLocationName == '') {
+      alert('請輸入您所在的城市');
+    } else {
+      Actions.signup3({
+        email: this.props.email,
+        password: this.props.password,
+        nickname: this.props.nickname,
+        birthday: this.props.birthday,
+        city: this.state.city,
+      });
+    }
   }
 
-  // checkInputs = () => {
-  //   let tmp = this.state.nickname.trim();
-  //   if(tmp.length == 0) {
-  //     this.setState({
-  //       errMsg: '請輸入您想要使用的的名稱',
-  //       disabled: true,
-  //     })
-  //   } else {
-  //     Actions.signup3({
-  //       email: this.props.email,
-  //       password: this.props.password,
-  //       nickname: this.props.nickname,
-  //       birthday: this.props.birthday,
-  //       city: this.state.city,
-  //     });
-  //   }
-  // }
-
   render() {
+    const { size, placeholder, dispLocationName } = this.state;
     return (
-      <View style={this.state.size}>
+      <View style={size}>
         <Header
-          headerText='所在城市'
+          headerText='常在城市'
           rightButtonText='下一步'
           onRight={this.goNext}
           rightColor='#007AFF'
@@ -86,19 +75,16 @@ export default class Signup2 extends Component {
           leftColor='#007AFF'
         />
         <GooglePlacesAutocomplete
-          placeholder={this.state.dispLocationName}
+          placeholder={placeholder}
           minLength={2}
           autoFocus={false}
           listViewDisplayed={true}
           fetchDetails={true}
           onPress={(data, details = null) => {
             this.updatePlace(data, details);
-            Reactotron.log({data: data});
-            Reactotron.log({detail: details});
+            Reactotron.log({data: data, detail: details});
           }}
-          getDefaultValue={() => {
-            return ''; // text input default value
-          }}
+          getDefaultValue={() => dispLocationName}
           query={{
             key: 'AIzaSyBYTZDmeWcR9MEdiUTdgZGb80nDWYLnCSk',
             language: 'en', // language of the results
@@ -113,7 +99,7 @@ export default class Signup2 extends Component {
             },
           }}
           currentLocation={true}
-          currentLocationLabel="以現在位置搜尋城市"
+          currentLocationLabel="現在所在位置城市"
           nearbyPlacesAPI='GoogleReverseGeocoding'
           filterReverseGeocodingByTypes={['locality', 'administrative_area_level_1', 'administrative_area_level_2', 'administrative_area_level_3']}
           predefinedPlacesAlwaysVisible={true}

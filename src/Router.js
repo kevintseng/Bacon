@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Scene, Actions } from 'react-native-mobx';
+import { Router, Scene } from 'react-native-mobx';
 // import { Actions } from 'react-native-router-flux';  // eslint-disable-line
 import Welcome from './containers/Welcome';
 import Signup from './containers/Signup';
