@@ -3632,10 +3632,6 @@ react-native-datepicker@^1.4.4:
   dependencies:
     moment "2.x.x"
 
-react-native-device-info@^0.9.9:
-  version "0.9.9"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.9.9.tgz#42490719b8be2b8ffe689f3c74d56884ca05c0d7"
-
 react-native-easy-grid@^0.1.8:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/react-native-easy-grid/-/react-native-easy-grid-0.1.8.tgz#7953fb85e0e2c316d814bbd189cb9efdf56ff2a5"
