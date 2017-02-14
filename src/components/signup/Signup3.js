@@ -6,11 +6,11 @@ import {
 } from 'react-native';
 import {ButtonGroup, FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
-import { Header } from '../components/Header';
+import { Header } from '../common/Header';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
-export default class Signup3 extends Component {
+export class Signup3 extends Component {
   static propTypes = {
     email: PropTypes.string,
     password: PropTypes.string,

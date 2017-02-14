@@ -8,16 +8,13 @@ import {FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-di
 import { Actions } from 'react-native-router-flux';  // eslint-disable-line
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'; // eslint-disable-line
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
-import { Header } from '../components/Header';
+import { Header } from '../common/Header';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
-export default class Signup2 extends Component {
+export class Signup2 extends Component {
   static propTypes = {
-    email: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-    birthday: PropTypes.string.isRequired,
-    nickname: PropTypes.string.isRequired,
+    store: PropTypes.object.isRequired,
   };
 
   constructor(props) {

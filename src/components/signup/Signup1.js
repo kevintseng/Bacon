@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {
     View,
     ActivityIndicator,
@@ -9,10 +9,11 @@ import {CheckBox, FormLabel, FormInput, Button} from 'react-native-elements'; //
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
 import Reactotron from 'reactotron-react-native';
-
+import { autorun } from 'mobx';
+import { observer } from 'mobx-react/native';
 import { getAge } from '../utils/Utils';
-import { Header } from '../components/Header';
-
+import { Header } from '../common/Header';
+import SignupStore from '../../store/SignupStore'
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 const styles = {
@@ -35,22 +36,22 @@ function maxDay() {
   return maxDate;
 }
 
+@observer
+export class Signup1 extends Component {
+  // static propTypes = {
+  //   store: PropTypes.object,
+  // }
 
-export default class Signup extends Component {
   constructor(props) {
     super(props);
+    this.store = new SignupStore();
     this.state = {
       size: {
           width,
           height
       },
       maxDate: maxDay(),
-      email: '',
-      password: '',
-      nickname: '',
-      birthday: '',
       loading: false,
-      termsAgreed: false,
       birthdayErr: false,
       nickErr: false,
       passErr: false,
@@ -76,43 +77,43 @@ export default class Signup extends Component {
   };
 
   updateTermAgreement = () => {
+    this.store.updateTermsAgreement();
     this.setState({
-      termsAgreed: !this.state.termsAgreed,
       termsErr: false,
     });
     this.termsCheck;
   }
 
   updateEmail = email => {
+    this.store.setEmail(email.trim());
     this.setState({
-      email: email.trim(),
       emailErr: false,
     });
   }
 
   updatePassword = password => {
+    this.store.setPassword(password.trim());
     this.setState({
-      password: password.trim(),
       passErr: false,
     });
   }
 
   updateNickname = (nickname) => {
+    this.store.setNickname(nickname.trim());
     this.setState({
-      nickname: nickname.trim(),
       nickErr: false,
     });
   }
 
   updateBirthday = bday => {
+    this.store.setBirthday(bday.trim());
     this.setState({
-      birthday: bday.trim(),
       birthdayErr: false,
     });
   }
 
   emailCheck() {
-    if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)){
+    if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.store.email)){
       return true;
     }
     this.setState({
@@ -123,7 +124,7 @@ export default class Signup extends Component {
 
   passwordCheck() {
     const passw =  /^[A-Za-z0-9]{6,10}$/;
-    if(this.state.password.match(passw))
+    if(this.store.password.match(passw))
     {
       return true;
     } else {
@@ -135,7 +136,7 @@ export default class Signup extends Component {
   }
 
   nicknameCheck() {
-    if(this.state.nickname.length < 2) {
+    if(this.store.nickname.length < 2) {
       this.setState({
         nickErr: '請輸入2個字以上的名稱',
       })
@@ -146,14 +147,14 @@ export default class Signup extends Component {
 
   birthdayCheck() {
     //check birthday must not be ''
-    if(this.state.birthday == '') {
+    if(this.store.birthday == '') {
       this.setState({
         birthdayErr: '請提供您的生日',
       })
       return false;
     }
     // Check age must be 18 and above
-    if(getAge(this.state.birthday) < 18) {
+    if(getAge(this.store.birthday) < 18) {
       this.setState({
         birthdayErr: '本App僅提供滿18歲以上用戶使用',
       })
@@ -163,7 +164,7 @@ export default class Signup extends Component {
   }
 
   termsCheck() {
-    if(!this.state.termsAgreed) {
+    if(!this.store.termsAgreed) {
       this.setState({
         termsErr: '抱歉, 您必須先同意本App之所有條款後才能使用服務',
       })
@@ -180,16 +181,17 @@ export default class Signup extends Component {
     const termsOk = this.termsCheck();
     if(emailOk && passwordOk && nameOk && bdayOk && termsOk){
       Actions.signup2({
-        email: this.state.email,
-        password: this.state.password,
-        nickname: this.state.nickname,
-        birthday: this.state.birthday,
+        store: this.store
       });
     }
   }
 
   render() {
-    const { email, password, nickname, birthday, termsAgreed, maxDate, birthdayErr, emailErr, termsErr, nickErr, passErr, loading, size } = this.state;
+    const { termsAgreed, email, password, nickname, birthday } = this.store;
+    const { maxDate, birthdayErr, emailErr, termsErr, nickErr, passErr, loading, size } = this.state;
+    autorun(() => {
+      Reactotron.log(this.store);
+    });
     return (
       <View style={this.state.size}>
         <Header
