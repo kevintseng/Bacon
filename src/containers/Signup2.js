@@ -81,7 +81,9 @@ export default class Signup2 extends Component {
           headerText='所在城市'
           rightButtonText='下一步'
           onRight={this.goNext}
-          onLeft={false}
+          rightColor='#007AFF'
+          onLeft={() => Actions.pop()}
+          leftColor='#007AFF'
         />
         <GooglePlacesAutocomplete
           placeholder={this.state.dispLocationName}

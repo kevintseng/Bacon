@@ -172,28 +172,6 @@ export default class Signup extends Component {
     return true;
   }
 
-  // allCheck() {
-  //   const emailOk = this.emailCheck();
-  //   const passwordOk = this.passwordCheck();
-  //   const nameOk = this.nicknameCheck();
-  //   const bdayOk = this.birthdayCheck();
-  //   const termsOk = this.termsCheck();
-  //   if(emailOk && passwordOk && nameOk && bdayOk && termsOk){
-  //     this.goNext();
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  // goNext() {
-  //   Actions.signup2({
-  //     email: this.state.email,
-  //     password: this.state.password,
-  //     nickname: this.state.nickname,
-  //     birthday: this.state.birthday,
-  //   });
-  // }
-
   handleSubmit() {
     const emailOk = this.emailCheck();
     const passwordOk = this.passwordCheck();
@@ -206,12 +184,9 @@ export default class Signup extends Component {
         password: this.state.password,
         nickname: this.state.nickname,
         birthday: this.state.birthday,
-
       });
     }
   }
-
-
 
   render() {
     const { email, password, nickname, birthday, termsAgreed, maxDate, birthdayErr, emailErr, termsErr, nickErr, passErr, loading, size } = this.state;
@@ -221,8 +196,9 @@ export default class Signup extends Component {
           headerText='建立新帳號'
           rightButtonText='下一步'
           onRight={this.handleSubmit}
+          rightColor='#007AFF'
+          onLeft={() => Actions.pop()}
           leftColor='#007AFF'
-          onLeft={Actions.pop()}
         />
         <FormLabel>帳號 Email</FormLabel>
         {

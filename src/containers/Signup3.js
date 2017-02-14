@@ -15,6 +15,9 @@ export default class Signup3 extends Component {
     email: PropTypes.string,
     password: PropTypes.string,
     nickname: PropTypes.string,
+    birthday: PropTypes.string,
+    city: PropTypes.string,
+    country: PropTypes.string,
   };
 
   constructor(props) {
@@ -83,6 +86,9 @@ export default class Signup3 extends Component {
           headerText='性別及對象'
           rightButtonText='完成'
           onRight={this.checkInputs}
+          rightColor='#007AFF'
+          onLeft={() => Actions.pop()}
+          leftColor='#007AFF'
         />
         <View style={{ marginBottom: 20 }}>
           <FormLabel>我的性別</FormLabel>
