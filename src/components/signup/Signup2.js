@@ -9,7 +9,6 @@ import { Actions } from 'react-native-router-flux';  // eslint-disable-line
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'; // eslint-disable-line
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import { Header } from '../common/Header';
-import DeviceInfo from 'react-native-device-info';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
@@ -37,7 +36,6 @@ export class Signup2 extends Component {
     const disp = data.description ? data.description : data.formatted_address;
     const placeID = details.place_id;
     const geocode= details.geometry.location;
-    Reactotron.log(DeviceInfo.getDeviceCountry());
     this.props.store.setCity(disp);
     this.props.store.setPlaceID(placeID);
     this.props.store.setGeocode(geocode);
