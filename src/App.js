@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
-import { dev_FirebaseConfig } from './config'
+// import { dev_FirebaseConfig } from './config'
 import RouterComponent from './Router';
+import Firestack from 'react-native-firestack';
 
 class App extends Component {
   constructor() {
     super();
     // Initialize Firebase
-    const firebaseConfig = dev_FirebaseConfig;
-    firebase.initializeApp(firebaseConfig);
+    // const firebaseConfig = dev_FirebaseConfig;
+    const configurationOptions = {
+      debug: true,
+    };
+    const firestack = new Firestack(configurationOptions);
   }
 
   render() {

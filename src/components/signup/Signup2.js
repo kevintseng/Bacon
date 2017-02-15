@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react'; // eslint-disable-line
 import {
   View,
   Dimensions,
-  Text,
 } from 'react-native';
 import {FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';  // eslint-disable-line

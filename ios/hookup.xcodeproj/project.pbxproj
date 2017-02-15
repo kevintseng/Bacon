@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -25,6 +26,8 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		28FF5C44A2B94B43A702817F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 842F51EB028E40DEBBD2F004 /* Zocial.ttf */; };
 		44501DBA4C5A46BA9D9A5F02 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E690F9B9C1E34499825596A0 /* Octicons.ttf */; };
+		45E644E41E542EF200611550 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45E644E31E542EF200611550 /* GoogleService-Info.plist */; };
+		45E644E51E542EF200611550 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45E644E31E542EF200611550 /* GoogleService-Info.plist */; };
 		48DDAC82DE1A4A749F7B5176 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A10D3CA1B808443BB08FA4C8 /* Foundation.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6305EAFA2C18447F99BE05CE /* libFirestack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F7EC43ED0142A9A4E5B17D /* libFirestack.a */; };
@@ -261,6 +264,7 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		262464281EBBEE306C1D92C8 /* Pods_hookupTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hookupTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2981770420EE4C1E801C4899 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
+		45E644E31E542EF200611550 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "hookup/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		482808DC5F664413B7C59B8F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		667D5281DB7C3FD33EE33562 /* Pods-hookupTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hookupTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-hookupTests/Pods-hookupTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -401,6 +405,7 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				45E644E31E542EF200611550 /* GoogleService-Info.plist */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -877,6 +882,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45E644E51E542EF200611550 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -884,6 +890,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45E644E41E542EF200611550 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				B50B65A6F36E4D99B5197FF3 /* Entypo.ttf in Resources */,
@@ -1061,9 +1068,7 @@
 				INFOPLIST_FILE = hookupTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hookup.app/hookup";
 			};
@@ -1078,9 +1083,7 @@
 				INFOPLIST_FILE = hookupTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hookup.app/hookup";
 			};
@@ -1100,6 +1103,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kayming.hkup;
 				PRODUCT_NAME = hookup;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1118,6 +1122,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kayming.hkup;
 				PRODUCT_NAME = hookup;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
