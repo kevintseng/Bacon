@@ -1,4 +1,4 @@
-package com.hookup;
+package com.hookup.android;
 
 import com.facebook.react.ReactActivity;
 

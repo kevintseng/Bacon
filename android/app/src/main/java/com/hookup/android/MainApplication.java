@@ -1,4 +1,4 @@
-package com.hookup;
+package com.hookup.android;
 
 import android.app.Application;
 import android.util.Log;
