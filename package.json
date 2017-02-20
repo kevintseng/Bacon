@@ -19,6 +19,7 @@
     "react-native-datepicker": "^1.4.4",
     "react-native-easy-grid": "^0.1.8",
     "react-native-elements": "^0.9.5",
+    "react-native-firestack": "^2.3.9",
     "react-native-google-places-autocomplete": "^1.2.7",
     "react-native-looped-carousel": "^0.1.5",
     "react-native-mobx": "^0.3.1",
