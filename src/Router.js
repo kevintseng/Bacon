@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 // import { Router, Scene, Route } from 'react-native-mobx';
 import { Router, Route, Scene, Actions } from 'react-native-router-flux';  // eslint-disable-line
-import Welcome from './containers/Welcome';
-import { Signup1, Signup2, Signup3 } from './components/signup';
-import MeetCute from './containers/MeetCute';
+import Firestack from 'react-native-firestack';
+import Welcome from './views/Welcome';
+import { Signup1, Signup2, Signup3, Signup4 } from './views/signup';
+import MeetCute from './views/MeetCute';
 import store from './store/AppStore';
 
 // define this based on the styles/dimensions you use
@@ -23,10 +24,12 @@ const getSceneStyle = (props, computedProps) => {
   return style;
 };
 
+const firestack = new Firestack();
+
 export default class RouterComponent extends Component {
   render() {
     return(
-      <Router store={store} getSceneStyle={getSceneStyle}>
+      <Router fire={firestack} store={store} getSceneStyle={getSceneStyle}>
         <Scene key='root'>
           <Scene
             key='welcome'
@@ -36,7 +39,8 @@ export default class RouterComponent extends Component {
           <Scene
             key='signup'
             hideNavBar
-            hideTabBar>
+            hideTabBar
+          >
             <Scene
               key='signup1'
               component={Signup1} />
@@ -46,6 +50,9 @@ export default class RouterComponent extends Component {
             <Scene
               key='signup3'
               component={Signup3} />
+            <Scene
+              key='signup4'
+              component={Signup4} />
           </Scene>
           <Scene
             key='meetcute'

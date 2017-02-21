@@ -3691,6 +3691,10 @@ react-native-google-places-autocomplete@^1.2.7:
   dependencies:
     qs "^5.2.0"
 
+react-native-image-picker@latest:
+  version "0.25.5"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.25.5.tgz#62b12f98bb4b4bf0a7ac6fde7977896f7944b500"
+
 react-native-looped-carousel@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/react-native-looped-carousel/-/react-native-looped-carousel-0.1.5.tgz#322ffe6cec208949113ed732bfd64d2d5107cbff"

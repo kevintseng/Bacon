@@ -1,5 +1,6 @@
 // Firebase production configs
 const FirebaseConfig = { //eslint-disable-line
+  debug: true,
   apiKey: "AIzaSyBYTZDmeWcR9MEdiUTdgZGb80nDWYLnCSk",
   authDomain: "kjyl-150415.firebaseapp.com",
   databaseURL: "https://kjyl-150415.firebaseio.com",
@@ -9,6 +10,7 @@ const FirebaseConfig = { //eslint-disable-line
 
   // Firebase development configs
 const dev_FirebaseConfig = { //eslint-disable-line
+  debug: true,
   apiKey: "AIzaSyBPCpEc-v-mSf_riAUFd79xDzVgXXg7gN0",
   authDomain: "rainyday-7fa26.firebaseapp.com",
   databaseURL: "https://rainyday-7fa26.firebaseio.com",

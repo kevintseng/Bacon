@@ -39,6 +39,7 @@
 		E6208DBB02C5480A8202DD72 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB4AAA8B5572446D954900BA /* MaterialCommunityIcons.ttf */; };
 		FC1A32A0002343D8BF81E35D /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A06F59F18C2049CCA0974036 /* FontAwesome.ttf */; };
 		FF8B53DC7BC04C31A322EB34 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 482808DC5F664413B7C59B8F /* SimpleLineIcons.ttf */; };
+		20094E8257874ECA9A7C3133 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E37B388F1D6744A682F68C27 /* libRNImagePicker.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -284,6 +285,8 @@
 		E7684F36FEB64BD297008104 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		F6F7EC43ED0142A9A4E5B17D /* libFirestack.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFirestack.a; sourceTree = "<group>"; };
 		FB4AAA8B5572446D954900BA /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		03FC35D6BC554C5693B75BD3 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; name = "RNImagePicker.xcodeproj"; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		E37B388F1D6744A682F68C27 /* libRNImagePicker.a */ = {isa = PBXFileReference; name = "libRNImagePicker.a"; path = "libRNImagePicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,6 +317,7 @@
 				E603B42D0364482C9369DCC9 /* libRNVectorIcons.a in Frameworks */,
 				6305EAFA2C18447F99BE05CE /* libFirestack.a in Frameworks */,
 				6F2135DA1199A6DBBED0BE01 /* Pods_hookup.framework in Frameworks */,
+				20094E8257874ECA9A7C3133 /* libRNImagePicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,6 +500,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				2981770420EE4C1E801C4899 /* RNVectorIcons.xcodeproj */,
 				6B798D6ED0C64753999E9292 /* Firestack.xcodeproj */,
+				03FC35D6BC554C5693B75BD3 /* RNImagePicker.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1067,7 +1072,10 @@
 				INFOPLIST_FILE = hookupTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hookup.app/hookup";
 			};
@@ -1082,7 +1090,10 @@
 				INFOPLIST_FILE = hookupTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hookup.app/hookup";
 			};

@@ -4,7 +4,19 @@ import Reactotron from 'reactotron-react-native';
 
 // @autobind
 class AppStore {
+  @observable user;
 
+  constructor() {
+    this.user = null;
+  }
+
+  @action setUser(user) {
+    this.user = user;
+  }
+
+  @action signin(user) {
+    this.user = user;
+  }
 }
 
 autorun(() => {

@@ -33,8 +33,8 @@ export default class SignupStore {
     this.locale = '';
   }
 
-  @action updateTermsAgreement() {
-    this.termsAgreed = !this.termsAgreed;
+  @action setTermsAgreement(termsAgreed) {
+    this.termsAgreed = termsAgreed;
   }
 
   @action setEmail(email) {
@@ -70,7 +70,14 @@ export default class SignupStore {
   }
 
   @action setGender(gender) {
-    this.gender = gender;
+    switch(gender) {
+      case 0:
+      this.gender = 'm';
+      break;
+      case 1:
+      this.gender = 'f';
+      break;
+    }
   }
 
   @action setPlaceID(pid) {
