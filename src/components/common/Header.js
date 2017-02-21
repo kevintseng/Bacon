@@ -7,7 +7,7 @@ import { Icon, Button } from 'react-native-elements'; // eslint-disable-line
 // Make a component
 const Header = (props) => {
   const { titleStyle, gridStyle, buttonStyle, viewStyle, leftColStyle, rightColStyle } = styles;
-  let { leftColor, onLeft, rightColor, onRight, headerText } = props;
+  let { leftColor, onLeft, rightColor, onRight, headerText, rightButtonText } = props;
   if(!leftColor) leftColor = 'transparent';
   if(!rightColor) rightColor = 'transparent';
   if(!onLeft) onLeft = () => {};
@@ -32,7 +32,7 @@ const Header = (props) => {
           buttonStyle={buttonStyle}
           backgroundColor='transparent'
           color={rightColor}
-          title={'下一步'}
+          title={rightButtonText}
           onPress={onRight}
         />
       </Col>
@@ -62,16 +62,16 @@ const styles = {
   },
   leftColStyle: {
     justifyContent: 'center',
-    width: 80,
+    width: 100,
     alignItems: 'flex-start',
   },
   rightColStyle: {
-    width: 80,
+    width: 100,
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
   buttonStyle: {
-    width: 55,
+    width: 90,
     margin: 0,
     paddingHorizontal: 0,
     paddingVertical: 10,

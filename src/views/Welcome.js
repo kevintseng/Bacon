@@ -1,18 +1,24 @@
-import React, {Component} from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
     View,
     Text,
     Dimensions,
 } from 'react-native';
-import {FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
+import { FormLabel, FormInput, Button } from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
 
 const {width, height} = Dimensions.get('window'); // eslint-disable-line
 
 export default class Welcome extends Component {
+  static propTypes = {
+    store: PropTypes.func,
+    fire: PropTypes.object,
+  }
 
   constructor(props) {
     super(props);
+    this.store = this.props.store;
+    this.fs = this.props.fire;
     this.state = {
       size: {
         width,
@@ -54,7 +60,7 @@ export default class Welcome extends Component {
         <Text>{this.state.email}</Text>
         <Button
           raised
-          backgroundColor='#a022ae'
+          backgroundColor='#03A9F4'
           title={'登入'} />
         <View stye={{
           flex: 1,

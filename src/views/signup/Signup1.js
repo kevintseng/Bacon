@@ -11,8 +11,8 @@ import DatePicker from 'react-native-datepicker';
 import Reactotron from 'reactotron-react-native';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
-import { getAge } from '../utils/Utils';
-import { Header } from '../common/Header';
+import { getAge } from '../../components/Utils';
+import { Header } from '../../components/common/Header';
 import SignupStore from '../../store/SignupStore'
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
@@ -38,18 +38,26 @@ function maxDay() {
 
 @observer
 export class Signup1 extends Component {
-  // static propTypes = {
-  //   store: PropTypes.object,
-  // }
+  static propTypes = {
+    store: PropTypes.func,
+    fire: PropTypes.object,
+  }
 
   constructor(props) {
     super(props);
-    this.store = new SignupStore();
+    this.appstore = this.props.store;
+    this.fs = this.props.fire;
+    this.sustore = new SignupStore();
     this.state = {
       size: {
           width,
           height
       },
+      email: 'test20@20.com',
+      password: '123456',
+      birthday: '1989-09-09',
+      nickname: 'test20',
+      termsAgreed: true,
       maxDate: maxDay(),
       loading: false,
       birthdayErr: false,
@@ -77,43 +85,42 @@ export class Signup1 extends Component {
   };
 
   updateTermAgreement = () => {
-    this.store.updateTermsAgreement();
     this.setState({
       termsErr: false,
+      termsAgreed: !this.state.termsAgreed,
     });
-    this.termsCheck;
   }
 
   updateEmail = email => {
-    this.store.setEmail(email.trim());
     this.setState({
       emailErr: false,
+      email: email.trim(),
     });
   }
 
   updatePassword = password => {
-    this.store.setPassword(password.trim());
     this.setState({
       passErr: false,
+      password: password.trim(),
     });
   }
 
   updateNickname = (nickname) => {
-    this.store.setNickname(nickname.trim());
     this.setState({
       nickErr: false,
+      nickname: nickname.trim(),
     });
   }
 
   updateBirthday = bday => {
-    this.store.setBirthday(bday.trim());
     this.setState({
       birthdayErr: false,
+      birthday: bday.trim(),
     });
   }
 
   emailCheck() {
-    if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.store.email)){
+    if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)){
       return true;
     }
     this.setState({
@@ -124,7 +131,7 @@ export class Signup1 extends Component {
 
   passwordCheck() {
     const passw =  /^[A-Za-z0-9]{6,10}$/;
-    if(this.store.password.match(passw))
+    if(this.state.password.match(passw))
     {
       return true;
     } else {
@@ -136,7 +143,7 @@ export class Signup1 extends Component {
   }
 
   nicknameCheck() {
-    if(this.store.nickname.length < 2) {
+    if(this.state.nickname.length < 2) {
       this.setState({
         nickErr: '請輸入2個字以上的名稱',
       })
@@ -147,14 +154,14 @@ export class Signup1 extends Component {
 
   birthdayCheck() {
     //check birthday must not be ''
-    if(this.store.birthday == '') {
+    if(this.state.birthday == '') {
       this.setState({
         birthdayErr: '請提供您的生日',
       })
       return false;
     }
     // Check age must be 18 and above
-    if(getAge(this.store.birthday) < 18) {
+    if(getAge(this.state.birthday) < 18) {
       this.setState({
         birthdayErr: '本App僅提供滿18歲以上用戶使用',
       })
@@ -164,7 +171,7 @@ export class Signup1 extends Component {
   }
 
   termsCheck() {
-    if(!this.store.termsAgreed) {
+    if(!this.state.termsAgreed) {
       this.setState({
         termsErr: '抱歉, 您必須先同意本App之所有條款後才能使用服務',
       })
@@ -180,18 +187,43 @@ export class Signup1 extends Component {
     const bdayOk = this.birthdayCheck();
     const termsOk = this.termsCheck();
     if(emailOk && passwordOk && nameOk && bdayOk && termsOk){
+      this.sustore.setBirthday(this.state.birthday);
+      this.sustore.setNickname(this.state.nickname);
+      this.sustore.setPassword(this.state.password);
+      this.sustore.setTermsAgreement(this.state.termsAgreed);
+      this.sustore.setEmail(this.state.email);
+      autorun(() => {
+        Reactotron.log(this.sustore);
+      });
+      // Create a new user on Firebase
+      // this.fs.auth.createUserWithEmail(this.state.email, this.state.password)
+      // .then((user) => {
+      //
+      //   this.sustore.setUid(user.uid);
+      //
+      //   this.fs.auth.updateUserProfile({
+      //     displayName: this.sustore.nickname
+      //   })
+      //   .then(res => Reactotron.log({'DisplayName updated': res}))
+      //   .catch(err => Reactotron.log({'There was an error': err}));
+      //
+      //   Reactotron.log({'user created': user, 'uid': user.uid});
+      // })
+      // .catch((err) => {
+      //   Reactotron.log({'An error occurred': err});
+      // });
+
+      // Go to signup step 2
       Actions.signup2({
-        store: this.store
+        sustore: this.sustore
       });
     }
   }
 
   render() {
-    const { termsAgreed, email, password, nickname, birthday } = this.store;
+    const { termsAgreed, email, password, nickname, birthday } = this.state;
     const { maxDate, birthdayErr, emailErr, termsErr, nickErr, passErr, loading, size } = this.state;
-    autorun(() => {
-      Reactotron.log(this.store);
-    });
+
     return (
       <View style={this.state.size}>
         <Header

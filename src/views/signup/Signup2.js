@@ -6,23 +6,30 @@ import {
 import {FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';  // eslint-disable-line
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'; // eslint-disable-line
+// import { autorun } from 'mobx';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
-import { Header } from '../common/Header';
+import { Header } from '../../components/common/Header';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 export class Signup2 extends Component {
   static propTypes = {
-    store: PropTypes.object.isRequired,
+    fire: PropTypes.object,
+    store: PropTypes.func,
+    sustore: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
+    this.sustore = this.props.sustore;
     this.state = {
       size: {
         width,
         height:600,
       },
+      city: null,
+      placeID: null,
+      geocode: null,
       placeholder: '請輸入所在城市名稱',
       dispLocationName: '',
       errMsg: false,
@@ -35,10 +42,10 @@ export class Signup2 extends Component {
     const disp = data.description ? data.description : data.formatted_address;
     const placeID = details.place_id;
     const geocode= details.geometry.location;
-    this.props.store.setCity(disp);
-    this.props.store.setPlaceID(placeID);
-    this.props.store.setGeocode(geocode);
     this.setState({
+      city: disp,
+      placeID: placeID,
+      geocode: geocode,
       placeholder: disp,
       dispLocationName: disp,
       errMsg: false,
@@ -50,8 +57,12 @@ export class Signup2 extends Component {
     if(this.state.dispLocationName == '') {
       alert('請輸入您所在的城市');
     } else {
+      this.sustore.setCity(this.state.city);
+      this.sustore.setPlaceID(this.state.placeID);
+      this.sustore.setGeocode(this.state.geocode);
+
       Actions.signup3({
-        store: this.props.store
+        sustore: this.sustore
       });
     }
   }
@@ -71,8 +82,8 @@ export class Signup2 extends Component {
         <GooglePlacesAutocomplete
           placeholder={placeholder}
           minLength={2}
-          autoFocus={false}
-          listViewDisplayed={false}
+          autoFocus={true}
+          listViewDisplayed={true}
           fetchDetails={true}
           onPress={(data, details = null) => {
             Reactotron.log({data, details});
@@ -91,7 +102,7 @@ export class Signup2 extends Component {
             predefinedPlacesDescription: {
               color: '#1faadb',
             },
-          }} 龍潭
+          }}
           currentLocation={true}
           currentLocationLabel="現在所在位置城市"
           nearbyPlacesAPI='GoogleReverseGeocoding'
@@ -102,18 +113,3 @@ export class Signup2 extends Component {
     );
   }
 }
-
-// const addr = data.address_components;
-// const city = addr[0].long_name;
-// const placeID = data.place_id;
-// const geocode= data.geometry.location;
-// this.props.store.setCity(addr[0].long_name);
-// this.props.store.setCountry(addr[addr.length-1].short_name);
-// this.props.store.setPlaceID(placeID);
-// this.props.store.setGeocode(geocode);
-// this.setState({
-//   placeholder: city,
-//   dispLocationName: city,
-//   errMsg: false,
-//   disabled: false,
-// });
