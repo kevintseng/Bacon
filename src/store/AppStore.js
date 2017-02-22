@@ -10,13 +10,10 @@ class AppStore {
     this.user = null;
   }
 
-  @action setUser(user) {
+  @action signedIn(user) {
     this.user = user;
   }
 
-  @action signin(user) {
-    this.user = user;
-  }
 }
 
 autorun(() => {

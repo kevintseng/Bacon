@@ -6,6 +6,7 @@ import Welcome from './views/Welcome';
 import { Signup1, Signup2, Signup3, Signup4 } from './views/signup';
 import MeetCute from './views/MeetCute';
 import store from './store/AppStore';
+import Forgot from './views/Forgot';
 
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
@@ -36,6 +37,12 @@ export default class RouterComponent extends Component {
             component={Welcome}
             title='Hookup'
             hideTabBar/>
+          <Scene
+            key='forgot'
+            component={Forgot}
+            title='申請重設密碼'
+            hideTabBar
+            hideNavBar />
           <Scene
             key='signup'
             hideNavBar

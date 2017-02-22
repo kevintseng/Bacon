@@ -11,7 +11,7 @@ import DatePicker from 'react-native-datepicker';
 import Reactotron from 'reactotron-react-native';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
-import { getAge } from '../../components/Utils';
+import { getAge, checkEmail } from '../../components/Utils';
 import { Header } from '../../components/common/Header';
 import SignupStore from '../../store/SignupStore'
 
@@ -120,7 +120,7 @@ export class Signup1 extends Component {
   }
 
   emailCheck() {
-    if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)){
+    if(checkEmail(this.state.email)){
       return true;
     }
     this.setState({
