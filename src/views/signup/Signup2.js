@@ -8,14 +8,16 @@ import { Actions } from 'react-native-router-flux';  // eslint-disable-line
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'; // eslint-disable-line
 // import { autorun } from 'mobx';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
-import { Header } from '../../components/common/Header';
+import { Header } from '../../components/Header';
+import { observer } from 'mobx-react/native';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
+@observer
 export class Signup2 extends Component {
   static propTypes = {
     fire: PropTypes.object,
-    store: PropTypes.func,
+    store: PropTypes.object,
     sustore: PropTypes.object,
   };
 
@@ -55,7 +57,7 @@ export class Signup2 extends Component {
 
   goNext = () => {
     if(this.state.dispLocationName == '') {
-      alert('請輸入您所在的城市');
+      alert('請提供所在的城市');
     } else {
       this.sustore.setCity(this.state.city);
       this.sustore.setPlaceID(this.state.placeID);

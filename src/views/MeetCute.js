@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Image, View, Dimensions, ScrollView, Text } from 'react-native';
-import { Card, Divider, Button } from 'react-native-elements';
+import { ActivityIndicator, Image, View, Dimensions, ScrollView } from 'react-native';
+import { Card, Divider, Button, Text } from 'react-native-elements';
 import Carousel from 'react-native-looped-carousel';
+import { Actions } from 'react-native-router-flux';// eslint-disable-line
 
 const { width, height } = Dimensions.get('window');// eslint-disable-line
 
@@ -14,6 +15,10 @@ export default class MeetCute extends Component {
       imgLoading: false,
     };
   }
+
+  // componentDidMount() {
+  //   Actions.refresh({ key: 'drawer', open: false });
+  // }
 
   render() {
     return (
@@ -97,10 +102,11 @@ export default class MeetCute extends Component {
           </View>
         </Carousel>
         <Card
-          title='Carol'>
-          <Text>
-            23歲, 女
-          </Text>
+          containerStyle={{ width: this.state.size.width, margin: 0, padding: 10 }}>
+          <View style={{ flex:0, flexDirection: 'row' }}>
+            <Text h4>Carol </Text>
+            <Text> 23歲, 女</Text>
+          </View>
           <Divider style={{ marginVertical: 5 }}/>
           <Text style={{ color: '#6A5ACD' }}>
             興趣

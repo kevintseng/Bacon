@@ -12,7 +12,7 @@ import Reactotron from 'reactotron-react-native';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
 import { getAge, checkEmail } from '../../components/Utils';
-import { Header } from '../../components/common/Header';
+import { Header } from '../../components/Header';
 import SignupStore from '../../store/SignupStore'
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
@@ -39,7 +39,7 @@ function maxDay() {
 @observer
 export class Signup1 extends Component {
   static propTypes = {
-    store: PropTypes.func,
+    store: PropTypes.object,
     fire: PropTypes.object,
   }
 
@@ -196,22 +196,22 @@ export class Signup1 extends Component {
         Reactotron.log(this.sustore);
       });
       // Create a new user on Firebase
-      // this.fs.auth.createUserWithEmail(this.state.email, this.state.password)
-      // .then((user) => {
-      //
-      //   this.sustore.setUid(user.uid);
-      //
-      //   this.fs.auth.updateUserProfile({
-      //     displayName: this.sustore.nickname
-      //   })
-      //   .then(res => Reactotron.log({'DisplayName updated': res}))
-      //   .catch(err => Reactotron.log({'There was an error': err}));
-      //
-      //   Reactotron.log({'user created': user, 'uid': user.uid});
-      // })
-      // .catch((err) => {
-      //   Reactotron.log({'An error occurred': err});
-      // });
+      this.fs.auth.createUserWithEmail(this.state.email, this.state.password)
+      .then((user) => {
+
+        this.sustore.setUid(user.uid);
+
+        this.fs.auth.updateUserProfile({
+          displayName: this.sustore.nickname
+        })
+        .then(res => Reactotron.log({'DisplayName updated': res}))
+        .catch(err => Reactotron.log({'There was an error': err}));
+
+        Reactotron.log({'user created': user, 'uid': user.uid});
+      })
+      .catch((err) => {
+        Reactotron.log({'An error occurred': err});
+      });
 
       // Go to signup step 2
       Actions.signup2({
@@ -318,6 +318,7 @@ export class Signup1 extends Component {
           </Text>
         }
         <Button
+          style={{ marginTop: 10 }}
           backgroundColor='transparent'
           color='#007AFF'
           title={'下一步'}

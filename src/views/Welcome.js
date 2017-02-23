@@ -3,18 +3,20 @@ import {
     View,
     Dimensions,
 } from 'react-native';
-import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'; // eslint-disable-line
+import { Text, FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
-import { autorun } from 'mobx';
+import { autorun } from 'mobx'; // eslint-disable-line
+import { observer } from 'mobx-react/native';
 import { checkEmail } from '../components/Utils';
-import FormErrorMsg from '../components/common/FormErrorMsg';
+import FormErrorMsg from '../components/FormErrorMsg';
 
 const {width, height} = Dimensions.get('window'); // eslint-disable-line
 
+@observer
 export default class Welcome extends Component {
   static propTypes = {
-    store: PropTypes.func,
+    store: PropTypes.object,
     fire: PropTypes.object,
     emailErr: PropTypes.bool || PropTypes.string,
     loginErr: PropTypes.bool || PropTypes.string,
@@ -31,8 +33,8 @@ export default class Welcome extends Component {
         width,
         height
       },
-      email: '',
-      password: '',
+      email: 'tgpsstar@gmail.com',
+      password: '123456',
       emailErr: false,
       loginErr: false,
       loading: false,
@@ -46,13 +48,13 @@ export default class Welcome extends Component {
       });
       this.fs.auth.signInWithEmail(this.state.email, this.state.password)
       .then((user) => {
-        Reactotron.log('User successfully logged in', user);
         this.store.signedIn(user);
+        Reactotron.log({'User successfully logged in': this.store.user });
         return Actions.meetcute({type:'reset'});
       })
       .catch((err) => {
         this.setState({
-          loginErr: '登入失敗, 請檢查帳號密碼.',
+          loginErr: '登入失敗, 請再確認輸入的帳號是否有誤',
           loading: false,
         });
         Reactotron.log({code: err.code, desc: err.description});
@@ -80,7 +82,7 @@ export default class Welcome extends Component {
       return true;
     }
     this.setState({
-      emailErr: '請輸入您的註冊帳號所使用的Email登入.',
+      emailErr: '這不是有效的email, 請再確認',
     });
     return false;
   }
@@ -88,7 +90,7 @@ export default class Welcome extends Component {
   passwordCheck = () => {
     if(this.state.password.length < 1) {
       this.setState({
-        loginErr: '請輸入密碼.',
+        loginErr: '請輸入密碼',
       });
       return false;
     }
@@ -96,12 +98,12 @@ export default class Welcome extends Component {
   }
 
   render() {
-    autorun(() => {
-      Reactotron.log(this.state);
-    });
     return (
-      <View style={this.state.size}>
-        <FormLabel>帳號 Email</FormLabel>
+      <View style={[this.state.size, { marginTop: 20 }]}>
+        <View>
+          <Text h3> 歡迎使用 Hookup </Text>
+        </View>
+        <FormLabel>登入 Email</FormLabel>
         <FormInput
           autoFocus={true}
           autoCorrect={false}
@@ -130,6 +132,7 @@ export default class Welcome extends Component {
         {
           this.state.loginErr &&   <FormErrorMsg>{this.state.loginErr}</FormErrorMsg>
         }
+        <View style={{ height: 10 }} />
         <Button
           raised
           icon={ this.state.loading ? {name: 'sync'} : {name: 'chevron-right'}}
@@ -141,19 +144,20 @@ export default class Welcome extends Component {
           flex: 1,
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'space-between'}}>
-            <Button
-              title='還沒有帳號? 建立新帳號'
-              color='black'
-              backgroundColor='transparent'
-              onPress={Actions.signup}
-            />
-            <Button
-              title='忘記密碼?'
-              color='grey'
-              backgroundColor='transparent'
-              onPress={Actions.forgot}
-            />
+          justifyContent: 'space-between'}}
+        >
+          <Button
+            title='您還不是會員嗎? 馬上免費加入'
+            color='black'
+            backgroundColor='transparent'
+            onPress={Actions.signup}
+          />
+          <Button
+            title='忘記密碼? 申請密碼重設'
+            color='grey'
+            backgroundColor='transparent'
+            onPress={Actions.forgot}
+          />
         </View>
       </View>
     );

@@ -5,16 +5,19 @@ import {
 } from 'react-native';
 import {ButtonGroup, FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
+import { observer } from 'mobx-react/native';
 import { autorun } from 'mobx';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
-import { Header } from '../../components/common/Header';
+import { Header } from '../../components/Header';
+import FormErrorMsg from '../../components/FormErrorMsg';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
+@observer
 export class Signup3 extends Component {
   static propTypes = {
     fire: PropTypes.object,
-    store: PropTypes.func,
+    store: PropTypes.object,
     sustore: PropTypes.object,
   };
 
@@ -26,9 +29,10 @@ export class Signup3 extends Component {
           width,
           height: 600
       },
-      disabled: true,
       selectedGender: -1,
       selectedSexOrientation: -1,
+      genderErr: false,
+      soErr: false,
       loading: false,
     };
   }
@@ -36,7 +40,7 @@ export class Signup3 extends Component {
   updateGender = (selected) => {
     if(selected >= 0) {
       this.setState({
-        disabled: false,
+        genderErr: false,
         selectedGender: selected,
       });
     }
@@ -45,32 +49,34 @@ export class Signup3 extends Component {
   updateSexOrientation = (selected) => {
     if(selected >= 0) {
       this.setState({
-        disabled: false,
+        soErr: false,
         selectedSexOrientation: selected,
       });
     }
   }
 
-  checkInputs = () => {
-    if(this.state.selectedGender < 0 && this.state.selectedSexOrientation < 0) {
-      alert('請選擇您的性別及性向');
-      this.setState({disabled: true});
-    } else if(this.state.selectedGender < 0) {
-      alert('請選擇您的性別');
-      this.setState({disabled: true});
-    } else if(this.state.selectedSexOrientation < 0) {
-      alert('請選取您的性向');
-      this.setState({disabled: true});
-    } else {
-      this.sustore.setGender(this.state.selectedGender);
-      this.sustore.setSexOrientation(this.state.selectedSexOrientation);
-      autorun(() => {
-        Reactotron.log(this.sustore);
+  handleSubmit = () => {
+    if(this.state.selectedGender < 0) {
+      this.setState({
+        genderErr: '請選擇其中一項'
       });
-      Actions.signup4({
-        sustore: this.sustore
-      });
+      return
     }
+    if(this.state.selectedSexOrientation < 0) {
+      this.setState({
+        soErr: '請選擇其中一項'
+      });
+      return
+    }
+
+    this.sustore.setGender(this.state.selectedGender);
+    this.sustore.setSexOrientation(this.state.selectedSexOrientation);
+    autorun(() => {
+      Reactotron.log(this.sustore);
+    });
+    Actions.signup4({
+      sustore: this.sustore
+    });
   }
 
   render() {
@@ -82,8 +88,8 @@ export class Signup3 extends Component {
       <View style={this.state.size}>
         <Header
           headerText='性別及對象'
-          rightButtonText='再一步'
-          onRight={this.checkInputs}
+          rightButtonText='下一步'
+          onRight={this.handleSubmit}
           rightColor='#007AFF'
           onLeft={() => Actions.pop()}
           leftColor='#007AFF'
@@ -98,7 +104,10 @@ export class Signup3 extends Component {
             selectedIndex={selectedGender}
             buttons={genders}
           />
-          <FormLabel>找尋對象性別</FormLabel>
+          {
+            this.state.genderErr &&   <FormErrorMsg>{this.state.genderErr}</FormErrorMsg>
+          }
+          <FormLabel>我想要找尋的對象性別</FormLabel>
           <ButtonGroup
             containerStyle={{ height: 30 }}
             selectedBackgroundColor='#03A9F4'
@@ -107,7 +116,17 @@ export class Signup3 extends Component {
             selectedIndex={selectedSexOrientation}
             buttons={sexOrientations}
           />
+          {
+            this.state.soErr &&   <FormErrorMsg>{this.state.soErr}</FormErrorMsg>
+          }
         </View>
+        <Button
+          style={{ marginTop: 10 }}
+          backgroundColor='transparent'
+          color='#007AFF'
+          title={'再一步就完成了'}
+          onPress={this.handleSubmit}
+        />
       </View>
     );
   }

@@ -10,7 +10,7 @@ import Header from '../../components/Header';
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
-export class Settings extends Component {
+export class Profile extends Component {
   static propTypes = {
     store: PropTypes.object,
     fire: PropTypes.object,

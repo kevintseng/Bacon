@@ -12,6 +12,7 @@ class AppStore {
 
   @action signedIn(user) {
     this.user = user;
+    Reactotron.log({'AppStore user': this.user});
   }
 
 }

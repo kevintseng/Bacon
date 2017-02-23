@@ -8,17 +8,19 @@ import UserAvatar from 'react-native-user-avatar';
 import { Card, Button } from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux'; // eslint-disable-line
 import { autorun } from 'mobx'; // eslint-disable-line
+import { observer } from 'mobx-react/native';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
-import { Header } from '../../components/common/Header';
+import { Header } from '../../components/Header';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 const emptyImg = require('./cameraPlaceholder.jpg');
 
+@observer
 export class Signup4 extends Component {
   static propTypes = {
     fire: PropTypes.object,
-    store: PropTypes.func,
+    store: PropTypes.object,
     sustore: PropTypes.object,
   };
 
@@ -44,7 +46,7 @@ export class Signup4 extends Component {
     Reactotron.log('set photo');
   }
 
-  checkInputs = () => {
+  handleSubmit = () => {
       // return Actions.pop({popNum: 3});
       // return Actions.meetcute({type:'reset'})
   }
@@ -56,7 +58,7 @@ export class Signup4 extends Component {
         <Header
           headerText='上傳個人照'
           rightButtonText='完成'
-          onRight={this.checkInputs}
+          onRight={this.handleSubmit}
           rightColor='#007AFF'
           onLeft={() => Actions.pop()}
           leftColor='#007AFF'
@@ -75,6 +77,13 @@ export class Signup4 extends Component {
               onPress={this.updatePhotoUrl}
             />
           </Card>
+          <Button
+            style={{ marginTop: 10 }}
+            backgroundColor='transparent'
+            color='#007AFF'
+            title={'完成'}
+            onPress={this.handleSubmit}
+          />
         </View>
       </View>
     );
