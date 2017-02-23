@@ -9,7 +9,7 @@ import Reactotron from 'reactotron-react-native';
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
-export class Profile extends Component {
+export class Visitors extends Component {
   static propTypes = {
     store: PropTypes.object,
     fire: PropTypes.object,
@@ -37,7 +37,6 @@ export class Profile extends Component {
     });
     return(
       <View style={this.state.size}>
-
         <Text> hi </Text>
       </View>
     );

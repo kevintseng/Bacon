@@ -10,9 +10,14 @@ class AppStore {
     this.user = null;
   }
 
-  @action signedIn(user) {
+  @action signIn(user) {
     this.user = user;
-    Reactotron.log({'AppStore user': this.user});
+    Reactotron.log({'AppStore user in': this.user});
+  }
+
+  @action signOut() {
+    this.user = null;
+    Reactotron.log({'AppStore user out': this.user});
   }
 
 }

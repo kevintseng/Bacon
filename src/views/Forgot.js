@@ -8,7 +8,7 @@ import {
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
-import { autorun } from 'mobx';
+import { autorun } from 'mobx'; // eslint-disable-line
 import { checkEmail } from '../components/Utils';
 import { Header } from '../components/Header';
 import FormErrorMsg from '../components/FormErrorMsg';

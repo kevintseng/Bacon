@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import React, { Component, PropTypes } from 'react';
+import { ScrollView, AsyncStorage } from 'react-native';
 import Reactotron from 'reactotron-react-native';
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
+import { observer } from 'mobx-react/native';
 
 // const sampleImg = require('../images/chiling.jpeg');
 
@@ -11,7 +12,7 @@ const list = [
   {
     title: '邂逅',
     icon: 'face',
-    key: 'meetnew'
+    key: 'meetcute'
   },
   {
     title: '巧遇',
@@ -48,7 +49,20 @@ const list = [
   }
 ];
 
+@observer
 export default class SideBar extends Component {
+  static propTypes = {
+    fire: PropTypes.object,
+    store: PropTypes.object,
+  };
+
+  constructor(props) {
+    super(props);
+    this.store = this.props.store;
+    this.fs = this.props.fire;
+    // this.handleOnPress = this.handleOnPress.bind(this);
+  }
+
   handleImageChange = () => {
     // Do something
     Reactotron.log('handleImageChange pressed.');
@@ -70,28 +84,39 @@ export default class SideBar extends Component {
     return false;
   };
 
-  handleOnPress = (key) => {
-    switch (key) {
-      // case 'meetnew':
-      //   return Actions.meetcute({type:'reset'});
-      case 'myprofile':
-        return Actions.myprofle;
-      case 'favorites':
-        return Actions.favorites;
-      case 'visitors':
-        return Actions.visitors;
-      case 'likesyou':
-        return Actions.likesyou;
-      case 'nearby':
-        return Actions.signup;
-      case 'messages':
-        return Actions.messages;
-      case 'settings':
-        return Actions.settings;
-      default:
-
-    }
+  signout = () => {
+    AsyncStorage.removeItem('userData').then(() => {
+      this.store.signOut();
+      this.fs.auth.signOut().then(() => {
+        Actions.welcome({type: 'reset'});
+      });
+    });
   };
+
+  handleOnPress(key) {
+     Reactotron.log(key.toString());
+     return Actions.nearby;
+     // switch (key) {
+     //   case 'meetcute':
+     //     return Actions.meetcute;
+     //   case 'nearby':
+     //     Reactotron.log(key);
+     //     Actions.nearby;
+     //     break;
+     //   case 'favorites':
+     //     return Actions.favorites;
+     //   case 'visitors':
+     //     return Actions.visitors;
+     //   case 'likesyou':
+     //     return Actions.likesyou;
+     //   case 'messages':
+     //     return Actions.messages;
+     //   case 'settings':
+     //     return Actions.settings;
+     //   default:
+     //
+     // }
+   }
 
   render() {
     return (
@@ -107,7 +132,7 @@ export default class SideBar extends Component {
             avatar={{ uri: 'https://i.imgur.com/LQvbY0N.jpg' }}
             title={'我是正妹'}
             rightIcon={{ name: 'account-circle' }}
-            onPress={this.handleOnPress('myprofile')}
+            onPress={this.handleOnPress('profile')}
           />
           {
             list.map((item, i) => (
@@ -122,6 +147,13 @@ export default class SideBar extends Component {
             ))
           }
         </List>
+        <Button
+          style={{ marginTop: 10 }}
+          backgroundColor='transparent'
+          color='#007AFF'
+          title={'登出'}
+          onPress={this.signout}
+        />
       </ScrollView>
     );
   }

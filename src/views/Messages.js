@@ -5,11 +5,12 @@ import { autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
 import { Text } from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
+import Header from '../components/Header';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
-export class Profile extends Component {
+export class Messages extends Component {
   static propTypes = {
     store: PropTypes.object,
     fire: PropTypes.object,
@@ -37,7 +38,6 @@ export class Profile extends Component {
     });
     return(
       <View style={this.state.size}>
-
         <Text> hi </Text>
       </View>
     );

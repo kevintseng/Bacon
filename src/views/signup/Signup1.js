@@ -45,7 +45,7 @@ export class Signup1 extends Component {
 
   constructor(props) {
     super(props);
-    this.appstore = this.props.store;
+    this.store = this.props.store;
     this.fs = this.props.fire;
     this.sustore = new SignupStore();
     this.state = {

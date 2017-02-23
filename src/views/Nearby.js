@@ -1,47 +1,42 @@
-import React, {Component, PropTypes} from 'react';
-import { View } from 'react-native';
-import { Actions } from 'react-native-router-flux';
-import { autorun } from 'mobx';
-import { observer } from 'mobx-react/native';
-import { Text } from 'react-native-elements';
-import Reactotron from 'reactotron-react-native';
-import Header from '../../components/Header';
+import React, { Component, PropTypes } from 'react';
+import { View, Dimensions, Text} from 'react-native';
+// import { Actions } from 'react-native-router-flux';
+// import { autorun } from 'mobx';
+// import { observer } from 'mobx-react/native';
+// import { Text } from 'react-native-elements';
+// import Reactotron from 'reactotron-react-native';
 
-const {width, height} = Dimensions.get('window'); //eslint-disable-line
+// const { width, height } = Dimensions.get('window'); //eslint-disable-line
 
-@observer
+// @observer
 export class Nearby extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-  }
+  // static propTypes = {
+  //   store: PropTypes.object,
+  //   fire: PropTypes.object,
+  // }
 
-  constructor(props) {
-    super(props);
-    this.appstore = this.props.store;
-    this.fs = this.props.fire;
-    this.state = {
-      size: {
-          width,
-          height
-      },
-    };
+  // constructor(props) {
+  //   super(props);
+  //   this.store = this.props.store;
+  //   this.fs = this.props.fire;
+  //   // this.state = {
+  //   //   size: {
+  //   //       width,
+  //   //       height
+  //   //   },
+  //   // };
+  // }
+  //
+  componentWillMount() {
+    Actions.refresh({ key: 'drawer', open: false });
   }
 
   render() {
-    autorun(() => {
-      Reactotron.log(this.state);
-    });
+    // autorun(() => {
+    //   Reactotron.log(this.state);
+    // });
     return(
-      <View style={this.state.size}>
-        <Header
-          headerText='建立新帳號'
-          rightButtonText='下一步'
-          onRight={this.handleSubmit}
-          rightColor='#007AFF'
-          onLeft={() => Actions.pop()}
-          leftColor='#007AFF'
-        />
+      <View>
         <Text> hi </Text>
       </View>
     );

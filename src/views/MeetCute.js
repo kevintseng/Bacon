@@ -1,12 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { ActivityIndicator, Image, View, Dimensions, ScrollView } from 'react-native';
 import { Card, Divider, Button, Text } from 'react-native-elements';
 import Carousel from 'react-native-looped-carousel';
+import { observer } from 'mobx-react/native';
 import { Actions } from 'react-native-router-flux';// eslint-disable-line
 
 const { width, height } = Dimensions.get('window');// eslint-disable-line
 
+@observer
 export default class MeetCute extends Component {
+  static propTypes = {
+    store: PropTypes.object,
+    fire: PropTypes.object,
+  }
 
   constructor(props) {
     super(props);
@@ -16,9 +22,9 @@ export default class MeetCute extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   Actions.refresh({ key: 'drawer', open: false });
-  // }
+  componentWillMount() {
+    Actions.refresh({ key: 'drawer', open: false });
+  }
 
   render() {
     return (
