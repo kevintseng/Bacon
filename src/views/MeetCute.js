@@ -23,7 +23,7 @@ export default class MeetCute extends Component {
   }
 
   componentWillMount() {
-    Actions.refresh({ key: 'drawer', open: false });
+    // Actions.refresh({ key: 'drawer', open: false });
   }
 
   render() {

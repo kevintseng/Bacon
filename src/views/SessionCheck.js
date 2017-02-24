@@ -9,6 +9,7 @@ import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
 import { autorun } from 'mobx'; // eslint-disable-line
 import { observer } from 'mobx-react/native';
+import Signin from './Signin';
 
 const { width, height } = Dimensions.get('window'); // eslint-disable-line
 
@@ -39,13 +40,13 @@ export default class Welcome extends Component {
 
   getUser = async () => {
     let msg = 'getUser: ';
-
     try {
       AsyncStorage.getItem('userData').then((userData_string) => {
         Reactotron.log(msg.concat(userData_string));
         let userData = JSON.parse(userData_string);
         if(userData != null) {
           this.store.setUser(userData);
+          Actions.main;
           return true;
         } else {
           this.setState({ loading: false });

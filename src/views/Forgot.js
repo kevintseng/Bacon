@@ -130,11 +130,6 @@ export default class Forgot extends Component {
 
     return (
       <View style={this.state.size}>
-        <Header
-          headerText='申請密碼重設'
-          onLeft={() => Actions.pop()}
-          leftColor='#007AFF'
-        />
         { this.state.sent ? sent: content }
       </View>
     );

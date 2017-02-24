@@ -28,7 +28,7 @@ export class Nearby extends Component {
   // }
   //
   componentWillMount() {
-    Actions.refresh({ key: 'drawer', open: false });
+    // Actions.refresh({ key: 'drawer', open: false });
   }
 
   render() {

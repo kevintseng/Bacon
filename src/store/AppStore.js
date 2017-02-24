@@ -1,29 +1,27 @@
 import { observable, action, autorun } from 'mobx'; // eslint-disable-line
 // import autobind from 'autobind-decorator';
-import Reactotron from 'reactotron-react-native';
 
 // @autobind
 class AppStore {
   @observable user;
+  @observable view;
 
   constructor() {
     this.user = null;
+    this.view = 'signin';
   }
 
-  @action signIn(user) {
+  @action setUser(user) {
     this.user = user;
-    Reactotron.log({'AppStore user in': this.user});
   }
 
   @action signOut() {
     this.user = null;
-    Reactotron.log({'AppStore user out': this.user});
   }
 
+  @action setView(sceneKey) {
+    this.view = sceneKey;
+  }
 }
-
-autorun(() => {
-  Reactotron.log({AppStore});
-})
 
 export default AppStore;

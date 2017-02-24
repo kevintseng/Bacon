@@ -50,16 +50,16 @@ export default class Welcome extends Component {
       .then(async (data) => {
         try {
           await AsyncStorage.setItem('userData', JSON.stringify(data));
-          this.store.signIn(data);
-          Reactotron.log('AppStore: ' + JSON.stringify(this.store.user));
+          this.store.setUser(data);
+          Reactotron.log('SetUser: ' + JSON.stringify(this.store.user));
         } catch (error) {
           Reactotron.log(msg.concat(error.message));
         }
-        return Actions.meetcute({type:'reset'});
+        Actions.main();
       })
       .catch((err) => {
         this.setState({
-          loginErr: '登入失敗, 請再確認輸入的帳號是否有誤',
+          loginErr: '登入失敗, 請再確認輸入的帳號是否有誤' + err,
           loading: false,
         });
         Reactotron.log({code: err.code, desc: err.description});

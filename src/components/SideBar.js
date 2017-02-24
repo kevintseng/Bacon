@@ -12,30 +12,30 @@ const list = [
   {
     title: '邂逅',
     icon: 'face',
-    key: 'meetcute'
+    key: 'meetcute',
   },
   {
     title: '巧遇',
     icon: 'explore',
-    key: 'nearby'
+    key: 'nearby',
   },
   {
     title: '訊息',
     icon: 'message',
     key: 'messages',
-    new: 1
+    new: 1,
   },
   {
     title: '喜歡您',
     icon: 'star',
     key: 'likesyou',
-    new: 2
+    new: 2,
   },
   {
     title: '訪客',
     icon: 'visibility',
     key: 'visitors',
-    new: 5
+    new: 5,
   },
   {
     title: '收藏',
@@ -45,7 +45,7 @@ const list = [
   {
     title: '設定',
     icon: 'settings',
-    key: 'settings'
+    key: 'settings',
   }
 ];
 
@@ -54,7 +54,9 @@ export default class SideBar extends Component {
   static propTypes = {
     fire: PropTypes.object,
     store: PropTypes.object,
-  };
+  }
+
+
 
   constructor(props) {
     super(props);
@@ -94,36 +96,34 @@ export default class SideBar extends Component {
   };
 
   handleOnPress(key) {
-     Reactotron.log(key.toString());
-     return Actions.nearby;
-     // switch (key) {
-     //   case 'meetcute':
-     //     return Actions.meetcute;
-     //   case 'nearby':
-     //     Reactotron.log(key);
-     //     Actions.nearby;
-     //     break;
-     //   case 'favorites':
-     //     return Actions.favorites;
-     //   case 'visitors':
-     //     return Actions.visitors;
-     //   case 'likesyou':
-     //     return Actions.likesyou;
-     //   case 'messages':
-     //     return Actions.messages;
-     //   case 'settings':
-     //     return Actions.settings;
-     //   default:
-     //
-     // }
-   }
+    Reactotron.log(key);
+    switch (key) {
+      case 'meetcute':
+        return () => {
+          Actions.meetcute({type: 'reset'});
+        };
+      case 'nearby':
+        return  () => {
+          Actions.nearby({type: 'reset'});
+        };
+      case 'favorites':
+        return Actions.favorites;
+      case 'visitors':
+        return Actions.visitors;
+      case 'likesyou':
+        return Actions.likesyou;
+      case 'messages':
+        return Actions.messages;
+      case 'settings':
+        return Actions.settings;
+    }
+  }
 
   render() {
     return (
       <ScrollView
         style={{
-          paddingTop: 50,
-          height: 600,
+          height: 800,
         }}
       >
         <List>
