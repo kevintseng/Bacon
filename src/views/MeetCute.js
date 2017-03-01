@@ -4,6 +4,7 @@ import { Card, Divider, Button, Text } from 'react-native-elements';
 import Carousel from 'react-native-looped-carousel';
 import { observer } from 'mobx-react/native';
 import { Actions } from 'react-native-router-flux';// eslint-disable-line
+import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 
 const { width, height } = Dimensions.get('window');// eslint-disable-line
 
@@ -23,14 +24,14 @@ export default class MeetCute extends Component {
   }
 
   componentWillMount() {
-    // Actions.refresh({ key: 'drawer', open: false });
+    Reactotron.log('Rendering meetcute');
+    Actions.refresh({ key: 'drawer', open: false });
   }
-
   render() {
-    return (
+    const content = (
       <ScrollView>
         <Carousel
-          style={this.state.size}
+          style={[this.state.size]}
           autoplay={false}
           bullets
         >
@@ -164,6 +165,12 @@ export default class MeetCute extends Component {
           </Text>
         </Card>
       </ScrollView>
+    );
+
+    return (
+      <View>
+        {content}
+      </View>
     );
   }
 }

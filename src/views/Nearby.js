@@ -1,15 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View, Dimensions, Text} from 'react-native';
-// import { Actions } from 'react-native-router-flux';
-// import { autorun } from 'mobx';
-// import { observer } from 'mobx-react/native';
+import { Actions } from 'react-native-router-flux';
+import { autorun } from 'mobx';
+import { observer } from 'mobx-react/native';
 // import { Text } from 'react-native-elements';
-// import Reactotron from 'reactotron-react-native';
+import Reactotron from 'reactotron-react-native';
 
-// const { width, height } = Dimensions.get('window'); //eslint-disable-line
+const { width, height } = Dimensions.get('window'); //eslint-disable-line
 
-// @observer
-export class Nearby extends Component {
+@observer
+export default class Nearby extends Component {
   // static propTypes = {
   //   store: PropTypes.object,
   //   fire: PropTypes.object,
@@ -28,7 +28,8 @@ export class Nearby extends Component {
   // }
   //
   componentWillMount() {
-    // Actions.refresh({ key: 'drawer', open: false });
+    Reactotron.log('Rendering nearby');
+    Actions.refresh({ key: 'drawer', open: false });
   }
 
   render() {

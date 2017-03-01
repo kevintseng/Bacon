@@ -90,7 +90,7 @@ export default class SideBar extends Component {
     AsyncStorage.removeItem('userData').then(() => {
       this.store.signOut();
       this.fs.auth.signOut().then(() => {
-        Actions.welcome({type: 'reset'});
+        Actions.sessioncheck({type: 'reset'});
       });
     });
   };
@@ -99,23 +99,19 @@ export default class SideBar extends Component {
     Reactotron.log(key);
     switch (key) {
       case 'meetcute':
-        return () => {
-          Actions.meetcute({type: 'reset'});
-        };
+        return () => Actions.meetcute({type: 'reset'});
       case 'nearby':
-        return  () => {
-          Actions.nearby({type: 'reset'});
-        };
+        return () => Actions.nearby({type: 'reset'});
       case 'favorites':
-        return Actions.favorites;
+        return () => Actions.favorites({type: 'reset'});
       case 'visitors':
-        return Actions.visitors;
+        return () => Actions.visitors({type: 'reset'});
       case 'likesyou':
-        return Actions.likesyou;
+        return () => Actions.likesyou({type: 'reset'});
       case 'messages':
-        return Actions.messages;
+        return () => Actions.messages({type: 'reset'});
       case 'settings':
-        return Actions.settings;
+        return () => Actions.settings({type: 'reset'});
     }
   }
 

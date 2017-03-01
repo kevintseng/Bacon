@@ -21,22 +21,26 @@ export default class DrawerPanel extends Component {
     this.fs = this.props.fire;
   }
 
+  // componentDidMount() {
+  //   Actions.refresh({key: 'drawer', ref: this.refs.navigation});
+  // }
+
   render() {
     const state = this.props.navigationState;
     const children = state.children;
+
     return (
       <Drawer
         ref='navigation'
+        type='displace'
         onOpen={() => Actions.refresh({ key: state.key, open: true })}
         onClose={() => Actions.refresh({ key: state.key, open: false })}
         open={state.open}
-        type="displace"
         content={<SideBar fire={this.fs} store={this.store} />}
         tapToClose
         openDrawerOffset={0.2}
         panCloseMask={0.2}
         negotiatePan
-        side={'left'}
         tweenHandler={(ratio) => ({
          main: { opacity: Math.max(0.54, 1 - ratio) }
         })}

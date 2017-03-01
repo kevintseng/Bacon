@@ -9,7 +9,7 @@ import Reactotron from 'reactotron-react-native';
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
-export class Visitors extends Component {
+export default class Visitors extends Component {
   static propTypes = {
     store: PropTypes.object,
     fire: PropTypes.object,

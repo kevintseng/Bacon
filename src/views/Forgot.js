@@ -10,7 +10,6 @@ import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
 import { autorun } from 'mobx'; // eslint-disable-line
 import { checkEmail } from '../components/Utils';
-import { Header } from '../components/Header';
 import FormErrorMsg from '../components/FormErrorMsg';
 
 const {width, height} = Dimensions.get('window'); // eslint-disable-line

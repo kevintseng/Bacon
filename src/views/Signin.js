@@ -49,13 +49,14 @@ export default class Welcome extends Component {
       this.fs.auth.signInWithEmail(this.state.email, this.state.password)
       .then(async (data) => {
         try {
-          await AsyncStorage.setItem('userData', JSON.stringify(data));
-          this.store.setUser(data);
+          let user = data.user;
+          await AsyncStorage.setItem('@HookupStore:user', JSON.stringify(user));
+          this.store.setUser(user);
           Reactotron.log('SetUser: ' + JSON.stringify(this.store.user));
+          Actions.drawer();
         } catch (error) {
           Reactotron.log(msg.concat(error.message));
         }
-        Actions.main();
       })
       .catch((err) => {
         this.setState({

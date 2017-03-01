@@ -9,7 +9,7 @@ import Reactotron from 'reactotron-react-native';
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
-export class Chat extends Component {
+export default class Chat extends Component {
   static propTypes = {
     store: PropTypes.object,
     fire: PropTypes.object,
