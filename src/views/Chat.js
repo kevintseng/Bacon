@@ -28,6 +28,7 @@ export default class Chat extends Component {
   }
 
   componentWillMount() {
+    Reactotron.log('Rendering Chat');
     Actions.refresh({ key: 'drawer', open: false });
   }
 

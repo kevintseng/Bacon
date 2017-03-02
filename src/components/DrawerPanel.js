@@ -3,7 +3,6 @@ import Drawer from 'react-native-drawer';
 import { Actions, DefaultRenderer } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import Reactotron from 'reactotron-react-native';
-import { autorun } from 'mobx';
 import SideBar from './SideBar';
 
 @observer
@@ -21,9 +20,9 @@ export default class DrawerPanel extends Component {
     this.fs = this.props.fire;
   }
 
-  // componentDidMount() {
-  //   Actions.refresh({key: 'drawer', ref: this.refs.navigation});
-  // }
+  componentWillMount() {
+    Reactotron.debug('Rendering DrawerPanel');
+  }
 
   render() {
     const state = this.props.navigationState;

@@ -28,6 +28,7 @@ export default class Visitors extends Component {
   }
 
   componentWillMount() {
+    Reactotron.log('Rendering Visitors');
     Actions.refresh({ key: 'drawer', open: false });
   }
 

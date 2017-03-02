@@ -28,6 +28,7 @@ export default class Favorites extends Component {
   }
 
   componentWillMount() {
+    Reactotron.log('Rendering Favorites');
     Actions.refresh({ key: 'drawer', open: false });
   }
 

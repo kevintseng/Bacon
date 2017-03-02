@@ -40,6 +40,7 @@ export default class Welcome extends Component {
     };
   }
 
+  // TODO: Add security measures to saved auth data.
   signin = async () => {
     let msg = 'singin: ';
     if(this.emailCheck() && this.passwordCheck()) {
@@ -50,12 +51,19 @@ export default class Welcome extends Component {
       .then(async (data) => {
         try {
           let user = data.user;
-          await AsyncStorage.setItem('@HookupStore:user', JSON.stringify(user));
-          this.store.setUser(user);
-          Reactotron.log('SetUser: ' + JSON.stringify(this.store.user));
+          await AsyncStorage.setItem('@HookupStore:user', JSON.stringify(user)); // String
+          this.store.setUser(user); // User Object
+          Reactotron.debug('SetUser: ' + JSON.stringify(this.store.user));
+          Reactotron.debug('refreshToken:' + user.refreshToken);
+          this.fs.auth.getToken().then( res => {
+            Reactotron.debug('Token:' + res.token);
+            AsyncStorage.setItem('@HookupStore:token', res.token);
+          }).catch( err => {
+            Reactotron.error({name: err.name, desc: err.rawDescription});
+          });
           Actions.drawer();
         } catch (error) {
-          Reactotron.log(msg.concat(error.message));
+          Reactotron.error(msg.concat(error.message));
         }
       })
       .catch((err) => {
@@ -63,7 +71,7 @@ export default class Welcome extends Component {
           loginErr: '登入失敗, 請再確認輸入的帳號是否有誤' + err,
           loading: false,
         });
-        Reactotron.log({code: err.code, desc: err.description});
+        Reactotron.error({name: err.name, desc: err.rawDescription});
       });
     }
   }

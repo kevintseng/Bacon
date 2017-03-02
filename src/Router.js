@@ -40,7 +40,10 @@ const getSceneStyle = (props, computedProps) => {
   return style;
 };
 
+// TODO: Import firebase configs from Configs.js
 const firestack = new Firestack();
+
+// TODO: Find a way to tie Firestack and mobx store to achieve auto sync
 const appstore = new AppStore();
 
 const menuButton = () => (
@@ -53,8 +56,18 @@ const menuButton = () => (
 
 @observer
 export default class RouterComponent extends Component {
-  render() {
+  componentWillMount() {
+    firestack.auth.listenForAuth((u) => {
+      Reactotron.log('listenForAuth');
+      Reactotron.log(u);
+    });
+  }
 
+  componentWillUnmount() {
+    firestack.auth.unlistenForAuth();
+  }
+
+  render() {
     return(
       <Router
         fire={firestack}

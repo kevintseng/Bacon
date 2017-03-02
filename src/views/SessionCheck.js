@@ -35,56 +35,52 @@ export default class Welcome extends Component {
 
   componentWillMount() {
     // Actions.refresh({ key: 'drawer', open: false });
-    Reactotron.log('Rendering SessionCheck');
+    Reactotron.debug('Rendering SessionCheck');
     this.getUser();
   }
 
-  getUser = async () => {
+  getUser = () => {
     let msg = 'getUser: ';
     try {
-      AsyncStorage.getItem('@HookupStore:userear').then((userData_string) => {
-        this.setState({
-          text: userData_string,
-        });
-        Reactotron.log(msg.concat(userData_string));
+      AsyncStorage.getItem('@HookupStore:user').then((userData_string) => {
+        Reactotron.debug(msg.concat(userData_string));
         let userData = JSON.parse(userData_string);
         if(userData != null) {
-          this.reAuth(userData.user);
+          this.store.setUser(userData);
           Actions.drawer();
-          // return true;
+          // AsyncStorage.getItem('@HookupStore:token').then((token) => {
+          //   if(token != null) {
+          //     // this.reAuth(token);
+          //   } else {
+          //     Reactotron.warn('No token found');
+          //     Actions.signin();
+          //   }
+          // })
         } else {
-          Reactotron.log(msg.concat('No session'));
+          Reactotron.warn(msg.concat('No session stored.'));
           Actions.signin();
         }
       });
     } catch(error) {
-      Reactotron.log(msg.concat('Error: ' + error.message));
-      return false;
+      Reactotron.error(msg.concat('Unable to access data storage: ' + error.message));
     }
-    return false;
   }
 
-  reAuth = () => {
-    Reactotron.log('Todo: Re-Authenticate user here.')
-      // this.fs.auth.signInWithCustomToken( 'AJly3UXmTXpoWE3NAzyXcE1MvEd-RXn3u0OqWu1sy2gxS_8BrpOqeOGo5Fq_T5PRy8uOTV8n34azJdZlEXQF6CiWo06li0HKDf2AYx-nXf5hzz5SyZmIgnla7vHvCia7SM7yRiA0za83YzwfNFEZ37Kvoivm7ONaXGVfacQbft43dcAHxPRH5XaFMLH2LoRiXPBzZ-PrsT-7HJBUp6JtJBuc7VmsbuWV_Q')
-      // .then((data) => {
-      //   Reactotron.log(data.toString());
-      //   try {
-      //     // await AsyncStorage.setItem('ReAuthenticated: ', JSON.stringify(data));
-      //     // this.store.setUser(data);
-      //   } catch (error) {
-      //     Reactotron.log(msg.concat(error.message));
-      //   }
-      // })
-      // .catch((err) => {
-      //   this.setState({
-      //     loginErr: '登入失敗, 請再確認輸入的帳號是否有誤' + err,
-      //     loading: false,
-      //   });
-      //   Reactotron.log({code: err.code, desc: err.description});
-      // });
-
-  }
+  // reAuth = (token) => {
+  //   Reactotron.debug('Using token: ' + token);
+  //   this.fs.auth.reauthenticateWithCredentialForProvider('Firebase', token, '').then((user) => {
+  //     this.store.setUser(user); // user object
+  //     Reactotron.debug('this.store.user set');
+  //     Reactotron.debug(this.store.user);
+  //     AsyncStorage.setItem('@HookupStore:user', JSON.stringify(this.store.user)); // String
+  //     Reactotron.debug('HookupStore:user updated: ' + JSON.stringify(this.store.user));
+  //     Actions.drawer();
+  //   }).catch((err) => {
+  //     Reactotron.error(err);
+  //     Reactotron.error({'error': err.name, 'rawDescription': err.rawDescription});
+  //     Actions.signin();
+  //   });
+  // }
 
   render() {
     return (

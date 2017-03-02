@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Dimensions, Text} from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
 // import { Text } from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
@@ -28,14 +27,11 @@ export default class Nearby extends Component {
   // }
   //
   componentWillMount() {
-    Reactotron.log('Rendering nearby');
+    Reactotron.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false });
   }
 
   render() {
-    // autorun(() => {
-    //   Reactotron.log(this.state);
-    // });
     return(
       <View>
         <Text> hi </Text>

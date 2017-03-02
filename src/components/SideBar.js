@@ -4,50 +4,11 @@ import Reactotron from 'reactotron-react-native';
 import { List, ListItem, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
+import { SIDEBAR_LINKS } from '../Configs';
 
 // const sampleImg = require('../images/chiling.jpeg');
 
-const list = [
-
-  {
-    title: '邂逅',
-    icon: 'face',
-    key: 'meetcute',
-  },
-  {
-    title: '巧遇',
-    icon: 'explore',
-    key: 'nearby',
-  },
-  {
-    title: '訊息',
-    icon: 'message',
-    key: 'messages',
-    new: 1,
-  },
-  {
-    title: '喜歡您',
-    icon: 'star',
-    key: 'likesyou',
-    new: 2,
-  },
-  {
-    title: '訪客',
-    icon: 'visibility',
-    key: 'visitors',
-    new: 5,
-  },
-  {
-    title: '收藏',
-    icon: 'favorite',
-    key: 'favorites'
-  },
-  {
-    title: '設定',
-    icon: 'settings',
-    key: 'settings',
-  }
-];
+const list = SIDEBAR_LINKS;
 
 @observer
 export default class SideBar extends Component {
@@ -56,8 +17,6 @@ export default class SideBar extends Component {
     store: PropTypes.object,
   }
 
-
-
   constructor(props) {
     super(props);
     this.store = this.props.store;
@@ -65,9 +24,14 @@ export default class SideBar extends Component {
     // this.handleOnPress = this.handleOnPress.bind(this);
   }
 
+  componentWillMount() {
+    Reactotron.debug('Rendering SideBar');
+  }
+
+
   handleImageChange = () => {
     // Do something
-    Reactotron.log('handleImageChange pressed.');
+    Reactotron.debug('handleImageChange pressed.');
     // response looks like : {
     //      data: "data:image/jpeg;base64,/9j/4AAQSkZJRg...", // Base64
     //      fileSize: 474486,
@@ -87,16 +51,22 @@ export default class SideBar extends Component {
   };
 
   signout = () => {
-    AsyncStorage.removeItem('userData').then(() => {
+    AsyncStorage.multiRemove(['@HookupStore:user', '@HookupStore:token']).then(() => {
       this.store.signOut();
       this.fs.auth.signOut().then(() => {
+        Reactotron.debug('SideBar: User is logged out');
         Actions.sessioncheck({type: 'reset'});
+      }).catch(err => {
+        Reactotron.error('fs signout error: ');
+        Reactotron.error(err);
       });
+    }).catch(err => {
+      Reactotron.error('signout error: ');
+      Reactotron.error(err);
     });
   };
 
   handleOnPress(key) {
-    Reactotron.log(key);
     switch (key) {
       case 'meetcute':
         return () => Actions.meetcute({type: 'reset'});

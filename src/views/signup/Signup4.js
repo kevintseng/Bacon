@@ -9,12 +9,22 @@ import { Card, Button } from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux'; // eslint-disable-line
 import { autorun } from 'mobx'; // eslint-disable-line
 import { observer } from 'mobx-react/native';
+import ImagePicker from 'react-native-image-picker';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import { Header } from '../../components/Header';
+import { FirebaseConfig } from '../../Configs';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 const emptyImg = require('./cameraPlaceholder.jpg');
+const { storageBucket } = FirebaseConfig;
+const ipOptions = {
+  title: '上傳照片',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images'
+  },
+};
 
 @observer
 export class Signup4 extends Component {
@@ -34,9 +44,15 @@ export class Signup4 extends Component {
           width,
           height: 600
       },
-      image: emptyImg,
+      image: null,
+      imageHeight: null,
+      imageWidth: null,
       photoUrl: null,
     };
+  }
+
+  componentWillMount() {
+    this.fs.storage.setStorageUrl(storageBucket);
   }
 
   updatePhotoUrl = (photoUrl = 'test') => {
@@ -44,6 +60,23 @@ export class Signup4 extends Component {
       photoUrl,
     })
     Reactotron.log('set photo');
+  }
+
+  addImage = () => {
+    ImagePicker.showImagePicker(null, (res) => {
+      if(res.didCancel) {
+        return;
+      } else if(res.error) {
+        Reactotron.error('ImagePicker Error: ' + res.error);
+      } else {
+        let source = { uri: res.uri };
+        this.setState({
+          image: source,
+          imageHeight: res.height,
+          imageWidth: res.width,
+        });
+      }
+    });
   }
 
   handleSubmit = () => {
@@ -65,7 +98,12 @@ export class Signup4 extends Component {
         />
         <View style={{ marginBottom: 20 }}>
           <Card>
-            <UserAvatar style={{ alignSelf: 'center', marginBottom: 10 }} size='150' name={nickname} />
+            <UserAvatar
+              style={{ alignSelf: 'center', marginBottom: 10 }}
+              size='150'
+              name={nickname}
+              src={this.state.image}
+              />
             <Text style={{marginBottom: 10}}>
               根據最新英國研究報告, 在交友app上顯示您的個人照片會提高配對成功機率喔！
               無論你信不信, 反正我信了。</Text>
@@ -74,7 +112,7 @@ export class Signup4 extends Component {
               backgroundColor='#03A9F4'
               buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
               title='新增個人照片'
-              onPress={this.updatePhotoUrl}
+              onPress={this.addImage}
             />
           </Card>
           <Button

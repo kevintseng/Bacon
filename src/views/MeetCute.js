@@ -24,9 +24,10 @@ export default class MeetCute extends Component {
   }
 
   componentWillMount() {
-    Reactotron.log('Rendering meetcute');
+    Reactotron.debug('Rendering MeetCute');
     Actions.refresh({ key: 'drawer', open: false });
   }
+
   render() {
     const content = (
       <ScrollView>

@@ -37,6 +37,10 @@ export default class Forgot extends Component {
     };
   }
 
+  componentWillMount() {
+    Reactotron.debug('Rendering Forgot');
+  }
+
   onSubmit = () => {
     if(this.emailCheck()) {
       this.setState({

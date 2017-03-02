@@ -919,6 +919,10 @@ balanced-match@^0.4.1:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-0.4.2.tgz#cb3f3e3c732dc0f01ee70b403f302e61d7709838"
 
+base-64@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
+
 base64-arraybuffer@0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/base64-arraybuffer/-/base64-arraybuffer-0.1.5.tgz#73926771923b5a19747ad666aa5cd4bf9c6e9ce8"
@@ -2050,7 +2054,7 @@ glob@^5.0.15:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.0.0, glob@^7.0.3, glob@^7.0.5:
+glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.0.6:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.1.tgz#805211df04faaf1c63a3600306cdf5ade50b2ec8"
   dependencies:
@@ -3697,6 +3701,13 @@ react-native-experimental-navigation@0.26.x:
     fbjs "^0.8.1"
     react-addons-pure-render-mixin "^15.0.2"
 
+react-native-fetch-blob@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/react-native-fetch-blob/-/react-native-fetch-blob-0.10.2.tgz#f3d25eec265af6f21f84d0bd0992c46425259f80"
+  dependencies:
+    base-64 "0.1.0"
+    glob "^7.0.6"
+
 react-native-firestack@^2.3.9:
   version "2.3.9"
   resolved "https://registry.yarnpkg.com/react-native-firestack/-/react-native-firestack-2.3.9.tgz#9654abe4a3e4c81a1977cc43d0d8d99322ad10f1"
@@ -3711,9 +3722,9 @@ react-native-google-places-autocomplete@^1.2.7:
   dependencies:
     qs "^5.2.0"
 
-react-native-image-picker@latest:
-  version "0.25.5"
-  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.25.5.tgz#62b12f98bb4b4bf0a7ac6fde7977896f7944b500"
+react-native-image-picker@^0.25.7:
+  version "0.25.7"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.25.7.tgz#1475fd72111a74f434598f2c99453998ac21b599"
 
 react-native-looped-carousel@^0.1.5:
   version "0.1.5"
