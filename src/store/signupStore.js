@@ -16,6 +16,7 @@ export default class SignupStore {
   @observable placeID;
   @observable locale;
   @observable country;
+  @observable avatar;
 
   constructor() {
     this.uid = '';
@@ -31,6 +32,7 @@ export default class SignupStore {
     this.geocode = null;
     this.placeID = '';
     this.locale = '';
+    this.avatar = null;
   }
 
   @action setTermsAgreement(termsAgreed) {
@@ -109,6 +111,10 @@ export default class SignupStore {
 
   @action getNewUid() {
 
+  }
+
+  @action setAvatar(url) {
+    this.avatar = url;
   }
 
 }

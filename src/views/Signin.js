@@ -54,24 +54,24 @@ export default class Welcome extends Component {
           await AsyncStorage.setItem('@HookupStore:user', JSON.stringify(user)); // String
           this.store.setUser(user); // User Object
           Reactotron.debug('SetUser: ' + JSON.stringify(this.store.user));
-          Reactotron.debug('refreshToken:' + user.refreshToken);
-          this.fs.auth.getToken().then( res => {
-            Reactotron.debug('Token:' + res.token);
-            AsyncStorage.setItem('@HookupStore:token', res.token);
-          }).catch( err => {
-            Reactotron.error({name: err.name, desc: err.rawDescription});
-          });
+          // Reactotron.debug('refreshToken:' + user.refreshToken);
+          // this.fs.auth.getToken().then( res => {
+          //   Reactotron.debug('Token:' + res.token);
+          //   AsyncStorage.setItem('@HookupStore:token', res.token);
+          // }).catch( getTokenErr => {
+          //   Reactotron.error({name: getTokenErr.name, desc: getTokenErr.description});
+          // });
           Actions.drawer();
-        } catch (error) {
-          Reactotron.error(msg.concat(error.message));
+        } catch (AsyncStorageError) {
+          Reactotron.error(msg.concat(AsyncStorageError));
         }
       })
-      .catch((err) => {
+      .catch((signInErr) => {
         this.setState({
-          loginErr: '登入失敗, 請再確認輸入的帳號是否有誤' + err,
+          loginErr: '登入失敗: ' + signInErr.description,
           loading: false,
         });
-        Reactotron.error({name: err.name, desc: err.rawDescription});
+        Reactotron.error({name: signInErr.name, desc: signInErr.description});
       });
     }
   }

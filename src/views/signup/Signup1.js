@@ -198,9 +198,7 @@ export class Signup1 extends Component {
       // Create a new user on Firebase
       this.fs.auth.createUserWithEmail(this.state.email, this.state.password)
       .then((user) => {
-
         this.sustore.setUid(user.uid);
-
         this.fs.auth.updateUserProfile({
           displayName: this.sustore.nickname
         })
