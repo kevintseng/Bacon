@@ -18,4 +18,45 @@ const dev_FirebaseConfig = { //eslint-disable-line
   messagingSenderId: "309937705062"
 };
 
-export { dev_FirebaseConfig };
+const SIDEBAR_LINKS = [
+  {
+    title: '邂逅',
+    icon: 'face',
+    key: 'meetcute',
+  },
+  {
+    title: '巧遇',
+    icon: 'explore',
+    key: 'nearby',
+  },
+  {
+    title: '訊息',
+    icon: 'message',
+    key: 'messages',
+    new: 1,
+  },
+  {
+    title: '喜歡您',
+    icon: 'star',
+    key: 'likesyou',
+    new: 2,
+  },
+  {
+    title: '訪客',
+    icon: 'visibility',
+    key: 'visitors',
+    new: 5,
+  },
+  {
+    title: '收藏',
+    icon: 'favorite',
+    key: 'favorites'
+  },
+  {
+    title: '設定',
+    icon: 'settings',
+    key: 'settings',
+  }
+];
+
+export { FirebaseConfig, dev_FirebaseConfig, SIDEBAR_LINKS };
