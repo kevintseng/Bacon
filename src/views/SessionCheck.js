@@ -42,7 +42,7 @@ export default class Welcome extends Component {
   getUser = async () => {
     let msg = 'getUser: ';
     try {
-      AsyncStorage.getItem('@HookupStore:user').then((userData_string) => {
+      AsyncStorage.getItem('@HookupStore:userear').then((userData_string) => {
         this.setState({
           text: userData_string,
         });
