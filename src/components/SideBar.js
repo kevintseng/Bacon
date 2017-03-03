@@ -50,21 +50,31 @@ export default class SideBar extends Component {
     return false;
   };
 
-  signout = () => {
-    AsyncStorage.multiRemove(['@HookupStore:user', '@HookupStore:token']).then(() => {
-      this.store.signOut();
-      this.fs.auth.signOut().then(() => {
-        Reactotron.debug('SideBar: User is logged out');
+  signout = async () => {
+    try {
+      this.setOffline(this.store.user.uid);
+      await this.fs.auth().signOut();
+      await AsyncStorage.removeItem('@HookupStore:user').then(() => {
+        this.store.signOut();
         Actions.sessioncheck({type: 'reset'});
       }).catch(err => {
-        Reactotron.error('fs signout error: ');
+        Reactotron.error('Delete local storage user data error: ');
         Reactotron.error(err);
       });
-    }).catch(err => {
-      Reactotron.error('signout error: ');
-      Reactotron.error(err);
-    });
+    } catch (error) {
+      Reactotron.error('Firebase signout error: ');
+      Reactotron.error(error);
+    }
   };
+
+  setOffline(uid) {
+    const timestamp = Math.floor(Date.now() / 1000);
+    let dbRef = this.fs.database().ref('/connections/' + uid);
+    dbRef.update({
+      online: false,
+      lastOnline: timestamp,
+    });
+  }
 
   handleOnPress(key) {
     switch (key) {

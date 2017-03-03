@@ -37,10 +37,10 @@ export function checkEmail(email) {
   return false;
 }
 
-export function presenceMonitor(user, firestack) {
+export function presenceMonitor(user, fb) {
   const timestamp = Math.floor(Date.now() / 1000);
 
-  firestack.presence.on(user.uid)
+  fb.presence.on(user.uid)
     .setOnline()
     .onConnect(ref => {
       ref.set({

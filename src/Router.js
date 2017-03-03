@@ -82,6 +82,7 @@ export default class RouterComponent extends Component {
           appstore.setUser(user);
           Reactotron.log('user set appstore');
           Reactotron.log(appstore.user);
+          this.setOnline(appstore.user.uid);
           AsyncStorage.setItem('@HookupStore:user', JSON.stringify(appstore.user)).catch( AsyncStorageError => {
             Reactotron.error(AsyncStorageError);
             return;
@@ -92,13 +93,32 @@ export default class RouterComponent extends Component {
         });
 
       } else {
-        Reactotron.log('User not signed in, cleaning up user store.');
-        appstore.setUser(null);
+        Reactotron.log('User not signed in');
       }
     });
   }
 
+  setOnline(uid) {
+    const timestamp = Math.floor(Date.now() / 1000);
+    let dbRef = fs.database().ref('/connections/' + uid);
+    dbRef.set({
+      online: true,
+      lastOnline: timestamp,
+      location: 'Taipei, Taiwan',
+    });
+  }
+
+  setOffline(uid) {
+    const timestamp = Math.floor(Date.now() / 1000);
+    let dbRef = fs.database().ref('/connections/' + uid);
+    dbRef.update({
+      online: false,
+      lastOnline: timestamp,
+    });
+  }
+
   componentWillUnmount() {
+
   }
 
   render() {

@@ -4,7 +4,6 @@ import { Actions, DefaultRenderer } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import Reactotron from 'reactotron-react-native';
 import SideBar from './SideBar';
-import { presenceMonitor } from './Utils';
 
 @observer
 export default class DrawerPanel extends Component {
@@ -23,10 +22,6 @@ export default class DrawerPanel extends Component {
 
   componentWillMount() {
     Reactotron.debug('Rendering DrawerPanel');
-  }
-
-  componentDidMount() {
-    presenceMonitor(this.store.user, this.fs);
   }
 
   render() {
