@@ -32,8 +32,8 @@ export default class Welcome extends Component {
         width,
         height
       },
-      email: 'tgpsstar@gmail.com',
-      password: '123456',
+      email: null,
+      password: null,
       emailErr: false,
       loginErr: false,
       loading: false,
@@ -51,16 +51,10 @@ export default class Welcome extends Component {
       .then(async (data) => {
         try {
           let user = data.user;
+
           await AsyncStorage.setItem('@HookupStore:user', JSON.stringify(user)); // String
           this.store.setUser(user); // User Object
           Reactotron.debug('SetUser: ' + JSON.stringify(this.store.user));
-          // Reactotron.debug('refreshToken:' + user.refreshToken);
-          // this.fs.auth.getToken().then( res => {
-          //   Reactotron.debug('Token:' + res.token);
-          //   AsyncStorage.setItem('@HookupStore:token', res.token);
-          // }).catch( getTokenErr => {
-          //   Reactotron.error({name: getTokenErr.name, desc: getTokenErr.description});
-          // });
           Actions.drawer();
         } catch (AsyncStorageError) {
           Reactotron.error(msg.concat(AsyncStorageError));

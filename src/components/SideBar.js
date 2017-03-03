@@ -82,6 +82,8 @@ export default class SideBar extends Component {
         return () => Actions.messages({type: 'reset'});
       case 'settings':
         return () => Actions.settings({type: 'reset'});
+      case 'profile':
+          return () => Actions.profile({type: 'reset'});
     }
   }
 

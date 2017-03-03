@@ -5,7 +5,10 @@ const FirebaseConfig = { //eslint-disable-line
   authDomain: "kjyl-150415.firebaseapp.com",
   databaseURL: "https://kjyl-150415.firebaseio.com",
   storageBucket: "kjyl-150415.appspot.com",
-  messagingSenderId: "725652377518"
+  messagingSenderId: "725652377518",
+  googleAppId: '1:725652377518:ios:bbdec425ca56934d',
+  APIKey: 'AIzaSyBm9fcnGrmdAZo26_PJH5ieA0paXpLpYHY',
+  GCMSenderID: '725652377518',
 };
 
   // Firebase development configs

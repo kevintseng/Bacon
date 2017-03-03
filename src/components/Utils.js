@@ -1,3 +1,5 @@
+import Reactotron from 'reactotron-react-native';
+
 export function getAge(birthday) {
   if(!birthday) {
     return -1;
@@ -33,4 +35,26 @@ export function checkEmail(email) {
     return true;
   }
   return false;
+}
+
+export function presenceMonitor(user, firestack) {
+  const timestamp = Math.floor(Date.now() / 1000);
+
+  firestack.presence.on(user.uid)
+    .setOnline()
+    .onConnect(ref => {
+      ref.set({
+        online: true,
+        lastOnline: timestamp,
+        location: 'taipei'
+      });
+      Reactotron.log('connected');
+      ref.onDisconnect(ref=>{
+        ref.set({
+          online: false,
+          location: null,
+          lastOnline: timestamp,
+        })
+      });
+    });
 }

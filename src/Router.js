@@ -22,6 +22,7 @@ import { Signup1, Signup2, Signup3, Signup4 } from './views/signup'; // eslint-d
 import DrawerPanel from './components/DrawerPanel';
 import AppStore from './store/AppStore'; // eslint-disable-line
 import Forgot from './views/Forgot'; // eslint-disable-line
+import { FirebaseConfig } from './Configs';
 
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
@@ -40,8 +41,11 @@ const getSceneStyle = (props, computedProps) => {
   return style;
 };
 
-// TODO: Import firebase configs from Configs.js
 const firestack = new Firestack();
+
+firestack.configure(FirebaseConfig).then(() => Reactotron.log('Server configured and ready'));
+firestack.on('debug', msg => Reactotron.log('Receved server debug message' + msg));
+
 
 // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
 const appstore = new AppStore();
@@ -68,6 +72,7 @@ export default class RouterComponent extends Component {
   }
 
   render() {
+
     return(
       <Router
         fire={firestack}
@@ -93,7 +98,7 @@ export default class RouterComponent extends Component {
                 component={Signup4} />
             </Scene>
             <Scene key='drawer' component={DrawerPanel} open={false} >
-              <Scene key='main' tabs hideNavBar={false} >
+              <Scene key='main' tabs hideNavBar={false}>
                 <Scene key='meetcute'
                   component={MeetCute}
                   title='MeetCute'
@@ -123,6 +128,11 @@ export default class RouterComponent extends Component {
                 <Scene key='settings'
                   component={Settings}
                   title='Settings'
+                  renderLeftButton={menuButton}
+                  />
+                <Scene key='profile'
+                  component={Profile}
+                  title='Profile'
                   renderLeftButton={menuButton}
                   />
               </Scene>

@@ -160,11 +160,16 @@ export class Signup4 extends Component {
       photoURL: this.state.photoUrl,
     }).then(res => {
       Reactotron.debug('User profile updated');
+      Reactotron.debug(res);
     }).catch(err => {
       Reactotron.error('User profile update error');
       Reactotron.error(err);
     });
     const postData = {
+      uid: this.sustore.uid,
+      displayName: this.sustore.nickname,
+      email: this.sustore.email,
+      photoURL: this.state.photoUrl,
       birthday: this.sustore.birthday,
       termsAgreed: this.sustore.termsAgreed,
       city: this.sustore.city,
@@ -183,8 +188,7 @@ export class Signup4 extends Component {
       Reactotron.error('Set user data failed');
       Reactotron.error(err);
     });
-      // return Actions.pop({popNum: 3});
-      // return Actions.meetcute({type:'reset'})
+    return Actions.sessioncheck();
   }
 
   render() {

@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { View, Dimensions, } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { Text } from 'react-native-elements';
+import { Card, Text, ListItem } from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
@@ -23,20 +23,57 @@ export default class Profile extends Component {
           width,
           height
       },
+      tip: null,
     };
   }
 
   componentWillMount() {
     Reactotron.log('Rendering Profile');
     Actions.refresh({ key: 'drawer', open: false });
+    this.fs.auth.getCurrentUser()
+    .then(user => Reactotron.debug(user))
+    .catch(err => Reactotron.error(err));
+    Reactotron.debug(this.store.user);
+  }
+
+  emailPressed = () => {
+    this.setState({
+      tip: '未認證'
+    });
   }
 
   render() {
-    return(
-      <View style={this.state.size}>
+    const user = this.store.user;
+    const userImg = {uri: user.photoURL};
+    const emailVerified = user.emailVerified ? {name: 'beenhere', color: 'skyblue'} : {name: 'report', color: 'orange'};
 
-        <Text> hi </Text>
+    return(
+      <View style={styles.viewWrapper}>
+        <Card
+          title={user.displayName}
+          containerStyle={{ flex: 1, width: this.state.size.width, margin: 0 }}
+          wrapperStyle={{flex: 1}}
+          image={userImg}
+          >
+          <ListItem
+            key={user.email}
+            title='Email'
+            subtitle={user.email}
+            rightTitle={this.state.tip}
+            rightIcon={emailVerified}
+            onPress={this.emailPressed}
+            />
+
+
+        </Card>
       </View>
     );
   }
 }
+
+const styles = {
+  viewWrapper: {
+    width: width,
+    height: height,
+  }
+};
