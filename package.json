@@ -26,7 +26,6 @@
     "react-native-image-picker": "^0.25.7",
     "react-native-looped-carousel": "^0.1.5",
     "react-native-mobx": "^0.3.1",
-    "react-native-network-info": "^1.0.0",
     "react-native-router-flux": "^3.37.0",
     "react-native-swipe-carousel": "^0.1.7",
     "react-native-user-avatar": "^1.0.2",
