@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import {
     View,
     Dimensions,
-    AsyncStorage,
 } from 'react-native';
 import { Text, FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
@@ -32,8 +31,8 @@ export default class Welcome extends Component {
         width,
         height
       },
-      email: null,
-      password: null,
+      email: 'test20@20.com',
+      password: '123456',
       emailErr: false,
       loginErr: false,
       loading: false,
@@ -42,31 +41,15 @@ export default class Welcome extends Component {
 
   // TODO: Add security measures to saved auth data.
   signin = async () => {
-    let msg = 'singin: ';
     if(this.emailCheck() && this.passwordCheck()) {
       this.setState({
         loading: true
       });
-      this.fs.auth.signInWithEmail(this.state.email, this.state.password)
-      .then(async (data) => {
-        try {
-          let user = data.user;
-
-          await AsyncStorage.setItem('@HookupStore:user', JSON.stringify(user)); // String
-          this.store.setUser(user); // User Object
-          Reactotron.debug('SetUser: ' + JSON.stringify(this.store.user));
-          Actions.drawer();
-        } catch (AsyncStorageError) {
-          Reactotron.error(msg.concat(AsyncStorageError));
-        }
-      })
-      .catch((signInErr) => {
-        this.setState({
-          loginErr: '登入失敗: ' + signInErr.description,
-          loading: false,
-        });
-        Reactotron.error({name: signInErr.name, desc: signInErr.description});
+      this.fs.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(err => {
+        Reactotron.error(err);
+        return;
       });
+      Actions.drawer();
     }
   }
 

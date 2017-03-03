@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-// import { Router, Scene, Route } from 'react-native-mobx';
+import { AsyncStorage } from 'react-native';
 import { Router, Switch, Scene, Modal, Actions, ActionConst } from 'react-native-router-flux';  // eslint-disable-line
-import Firestack from 'react-native-firestack'; // eslint-disable-line
 import { observer } from 'mobx-react/native'; // eslint-disable-line
 import { autorun } from 'mobx'; // eslint-disable-line
 import { Icon } from 'react-native-elements' // eslint-disable-line
+import * as Firebase from 'firebase';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import ErrorView from './components/ErrorView'; // eslint-disable-line
 import MeetCute from './views/MeetCute'; // eslint-disable-line
@@ -41,10 +41,7 @@ const getSceneStyle = (props, computedProps) => {
   return style;
 };
 
-const firestack = new Firestack();
-
-firestack.configure(FirebaseConfig).then(() => Reactotron.log('Server configured and ready'));
-firestack.on('debug', msg => Reactotron.log('Receved server debug message' + msg));
+const fs = Firebase.initializeApp(FirebaseConfig);
 
 
 // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
@@ -61,21 +58,53 @@ const menuButton = () => (
 @observer
 export default class RouterComponent extends Component {
   componentWillMount() {
-    firestack.auth.listenForAuth((u) => {
-      Reactotron.log('listenForAuth');
-      Reactotron.log(u);
+    // firestack.auth.listenForAuth((u) => {
+    //   Reactotron.log('listenForAuth');
+    //   Reactotron.log(u);
+    // });
+    let user;
+    fs.auth().onAuthStateChanged(data => {
+      if(data) {
+        let dbRef = fs.database().ref('/users/' + data.uid);
+        user = {
+          uid: data.uid,
+          displayName: data.displayName,
+          photoURL: data.photoURL,
+          email: data.email,
+          emailVerified: data.emailVerified,
+          isAnonymous: data.isAnonymous,
+          providerId: data.providerId,
+        };
+
+        dbRef.once('value').then(snap => {
+          // Reactotron.debug(snap.val());
+          Object.assign(user, user, snap.val());
+          appstore.setUser(user);
+          Reactotron.log('user set appstore');
+          Reactotron.log(appstore.user);
+          AsyncStorage.setItem('@HookupStore:user', JSON.stringify(appstore.user)).catch( AsyncStorageError => {
+            Reactotron.error(AsyncStorageError);
+            return;
+          });
+        }).catch(err => {
+          Reactotron.error('Get user data failed.');
+          Reactotron.error(err);
+        });
+
+      } else {
+        Reactotron.log('User not signed in, cleaning up user store.');
+        appstore.setUser(null);
+      }
     });
   }
 
   componentWillUnmount() {
-    firestack.auth.unlistenForAuth();
   }
 
   render() {
-
     return(
       <Router
-        fire={firestack}
+        fire={fs}
         store={appstore}
         getSceneStyle={getSceneStyle} >
         <Scene key='modal' component={Modal} >

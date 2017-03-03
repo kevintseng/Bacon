@@ -6,7 +6,6 @@ import android.util.Log;
 import com.facebook.react.ReactApplication;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
-import io.fullstack.firestack.FirestackPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -31,7 +30,6 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RNFetchBlobPackage(),
             new ImagePickerPackage(),
-            new FirestackPackage(),
             new VectorIconsPackage()
       );
     }

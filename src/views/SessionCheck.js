@@ -8,10 +8,9 @@ import {
 } from 'react-native'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
-import { autorun } from 'mobx'; // eslint-disable-line
 import { observer } from 'mobx-react/native';
 
-const { width, height } = Dimensions.get('window'); // eslint-disable-line
+const { width, height } = Dimensions.get('window');
 
 @observer
 export default class Welcome extends Component {
@@ -25,10 +24,6 @@ export default class Welcome extends Component {
     this.store = this.props.store;
     this.fs = this.props.fire;
     this.state = {
-      size: {
-        width,
-        height
-      },
       text: '',
     };
   }
@@ -39,21 +34,20 @@ export default class Welcome extends Component {
   }
 
   getUser = async () => {
-    let msg = 'getUser: ';
     try {
       AsyncStorage.getItem('@HookupStore:user').then((userData_string) => {
-        Reactotron.debug(msg.concat(userData_string));
+        Reactotron.debug('Local storage has no user data');
         let userData = JSON.parse(userData_string);
         if(userData != null) {
           this.store.setUser(userData);
           Actions.drawer();
         } else {
-          Reactotron.warn(msg.concat('No session stored.'));
+          Reactotron.warn('Rendering signin');
           Actions.signin();
         }
       });
     } catch(error) {
-      Reactotron.error(msg.concat('Unable to access data storage: ' + error.message));
+      Reactotron.error('Unable to access local storage: ' + error.message);
     }
   }
 
