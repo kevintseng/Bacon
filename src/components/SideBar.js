@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { ScrollView, AsyncStorage } from 'react-native';
+import { ScrollView, AsyncStorage, View } from 'react-native';
 import Reactotron from 'reactotron-react-native';
-import { List, ListItem, Button } from 'react-native-elements';
+import { List, ListItem, Button, Icon } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { SIDEBAR_LINKS } from '../Configs';
@@ -115,6 +115,13 @@ export default class SideBar extends Component {
         }}
       >
         <List>
+          <ListItem
+            containerStyle={{ height: 42 }}
+            hideChevron
+            leftIcon={{ name: 'chevron-left' }}
+            title='關閉選單'
+            onPress={() => Actions.refresh({ key: 'drawer', open: false })}
+          />
           <ListItem
             roundAvatar
             avatar={{ uri: 'https://i.imgur.com/LQvbY0N.jpg' }}
