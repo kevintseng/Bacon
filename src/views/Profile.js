@@ -30,9 +30,8 @@ export default class Profile extends Component {
   componentWillMount() {
     Reactotron.log('Rendering Profile');
     Actions.refresh({ key: 'drawer', open: false });
-    this.fs.auth().currentUser()
-    .then(user => Reactotron.debug(user))
-    .catch(err => Reactotron.error(err));
+    let user = this.fs.auth().currentUser;
+    
     Reactotron.debug(this.store.user);
   }
 
