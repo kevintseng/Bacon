@@ -57,11 +57,7 @@ const menuButton = () => (
 
 @observer
 export default class RouterComponent extends Component {
-  componentWillMount() {
-    // firestack.auth.listenForAuth((u) => {
-    //   Reactotron.log('listenForAuth');
-    //   Reactotron.log(u);
-    // });
+  componentDidMount() {
     let user;
     fs.auth().onAuthStateChanged(data => {
       if(data) {
@@ -77,10 +73,9 @@ export default class RouterComponent extends Component {
         };
 
         dbRef.once('value').then(snap => {
-          // Reactotron.debug(snap.val());
           Object.assign(user, user, snap.val());
           appstore.setUser(user);
-          Reactotron.log('user set appstore');
+          Reactotron.log('Router: User has been set in appstore');
           Reactotron.log(appstore.user);
           this.setOnline(appstore.user.uid);
           AsyncStorage.setItem('@HookupStore:user', JSON.stringify(appstore.user)).catch( AsyncStorageError => {
@@ -93,6 +88,7 @@ export default class RouterComponent extends Component {
         });
 
       } else {
+        this.signOut();
         Reactotron.log('User not signed in');
       }
     });
@@ -117,9 +113,18 @@ export default class RouterComponent extends Component {
     });
   }
 
-  componentWillUnmount() {
-
-  }
+  signOut = () => {
+    if(appstore.user != null) {
+      this.setOffline(appstore.user.uid);
+    }
+    AsyncStorage.removeItem('@HookupStore:user').then(() => {
+      appstore.signOut();
+      Actions.sessioncheck({type: 'reset'});
+    }).catch(err => {
+      Reactotron.error('Delete local storage user data error: ');
+      Reactotron.error(err);
+    });
+  };
 
   render() {
     return(

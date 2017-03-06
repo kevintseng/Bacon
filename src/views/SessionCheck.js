@@ -42,7 +42,7 @@ export default class Welcome extends Component {
           this.store.setUser(userData);
           Actions.drawer();
         } else {
-          Reactotron.warn('Rendering signin');
+          Reactotron.debug('Rendering signin');
           Actions.signin();
         }
       });

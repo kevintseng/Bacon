@@ -9,7 +9,6 @@ import {CheckBox, FormLabel, FormInput, Button} from 'react-native-elements'; //
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
 import Reactotron from 'reactotron-react-native';
-import { autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
 import { getAge, checkEmail } from '../../components/Utils';
 import { Header } from '../../components/Header';
@@ -31,8 +30,8 @@ function maxDay() {
   const month = ('0' + (today.getMonth() + 1).toString()).slice(-2); // Jan = 0, Feb = 1.
   const day = ('0' + today.getDate().toString()).slice(-2);
   let maxDate = year.toString() + '-' + month.toString() + '-' + day;
-  let temp = new Date(maxDate);
-  Reactotron.log({'now': today.toString(), 'month': month, 'date': day, 'maxDate': maxDate, 'timestamp': temp.getTime()/1000});
+  // let temp = new Date(maxDate);
+  // Reactotron.debug({'now': today.toString(), 'month': month, 'date': day, 'maxDate': maxDate, 'timestamp': temp.getTime()/1000});
   return maxDate;
 }
 
@@ -65,8 +64,9 @@ export class Signup1 extends Component {
       passErr: false,
       emailErr: false,
       termsErr: false,
+      registerErr: false,
     };
-    // this.allCheck = this.allCheck.bind(this);
+
     this.emailCheck = this.emailCheck.bind(this);
     this.passwordCheck = this.passwordCheck.bind(this);
     this.nicknameCheck = this.nicknameCheck.bind(this);
@@ -88,12 +88,14 @@ export class Signup1 extends Component {
     this.setState({
       termsErr: false,
       termsAgreed: !this.state.termsAgreed,
+      registerErr: false,
     });
   }
 
   updateEmail = email => {
     this.setState({
       emailErr: false,
+      registerErr: false,
       email: email.trim(),
     });
   }
@@ -101,12 +103,14 @@ export class Signup1 extends Component {
   updatePassword = password => {
     this.setState({
       passErr: false,
+      registerErr: false,
       password: password.trim(),
     });
   }
 
   updateNickname = (nickname) => {
     this.setState({
+      registerErr: false,
       nickErr: false,
       nickname: nickname.trim(),
     });
@@ -114,6 +118,7 @@ export class Signup1 extends Component {
 
   updateBirthday = bday => {
     this.setState({
+      registerErr: false,
       birthdayErr: false,
       birthday: bday.trim(),
     });
@@ -181,6 +186,7 @@ export class Signup1 extends Component {
   }
 
   handleSubmit() {
+    this.setState({loading: true});
     const emailOk = this.emailCheck();
     const passwordOk = this.passwordCheck();
     const nameOk = this.nicknameCheck();
@@ -192,35 +198,36 @@ export class Signup1 extends Component {
       this.sustore.setPassword(this.state.password);
       this.sustore.setTermsAgreement(this.state.termsAgreed);
       this.sustore.setEmail(this.state.email);
-      autorun(() => {
-        Reactotron.log(this.sustore);
-      });
+
       // Create a new user on Firebase
-      this.fs.auth.createUserWithEmail(this.state.email, this.state.password)
+      this.fs.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then((user) => {
         this.sustore.setUid(user.uid);
-        this.fs.auth.updateUserProfile({
-          displayName: this.sustore.nickname
-        })
-        .then(res => Reactotron.log({'DisplayName updated': res}))
-        .catch(err => Reactotron.log({'There was an error': err}));
-
-        Reactotron.log({'user created': user, 'uid': user.uid});
+        Reactotron.debug({'New user created': user, 'uid': user.uid});
+      })
+      .then(() => {
+        this.setState({
+          loading: false,
+          registerErr: false,
+        });
+        // Go to signup step 2
+        Actions.signup2({
+          sustore: this.sustore
+        });
       })
       .catch((err) => {
-        Reactotron.log({'An error occurred': err});
-      });
-
-      // Go to signup step 2
-      Actions.signup2({
-        sustore: this.sustore
+        this.setState({
+          loading: false,
+          registerErr: err.message,
+        });
+        Reactotron.error(err);
       });
     }
   }
 
   render() {
     const { termsAgreed, email, password, nickname, birthday } = this.state;
-    const { maxDate, birthdayErr, emailErr, termsErr, nickErr, passErr, loading, size } = this.state;
+    const { maxDate, birthdayErr, emailErr, termsErr, nickErr, passErr, loading, size, registerErr } = this.state;
 
     return (
       <View style={this.state.size}>
@@ -322,6 +329,12 @@ export class Signup1 extends Component {
           title={'下一步'}
           onPress={this.handleSubmit}
         />
+        {
+          registerErr &&
+          <Text style={styles.errStyle}>
+          {registerErr}
+          </Text>
+        }
         {
           loading && <ActivityIndicator />
         }

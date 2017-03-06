@@ -23,6 +23,7 @@ export class Signup2 extends Component {
 
   constructor(props) {
     super(props);
+    this.fs = this.props.fire;
     this.sustore = this.props.sustore;
     this.state = {
       size: {

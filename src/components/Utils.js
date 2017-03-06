@@ -48,7 +48,7 @@ export function presenceMonitor(user, fb) {
         lastOnline: timestamp,
         location: 'taipei'
       });
-      Reactotron.log('connected');
+      Reactotron.log('Connected');
       ref.onDisconnect(ref=>{
         ref.set({
           online: false,

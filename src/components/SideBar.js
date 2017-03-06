@@ -50,15 +50,25 @@ export default class SideBar extends Component {
     return false;
   };
 
-  signout = async () => {
+  signOut = async () => {
     try {
       this.setOffline(this.store.user.uid);
       await this.fs.auth().signOut();
-      await AsyncStorage.removeItem('@HookupStore:user').then(() => {
-        this.store.signOut();
-        Actions.sessioncheck({type: 'reset'});
+      AsyncStorage.getItem('@HookupStore:user').then( user => {
+        if(user != null) {
+          AsyncStorage.removeItem('@HookupStore:user').then(() => {
+            this.store.signOut();
+            Actions.sessioncheck({type: 'reset'});
+          }).catch(err => {
+            Reactotron.error('Delete local storage user data error: ');
+            Reactotron.error(err);
+          });
+        } else {
+          this.store.signOut();
+          Actions.sessioncheck({type: 'reset'});
+        }
       }).catch(err => {
-        Reactotron.error('Delete local storage user data error: ');
+        Reactotron.error('Get local storage user data error: ');
         Reactotron.error(err);
       });
     } catch (error) {
@@ -130,7 +140,7 @@ export default class SideBar extends Component {
           backgroundColor='transparent'
           color='#007AFF'
           title={'登出'}
-          onPress={this.signout}
+          onPress={this.signOut}
         />
       </ScrollView>
     );
