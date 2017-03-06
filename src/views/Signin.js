@@ -45,11 +45,17 @@ export default class Welcome extends Component {
       this.setState({
         loading: true
       });
-      this.fs.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(err => {
+      this.fs.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => {
+        Actions.drawer();
+      })
+      .catch(err => {
         Reactotron.error(err);
-        return;
+        this.setState({
+          loginErr: err.message,
+          loading: false,
+        });
       });
-      Actions.drawer();
     }
   }
 
