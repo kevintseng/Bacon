@@ -7,12 +7,13 @@ import {
     Platform,
   } from 'react-native'; // eslint-disable-line
 import UserAvatar from 'react-native-user-avatar';
+import ImageResizer from 'react-native-image-resizer';
 import { Card, Button } from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux'; // eslint-disable-line
-import { autorun } from 'mobx'; // eslint-disable-line
+import RNFetchBlob from 'react-native-fetch-blob';
 import { observer } from 'mobx-react/native';
 import ImagePicker from 'react-native-image-picker';
-import RNFetchBlob from 'react-native-fetch-blob';
+import { uploadImage } from '../../components/Utils';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import { Header } from '../../components/Header';
 // import { FirebaseConfig } from '../../Configs';
@@ -36,7 +37,6 @@ const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
 
-
 @observer
 export class Signup4 extends Component {
   static propTypes = {
@@ -55,7 +55,6 @@ export class Signup4 extends Component {
           width,
           height: 600
       },
-      image: null,
       imageHeight: null,
       imageWidth: null,
       imageTimestamp: null,
@@ -68,21 +67,43 @@ export class Signup4 extends Component {
   componentWillMount() {
   }
 
-  updatePhotoUrl = (photoUrl) => {
-    Reactotron.debug('UpdatePhotoUrl: ' + photoUrl);
-    this.setState({
-      photoUrl,
-      loading: false,
-    })
+  addImage = () => {
+    ImagePicker.showImagePicker(ipOptions, async (res) => {
+      this.setState({
+        loading: true
+      });
+      if(res.didCancel) {
+        Reactotron.log('ImagePicker: User cancelled image picker');
+        return;
+      } else if(res.error) {
+        Reactotron.error('ImagePicker Error: ' + res.error);
+        this.setState({
+          loading: false,
+        });
+      } else {
+        ImageResizer.createResizedImage(res.uri, 300, 300, 'JPEG', 80)
+        .then( async (resizedImageUri) => {
+          this. uploadImage(resizedImageUri);
+          this.setState({
+            image: 'file://' + resizedImageUri,
+            imageGeo: {
+              lon: res.longitude,
+              lat: res.latitude
+            },
+            imageTimestamp: res.timestamp,
+          });
+        }).catch((err) => {
+          Reactotron.error(err);
+        });
+      }
+    });
   }
 
-  uploadImageAndSetPhotoUrl = (uri, mime = 'image/jpeg') => {
+  uploadImage = (uri, ref, mime = 'image/PNG') => {
     Reactotron.debug('Uploading image');
     const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
     let uploadBlob = null;
-    Reactotron.debug(this.sustore.uid);
-    const imageRef = this.fs.storage().ref('images/user').child(`${this.sustore.uid}`);
-
+    const imageRef = this.fs.storage().ref('images/avatars/' + this.sustore.uid);
     fs.readFile(uploadUri, 'base64')
       .then((data) => {
         return Blob.build(data, { type: `${mime};BASE64` });
@@ -98,42 +119,16 @@ export class Signup4 extends Component {
       .then((url) => {
         Reactotron.debug('Url');
         Reactotron.debug(url);
-        this.updatePhotoUrl(url);
+        this.setState({
+          photoUrl: url,
+          loading: false,
+        });
+        this.sustore.setAvatar(url);
       })
       .catch(err => {
         Reactotron.error('ReadFile error: ');
         Reactotron.error(err);
       })
-  }
-
-  addImage = () => {
-    ImagePicker.showImagePicker(ipOptions, (res) => {
-      this.setState({
-        loading: true
-      });
-      if(res.didCancel) {
-        Reactotron.log('ImagePicker: User cancelled image picker');
-        return;
-      } else if(res.error) {
-        Reactotron.error('ImagePicker Error: ' + res.error);
-        this.setState({
-          loading: false,
-        });
-      } else {
-        this.uploadImageAndSetPhotoUrl(res.uri);
-        // Reactotron.debug(res);
-        this.setState({
-          image: res.uri,
-          imageHeight: res.height,
-          imageWidth: res.width,
-          imageGeo: {
-            lon: res.longitude,
-            lat: res.latitude
-          },
-          imageTimestamp: res.timestamp,
-        });
-      }
-    });
   }
 
   handleSubmit = () => {
@@ -142,7 +137,7 @@ export class Signup4 extends Component {
       return;
     }
     let user = this.fs.auth().currentUser;
-    this.sustore.setAvatar(this.state.photoUrl);
+
     user.updateProfile({
       photoURL: this.state.photoUrl,
       displayName: this.sustore.nickname,
@@ -153,11 +148,12 @@ export class Signup4 extends Component {
       Reactotron.error('User profile update error');
       Reactotron.error(err);
     });
+
     const postData = {
+      photoURL: this.sustore.avatar,
       uid: this.sustore.uid,
       displayName: this.sustore.nickname,
       email: this.sustore.email,
-      photoURL: this.state.photoUrl,
       birthday: this.sustore.birthday,
       termsAgreed: this.sustore.termsAgreed,
       city: this.sustore.city,
@@ -199,7 +195,7 @@ export class Signup4 extends Component {
               style={{ alignSelf: 'center', marginBottom: 10 }}
               size='150'
               name={nickname}
-              src={this.state.photoUrl}
+              src={this.state.image}
               />
             }
             </View>

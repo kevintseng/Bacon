@@ -1,4 +1,7 @@
 import Reactotron from 'reactotron-react-native';
+import ImageResizer from 'react-native-image-resizer';
+import RNFetchBlob from 'react-native-fetch-blob';
+import { Platform } from 'react-native';
 
 export function getAge(birthday) {
   if(!birthday) {
@@ -57,4 +60,47 @@ export function presenceMonitor(user, fb) {
         })
       });
     });
+}
+
+export function resizeImage(uri) {
+  ImageResizer.createResizedImage(uri, 300, 300, 'PNG', 80)
+  .then((resizedImageUri) => {
+    Reactotron.debug(resizedImageUri);
+    return resizedImageUri;
+  }).catch((err) => {
+    Reactotron.error(err);
+  });
+}
+
+const Blob = RNFetchBlob.polyfill.Blob
+const fs = RNFetchBlob.fs
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob = Blob
+
+export function uploadImage(uri, ref, mime = 'image/PNG') {
+  Reactotron.debug('Uploading image');
+  const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+  let uploadBlob = null;
+  const imageRef = ref;
+  fs.readFile(uploadUri, 'base64')
+    .then((data) => {
+      return Blob.build(data, { type: `${mime};BASE64` });
+    })
+    .then((blob) => {
+      uploadBlob = blob
+      return imageRef.put(blob, { contentType: mime })
+    })
+    .then(() => {
+      uploadBlob.close()
+      return imageRef.getDownloadURL();
+    })
+    .then((url) => {
+      Reactotron.debug('Url');
+      Reactotron.debug(url);
+      return url;
+    })
+    .catch(err => {
+      Reactotron.error('ReadFile error: ');
+      Reactotron.error(err);
+    })
 }
