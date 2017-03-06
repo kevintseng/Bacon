@@ -47,7 +47,7 @@ export default class Forgot extends Component {
         loading: true
       });
 
-      this.fs.auth.sendPasswordResetWithEmail(this.state.email)
+      this.fs.auth().sendPasswordResetEmail(this.state.email)
       .then(() => {
         this.setState({
           sent: true,

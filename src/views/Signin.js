@@ -31,8 +31,8 @@ export default class Welcome extends Component {
         width,
         height
       },
-      email: 'test20@20.com',
-      password: '123456',
+      email: '',
+      password: '',
       emailErr: false,
       loginErr: false,
       loading: false,
