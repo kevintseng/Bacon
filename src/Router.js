@@ -76,7 +76,7 @@ export default class RouterComponent extends Component {
           Object.assign(user, user, snap.val());
           appstore.setUser(user);
           Reactotron.log('Router: User has been set in appstore');
-          Reactotron.log(appstore.user);
+          Reactotron.log(appstore);
           this.setOnline(appstore.user.uid);
           AsyncStorage.setItem('@HookupStore:user', JSON.stringify(appstore.user)).catch( AsyncStorageError => {
             Reactotron.error(AsyncStorageError);

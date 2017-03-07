@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { ScrollView, AsyncStorage, View } from 'react-native';
+import { ScrollView, AsyncStorage } from 'react-native';
 import Reactotron from 'reactotron-react-native';
-import { List, ListItem, Button, Icon } from 'react-native-elements';
+import { List, ListItem, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { SIDEBAR_LINKS } from '../Configs';
@@ -26,7 +26,7 @@ export default class SideBar extends Component {
 
   componentDidMount() {
     Reactotron.debug('SideBar rendered');
-    Reactotron.debug(this.store);
+    // Reactotron.debug(this.store);
   }
 
 
@@ -80,7 +80,7 @@ export default class SideBar extends Component {
 
   setOffline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    let dbRef = this.fs.database().ref('/connections/' + uid);
+    const dbRef = this.fs.database().ref('/connections/' + uid);
     dbRef.update({
       online: false,
       lastOnline: timestamp,

@@ -3724,6 +3724,10 @@ react-native-mobx@^0.3.1:
     mobx-react "^3.3.0"
     react-native-router-flux "^3.31.2"
 
+react-native-photo-grid@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-photo-grid/-/react-native-photo-grid-0.0.2.tgz#ceb523c72a52aa792906809f1473d1a1a91a1438"
+
 react-native-router-flux@^3.31.2, react-native-router-flux@^3.37.0:
   version "3.37.0"
   resolved "https://registry.yarnpkg.com/react-native-router-flux/-/react-native-router-flux-3.37.0.tgz#18e8fd3e1e6dbdc4d8340cd47313c28bb9bb1caf"
