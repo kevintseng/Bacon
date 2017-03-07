@@ -24,8 +24,9 @@ export default class SideBar extends Component {
     // this.handleOnPress = this.handleOnPress.bind(this);
   }
 
-  componentWillMount() {
-    Reactotron.debug('Rendering SideBar');
+  componentDidMount() {
+    Reactotron.debug('SideBar rendered');
+    Reactotron.debug(this.store);
   }
 
 
@@ -108,6 +109,7 @@ export default class SideBar extends Component {
   }
 
   render() {
+    const { displayName, photoURL } = this.store.user;
     return (
       <ScrollView
         style={{
@@ -117,16 +119,15 @@ export default class SideBar extends Component {
         <List>
           <ListItem
             containerStyle={{ height: 42 }}
-            hideChevron
-            leftIcon={{ name: 'chevron-left' }}
-            title='關閉選單'
+            rightIcon={{ name: 'first-page' }}
+            rightTitle='Close'
+            rightTitleStyle={{ color: '#616161' }}
             onPress={() => Actions.refresh({ key: 'drawer', open: false })}
           />
           <ListItem
             roundAvatar
-            avatar={{ uri: 'https://i.imgur.com/LQvbY0N.jpg' }}
-            title={'我是正妹'}
-            rightIcon={{ name: 'account-circle' }}
+            avatar={{ uri: photoURL }}
+            title={displayName}
             onPress={this.handleOnPress('profile')}
           />
           {

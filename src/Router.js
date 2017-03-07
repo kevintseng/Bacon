@@ -186,7 +186,7 @@ export default class RouterComponent extends Component {
                   />
                 <Scene key='profile'
                   component={Profile}
-                  title='Profile'
+                  title='關於我'
                   renderLeftButton={menuButton}
                   />
               </Scene>
