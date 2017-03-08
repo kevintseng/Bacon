@@ -8,7 +8,7 @@ import Reactotron from 'reactotron-react-native';
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
-export default class Profile extends Component {
+export default class Question extends Component {
   static propTypes = {
     store: PropTypes.object,
     fire: PropTypes.object,
@@ -49,7 +49,7 @@ export default class Profile extends Component {
     return(
       <View style={styles.viewWrapper}>
         <Card
-          title='Test Profile'
+          title={user.displayName}
           containerStyle={{ flex: 1, width: this.state.size.width, margin: 0 }}
           wrapperStyle={{flex: 1}}
           image={userImg}

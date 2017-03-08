@@ -13,6 +13,9 @@ import Messages from './views/Messages'; // eslint-disable-line
 import LikesYou from './views/LikesYou'; // eslint-disable-line
 import Visitors from './views/Visitors'; // eslint-disable-line
 import Settings from './views/Settings'; // eslint-disable-line
+import Account from './views/Settings';
+import PushNotification from './views/Settings';
+import Question from './views/Settings';
 import Signin from './views/Signin'; // eslint-disable-line
 import SessionCheck from './views/SessionCheck'; // eslint-disable-line
 import Profile from './views/Profile'; // eslint-disable-line
@@ -182,14 +185,21 @@ export default class RouterComponent extends Component {
                 <Scene key='settings'
                   component={Settings}
                   title='Settings'
-                  renderLeftButton={menuButton}
-                  />
-                <Scene key='profile'
-                  component={Profile}
-                  title='Profile'
-                  renderLeftButton={menuButton}
-                  />
+                  renderLeftButton={menuButton}/>
+                <Scene key='account'
+                  component={Account}
+                  title='Account'
+                  renderLeftButton={menuButton}/>
+
+
+
+
               </Scene>
+
+
+
+
+
             </Scene>
             <Scene key="errorview" component={ErrorView} />
           </Scene>
