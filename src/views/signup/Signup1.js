@@ -12,7 +12,7 @@ import Reactotron from 'reactotron-react-native';
 import { observer } from 'mobx-react/native';
 import { getAge, checkEmail } from '../../components/Utils';
 import { Header } from '../../components/Header';
-import SignupStore from '../../store/signupStore'
+import SignupStore from '../../store/SignupStore'
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 const styles = {
