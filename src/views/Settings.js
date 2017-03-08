@@ -45,11 +45,11 @@ export default class Settings extends Component {
   handleOnPress(key) {
     switch (key) {
       case 'account':
-        return () => Actions.account({type: 'push'});
+        return () => Actions.account();
       case 'pushnotification':
-        return () => Actions.pushnotification({type: 'push'});
+        return () => Actions.pushnotification();
       case 'question':
-        return () => Actions.question({type: 'push'});
+        return () => Actions.question();
     }
   }
 

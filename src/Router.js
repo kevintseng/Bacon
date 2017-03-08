@@ -13,9 +13,9 @@ import Messages from './views/Messages'; // eslint-disable-line
 import LikesYou from './views/LikesYou'; // eslint-disable-line
 import Visitors from './views/Visitors'; // eslint-disable-line
 import Settings from './views/Settings'; // eslint-disable-line
-import Account from './views/Settings';
-import PushNotification from './views/Settings';
-import Question from './views/Settings';
+import Account from './views/Settings/Account';
+import PushNotification from './views/Settings/PushNotification';
+import Question from './views/Settings/Question';
 import Signin from './views/Signin'; // eslint-disable-line
 import SessionCheck from './views/SessionCheck'; // eslint-disable-line
 import Profile from './views/Profile'; // eslint-disable-line
@@ -180,26 +180,35 @@ export default class RouterComponent extends Component {
                   renderLeftButton={menuButton} />
                 <Scene key='visitors'
                   component={Visitors}
-                  title='LikesYou'
+                  title='Visitors'
                   renderLeftButton={menuButton} />
-                <Scene key='settings'
-                  component={Settings}
-                  title='Settings'
-                  renderLeftButton={menuButton}/>
-                <Scene key='account'
-                  component={Account}
-                  title='Account'
-                  renderLeftButton={menuButton}/>
-
-
-
-
+                  <Scene key='settings'
+                    component={Settings}
+                    title='Settings'
+                    renderLeftButton={menuButton}/>
+                    <Scene key='account'
+                      component={Account}
+                      title='Account'
+                      />
+                  <Scene key='settings_wrapper'>
+                    <Scene key='settings'
+                      component={Settings}
+                      title='Settings'
+                      renderLeftButton={menuButton}/>
+                    <Scene key='account'
+                      component={Account}
+                      title='Account'
+                      />
+                    <Scene key='pushnotification'
+                      component={PushNotification}
+                      title='PushNotification'
+                      />
+                    <Scene key='question'
+                      component={Question}
+                      title='Question'
+                      />
+                  </Scene>
               </Scene>
-
-
-
-
-
             </Scene>
             <Scene key="errorview" component={ErrorView} />
           </Scene>
