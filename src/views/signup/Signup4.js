@@ -23,7 +23,7 @@ const ipOptions = {
   mediaType: 'photo',
   maxWidth: 1000,
   maxHeight: 1000,
-  quality: 1,
+  quality: 0.8,
   noData: false,
   storageOptions: {
     skipBackup: true,
@@ -61,9 +61,6 @@ export class Signup4 extends Component {
       photoUrl: null,
       loading: false,
     };
-  }
-
-  componentWillMount() {
   }
 
   addImage = () => {

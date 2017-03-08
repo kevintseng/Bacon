@@ -41,6 +41,7 @@
 		FC1A32A0002343D8BF81E35D /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A06F59F18C2049CCA0974036 /* FontAwesome.ttf */; };
 		FF8B53DC7BC04C31A322EB34 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 482808DC5F664413B7C59B8F /* SimpleLineIcons.ttf */; };
 		10E5E4ADC630424DA4ADBC3F /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC688A120D524A8CB17890DA /* libRCTImageResizer.a */; };
+		3E09E073F2CA48039F39ACAF /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1863A827D06343DBB5CC54E6 /* libimageCropPicker.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -297,6 +298,8 @@
 		FB4AAA8B5572446D954900BA /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		60BD8278167B448C9A8674B6 /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; name = "RCTImageResizer.xcodeproj"; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		FC688A120D524A8CB17890DA /* libRCTImageResizer.a */ = {isa = PBXFileReference; name = "libRCTImageResizer.a"; path = "libRCTImageResizer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		1211AEE07E6B4E2696B5E59A /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; name = "imageCropPicker.xcodeproj"; path = "../node_modules/react-native-customized-image-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		1863A827D06343DBB5CC54E6 /* libimageCropPicker.a */ = {isa = PBXFileReference; name = "libimageCropPicker.a"; path = "libimageCropPicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -329,6 +332,7 @@
 				20094E8257874ECA9A7C3133 /* libRNImagePicker.a in Frameworks */,
 				9755574CC753457AA0C46F2D /* libRNFetchBlob.a in Frameworks */,
 				10E5E4ADC630424DA4ADBC3F /* libRCTImageResizer.a in Frameworks */,
+				3E09E073F2CA48039F39ACAF /* libimageCropPicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +525,7 @@
 				03FC35D6BC554C5693B75BD3 /* RNImagePicker.xcodeproj */,
 				97384A140D6040228160457A /* RNFetchBlob.xcodeproj */,
 				60BD8278167B448C9A8674B6 /* RCTImageResizer.xcodeproj */,
+				1211AEE07E6B4E2696B5E59A /* imageCropPicker.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1106,6 +1111,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hookup.app/hookup";
@@ -1123,6 +1129,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";

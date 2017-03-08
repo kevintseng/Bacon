@@ -1,16 +1,40 @@
+//TODO: 把 renderGallery拉出來變成一個component
+
 import React, { Component, PropTypes } from 'react';
-import { View, Dimensions, TouchableOpacity, Image, ScrollView } from 'react-native'; //eslint-disable-line
+import { View, Dimensions, TouchableOpacity, Image, ScrollView, AsyncStorage } from 'react-native'; //eslint-disable-line
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Card, Text, ListItem, Grid, Row, Col } from 'react-native-elements'; //eslint-disable-line
 import PhotoGrid from 'react-native-photo-grid'; //eslint-disable-line
 import Reactotron from 'reactotron-react-native';
+import ImagePicker from 'react-native-customized-image-picker';
+
+const defaultImage = require('../images/addImage.png');
+const placeholder = require('../images/cameraPlaceholder.jpg');
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 const styles = {
   viewWrapper: {
     width,
     height,
+  },
+  container: {
+      flex: 1,
+      flexDirection: 'row',
+  },
+  gallery: {
+      flexDirection: 'row'
+  },
+  icon: {
+      textAlign: 'center'
+  },
+  item: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  photo: {
+      flex: 1
   }
 };
 
@@ -31,28 +55,30 @@ export default class Profile extends Component {
           height
       },
       tip: null,
-      items: [],
+      items: [{ id: 'addImage', src: defaultImage }],
     };
   }
 
   componentDidMount() {
     Reactotron.log('Profile rendered');
     Actions.refresh({ key: 'drawer', open: false });
-    const defaultImage = require('../images/addImage.png');
     // Build an array of 60 photos
-    const items = [
-      { id: '0', src: defaultImage },
-      { id: '1', src: defaultImage },
-      { id: '2', src: defaultImage },
-      { id: '3', src: defaultImage },
-      { id: '4', src: defaultImage },
-      { id: '5', src: defaultImage },
-      { id: '6', src: defaultImage },
-      { id: '7', src: defaultImage },
-      { id: '8', src: defaultImage },
-      { id: '9', src: defaultImage },
-    ];
-    this.setState({ items });
+  }
+
+  getPhotosFromLocal = () => {
+    AsyncStorage.getItem('@HookupStorage:photos', (err, result) => {
+      if(result) {
+        Reactotron.debug(result);
+      } else {
+        Reactotron.error(err);
+      }
+    });
+  }
+
+  savePhotosToLocal= (items) => {
+    AsyncStorage.setItem('@HookupStorage:photos', JSON.stringify(items), (err) => {
+      Reactotron.error(err);
+    });
   }
 
   emailPressed = () => {
@@ -62,27 +88,73 @@ export default class Profile extends Component {
   }
 
   renderHeader = () => {
-    // var filtered = arr.filter(function( element, index, array) { return (index % 2 === 0); });
     return;
   }
 
-  renderItem = (item, itemSize) => {
-    return(
-      <Col style={{ marginLeft: 5 }}>
-        <TouchableOpacity
-          key = { item.id }
-          style = {{ width: itemSize, height: itemSize }}
-          onPress = { () => {
-            // Do Something
-          }}>
-          <Image
-            resizeMode = "contain"
-            style = {{ flex: 1  }}
-            source = { item.src }
-          />
-        </TouchableOpacity>
-      </Col>
-    )
+  renderGallery = (items, itemSize) => {
+    const pairs = this.getPairsArray(items);
+    return pairs.map((item, index) => {
+      return (
+        <View style={styles.item} key={index}>
+          <TouchableOpacity
+            key = { item[0].id }
+            style = {{ flex: 1, margin: 1, width: itemSize, height: itemSize }}
+            onPress = { () => {
+              if(item[0].id === 'addImage') {
+                ImagePicker.openPicker({
+                  cropping: true,
+                  compressQuality: 80,
+                  multiple: true,
+                  width: 800,
+                  height: 800,
+                }).then(images => {
+                  Reactotron.log(images);
+
+                });
+              }
+            }}>
+            <Image
+              resizeMode='cover'
+              defaultSource={placeholder}
+              style={{ flex: 1, width: itemSize, height: itemSize }}
+              source={item[0].src} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            key = { item[1].id }
+            style = {{ flex: 1, margin: 1, width: itemSize, height: itemSize }}
+            onPress = { () => {
+
+            }}>
+            <Image
+              resizeMode='cover'
+              defaultSource={placeholder}
+              style={{ flex: 1, width: itemSize, height: itemSize }}
+              source={item[1].src} />
+          </TouchableOpacity>
+        </View>
+      );
+    });
+  }
+
+  getPairsArray(photos) {
+    let pa = photos;
+    let pairs_r = [];
+    let pairs = [];
+    let count = 0;
+    // Fill up array with placeholder images
+    while(photos.length < 6) {
+      pa.push({ id: 'placeholder' + photos.length, src: placeholder });
+    }
+    pa.forEach((item) => {
+      count += 1;
+      pairs.push(item);
+      if(count == 2){
+        pairs_r.push(pairs)
+        count = 0;
+        pairs = [];
+      }
+    });
+    return pairs_r;
   }
 
   render() {
@@ -96,18 +168,6 @@ export default class Profile extends Component {
           containerStyle={{ flex: 1, width: this.state.size.width, margin: 0 }}
           wrapperStyle={{ flex: 1 }}
           >
-          <View style={{ height: 240, backgroundColor: '#6A85B1', }}>
-            <ScrollView
-              horizontal
-              style={{ marginLeft: 0, height: 240, backgroundColor: '#6A85B1', }}
-              >
-              <Grid>
-                {
-                  this.state.items.map(item => this.renderItem(item, 120))
-                }
-              </Grid>
-            </ScrollView>
-          </View>
           <ListItem
             key={user.email}
             title='Email'
@@ -116,7 +176,15 @@ export default class Profile extends Component {
             rightIcon={emailVerified}
             onPress={this.emailPressed}
             />
-
+          <View style={{ height: 240, }}>
+              <ScrollView
+                horizontal
+                >
+                  {
+                    this.renderGallery(this.state.items, 120)
+                  }
+              </ScrollView>
+            </View>
 
         </Card>
       </View>

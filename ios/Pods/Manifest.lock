@@ -59,6 +59,8 @@ PODS:
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.8)
   - Protobuf (3.2.0)
+  - QBImagePickerController (3.4.0)
+  - RSKImageCropper (1.6.0)
 
 DEPENDENCIES:
   - Firebase
@@ -68,6 +70,8 @@ DEPENDENCIES:
   - Firebase/Messaging
   - Firebase/RemoteConfig
   - Firebase/Storage
+  - QBImagePickerController
+  - RSKImageCropper
 
 SPEC CHECKSUMS:
   Firebase: 5bc34d7b5ff5792e3386c8b28dc6265deeab0da4
@@ -82,7 +86,9 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 6f8d8b28b7e345549ac471071608170b31cb4977
   Protobuf: 745f59e122e5de98d4d7ef291e264a0eef80f58e
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
+  RSKImageCropper: 6903235c7a8a79acb1e1f3490e2c911b858f8208
 
-PODFILE CHECKSUM: 812361f02e2ccf62afe6615076770b8108a56138
+PODFILE CHECKSUM: d1e67209d842e9eac6eb28e7b3db1a5bce9d52ae
 
 COCOAPODS: 1.1.1
