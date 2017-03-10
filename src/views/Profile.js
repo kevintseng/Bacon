@@ -71,8 +71,20 @@ export default class Profile extends Component {
 }
 
 const styles = {
-  viewWrapper: {
-    width: width,
-    height: height,
+    subtitleView: {
+      paddingTop: 0,
+      marginTop: 0
+    },
+    ratingImage: {
+      height: 19.21,
+      width: 100
+    },
+    ratingText: {
+      paddingLeft: 10,
+      color: 'grey'
+    },
+    viewWrapper: {
+      width: width,
+      height: height,
+    }
   }
-};

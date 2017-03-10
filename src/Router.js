@@ -16,6 +16,7 @@ import Settings from './views/Settings'; // eslint-disable-line
 import Account from './views/Settings/Account';
 import PushNotification from './views/Settings/PushNotification';
 import Question from './views/Settings/Question';
+import ChangePassword from './views/Settings/ChangePassword';
 import Signin from './views/Signin'; // eslint-disable-line
 import SessionCheck from './views/SessionCheck'; // eslint-disable-line
 import Profile from './views/Profile'; // eslint-disable-line
@@ -137,6 +138,7 @@ export default class RouterComponent extends Component {
         getSceneStyle={getSceneStyle} >
         <Scene key='modal' component={Modal} >
           <Scene key='root' hideNavBar>
+
             <Scene key='sessioncheck' component={SessionCheck} />
             <Scene key='signin' component={Signin} />
             <Scene key='forgot' component={Forgot} title='申請重設密碼' hideNavBar={false} />
@@ -207,10 +209,26 @@ export default class RouterComponent extends Component {
                       component={Question}
                       title='Question'
                       />
+                    <Scene key='changepassword'
+                      component={ChangePassword}
+                      title='ChangePassword'
+                    />
+
+
+
+
+
                   </Scene>
+
+
+
+
+
+
               </Scene>
             </Scene>
             <Scene key="errorview" component={ErrorView} />
+
           </Scene>
         </Scene>
       </Router>

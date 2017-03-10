@@ -58,52 +58,65 @@ export default class Settings extends Component {
 
   render() {
     return(
-      <List>
-        <ListItem
-          roundAvatar
-          title='帳號管理'
-          //onPress={()=> {Actions.Account({type: 'reset'})}}
-          onPress={this.handleOnPress('account')}
-        />
+        <View style={styles.viewWrapper}>
 
-        <ListItem
-          roundAvatar
-          title='推播通知'
-          onPress={this.handleOnPress('pushnotification')}
-        />
+          <ListItem
+            roundAvatar
+            hideChevron
+            title='帳號管理'
+            //onPress={()=> {Actions.Account({type: 'reset'})}}
+            onPress={this.handleOnPress('account')}
+          />
 
-        <ListItem
-          roundAvatar
-          title='常見問題'
-          onPress={this.handleOnPress('question')}
-        />
+          <ListItem
+            roundAvatar
+            hideChevron
+            title='推播通知'
+            onPress={this.handleOnPress('pushnotification')}
+          />
 
-        <ListItem
-          roundAvatar
-          title='意見反應'
-        />
+          <ListItem
+            roundAvatar
+            hideChevron
+            title='常見問題'
+            onPress={this.handleOnPress('question')}
+          />
 
-        <ListItem
-          roundAvatar
-          title='版本資訊'
-        />
+          <ListItem
+            //roundAvatar
+            hideChevron
+            title='意見反應'
+          />
 
-        <ListItem
-          roundAvatar
-          title='版權聲明'
-        />
+          <ListItem
+            roundAvatar
+            hideChevron
+            title='版本資訊'
+          />
 
-        <ListItem
-          roundAvatar
-          title='隱私權聲明'
-        />
+          <ListItem
+            roundAvatar
+            hideChevron
+            title='版權聲明'
+          />
 
-        <ListItem
-          roundAvatar
-          title='使用條款'
-        />
+          <ListItem
+            roundAvatar
+            hideChevron
+            title='隱私權聲明'
+          />
 
-      </List>
+          <ListItem
+            roundAvatar
+            hideChevrons
+            title='使用條款'
+          />
+
+
+        </View>
+
+
+
 
     );
   }
@@ -115,9 +128,8 @@ export default class Settings extends Component {
 
 const styles = {
     subtitleView: {
-      flexDirection: 'row',
-      paddingLeft: 10,
-      paddingTop: 5
+      paddingTop: 0,
+      marginTop: 0
     },
     ratingImage: {
       height: 19.21,
@@ -126,5 +138,9 @@ const styles = {
     ratingText: {
       paddingLeft: 10,
       color: 'grey'
+    },
+    viewWrapper: {
+      width: width,
+      height: height,
     }
   }
