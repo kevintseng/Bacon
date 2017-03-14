@@ -50,6 +50,8 @@ export default class Settings extends Component {
         return () => Actions.pushnotification();
       case 'question':
         return () => Actions.question();
+      case 'reaction':
+        return () => Actions.reaction();
     }
   }
 
@@ -86,6 +88,7 @@ export default class Settings extends Component {
             //roundAvatar
             hideChevron
             title='意見反應'
+            onPress={this.handleOnPress('reaction')}
           />
 
           <ListItem

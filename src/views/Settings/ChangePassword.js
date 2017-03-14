@@ -20,6 +20,7 @@ import Reactotron from 'reactotron-react-native';
 import { autorun } from 'mobx'; // eslint-disable-line
 import FormErrorMsg from '../../components/FormErrorMsg';
 
+
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
@@ -51,6 +52,7 @@ export default class ChangePassword extends Component {
 
   signin = async () => {
     this.setState({
+      loading: true,
       OgPasswordErr: false,
       NewPasswordErr: false,
       ConfirmNewPasswordErr: false,
@@ -64,11 +66,13 @@ export default class ChangePassword extends Component {
           OgPasswordErr: false,
         });
         this.updatePwd();
+
       })
       .catch(err => {
         Reactotron.error(err);
         this.setState({
           OgPasswordErr: err.message,
+          loading: false,
         });
         console.log('lgoin false')
       });
@@ -76,18 +80,30 @@ export default class ChangePassword extends Component {
   }
 
 
-  updatePwd = async () => {
+  updatePwd =  () => {
     if(this.newPasswordCheck() && this.confirmNewPasswordCheck() && this.newPwd_and_confirmPwdCheck()){
       let user = this.fs.auth().currentUser;
       let newPassword = this.state.ConfirmNewPassword;
 
       user.updatePassword(newPassword).then(function(){
         console.log('Update successful')
+
+        Alert.alert(
+          '',
+          '修改密碼成功',
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed!')},
+          ]
+        );
+
+
       }, function(error){
         console.log('error happened')
       });
 
     }
+
+    this.setState({loading: false,});
   }
 
 
@@ -160,11 +176,16 @@ export default class ChangePassword extends Component {
     });
   }
 
+  clearInput = InputName => {
+    this.refs[InputName].setNativeProps({text: ''});
+  }
 
 
   componentDidMount() {
     Reactotron.log('Account rendered');
   }
+
+
 
   render() {
 
@@ -177,6 +198,7 @@ export default class ChangePassword extends Component {
             secureTextEntry
             placeholder='請輸入原始密碼'
             maxLength={10}
+
             value={this.state.OgPassword}
             onChangeText={OgPassword =>
               this.onOgPasswordChange(OgPassword)}
@@ -203,6 +225,7 @@ export default class ChangePassword extends Component {
 
           <FormLabel>確認新密碼</FormLabel>
           <FormInput
+            ref='cfnpwd'
             secureTextEntry
             placeholder='請再次輸入6~10字英數組合密碼'
             maxLength={10}
@@ -220,7 +243,10 @@ export default class ChangePassword extends Component {
             //color='#007AFF'
             buttonStyle={styles.buttonTop}
             onPress={this.signin}
-            title='確認' />
+            title={this.state.loading ? '處理中...' : '確認'}
+          />
+
+
       </View>
     );
   }

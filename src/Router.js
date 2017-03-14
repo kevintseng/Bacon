@@ -17,6 +17,7 @@ import Account from './views/Settings/Account';
 import PushNotification from './views/Settings/PushNotification';
 import Question from './views/Settings/Question';
 import ChangePassword from './views/Settings/ChangePassword';
+import Reaction from './views/Settings/Reaction';
 import Signin from './views/Signin'; // eslint-disable-line
 import SessionCheck from './views/SessionCheck'; // eslint-disable-line
 import Profile from './views/Profile'; // eslint-disable-line
@@ -214,7 +215,10 @@ export default class RouterComponent extends Component {
                       title='ChangePassword'
                     />
 
-
+                    <Scene key='reaction'
+                      component={Reaction}
+                      title='Reaction'
+                    />
 
 
 

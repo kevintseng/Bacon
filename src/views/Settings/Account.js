@@ -12,6 +12,7 @@ import {
   Dimensions,
   TouchableHighlight,
   UIExplorerBlock,
+  AsyncStorage,
 } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { Text, Button,ListItem,SocialIcon } from 'react-native-elements';
@@ -38,6 +39,49 @@ export default class Account extends Component {
   }
 
 
+  deleteAccount = async() => {
+    let user = this.fs.auth().currentUser;
+
+    user.delete().then(function() {
+      try{
+      AsyncStorage.getItem('@HookupStore:user').then( user => {
+        if(user != null) {
+          AsyncStorage.removeItem('@HookupStore:user').then(() => {
+            console.log('in fun');
+            this.store.signOut();
+            Actions.sessioncheck({type: 'reset'});
+          }).catch(err => {
+            Reactotron.error('Delete local storage user data error: ');
+            Reactotron.error(err);
+          });
+        } else {
+          this.store.signOut();
+          Actions.sessioncheck({type: 'reset'});
+        }
+      }).catch(err => {
+        Reactotron.error('Get local storage user data error: ');
+        Reactotron.error(err);
+      });
+      } catch (error) {
+        Reactotron.error('Firebase signout error: ');
+        Reactotron.error(error);
+      };
+    }, function(error) {
+      // An error happened.
+    });
+
+
+
+
+
+
+};
+
+ checkin(){
+   console.log('in checkfun');
+ }
+
+
   componentDidMount() {
     Reactotron.log('Account rendered');
   }
@@ -56,7 +100,15 @@ export default class Account extends Component {
           color='#666666'
           fontSize={12}
           style={{ marginTop: 10 }}
-          title='刪除帳號' />
+          title='刪除帳號'
+          onPress={() => Alert.alert(
+            '刪除帳號',
+            '帳號刪除後，將無法恢復。請確認是否刪除',
+            [
+              {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
+              {text: 'OK', onPress: this.deleteAccount},
+            ]
+          )}/>
       </View>
     );
   }
