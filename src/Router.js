@@ -21,6 +21,11 @@ import DrawerPanel from './views/DrawerPanel';
 import ErrorView from './views/ErrorView';
 import AppStore from './store/AppStore';
 import Forgot from './views/Forgot';
+import Account from './views/Settings/Account';
+import PushNotification from './views/Settings/PushNotification';
+import Question from './views/Settings/Question';
+import ChangePassword from './views/Settings/ChangePassword';
+import Reaction from './views/Settings/Reaction';
 import { FirebaseConfig } from './Configs';
 
 // define this based on the styles/dimensions you use
@@ -39,6 +44,7 @@ const getSceneStyle = (props, computedProps) => {
   }
   return style;
 };
+
 const storage = new Storage({
     // maximum capacity, default 1000
     size: 1000,
@@ -173,6 +179,7 @@ export default class RouterComponent extends Component {
         localdb={storage}
         getSceneStyle={getSceneStyle} >
           <Scene key='root' hideNavBar>
+
             <Scene key='sessioncheck' component={SessionCheck} />
             <Scene key='signin' component={Signin} />
             <Scene key='forgot' component={Forgot} title='申請密碼重設' hideNavBar={false} />
@@ -216,13 +223,43 @@ export default class RouterComponent extends Component {
                   renderLeftButton={menuButton} />
                 <Scene key='visitors'
                   component={Visitors}
-                  title='LikesYou'
+                  title='Visitors'
                   renderLeftButton={menuButton} />
-                <Scene key='settings'
-                  component={Settings}
-                  title='Settings'
-                  renderLeftButton={menuButton}
-                  />
+                  <Scene key='settings'
+                    component={Settings}
+                    title='Settings'
+                    renderLeftButton={menuButton}/>
+                    <Scene key='account'
+                      component={Account}
+                      title='Account'
+                      />
+                  <Scene key='settings_wrapper'>
+                    <Scene key='settings'
+                      component={Settings}
+                      title='Settings'
+                      renderLeftButton={menuButton}/>
+                    <Scene key='account'
+                      component={Account}
+                      title='Account'
+                      />
+                    <Scene key='pushnotification'
+                      component={PushNotification}
+                      title='PushNotification'
+                      />
+                    <Scene key='question'
+                      component={Question}
+                      title='Question'
+                      />
+                    <Scene key='changepassword'
+                      component={ChangePassword}
+                      title='ChangePassword'
+                    />
+                    <Scene key='reaction'
+                      component={Reaction}
+                      title='Reaction'
+                    />
+                  </Scene>
+
                 <Scene key='profile'
                   component={Profile}
                   title='關於我'
@@ -231,68 +268,9 @@ export default class RouterComponent extends Component {
               </Scene>
             </Scene>
             <Scene key="errorview" component={ErrorView} />
+
           </Scene>
       </Router>
     );
   }
 }
-
-// <Scene key="welcome" component={Welcome} title="Hookup" type='replace' initial />
-// <Scene key='forgot' component={Forgot} title='申請重設密碼' />
-// <Scene key='signup'>
-//   <Scene
-//     key='signup1'
-//     component={Signup1} />
-//   <Scene
-//     key='signup2'
-//     component={Signup2} />
-//   <Scene
-//     key='signup3'
-//     component={Signup3} />
-//   <Scene
-//     key='signup4'
-//     component={Signup4} />
-// </Scene>
-// <Scene key="drawer"
-//   component={DrawerPanel}
-//   open={false}
-//   side={'right'} >
-//   <Scene key="main" tabs={true} type="reset">
-//     <Scene key='meetcute'
-//       component={MeetCute}
-//       title='MeetCute'
-//       renderLeftButton={menuButton} />
-//     <Scene key='nearby'
-//       component={Nearby}
-//       title='Nearby'
-//       renderLeftButton={menuButton} />
-//     <Scene key='profile'
-//       component={Profile}
-//       title='Profile'
-//       renderLeftButton={menuButton} />
-//     <Scene key='settings'
-//       component={Settings}
-//       title='Settings'
-//       renderLeftButton={menuButton} />
-//     <Scene key='chat'
-//       component={Chat}
-//       title='Chat'
-//       renderLeftButton={menuButton} />
-//     <Scene key='favorites'
-//       component={Favorites}
-//       title='Favorites'
-//       renderLeftButton={menuButton} />
-//     <Scene key='messages'
-//       component={Messages}
-//       title='Messages'
-//       renderLeftButton={menuButton} />
-//     <Scene key='likesyou'
-//       component={LikesYou}
-//       title='LikesYou'
-//       renderLeftButton={menuButton} />
-//     <Scene key='visitors'
-//       component={Visitors}
-//       title='LikesYou'
-//       renderLeftButton={menuButton} />
-//   </Scene>
-// </Scene>

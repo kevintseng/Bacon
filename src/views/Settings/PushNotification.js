@@ -1,46 +1,23 @@
-//TODO: 把 renderGallery拉出來變成一個component
-
-import React, { Component } from 'react';
-import { View, Dimensions, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, {Component, PropTypes} from 'react';
+import { View, Dimensions, } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { Card, ListItem } from 'react-native-elements';
+import { Card, Text, ListItem } from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
 
-const { width, height } = Dimensions.get('window');
-
-const styles = {
-  viewWrapper: {
-    width,
-    height,
-  },
-  container: {
-      flex: 1,
-      flexDirection: 'row',
-  },
-  gallery: {
-      flexDirection: 'row'
-  },
-  icon: {
-      textAlign: 'center'
-  },
-  item: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  photo: {
-      flex: 1
-  }
-};
+const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
-export default class Profile extends Component {
+export default class PushNotification extends Component {
+  static propTypes = {
+    store: PropTypes.object,
+    fire: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.firebase = this.props.fire;
-    this.db = this.props.localdb;
+    this.fs = this.props.fire;
     this.state = {
       size: {
           width,
@@ -53,6 +30,9 @@ export default class Profile extends Component {
   componentWillMount() {
     Reactotron.log('Rendering Profile');
     Actions.refresh({ key: 'drawer', open: false });
+    let user = this.fs.auth().currentUser;
+
+    Reactotron.debug(this.store.user);
   }
 
   emailPressed = () => {
@@ -69,7 +49,7 @@ export default class Profile extends Component {
     return(
       <View style={styles.viewWrapper}>
         <Card
-          title='Test Profile'
+          title={user.displayName}
           containerStyle={{ flex: 1, width: this.state.size.width, margin: 0 }}
           wrapperStyle={{flex: 1}}
           image={userImg}
@@ -82,8 +62,17 @@ export default class Profile extends Component {
             rightIcon={emailVerified}
             onPress={this.emailPressed}
             />
+
+
         </Card>
       </View>
     );
   }
 }
+
+const styles = {
+  viewWrapper: {
+    width: width,
+    height: height,
+  }
+};
