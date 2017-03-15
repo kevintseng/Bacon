@@ -76,6 +76,10 @@ export default class ChangePassword extends Component {
         });
         console.log('lgoin false')
       });
+    }else{
+      this.setState({
+        loading:false,
+      })
     }
   }
 
