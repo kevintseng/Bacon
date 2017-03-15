@@ -14,7 +14,7 @@ import { observer } from 'mobx-react/native';
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
-export class Signup2 extends Component {
+class Signup2 extends Component {
   static propTypes = {
     fire: PropTypes.object,
     store: PropTypes.object,
@@ -23,7 +23,7 @@ export class Signup2 extends Component {
 
   constructor(props) {
     super(props);
-    this.fs = this.props.fire;
+    this.firebase = this.props.fire;
     this.sustore = this.props.sustore;
     this.state = {
       size: {
@@ -116,3 +116,5 @@ export class Signup2 extends Component {
     );
   }
 }
+
+export { Signup2 };

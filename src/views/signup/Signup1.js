@@ -10,8 +10,8 @@ import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
 import Reactotron from 'reactotron-react-native';
 import { observer } from 'mobx-react/native';
-import { getAge, checkEmail } from '../../components/Utils';
-import { Header } from '../../components/Header';
+import { getAge, checkEmail } from '../../Utils';
+import { Header } from '../../components';
 import SignupStore from '../../store/SignupStore'
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
@@ -29,14 +29,12 @@ function maxDay() {
   const year = nowYear - 18;
   const month = ('0' + (today.getMonth() + 1).toString()).slice(-2); // Jan = 0, Feb = 1.
   const day = ('0' + today.getDate().toString()).slice(-2);
-  let maxDate = year.toString() + '-' + month.toString() + '-' + day;
-  // let temp = new Date(maxDate);
-  // Reactotron.debug({'now': today.toString(), 'month': month, 'date': day, 'maxDate': maxDate, 'timestamp': temp.getTime()/1000});
+  const maxDate = year.toString() + '-' + month.toString() + '-' + day;
   return maxDate;
 }
 
 @observer
-export class Signup1 extends Component {
+class Signup1 extends Component {
   static propTypes = {
     store: PropTypes.object,
     fire: PropTypes.object,
@@ -45,7 +43,7 @@ export class Signup1 extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.fs = this.props.fire;
+    this.firebase = this.props.fire;
     this.sustore = new SignupStore();
     this.state = {
       size: {
@@ -80,7 +78,7 @@ export class Signup1 extends Component {
     const nowYear = now.getFullYear();
     const maxYear = nowYear - 18;
 
-    let maxDate = maxYear.toString() + '-' + now.getMonth().toString() + '-' + now.getDay().toString();
+    const maxDate = maxYear.toString() + '-' + now.getMonth().toString() + '-' + now.getDay().toString();
     return maxDate;
   };
 
@@ -88,6 +86,7 @@ export class Signup1 extends Component {
     this.setState({
       termsErr: false,
       termsAgreed: !this.state.termsAgreed,
+      loading: false,
       registerErr: false,
     });
   }
@@ -96,6 +95,7 @@ export class Signup1 extends Component {
     this.setState({
       emailErr: false,
       registerErr: false,
+      loading: false,
       email: email.trim(),
     });
   }
@@ -104,6 +104,7 @@ export class Signup1 extends Component {
     this.setState({
       passErr: false,
       registerErr: false,
+      loading: false,
       password: password.trim(),
     });
   }
@@ -112,6 +113,7 @@ export class Signup1 extends Component {
     this.setState({
       registerErr: false,
       nickErr: false,
+      loading: false,
       nickname: nickname.trim(),
     });
   }
@@ -120,6 +122,7 @@ export class Signup1 extends Component {
     this.setState({
       registerErr: false,
       birthdayErr: false,
+      loading: false,
       birthday: bday.trim(),
     });
   }
@@ -130,27 +133,29 @@ export class Signup1 extends Component {
     }
     this.setState({
       emailErr: '咦？請再檢查一次email是否正確?',
+      loading: false,
     })
     return false;
   }
 
   passwordCheck() {
     const passw =  /^[A-Za-z0-9]{6,10}$/;
-    if(this.state.password.match(passw))
+    if(!this.state.password.match(passw))
     {
-      return true;
-    } else {
       this.setState({
         passErr: '請輸入數字或英文字母組合的6~10字密碼',
+        loading: false,
       })
       return false;
     }
+    return true;
   }
 
   nicknameCheck() {
     if(this.state.nickname.length < 2) {
       this.setState({
         nickErr: '請輸入2個字以上的名稱',
+        loading: false,
       })
       return false;
     }
@@ -162,6 +167,7 @@ export class Signup1 extends Component {
     if(this.state.birthday == '') {
       this.setState({
         birthdayErr: '請提供您的生日',
+        loading: false,
       })
       return false;
     }
@@ -169,6 +175,7 @@ export class Signup1 extends Component {
     if(getAge(this.state.birthday) < 18) {
       this.setState({
         birthdayErr: '本App僅提供滿18歲以上用戶使用',
+        loading: false,
       })
       return false;
     }
@@ -179,6 +186,7 @@ export class Signup1 extends Component {
     if(!this.state.termsAgreed) {
       this.setState({
         termsErr: '抱歉, 您必須先同意本App之所有條款後才能使用服務',
+        loading: false,
       })
       return false;
     }
@@ -200,7 +208,7 @@ export class Signup1 extends Component {
       this.sustore.setEmail(this.state.email);
 
       // Create a new user on Firebase
-      this.fs.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+      this.firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then((user) => {
         this.sustore.setUid(user.uid);
         Reactotron.debug({'New user created': user, 'uid': user.uid});
@@ -236,6 +244,8 @@ export class Signup1 extends Component {
           rightButtonText='下一步'
           onRight={this.handleSubmit}
           rightColor='#007AFF'
+          disableRight={this.state.loading}
+          disableLeft={this.state.loading}
           onLeft={() => Actions.pop()}
           leftColor='#007AFF'
         />
@@ -247,7 +257,7 @@ export class Signup1 extends Component {
           </Text>
         }
         <FormInput
-          autoFocus={true}
+          autoFocus
           autoCorrect={false}
           value={email}
           placeholder='範例：sample@email.com'
@@ -266,7 +276,8 @@ export class Signup1 extends Component {
           {passErr}
           </Text>
         }
-        <FormInput ref='passwrd'
+        <FormInput
+          ref='passwrd'
           placeholder='請輸入6~10字英數組合密碼' secureTextEntry
           maxLength={10}
           onBlur={this.passwordCheck}
@@ -282,7 +293,8 @@ export class Signup1 extends Component {
           {nickErr}
           </Text>
         }
-        <FormInput ref='nickname'
+        <FormInput
+          ref='nickname'
           placeholder='請輸入您的大名(2個字以上)'
           value={nickname}
           onBlur={this.nicknameCheck}
@@ -328,6 +340,7 @@ export class Signup1 extends Component {
           color='#007AFF'
           title={'下一步'}
           onPress={this.handleSubmit}
+          disabled={this.state.loading}
         />
         {
           registerErr &&
@@ -342,3 +355,5 @@ export class Signup1 extends Component {
     );
   }
 }
+
+export { Signup1 };

@@ -14,7 +14,7 @@ import FormErrorMsg from '../../components/FormErrorMsg';
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
-export class Signup3 extends Component {
+class Signup3 extends Component {
   static propTypes = {
     fire: PropTypes.object,
     store: PropTypes.object,
@@ -131,3 +131,5 @@ export class Signup3 extends Component {
     );
   }
 }
+
+export { Signup3 };

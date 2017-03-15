@@ -19,6 +19,21 @@ import { Header } from '../../components/Header';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
+const styles = {
+  wrapper: {
+    flex: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  indicator: {
+    marginTop: 50,
+    marginBottom: 50,
+    alignSelf: 'center'
+  }
+};
+
 const ipOptions = {
   mediaType: 'photo',
   maxWidth: 1000,
@@ -37,7 +52,7 @@ window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
 
 @observer
-export class Signup4 extends Component {
+class Signup4 extends Component {
   static propTypes = {
     fire: PropTypes.object,
     store: PropTypes.object,
@@ -48,7 +63,7 @@ export class Signup4 extends Component {
     super(props);
     this.sustore = this.props.sustore;
     this.store = this.props.store;
-    this.fs = this.props.fire;
+    this.firebase = this.props.fire;
     this.state = {
       size: {
           width,
@@ -77,7 +92,7 @@ export class Signup4 extends Component {
           loading: false,
         });
       } else {
-        ImageResizer.createResizedImage(res.uri, 300, 300, 'JPEG', 80)
+        ImageResizer.createResizedImage(res.uri, 200, 200, 'JPEG', 80)
         .then( async (resizedImageUri) => {
           this. uploadImage(resizedImageUri);
           this.setState({
@@ -99,7 +114,7 @@ export class Signup4 extends Component {
     Reactotron.debug('Uploading image');
     const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
     let uploadBlob = null;
-    const imageRef = this.fs.storage().ref('images/avatars/' + this.sustore.uid);
+    const imageRef = this.firebase.storage().ref('images/avatars/' + this.sustore.uid);
     fs.readFile(uploadUri, 'base64')
       .then((data) => {
         return Blob.build(data, { type: `${mime};BASE64` });
@@ -127,19 +142,18 @@ export class Signup4 extends Component {
       })
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     if(!this.state.photoUrl) {
       alert('請給偶一張您的美/帥照, 拜偷拜偷');
       return;
     }
-    let user = this.fs.auth().currentUser;
+    const user = await this.firebase.auth().currentUser;
 
     user.updateProfile({
       photoURL: this.state.photoUrl,
       displayName: this.sustore.nickname,
-    }).then(res => {
+    }).then(() => {
       Reactotron.debug('User profile updated');
-      Reactotron.debug(res);
     }).catch(err => {
       Reactotron.error('User profile update error');
       Reactotron.error(err);
@@ -159,10 +173,11 @@ export class Signup4 extends Component {
       placeID: this.sustore.placeID,
       locale: this.sustore.locale,
       country: this.sustore.country,
+      signupCompleted: true,
     };
 
-    this.fs.database().ref(`users/${this.sustore.uid}`).set(postData).then((res) => {
-      Reactotron.debug('Set user data to fs');
+    await this.firebase.database().ref(`users/${this.sustore.uid}`).set(postData).then((res) => {
+      Reactotron.debug('Set user data to firebase');
       Reactotron.debug(res);
     }).catch(err => {
       Reactotron.error('Set user data failed');
@@ -219,17 +234,4 @@ export class Signup4 extends Component {
   }
 }
 
-const styles = {
-  wrapper: {
-    flex: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-  },
-  indicator: {
-    marginTop: 50,
-    marginBottom: 50,
-    alignSelf: 'center'
-  }
-};
+export { Signup4 };
