@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { ScrollView, AsyncStorage, View } from 'react-native';
+import { ScrollView, AsyncStorage } from 'react-native';
 import Reactotron from 'reactotron-react-native';
-import { List, ListItem, Button, Icon } from 'react-native-elements';
+import { List, ListItem, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { SIDEBAR_LINKS } from '../Configs';
@@ -24,8 +24,9 @@ export default class SideBar extends Component {
     // this.handleOnPress = this.handleOnPress.bind(this);
   }
 
-  componentWillMount() {
-    Reactotron.debug('Rendering SideBar');
+  componentDidMount() {
+    Reactotron.debug('SideBar rendered');
+    // Reactotron.debug(this.store);
   }
 
 
@@ -79,7 +80,7 @@ export default class SideBar extends Component {
 
   setOffline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    let dbRef = this.fs.database().ref('/connections/' + uid);
+    const dbRef = this.fs.database().ref('/connections/' + uid);
     dbRef.update({
       online: false,
       lastOnline: timestamp,
@@ -103,11 +104,12 @@ export default class SideBar extends Component {
       case 'settings':
         return () => Actions.settings_wrapper({type: 'reset'});
       case 'profile':
-          return () => Actions.profile({type: 'reset'});
+        return () => Actions.profile({type: 'reset'});
     }
   }
 
   render() {
+    const { displayName, photoURL } = this.store.user;
     return (
       <ScrollView
         style={{
@@ -117,16 +119,15 @@ export default class SideBar extends Component {
         <List>
           <ListItem
             containerStyle={{ height: 42 }}
-            hideChevron
-            leftIcon={{ name: 'chevron-left' }}
-            title='關閉選單'
+            rightIcon={{ name: 'first-page' }}
+            rightTitle='Close'
+            rightTitleStyle={{ color: '#616161' }}
             onPress={() => Actions.refresh({ key: 'drawer', open: false })}
           />
           <ListItem
             roundAvatar
-            avatar={{ uri: 'https://i.imgur.com/LQvbY0N.jpg' }}
-            title={'我是正妹'}
-            rightIcon={{ name: 'account-circle' }}
+            avatar={{ uri: photoURL }}
+            title={displayName}
             onPress={this.handleOnPress('profile')}
           />
           {

@@ -105,8 +105,7 @@ export default class SignupStore {
   }
 
   @computed get birthdayTimestamp() {
-    let temp = new Date(this.birthday).getTime()/1000;
-    return temp;
+    return new Date(this.birthday).getTime()/1000;
   }
 
   @action getNewUid() {

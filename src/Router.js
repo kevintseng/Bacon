@@ -81,7 +81,7 @@ export default class RouterComponent extends Component {
           Object.assign(user, user, snap.val());
           appstore.setUser(user);
           Reactotron.log('Router: User has been set in appstore');
-          Reactotron.log(appstore.user);
+          Reactotron.log(appstore);
           this.setOnline(appstore.user.uid);
           AsyncStorage.setItem('@HookupStore:user', JSON.stringify(appstore.user)).catch( AsyncStorageError => {
             Reactotron.error(AsyncStorageError);
@@ -214,20 +214,23 @@ export default class RouterComponent extends Component {
                       component={ChangePassword}
                       title='ChangePassword'
                     />
-
                     <Scene key='reaction'
                       component={Reaction}
                       title='Reaction'
                     />
-
-
-
                   </Scene>
 
 
 
 
 
+
+
+                <Scene key='profile'
+                  component={Profile}
+                  title='關於我'
+                  renderLeftButton={menuButton}
+                  />
 
               </Scene>
             </Scene>

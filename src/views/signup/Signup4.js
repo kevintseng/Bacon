@@ -13,7 +13,6 @@ import { Actions } from 'react-native-router-flux'; // eslint-disable-line
 import RNFetchBlob from 'react-native-fetch-blob';
 import { observer } from 'mobx-react/native';
 import ImagePicker from 'react-native-image-picker';
-import { uploadImage } from '../../components/Utils';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import { Header } from '../../components/Header';
 // import { FirebaseConfig } from '../../Configs';
@@ -24,7 +23,7 @@ const ipOptions = {
   mediaType: 'photo',
   maxWidth: 1000,
   maxHeight: 1000,
-  quality: 1,
+  quality: 0.8,
   noData: false,
   storageOptions: {
     skipBackup: true,
@@ -62,9 +61,6 @@ export class Signup4 extends Component {
       photoUrl: null,
       loading: false,
     };
-  }
-
-  componentWillMount() {
   }
 
   addImage = () => {
