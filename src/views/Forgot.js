@@ -1,30 +1,22 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import {
     View,
     Dimensions,
     Text,
     Image,
 } from 'react-native';
-import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'; // eslint-disable-line
+import { FormLabel, FormInput, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
-import { autorun } from 'mobx'; // eslint-disable-line
-import { checkEmail } from '../components/Utils';
-import FormErrorMsg from '../components/FormErrorMsg';
+import { checkEmail } from '../Utils';
+import { FormErrorMsg } from '../components';
 
-const {width, height} = Dimensions.get('window'); // eslint-disable-line
+const {width, height} = Dimensions.get('window');
 
 export default class Forgot extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-    emailErr: PropTypes.bool || PropTypes.string,
-    email: PropTypes.string,
-  }
-
   constructor(props) {
     super(props);
-    this.fs = this.props.fire;
+    this.firebase= this.props.fire;
     this.state = {
       size: {
         width,
@@ -37,8 +29,8 @@ export default class Forgot extends Component {
     };
   }
 
-  componentWillMount() {
-    Reactotron.debug('Rendering Forgot');
+  componentDidMount() {
+    Reactotron.debug('Forgot view rendered.');
   }
 
   onSubmit = () => {
@@ -47,7 +39,7 @@ export default class Forgot extends Component {
         loading: true
       });
 
-      this.fs.auth().sendPasswordResetEmail(this.state.email)
+      this.firebase.auth().sendPasswordResetEmail(this.state.email)
       .then(() => {
         this.setState({
           sent: true,
@@ -109,7 +101,7 @@ export default class Forgot extends Component {
         <View style={{ height: 20 }} />
         <FormLabel>請輸入需要重設密碼的 Email </FormLabel>
         <FormInput
-          autoFocus={true}
+          autoFocus
           autoCorrect={false}
           placeholder='sample@email.com'
           returnKeyType={'next'}

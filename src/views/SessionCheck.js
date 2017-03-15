@@ -1,11 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import {
     View,
     Dimensions,
-    AsyncStorage,
     ActivityIndicator,
-    TextInput, // eslint-disable-line
-} from 'react-native'; // eslint-disable-line
+} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
 import { observer } from 'mobx-react/native';
@@ -14,46 +12,57 @@ const { width, height } = Dimensions.get('window');
 
 @observer
 export default class Welcome extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-  }
-
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.fs = this.props.fire;
+    this.db = this.props.localdb;
     this.state = {
       text: '',
     };
   }
 
   componentWillMount() {
-    Reactotron.debug('Rendering SessionCheck');
+    Reactotron.log('Rendering SessionCheck');
     this.getUser();
   }
 
-  getUser = async () => {
-    try {
-      AsyncStorage.getItem('@HookupStore:user').then((userData_string) => {
-        Reactotron.debug('Local storage has no user data');
-        let userData = JSON.parse(userData_string);
-        if(userData != null) {
-          this.store.setUser(userData);
-          Actions.drawer();
-        } else {
-          Reactotron.debug('Rendering signin');
-          Actions.signin();
-        }
-      });
-    } catch(error) {
-      Reactotron.error('Unable to access local storage: ' + error.message);
-    }
+  componentDidMount() {
+    Reactotron.log('SessionCheck rendered');
+  }
+
+  getUser = () => {
+    this.db.load({
+      key: 'user',
+      autoSync: false,
+      syncInBackground: false,
+    }).then(ret => {
+      Reactotron.log('localdb: ');
+      Reactotron.log(ret);
+      if(ret != null) {
+        this.store.setUser(ret.rawData);
+        Actions.drawer();
+      } else {
+        Reactotron.log('SessionCheck: Rendering signin');
+        Actions.signin();
+      }
+    }).catch(err => {
+      Reactotron.log(err.message);
+      switch (err.name) {
+          case 'NotFoundError':
+            Reactotron.log('SessionCheck: Data not found, rendering signin');
+            Actions.signin();
+            break;
+          case 'ExpiredError':
+            Reactotron.log('SessionCheck: Data expired, rendering signin');
+            Actions.signin();
+            break;
+      }
+    })
   }
 
   render() {
     return (
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: width, height: height }}>
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width, height }}>
         <ActivityIndicator size='large' />
       </View>
     );

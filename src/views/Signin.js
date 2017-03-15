@@ -1,31 +1,23 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import {
     View,
     Dimensions,
 } from 'react-native';
-import { Text, FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'; // eslint-disable-line
+import { Text, FormLabel, FormInput, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
-import { autorun } from 'mobx'; // eslint-disable-line
 import { observer } from 'mobx-react/native';
-import { checkEmail } from '../components/Utils';
-import FormErrorMsg from '../components/FormErrorMsg';
+import { FormErrorMsg } from '../components';
+import { checkEmail } from '../Utils';
 
 const { width, height } = Dimensions.get('window');
 
 @observer
 export default class Welcome extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-    email: PropTypes.string,
-    password: PropTypes.string,
-  }
-
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.fs = this.props.fire;
+    this.firebase = this.props.fire;
     this.state = {
       size: {
         width,
@@ -45,17 +37,25 @@ export default class Welcome extends Component {
       this.setState({
         loading: true
       });
-      this.fs.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
-        Actions.drawer();
-      })
+      await this.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .catch(err => {
         Reactotron.error(err);
         this.setState({
           loginErr: err.message,
           loading: false,
         });
-      });
+      }); // end firebase.auth().signInWithEmailAndPassword
+
+      const user = await this.firebase.auth().currentUser;
+      if(user) {
+        Reactotron.log('User has signed in successfully.');
+        this.setState({
+          loading: false
+        });
+        Actions.drawer();
+      } else {
+        Reactotron.log('Signing in.....user.');
+      }
     }
   }
 
@@ -101,7 +101,7 @@ export default class Welcome extends Component {
           <Text h3> 歡迎使用 Hookup </Text>
           <FormLabel>登入 Email</FormLabel>
           <FormInput
-            autoFocus={true}
+            autoFocus
             autoCorrect={false}
             placeholder='sample@email.com'
             returnKeyType={'next'}

@@ -17,7 +17,7 @@ export default class Settings extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.fs = this.props.fire;
+    this.firebase = this.props.fire;
     this.state = {
       size: {
           width,

@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
-import { Router, Switch, Scene, Modal, Actions, ActionConst } from 'react-native-router-flux';  // eslint-disable-line
-import { observer } from 'mobx-react/native'; // eslint-disable-line
-import { autorun } from 'mobx'; // eslint-disable-line
-import { Icon } from 'react-native-elements' // eslint-disable-line
-import * as Firebase from 'firebase';
-import Reactotron from 'reactotron-react-native'; // eslint-disable-line
-import ErrorView from './components/ErrorView'; // eslint-disable-line
-import MeetCute from './views/MeetCute'; // eslint-disable-line
-import Nearby from './views/Nearby'; // eslint-disable-line
-import Messages from './views/Messages'; // eslint-disable-line
-import LikesYou from './views/LikesYou'; // eslint-disable-line
-import Visitors from './views/Visitors'; // eslint-disable-line
-import Settings from './views/Settings'; // eslint-disable-line
-import Signin from './views/Signin'; // eslint-disable-line
-import SessionCheck from './views/SessionCheck'; // eslint-disable-line
-import Profile from './views/Profile'; // eslint-disable-line
-import Chat from './views/Chat'; // eslint-disable-line
-import Favorites from './views/Favorites'; // eslint-disable-line
-import { Signup1, Signup2, Signup3, Signup4 } from './views/signup'; // eslint-disable-line
-import DrawerPanel from './components/DrawerPanel';
-import AppStore from './store/AppStore'; // eslint-disable-line
-import Forgot from './views/Forgot'; // eslint-disable-line
+import Storage from 'react-native-storage';
+import { Router, Scene, Actions } from 'react-native-router-flux';
+import { observer } from 'mobx-react/native';
+import { Icon } from 'react-native-elements'
+import * as Firebase from 'firebase';  // eslint-disable-line
+import Reactotron from 'reactotron-react-native';
+import MeetCute from './views/MeetCute';
+import Nearby from './views/Nearby';
+import Messages from './views/Messages';
+import LikesYou from './views/LikesYou';
+import Visitors from './views/Visitors';
+import Settings from './views/Settings';
+import Signin from './views/Signin';
+import SessionCheck from './views/SessionCheck';
+import Profile from './views/Profile';
+import Favorites from './views/Favorites';
+import { Signup1, Signup2, Signup3, Signup4 } from './views/signup';
+import DrawerPanel from './views/DrawerPanel';
+import ErrorView from './views/ErrorView';
+import AppStore from './store/AppStore';
+import Forgot from './views/Forgot';
 import { FirebaseConfig } from './Configs';
 
 // define this based on the styles/dimensions you use
@@ -40,9 +39,30 @@ const getSceneStyle = (props, computedProps) => {
   }
   return style;
 };
+const storage = new Storage({
+    // maximum capacity, default 1000
+    size: 1000,
 
-const fs = Firebase.initializeApp(FirebaseConfig);
+    // Use AsyncStorage for RN, or window.localStorage for web.
+    // If not set, data would be lost after reload.
+    storageBackend: AsyncStorage,
 
+    // expire time, default 1 day(1000 * 3600 * 24 milliseconds).
+    // can be null, which means never expire.
+    defaultExpires: 1000 * 3600 * 24,
+
+    // cache data in the memory. default is true.
+    enableCache: true,
+
+    // if data was not found in storage or expired,
+    // the corresponding sync method will be invoked and return
+    // the latest data.
+    sync : {
+        // we'll talk about the details later.
+    }
+});
+
+const firebase = Firebase.initializeApp(FirebaseConfig);
 
 // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
 const appstore = new AppStore();
@@ -59,9 +79,11 @@ const menuButton = () => (
 export default class RouterComponent extends Component {
   componentDidMount() {
     let user;
-    fs.auth().onAuthStateChanged(data => {
+    firebase.auth().onAuthStateChanged(data => {
       if(data) {
-        let dbRef = fs.database().ref('/users/' + data.uid);
+        Reactotron.log('Router: Got user data from firebase auth api:');
+        Reactotron.log(data);
+        const dbRef = firebase.database().ref('/users/' + data.uid);
         user = {
           uid: data.uid,
           displayName: data.displayName,
@@ -74,29 +96,41 @@ export default class RouterComponent extends Component {
 
         dbRef.once('value').then(snap => {
           Object.assign(user, user, snap.val());
+
+          // Block incompleted signup users to login
+          if(!user.signupCompleted) {
+            this.signOut();
+            Reactotron.log('Router: Incomplete sign up.');
+            return;
+          }
+          Reactotron.log(user);
           appstore.setUser(user);
           Reactotron.log('Router: User has been set in appstore');
           Reactotron.log(appstore);
           this.setOnline(appstore.user.uid);
-          AsyncStorage.setItem('@HookupStore:user', JSON.stringify(appstore.user)).catch( AsyncStorageError => {
-            Reactotron.error(AsyncStorageError);
-            return;
+          storage.save({
+            key: 'user',
+            rawData: appstore.user,
+            expires: 1000 * 3600 * 24 * 30, // expires after 30 days
+          }).catch(err => {
+            Reactotron.log('Router: Saving data to local db failed.');
+            Reactotron.log(err);
           });
         }).catch(err => {
-          Reactotron.error('Get user data failed.');
+          Reactotron.error('Router: Get user data failed.');
           Reactotron.error(err);
         });
 
       } else {
         this.signOut();
-        Reactotron.log('User not signed in');
+        Reactotron.log('Router: No valid user session.');
       }
     });
   }
 
   setOnline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    let dbRef = fs.database().ref('/connections/' + uid);
+    const dbRef = firebase.database().ref('/connections/' + uid);
     dbRef.set({
       online: true,
       lastOnline: timestamp,
@@ -106,7 +140,7 @@ export default class RouterComponent extends Component {
 
   setOffline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    let dbRef = fs.database().ref('/connections/' + uid);
+    const dbRef = firebase.database().ref('/connections/' + uid);
     dbRef.update({
       online: false,
       lastOnline: timestamp,
@@ -114,29 +148,34 @@ export default class RouterComponent extends Component {
   }
 
   signOut = () => {
-    if(appstore.user != null) {
+    // Clear out appstore's user data
+    if(appstore.user) {
       this.setOffline(appstore.user.uid);
     }
-    AsyncStorage.removeItem('@HookupStore:user').then(() => {
-      appstore.signOut();
-      Actions.sessioncheck({type: 'reset'});
-    }).catch(err => {
-      Reactotron.error('Delete local storage user data error: ');
-      Reactotron.error(err);
+
+    // Sign out from firebase
+    firebase.auth().signOut();
+
+    // Clear out local database's user data
+    storage.remove({
+      key: 'user',
     });
+
+    // Render SessionCheck and redirect to signin view
+    Actions.signin({type: 'reset'});
   };
 
   render() {
     return(
       <Router
-        fire={fs}
+        fire={firebase}
         store={appstore}
+        localdb={storage}
         getSceneStyle={getSceneStyle} >
-        <Scene key='modal' component={Modal} >
           <Scene key='root' hideNavBar>
             <Scene key='sessioncheck' component={SessionCheck} />
             <Scene key='signin' component={Signin} />
-            <Scene key='forgot' component={Forgot} title='申請重設密碼' hideNavBar={false} />
+            <Scene key='forgot' component={Forgot} title='申請密碼重設' hideNavBar={false} />
             <Scene key='signup' hideNavBar>
               <Scene
                 key='signup1'
@@ -193,7 +232,6 @@ export default class RouterComponent extends Component {
             </Scene>
             <Scene key="errorview" component={ErrorView} />
           </Scene>
-        </Scene>
       </Router>
     );
   }

@@ -9,6 +9,9 @@
     "rules": {
       "no-console": "off",
       "prop-types": "off",
+      "import/no-commonjs": "off",
+      "react/prop-types": "off",
+      "no-alert": "off",
       "react/jsx-handler-names": "off",
       "react/no-did-mount-set-state": "off",
       "arrow-body-style": "off",
@@ -19,7 +22,9 @@
       "eqeqeq": "off",
       "class-methods-use-this": "off",
       "react-native/no-color-literals": "off",
-      "no-empty-function": "off"
+      "no-empty-function": "off",
+      "react/no-string-refs": "off",
+      "no-unused-expressions": "off",
     },
     "globals": {
         "require": true

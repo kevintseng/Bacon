@@ -1746,7 +1746,7 @@ eslint-plugin-react-native@~2.0.0:
     babel-eslint "6.1.2"
     eslint "3.2.1"
 
-eslint-plugin-react@^6.9.0:
+eslint-plugin-react@^6.10.0:
   version "6.10.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-6.10.0.tgz#9c48b48d101554b5355413e7c64238abde6ef1ef"
   dependencies:

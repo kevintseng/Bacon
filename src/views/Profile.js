@@ -1,18 +1,18 @@
 //TODO: 把 renderGallery拉出來變成一個component
 
-import React, { Component, PropTypes } from 'react';
-import { View, Dimensions, TouchableOpacity, Image, ScrollView, AsyncStorage } from 'react-native'; //eslint-disable-line
+import React, { Component } from 'react';
+import { View, Dimensions, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { Card, Text, ListItem, Grid, Row, Col } from 'react-native-elements'; //eslint-disable-line
-import PhotoGrid from 'react-native-photo-grid'; //eslint-disable-line
+import { Card, ListItem } from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
 import ImagePicker from 'react-native-customized-image-picker';
 
 const defaultImage = require('../images/addImage.png');
 const placeholder = require('../images/cameraPlaceholder.jpg');
 
-const {width, height} = Dimensions.get('window'); //eslint-disable-line
+const {width, height} = Dimensions.get('window');
+
 const styles = {
   viewWrapper: {
     width,
@@ -40,15 +40,11 @@ const styles = {
 
 @observer
 export default class Profile extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-  }
-
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.fs = this.props.fire;
+    this.firebase = this.props.fire;
+    this.db = this.props.localdb;
     this.state = {
       size: {
           width,
@@ -66,19 +62,11 @@ export default class Profile extends Component {
   }
 
   getPhotosFromLocal = () => {
-    AsyncStorage.getItem('@HookupStorage:photos', (err, result) => {
-      if(result) {
-        Reactotron.debug(result);
-      } else {
-        Reactotron.error(err);
-      }
-    });
+
   }
 
   savePhotosToLocal= (items) => {
-    AsyncStorage.setItem('@HookupStorage:photos', JSON.stringify(items), (err) => {
-      Reactotron.error(err);
-    });
+    return items;
   }
 
   emailPressed = () => {

@@ -9,6 +9,7 @@ class AppStore {
   constructor() {
     this.user = null;
     this.view = 'signin';
+    this.signupCompleted = false;
   }
 
   @action setUser(user) {
@@ -16,7 +17,7 @@ class AppStore {
   }
 
   @action signOut() {
-    this.user = null;
+    this.user = '';
   }
 
   @action setView(sceneKey) {
