@@ -109,6 +109,7 @@ export default class RouterComponent extends Component {
             Reactotron.log('Router: Incomplete sign up.');
             return;
           }
+          
           Reactotron.log(user);
           appstore.setUser(user);
           Reactotron.log('Router: User has been set in appstore');
