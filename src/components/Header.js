@@ -44,7 +44,7 @@ const styles = {
 // Make a component
 const Header = (props) => {
   const { titleStyle, gridStyle, buttonStyle, viewStyle, leftColStyle, rightColStyle } = styles;
-  let { leftColor, onLeft, rightColor, onRight } = props;
+  let { leftColor, disableRight, disableLeft, onLeft, rightColor, onRight } = props;
   const { headerText, rightButtonText } = props;
   if(!leftColor) leftColor = 'transparent';
   if(!rightColor) rightColor = 'transparent';
@@ -60,6 +60,7 @@ const Header = (props) => {
           color={leftColor}
           size={32}
           onPress={onLeft}
+          disabled={disableLeft}
         />
       </Col>
       <Col>
@@ -72,6 +73,7 @@ const Header = (props) => {
           color={rightColor}
           title={rightButtonText}
           onPress={onRight}
+          disabled={disableRight}
         />
       </Col>
     </Grid>
@@ -89,4 +91,4 @@ Header.propTypes = {
 }
 
 // Make the component available to other parts of the app
-export default { Header };
+export { Header };

@@ -1,47 +1,36 @@
-import React, { Component, PropTypes } from 'react';
-import { ScrollView, AsyncStorage } from 'react-native';
+import React, { Component } from 'react';
+import { ScrollView } from 'react-native';
 import Reactotron from 'reactotron-react-native';
 import { List, ListItem, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { SIDEBAR_LINKS } from '../Configs';
 
-// const sampleImg = require('../images/chiling.jpeg');
-
 const list = SIDEBAR_LINKS;
 
 @observer
 export default class SideBar extends Component {
-  static propTypes = {
-    fire: PropTypes.object,
-    store: PropTypes.object,
-  }
-
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.fs = this.props.fire;
-    // this.handleOnPress = this.handleOnPress.bind(this);
+    this.firebase = this.props.fire;
+    this.db = this.props.localdb;
+  }
+
+  componentWillMount() {
+    Reactotron.log('Rendering SideBar.');
+    // Reactotron.log(this.store);
   }
 
   componentDidMount() {
-    Reactotron.debug('SideBar rendered');
-    // Reactotron.debug(this.store);
+    Reactotron.log('SideBar rendered.');
+    // Reactotron.log(this.store);
   }
 
 
   handleImageChange = () => {
     // Do something
-    Reactotron.debug('handleImageChange pressed.');
-    // response looks like : {
-    //      data: "data:image/jpeg;base64,/9j/4AAQSkZJRg...", // Base64
-    //      fileSize: 474486,
-    //      height: 531,
-    //      isVertical: false,
-    //      origURL: "assets-library://asset/asset.JPG?id=106E99A1-4F6A-45A2-B320-B0AD4A8E8473&ext=JPG",
-    //      uri: "file:///...",
-    //      width: 800,
-    // }
+    Reactotron.log('handleImageChange pressed.');
   };
 
   badgeShow = (newCount) => {
@@ -51,36 +40,28 @@ export default class SideBar extends Component {
     return false;
   };
 
-  signOut = async () => {
-    try {
+  signOut = () => {
+    // Clear out appstore's user data
+    if(this.store.user) {
       this.setOffline(this.store.user.uid);
-      await this.fs.auth().signOut();
-      AsyncStorage.getItem('@HookupStore:user').then( user => {
-        if(user != null) {
-          AsyncStorage.removeItem('@HookupStore:user').then(() => {
-            this.store.signOut();
-            Actions.sessioncheck({type: 'reset'});
-          }).catch(err => {
-            Reactotron.error('Delete local storage user data error: ');
-            Reactotron.error(err);
-          });
-        } else {
-          this.store.signOut();
-          Actions.sessioncheck({type: 'reset'});
-        }
-      }).catch(err => {
-        Reactotron.error('Get local storage user data error: ');
-        Reactotron.error(err);
-      });
-    } catch (error) {
-      Reactotron.error('Firebase signout error: ');
-      Reactotron.error(error);
+      this.store.signOut();
     }
-  };
+
+    // Sign out from firebase
+    this.firebase.auth().signOut();
+
+    // Clear out local database's user data
+    this.db.remove({
+      key: 'user',
+    });
+
+    // Render SessionCheck and redirect to signin view
+    Actions.sessioncheck({type: 'reset'});
+  }
 
   setOffline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    const dbRef = this.fs.database().ref('/connections/' + uid);
+    const dbRef = this.firebase.database().ref('/connections/' + uid);
     dbRef.update({
       online: false,
       lastOnline: timestamp,
@@ -109,7 +90,16 @@ export default class SideBar extends Component {
   }
 
   render() {
-    const { displayName, photoURL } = this.store.user;
+
+    let displayName, photoURL;
+    if(this.store.user != null && this.store.user != '') {
+      displayName = this.store.user.displayName;
+      photoURL = this.store.user.photoURL;
+    } else {
+      displayName = 'Loading..';
+      photoURL = 'https://placeholder.it/150x150'
+    }
+
     return (
       <ScrollView
         style={{
@@ -127,7 +117,7 @@ export default class SideBar extends Component {
           <ListItem
             roundAvatar
             avatar={{ uri: photoURL }}
-            title={displayName}
+            title={ displayName }
             onPress={this.handleOnPress('profile')}
           />
           {

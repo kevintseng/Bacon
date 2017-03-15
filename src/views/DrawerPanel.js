@@ -7,21 +7,18 @@ import SideBar from './SideBar';
 
 @observer
 export default class DrawerPanel extends Component {
-  static propTypes = {
-    fire: PropTypes.object,
-    store: PropTypes.object,
-    navigationState: PropTypes.object,
-    onNavigate: PropTypes.func,
-  }
-
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.fs = this.props.fire;
+    this.firebase = this.props.fire;
+    this.db = this.props.localdb
+  }
+  componentWillMount() {
+    Reactotron.debug('Rendering DrawerPanel.');
   }
 
-  componentWillMount() {
-    Reactotron.debug('Rendering DrawerPanel');
+  componentDidMount() {
+    Reactotron.debug('DrawerPanel rendered.');
   }
 
   render() {
@@ -35,7 +32,7 @@ export default class DrawerPanel extends Component {
         onOpen={() => Actions.refresh({ key: state.key, open: true })}
         onClose={() => Actions.refresh({ key: state.key, open: false })}
         open={state.open}
-        content={<SideBar fire={this.fs} store={this.store} />}
+        content={<SideBar fire={this.firebase} store={this.store} localdb={this.db}/>}
         tapToClose
         openDrawerOffset={0.2}
         panCloseMask={0.2}

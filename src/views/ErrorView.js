@@ -3,11 +3,11 @@ import {View, Text, StyleSheet, Animated, Dimensions} from "react-native";
 import {Button} from "react-native-elements";
 import {Actions} from "react-native-router-flux";
 
-var {
+const {
   height: deviceHeight
 } = Dimensions.get("window");
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         position: "absolute",
         top:0,
@@ -20,7 +20,7 @@ var styles = StyleSheet.create({
     },
 });
 
-export default class Error extends Component {
+export default class ErrorView extends Component {
   static propTypes = {
     data: PropTypes.string,
   }

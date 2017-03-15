@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {},
   label: {
     marginLeft: 20,
@@ -21,4 +21,4 @@ const FormErrorMsg = ({children}) => (
   </View>
 )
 
-export default FormErrorMsg;
+export { FormErrorMsg };
