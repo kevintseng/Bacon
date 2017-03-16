@@ -1,8 +1,7 @@
-// Import libraries for making a component
 import React, { PropTypes } from 'react';
 import { Text, View } from 'react-native';
 import { Col, Grid } from "react-native-easy-grid";
-import { Icon, Button } from 'react-native-elements'; // eslint-disable-line
+import { Icon, Button } from 'react-native-elements';
 
 const styles = {
   viewStyle: {
