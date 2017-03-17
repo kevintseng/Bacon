@@ -1,16 +1,20 @@
 //TODO: 把 renderGallery拉出來變成一個component
 
 import React, { Component } from 'react';
-import { View, Dimensions, Text, ActivityIndicator, Image, ScrollView } from 'react-native';
+import { View, Dimensions, ActivityIndicator, Image, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Carousel from 'react-native-looped-carousel';
 import { observer } from 'mobx-react/native';
-import { Card, ListItem, Button } from 'react-native-elements';
+import { Card, ListItem } from 'react-native-elements';
+import ImagePicker from 'react-native-customized-image-picker';
 import Reactotron from 'reactotron-react-native';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+// import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import MessageBarAlert from 'react-native-message-bar/MessageBar';
 import MessageBarManager from 'react-native-message-bar/MessageBarManager';
+import { uploadImage, resizeImage } from '../Utils';
+import { EditBar } from '../components';
 
+const IMAGE_HOLDER = require('../images/addImage.png'); //eslint-disable-line
 const { width, height } = Dimensions.get('window');
 
 const styles = {
@@ -51,6 +55,7 @@ export default class Profile extends Component {
       },
       tip: null,
       imgLoading: false,
+      gallery: [{id: 'image_holder1', src: IMAGE_HOLDER}, {id: 'image_holder2', src: IMAGE_HOLDER}],
     };
 
   }
@@ -68,7 +73,7 @@ export default class Profile extends Component {
     MessageBarManager.unregisterMessageBar();
   }
 
-  handleAlert(msg) {
+  handleDelete(msg = 'Delete Photo Pressed') {
     MessageBarManager.showAlert({
       title: 'title',
       message: msg,
@@ -77,10 +82,91 @@ export default class Profile extends Component {
     });
   }
 
+  handleAddPhoto() {
+    ImagePicker.openPicker({
+      cropping: true,
+      multiple: true,
+      includeBase64: true,
+    })
+    .then( images => {
+      images.forEach(async(image) => {
+        try {
+          const filename = await this.generatePhotoFilename(this.store.user.uid);
+          const imageRef = this.firebase.storage().ref('userPhotos/' + this.store.user.uid).child(filename);
+          // resizeImage(uri, width, height, mime, quality)
+          const resizedUri = await resizeImage(image.path, 800, 800, image.mime, 100);
+          // uploadImage(resizedUri, imageRef, image.mime)
+          const downloadUrl = await uploadImage(resizedUri, imageRef, image.mime);
+
+          Reactotron.log('downloadUrl: ' + downloadUrl);
+
+          this.state.gallery.push(
+            { id: filename, src: { uri: downloadUrl } }
+          );
+
+          Reactotron.log(this.state.gallery);
+        } catch (err) {
+          Reactotron.error('Profile:handleAddPhoto: ');
+          Reactotron.error(err);
+        }
+      }); //end for each
+    })
+    .catch( err => {
+      Reactotron.log(err.code);
+    });
+  }
+
   emailPressed = () => {
     this.setState({
       tip: '未認證'
     });
+  }
+
+  generatePhotoFilename = (uid) => {
+    const childpath = 'users/' + uid + '/photos';
+    return this.firebase.database().ref().child(childpath).push().key;
+  }
+
+  renderPhoto = (item) => {
+    return (
+      <View style={styles.container}>
+        <Image
+          key={item.id}
+          resizeMode='contain'
+          style={[styles.container, {backgroundColor: '#DCDCDC'}]}
+          onLoadStart={() => this.setState({ imgLoading: true })}
+          onLoad={() => this.setState({ imgLoading: false })}
+          source={item.src}>
+          {
+            this.state.imgLoading && <View style={{ flex:1, width: this.state.size.width, alignItems: 'center', justifyContent: 'center' }}><ActivityIndicator size='large' color='white' /></View>
+          }
+          {
+            !this.state.imgLoading
+            &&
+            <EditBar
+              handleDelete={this.handleDelete.bind(this, item.id)}
+              handleAddPhoto={this.handleAddPhoto.bind(this)}
+              />
+          }
+        </Image>
+      </View>
+    );
+  }
+
+  renderGallery = (gallery) => {
+    return (
+      <Carousel
+        style={styles.container}
+        autoplay={false}
+        bullets
+        >
+        {
+          gallery.forEach(item => {
+            this.renderPhoto(item);
+          })
+        }
+    </Carousel>
+    );
   }
 
   render() {
@@ -96,44 +182,9 @@ export default class Profile extends Component {
             containerStyle={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: this.state.size.width, margin: 0, padding: 0 }}
             wrapperStyle={{flex: 1, margin: 0, padding: 0}}
             >
-            <Carousel
-              style={styles.container}
-              autoplay={false}
-              bullets
-              >
-              <View style={styles.container}>
-                <Image
-                  key='1'
-                  resizeMode='contain'
-                  style={[styles.container, {backgroundColor: '#DCDCDC'}]}
-                  onLoadStart={() => this.setState({ imgLoading: true })}
-                  onLoad={() => this.setState({ imgLoading: false })}
-                  source={{uri: 'https://loremflickr.com/320/300/taiwan,woman/?random=1'}}>
-                  {
-                    this.state.imgLoading && <View style={{ flex:1, width: this.state.size.width, alignItems: 'center', justifyContent: 'center' }}><ActivityIndicator size='large' color='white' /></View>
-                  }
-                  {
-                    !this.state.imgLoading && <EditBar handleAlert={this.handleAlert.bind(this)}/>
-                  }
-                </Image>
-              </View>
-              <View style={styles.container}>
-                <Image
-                  key='2'
-                  resizeMode='contain'
-                  style={[styles.container, {backgroundColor: '#DCDCDC'}]}
-                  onLoadStart={() => this.setState({ imgLoading: true })}
-                  onLoad={() => this.setState({ imgLoading: false })}
-                  source={{uri: 'https://loremflickr.com/320/300/taiwan,woman/?random=1'}}>
-                  {
-                    this.state.imgLoading && <View style={{ flex:1, width: this.state.size.width, alignItems: 'center', justifyContent: 'center' }}><ActivityIndicator size='large' color='white' /></View>
-                  }
-                  {
-                    !this.state.imgLoading && <EditBar />
-                  }
-                </Image>
-              </View>
-            </Carousel>
+            {
+              this.renderGallery(this.state.gallery)
+            }
             <ListItem
               key={user.email}
               title='Email'
@@ -150,30 +201,80 @@ export default class Profile extends Component {
   }
 }
 
-class EditBar extends Component {
+class PhotoView extends Component {
   constructor(props) {
     super(props);
+    this.store = this.props.store;
+    this.firebase = this.props.fire;
+    this.db = this.props.localdb;
+    this.state = {
+      size: {
+          width,
+          height
+      },
+      tip: null,
+      imgLoading: false,
+      gallery: [{id: 'image_holder', src: IMAGE_HOLDER}],
+    };
   }
 
-  handlePressed = () => {
-    this.props.handleAlert('pressed');
+  handleAddPhoto() {
+    ImagePicker.openPicker({
+      cropping: true,
+      multiple: true,
+      includeBase64: true,
+    })
+    .then( images => {
+      images.forEach(async(image) => {
+        try {
+          const filename = await this.generatePhotoFilename(this.store.user.uid);
+          const imageRef = this.firebase.storage().ref('userPhotos/' + this.store.user.uid).child(filename);
+          // resizeImage(uri, width, height, mime, quality)
+          const resizedUri = await resizeImage(image.path, 800, 800, image.mime, 100);
+          // uploadImage(resizedUri, imageRef, image.mime)
+          const downloadUrl = await uploadImage(resizedUri, imageRef, image.mime);
+
+          Reactotron.log('downloadUrl: ' + downloadUrl);
+
+          this.props.gallery.push(
+            { id: filename, src: { uri: downloadUrl } }
+          );
+
+          Reactotron.log(this.props.gallery);
+        } catch (err) {
+          Reactotron.error('Profile:handleAddPhoto: ');
+          Reactotron.error(err);
+        }
+      }); //end for each
+    })
+    .catch( err => {
+      Reactotron.log(err.code);
+    });
   }
 
   render() {
-    return(
-      <View style={{ alignSelf: 'center', flex:0, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', backgroundColor: '#424242', opacity: 0.8, width, height: 50 }}>
-        <Button
-          icon={{ name: 'delete', color: 'white', size: 30 }}
-          backgroundColor='transparent'
-          onPress={this.handlePressed}
-        />
-        <Button
-          icon={{ name: 'add-to-photos', color: 'white', size: 30 }}
-          backgroundColor='transparent'
-          onPress={() => {}}
-        />
+    return (
+      <View style={styles.container}>
+        <Image
+          key={this.props.item.id}
+          resizeMode='contain'
+          style={[styles.container, {backgroundColor: '#DCDCDC'}]}
+          onLoadStart={() => this.setState({ imgLoading: true })}
+          onLoad={() => this.setState({ imgLoading: false })}
+          source={this.props.item.src}>
+          {
+            this.state.imgLoading && <View style={{ flex:1, width: this.state.size.width, alignItems: 'center', justifyContent: 'center' }}><ActivityIndicator size='large' color='white' /></View>
+          }
+          {
+            !this.state.imgLoading
+            &&
+            <EditBar
+              handleDelete={this.handleDelete.bind(this, this.props.item.id)}
+              handleAddPhoto={this.handleAddPhoto.bind(this)}
+              />
+          }
+        </Image>
       </View>
     );
   }
-
 }
