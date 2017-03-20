@@ -155,17 +155,16 @@ export default class Profile extends Component {
 
   renderGallery = (gallery) => {
     return (
-      <Carousel
+      <ScrollView
         style={styles.container}
-        autoplay={false}
-        bullets
+        horizontal
         >
         {
           gallery.forEach(item => {
             this.renderPhoto(item);
           })
         }
-    </Carousel>
+    </ScrollView>
     );
   }
 
