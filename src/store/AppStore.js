@@ -1,15 +1,15 @@
-import { observable, action, autorun } from 'mobx'; // eslint-disable-line
+import { observable, action } from 'mobx';
 // import autobind from 'autobind-decorator';
+import Reactotron from 'reactotron-react-native';
 
 // @autobind
 class AppStore {
   @observable user;
-  @observable view;
+  @observable inSignupProcess;
 
   constructor() {
     this.user = null;
-    this.view = 'signin';
-    this.signupCompleted = false;
+    this.inSignupProcess = false;
   }
 
   @action setUser(user) {
@@ -22,6 +22,11 @@ class AppStore {
 
   @action setView(sceneKey) {
     this.view = sceneKey;
+  }
+
+  @action setInSignupProcess(val) {
+    this.inSignupProcess = val;
+    Reactotron.log('Set inSignupProcess: ' + val);
   }
 }
 

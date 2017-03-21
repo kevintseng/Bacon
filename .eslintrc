@@ -25,6 +25,8 @@
       "no-empty-function": "off",
       "react/no-string-refs": "off",
       "no-unused-expressions": "off",
+      "import/prefer-default-export": "off",
+      "react/prefer-stateless-function": "off",
     },
     "globals": {
         "require": true

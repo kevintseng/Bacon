@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.RNSvgPackage;
 import com.mg.app.PickerPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSvgPackage(),
             new PickerPackage(),
             new ImageResizerPackage(),
             new RNFetchBlobPackage(),

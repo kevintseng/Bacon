@@ -14,9 +14,9 @@ import Visitors from './views/Visitors';
 import Settings from './views/Settings';
 import Signin from './views/Signin';
 import SessionCheck from './views/SessionCheck';
-import Profile from './views/Profile';
+import { Profile } from './views/Profile';
 import Favorites from './views/Favorites';
-import { Signup1, Signup2, Signup3, Signup4 } from './views/signup';
+import { Signup1, Signup2, Signup3, Signup4 } from './views/Signup';
 import DrawerPanel from './views/DrawerPanel';
 import ErrorView from './views/ErrorView';
 import AppStore from './store/AppStore';
@@ -104,12 +104,12 @@ export default class RouterComponent extends Component {
           Object.assign(user, user, snap.val());
 
           // Block incompleted signup users to login
-          if(!user.signupCompleted) {
+          if(!user.signupCompleted && !appstore.inSignupProcess) {
             this.signOut();
             Reactotron.log('Router: Incomplete sign up.');
             return;
           }
-          
+
           Reactotron.log(user);
           appstore.setUser(user);
           Reactotron.log('Router: User has been set in appstore');
