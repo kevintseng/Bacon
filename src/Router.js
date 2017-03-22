@@ -25,7 +25,7 @@ import Account from './views/Settings/Account';
 import PushNotification from './views/Settings/PushNotification';
 import Question from './views/Settings/Question';
 import ChangePassword from './views/Settings/ChangePassword';
-import Reaction from './views/Settings/Reaction';
+import FeedBack from './views/Settings/FeedBack';
 import { FirebaseConfig } from './Configs';
 
 // define this based on the styles/dimensions you use
@@ -109,7 +109,7 @@ export default class RouterComponent extends Component {
             Reactotron.log('Router: Incomplete sign up.');
             return;
           }
-          
+
           Reactotron.log(user);
           appstore.setUser(user);
           Reactotron.log('Router: User has been set in appstore');
@@ -255,9 +255,9 @@ export default class RouterComponent extends Component {
                       component={ChangePassword}
                       title='ChangePassword'
                     />
-                    <Scene key='reaction'
-                      component={Reaction}
-                      title='Reaction'
+                    <Scene key='feedback'
+                      component={FeedBack}
+                      title='Feedback'
                     />
                   </Scene>
 

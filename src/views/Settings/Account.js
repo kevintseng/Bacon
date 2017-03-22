@@ -19,6 +19,7 @@ import { Text, Button,ListItem,SocialIcon } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
 
+
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
@@ -84,7 +85,9 @@ export default class Account extends Component {
 
   componentDidMount() {
     Reactotron.log('Account rendered');
+
   }
+
 
   render() {
     return(
@@ -109,6 +112,7 @@ export default class Account extends Component {
               {text: 'OK', onPress: this.deleteAccount},
             ]
           )}/>
+
       </View>
     );
   }

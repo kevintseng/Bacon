@@ -19,6 +19,8 @@ import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
 import { autorun } from 'mobx'; // eslint-disable-line
 import FormErrorMsg from '../../components/FormErrorMsg';
+import MessageBarAlert from 'react-native-message-bar/MessageBar';
+import MessageBarManager from 'react-native-message-bar/MessageBarManager';
 
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
@@ -75,6 +77,10 @@ export default class ChangePassword extends Component {
           loading: false,
         });
         console.log('lgoin false')
+        MessageBarManager.showAlert({
+          message: "密碼修改失敗",
+          alertType: 'error'
+        });
       });
     }else{
       this.setState({
@@ -84,29 +90,32 @@ export default class ChangePassword extends Component {
   }
 
 
-  updatePwd =  () => {
+  updatePwd = async () => {
     if(this.newPasswordCheck() && this.confirmNewPasswordCheck() && this.newPwd_and_confirmPwdCheck()){
       let user = this.fs.auth().currentUser;
       let newPassword = this.state.ConfirmNewPassword;
 
       user.updatePassword(newPassword).then(function(){
         console.log('Update successful')
-
-        Alert.alert(
-          '',
-          '修改密碼成功',
-          [
-            {text: 'OK', onPress: () => console.log('OK Pressed!')},
-          ]
-        );
-
-
+        //Alert.alert(
+        //'',
+        //'修改密碼成功',
+        //[
+        //{text: 'OK', onPress: () => console.log('OK Pressed!')},
+        //]
+        //);
+        MessageBarManager.showAlert({
+          message: "密碼修改成功",
+          alertType: 'success'
+        });
       }, function(error){
         console.log('error happened')
+        MessageBarManager.showAlert({
+          message: "密碼修改失敗",
+          alertType: 'error'
+        });
       });
-
     }
-
     this.setState({loading: false,});
   }
 
@@ -186,7 +195,25 @@ export default class ChangePassword extends Component {
 
 
   componentDidMount() {
-    Reactotron.log('Account rendered');
+    Reactotron.log('ChangePassword rendered');
+    MessageBarManager.registerMessageBar(this.refs.alert);
+  };
+
+  componentWillUnmount() {
+  // Remove the alert located on this master page from the manager
+    MessageBarManager.unregisterMessageBar();
+  };
+
+  showSuccessAlert = async () => {
+    // Title or Message is at least Mandatory
+    // alertType is not Mandatory, but if no alertType provided, 'info' (blue color) will picked for you
+
+    // Simple show the alert with the manager
+    console.log('MessageBar in')
+    MessageBarManager.showAlert({
+      message: "This is a simple alert",
+      alertType: 'success'
+    });
   }
 
 
@@ -250,7 +277,7 @@ export default class ChangePassword extends Component {
             title={this.state.loading ? '處理中...' : '確認'}
           />
 
-
+          <MessageBarAlert ref="alert" />
       </View>
     );
   }
