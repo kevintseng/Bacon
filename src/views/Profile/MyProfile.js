@@ -86,7 +86,7 @@ export default class MyProfile extends Component {
     return(
       <ScrollView style={styles.viewWrapper}>
         <Card
-          containerStyle={{ flex: 1, width: this.state.size.width, margin: 0 }}
+          containerStyle={{ flex: 1, width: (this.state.size.width - 10), margin: 0 }}
           wrapperStyle={{ flex: 1 }}
           image={{ uri: user.photoURL }}
           imageStyle={{ resizeMode: 'cover' }}

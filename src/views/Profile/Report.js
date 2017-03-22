@@ -23,7 +23,7 @@ const styles = {
 export default class Report extends Component {
   render() {
     const data = [{
-      "魅力": 68,
+      "魅力值": 68,
       "熱門度": 74,
       "好感度": 79,
       "友好度": 51,
@@ -31,7 +31,7 @@ export default class Report extends Component {
     }];
 
     const options = {
-      width: 300,
+      width,
       height: 300,
       r: 130,
       max: 150,

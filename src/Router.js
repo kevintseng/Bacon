@@ -265,6 +265,7 @@ export default class RouterComponent extends Component {
                   component={Profile}
                   title='關於我'
                   renderLeftButton={menuButton}
+                  hideTabBar
                   />
               </Scene>
             </Scene>
