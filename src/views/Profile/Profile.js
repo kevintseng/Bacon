@@ -13,23 +13,11 @@ import Report from './Report';
 
 const { width, height } = Dimensions.get('window');
 const styles = {
-  tabView: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: 'rgba(0,0,0,0.01)',
-  },
-  // card: {
-  //   borderWidth: 1,
-  //   backgroundColor: '#fff',
-  //   borderColor: 'rgba(0,0,0,0.1)',
-  //   margin: 5,
-  //   height: 150,
-  //   padding: 15,
-  //   shadowColor: '#ccc',
-  //   shadowOffset: { width: 2, height: 2, },
-  //   shadowOpacity: 0.5,
-  //   shadowRadius: 3,
-  // },
+  wrapperStyle: {
+    width,
+    marginTop: 7,
+    paddingTop: 52,
+  }
 };
 
 @observer
@@ -56,7 +44,7 @@ class Profile extends Component {
   render() {
     return(
         <ScrollableTabView
-          style={{ marginTop: 6, paddingTop: 55, paddingHorizontal: 5 }}
+          style={styles.wrapperStyle}
           tabBarPosition='overlayTop'
           renderTabBar={() => <DefaultTabBar />}
           tabBarUnderlineStyle={{ backgroundColor: '#2962FF' }}
@@ -69,21 +57,18 @@ class Profile extends Component {
             store={this.store}
             fire={this.firebase}
             storage={this.storage}
-            style={styles.tabView}
             tabLabel='交友自介'
             />
           <Gallery
             store={this.store}
             fire={this.firebase}
             storage={this.storage}
-            style={styles.tabView}
             tabLabel='個人相簿'
             />
           <Report
             store={this.store}
             fire={this.firebase}
             storage={this.storage}
-            style={styles.tabView}
             tabLabel='互動分析'
             />
         </ScrollableTabView>

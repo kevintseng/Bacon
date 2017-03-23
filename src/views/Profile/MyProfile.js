@@ -5,9 +5,9 @@ import { View, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Card, Icon, Text, ListItem } from 'react-native-elements';
-import UserAvatar from 'react-native-user-avatar';
 import Reactotron from 'reactotron-react-native';
 import Moment from 'moment';
+import { BasicInfoEditMode } from './BasicInfo';
 
 const ADD_IMAGE = require('../../images/addImage.png');
 
@@ -18,10 +18,9 @@ const styles = {
   },
   container: {
       flex: 1,
-      flexDirection: 'row',
-  },
-  gallery: {
-      flexDirection: 'row'
+      alignItems: 'center',
+      margin: 0,
+      padding: 0,
   },
   icon: {
       textAlign: 'center'
@@ -31,9 +30,6 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
   },
-  photo: {
-      flex: 1
-  }
 };
 
 @observer
@@ -84,22 +80,29 @@ export default class MyProfile extends Component {
     const user = this.store.user;
     // const userImg = {uri: user.photoURL};
     return(
-      <ScrollView style={styles.viewWrapper}>
+      <ScrollView>
         <Card
-          containerStyle={{ flex: 1, width: (this.state.size.width - 10), margin: 0 }}
-          wrapperStyle={{ flex: 1 }}
-          image={{ uri: user.photoURL }}
-          imageStyle={{ resizeMode: 'cover' }}
+          wrapperStyle={styles.viewWrapper}
+          containerStyle={styles.container}
           >
-
-          <View style={{ height: 70, paddingHorizontal: 5, flex:0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', backgroundColor: '#3F51B5' }}>
-            <View style={{ width: 100, flex:0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          <BasicInfoEditMode />
+          <ListItem
+            key='name'
+            title={user.displayName}
+            subtitle={`${this.getGender(user.gender)}, ${this.getAge(user.birthday)}, ${user.city}`}
+            roundAvatar
+            avatar={{ uri: user.photoURL }}
+            avatarStyle={{ width: 70, height: 70 }}
+            rightIcon={{name: 'mode-edit', color: '#2962FF'}}
+            />
+          <View style={{ height: 45, paddingHorizontal: 80, flex:1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FF6F00' }}>
+            <View style={{ flex:1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
               <View>
-                <Text style={{ fontSize: 15, color: '#E0E0E0' }}>一般</Text>
-                <Text style={{ fontSize: 15, color: '#E0E0E0' }}>會員</Text>
+                <Text style={{ fontSize: 14, color: 'white' }}>一般</Text>
+                <Text style={{ fontSize: 14, color: 'white' }}>會員</Text>
               </View>
               <TouchableOpacity
-                style={{ marginLeft: 10, flex: 0, alignItems: 'center' }}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
                     this.setState({
                       visible: true,
@@ -110,13 +113,14 @@ export default class MyProfile extends Component {
                 <Text style={{ fontSize: 10, color: 'white' }}>升級</Text>
               </TouchableOpacity>
             </View>
-            <View style={{ width: 100, flex:0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <View style={{ alignItems: 'center', justifyContent:'space-between' }}>
-                <Text style={{ fontSize: 15, color: 'white' }}>點數</Text>
-                <Text style={{ fontSize: 10, color: 'yellow' }}>35,000</Text>
+            <View style={{ width: 60 }}/>
+            <View style={{ flex:1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+              <View style={{ marginTop: 4 }}>
+                <Text style={{ fontSize: 14, color: 'white' }}>點數</Text>
+                <Text style={{ fontSize: 14, color: 'yellow' }}>3,237</Text>
               </View>
               <TouchableOpacity
-                style={{ marginLeft: 10, flex: 0, alignItems: 'center' }}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
                   this.setState({
                     visible: true,
@@ -124,22 +128,17 @@ export default class MyProfile extends Component {
                   });
                 }}>
                 <Icon name='redeem' color='#EEEEEE'/>
-                <Text style={{ fontSize: 10, color: '#E0E0E0' }}>儲值</Text>
+                <Text style={{ fontSize: 10, color: 'white' }}>儲值</Text>
               </TouchableOpacity>
             </View>
           </View>
           <ListItem
-            key='name'
-            title={user.displayName}
-            subtitle={`${this.getGender(user.gender)}, ${this.getAge(user.birthday)}, ${user.city}`}
-            hideChevron
-            />
-          <ListItem
             key='email'
-            title='Email認證'
-            rightTitle='馬上認證'
+            title='Email 認證'
+            rightTitle='重寄認證信'
             rightTitleStyle={{ color: '#2962FF' }}
-            subtitle='未認證'
+            hideChevron
+            subtitle='未完成'
             />
           <ListItem
             key='bio'
@@ -163,9 +162,10 @@ export default class MyProfile extends Component {
             key='photoVerified'
             rightIcon={{name: 'chevron-right', color: '#2962FF'}}
             title='照片認證'
-            rightTitle='馬上認證'
+            rightTitle='進行認證'
             rightTitleStyle={{ color: '#2962FF' }}
-            subtitle='未認證'
+            hideChevron
+            subtitle='未完成'
             />
         </Card>
       </ScrollView >
