@@ -7,7 +7,7 @@ import { observer } from 'mobx-react/native';
 import { Card, Icon, Text, ListItem } from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
 import Moment from 'moment';
-import { BasicInfoEditMode } from './BasicInfo';
+import { BasicInfo } from './BasicInfo';
 
 const ADD_IMAGE = require('../../images/addImage.png');
 
@@ -40,10 +40,7 @@ export default class MyProfile extends Component {
     this.fs = this.props.fire;
     this.storage = this.props.storage;
     this.state = {
-      size: {
-          width,
-          height
-      },
+      editBasicInfo: false,
       message: '',
       visible: false,
       tip: null,
@@ -76,25 +73,35 @@ export default class MyProfile extends Component {
     }
   }
 
+  handleEditBasicInfo = () => {
+    this.setState({
+      editBasicInfo: true,
+    })
+  }
+
+  handleSaveBasicInfo = () => {
+    this.setState({
+      editBasicInfo: false,
+    })
+  }
+
   render() {
     const user = this.store.user;
+    const age = this.getAge(user.birthday);
+    const gender = this.getGender(user.gender);
     // const userImg = {uri: user.photoURL};
     return(
       <ScrollView>
+        <BasicInfo
+          displayName={user.displayName}
+          location={user.city}
+          avatar={user.photoURL}
+          handleEditBasicInfo={this.handleEditBasicInfo}
+          />
         <Card
           wrapperStyle={styles.viewWrapper}
           containerStyle={styles.container}
           >
-          <BasicInfoEditMode />
-          <ListItem
-            key='name'
-            title={user.displayName}
-            subtitle={`${this.getGender(user.gender)}, ${this.getAge(user.birthday)}, ${user.city}`}
-            roundAvatar
-            avatar={{ uri: user.photoURL }}
-            avatarStyle={{ width: 70, height: 70 }}
-            rightIcon={{name: 'mode-edit', color: '#2962FF'}}
-            />
           <View style={{ height: 45, paddingHorizontal: 80, flex:1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FF6F00' }}>
             <View style={{ flex:1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
               <View>
@@ -168,7 +175,7 @@ export default class MyProfile extends Component {
             subtitle='未完成'
             />
         </Card>
-      </ScrollView >
+      </ScrollView>
     );
   }
 }

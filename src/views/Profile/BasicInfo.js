@@ -1,20 +1,29 @@
 import React from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { Avatar } from 'react-native-elements';
+import InputField from './InputField'
 
-const BasicInfoEditMode = (props) => {
+const BasicInfo = (props) => {
+  const { displayName, location, avatar } = props;
   return (
-    <View style={{ height: 80, flex: 1 }}>
-      <Avatar
-        small
-        rounded
-        icon={{type: 'user'}}
-        onPress={() => console.log("Works!")}
-        activeOpacity={0.7}
-        containerStyle={{flex: 2, marginLeft: 20, marginTop: 115}}
-      />
+    <View style={{ height: 90, flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10 }}>
+      <View style={{ flex: 0, paddingVertical: 5 }}>
+        <Avatar
+          large
+          rounded
+          icon={{type: 'user'}}
+          onPress={() => console.log("Works!")}
+          containerStyle={{ flex: 1 }}
+          activeOpacity={0.7}
+          source={{ uri: avatar }}
+        />
+      </View>
+      <View style={{ marginLeft: 80, width: 200 }}>
+        <InputField defaultValue={displayName} />
+        <InputField defaultValue={location} maxLength={100} />
+      </View>
     </View>
   );
 };
 
-export { BasicInfoEditMode };
+export { BasicInfo };
