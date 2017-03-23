@@ -1,32 +1,25 @@
 import React, { Component } from 'react';
-import { Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import PhotoGrid from 'react-native-photo-grid';
 import Reactotron from 'reactotron-react-native';
 import ImagePicker from 'react-native-customized-image-picker';
 import { uploadImage } from '../../Utils';
+import { Photo } from './Photo';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 const ADD_IMAGE = require('../../images/addImage.png'); //eslint-disable-line
 const PLACEHOLDER = require('../../images/cameraPlaceholder.jpg'); //eslint-disable-line
 const styles = {
   viewWrapper: {
-    width: width - 10,
+    width,
     flex: 1,
-    alignItems: 'center',
-    marginHorizontal: 0,
-  },
-  container: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
   },
   gallery: {
-      flexDirection: 'row'
   },
   icon: {
-      textAlign: 'center'
+    textAlign: 'center'
   },
   item: {
     flex: 1,
@@ -59,34 +52,25 @@ export default class Gallery extends Component {
     this.setState({ items });
   }
 
-  renderItem(item, itemSize = 200) {
+  renderItem(item, size = 123) {
     return(
-      <TouchableOpacity
-        key = { item.id }
-        style = {{ width: itemSize, height: itemSize }}
-        onPress = { () => {
-
-        }}>
-        <Image
-          resizeMode = "cover"
-          style = {{ flex: 1 }}
-          source = {{ uri: item.src }}
-        />
-      </TouchableOpacity>
+      <Photo item={item} key={item.id} handleEditPhoto={() => {}} size={size} />
     )
   }
 
 
   render() {
-    Reactotron.log(this.state.items);
+    Reactotron.log(width);
     return(
-      <PhotoGrid
-        style={styles.wrapperStyle}
-        data = { this.state.items }
-        itemsPerRow = { 3 }
-        itemMargin = { 1 }
-        renderItem = { this.renderItem }
-      />
+      <View style={styles.viewWrapper}>
+        <PhotoGrid
+          style={styles.gallery}
+          data = { this.state.items }
+          itemsPerRow = { 3 }
+          itemMargin = { 1 }
+          renderItem = { this.renderItem }
+        />
+      </View>
     );
   }
 }
