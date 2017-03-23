@@ -50,8 +50,8 @@ export default class Settings extends Component {
         return () => Actions.pushnotification();
       case 'question':
         return () => Actions.question();
-      case 'reaction':
-        return () => Actions.reaction();
+      case 'feedback':
+        return () => Actions.feedback();
     }
   }
 
@@ -85,10 +85,10 @@ export default class Settings extends Component {
           />
 
           <ListItem
-            //roundAvatar
+            roundAvatar
             hideChevron
             title='意見反應'
-            onPress={this.handleOnPress('reaction')}
+            onPress={this.handleOnPress('feedback')}
           />
 
           <ListItem
@@ -100,18 +100,12 @@ export default class Settings extends Component {
           <ListItem
             roundAvatar
             hideChevron
-            title='版權聲明'
-          />
-
-          <ListItem
-            roundAvatar
-            hideChevron
             title='隱私權聲明'
           />
 
           <ListItem
             roundAvatar
-            hideChevrons
+            hideChevron
             title='使用條款'
           />
 
@@ -145,5 +139,6 @@ const styles = {
     viewWrapper: {
       width: width,
       height: height,
+      marginTop: 10,
     }
   }
