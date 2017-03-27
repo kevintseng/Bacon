@@ -1,17 +1,19 @@
 //TODO: 把 renderGallery拉出來變成一個component
 
 import React, { Component } from 'react';
-import { View, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
+import { Dimensions, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { Card, Icon, Text, ListItem } from 'react-native-elements';
+import { Card, ListItem, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
 import Moment from 'moment';
 import { BasicInfo } from './BasicInfo';
+import AccountStatus from './AccountStatus';
+
 
 const ADD_IMAGE = require('../../images/addImage.png');
 
-const {width, height} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const styles = {
   viewWrapper: {
     width,
@@ -85,6 +87,22 @@ export default class MyProfile extends Component {
     })
   }
 
+  handleUpgrade = () => {
+    this.setState({
+      visible: true,
+      message: '會員升級鈕'
+    });
+    Reactotron.log('upgrade button pressed');
+  }
+
+  handleAddCredit = () => {
+    this.setState({
+      visible: true,
+      message: '儲值鈕'
+    });
+    Reactotron.log('addCredit button pressed');
+  }
+
   render() {
     const user = this.store.user;
     const age = this.getAge(user.birthday);
@@ -98,47 +116,14 @@ export default class MyProfile extends Component {
           avatar={user.photoURL}
           handleEditBasicInfo={this.handleEditBasicInfo}
           />
+        <AccountStatus
+          upgrade={this.handleUpgrade}
+          addCredit={this.handleAddCredit}
+          />
         <Card
           wrapperStyle={styles.viewWrapper}
           containerStyle={styles.container}
           >
-          <View style={{ height: 45, paddingHorizontal: 80, flex:1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FF6F00' }}>
-            <View style={{ flex:1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-              <View>
-                <Text style={{ fontSize: 14, color: 'white' }}>一般</Text>
-                <Text style={{ fontSize: 14, color: 'white' }}>會員</Text>
-              </View>
-              <TouchableOpacity
-                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                onPress={() => {
-                    this.setState({
-                      visible: true,
-                      message: '會員升級鈕'
-                    });
-                }}>
-                <Icon name='star' color='#EEEEEE'/>
-                <Text style={{ fontSize: 10, color: 'white' }}>升級</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: 60 }}/>
-            <View style={{ flex:1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-              <View style={{ marginTop: 4 }}>
-                <Text style={{ fontSize: 14, color: 'white' }}>點數</Text>
-                <Text style={{ fontSize: 14, color: 'yellow' }}>3,237</Text>
-              </View>
-              <TouchableOpacity
-                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                onPress={() => {
-                  this.setState({
-                    visible: true,
-                    message: '儲值鈕'
-                  });
-                }}>
-                <Icon name='redeem' color='#EEEEEE'/>
-                <Text style={{ fontSize: 10, color: 'white' }}>儲值</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
           <ListItem
             key='email'
             title='Email 認證'
@@ -147,12 +132,15 @@ export default class MyProfile extends Component {
             hideChevron
             subtitle='未完成'
             />
-          <ListItem
-            key='bio'
-            title='自我介紹'
-            rightIcon={{name: 'mode-edit', color: '#2962FF'}}
-            subtitle='我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......'
-            />
+            <FormLabel>自我介紹</FormLabel>
+            <FormInput
+              multiline
+              maxLength={25}
+              value={'我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......'}
+
+              onChangeText={() => {}}
+              />
+            <FormValidationMessage>Error message</FormValidationMessage>
           <ListItem
             key='hobby'
             title='興趣愛好'

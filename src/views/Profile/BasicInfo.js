@@ -19,8 +19,8 @@ const BasicInfo = (props) => {
         />
       </View>
       <View style={{ marginLeft: 80, width: 200 }}>
-        <InputField defaultValue={displayName} />
-        <InputField defaultValue={location} maxLength={100} />
+        <InputField defaultValue={displayName} autoFocus />
+        <InputField defaultValue={location} maxLength={30} />
       </View>
     </View>
   );

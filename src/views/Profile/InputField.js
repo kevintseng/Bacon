@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, TextInput, TouchableOpacity } from 'react-native';
+import { View, TextInput } from 'react-native';
+import Reactotron from 'reactotron-react-native';
 
 const styles = {
   editViewStyle: {
@@ -32,38 +33,48 @@ const styles = {
 export default class InputField extends Component {
   constructor(props) {
     super(props);
+    let multiline = false;
+    if(this.props.maxLength > 25) {
+      multiline = true;
+    }
     this.state = {
-      maxLength: 20,
+      maxLength: this.props.maxLength ? this.props.maxLength: 20,
+      multiline: multiline,
       editMode: false,
-      text: '',
+      text: this.props.defaultValue,
+      autoFocus: this.props.autoFocus,
     };
   }
 
   componentDidMount() {
-    this.setState({
-      text: this.props.defaultValue,
-      maxLength: this.props.maxLength ? this.props.maxLength: 20
-    });
+
   }
 
   handleEndEditing = () => {
-    
+
     this.setState({ editMode: false });
   }
 
   render() {
-    const viewStyle = this.state.editMode ? styles.editViewStyle : styles.normalViewStyle;
-    const fieldStyle = this.state.editMode ? styles.editFieldStyle : styles.normalFieldStyle;
+    const { text, multiline, maxLength, autoFocus, editMode } = this.state;
+
+    const viewStyle = editMode ? styles.editViewStyle : styles.normalViewStyle;
+
+    const fieldStyle = editMode ? styles.editFieldStyle : styles.normalFieldStyle;
+
+
     return (
       <View style={viewStyle}>
         <TextInput
+          multiline={multiline}
           style={fieldStyle}
+          autoFocus={autoFocus}
           onFocus={() => this.setState({ editMode: true })}
           onEndEditing={() => this.setState({ editMode: false })}
           autoCapitalize="none"
           onChangeText={(text) => this.setState({text})}
-          value={this.state.text}
-          maxLength = {this.state.maxLength}
+          value={text}
+          maxLength = {maxLength}
           />
       </View>
     );
