@@ -2210,6 +2210,10 @@ generate-object-property@^1.1.0:
   dependencies:
     is-property "^1.0.0"
 
+geofire@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/geofire/-/geofire-4.1.2.tgz#031632e757605e9b885bd6e8febaef7a0e85869f"
+
 get-caller-file@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.2.tgz#f702e63127e7e231c160a80c1554acb70d5047e5"
@@ -3894,6 +3898,10 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
+react-native-actionsheet@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-actionsheet/-/react-native-actionsheet-2.0.6.tgz#80402b1186948a84177eb17f19cc99c17922b785"
+
 react-native-customized-image-picker@^0.0.24:
   version "0.0.24"
   resolved "https://registry.yarnpkg.com/react-native-customized-image-picker/-/react-native-customized-image-picker-0.0.24.tgz#07513caef7282dcddd2416f64e95f1f4513c950d"
@@ -3958,6 +3966,10 @@ react-native-image-resizer@^0.1.0:
 react-native-looped-carousel@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/react-native-looped-carousel/-/react-native-looped-carousel-0.1.5.tgz#322ffe6cec208949113ed732bfd64d2d5107cbff"
+
+react-native-message-bar@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-message-bar/-/react-native-message-bar-1.6.0.tgz#79623e89655475216927090771b0238616b6f1c7"
 
 react-native-mobx@^0.3.1:
   version "0.3.1"
