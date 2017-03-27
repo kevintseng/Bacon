@@ -1,11 +1,10 @@
 //TODO: 把 renderGallery拉出來變成一個component
 import React, { Component } from 'react';
-import { Dimensions, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { Dimensions } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import Reactotron from 'reactotron-react-native';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Gallery from './Gallery';
 import MyProfile from './MyProfile';
 import Report from './Report';
