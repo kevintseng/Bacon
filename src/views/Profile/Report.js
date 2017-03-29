@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { Radar } from 'react-native-pathjs-charts';
 import { observer } from 'mobx-react/native';
+import Reactotron from 'reactotron-react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -21,13 +22,22 @@ const styles = {
 
 @observer
 export default class Report extends Component {
+  constructor(props) {
+    super(props);
+    this.store = this.props.store;
+  }
+
+  componentDidMount() {
+  }
+
   render() {
+    const { charm, popularity, likeness, friendliness, activity } = this.store.user.analysis;
     const data = [{
-      "魅力值": 68,
-      "熱門度": 74,
-      "好感度": 79,
-      "友好度": 51,
-      "活耀度": 49,
+      "魅力值": charm,
+      "熱門度": popularity,
+      "好感度": likeness,
+      "友好度": friendliness,
+      "活耀度": activity,
     }];
 
     const options = {

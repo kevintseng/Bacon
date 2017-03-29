@@ -5,7 +5,7 @@ import Reactotron from 'reactotron-react-native';
 
 const styles = {
   barStyle: {
-    height: 60,
+    height: 80,
     flex:1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -20,7 +20,7 @@ const styles = {
     flexDirection: 'row',
     justifyContent : 'center',
     alignItems: 'center',
-    marginHorizontal: 2,
+    marginHorizontal: 25,
   },
   statusName: {
     fontSize: 14,
@@ -28,17 +28,21 @@ const styles = {
     marginRight: 3,
   },
   buttonWrapper: {
-    width: 50,
-    margin: 2,
+    flex: 1,
+    alignItems: 'center',
+    height: 60,
+    width: 40,
+    marginLeft: 5
   },
   buttonStyle: {
-    padding: 2,
     flex: 1,
+    width: 60,
+    height: 40,
+    borderWidth: 2,
+    borderRadius: 40,
+    borderColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderRadius: 30,
-    borderColor: 'white',
   },
   buttonTitle: {
     fontSize: 10,
@@ -59,18 +63,23 @@ export default class AccountStatus extends Component {
   }
 
   render() {
+
     return (
       <View style={styles.barStyle}>
         <View style={styles.containerStyle}>
-          <Text style={styles.statusName}>一般會員</Text>
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              onPress={this.handleUpgrade}>
-              <Icon name='star' color='#EEEEEE'/>
-              <Text style={styles.buttonTitle}>升級</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.statusName}>
+            { this.props.vip ? this.props.vip.toUpperCase() : '一般會員' }
+          </Text>
+          {
+            !this.props.vip && <View style={styles.buttonWrapper}>
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={this.handleUpgrade}>
+                <Icon name='star' color='#EEEEEE'/>
+                <Text style={styles.buttonTitle}>升級</Text>
+              </TouchableOpacity>
+            </View>
+          }
         </View>
         <View style={styles.containerStyle}>
           <Text style={styles.statusName}>點數 3,237</Text>

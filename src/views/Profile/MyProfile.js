@@ -1,7 +1,7 @@
 //TODO: 把 renderGallery拉出來變成一個component
 
 import React, { Component } from 'react';
-import { Dimensions, ScrollView } from 'react-native';
+import { Dimensions, ScrollView, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Card, ListItem, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
@@ -9,6 +9,7 @@ import Reactotron from 'reactotron-react-native';
 import Moment from 'moment';
 import { BasicInfo } from './BasicInfo';
 import AccountStatus from './AccountStatus';
+import InfoArea from './InfoArea';
 
 
 const ADD_IMAGE = require('../../images/addImage.png');
@@ -39,7 +40,7 @@ export default class MyProfile extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.fs = this.props.fire;
+    this.firebase = this.props.fire;
     this.storage = this.props.storage;
     this.state = {
       editBasicInfo: false,
@@ -47,6 +48,12 @@ export default class MyProfile extends Component {
       visible: false,
       tip: null,
       items: [{ id: 'addImage', src: ADD_IMAGE }],
+      bio: this.store.user.bio ? this.store.user.bio : '',
+      hobby: this.store.user.hobby ? this.store.user.hobby : '',
+      language: this.store.user.lang ? this.store.user.lang : '',
+      bioHeight: 50,
+      emailVerificationButtonLabel: '重寄認證信',
+      vip: this.store.user.vip ? this.store.user.vip : false,
     };
   }
 
@@ -54,6 +61,10 @@ export default class MyProfile extends Component {
     Reactotron.log('Profile rendered');
     Actions.refresh({ key: 'drawer', open: false });
     // Build an array of 60 photos
+  }
+
+  componentWillUnmount() {
+
   }
 
   emailPressed = () => {
@@ -88,10 +99,7 @@ export default class MyProfile extends Component {
   }
 
   handleUpgrade = () => {
-    this.setState({
-      visible: true,
-      message: '會員升級鈕'
-    });
+    this.store.upgradeMembership(this.firebase);
     Reactotron.log('upgrade button pressed');
   }
 
@@ -103,7 +111,54 @@ export default class MyProfile extends Component {
     Reactotron.log('addCredit button pressed');
   }
 
+  handleSendVerifyEmail = () => {
+    const user = this.firebase.auth().currentUser;
+    if(user) {
+      this.setState({
+        emailVerificationButtonLabel: '已寄出',
+      });
+    }
+    user.sendEmailVerification().then(() => {
+      Reactotron.log('Email verification request sent');
+    }, error => {
+      Reactotron.log(error);
+    });
+  }
+
+  handleVerifyPhoto = () => {
+
+    Reactotron.log('Verify Photo Pressed');
+  }
+
+  _onChangeHeight = (before, after) => {
+    Reactotron.log('before: ' + before + ' after: ' + after);
+  }
+
+  handleUpdateBio = val => {
+    this.store.setBio(val);
+    Reactotron.log('setBio: ' + val);
+    this.updateToFirebase('bio', val);
+  }
+
+  handleUpdateHobby = val => {
+    this.store.setHobby(val);
+    Reactotron.log('setHobby: ' + val);
+    this.updateToFirebase('hobby', val);
+  }
+
+  handleUpdateLang = val => {
+    this.store.setLang(val);
+    this.updateToFirebase('lang', val);
+    Reactotron.log('setLanguage: ' + val);
+  }
+
+  updateToFirebase(key, val) {
+    const setFirebase = this.firebase.database().ref('users/' + this.store.user.uid + '/' + key);
+    setFirebase.set(val);
+  }
+
   render() {
+    Reactotron.log(this.store.user);
     const user = this.store.user;
     const age = this.getAge(user.birthday);
     const gender = this.getGender(user.gender);
@@ -117,52 +172,49 @@ export default class MyProfile extends Component {
           handleEditBasicInfo={this.handleEditBasicInfo}
           />
         <AccountStatus
+          vip={this.store.user.vip}
           upgrade={this.handleUpgrade}
           addCredit={this.handleAddCredit}
           />
-        <Card
-          wrapperStyle={styles.viewWrapper}
-          containerStyle={styles.container}
-          >
           <ListItem
             key='email'
             title='Email 認證'
-            rightTitle='重寄認證信'
+            rightTitle={this.state.emailVerificationButtonLabel}
             rightTitleStyle={{ color: '#2962FF' }}
+            onPress={this.handleSendVerifyEmail}
             hideChevron
             subtitle='未完成'
             />
-            <FormLabel>自我介紹</FormLabel>
-            <FormInput
-              multiline
-              maxLength={25}
-              value={'我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......我是一個......'}
-
-              onChangeText={() => {}}
-              />
-            <FormValidationMessage>Error message</FormValidationMessage>
           <ListItem
-            key='hobby'
-            title='興趣愛好'
-            rightIcon={{name: 'mode-edit', color: '#2962FF'}}
-            subtitle='我的興趣是....我的興趣是....我的興趣是....'
-            />
-          <ListItem
-            key='language'
-            title='語言能力'
-            rightIcon={{name: 'mode-edit', color: '#2962FF'}}
-            subtitle='中文, 英文'
-            />
-          <ListItem
-            key='photoVerified'
-            rightIcon={{name: 'chevron-right', color: '#2962FF'}}
-            title='照片認證'
+            key='verifiedPhoto'
+            title='相片認證'
             rightTitle='進行認證'
             rightTitleStyle={{ color: '#2962FF' }}
             hideChevron
             subtitle='未完成'
             />
-        </Card>
+          <InfoArea
+            label={'自我介紹'}
+            defaultValue={this.state.bio}
+            minHeight={60}
+            maxLength={300}
+            handleFunc={this.handleUpdateBio}
+            />
+          <InfoArea
+            label={'興趣愛好'}
+            defaultValue={this.state.hobby}
+            minHeight={30}
+            maxLength={150}
+            handleFunc={this.handleUpdateHobby}
+            />
+          <InfoArea
+            label={'語言能力'}
+            defaultValue={this.state.language}
+            minHeight={30}
+            maxLength={50}
+            handleFunc={this.handleUpdateLang}
+            />
+          <View style={{ height: 20 }} />
       </ScrollView>
     );
   }
