@@ -15,6 +15,7 @@
     "react": "~15.4.0-rc.4",
     "react-native": "0.40.0",
     "react-native-actionsheet": "^2.0.6",
+    "react-native-auto-expanding-textinput": "0.0.5",
     "react-native-customized-image-picker": "^0.0.24",
     "react-native-datepicker": "^1.4.4",
     "react-native-drawer": "^2.3.0",
