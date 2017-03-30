@@ -80,11 +80,11 @@ const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
 
-export function uploadImage(uri, ref, mime = 'image/jpeg') {
+export function uploadImage(uri, firebaseRefObj, mime = 'image/jpeg') {
   Reactotron.debug('Uploading image: ' + uri);
   const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
   let uploadBlob = null;
-  const imageRef = ref;
+  const imageRef = firebaseRefObj;
   return fs.readFile(uploadUri, 'base64')
     .then((data) => {
       return Blob.build(data, { type: `${mime};BASE64` });

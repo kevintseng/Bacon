@@ -52,9 +52,21 @@ class AppStore {
 
   }
 
+  @action addPhotos(firebase, gallery) {
+    this.user.photos = this.user.photos.concat(gallery);
+    Reactotron.log('AppStore photos');
+    Reactotron.log(this.user.photos);
+    this.updateUserAtFirebase(firebase, 'photos', this.user.photos);
+  }
+
   updateUserAtFirebase(firebase, key, val) {
-    const setFirebase = firebase.database().ref('users/' + this.user.uid + '/' + key);
-    setFirebase.set(val);
+    try {
+      const setFirebase = firebase.database().ref('users/' + this.user.uid + '/' + key);
+
+      setFirebase.set(val);
+    } catch(err) {
+      Reactotron.log(err);
+    }
   }
 }
 
