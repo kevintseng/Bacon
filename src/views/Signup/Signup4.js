@@ -187,6 +187,7 @@ class Signup4 extends Component {
       bio: '',
       hobby: '',
       lang: '',
+      gallery: [],
       analysis,
       signupCompleted: true,
     };
