@@ -160,6 +160,13 @@ class Signup4 extends Component {
       Reactotron.error('User profile update error');
       Reactotron.error(err);
     });
+    const analysis = {
+      charm: 50,
+      friendliness: 50,
+      likeness: 50,
+      popularity: 50,
+      activity: 50,
+    };
 
     const postData = {
       photoURL: this.sustore.avatar,
@@ -175,6 +182,12 @@ class Signup4 extends Component {
       placeID: this.sustore.placeID,
       locale: this.sustore.locale,
       country: this.sustore.country,
+      photoVerified: false,
+      vip: false,
+      bio: '',
+      hobby: '',
+      lang: '',
+      analysis,
       signupCompleted: true,
     };
 

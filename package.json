@@ -28,6 +28,7 @@
     "react-native-looped-carousel": "^0.1.5",
     "react-native-message-bar": "^1.6.0",
     "react-native-mobx": "^0.3.1",
+    "react-native-multiple-select": "^0.1.0",
     "react-native-pathjs-charts": "^0.0.26",
     "react-native-photo-grid": "^0.0.2",
     "react-native-router-flux": "^3.37.0",
