@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { FormLabel, FormValidationMessage, Icon} from 'react-native-elements';
 import AutoExpandingTextInput from 'react-native-auto-expanding-textinput';
-import Reactotron from 'reactotron-react-native';
+// import Reactotron from 'reactotron-react-native';
 
 const styles = {
   textAreaStyle: {
