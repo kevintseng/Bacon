@@ -2091,9 +2091,9 @@ find-up@^1.0.0, find-up@^1.1.2:
     path-exists "^2.0.0"
     pinkie-promise "^2.0.0"
 
-firebase@^3.6.7:
-  version "3.6.9"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-3.6.9.tgz#26ad0f6adf2cd829a91e52e44f4867050f3cd2ad"
+firebase@^3.7.3:
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-3.7.4.tgz#629fd7f84f8ed74f1da815fd792bfa03cd5e2b5c"
   dependencies:
     dom-storage "2.0.2"
     faye-websocket "0.9.3"
@@ -2186,6 +2186,10 @@ generate-object-property@^1.1.0:
   resolved "https://registry.yarnpkg.com/generate-object-property/-/generate-object-property-1.2.0.tgz#9c0e1c40308ce804f4783618b937fa88f99d50d0"
   dependencies:
     is-property "^1.0.0"
+
+geofire@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/geofire/-/geofire-4.1.2.tgz#031632e757605e9b885bd6e8febaef7a0e85869f"
 
 get-caller-file@^1.0.1:
   version "1.0.2"
@@ -3859,6 +3863,10 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
+react-native-actionsheet@^2.0.6:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-actionsheet/-/react-native-actionsheet-2.1.0.tgz#e1b58bd951f4fcc1c5ebbb769fff5c693f12e23a"
+
 react-native-customized-image-picker@^0.0.24:
   version "0.0.24"
   resolved "https://registry.yarnpkg.com/react-native-customized-image-picker/-/react-native-customized-image-picker-0.0.24.tgz#07513caef7282dcddd2416f64e95f1f4513c950d"
@@ -3923,6 +3931,10 @@ react-native-image-resizer@^0.1.0:
 react-native-looped-carousel@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/react-native-looped-carousel/-/react-native-looped-carousel-0.1.5.tgz#322ffe6cec208949113ed732bfd64d2d5107cbff"
+
+react-native-message-bar@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-message-bar/-/react-native-message-bar-1.6.0.tgz#79623e89655475216927090771b0238616b6f1c7"
 
 react-native-mobx@^0.3.1:
   version "0.3.1"
