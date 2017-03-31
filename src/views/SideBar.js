@@ -61,11 +61,7 @@ export default class SideBar extends Component {
 
   setOffline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    const dbRef = this.firebase.database().ref('/connections/' + uid);
-    dbRef.update({
-      online: false,
-      lastOnline: timestamp,
-    });
+    this.firebase.database().ref('/online/' + uid).remove();
   }
 
   handleOnPress(key) {

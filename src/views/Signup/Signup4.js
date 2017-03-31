@@ -116,7 +116,7 @@ class Signup4 extends Component {
     Reactotron.debug('Uploading image');
     const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
     let uploadBlob = null;
-    const imageRef = this.firebase.storage().ref('images/avatars/' + this.sustore.uid);
+    const imageRef = this.firebase.storage().ref('avatars/' + this.sustore.uid);
     fs.readFile(uploadUri, 'base64')
       .then((data) => {
         return Blob.build(data, { type: `${mime};BASE64` });
@@ -199,6 +199,16 @@ class Signup4 extends Component {
       Reactotron.error('Set user data failed');
       Reactotron.error(err);
     });
+    const soData = {
+      uid: this.sustore.uid,
+      displayName: this.sustore.nickname,
+      birthday: this.sustore.birthday,
+      photoURL: this.sustore.avatar,
+      gender: this.sustore.gender,
+      geocode: this.sustore.geocode,
+      placeID: this.sustore.placeID,
+    };
+    this.firebase.database().ref(this.sustore.sexOrientation).set(soData);
     this.store.setInSignupProcess(false);
     return Actions.sessioncheck();
   }
