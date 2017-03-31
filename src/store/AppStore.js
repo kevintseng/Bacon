@@ -52,11 +52,8 @@ class AppStore {
 
   }
 
-  @action addPhotos(firebase, gallery) {
-    this.user.photos = this.user.photos.concat(gallery);
-    Reactotron.log('AppStore photos');
-    Reactotron.log(this.user.photos);
-    this.updateUserAtFirebase(firebase, 'photos', this.user.photos);
+  @action setPhotos(gallery) {
+    this.user.photos = gallery;
   }
 
   updateUserAtFirebase(firebase, key, val) {
