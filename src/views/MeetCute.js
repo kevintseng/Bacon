@@ -3,18 +3,13 @@ import { ActivityIndicator, Image, View, Dimensions, ScrollView } from 'react-na
 import { Card, Divider, Button, Text } from 'react-native-elements';
 import Carousel from 'react-native-looped-carousel';
 import { observer } from 'mobx-react/native';
-import { Actions } from 'react-native-router-flux';// eslint-disable-line
-import Reactotron from 'reactotron-react-native'; // eslint-disable-line
+import { Actions } from 'react-native-router-flux';
+import Reactotron from 'reactotron-react-native';
 
-const { width, height } = Dimensions.get('window');// eslint-disable-line
+const { width, height } = Dimensions.get('window');
 
 @observer
 export default class MeetCute extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-  }
-
   constructor(props) {
     super(props);
     this.firebase = this.props.fire;
@@ -33,10 +28,12 @@ export default class MeetCute extends Component {
   }
 
   componentDidMount() {
-    const ref = this.firebase.database().ref('users').orderByValue('gender');
-    ref.once('value', snap => {
-      Reactotron.log(snap.val());
+    const ref = this.firebase.database().ref('users').equalTo('gender/f');
+    ref.once('value', snapshot => {
+      Reactotron.log('snapshot');
+      Reactotron.log(snapshot)
     });
+
 
   }
 

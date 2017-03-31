@@ -137,21 +137,16 @@ export default class RouterComponent extends Component {
 
   setOnline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    const dbRef = firebase.database().ref('/connections/' + uid);
+    const dbRef = firebase.database().ref('/online/' + uid);
     dbRef.set({
-      online: true,
       lastOnline: timestamp,
       location: 'Taipei, Taiwan',
     });
   }
 
   setOffline(uid) {
-    const timestamp = Math.floor(Date.now() / 1000);
-    const dbRef = firebase.database().ref('/connections/' + uid);
-    dbRef.update({
-      online: false,
-      lastOnline: timestamp,
-    });
+    // const timestamp = Math.floor(Date.now() / 1000);
+    firebase.database().ref('/online/' + uid).remove();
   }
 
   signOut = () => {
