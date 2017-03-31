@@ -17,15 +17,27 @@ export default class MeetCute extends Component {
 
   constructor(props) {
     super(props);
+    this.firebase = this.props.fire;
+    this.store = this.props.store;
+    this.localdb = this.props.localdb;
     this.state = {
       size: { width, height: 320 },
       imgLoading: false,
+      list: null,
     };
   }
 
   componentWillMount() {
     Reactotron.debug('Rendering MeetCute');
     Actions.refresh({ key: 'drawer', open: false });
+  }
+
+  componentDidMount() {
+    const ref = this.firebase.database().ref('users').orderByValue('gender');
+    ref.once('value', snap => {
+      Reactotron.log(snap.val());
+    });
+
   }
 
   render() {
