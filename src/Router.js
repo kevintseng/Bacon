@@ -16,7 +16,7 @@ import Signin from './views/Signin';
 import SessionCheck from './views/SessionCheck';
 import Profile from './views/Profile';
 import Favorites from './views/Favorites';
-import { Signup1, Signup2, Signup3, Signup4 } from './views/signup';
+import { Signup1, Signup2, Signup3, Signup4 } from './views/Signup';
 import DrawerPanel from './views/DrawerPanel';
 import ErrorView from './views/ErrorView';
 import AppStore from './store/AppStore';

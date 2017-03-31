@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Dimensions} from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { Text, Button } from 'react-native-elements';
+import { Text, Button, List, ListItem} from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
 import GeoFire from 'geofire';
+import moment from 'moment';
 
 const { width, height } = Dimensions.get('window'); //eslint-disable-line
 
@@ -15,6 +16,10 @@ export default class Nearby extends Component {
     fire: PropTypes.object,
     latitude: PropTypes.number,
     longitude: PropTypes.number,
+    usersLocation: PropTypes.object,
+    latlong: PropTypes.object,
+    //initialPosition: PropTypes.number,
+    //lastPosition: PropTypes.number,
   }
 
   constructor(props) {
@@ -22,97 +27,118 @@ export default class Nearby extends Component {
     this.store = this.props.store;
     this.fs = this.props.fire;
     this.state = {
-      size: {
-          width,
-          height
-      },
-      tip: null,
-    };
+      usersLocation: [],
+    }
+    //this.getLocation();
   }
 
-  componentWillMount() {
+  componentDidMount(){
+    //this.getLocation();
+    this.getLocation();
+    //geoQuery.cancel();
+  }
+
+   componentWillMount() {
+    //this.latlong =  this.getLocation();
+    //this.usersLocation = 'try it!!';
+    //this.getGeo();
+
     Reactotron.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false });
   }
 
 
-  getLocation = () =>{
+  getLocation = async () =>{
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        //console.log('pos', position); stringify
         var initialPosition = JSON.parse(JSON.stringify(position));
-        console.log(initialPosition);
-        console.log(initialPosition.coords.latitude);
         this.latitude = initialPosition.coords.latitude;
         this.longitude = initialPosition.coords.longitude;
-        //console.log(initialPosition);
-        //console.log(initialPosition['coords']['longitude']);
-        this.setState({initialPosition});
+        console.log(this.latitude);
+        console.log(this.longitude);
+        //this.setState({initialPosition});
+        console.log('geoLocation sucess  ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds()  )
+        var location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
+        //console.log(location);
+        this.getGeo(initialPosition.coords.latitude,initialPosition.coords.longitude);
+
       },
       (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      {enableHighAccuracy: true, timeout: 0, maximumAge: 1000}
     );
-  }
-
-  getMyuid = () => {
-    var myUserId = this.fs.auth().currentUser.uid;
-    console.log(myUserId);
-    this.fs.database().ref('/users/').once('value').then(function(snapshot) {
-      var username = snapshot.val().email;
-      console.log(snapshot.val());
-    });
 
   }
 
-  getGeo = () =>{
+  getGeo = async (latitude, longitude) =>{
+
     var myUserId = this.fs.auth().currentUser.uid;
     var firebaseRef = this.fs.database().ref('/user_locations/')
     var geoFire = new GeoFire(firebaseRef);
 
-    //console.log(this.latitude);
+    geoFire.set(myUserId, [latitude, longitude ]).then(function() {
+        //console.log("Provided key has been added to GeoFire");
+      }, function(error) {
+        //console.log("Error: " + error);
+      });
+      var geoQuery = geoFire.query({
+        center: [latitude, longitude],
+        radius: 10.5
+      });
+      var center = geoQuery.center();
+      var nearBy = [];
+      var UserLocation = {};
 
-    geoFire.set(myUserId, [this.latitude, this.longitude ]).then(function() {
-        console.log("Provided key has been added to GeoFire");
+      /**/
+      geoQuery.on("key_entered", function(key, location, distance) {
+        //console.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
+        //nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2))});
+        UserLocation = {
+          uid: key,
+          distance: parseFloat(distance.toFixed(2))
+        };
+        nearBy.push(UserLocation);
+        console.log('geo ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
+      },function(error) {
+        console.log(error);
+      });
+
+      /*
+      geoQuery.on("key_entered").then(function(key, location, distance) {
+        console.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
       }, function(error) {
         console.log("Error: " + error);
       });
+      */
+      //nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2))});
+      //var queryData = JSON.parse(JSON.stringify(nearBy));
+      //console.log(JSON.stringify(nearBy));
+      //return nearBy;
 
-      var geoQuery = geoFire.query({
-        center: [this.latitude, this.longitude ],
-        radius: 10.5
-      });
-
-      var center = geoQuery.center();
-
-      geoQuery.on("key_entered", function(key, location, distance) {
-        console.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
-      });
+      this.setState({usersLocation : nearBy})
+      console.log('geo ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
+      //console.log(nearBy.length)
   }
 
+
   render() {
-    //this.getLocation();
+    console.log('render ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
+    console.log(this.state.usersLocation);
+    const list = this.state.usersLocation;
+
     return(
       <View>
-      <Button
-        backgroundColor='#007AFF'
-        //color='#007AFF'
-        buttonStyle={{marginTop: 20}}
-        onPress={this.getLocation}
-        title='送出' />
-
-        <Button
-          backgroundColor='#007AFF'
-          //color='#007AFF'
-          buttonStyle={{marginTop: 20}}
-          onPress={this.getMyuid}
-          title='送出' />
-
-          <Button
-            backgroundColor='#007AFF'
-            //color='#007AFF'
-            buttonStyle={{marginTop: 20}}
-            onPress={this.getGeo}
-            title='送出' />
+      <List containerStyle={{marginBottom: 20}}>
+      {
+        list.map((l, i) => (
+          <ListItem
+            roundAvatar
+            //avatar={{uri:l.avatar_url}}
+            key={i}
+            title={l.uid}
+          />
+        ))
+      }
+    </List>
 
       </View>
     );
