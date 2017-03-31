@@ -88,25 +88,16 @@ export default class Nearby extends Component {
       });
       var center = geoQuery.center();
       var nearBy = [];
-      var UserLocation = {};
+      //var UserLocation = {};
 
       geoQuery.on("ready", async () => {
         await geoQuery.on('key_entered', (key, location, distance) => {
-          Reactotron.log(key + " is located at [" + location + "] which is within the query (" + parseFloat(distance.toFixed(2)) + " km from center)");
+          //Reactotron.log(key + " is located at [" + location + "] which is within the query (" + parseFloat(distance.toFixed(2)) + " km from center)");
           nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2)) });
-
         });
         Reactotron.log('nearBy');
         Reactotron.log(nearBy);
         this.setState({usersLocation : nearBy})
-        // UserLocation = {
-        //   uid: key,
-        //   distance: parseFloat(distance.toFixed(2))
-        // };
-        // nearBy.push(UserLocation);
-        // Reactotron.log('getGeo: geo ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
-        // this.state.usersLocation.push(UserLocation);
-      },function(error) {
         Reactotron.log(error);
       });
 
