@@ -7,6 +7,7 @@ import Reactotron from 'reactotron-react-native';
 import GeoFire from 'geofire';
 import moment from 'moment';
 
+
 const { width, height } = Dimensions.get('window'); //eslint-disable-line
 
 @observer
@@ -48,18 +49,18 @@ export default class Nearby extends Component {
   }
 
 
-  getLocation = async () =>{
+  getLocation = () =>{
     navigator.geolocation.getCurrentPosition(
       (position) => {
         var initialPosition = JSON.parse(JSON.stringify(position));
         this.latitude = initialPosition.coords.latitude;
         this.longitude = initialPosition.coords.longitude;
-        console.log(this.latitude);
-        console.log(this.longitude);
+        Reactotron.log(this.latitude);
+        Reactotron.log(this.longitude);
         //this.setState({initialPosition});
-        console.log('geoLocation sucess  ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds()  )
+        Reactotron.log('geoLocation sucess  ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds()  )
         var location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
-        //console.log(location);
+        //Reactotron.log(location);
         this.getGeo(initialPosition.coords.latitude,initialPosition.coords.longitude);
 
       },
@@ -76,53 +77,56 @@ export default class Nearby extends Component {
     var geoFire = new GeoFire(firebaseRef);
 
     geoFire.set(myUserId, [latitude, longitude ]).then(function() {
-        //console.log("Provided key has been added to GeoFire");
+        //Reactotron.log("Provided key has been added to GeoFire");
       }, function(error) {
-        //console.log("Error: " + error);
+        //Reactotron.log("Error: " + error);
       });
+      Reactotron.log('lat: ' + latitude + ', lon: ' + longitude);
       var geoQuery = geoFire.query({
         center: [latitude, longitude],
-        radius: 10.5
+        radius: 50
       });
       var center = geoQuery.center();
       var nearBy = [];
       var UserLocation = {};
 
-      /**/
-      geoQuery.on("key_entered", function(key, location, distance) {
-        //console.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
-        //nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2))});
-        UserLocation = {
-          uid: key,
-          distance: parseFloat(distance.toFixed(2))
-        };
-        nearBy.push(UserLocation);
-        console.log('geo ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
+      geoQuery.on("ready", async () => {
+        await geoQuery.on('key_entered', (key, location, distance) => {
+          Reactotron.log(key + " is located at [" + location + "] which is within the query (" + parseFloat(distance.toFixed(2)) + " km from center)");
+          nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2)) });
+
+        });
+        Reactotron.log('nearBy');
+        Reactotron.log(nearBy);
+        this.setState({usersLocation : nearBy})
+        // UserLocation = {
+        //   uid: key,
+        //   distance: parseFloat(distance.toFixed(2))
+        // };
+        // nearBy.push(UserLocation);
+        // Reactotron.log('getGeo: geo ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
+        // this.state.usersLocation.push(UserLocation);
       },function(error) {
-        console.log(error);
+        Reactotron.log(error);
       });
 
       /*
       geoQuery.on("key_entered").then(function(key, location, distance) {
-        console.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
+        Reactotron.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
       }, function(error) {
-        console.log("Error: " + error);
+        Reactotron.log("Error: " + error);
       });
       */
       //nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2))});
       //var queryData = JSON.parse(JSON.stringify(nearBy));
-      //console.log(JSON.stringify(nearBy));
+      //Reactotron.log(JSON.stringify(nearBy));
       //return nearBy;
-
-      this.setState({usersLocation : nearBy})
-      console.log('geo ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
-      //console.log(nearBy.length)
   }
 
 
   render() {
-    console.log('render ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
-    console.log(this.state.usersLocation);
+    Reactotron.log('render ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
+    Reactotron.log(this.state.usersLocation);
     const list = this.state.usersLocation;
 
     return(
