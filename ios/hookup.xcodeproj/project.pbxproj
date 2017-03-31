@@ -43,6 +43,7 @@
 		10E5E4ADC630424DA4ADBC3F /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC688A120D524A8CB17890DA /* libRCTImageResizer.a */; };
 		3E09E073F2CA48039F39ACAF /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1863A827D06343DBB5CC54E6 /* libimageCropPicker.a */; };
 		B09376F1096346C7822C0D70 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9CB30433ADC4E85964961AB /* libRNSVG.a */; };
+		4E5CD2B204C24D41887650F6 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEF968A28E44ED2A9022B3B /* libRCTActionSheet.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -303,6 +304,8 @@
 		1863A827D06343DBB5CC54E6 /* libimageCropPicker.a */ = {isa = PBXFileReference; name = "libimageCropPicker.a"; path = "libimageCropPicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		ED688EB4C9F441BCAAF53F21 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; name = "RNSVG.xcodeproj"; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		F9CB30433ADC4E85964961AB /* libRNSVG.a */ = {isa = PBXFileReference; name = "libRNSVG.a"; path = "libRNSVG.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		392F781F29DB40A3ABACE091 /* AutoExpandingTextInput.xcodeproj */ = {isa = PBXFileReference; name = "AutoExpandingTextInput.xcodeproj"; path = "../node_modules/react-native-auto-expanding-textinput/ios/AutoExpandingTextInput.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		2CEF968A28E44ED2A9022B3B /* libRCTActionSheet.a */ = {isa = PBXFileReference; name = "libRCTActionSheet.a"; path = "libRCTActionSheet.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -337,6 +340,7 @@
 				10E5E4ADC630424DA4ADBC3F /* libRCTImageResizer.a in Frameworks */,
 				3E09E073F2CA48039F39ACAF /* libimageCropPicker.a in Frameworks */,
 				B09376F1096346C7822C0D70 /* libRNSVG.a in Frameworks */,
+				4E5CD2B204C24D41887650F6 /* libRCTActionSheet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,6 +535,7 @@
 				60BD8278167B448C9A8674B6 /* RCTImageResizer.xcodeproj */,
 				1211AEE07E6B4E2696B5E59A /* imageCropPicker.xcodeproj */,
 				ED688EB4C9F441BCAAF53F21 /* RNSVG.xcodeproj */,
+				392F781F29DB40A3ABACE091 /* AutoExpandingTextInput.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1118,6 +1123,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hookup.app/hookup";
@@ -1135,6 +1141,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

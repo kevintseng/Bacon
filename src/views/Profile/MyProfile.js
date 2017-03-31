@@ -10,7 +10,7 @@ import Moment from 'moment';
 import { BasicInfo } from './BasicInfo';
 import AccountStatus from './AccountStatus';
 import InfoArea from './InfoArea';
-import LangPicker from './LangPicker';
+// import LangPicker from './LangPicker';
 
 
 const ADD_IMAGE = require('../../images/addImage.png');
@@ -110,7 +110,7 @@ export default class MyProfile extends Component {
   }
 
   handleVerifyPhoto = () => {
-
+    alert('相片認證被觸發');
     Reactotron.log('Verify Photo Pressed');
   }
 
