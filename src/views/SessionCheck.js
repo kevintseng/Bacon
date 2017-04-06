@@ -23,11 +23,11 @@ export default class Welcome extends Component {
 
   componentWillMount() {
     Reactotron.log('Rendering SessionCheck');
-    this.getUser();
   }
 
   componentDidMount() {
     Reactotron.log('SessionCheck rendered');
+    this.getUser();
   }
 
   getUser = () => {

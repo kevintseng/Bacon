@@ -7,6 +7,7 @@ import { observer } from 'mobx-react/native';
 import { SIDEBAR_LINKS } from '../Configs';
 
 const list = SIDEBAR_LINKS;
+const loading = require('../images/loading.gif');
 
 @observer
 export default class SideBar extends Component {
@@ -19,14 +20,11 @@ export default class SideBar extends Component {
 
   componentWillMount() {
     Reactotron.log('Rendering SideBar.');
-    // Reactotron.log(this.store);
   }
 
   componentDidMount() {
     Reactotron.log('SideBar rendered.');
-    // Reactotron.log(this.store);
   }
-
 
   handleImageChange = () => {
     // Do something
@@ -60,7 +58,7 @@ export default class SideBar extends Component {
   }
 
   setOffline(uid) {
-    const timestamp = Math.floor(Date.now() / 1000);
+    // const timestamp = Math.floor(Date.now() / 1000);
     this.firebase.database().ref('/online/' + uid).remove();
   }
 
@@ -94,10 +92,10 @@ export default class SideBar extends Component {
     let displayName, photoURL;
     if(this.store.user != null && this.store.user != '') {
       displayName = this.store.user.displayName;
-      photoURL = this.store.user.photoURL;
+      photoURL = { uri: this.store.user.photoURL };
     } else {
       displayName = 'Loading..';
-      photoURL = 'https://placeholder.it/150x150'
+      photoURL = loading;
     }
 
     return (
@@ -116,7 +114,7 @@ export default class SideBar extends Component {
           />
           <ListItem
             roundAvatar
-            avatar={{ uri: photoURL }}
+            avatar={ photoURL }
             title={ displayName }
             onPress={this.handleOnPress('profile')}
           />
