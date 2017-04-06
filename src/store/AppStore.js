@@ -14,6 +14,7 @@ class AppStore {
 
   @action setUser(user) {
     this.user = user;
+    Reactotron.log('User @appstore: ' + user.uid);
   }
 
   @action signOut() {

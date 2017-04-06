@@ -1,10 +1,10 @@
 //TODO: 把 renderGallery拉出來變成一個component
 
 import React, { Component } from 'react';
-import { Dimensions, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { Card, ListItem, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
 import Moment from 'moment';
 import { BasicInfo } from './BasicInfo';
@@ -14,8 +14,6 @@ import InfoArea from './InfoArea';
 
 
 const ADD_IMAGE = require('../../images/addImage.png');
-
-const width = Dimensions.get('window').width;
 
 @observer
 export default class MyProfile extends Component {
