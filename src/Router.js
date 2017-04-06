@@ -175,7 +175,6 @@ export default class RouterComponent extends Component {
         localdb={storage}
         getSceneStyle={getSceneStyle} >
           <Scene key='root' hideNavBar>
-
             <Scene key='sessioncheck' component={SessionCheck} />
             <Scene key='signin' component={Signin} />
             <Scene key='forgot' component={Forgot} title='申請密碼重設' hideNavBar={false} />

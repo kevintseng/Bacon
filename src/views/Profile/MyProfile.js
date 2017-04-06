@@ -15,7 +15,7 @@ import InfoArea from './InfoArea';
 
 const ADD_IMAGE = require('../../images/addImage.png');
 
-// const width = Dimensions.get('window').width;
+const width = Dimensions.get('window').width;
 
 @observer
 export default class MyProfile extends Component {
