@@ -96,7 +96,8 @@ class Signup4 extends Component {
       } else {
         ImageResizer.createResizedImage(res.uri, 200, 200, 'JPEG', 80)
         .then( async (resizedImageUri) => {
-          this. uploadImage(resizedImageUri);
+          Reactotron.log('resizedImageUri: ' + resizedImageUri);
+          this.uploadImage(resizedImageUri);
           this.setState({
             image: 'file://' + resizedImageUri,
             imageGeo: {
@@ -112,11 +113,16 @@ class Signup4 extends Component {
     });
   }
 
-  uploadImage = (uri, ref, mime = 'image/PNG') => {
+  generateFilename = () => {
+    return this.firebase.database().ref('users/' + this.store.user.uid + '/photos').push().key;
+  }
+
+  uploadImage = (uri, ref, mime = 'image/jpeg') => {
     Reactotron.debug('Uploading image');
     const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
     let uploadBlob = null;
-    const imageRef = this.firebase.storage().ref('avatars/' + this.sustore.uid);
+    // const filename = this.generateFilename();
+    const imageRef = this.firebase.storage().ref('avatars/' + this.sustore.uid + '.jpg');
     fs.readFile(uploadUri, 'base64')
       .then((data) => {
         return Blob.build(data, { type: `${mime};BASE64` });

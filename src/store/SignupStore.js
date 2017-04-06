@@ -91,7 +91,7 @@ export default class SignupStore {
   }
 
   @action setSexOrientation(gender, selected) {
-    if(gender == 0) {
+    if(gender === 0) {
       switch(selected) {
         case 0:
         this.sexOrientation = 'msm'
@@ -99,7 +99,7 @@ export default class SignupStore {
         case 1:
         this.sexOrientation = 'msf';
         break;
-        case 3:
+        case 2:
         this.sexOrientation = 'msb';
         break;
       }
@@ -111,7 +111,7 @@ export default class SignupStore {
         case 1:
         this.sexOrientation = 'fsf';
         break;
-        case 3:
+        case 2:
         this.sexOrientation = 'fsb';
         break;
       }

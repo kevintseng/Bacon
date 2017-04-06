@@ -33,8 +33,6 @@ export default class MeetCute extends Component {
       Reactotron.log('snapshot');
       Reactotron.log(snapshot)
     });
-
-
   }
 
   render() {
