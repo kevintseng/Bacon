@@ -206,7 +206,16 @@ class Signup4 extends Component {
       Reactotron.error(err);
     });
     const soRef = this.sustore.sexOrientation + '/' + this.sustore.uid;
-    this.firebase.database().ref(this.sustore.sexOrientation).set(this.sustore.uid);
+    const soData = {
+      name: this.sustore.displayName,
+      photoURL: this.sustore.avatar,
+      birthday: this.sustore.birthday,
+      country: this.sustore.country,
+      lang: '',
+      city: this.sustore.city,
+      gender: this.sustore.gender,
+    };
+    this.firebase.database().ref(soRef).set(soData);
     this.store.setInSignupProcess(false);
     return Actions.sessioncheck();
   }

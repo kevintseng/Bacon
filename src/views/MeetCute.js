@@ -6,7 +6,7 @@ import { observer } from 'mobx-react/native';
 import { Actions } from 'react-native-router-flux';
 import Reactotron from 'reactotron-react-native';
 
-const { width, height } = Dimensions.get('window');
+const width = Dimensions.get('window').with;
 
 @observer
 export default class MeetCute extends Component {
@@ -28,12 +28,29 @@ export default class MeetCute extends Component {
   }
 
   componentDidMount() {
-    const ref = this.firebase.database().ref('users').equalTo('gender/f');
+    this.getData(this.store.user.sexOrientation);
+  }
+
+  getData = (cond) => {
+    const ref = this.firebase.database().ref(cond);
     ref.once('value', snapshot => {
       Reactotron.log('snapshot');
       Reactotron.log(snapshot)
     });
   }
+
+  // getTargets = (sexOrientation) => {
+  //   switch(sexOrientation) {
+  //     case 'msf':
+  //       this.getData('fsm');
+  //     case 'fsm':
+  //       return 'msf';
+  //     case 'msm':
+  //       return 'msm';
+  //     case 'msb':
+  //       return ''
+  //   }
+  // }
 
   render() {
     const content = (

@@ -83,7 +83,7 @@ const menuButton = () => (
 
 @observer
 export default class RouterComponent extends Component {
-  componentDidMount() {
+  componentWillMount() {
     let user;
     firebase.auth().onAuthStateChanged(data => {
       if(data) {
@@ -105,15 +105,20 @@ export default class RouterComponent extends Component {
 
           // Block incompleted signup users to login
           if(!user.signupCompleted && !appstore.inSignupProcess) {
+            const _user = firebase.auth().currentUser;
+          // In case the user dropped out during sign-up and want to sign-up again
+            if(_user) {
+              _user.delete().then(() => {}, _err => { Reactotron.error(_err); });
+            }
             this.signOut();
             Reactotron.log('Router: Incomplete sign up.');
             return;
           }
 
           Reactotron.log(user);
+          Reactotron.log('Setting store.user @Router');
           appstore.setUser(user);
-          Reactotron.log('Router: User has been set in appstore');
-          Reactotron.log(appstore);
+
           this.setOnline(appstore.user.uid);
           storage.save({
             key: 'user',
