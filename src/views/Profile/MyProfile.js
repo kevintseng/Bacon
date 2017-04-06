@@ -15,7 +15,7 @@ import InfoArea from './InfoArea';
 
 const ADD_IMAGE = require('../../images/addImage.png');
 
-const {width} = Dimensions.get('window');
+// const width = Dimensions.get('window').width;
 
 @observer
 export default class MyProfile extends Component {
@@ -32,7 +32,7 @@ export default class MyProfile extends Component {
       items: [{ id: 'addImage', src: ADD_IMAGE }],
       bio: this.store.user.bio ? this.store.user.bio : '',
       hobby: this.store.user.hobby ? this.store.user.hobby : '',
-      language: this.store.user.lang ? this.store.user.lang : '',
+      lang: this.store.user.lang ? this.store.user.lang : '',
       emailVerified: this.store.user.emailVerified,
       bioHeight: 50,
       emailVerificationButtonLabel: '重寄認證信',

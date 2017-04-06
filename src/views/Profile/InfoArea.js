@@ -53,6 +53,10 @@ export default class InfoArea extends Component {
   componentDidMount() {
   }
 
+  componentWillUnmount() {
+    this.handleEndEditing();
+  }
+
   _onChangeHeight = (before, after) => {
     // Reactotron.log('before: ' + before + ' after: ' + after);
   }
