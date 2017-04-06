@@ -205,16 +205,8 @@ class Signup4 extends Component {
       Reactotron.error('Set user data failed');
       Reactotron.error(err);
     });
-    const soData = {
-      uid: this.sustore.uid,
-      displayName: this.sustore.nickname,
-      birthday: this.sustore.birthday,
-      photoURL: this.sustore.avatar,
-      gender: this.sustore.gender,
-      geocode: this.sustore.geocode,
-      placeID: this.sustore.placeID,
-    };
-    this.firebase.database().ref(this.sustore.sexOrientation).set(soData);
+    const soRef = this.sustore.sexOrientation + '/' + this.sustore.uid;
+    this.firebase.database().ref(this.sustore.sexOrientation).set(this.sustore.uid);
     this.store.setInSignupProcess(false);
     return Actions.sessioncheck();
   }
