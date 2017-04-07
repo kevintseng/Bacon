@@ -1,11 +1,11 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {
     View,
     ActivityIndicator,
     Dimensions,
     Text,
 } from 'react-native';
-import {CheckBox, FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
+import {CheckBox, FormLabel, FormInput, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
 import Reactotron from 'reactotron-react-native';
@@ -35,16 +35,12 @@ function maxDay() {
 
 @observer
 class Signup1 extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-  }
-
   constructor(props) {
     super(props);
     this.store = this.props.store;
     this.firebase = this.props.fire;
     this.sustore = new SignupStore();
+
     this.state = {
       size: {
           width,
@@ -71,6 +67,15 @@ class Signup1 extends Component {
     this.birthdayCheck = this.birthdayCheck.bind(this);
     this.termsCheck = this.termsCheck.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillMount() {
+    Reactotron.log('Will mount Signup1');
+  }
+
+  componentDidMount() {
+    this.store.setInSignupProcess(true);
+    Reactotron.log('Signup 1 mounted');
   }
 
   maxDay = () => {

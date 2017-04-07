@@ -1,19 +1,18 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {
     View,
     Dimensions,
     Text,
     ActivityIndicator,
     Platform,
-  } from 'react-native'; // eslint-disable-line
-import UserAvatar from 'react-native-user-avatar';
+  } from 'react-native';
 import ImageResizer from 'react-native-image-resizer';
-import { Card, Button } from 'react-native-elements'; // eslint-disable-line
-import { Actions } from 'react-native-router-flux'; // eslint-disable-line
+import { Card, Button, Avatar } from 'react-native-elements';
+import { Actions } from 'react-native-router-flux';
 import RNFetchBlob from 'react-native-fetch-blob';
 import { observer } from 'mobx-react/native';
 import ImagePicker from 'react-native-image-picker';
-import Reactotron from 'reactotron-react-native'; // eslint-disable-line
+import Reactotron from 'reactotron-react-native';
 import { Header } from '../../components/Header';
 // import { FirebaseConfig } from '../../Configs';
 
@@ -53,12 +52,6 @@ window.Blob = Blob
 
 @observer
 class Signup4 extends Component {
-  static propTypes = {
-    fire: PropTypes.object,
-    store: PropTypes.object,
-    sustore: PropTypes.object,
-  };
-
   constructor(props) {
     super(props);
     this.sustore = this.props.sustore;
@@ -76,6 +69,15 @@ class Signup4 extends Component {
       photoUrl: null,
       loading: false,
     };
+  }
+
+  componentWillMount() {
+    Reactotron.log('Will mount Signup4');
+  }
+
+  componentDidMount() {
+    this.store.setInSignupProcess(true);
+    Reactotron.log('Signup 4 mounted');
   }
 
   addImage = () => {
@@ -183,6 +185,7 @@ class Signup4 extends Component {
       Reactotron.error('Set user data failed');
       Reactotron.error(err);
     });
+    this.store.setInSignupProcess(false);
     return Actions.sessioncheck();
   }
 
@@ -202,11 +205,12 @@ class Signup4 extends Component {
           <Card>
             <View style={styles.wrapper}>
             {
-              this.state.loading ? <ActivityIndicator style={styles.indicator}/> : <UserAvatar
+              this.state.loading ? <ActivityIndicator style={styles.indicator}/> : <Avatar
               style={{ alignSelf: 'center', marginBottom: 10 }}
-              size='150'
-              name={nickname}
-              src={this.state.image}
+              xlarge
+              rounded
+              title={nickname}
+              source={{uri: this.state.image}}
               />
             }
             </View>

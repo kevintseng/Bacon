@@ -85,7 +85,11 @@ export default class SideBar extends Component {
       case 'settings':
         return () => Actions.settings_wrapper({type: 'reset'});
       case 'profile':
-        return () => Actions.profile({type: 'reset'});
+      // Go to profile view only when user data is loaded.
+        if(this.store.user != null && this.store.user != '') {
+          return () => Actions.profile({type: 'reset'});
+        }
+        return () => {};
     }
   }
 

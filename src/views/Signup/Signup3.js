@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {
     View,
     Dimensions,
@@ -8,22 +8,16 @@ import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { autorun } from 'mobx';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
-import { Header } from '../../components/Header';
-import FormErrorMsg from '../../components/FormErrorMsg';
+import { Header, FormErrorMsg } from '../../components';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
 class Signup3 extends Component {
-  static propTypes = {
-    fire: PropTypes.object,
-    store: PropTypes.object,
-    sustore: PropTypes.object,
-  };
-
   constructor(props) {
     super(props);
     this.sustore = this.props.sustore;
+    this.store = this.props.store;
     this.state = {
       size: {
           width,
@@ -35,6 +29,15 @@ class Signup3 extends Component {
       soErr: false,
       loading: false,
     };
+  }
+
+  componentWillMount() {
+    Reactotron.log('Will mount Signup3');
+  }
+
+  componentDidMount() {
+    this.store.setInSignupProcess(true);
+    Reactotron.log('Signup 3 mounted');
   }
 
   updateGender = (selected) => {
