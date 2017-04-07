@@ -43,11 +43,7 @@
 		10E5E4ADC630424DA4ADBC3F /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC688A120D524A8CB17890DA /* libRCTImageResizer.a */; };
 		3E09E073F2CA48039F39ACAF /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1863A827D06343DBB5CC54E6 /* libimageCropPicker.a */; };
 		B09376F1096346C7822C0D70 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9CB30433ADC4E85964961AB /* libRNSVG.a */; };
-<<<<<<< HEAD
-		2E094AE38DA34593BCB9518E /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68CF5868DE474CFCA27B0A43 /* libRCTActionSheet.a */; };
-=======
 		4E5CD2B204C24D41887650F6 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEF968A28E44ED2A9022B3B /* libRCTActionSheet.a */; };
->>>>>>> dev-master
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -308,13 +304,8 @@
 		1863A827D06343DBB5CC54E6 /* libimageCropPicker.a */ = {isa = PBXFileReference; name = "libimageCropPicker.a"; path = "libimageCropPicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		ED688EB4C9F441BCAAF53F21 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; name = "RNSVG.xcodeproj"; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		F9CB30433ADC4E85964961AB /* libRNSVG.a */ = {isa = PBXFileReference; name = "libRNSVG.a"; path = "libRNSVG.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-<<<<<<< HEAD
-		2C4B31FCF79E4B3284911543 /* AutoExpandingTextInput.xcodeproj */ = {isa = PBXFileReference; name = "AutoExpandingTextInput.xcodeproj"; path = "../node_modules/react-native-auto-expanding-textinput/ios/AutoExpandingTextInput.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		68CF5868DE474CFCA27B0A43 /* libRCTActionSheet.a */ = {isa = PBXFileReference; name = "libRCTActionSheet.a"; path = "libRCTActionSheet.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-=======
 		392F781F29DB40A3ABACE091 /* AutoExpandingTextInput.xcodeproj */ = {isa = PBXFileReference; name = "AutoExpandingTextInput.xcodeproj"; path = "../node_modules/react-native-auto-expanding-textinput/ios/AutoExpandingTextInput.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		2CEF968A28E44ED2A9022B3B /* libRCTActionSheet.a */ = {isa = PBXFileReference; name = "libRCTActionSheet.a"; path = "libRCTActionSheet.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
->>>>>>> dev-master
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -349,11 +340,7 @@
 				10E5E4ADC630424DA4ADBC3F /* libRCTImageResizer.a in Frameworks */,
 				3E09E073F2CA48039F39ACAF /* libimageCropPicker.a in Frameworks */,
 				B09376F1096346C7822C0D70 /* libRNSVG.a in Frameworks */,
-<<<<<<< HEAD
-				2E094AE38DA34593BCB9518E /* libRCTActionSheet.a in Frameworks */,
-=======
 				4E5CD2B204C24D41887650F6 /* libRCTActionSheet.a in Frameworks */,
->>>>>>> dev-master
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,11 +535,7 @@
 				60BD8278167B448C9A8674B6 /* RCTImageResizer.xcodeproj */,
 				1211AEE07E6B4E2696B5E59A /* imageCropPicker.xcodeproj */,
 				ED688EB4C9F441BCAAF53F21 /* RNSVG.xcodeproj */,
-<<<<<<< HEAD
-				2C4B31FCF79E4B3284911543 /* AutoExpandingTextInput.xcodeproj */,
-=======
 				392F781F29DB40A3ABACE091 /* AutoExpandingTextInput.xcodeproj */,
->>>>>>> dev-master
 			);
 			name = Libraries;
 			sourceTree = "<group>";
