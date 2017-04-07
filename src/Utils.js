@@ -62,13 +62,16 @@ export function presenceMonitor(user, fb) {
     });
 }
 
-export function resizeImage(uri) {
-  ImageResizer.createResizedImage(uri, 300, 300, 'PNG', 80)
+export function resizeImage(uri, width, height, mime, quality) {
+  Reactotron.log('Resizing image...');
+  const imageFileType = mime.replace("image/", "").toUpperCase();
+  return ImageResizer.createResizedImage(uri, width, height, imageFileType, quality)
   .then((resizedImageUri) => {
-    Reactotron.debug(resizedImageUri);
+    Reactotron.log('Image resized: ' +  resizedImageUri);
     return resizedImageUri;
-  }).catch((err) => {
-    Reactotron.error(err);
+  })
+  .catch(err => {
+    Reactotron.error(err.code);
   });
 }
 
@@ -77,12 +80,12 @@ const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
 
-export function uploadImage(uri, ref, mime = 'image/PNG') {
-  Reactotron.debug('Uploading image');
+export function uploadImage(uri, ref, mime = 'image/jpeg') {
+  Reactotron.debug('Uploading image: ' + uri);
   const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
   let uploadBlob = null;
   const imageRef = ref;
-  fs.readFile(uploadUri, 'base64')
+  return fs.readFile(uploadUri, 'base64')
     .then((data) => {
       return Blob.build(data, { type: `${mime};BASE64` });
     })
@@ -94,13 +97,8 @@ export function uploadImage(uri, ref, mime = 'image/PNG') {
       uploadBlob.close()
       return imageRef.getDownloadURL();
     })
-    .then((url) => {
-      Reactotron.debug('Url');
-      Reactotron.debug(url);
-      return url;
-    })
     .catch(err => {
-      Reactotron.error('ReadFile error: ');
+      Reactotron.error('Error in uploadImage ReadFile ');
       Reactotron.error(err);
-    })
+    });
 }

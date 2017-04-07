@@ -14,7 +14,7 @@ import Visitors from './views/Visitors';
 import Settings from './views/Settings';
 import Signin from './views/Signin';
 import SessionCheck from './views/SessionCheck';
-import Profile from './views/Profile';
+import { Profile } from './views/Profile';
 import Favorites from './views/Favorites';
 import { Signup1, Signup2, Signup3, Signup4 } from './views/Signup';
 import DrawerPanel from './views/DrawerPanel';
@@ -104,7 +104,7 @@ export default class RouterComponent extends Component {
           Object.assign(user, user, snap.val());
 
           // Block incompleted signup users to login
-          if(!user.signupCompleted) {
+          if(!user.signupCompleted && !appstore.inSignupProcess) {
             this.signOut();
             Reactotron.log('Router: Incomplete sign up.');
             return;
@@ -265,6 +265,7 @@ export default class RouterComponent extends Component {
                   component={Profile}
                   title='關於我'
                   renderLeftButton={menuButton}
+                  hideTabBar
                   />
               </Scene>
             </Scene>

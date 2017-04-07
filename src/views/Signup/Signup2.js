@@ -1,29 +1,24 @@
-import React, {Component, PropTypes} from 'react'; // eslint-disable-line
+import React, {Component} from 'react';
 import {
   View,
   Dimensions,
 } from 'react-native';
-import {FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
-import { Actions } from 'react-native-router-flux';  // eslint-disable-line
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'; // eslint-disable-line
+// import {FormLabel, FormInput, Button} from 'react-native-elements';
+import { Actions } from 'react-native-router-flux';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 // import { autorun } from 'mobx';
-import Reactotron from 'reactotron-react-native'; // eslint-disable-line
-import { Header } from '../../components/Header';
+import Reactotron from 'reactotron-react-native';
+import { Header } from '../../components';
 import { observer } from 'mobx-react/native';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 @observer
 class Signup2 extends Component {
-  static propTypes = {
-    fire: PropTypes.object,
-    store: PropTypes.object,
-    sustore: PropTypes.object,
-  };
-
   constructor(props) {
     super(props);
     this.firebase = this.props.fire;
+    this.store = this.props.store;
     this.sustore = this.props.sustore;
     this.state = {
       size: {
@@ -39,6 +34,15 @@ class Signup2 extends Component {
       disabled: true,
       loading: false,
     };
+  }
+
+  componentWillMount() {
+    Reactotron.log('Will mount Signup2');
+  }
+
+  componentDidMount() {
+    this.store.setInSignupProcess(true);
+    Reactotron.log('Signup 2 mounted');
   }
 
   updatePlace = (data, details) => {
