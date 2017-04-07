@@ -19,18 +19,7 @@ import { Header } from '../../components/Header';
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
 const styles = {
-  wrapper: {
-    flex: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-  },
-  indicator: {
-    marginTop: 50,
-    marginBottom: 50,
-    alignSelf: 'center'
-  }
+  wrapper: { alignSelf: 'center', height: 150, width: 150, marginBottom: 10 },
 };
 
 const ipOptions = {
@@ -155,75 +144,89 @@ class Signup4 extends Component {
       alert('請給偶一張您的美/帥照, 拜偷拜偷');
       return;
     }
-    const user = await this.firebase.auth().currentUser;
+    try {
 
-    user.updateProfile({
-      photoURL: this.state.photoUrl,
-      displayName: this.sustore.nickname,
-    }).then(() => {
-      Reactotron.debug('User profile updated');
-    }).catch(err => {
-      Reactotron.error('User profile update error');
+      const user = await this.firebase.auth().currentUser;
+
+      await user.updateProfile({
+        photoURL: this.state.photoUrl,
+        displayName: this.sustore.nickname,
+      }).then(() => {
+        Reactotron.debug('User profile updated');
+      }).catch(err => {
+        Reactotron.error('User profile update error');
+        Reactotron.error(err);
+      });
+      const analysis = {
+        charm: 50,
+        friendliness: 50,
+        likeness: 50,
+        popularity: 50,
+        activity: 50,
+      };
+
+      const postData = {
+        photoURL: this.sustore.avatar,
+        uid: this.sustore.uid,
+        displayName: this.sustore.nickname,
+        email: this.sustore.email,
+        birthday: this.sustore.birthday,
+        termsAgreed: this.sustore.termsAgreed,
+        city: this.sustore.city,
+        gender: this.sustore.gender,
+        sexOrientation: this.sustore.sexOrientation,
+        geocode: this.sustore.geocode,
+        placeID: this.sustore.placeID,
+        locale: this.sustore.locale,
+        country: this.sustore.country,
+        photoVerified: false,
+        vip: false,
+        bio: '',
+        hobby: '',
+        lang: '',
+        gallery: [],
+        analysis,
+        signupCompleted: true,
+      };
+
+      await this.firebase.database().ref(`users/${this.sustore.uid}`).set(postData).then((res) => {
+        Reactotron.debug('Set user data to firebase');
+        Reactotron.debug(res);
+      }).catch(err => {
+        Reactotron.error('Set user data failed');
+        Reactotron.error(err);
+      });
+      const soRef = this.sustore.sexOrientation + '/' + this.sustore.uid;
+      const soData = {
+        name: this.sustore.nickname,
+        photoURL: this.sustore.avatar,
+        birthday: this.sustore.birthday,
+        country: this.sustore.country,
+        city: this.sustore.city,
+        gender: this.sustore.gender,
+        sexOrientation: this.sustore.sexOrientation,
+      };
+      Reactotron.log(soRef);
+      Reactotron.log(soData);
+      await this.firebase.database().ref(soRef).set(soData).then((res) => {
+        Reactotron.debug('Set sexOrientation to firebase');
+        Reactotron.debug(res);
+      }).catch(err => {
+        Reactotron.error('Set sexOrientation failed');
+        Reactotron.error(err);
+      });
+      this.store.setInSignupProcess(false);
+      return Actions.sessioncheck();
+    } catch (err) {
       Reactotron.error(err);
-    });
-    const analysis = {
-      charm: 50,
-      friendliness: 50,
-      likeness: 50,
-      popularity: 50,
-      activity: 50,
-    };
-
-    const postData = {
-      photoURL: this.sustore.avatar,
-      uid: this.sustore.uid,
-      displayName: this.sustore.nickname,
-      email: this.sustore.email,
-      birthday: this.sustore.birthday,
-      termsAgreed: this.sustore.termsAgreed,
-      city: this.sustore.city,
-      gender: this.sustore.gender,
-      sexOrientation: this.sustore.sexOrientation,
-      geocode: this.sustore.geocode,
-      placeID: this.sustore.placeID,
-      locale: this.sustore.locale,
-      country: this.sustore.country,
-      photoVerified: false,
-      vip: false,
-      bio: '',
-      hobby: '',
-      lang: '',
-      gallery: [],
-      analysis,
-      signupCompleted: true,
-    };
-
-    await this.firebase.database().ref(`users/${this.sustore.uid}`).set(postData).then((res) => {
-      Reactotron.debug('Set user data to firebase');
-      Reactotron.debug(res);
-    }).catch(err => {
-      Reactotron.error('Set user data failed');
-      Reactotron.error(err);
-    });
-    const soRef = this.sustore.sexOrientation + '/' + this.sustore.uid;
-    const soData = {
-      name: this.sustore.displayName,
-      photoURL: this.sustore.avatar,
-      birthday: this.sustore.birthday,
-      country: this.sustore.country,
-      lang: '',
-      city: this.sustore.city,
-      gender: this.sustore.gender,
-    };
-    this.firebase.database().ref(soRef).set(soData);
-    this.store.setInSignupProcess(false);
-    return Actions.sessioncheck();
+    }
   }
 
   render() {
     const { nickname } = this.sustore;
+
     return (
-      <View style={[this.state.size, {flexGrow: 1, }]}>
+      <View style={this.state.size}>
         <Header
           headerText='上傳個人照'
           rightButtonText='完成'
@@ -236,8 +239,9 @@ class Signup4 extends Component {
           <Card>
             <View style={styles.wrapper}>
             {
-              this.state.loading ? <ActivityIndicator style={styles.indicator}/> : <Avatar
-              style={{ alignSelf: 'center', marginBottom: 10 }}
+              this.state.loading ? <ActivityIndicator size='large' style={{
+                marginTop: 60
+              }}/> : <Avatar
               xlarge
               rounded
               title={nickname}
