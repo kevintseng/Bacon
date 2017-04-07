@@ -14,6 +14,7 @@ class AppStore {
 
   @action setUser(user) {
     this.user = user;
+    Reactotron.log('User @appstore: ' + user.uid);
   }
 
   @action signOut() {
@@ -52,9 +53,18 @@ class AppStore {
 
   }
 
+  @action setPhotos(gallery) {
+    this.user.photos = gallery;
+  }
+
   updateUserAtFirebase(firebase, key, val) {
-    const setFirebase = firebase.database().ref('users/' + this.user.uid + '/' + key);
-    setFirebase.set(val);
+    try {
+      const setFirebase = firebase.database().ref('users/' + this.user.uid + '/' + key);
+
+      setFirebase.set(val);
+    } catch(err) {
+      Reactotron.log(err);
+    }
   }
 }
 

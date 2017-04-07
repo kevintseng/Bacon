@@ -83,7 +83,7 @@ const menuButton = () => (
 
 @observer
 export default class RouterComponent extends Component {
-  componentDidMount() {
+  componentWillMount() {
     let user;
     firebase.auth().onAuthStateChanged(data => {
       if(data) {
@@ -105,15 +105,21 @@ export default class RouterComponent extends Component {
 
           // Block incompleted signup users to login
           if(!user.signupCompleted && !appstore.inSignupProcess) {
+            const _user = firebase.auth().currentUser;
+          // In case the user dropped out during sign-up and want to sign-up again
+          // TODO: Should also check firebase db to see if there's any other related data needs to be removed too
+            if(_user) {
+              _user.delete().then(() => {}, _err => { Reactotron.error(_err); });
+            }
             this.signOut();
             Reactotron.log('Router: Incomplete sign up.');
             return;
           }
 
           Reactotron.log(user);
+          Reactotron.log('Setting store.user @Router');
           appstore.setUser(user);
-          Reactotron.log('Router: User has been set in appstore');
-          Reactotron.log(appstore);
+
           this.setOnline(appstore.user.uid);
           storage.save({
             key: 'user',
@@ -137,21 +143,16 @@ export default class RouterComponent extends Component {
 
   setOnline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    const dbRef = firebase.database().ref('/connections/' + uid);
+    const dbRef = firebase.database().ref('/online/' + uid);
     dbRef.set({
-      online: true,
       lastOnline: timestamp,
       location: 'Taipei, Taiwan',
     });
   }
 
   setOffline(uid) {
-    const timestamp = Math.floor(Date.now() / 1000);
-    const dbRef = firebase.database().ref('/connections/' + uid);
-    dbRef.update({
-      online: false,
-      lastOnline: timestamp,
-    });
+    // const timestamp = Math.floor(Date.now() / 1000);
+    firebase.database().ref('/online/' + uid).remove();
   }
 
   signOut = () => {
@@ -180,7 +181,6 @@ export default class RouterComponent extends Component {
         localdb={storage}
         getSceneStyle={getSceneStyle} >
           <Scene key='root' hideNavBar>
-
             <Scene key='sessioncheck' component={SessionCheck} />
             <Scene key='signin' component={Signin} />
             <Scene key='forgot' component={Forgot} title='申請密碼重設' hideNavBar={false} />

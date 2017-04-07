@@ -1,39 +1,19 @@
 //TODO: 把 renderGallery拉出來變成一個component
 
 import React, { Component } from 'react';
-import { Dimensions, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { Card, ListItem, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
 import Moment from 'moment';
 import { BasicInfo } from './BasicInfo';
 import AccountStatus from './AccountStatus';
 import InfoArea from './InfoArea';
+// import LangPicker from './LangPicker';
 
 
 const ADD_IMAGE = require('../../images/addImage.png');
-
-const {width} = Dimensions.get('window');
-const styles = {
-  viewWrapper: {
-    width,
-  },
-  container: {
-      flex: 1,
-      alignItems: 'center',
-      margin: 0,
-      padding: 0,
-  },
-  icon: {
-      textAlign: 'center'
-  },
-  item: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-};
 
 @observer
 export default class MyProfile extends Component {
@@ -50,9 +30,11 @@ export default class MyProfile extends Component {
       items: [{ id: 'addImage', src: ADD_IMAGE }],
       bio: this.store.user.bio ? this.store.user.bio : '',
       hobby: this.store.user.hobby ? this.store.user.hobby : '',
-      language: this.store.user.lang ? this.store.user.lang : '',
+      lang: this.store.user.lang ? this.store.user.lang : '',
+      emailVerified: this.store.user.emailVerified,
       bioHeight: 50,
       emailVerificationButtonLabel: '重寄認證信',
+      photoVerified: this.store.user.photoVerified,
       vip: this.store.user.vip ? this.store.user.vip : false,
     };
   }
@@ -126,7 +108,7 @@ export default class MyProfile extends Component {
   }
 
   handleVerifyPhoto = () => {
-
+    alert('相片認證被觸發');
     Reactotron.log('Verify Photo Pressed');
   }
 
@@ -160,8 +142,51 @@ export default class MyProfile extends Component {
   render() {
     Reactotron.log(this.store.user);
     const user = this.store.user;
-    const age = this.getAge(user.birthday);
-    const gender = this.getGender(user.gender);
+    // const age = this.getAge(user.birthday);
+    // const gender = this.getGender(user.gender);
+
+    let emailVerificationItem = (<ListItem
+      key='email'
+      title='Email 認證'
+      rightTitle={this.state.emailVerificationButtonLabel}
+      rightTitleStyle={{ color: '#2962FF' }}
+      onPress={this.handleSendVerifyEmail}
+      hideChevron
+      subtitle='未完成'
+      />);
+
+    if(this.state.emailVerified) {
+      emailVerificationItem = (<ListItem
+        key='email'
+        title='Email 認證'
+        hideChevron
+        subtitle='已認證'
+        />);
+    }
+
+    let photoVerificationItem = (
+      <ListItem
+        key='verifiedPhoto'
+        title='相片認證'
+        rightTitle='進行認證'
+        rightTitleStyle={{ color: '#2962FF' }}
+        onPress={this.handleVerifyPhoto}
+        hideChevron
+        subtitle='未完成'
+        />
+    );
+
+    if(this.state.photoVerified) {
+      photoVerificationItem = (
+        <ListItem
+          key='verifiedPhoto'
+          title='相片認證'
+          hideChevron
+          subtitle='已認證'
+          />
+      );
+    }
+
     // const userImg = {uri: user.photoURL};
     return(
       <ScrollView>
@@ -172,27 +197,12 @@ export default class MyProfile extends Component {
           handleEditBasicInfo={this.handleEditBasicInfo}
           />
         <AccountStatus
-          vip={this.store.user.vip}
+          vip={user.vip}
           upgrade={this.handleUpgrade}
           addCredit={this.handleAddCredit}
           />
-          <ListItem
-            key='email'
-            title='Email 認證'
-            rightTitle={this.state.emailVerificationButtonLabel}
-            rightTitleStyle={{ color: '#2962FF' }}
-            onPress={this.handleSendVerifyEmail}
-            hideChevron
-            subtitle='未完成'
-            />
-          <ListItem
-            key='verifiedPhoto'
-            title='相片認證'
-            rightTitle='進行認證'
-            rightTitleStyle={{ color: '#2962FF' }}
-            hideChevron
-            subtitle='未完成'
-            />
+          { emailVerificationItem }
+          { photoVerificationItem }
           <InfoArea
             label={'自我介紹'}
             defaultValue={this.state.bio}
@@ -208,10 +218,10 @@ export default class MyProfile extends Component {
             handleFunc={this.handleUpdateHobby}
             />
           <InfoArea
-            label={'語言能力'}
-            defaultValue={this.state.language}
+            label={'溝通語言'}
+            defaultValue={this.state.lang}
             minHeight={30}
-            maxLength={50}
+            maxLength={150}
             handleFunc={this.handleUpdateLang}
             />
           <View style={{ height: 20 }} />

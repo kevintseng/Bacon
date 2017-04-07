@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { FormLabel, FormValidationMessage, Icon} from 'react-native-elements';
 import AutoExpandingTextInput from 'react-native-auto-expanding-textinput';
-import Reactotron from 'reactotron-react-native';
+// import Reactotron from 'reactotron-react-native';
 
 const styles = {
   textAreaStyle: {
@@ -33,7 +33,7 @@ export default class InfoArea extends Component {
     let multiline = false;
     if(this.props.maxLength > 25) {
       multiline = true;
-    };
+    }
 
     let minH = this.props.defaultValue ? Math.round(this.props.defaultValue.length * 0.6) : 30;
     // Reactotron.log(minH);
@@ -41,7 +41,7 @@ export default class InfoArea extends Component {
 
     this.state = {
       maxLength: this.props.maxLength ? this.props.maxLength: 25,
-      multiline: multiline,
+      multiline,
       editMode: false,
       text: this.props.defaultValue ? this.props.defaultValue: '',
       maxHeight: 300,
@@ -51,6 +51,10 @@ export default class InfoArea extends Component {
   }
 
   componentDidMount() {
+  }
+
+  componentWillUnmount() {
+    this.handleEndEditing();
   }
 
   _onChangeHeight = (before, after) => {

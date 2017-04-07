@@ -50,7 +50,7 @@ class Signup1 extends Component {
       password: '',
       birthday: '',
       nickname: '',
-      termsAgreed: true,
+      termsAgreed: false,
       maxDate: maxDay(),
       loading: false,
       birthdayErr: false,
@@ -190,7 +190,7 @@ class Signup1 extends Component {
   termsCheck() {
     if(!this.state.termsAgreed) {
       this.setState({
-        termsErr: '抱歉, 您必須先同意本App之所有條款後才能使用服務',
+        termsErr: '您必須先同意所有條款後再使用本App的服務',
         loading: false,
       })
       return false;
