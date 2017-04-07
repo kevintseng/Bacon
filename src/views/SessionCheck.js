@@ -56,6 +56,9 @@ export default class Welcome extends Component {
           Reactotron.log('SessionCheck: Data expired, rendering signin');
           Actions.signin();
           break;
+        default:
+          Reactotron.log(err.name);
+          Actions.signin();
       }
     })
   }
