@@ -107,6 +107,7 @@ export default class RouterComponent extends Component {
           if(!user.signupCompleted && !appstore.inSignupProcess) {
             const _user = firebase.auth().currentUser;
           // In case the user dropped out during sign-up and want to sign-up again
+          // TODO: Should also check firebase db to see if there's any other related data needs to be removed too
             if(_user) {
               _user.delete().then(() => {}, _err => { Reactotron.error(_err); });
             }
