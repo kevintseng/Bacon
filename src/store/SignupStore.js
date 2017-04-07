@@ -90,17 +90,31 @@ export default class SignupStore {
     this.geocode = geo;
   }
 
-  @action setSexOrientation(selected) {
-    switch(selected) {
-      case 0:
-      this.sexOrientation = 'm';
-      break;
-      case 1:
-      this.sexOrientation = 'f';
-      break;
-      case 3:
-      this.sexOrientation = 'b';
-      break;
+  @action setSexOrientation(gender, selected) {
+    if(gender === 0) {
+      switch(selected) {
+        case 0:
+        this.sexOrientation = 'msm'
+        break;
+        case 1:
+        this.sexOrientation = 'msf';
+        break;
+        case 2:
+        this.sexOrientation = 'msb';
+        break;
+      }
+    } else {
+      switch(selected) {
+        case 0:
+        this.sexOrientation = 'fsm'
+        break;
+        case 1:
+        this.sexOrientation = 'fsf';
+        break;
+        case 2:
+        this.sexOrientation = 'fsb';
+        break;
+      }
     }
   }
 

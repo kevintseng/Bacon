@@ -3,29 +3,70 @@ import { ActivityIndicator, Image, View, Dimensions, ScrollView } from 'react-na
 import { Card, Divider, Button, Text } from 'react-native-elements';
 import Carousel from 'react-native-looped-carousel';
 import { observer } from 'mobx-react/native';
-import { Actions } from 'react-native-router-flux';// eslint-disable-line
-import Reactotron from 'reactotron-react-native'; // eslint-disable-line
+import { Actions } from 'react-native-router-flux';
+import Reactotron from 'reactotron-react-native';
 
-const { width, height } = Dimensions.get('window');// eslint-disable-line
+const width = Dimensions.get('window').with;
 
 @observer
 export default class MeetCute extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-  }
-
   constructor(props) {
     super(props);
+    this.firebase = this.props.fire;
+    this.store = this.props.store;
+    this.localdb = this.props.localdb;
     this.state = {
       size: { width, height: 320 },
       imgLoading: false,
+      list: null,
     };
   }
 
   componentWillMount() {
     Reactotron.debug('Rendering MeetCute');
     Actions.refresh({ key: 'drawer', open: false });
+  }
+
+  componentDidMount() {
+    this.getTargets(this.store.user.sexOrientation);
+  }
+
+  getData = (cond) => {
+    Reactotron.log('MeetCute getData: ' + cond);
+    const ref = this.firebase.database().ref(cond);
+    ref.once('value', snapshot => {
+      Reactotron.log('snapshot');
+      Reactotron.log(snapshot)
+    }).catch( err => {
+      Reactotron.log(err);
+    });
+  }
+
+  getTargets = (sexOrientation) => {
+    switch(sexOrientation) {
+      case 'msf':
+        // this.getData('fsm');
+        this.getData('msf');
+        this.getData('msb');
+        break;
+      case 'msm':
+        this.getData('msm');
+        break;
+      case 'msb':
+        this.getData('msm');
+        this.getData('fsm');
+        break;
+      case 'fsm':
+        this.getData('msf');
+        break;
+      case 'fsf':
+        this.getData('fsf');
+        break;
+      case 'fsb':
+        this.getData('fsf');
+        this.getData('msf');
+        break;
+    }
   }
 
   render() {

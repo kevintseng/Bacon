@@ -23,11 +23,11 @@ export default class Welcome extends Component {
 
   componentWillMount() {
     Reactotron.log('Rendering SessionCheck');
-    this.getUser();
   }
 
   componentDidMount() {
     Reactotron.log('SessionCheck rendered');
+    this.getUser();
   }
 
   getUser = () => {
@@ -36,10 +36,10 @@ export default class Welcome extends Component {
       autoSync: false,
       syncInBackground: false,
     }).then(ret => {
-      Reactotron.log('localdb: ');
-      Reactotron.log(ret);
+      Reactotron.log('Loading localdb');
       if(ret != null) {
-        this.store.setUser(ret.rawData);
+        Reactotron.log('Setting store.user @SessionCheck');
+        this.store.setUser(ret);
         Actions.drawer();
       } else {
         Reactotron.log('SessionCheck: Rendering signin');
@@ -48,14 +48,17 @@ export default class Welcome extends Component {
     }).catch(err => {
       Reactotron.log(err.message);
       switch (err.name) {
-          case 'NotFoundError':
-            Reactotron.log('SessionCheck: Data not found, rendering signin');
-            Actions.signin();
-            break;
-          case 'ExpiredError':
-            Reactotron.log('SessionCheck: Data expired, rendering signin');
-            Actions.signin();
-            break;
+        case 'NotFoundError':
+          Reactotron.log('SessionCheck: Data not found, rendering signin');
+          Actions.signin();
+          break;
+        case 'ExpiredError':
+          Reactotron.log('SessionCheck: Data expired, rendering signin');
+          Actions.signin();
+          break;
+        default:
+          Reactotron.log(err.name);
+          Actions.signin();
       }
     })
   }

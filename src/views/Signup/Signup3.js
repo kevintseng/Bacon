@@ -73,7 +73,8 @@ class Signup3 extends Component {
     }
 
     this.sustore.setGender(this.state.selectedGender);
-    this.sustore.setSexOrientation(this.state.selectedSexOrientation);
+    Reactotron.log('gender: ' + this.state.selectedGender + ', selected: ' + this.state.selectedSexOrientation);
+    this.sustore.setSexOrientation(this.state.selectedGender, this.state.selectedSexOrientation);
     autorun(() => {
       Reactotron.log(this.sustore);
     });
