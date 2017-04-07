@@ -28,29 +28,46 @@ export default class MeetCute extends Component {
   }
 
   componentDidMount() {
-    this.getData(this.store.user.sexOrientation);
+    this.getTargets(this.store.user.sexOrientation);
   }
 
   getData = (cond) => {
+    Reactotron.log('MeetCute getData: ' + cond);
     const ref = this.firebase.database().ref(cond);
     ref.once('value', snapshot => {
       Reactotron.log('snapshot');
       Reactotron.log(snapshot)
+    }).catch( err => {
+      Reactotron.log(err);
     });
   }
 
-  // getTargets = (sexOrientation) => {
-  //   switch(sexOrientation) {
-  //     case 'msf':
-  //       this.getData('fsm');
-  //     case 'fsm':
-  //       return 'msf';
-  //     case 'msm':
-  //       return 'msm';
-  //     case 'msb':
-  //       return ''
-  //   }
-  // }
+  getTargets = (sexOrientation) => {
+    switch(sexOrientation) {
+      case 'msf':
+        // this.getData('fsm');
+        this.getData('msf');
+        this.getData('msb');
+        break;
+      case 'msm':
+        this.getData('msm');
+        break;
+      case 'msb':
+        this.getData('msm');
+        this.getData('fsm');
+        break;
+      case 'fsm':
+        this.getData('msf');
+        break;
+      case 'fsf':
+        this.getData('fsf');
+        break;
+      case 'fsb':
+        this.getData('fsf');
+        this.getData('msf');
+        break;
+    }
+  }
 
   render() {
     const content = (
