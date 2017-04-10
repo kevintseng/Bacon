@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Dimensions,ListView, Image } from 'react-native';
+import { View, Dimensions,ListView, Image,TouchableHighlight } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Text, Button, Avatar} from 'react-native-elements';
@@ -12,9 +12,12 @@ const { width, height } = Dimensions.get('window'); //eslint-disable-line
 const styles = {
     contentViewStyle: {
         // 主轴方向
-        flexDirection:'row',
+        //flexDirection:'row',
         // 换行
-        flexWrap:'wrap'
+        //flexWrap:'wrap'
+        justifyContent: 'center',
+        flexDirection: 'row',
+        flexWrap: 'wrap'
     },
 
     itemStyle: {
@@ -25,8 +28,9 @@ const styles = {
         width:80,
         height:80,
         // 左边距
-        marginLeft:20,
-        marginTop:20
+        //marginLeft:20,
+        marginTop:20,
+        margin: 10,
     },
 
     itemImageStyle: {
@@ -34,26 +38,12 @@ const styles = {
         width:80,
         height:80,
         // 间距
-        marginBottom:5
+        marginBottom:5,
+        borderRadius: 80/2,
+
     }
 };
 
-const newData = [
-        {"title" : "icon", "img" : "icon"},
-        {"title" : "lufei", "img" : "lufei"},
-        {"title" : "icon", "img" : "icon"},
-        {"title" : "lufei", "img" : "lufei"},
-        {"title" : "icon", "img" : "icon"},
-        {"title" : "lufei", "img" : "lufei"},
-        {"title" : "icon", "img" : "icon"},
-        {"title" : "lufei", "img" : "lufei"},
-        {"title" : "icon", "img" : "icon"},
-        {"title" : "lufei", "img" : "lufei"},
-        {"title" : "icon", "img" : "icon"},
-        {"title" : "lufei", "img" : "lufei"},
-        {"title" : "icon", "img" : "icon"},
-        {"title" : "lufei", "img" : "lufei"}
-  ];
 
 @observer
 export default class Nearby extends Component {
@@ -64,6 +54,8 @@ export default class Nearby extends Component {
     longitude: PropTypes.number,
     usersLocation: PropTypes.object,
     latlong: PropTypes.object,
+    myPhotoUrl: PropTypes.string,
+    myDisplayName: PropTypes.string,
     //initialPosition: PropTypes.number,
     //lastPosition: PropTypes.number,
   }
@@ -76,6 +68,10 @@ export default class Nearby extends Component {
     this.state = {
       usersLocation: [],
       dataSource: ds.cloneWithRows([]),
+      myAccount:{
+        url:'',
+        name:''
+      }
     }
 
     //this.getLocation();
@@ -142,16 +138,10 @@ export default class Nearby extends Component {
 
       geoQuery.on("ready", async () => {
         await geoQuery.on('key_entered', (key, location, distance) => {
-          //Reactotron.log(key + " is located at [" + location + "] which is within the query (" + parseFloat(distance.toFixed(2)) + " km from center)");
-          //nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2)) });
-
           if(key != myUserId){
               nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2)) });
           }
         });
-        //Reactotron.log('nearBy');
-        //Reactotron.log(nearBy);
-
         for (var value of nearBy){
           console.log(value);
           //value.name = 'frank';
@@ -159,19 +149,20 @@ export default class Nearby extends Component {
             value.name = snapshot.val().displayName;
             value.photoURL = snapshot.val().photoURL;
           });
+          /*
           await this.fs.database().ref('connections/' + value.uid).once('value').then(function(snapshot){
             //value.online = snapshot.val().online;
             value.online = snapshot.val().online;
           });
+          */
         }
+        nearBy.sort(function(a, b) {return a.distance - b.distance;});
         this.setState({usersLocation : nearBy})
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         console.log(nearBy);
         this.setState({dataSource: ds.cloneWithRows(nearBy)})
         //Reactotron.log(error);
       });
-
-
       /*
       geoQuery.on("key_entered").then(function(key, location, distance) {
         Reactotron.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
@@ -186,77 +177,44 @@ export default class Nearby extends Component {
   }
 
 
-  getData = () =>{
-    var uid = 'r5WSncaNXATxjvXqbsjwOBAnSZB2';
-    this.fs.database().ref('users/' + uid).once('value').then(function(snapshot){
-      var username = snapshot.val().username;
-      console.log(snapshot.val());
-    })
-  }
-
-
-
-
-
-
   render() {
     //Reactotron.log('render ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
     //Reactotron.log(this.state.usersLocation);
     //const list = this.state.usersLocation;
     //console.log(this.state.usersLocation);
     const list = this.state.usersLocation;
-    const styles = {
-        contentViewStyle: {
-            // 主轴方向
-            flexDirection:'row',
-            // 换行
-            flexWrap:'wrap'
-        },
-
-        itemStyle: {
-            // 对齐方式
-            alignItems:'center',
-            justifyContent:'center',
-            // 尺寸
-            width:80,
-            height:80,
-            // 左边距
-            marginLeft:40,
-            marginTop:20
-        },
-
-        itemImageStyle: {
-            // 尺寸
-            width:80,
-            height:80,
-            // 间距
-            marginBottom:5
-        }
-    };
-
+    //console.log('!!!' + this.state.myDisplayName);
     return(
-      <View>
-        <View style={{ height: 90, flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10 }}>
-        </View>
 
+      <View style={{flex: 1 ,alignSelf: 'center'}}>
 
+          <View style={{alignSelf: 'center',marginTop:20}}>
+             <Image source={{uri:this.store.user.photoURL}} style={styles.itemImageStyle}/>
+          </View>
+          <View style={{alignSelf: 'center',marginBottom:-20}}>
+             <Text>{this.store.user.displayName}</Text>
+          </View>
 
           <ListView
               dataSource={this.state.dataSource}
               renderRow={this.renderRow}
               contentContainerStyle={styles.contentViewStyle}
+              enableEmptySections = {true}
           />
+
       </View>
     );
   };
 
   renderRow(rowData){
-            return(
-            <View style={styles.itemStyle}>
-                <Image source={{uri:rowData.photoURL}} style={styles.itemImageStyle}/>
-                <Text>{rowData.name}</Text>
-            </View>
-            );
+    return(
+      <TouchableHighlight onPress={() => console.log(rowData.uid)} underlayColor = 'white' style={{height:80, marginTop:30}}>
+      <View style={styles.itemStyle}>
+          <Image source={{uri:rowData.photoURL}} style={styles.itemImageStyle}/>
+          <Text>{rowData.name}</Text>
+      </View>
+      </TouchableHighlight>
+    );
   }
 
 }
