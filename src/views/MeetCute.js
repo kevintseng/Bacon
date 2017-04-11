@@ -38,9 +38,10 @@ export default class MeetCute extends Component {
   }
 
   mq = (cond) => {
-    const ref = this.firebase.database().ref(cond);
+    const ref = this.firebase.database().ref(`seeking/${this.store.user.country}/${cond}`);
     ref.once('value', snap => {
       Reactotron.log('Executing mq cond:' + cond);
+      Reactotron.log(snap.val() );
       this.setState({
         list: snap.val(),
       });
@@ -51,6 +52,7 @@ export default class MeetCute extends Component {
     const ref = this.firebase.database().ref('users/' + uid);
     ref.once('value', snap => {
       Reactotron.log('Executing getProfile: ' + uid );
+      Reactotron.log('UserProfile' + snap.val() );
       this.setState({
         data: snap.val(),
       });
@@ -61,10 +63,10 @@ export default class MeetCute extends Component {
       let retArr;
       switch(so) {
         case 'msf':
-         retArr = this.mq('fsm');
+         this.mq('msf');
          break;
         case 'msm':
-          retArr = this.mq('msm');
+          this.mq('msm');
           break;
         case 'msb':
           // TODO: 等註冊多一點用戶後要改回來
