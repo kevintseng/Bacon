@@ -44,6 +44,7 @@
 		3E09E073F2CA48039F39ACAF /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1863A827D06343DBB5CC54E6 /* libimageCropPicker.a */; };
 		B09376F1096346C7822C0D70 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9CB30433ADC4E85964961AB /* libRNSVG.a */; };
 		4E5CD2B204C24D41887650F6 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEF968A28E44ED2A9022B3B /* libRCTActionSheet.a */; };
+		176143AAD814467D95C0825C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC19B83564ED4CCA8A23F810 /* libRNDeviceInfo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -306,6 +307,8 @@
 		F9CB30433ADC4E85964961AB /* libRNSVG.a */ = {isa = PBXFileReference; name = "libRNSVG.a"; path = "libRNSVG.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		392F781F29DB40A3ABACE091 /* AutoExpandingTextInput.xcodeproj */ = {isa = PBXFileReference; name = "AutoExpandingTextInput.xcodeproj"; path = "../node_modules/react-native-auto-expanding-textinput/ios/AutoExpandingTextInput.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		2CEF968A28E44ED2A9022B3B /* libRCTActionSheet.a */ = {isa = PBXFileReference; name = "libRCTActionSheet.a"; path = "libRCTActionSheet.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		BD16979B3F9A42A696DE06D1 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNDeviceInfo.xcodeproj"; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		DC19B83564ED4CCA8A23F810 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo.a"; path = "libRNDeviceInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -341,6 +344,7 @@
 				3E09E073F2CA48039F39ACAF /* libimageCropPicker.a in Frameworks */,
 				B09376F1096346C7822C0D70 /* libRNSVG.a in Frameworks */,
 				4E5CD2B204C24D41887650F6 /* libRCTActionSheet.a in Frameworks */,
+				176143AAD814467D95C0825C /* libRNDeviceInfo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,6 +540,7 @@
 				1211AEE07E6B4E2696B5E59A /* imageCropPicker.xcodeproj */,
 				ED688EB4C9F441BCAAF53F21 /* RNSVG.xcodeproj */,
 				392F781F29DB40A3ABACE091 /* AutoExpandingTextInput.xcodeproj */,
+				BD16979B3F9A42A696DE06D1 /* RNDeviceInfo.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1124,6 +1129,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hookup.app/hookup";
@@ -1141,6 +1147,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

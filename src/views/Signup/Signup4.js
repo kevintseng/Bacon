@@ -6,7 +6,8 @@ import {
     ActivityIndicator,
     Platform,
   } from 'react-native';
-import ImageResizer from 'react-native-image-resizer';
+import DeviceInfo from 'react-native-device-info';
+import ImageResizer from 'react-native-image-resizer'; //eslint-disable-line
 import { Card, Button, Avatar } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -14,7 +15,7 @@ import { observer } from 'mobx-react/native';
 import ImagePicker from 'react-native-image-picker';
 import Reactotron from 'reactotron-react-native';
 import { Header } from '../../components/Header';
-// import { FirebaseConfig } from '../../Configs';
+
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
@@ -62,6 +63,8 @@ class Signup4 extends Component {
           width,
           height: 600
       },
+      country: DeviceInfo.getDeviceCountry(),
+      locale: DeviceInfo.getDeviceLocale(),
       imageHeight: null,
       imageWidth: null,
       imageTimestamp: null,
@@ -180,8 +183,8 @@ class Signup4 extends Component {
       sexOrientation: this.sustore.sexOrientation,
       geocode: this.sustore.geocode,
       placeID: this.sustore.placeID,
-      locale: this.sustore.locale,
-      country: this.sustore.country,
+      locale: this.state.locale,
+      country: this.state.country,
       photoVerified: false,
       vip: false,
       bio: '',
