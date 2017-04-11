@@ -6,7 +6,7 @@ import {
 import {ButtonGroup, FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { autorun } from 'mobx';
+// import { autorun } from 'mobx';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import { Header, FormErrorMsg } from '../../components';
 
@@ -75,9 +75,9 @@ class Signup3 extends Component {
     this.sustore.setGender(this.state.selectedGender);
     Reactotron.log('gender: ' + this.state.selectedGender + ', selected: ' + this.state.selectedSexOrientation);
     this.sustore.setSexOrientation(this.state.selectedGender, this.state.selectedSexOrientation);
-    autorun(() => {
-      Reactotron.log(this.sustore);
-    });
+    // autorun(() => {
+    //   Reactotron.log(this.sustore);
+    // });
     Actions.signup4({
       sustore: this.sustore
     });
