@@ -70,10 +70,6 @@ export default class MeetCute extends Component {
           // TODO: 等註冊多一點用戶後要改回來
           // this.mq('fsm');
           // this.mq('msm');
-            // retArr = this.mq('fsm');
-            // Reactotron.log('retArr: ' + retArr);
-            // temp = this.mq('msm');
-            // Reactotron.log('temp: ' + temp);
             this.mq('fsm');
             break;
         case 'fsm':
