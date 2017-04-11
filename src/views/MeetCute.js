@@ -1,27 +1,24 @@
-import React, { Component, PropTypes } from 'react';
-import { ActivityIndicator, Image, View, Dimensions, ScrollView } from 'react-native';
-import { Card, Divider, Button, Text } from 'react-native-elements';
-import Carousel from 'react-native-looped-carousel';
+import React, { Component } from 'react';
+import { View, Dimensions } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { Actions } from 'react-native-router-flux';// eslint-disable-line
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
+import DeviceInfo from 'react-native-device-info';
+import Profile from './Profile';
+
 
 const { width, height } = Dimensions.get('window');// eslint-disable-line
 
 @observer
 export default class MeetCute extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-  }
-
   constructor(props) {
     super(props);
     this.firebase = this.props.fire;
     this.store = this.props.store;
-    this.localdb = this.props.localdb;
+    this.db = this.props.localdb;
     this.state = {
-      size: { width, height: 320 },
+      user: this.store.user,
+      size: { width, height },
       imgLoading: false,
       list: null,
     };
@@ -33,156 +30,75 @@ export default class MeetCute extends Component {
   }
 
   componentDidMount() {
-    const ref = this.firebase.database().ref('users').orderByValue('gender');
-    ref.once('value', snap => {
-      Reactotron.log(snap.val());
-    });
+    Reactotron.debug('MeetCute rendered');
+    this.seekMeetQs(this.store.user.sexOrientation);
+    const deviceId = DeviceInfo.getUniqueID();
+    const locale = DeviceInfo.getDeviceLocale();
+    const country = DeviceInfo.getDeviceCountry();
+    Reactotron.log('Device ID: ' + deviceId + ', locale: ' + locale + ', country: ' + country);
+  }
 
+  mq = (cond) => {
+    const ref = this.firebase.database().ref(cond);
+    ref.once('value', snap => {
+      Reactotron.log('Executing mq cond:' + cond);
+      this.setState({
+        list: snap.val(),
+      });
+    });
+  }
+
+  getProfile = uid => {
+    const ref = this.firebase.database().ref('users/' + uid);
+    ref.once('value', snap => {
+      Reactotron.log('Executing getProfile: ' + uid );
+      this.setState({
+        data: snap.val(),
+      });
+    })
+  }
+
+  seekMeetQs = (so) => {
+      let retArr;
+      switch(so) {
+        case 'msf':
+         retArr = this.mq('fsm');
+         break;
+        case 'msm':
+          retArr = this.mq('msm');
+          break;
+        case 'msb':
+          // TODO: 等註冊多一點用戶後要改回來
+          // this.mq('fsm');
+          // this.mq('msm');
+            // retArr = this.mq('fsm');
+            // Reactotron.log('retArr: ' + retArr);
+            // temp = this.mq('msm');
+            // Reactotron.log('temp: ' + temp);
+            this.mq('fsm');
+            break;
+        case 'fsm':
+          this.mq('msf');
+         break;
+        case 'fsf':
+            this.mq('fsf');
+          break;
+        case 'fsb':
+          Object.assign(retArr, this.mq('msf'), this.mq('fsf'));
+          break;
+      }
   }
 
   render() {
-    const content = (
-      <ScrollView>
-        <Carousel
-          style={[this.state.size]}
-          autoplay={false}
-          bullets
-        >
-          <View style={this.state.size}>
-            <Image
-              key='1'
-              style={[this.state.size, {flex:1, backgroundColor: '#DCDCDC', position: 'absolute'}]}
-              onLoadStart={() => this.setState({ imgLoading: true })}
-              onLoad={() => this.setState({ imgLoading: false })}
-              source={{uri: 'https://loremflickr.com/320/300/taiwan,woman/?random=1'}}>
-              {
-                this.state.imgLoading && <View style={{ flex:1, alignItems: 'center', justifyContent: 'flex-end' }}><ActivityIndicator size='large' color='white' /></View>
-              }
-              <View style={{ flex:1, marginLeft: 10, marginBottom: 20, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Button
-                  icon={{ name: 'heart', type: 'evilicon', color: 'white', size: 70 }}
-                  backgroundColor='transparent'
-                  onPress={() => {}}
-                />
-                <Button
-                  icon={{ name: 'close-o', type: 'evilicon', color: 'white', size: 70 }}
-                  backgroundColor='transparent'
-                  onPress={() => {}}
-                />
-              </View>
-            </Image>
-          </View>
-          <View style={this.state.size}>
-            <Image
-              key='2'
-              style={[this.state.size, {flex:1, backgroundColor: '#DCDCDC', position: 'absolute'}]}
-              onLoadStart={() => this.setState({ imgLoading: true })}
-              onLoad={() => this.setState({ imgLoading: false })}
-              source={{uri: 'https://loremflickr.com/320/300/taiwan,woman/?random=2'}}>
-              {
-                this.state.imgLoading && <View style={{ flex:1, alignItems: 'center', justifyContent: 'flex-end' }}><ActivityIndicator size='large' color='white' /></View>
-              }
-              <View style={{ flex:1, marginLeft: 10, marginBottom: 20, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Button
-                  icon={{ name: 'heart', type: 'evilicon', color: 'white', size: 70 }}
-                  backgroundColor='transparent'
-                  onPress={() => {}}
-                />
-                <Button
-                  icon={{ name: 'close-o', type: 'evilicon', color: 'white', size: 70 }}
-                  backgroundColor='transparent'
-                  onPress={() => {}}
-                />
-              </View>
-            </Image>
-          </View>
-          <View style={this.state.size}>
-            <Image
-              key='3'
-              style={[this.state.size, {flex:1, backgroundColor: '#DCDCDC', position: 'absolute'}]}
-              onLoadStart={() => this.setState({ imgLoading: true })}
-              onLoad={() => this.setState({ imgLoading: false })}
-              source={{uri: 'https://loremflickr.com/320/300/taiwan,woman/?random=3'}}>
-              {
-                this.state.imgLoading && <View style={{ flex:1, alignItems: 'center', justifyContent: 'flex-end' }}><ActivityIndicator size='large' color='white' /></View>
-              }
-              <View style={{ flex:1, marginLeft: 10, marginBottom: 20, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Button
-                  icon={{ name: 'heart', type: 'evilicon', color: 'white', size: 70 }}
-                  backgroundColor='transparent'
-                  onPress={() => {}}
-                />
-                <Button
-                  icon={{ name: 'close-o', type: 'evilicon', color: 'white', size: 70 }}
-                  backgroundColor='transparent'
-                  onPress={() => {}}
-                />
-              </View>
-            </Image>
-          </View>
-        </Carousel>
-        <Card
-          containerStyle={{ width: this.state.size.width, margin: 0, padding: 10 }}>
-          <View style={{ flex:0, flexDirection: 'row' }}>
-            <Text h4>Carol </Text>
-            <Text> 23歲, 女</Text>
-          </View>
-          <Divider style={{ marginVertical: 5 }}/>
-          <Text style={{ color: '#6A5ACD' }}>
-            興趣
-          </Text>
-          <Text style={{ alignSelf: 'flex-end' }}>
-            吃飯, 喝水, 睡覺, 灑尿
-          </Text>
-          <Divider style={{ marginVertical: 5 }}/>
-          <Text style={{ color: '#6A5ACD' }}>
-            興趣
-          </Text>
-          <Text style={{ alignSelf: 'flex-end' }}>
-            吃飯, 喝水, 睡覺, 灑尿
-          </Text>
-          <Divider style={{ marginVertical: 5 }}/>
-          <Text style={{ color: '#6A5ACD' }}>
-            興趣
-          </Text>
-          <Text style={{ alignSelf: 'flex-end' }}>
-            吃飯, 喝水, 睡覺, 灑尿
-          </Text>
-          <Divider style={{ marginVertical: 5 }}/>
-          <Text style={{ color: '#6A5ACD' }}>
-            興趣
-          </Text>
-          <Text style={{ alignSelf: 'flex-end' }}>
-            吃飯, 喝水, 睡覺, 灑尿
-          </Text>
-          <Divider style={{ marginVertical: 5 }}/>
-          <Text style={{ color: '#6A5ACD' }}>
-            興趣
-          </Text>
-          <Text style={{ alignSelf: 'flex-end' }}>
-            吃飯, 喝水, 睡覺, 灑尿
-          </Text>
-          <Divider style={{ marginVertical: 5 }}/>
-          <Text style={{ color: '#6A5ACD' }}>
-            興趣
-          </Text>
-          <Text style={{ alignSelf: 'flex-end' }}>
-            吃飯, 喝水, 睡覺, 灑尿
-          </Text>
-          <Divider style={{ marginVertical: 5 }}/>
-          <Text style={{ color: '#6A5ACD' }}>
-            興趣
-          </Text>
-          <Text style={{ alignSelf: 'flex-end' }}>
-            吃飯, 喝水, 睡覺, 灑尿
-          </Text>
-        </Card>
-      </ScrollView>
-    );
-
+    Reactotron.log('MeetCute render()');
+    Reactotron.log(this.state.list);
+    if(this.state.list) {
+      Reactotron.log(this.state.list[0]);
+      // this.getProfile(this.state.list[0]);
+    }
     return (
       <View>
-        {content}
+        <Profile data={this.state.data} />
       </View>
     );
   }
