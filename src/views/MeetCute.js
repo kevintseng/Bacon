@@ -89,9 +89,10 @@ export default class MeetCute extends Component {
   }
 
   render() {
-    Reactotron.log('MeetCute render()');
-    Reactotron.log(this.state.list);
+
     if(this.state.list) {
+      Reactotron.log('MeetCute render()');
+      Reactotron.log(this.state.list);
       Reactotron.log(this.state.list[0]);
       // this.getProfile(this.state.list[0]);
     }
