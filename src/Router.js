@@ -114,7 +114,7 @@ export default class RouterComponent extends Component {
 
           // Block incompleted signup users to login
           if(!user.signupCompleted && !this.state.store.inSignupProcess) {
-            const _user = firebase.auth().currentUser;
+            const _user = this.state.fire.auth().currentUser;
           // In case the user dropped out during sign-up and want to sign-up again
           // TODO: Should also check firebase db to see if there's any other related data needs to be removed too
             if(_user) {
@@ -151,7 +151,7 @@ export default class RouterComponent extends Component {
 
   setOnline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    const dbRef = firebase.database().ref('/online/' + uid);
+    const dbRef = this.state.fire.database().ref('/online/' + uid);
     dbRef.set({
       lastOnline: timestamp,
       location: 'Taipei, Taiwan',

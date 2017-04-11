@@ -4,7 +4,7 @@ import { observer } from 'mobx-react/native';
 import { Actions } from 'react-native-router-flux';// eslint-disable-line
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import DeviceInfo from 'react-native-device-info';
-import Profile from './Profile';
+import OthersProfile from './OthersProfile';
 
 const width = Dimensions.get('window').with;
 
@@ -17,7 +17,7 @@ export default class MeetCute extends Component {
     this.db = this.props.localdb;
     this.state = {
       user: this.store.user,
-      size: { width, height },
+      size: { width },
       imgLoading: false,
       list: null,
     };
@@ -97,7 +97,7 @@ export default class MeetCute extends Component {
     }
     return (
       <View>
-        <Profile data={this.state.data} />
+        <OthersProfile data={this.state.data} />
       </View>
     );
   }

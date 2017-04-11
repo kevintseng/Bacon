@@ -150,6 +150,14 @@ class Signup4 extends Component {
     try {
 
       const user = await this.firebase.auth().currentUser;
+      const analysis = {
+        charm: 50,
+        friendliness: 50,
+        likeness: 50,
+        popularity: 50,
+        activity: 50,
+      };
+
       const postData = {
         photoURL: this.sustore.avatar,
         uid: this.sustore.uid,
@@ -183,13 +191,6 @@ class Signup4 extends Component {
         Reactotron.error('User profile update error');
         Reactotron.error(err);
       });
-      const analysis = {
-        charm: 50,
-        friendliness: 50,
-        likeness: 50,
-        popularity: 50,
-        activity: 50,
-      };
 
       await this.firebase.database().ref(`users/${this.sustore.uid}`).set(postData).then((res) => {
         Reactotron.debug('Set user data to firebase');
@@ -198,16 +199,13 @@ class Signup4 extends Component {
         Reactotron.error('Set user data failed');
         Reactotron.error(err);
       });
-      const soRef = this.sustore.sexOrientation + '/' + this.sustore.uid;
+
+      //Add user to seeking table on firebase
+      const soRef = 'seeking/' + this.state.country + '/' + this.sustore.sexOrientation + '/' + this.sustore.uid;
       const soData = {
-        name: this.sustore.nickname,
-        photoURL: this.sustore.avatar,
-        birthday: this.sustore.birthday,
-        country: this.sustore.country,
-        city: this.sustore.city,
-        gender: this.sustore.gender,
-        sexOrientation: this.sustore.sexOrientation,
+        uid: this.sustore.uid
       };
+
       Reactotron.log(soRef);
       Reactotron.log(soData);
       await this.firebase.database().ref(soRef).set(soData).then((res) => {
