@@ -9,7 +9,7 @@ import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 const { width, height } = Dimensions.get('window');// eslint-disable-line
 
 @observer
-export default class Profile extends Component {
+export default class OthersProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {

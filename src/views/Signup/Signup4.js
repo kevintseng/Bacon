@@ -191,30 +191,6 @@ class Signup4 extends Component {
         activity: 50,
       };
 
-      const postData = {
-        photoURL: this.sustore.avatar,
-        uid: this.sustore.uid,
-        displayName: this.sustore.nickname,
-        email: this.sustore.email,
-        birthday: this.sustore.birthday,
-        termsAgreed: this.sustore.termsAgreed,
-        city: this.sustore.city,
-        gender: this.sustore.gender,
-        sexOrientation: this.sustore.sexOrientation,
-        geocode: this.sustore.geocode,
-        placeID: this.sustore.placeID,
-        locale: this.sustore.locale,
-        country: this.sustore.country,
-        photoVerified: false,
-        vip: false,
-        bio: '',
-        hobby: '',
-        lang: '',
-        gallery: [],
-        analysis,
-        signupCompleted: true,
-      };
-
       await this.firebase.database().ref(`users/${this.sustore.uid}`).set(postData).then((res) => {
         Reactotron.debug('Set user data to firebase');
         Reactotron.debug(res);
