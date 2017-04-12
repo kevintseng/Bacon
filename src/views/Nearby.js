@@ -40,7 +40,34 @@ const styles = {
         // 间距
         marginBottom:5,
         borderRadius: 80/2,
+    },
 
+    online:{
+      position: 'absolute',
+      bottom: 15,
+      right: 1,
+      height: 15,
+      width: 15,
+      backgroundColor: '#46ec2c',
+      //backgroundColor: '#e5e5e5',
+      borderRadius: 15/2,
+      borderStyle: 'solid',
+      borderColor: '#ffffff',
+      borderWidth: 2
+    },
+
+    offline:{
+      position: 'absolute',
+      bottom: 15,
+      right: 1,
+      height: 15,
+      width: 15,
+      //backgroundColor: '#46ec2c',
+      backgroundColor: '#e5e5e5',
+      borderRadius: 15/2,
+      borderStyle: 'solid',
+      borderColor: '#ffffff',
+      borderWidth: 2
     }
 };
 
@@ -66,6 +93,7 @@ export default class Nearby extends Component {
     this.store = this.props.store;
     this.fs = this.props.fire;
     this.state = {
+      loading:true,
       usersLocation: [],
       dataSource: ds.cloneWithRows([]),
       myAccount:{
@@ -73,23 +101,13 @@ export default class Nearby extends Component {
         name:''
       }
     }
-
-    //this.getLocation();
   }
 
   componentDidMount(){
-    //this.getLocation();
     this.getLocation();
-    //geoQuery.cancel();
-    //this.getData();
   }
 
    componentWillMount() {
-    //this.latlong =  this.getLocation();
-    //this.usersLocation = 'try it!!';
-
-    //this.getGeo();
-
     Reactotron.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false });
   }
@@ -99,16 +117,10 @@ export default class Nearby extends Component {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         var initialPosition = JSON.parse(JSON.stringify(position));
-        this.latitude = initialPosition.coords.latitude;
-        this.longitude = initialPosition.coords.longitude;
-        //Reactotron.log(this.latitude);
-        //Reactotron.log(this.longitude);
-        //this.setState({initialPosition});
-        //Reactotron.log('geoLocation sucess  ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds()  )
-        var location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
-        //Reactotron.log(location);
+        //this.latitude = initialPosition.coords.latitude;
+        //this.longitude = initialPosition.coords.longitude;
+        //var location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
         this.getGeo(initialPosition.coords.latitude,initialPosition.coords.longitude);
-
       },
       (error) => alert(JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 0, maximumAge: 1000}
@@ -116,105 +128,147 @@ export default class Nearby extends Component {
 
   }
 
+
+
   getGeo = async (latitude, longitude) =>{
 
     var myUserId = this.fs.auth().currentUser.uid;
     var firebaseRef = this.fs.database().ref('/user_locations/')
     var geoFire = new GeoFire(firebaseRef);
 
+    /**/
     geoFire.set(myUserId, [latitude, longitude ]).then(function() {
         //Reactotron.log("Provided key has been added to GeoFire");
       }, function(error) {
         //Reactotron.log("Error: " + error);
       });
-      //Reactotron.log('lat: ' + latitude + ', lon: ' + longitude);
+
       var geoQuery = geoFire.query({
         center: [latitude, longitude],
         radius: 50
       });
       var center = geoQuery.center();
       var nearBy = [];
-      //var UserLocation = {};
 
       geoQuery.on("ready", async () => {
         await geoQuery.on('key_entered', (key, location, distance) => {
           if(key != myUserId){
-              nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2)) });
+            this.getUsers(nearBy, key, distance);
           }
         });
-        for (var value of nearBy){
-          console.log(value);
-          //value.name = 'frank';
-          await this.fs.database().ref('users/' + value.uid).once('value').then(function(snapshot){
-            value.name = snapshot.val().displayName;
-            value.photoURL = snapshot.val().photoURL;
-          });
-          /*
-          await this.fs.database().ref('connections/' + value.uid).once('value').then(function(snapshot){
-            //value.online = snapshot.val().online;
-            value.online = snapshot.val().online;
-          });
-          */
-        }
-        nearBy.sort(function(a, b) {return a.distance - b.distance;});
-        this.setState({usersLocation : nearBy})
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        console.log(nearBy);
-        this.setState({dataSource: ds.cloneWithRows(nearBy)})
-        //Reactotron.log(error);
       });
-      /*
-      geoQuery.on("key_entered").then(function(key, location, distance) {
-        Reactotron.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
-      }, function(error) {
-        Reactotron.log("Error: " + error);
-      });
-      */
-      //nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2))});
-      //var queryData = JSON.parse(JSON.stringify(nearBy));
-      //Reactotron.log(JSON.stringify(nearBy));
-      //return nearBy;
   }
 
 
+
+
+  getUsers = async (nearBy, key, distance) => {
+     await this.fs.database().ref('users/' + key).once('value').then(snapshot =>{
+       this.getOnlineState(nearBy, key, distance, snapshot.val().displayName, snapshot.val().photoURL);
+    }).catch(function(reason){
+      console.log(reason);
+    });
+  };
+
+  getOnlineState = async(nearBy, key , distance, displayName, photoURL) => {
+    await this.fs.database().ref('online/' + key).once('value').then(snapshot =>{
+      if(snapshot.val() != null){
+        nearBy.push({
+           uid: key,
+           distance: parseFloat(distance.toFixed(2)),
+           name:displayName,
+           photoURL:photoURL,
+           online:true
+         });
+      }else{
+        nearBy.push({
+           uid: key,
+           distance: parseFloat(distance.toFixed(2)),
+           name:displayName,
+           photoURL:photoURL,
+           online:false
+         });
+      }
+   }).catch(function(reason){
+     console.log(reason);
+   });
+   nearBy.sort(function(a, b) {return a.distance - b.distance;});
+   this.setState({loading:false})
+   this.setState({usersLocation : nearBy})
+   var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+   console.log(nearBy);
+   this.setState({dataSource: ds.cloneWithRows(nearBy)})
+  }
+
+
+
+
+
+
   render() {
-    //Reactotron.log('render ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
-    //Reactotron.log(this.state.usersLocation);
-    //const list = this.state.usersLocation;
-    //console.log(this.state.usersLocation);
     const list = this.state.usersLocation;
-    //console.log('!!!' + this.state.myDisplayName);
+    const loading = this.state.loading;
+    console.log(loading)
+    let loadBar = (
+      <Text>'加載中....'</Text>
+    )
+
+    if(loading){
+      <Text>'加載中....'</Text>
+    }else{
+      <Text></Text>
+    }
+
+
+
     return(
-
       <View style={{flex: 1 ,alignSelf: 'center'}}>
-
           <View style={{alignSelf: 'center',marginTop:20}}>
              <Image source={{uri:this.store.user.photoURL}} style={styles.itemImageStyle}/>
           </View>
-          <View style={{alignSelf: 'center',marginBottom:-20}}>
+          <View style={{alignSelf: 'center',marginBottom:-2}}>
              <Text>{this.store.user.displayName}</Text>
           </View>
-
           <ListView
               dataSource={this.state.dataSource}
               renderRow={this.renderRow}
               contentContainerStyle={styles.contentViewStyle}
               enableEmptySections = {true}
           />
-
       </View>
     );
   };
 
-  renderRow(rowData){
+  renderRow = (rowData) => {
+
+    const online = rowData.online;
+    let onlineState = (
+      <View style={styles.online}></View>
+    )
+
+    if(online){
+      onlineState = (
+        <View style={styles.online}></View>
+      )
+    }else{
+      onlineState = (
+        <View style={styles.offline}></View>
+      )
+    }
+
     return(
       <TouchableHighlight onPress={() => console.log(rowData.uid)} underlayColor = 'white' style={{height:80, marginTop:30}}>
       <View style={styles.itemStyle}>
           <Image source={{uri:rowData.photoURL}} style={styles.itemImageStyle}/>
+          {onlineState}
           <Text>{rowData.name}</Text>
       </View>
       </TouchableHighlight>
     );
   }
+
+
+
+
 
 }
