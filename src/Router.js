@@ -92,7 +92,7 @@ export default class RouterComponent extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let user;
     this.state.fire.auth().onAuthStateChanged(data => {
       if(data) {
