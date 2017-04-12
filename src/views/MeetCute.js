@@ -30,21 +30,35 @@ export default class MeetCute extends Component {
 
   componentDidMount() {
     Reactotron.debug('MeetCute rendered');
-    this.seekMeetQs(this.store.user.sexOrientation);
     const deviceId = DeviceInfo.getUniqueID();
     const locale = DeviceInfo.getDeviceLocale();
     const country = DeviceInfo.getDeviceCountry();
     Reactotron.log('Device ID: ' + deviceId + ', locale: ' + locale + ', country: ' + country);
+
+    if(this.store.user) {
+      this.seekMeetQs(this.store.user.sexOrientation);
+    }
+
+    if(this.state.list) {
+      Reactotron.log('this.state.list:');
+      Reactotron.log(this.state.list[1]);
+    }
+
   }
 
   mq = (cond) => {
+    const list = [];
     const ref = this.firebase.database().ref(`seeking/${this.store.user.country}/${cond}`);
     ref.once('value', snap => {
       Reactotron.log('Executing mq cond:' + cond);
       Reactotron.log(snap.val() );
-      this.setState({
-        list: snap.val(),
+      snap.forEach(childsnap => {
+        Reactotron.log(childsnap.val());
+        list.push(childsnap.val());
       });
+      return list;
+    }).then(list => {
+      this.setState({ list });
     });
   }
 
@@ -63,7 +77,7 @@ export default class MeetCute extends Component {
       let retArr;
       switch(so) {
         case 'msf':
-         this.mq('msf');
+         this.mq('fsm');
          break;
         case 'msm':
           this.mq('msm');
@@ -87,16 +101,9 @@ export default class MeetCute extends Component {
   }
 
   render() {
-
-    if(this.state.list) {
-      Reactotron.log('MeetCute render()');
-      Reactotron.log(this.state.list);
-      Reactotron.log(this.state.list[0]);
-      // this.getProfile(this.state.list[0]);
-    }
     return (
       <View>
-        <OthersProfile data={this.state.data} />
+        <OthersProfile list={this.state.list} />
       </View>
     );
   }

@@ -13,7 +13,7 @@ export default class OthersProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      profileData: this.props.data,
+      list: this.props.list,
       gallerySize: { width, height: 320 },
     };
   }
@@ -24,6 +24,7 @@ export default class OthersProfile extends Component {
 
   componentDidMount() {
     Reactotron.debug('Profile rendered');
+    Reactotron.log('Profile List: ' + this.state.list);
   }
 
   render() {
