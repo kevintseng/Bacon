@@ -45,34 +45,6 @@ const getSceneStyle = (props, computedProps) => {
   return style;
 };
 
-const storage = new Storage({
-    // maximum capacity, default 1000
-    size: 1000,
-
-    // Use AsyncStorage for RN, or window.localStorage for web.
-    // If not set, data would be lost after reload.
-    storageBackend: AsyncStorage,
-
-    // expire time, default 1 day(1000 * 3600 * 24 milliseconds).
-    // can be null, which means never expire.
-    defaultExpires: 1000 * 3600 * 24,
-
-    // cache data in the memory. default is true.
-    enableCache: true,
-
-    // if data was not found in storage or expired,
-    // the corresponding sync method will be invoked and return
-    // the latest data.
-    sync : {
-        // we'll talk about the details later.
-    }
-});
-
-const firebase = Firebase.initializeApp(FirebaseConfig);
-
-// TODO: Find a way to tie Firestack and mobx store to achieve auto sync
-const appstore = new AppStore();
-
 const menuButton = () => (
   <Icon
     name='menu'
@@ -83,13 +55,50 @@ const menuButton = () => (
 
 @observer
 export default class RouterComponent extends Component {
-  componentWillMount() {
+  constructor() {
+    super();
+    const storage = new Storage({
+        // maximum capacity, default 1000
+        size: 1000,
+
+        // Use AsyncStorage for RN, or window.localStorage for web.
+        // If not set, data would be lost after reload.
+        storageBackend: AsyncStorage,
+
+        // expire time, default 1 day(1000 * 3600 * 24 milliseconds).
+        // can be null, which means never expire.
+        defaultExpires: 1000 * 3600 * 24,
+
+        // cache data in the memory. default is true.
+        enableCache: true,
+
+        // if data was not found in storage or expired,
+        // the corresponding sync method will be invoked and return
+        // the latest data.
+        sync : {
+            // we'll talk about the details later.
+        }
+    });
+
+    const firebase = Firebase.initializeApp(FirebaseConfig);
+
+    // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
+    const appstore = new AppStore();
+
+    this.state = {
+      store: appstore,
+      fire: firebase,
+      localdb: storage,
+    }
+  }
+
+  componentDidMount() {
     let user;
-    firebase.auth().onAuthStateChanged(data => {
+    this.state.fire.auth().onAuthStateChanged(data => {
       if(data) {
         Reactotron.log('Router: Got user data from firebase auth api:');
         Reactotron.log(data);
-        const dbRef = firebase.database().ref('/users/' + data.uid);
+        const dbRef = this.state.fire.database().ref('/users/' + data.uid);
         user = {
           uid: data.uid,
           displayName: data.displayName,
@@ -104,8 +113,8 @@ export default class RouterComponent extends Component {
           Object.assign(user, user, snap.val());
 
           // Block incompleted signup users to login
-          if(!user.signupCompleted && !appstore.inSignupProcess) {
-            const _user = firebase.auth().currentUser;
+          if(!user.signupCompleted && !this.state.store.inSignupProcess) {
+            const _user = this.state.fire.auth().currentUser;
           // In case the user dropped out during sign-up and want to sign-up again
           // TODO: Should also check firebase db to see if there's any other related data needs to be removed too
             if(_user) {
@@ -116,14 +125,13 @@ export default class RouterComponent extends Component {
             return;
           }
 
-          Reactotron.log(user);
-          Reactotron.log('Setting store.user @Router');
-          appstore.setUser(user);
-
-          this.setOnline(appstore.user.uid);
-          storage.save({
+          Reactotron.log({CombinedUserProfile: user});
+          this.state.store.setUser(user);
+          Reactotron.log('Router: User has been set in appstore');
+          this.setOnline(this.state.store.user.uid);
+          this.state.localdb.save({
             key: 'user',
-            rawData: appstore.user,
+            rawData: this.state.store.user,
             expires: 1000 * 3600 * 24 * 30, // expires after 30 days
           }).catch(err => {
             Reactotron.log('Router: Saving data to local db failed.');
@@ -143,7 +151,7 @@ export default class RouterComponent extends Component {
 
   setOnline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    const dbRef = firebase.database().ref('/online/' + uid);
+    const dbRef = this.state.fire.database().ref('/online/' + uid);
     dbRef.set({
       lastOnline: timestamp,
       location: 'Taipei, Taiwan',
@@ -152,22 +160,23 @@ export default class RouterComponent extends Component {
 
   setOffline(uid) {
     // const timestamp = Math.floor(Date.now() / 1000);
-    firebase.database().ref('/online/' + uid).remove();
+    this.state.fire.database().ref('/online/' + uid).remove();
   }
 
   signOut = () => {
     // Clear out appstore's user data
-    if(appstore.user) {
-      this.setOffline(appstore.user.uid);
+    if(this.state.store.user) {
+      this.setOffline(this.state.store.user.uid);
     }
 
     // Sign out from firebase
-    firebase.auth().signOut();
+    this.state.fire.auth().signOut();
 
     // Clear out local database's user data
-    storage.remove({
+    this.state.localdb.remove({
       key: 'user',
     });
+    this.setState({ user: null });
 
     // Render SessionCheck and redirect to signin view
     Actions.signin({type: 'reset'});
@@ -176,9 +185,9 @@ export default class RouterComponent extends Component {
   render() {
     return(
       <Router
-        fire={firebase}
-        store={appstore}
-        localdb={storage}
+        fire={this.state.fire}
+        store={this.state.store}
+        localdb={this.state.localdb}
         getSceneStyle={getSceneStyle} >
           <Scene key='root' hideNavBar>
             <Scene key='sessioncheck' component={SessionCheck} />
