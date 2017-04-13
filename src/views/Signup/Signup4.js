@@ -6,6 +6,7 @@ import {
     ActivityIndicator,
     Platform,
   } from 'react-native';
+import Moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
 import ImageResizer from 'react-native-image-resizer'; //eslint-disable-line
 import { Card, Button, Avatar } from 'react-native-elements';
@@ -180,6 +181,8 @@ class Signup4 extends Component {
         gallery: [],
         analysis,
         signupCompleted: true,
+        created: this.sustore.created,
+        lastUpdated: Moment().unix(),
       };
 
       await user.updateProfile({

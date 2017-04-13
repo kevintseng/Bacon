@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, ActivityIndicator } from 'react-native';
 import { observer } from 'mobx-react/native';
+import Moment from 'moment';
 import { Actions } from 'react-native-router-flux';// eslint-disable-line
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import DeviceInfo from 'react-native-device-info';
@@ -18,9 +19,11 @@ export default class MeetCute extends Component {
     this.state = {
       user: this.store.user,
       size: { width },
-      imgLoading: false,
       list: null,
+      next: null,
+      loading: true,
     };
+    this.seekMeetQs(this.store.user.sexOrientation);
   }
 
   componentWillMount() {
@@ -34,76 +37,86 @@ export default class MeetCute extends Component {
     const locale = DeviceInfo.getDeviceLocale();
     const country = DeviceInfo.getDeviceCountry();
     Reactotron.log('Device ID: ' + deviceId + ', locale: ' + locale + ', country: ' + country);
-
-    if(this.store.user) {
-      this.seekMeetQs(this.store.user.sexOrientation);
-    }
-
-    if(this.state.list) {
-      Reactotron.log('this.state.list:');
-      Reactotron.log(this.state.list[1]);
-    }
-
   }
 
   mq = (cond) => {
-    const list = [];
-    const ref = this.firebase.database().ref(`seeking/${this.store.user.country}/${cond}`);
-    ref.once('value', snap => {
-      Reactotron.log('Executing mq cond:' + cond);
-      Reactotron.log(snap.val() );
-      snap.forEach(childsnap => {
-        Reactotron.log(childsnap.val());
-        list.push(childsnap.val());
-      });
-      return list;
-    }).then(list => {
-      this.setState({ list });
-    });
-  }
+    const _list = [];
+    const query = this.firebase.database().ref(`seeking/${this.store.user.country}/${cond}`);
 
-  getProfile = uid => {
-    const ref = this.firebase.database().ref('users/' + uid);
-    ref.once('value', snap => {
-      Reactotron.log('Executing getProfile: ' + uid );
-      Reactotron.log('UserProfile' + snap.val() );
-      this.setState({
-        data: snap.val(),
+    query.once('value', snap => {
+      Reactotron.log('Executing mq cond:' + cond);
+      snap.forEach(childsnap => {
+        const _uid = childsnap.val().uid;
+        _list.push(_uid);
       });
+      Reactotron.log('Print list');
+      Reactotron.log(_list);
+      this.setState({ list: _list });
+    }).then(() => {
+      Reactotron.log(_list[0]);
+      this.getProfile(_list[0]);
     })
   }
 
+  getProfile = uid => {
+    const q = this.firebase.database().ref('users/' + uid);
+    q.once('value', snap => {
+      Reactotron.log('Profile data:' + snap.val());
+      this.setState({
+        data: snap.val(),
+        loading: false,
+      });
+    });
+  }
+
   seekMeetQs = (so) => {
-      let retArr;
-      switch(so) {
-        case 'msf':
-         this.mq('fsm');
-         break;
-        case 'msm':
-          this.mq('msm');
-          break;
-        case 'msb':
-          // TODO: 等註冊多一點用戶後要改回來
-          // this.mq('fsm');
-          // this.mq('msm');
-            this.mq('fsm');
-            break;
-        case 'fsm':
-          this.mq('msf');
-         break;
-        case 'fsf':
-            this.mq('fsf');
-          break;
-        case 'fsb':
-          Object.assign(retArr, this.mq('msf'), this.mq('fsf'));
-          break;
-      }
+    switch(so) {
+      case 'msf':
+       this.mq('fsm');
+       break;
+      case 'msm':
+        this.mq('msm');
+        break;
+      case 'fsm':
+        this.mq('msf');
+       break;
+      case 'fsf':
+          this.mq('fsf');
+        break;
+    }
+  }
+
+  getNext = () => {
+    this.setState({
+      loading: true,
+    })
+    const uid = this.state.data.uid;
+    const list = this.state.list;
+    Reactotron.log('MeetCute: getNext() pressed');
+    const _index = list.indexOf(uid) + 1;
+    Reactotron.log(_index);
+    if(list.length > _index) {
+      this.getProfile(list[_index]);
+    } else {
+      Reactotron.log('This is the last user');
+    }
+  }
+
+  handleLike = uid => {
+    const r = this.firebase.database().ref('users/' + uid + '/likes');
+    const d = {
+      uid,
+      timestamp: Moment().unix(),
+    };
+    r.set(d);
   }
 
   render() {
+    const indicator = (<ActivityIndicator style={{ alignItems: 'center', justifyContent: 'center', padding: 8, marginTop: 150 }} size='large' />);
+    
     return (
       <View>
-        <OthersProfile list={this.state.list} />
+        <OthersProfile data={this.state.data} getNext={this.getNext} handleLike={this.handleLike}/>
       </View>
     );
   }
