@@ -93,7 +93,6 @@ export default class Nearby extends Component {
     this.store = this.props.store;
     this.fs = this.props.fire;
     this.state = {
-      loading:true,
       usersLocation: [],
       dataSource: ds.cloneWithRows([]),
       myAccount:{
@@ -193,11 +192,10 @@ export default class Nearby extends Component {
      console.log(reason);
    });
    nearBy.sort(function(a, b) {return a.distance - b.distance;});
-   this.setState({loading:false})
-   this.setState({usersLocation : nearBy})
-   var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-   console.log(nearBy);
-   this.setState({dataSource: ds.cloneWithRows(nearBy)})
+     this.setState({usersLocation : nearBy})
+     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+     console.log(nearBy);
+     this.setState({dataSource: ds.cloneWithRows(nearBy)})
   }
 
 
@@ -207,26 +205,13 @@ export default class Nearby extends Component {
 
   render() {
     const list = this.state.usersLocation;
-    const loading = this.state.loading;
-    console.log(loading)
-    let loadBar = (
-      <Text>'加載中....'</Text>
-    )
-
-    if(loading){
-      <Text>'加載中....'</Text>
-    }else{
-      <Text></Text>
-    }
-
-
-
+    console.log()
     return(
       <View style={{flex: 1 ,alignSelf: 'center'}}>
           <View style={{alignSelf: 'center',marginTop:20}}>
              <Image source={{uri:this.store.user.photoURL}} style={styles.itemImageStyle}/>
           </View>
-          <View style={{alignSelf: 'center',marginBottom:-2}}>
+          <View style={{alignSelf: 'center',marginBottom:-20}}>
              <Text>{this.store.user.displayName}</Text>
           </View>
           <ListView
