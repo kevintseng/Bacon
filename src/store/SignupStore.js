@@ -1,4 +1,5 @@
 import { action, observable, computed } from 'mobx'; // eslint-disable-line
+import Moment from 'moment';
 // import autobind from 'autobind-decorator';
 
 // @autobind
@@ -17,6 +18,7 @@ export default class SignupStore {
   @observable locale;
   @observable country;
   @observable avatar;
+  @observable lastUpdated;
 
   constructor() {
     this.uid = '';
@@ -33,6 +35,7 @@ export default class SignupStore {
     this.placeID = '';
     this.locale = '';
     this.avatar = null;
+    this.created = null;
   }
 
   @action setTermsAgreement(termsAgreed) {
@@ -57,6 +60,7 @@ export default class SignupStore {
 
   @action setUid(id) {
     this.uid = id;
+    this.created = Moment().unix();
   }
 
   @action setCity(city) {
@@ -99,20 +103,14 @@ export default class SignupStore {
         case 1:
         this.sexOrientation = 'msf';
         break;
-        case 2:
-        this.sexOrientation = 'msb';
-        break;
       }
     } else {
       switch(selected) {
         case 0:
-        this.sexOrientation = 'fsm'
+        this.sexOrientation = 'fsf'
         break;
         case 1:
-        this.sexOrientation = 'fsf';
-        break;
-        case 2:
-        this.sexOrientation = 'fsb';
+        this.sexOrientation = 'fsm';
         break;
       }
     }

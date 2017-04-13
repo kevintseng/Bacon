@@ -86,7 +86,7 @@ class Signup3 extends Component {
   render() {
     const genders = ['男', '女'];
     const { selectedGender, selectedSexOrientation } = this.state;
-    const sexOrientations = ['男', '女', '皆可'];
+    const sexOrientations = ['同性', '異性'];
 
     return (
       <View style={this.state.size}>
