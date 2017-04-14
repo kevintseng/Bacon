@@ -17,6 +17,10 @@ class AppStore {
     Reactotron.log('Current User in AppStore: ' + user.uid);
   }
 
+  @action setAvatar(uri) {
+    this.user.photoURL = uri;
+  }
+
   @action signOut() {
     this.user = '';
   }
