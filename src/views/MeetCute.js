@@ -109,17 +109,16 @@ export default class MeetCute extends Component {
       this.setState({
         loading: false,
       });
+      alert('這是最後一位了, 在沒有有fu的對象我也沒辦法惹...GG');
       Reactotron.log("This is the last user");
     }
   };
 
   handleLike = uid => {
-    const r = this.firebase.database().ref("users/" + uid + "/likes");
-    const d = {
-      uid,
-      timestamp: Moment().unix()
-    };
-    r.set(d);
+    Reactotron.log('MeetCute: handleLike pressedL: ' + uid);
+    const r = this.firebase.database().ref("users/" + this.store.user.uid + "/likes").child(uid);
+    r.set({time: Moment().unix()});
+    this.getNext();
   };
 
   render() {
@@ -134,12 +133,6 @@ export default class MeetCute extends Component {
         size="large"
       />
     );
-
-    // <OthersProfile
-    //   data={this.state.data}
-    //   getNext={this.getNext}
-    //   handleLike={this.handleLike}
-    // />
     Reactotron.log('this.state.data');
     Reactotron.log(this.state.data);
     return (
