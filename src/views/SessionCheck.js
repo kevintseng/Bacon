@@ -17,13 +17,12 @@ export default class Welcome extends Component {
     this.firebase = this.props.fire;
     this.store = this.props.store;
     this.db = this.props.localdb;
-    this.user = this.props.user;
-    this.getUser();
+
   }
 
   componentWillMount() {
     Reactotron.log('Rendering SessionCheck');
-    // this.setUserToStore();
+    this.getUser();
   }
 
   componentDidMount() {

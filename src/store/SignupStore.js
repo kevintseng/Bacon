@@ -36,6 +36,11 @@ export default class SignupStore {
     this.locale = '';
     this.avatar = null;
     this.created = null;
+    this.lastUpdated = null;
+  }
+
+  @action setLastUpdated() {
+    this.lastUpdated = Moment().unix();
   }
 
   @action setTermsAgreement(termsAgreed) {
