@@ -216,12 +216,13 @@ export default class RouterComponent extends Component {
             <Scene key="signup4" component={Signup4} />
           </Scene>
           <Scene key="drawer" component={DrawerPanel} open={false}>
-            <Scene key="main" tabs hideNavBar={false}>
+            <Scene key="main" hideTabBar hideNavBar={false}>
               <Scene
                 key="meetcute"
                 component={MeetCute}
                 title="MeetCute"
                 renderLeftButton={menuButton}
+                hideTabBar
               />
               <Scene
                 key="nearby"
