@@ -143,16 +143,16 @@ export default class RouterComponent extends Component {
             this.state.store.setUser(user);
             console.log("Router: User has been set in appstore");
             this.setOnline(this.state.store.user.uid);
-            this.state.localdb
-              .save({
-                key: "user",
-                rawData: this.state.store.user,
-                expires: 1000 * 3600 * 24 * 30 // expires after 30 days
-              })
-              .catch(err => {
-                console.log("Router: Saving data to local db failed.");
-                console.log(err);
-              });
+            // this.state.localdb
+            //   .save({
+            //     key: "user",
+            //     rawData: this.state.store.user,
+            //     expires: 1000 * 3600 * 24 * 30 // expires after 30 days
+            //   })
+            //   .catch(err => {
+            //     console.log("Router: Saving data to local db failed.");
+            //     console.log(err);
+            //   });
           })
           .catch(err => {
             console.error("Router: Get user data failed.");
