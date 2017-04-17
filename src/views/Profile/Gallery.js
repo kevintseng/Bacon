@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { View, Dimensions, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Button, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import PhotoGrid from 'react-native-photo-grid';
-import Reactotron from 'reactotron-react-native';
 import ImagePicker from 'react-native-customized-image-picker';
 import Modal from 'react-native-simple-modal';
 import { uploadImage, resizeImage } from '../../Utils';
@@ -43,7 +41,6 @@ export default class Gallery extends Component {
 
     this.state = {
       items: [{ id: 'addImage', src: ADD_IMAGE }],
-      loading: false,
       photos: this.store.user.photos,
       showModal: false,
       currentItem: null,
@@ -52,10 +49,10 @@ export default class Gallery extends Component {
 
   componentDidMount() {
     const newItems = this.state.items;
-    Reactotron.log('items: ');
-    Reactotron.log(newItems);
-    Reactotron.log('user/photos: ');
-    Reactotron.log(this.store.user.photos);
+    console.log('items: ');
+    console.log(newItems);
+    console.log('user/photos: ');
+    console.log(this.store.user.photos);
     if(this.store.user.photos) {
       this.store.user.photos.forEach(item => {
         newItems.push(item);
@@ -63,8 +60,8 @@ export default class Gallery extends Component {
       this.setState({
         items: newItems,
       });
-      Reactotron.log('items: ');
-      Reactotron.log(newItems);
+      console.log('items: ');
+      console.log(newItems);
     }
   }
 
@@ -73,24 +70,22 @@ export default class Gallery extends Component {
   }
 
   handlePressed = async photo => {
-    Reactotron.log('Photo pressed');
-    this.setState({ loading: true });
-    let gallery = [];
+    console.log('Photo pressed');
     if(photo.id === 'addImage') {
       await ImagePicker.openPicker({
         multiple: true
       })
       .then( images => {
-        this.setState({ loading: true });
         images.forEach(async (image) => {
+          const gallery = [];
           const filename = await this.generateFilename();
           const firebaseRefObj = this.firebase.storage().ref('userPhotos/' + this.store.user.uid + '/' + filename + '.jpg');
           // resizeImage(uri, width, height, mime, quality)
           const resizedUri = await resizeImage(image.path, 600, 600, image.mime, 80);
           const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, image.mime);
-          Reactotron.log(image);
-          Reactotron.log('resizedUri: ' + resizedUri);
-          Reactotron.log('downloadUrl: ' + downloadUrl);
+          console.log(image);
+          console.log('resizedUri: ' + resizedUri);
+          console.log('downloadUrl: ' + downloadUrl);
           gallery.push({ id: filename, src: {uri: downloadUrl }});
 
           if(gallery.length == images.length) {
@@ -105,23 +100,20 @@ export default class Gallery extends Component {
             if(this.store.user.photos) {
               newGallery = this.store.user.photos.concat(gallery);
             }
-            // Reactotron.log('Print new gallery');
-            // Reactotron.log(newGallery);
+            // console.log('Print new gallery');
+            // console.log(newGallery);
             this.store.setPhotos(newGallery);
-            this.setState({ loading: false });
             this.firebase.database().ref('users/' + this.store.user.uid + '/photos').set(newGallery);
           }
         });
       })
       .catch(err => {
-        this.setState({ loading: false });
-        Reactotron.log(err.code);
+        console.log(err.code);
       });
     } else {
-      Reactotron.log('Real photo pressed');
+      console.log('Real photo pressed');
       this.setState({
         showModal: true,
-        loading: false,
         currentItem: photo,
       });
     }
@@ -136,13 +128,13 @@ export default class Gallery extends Component {
     user.updateProfile({
       photoURL,
     }).then(() => {
-      Reactotron.log('Update User Profile Succeed: ' + photoURL);
+      console.log('Update User Profile Succeed: ' + photoURL);
       this.setState({
         showModal: false
       });
     }, error => {
-      Reactotron.error(error);
-      Reactotron.log('Update User Profile failed: ' + photoURL);
+      console.error(error);
+      console.log('Update User Profile failed: ' + photoURL);
       this.setState({
         showModal: false
       });
@@ -156,9 +148,6 @@ export default class Gallery extends Component {
   render() {
     return(
       <View style={styles.viewWrapper}>
-        {
-          this.state.loading && <ActivityIndicator style={{ marginTop: 50, marginBottom: 20 }} />
-        }
         <PhotoGrid
           style={styles.gallery}
           data = { this.state.items }
@@ -187,9 +176,9 @@ export default class Gallery extends Component {
           overlayBackground={'rgba(0, 0, 0, 0.75)'}
           animationDuration={200}
           animationTension={40}
-          modalDidOpen={() => {Reactotron.log('modal open')}}
+          modalDidOpen={() => {console.log('modal open')}}
           modalDidClose={() => {this.setState({ showModal: false})}}
-          closeOnTouchOutside={true}
+          closeOnTouchOutside
           containerStyle={{
             justifyContent: 'center'
           }}

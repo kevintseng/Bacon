@@ -5,7 +5,7 @@ import { ScrollView, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { ListItem } from 'react-native-elements';
-import Reactotron from 'reactotron-react-native';
+
 import Moment from 'moment';
 import { BasicInfo } from './BasicInfo';
 import AccountStatus from './AccountStatus';
@@ -40,7 +40,7 @@ export default class MyProfile extends Component {
   }
 
   componentDidMount() {
-    Reactotron.log('Profile rendered');
+    console.log('Profile rendered');
     Actions.refresh({ key: 'drawer', open: false });
     // Build an array of 60 photos
   }
@@ -82,7 +82,7 @@ export default class MyProfile extends Component {
 
   handleUpgrade = () => {
     this.store.upgradeMembership(this.firebase);
-    Reactotron.log('upgrade button pressed');
+    console.log('upgrade button pressed');
   }
 
   handleAddCredit = () => {
@@ -90,7 +90,7 @@ export default class MyProfile extends Component {
       visible: true,
       message: '儲值鈕'
     });
-    Reactotron.log('addCredit button pressed');
+    console.log('addCredit button pressed');
   }
 
   handleSendVerifyEmail = () => {
@@ -101,37 +101,37 @@ export default class MyProfile extends Component {
       });
     }
     user.sendEmailVerification().then(() => {
-      Reactotron.log('Email verification request sent');
+      console.log('Email verification request sent');
     }, error => {
-      Reactotron.log(error);
+      console.log(error);
     });
   }
 
   handleVerifyPhoto = () => {
     alert('相片認證被觸發');
-    Reactotron.log('Verify Photo Pressed');
+    console.log('Verify Photo Pressed');
   }
 
   _onChangeHeight = (before, after) => {
-    Reactotron.log('before: ' + before + ' after: ' + after);
+    console.log('before: ' + before + ' after: ' + after);
   }
 
   handleUpdateBio = val => {
     this.store.setBio(val);
-    Reactotron.log('setBio: ' + val);
+    console.log('setBio: ' + val);
     this.updateToFirebase('bio', val);
   }
 
   handleUpdateHobby = val => {
     this.store.setHobby(val);
-    Reactotron.log('setHobby: ' + val);
+    console.log('setHobby: ' + val);
     this.updateToFirebase('hobby', val);
   }
 
   handleUpdateLang = val => {
     this.store.setLang(val);
     this.updateToFirebase('lang', val);
-    Reactotron.log('setLanguage: ' + val);
+    console.log('setLanguage: ' + val);
   }
 
   updateToFirebase(key, val) {
@@ -140,7 +140,7 @@ export default class MyProfile extends Component {
   }
 
   render() {
-    Reactotron.log(this.store.user);
+    console.log(this.store.user);
     const user = this.store.user;
     // const age = this.getAge(user.birthday);
     // const gender = this.getGender(user.gender);

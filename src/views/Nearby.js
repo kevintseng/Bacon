@@ -3,7 +3,7 @@ import { View, Dimensions,ListView, Image,TouchableHighlight } from 'react-nativ
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Text, Button, Avatar} from 'react-native-elements';
-import Reactotron from 'reactotron-react-native';
+
 import GeoFire from 'geofire';
 import moment from 'moment';
 
@@ -90,7 +90,7 @@ export default class Nearby extends Component {
 
     //this.getGeo();
 
-    Reactotron.log('Rendering Nearby');
+    console.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false });
   }
 
@@ -101,12 +101,12 @@ export default class Nearby extends Component {
         var initialPosition = JSON.parse(JSON.stringify(position));
         this.latitude = initialPosition.coords.latitude;
         this.longitude = initialPosition.coords.longitude;
-        //Reactotron.log(this.latitude);
-        //Reactotron.log(this.longitude);
+        //console.log(this.latitude);
+        //console.log(this.longitude);
         //this.setState({initialPosition});
-        //Reactotron.log('geoLocation sucess  ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds()  )
+        //console.log('geoLocation sucess  ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds()  )
         var location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
-        //Reactotron.log(location);
+        //console.log(location);
         this.getGeo(initialPosition.coords.latitude,initialPosition.coords.longitude);
 
       },
@@ -123,11 +123,11 @@ export default class Nearby extends Component {
     var geoFire = new GeoFire(firebaseRef);
 
     geoFire.set(myUserId, [latitude, longitude ]).then(function() {
-        //Reactotron.log("Provided key has been added to GeoFire");
+        //console.log("Provided key has been added to GeoFire");
       }, function(error) {
-        //Reactotron.log("Error: " + error);
+        //console.log("Error: " + error);
       });
-      //Reactotron.log('lat: ' + latitude + ', lon: ' + longitude);
+      //console.log('lat: ' + latitude + ', lon: ' + longitude);
       var geoQuery = geoFire.query({
         center: [latitude, longitude],
         radius: 50
@@ -161,25 +161,25 @@ export default class Nearby extends Component {
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         console.log(nearBy);
         this.setState({dataSource: ds.cloneWithRows(nearBy)})
-        //Reactotron.log(error);
+        //console.log(error);
       });
       /*
       geoQuery.on("key_entered").then(function(key, location, distance) {
-        Reactotron.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
+        console.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
       }, function(error) {
-        Reactotron.log("Error: " + error);
+        console.log("Error: " + error);
       });
       */
       //nearBy.push({uid: key, distance: parseFloat(distance.toFixed(2))});
       //var queryData = JSON.parse(JSON.stringify(nearBy));
-      //Reactotron.log(JSON.stringify(nearBy));
+      //console.log(JSON.stringify(nearBy));
       //return nearBy;
   }
 
 
   render() {
-    //Reactotron.log('render ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
-    //Reactotron.log(this.state.usersLocation);
+    //console.log('render ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds());
+    //console.log(this.state.usersLocation);
     //const list = this.state.usersLocation;
     //console.log(this.state.usersLocation);
     const list = this.state.usersLocation;

@@ -14,7 +14,7 @@ import { Actions } from "react-native-router-flux";
 import RNFetchBlob from "react-native-fetch-blob";
 import { observer } from "mobx-react/native";
 import ImagePicker from "react-native-image-picker";
-import Reactotron from "reactotron-react-native";
+
 import { Header } from "../../components/Header";
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
@@ -64,12 +64,12 @@ window.Blob = Blob;
   }
 
   componentWillMount() {
-    Reactotron.log("Will mount Signup4");
+    console.log("Will mount Signup4");
   }
 
   componentDidMount() {
     this.store.setInSignupProcess(true);
-    Reactotron.log("Signup 4 mounted");
+    console.log("Signup 4 mounted");
   }
 
   addImage = () => {
@@ -78,17 +78,17 @@ window.Blob = Blob;
         loading: true
       });
       if (res.didCancel) {
-        Reactotron.log("ImagePicker: User cancelled image picker");
+        console.log("ImagePicker: User cancelled image picker");
         return;
       } else if (res.error) {
-        Reactotron.error("ImagePicker Error: " + res.error);
+        console.error("ImagePicker Error: " + res.error);
         this.setState({
           loading: false
         });
       } else {
         ImageResizer.createResizedImage(res.uri, 200, 200, "JPEG", 80)
           .then(async resizedImageUri => {
-            Reactotron.log("resizedImageUri: " + resizedImageUri);
+            console.log("resizedImageUri: " + resizedImageUri);
             this.uploadImage(resizedImageUri);
             this.setState({
               image: "file://" + resizedImageUri,
@@ -100,7 +100,7 @@ window.Blob = Blob;
             });
           })
           .catch(err => {
-            Reactotron.error(err);
+            console.error(err);
           });
       }
     });
@@ -114,7 +114,7 @@ window.Blob = Blob;
   };
 
   uploadImage = (uri, ref, mime = "image/jpeg") => {
-    Reactotron.debug("Uploading image");
+    console.debug("Uploading image");
     const uploadUri = Platform.OS === "ios" ? uri.replace("file://", "") : uri;
     let uploadBlob = null;
     // const filename = this.generateFilename();
@@ -135,8 +135,8 @@ window.Blob = Blob;
         return imageRef.getDownloadURL();
       })
       .then(url => {
-        Reactotron.debug("Url");
-        Reactotron.debug(url);
+        console.debug("Url");
+        console.debug(url);
         this.setState({
           photoUrl: url,
           loading: false
@@ -144,8 +144,8 @@ window.Blob = Blob;
         this.sustore.setAvatar(url);
       })
       .catch(err => {
-        Reactotron.error("ReadFile error: ");
-        Reactotron.error(err);
+        console.error("ReadFile error: ");
+        console.error(err);
       });
   };
 
@@ -196,11 +196,11 @@ window.Blob = Blob;
           displayName: this.sustore.nickname
         })
         .then(() => {
-          Reactotron.debug("User profile updated");
+          console.debug("User profile updated");
         })
         .catch(err => {
-          Reactotron.error("User profile update error");
-          Reactotron.error(err);
+          console.error("User profile update error");
+          console.error(err);
         });
 
       await this.firebase
@@ -208,12 +208,12 @@ window.Blob = Blob;
         .ref(`users/${this.sustore.uid}`)
         .set(postData)
         .then(res => {
-          Reactotron.debug("Set user data to firebase");
-          Reactotron.debug(res);
+          console.debug("Set user data to firebase");
+          console.debug(res);
         })
         .catch(err => {
-          Reactotron.error("Set user data failed");
-          Reactotron.error(err);
+          console.error("Set user data failed");
+          console.error(err);
         });
 
       //Add user to seeking table on firebase
@@ -227,24 +227,24 @@ window.Blob = Blob;
         uid: this.sustore.uid
       };
 
-      Reactotron.log(soRef);
-      Reactotron.log(soData);
+      console.log(soRef);
+      console.log(soData);
       await this.firebase
         .database()
         .ref(soRef)
         .set(soData)
         .then(res => {
-          Reactotron.debug("Set sexOrientation to firebase");
-          Reactotron.debug(res);
+          console.debug("Set sexOrientation to firebase");
+          console.debug(res);
         })
         .catch(err => {
-          Reactotron.error("Set sexOrientation failed");
-          Reactotron.error(err);
+          console.error("Set sexOrientation failed");
+          console.error(err);
         });
       this.store.setInSignupProcess(false);
       Actions.sessioncheck();
     } catch (err) {
-      Reactotron.error(err);
+      console.error(err);
     }
   };
 

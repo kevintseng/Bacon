@@ -11,7 +11,7 @@ import Carousel from "react-native-looped-carousel";
 import Moment from "moment";
 import { observer } from "mobx-react/native";
 // import { Actions } from "react-native-router-flux";
-import Reactotron from "reactotron-react-native";
+
 
 const { width } = Dimensions.get("window");
 
@@ -28,20 +28,20 @@ export default class OthersProfile extends Component {
   }
 
   componentWillMount() {
-    Reactotron.debug("Rendering Profile");
+    console.debug("Rendering Profile");
   }
 
   componentDidMount() {
-    Reactotron.debug("Profile rendered");
-    Reactotron.log(this.state.data);
+    console.debug("Profile rendered");
+    console.log(this.state.data);
     if (this.state.data.photos) {
-      Reactotron.log("有photos");
+      console.log("有photos");
       this.state.data.photos.forEach(photo => {
-        Reactotron.log(photo.src.uri);
+        console.log(photo.src.uri);
         // Image.prefetch(photo.src.uri);
       });
     } else {
-      Reactotron.log("沒有photos");
+      console.log("沒有photos");
     }
     // this.setState({
     //   photos:

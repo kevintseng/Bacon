@@ -7,7 +7,7 @@ import {
 import { Actions } from 'react-native-router-flux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 // import { autorun } from 'mobx';
-import Reactotron from 'reactotron-react-native';
+
 import { Header } from '../../components';
 import { observer } from 'mobx-react/native';
 
@@ -37,12 +37,12 @@ class Signup2 extends Component {
   }
 
   componentWillMount() {
-    Reactotron.log('Will mount Signup2');
+    console.log('Will mount Signup2');
   }
 
   componentDidMount() {
     this.store.setInSignupProcess(true);
-    Reactotron.log('Signup 2 mounted');
+    console.log('Signup 2 mounted');
   }
 
   updatePlace = (data, details) => {
@@ -93,7 +93,7 @@ class Signup2 extends Component {
           listViewDisplayed={true}
           fetchDetails={true}
           onPress={(data, details = null) => {
-            Reactotron.log({data, details});
+            console.log({data, details});
             this.updatePlace(data, details);
           }}
           getDefaultValue={() => dispLocationName}

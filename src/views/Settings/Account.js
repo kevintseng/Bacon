@@ -17,7 +17,7 @@ import {
 import { observer } from 'mobx-react/native';
 import { Text, Button,ListItem,SocialIcon } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-import Reactotron from 'reactotron-react-native';
+
 
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
@@ -52,20 +52,20 @@ export default class Account extends Component {
             this.store.signOut();
             Actions.sessioncheck({type: 'reset'});
           }).catch(err => {
-            Reactotron.error('Delete local storage user data error: ');
-            Reactotron.error(err);
+            console.error('Delete local storage user data error: ');
+            console.error(err);
           });
         } else {
           this.store.signOut();
           Actions.sessioncheck({type: 'reset'});
         }
       }).catch(err => {
-        Reactotron.error('Get local storage user data error: ');
-        Reactotron.error(err);
+        console.error('Get local storage user data error: ');
+        console.error(err);
       });
       } catch (error) {
-        Reactotron.error('Firebase signout error: ');
-        Reactotron.error(error);
+        console.error('Firebase signout error: ');
+        console.error(error);
       };
     }, function(error) {
       // An error happened.
@@ -84,7 +84,7 @@ export default class Account extends Component {
 
 
   componentDidMount() {
-    Reactotron.log('Account rendered');
+    console.log('Account rendered');
 
   }
 

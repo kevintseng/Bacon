@@ -5,7 +5,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import Reactotron from 'reactotron-react-native';
+
 import { observer } from 'mobx-react/native';
 
 const { width, height } = Dimensions.get('window');
@@ -21,12 +21,12 @@ export default class Welcome extends Component {
   }
 
   componentWillMount() {
-    Reactotron.log('Rendering SessionCheck');
+    console.log('Rendering SessionCheck');
     this.getUser();
   }
 
   componentDidMount() {
-    Reactotron.log('SessionCheck rendered');
+    console.log('SessionCheck rendered');
   }
 
   getUser = () => {
@@ -35,28 +35,28 @@ export default class Welcome extends Component {
       autoSync: false,
       syncInBackground: false,
     }).then(ret => {
-      Reactotron.log('User existed in LocalDB: ');
-      Reactotron.log(ret);
+      console.log('User existed in LocalDB: ');
+      console.log(ret);
       if(ret) {
         this.store.setUser(ret);
         Actions.drawer();
       } else {
-        Reactotron.log('SessionCheck: Rendering signin');
+        console.log('SessionCheck: Rendering signin');
         Actions.signin();
       }
     }).catch(err => {
-      Reactotron.log(err.message);
+      console.log(err.message);
       switch (err.name) {
         case 'NotFoundError':
-          Reactotron.log('SessionCheck: Data not found, rendering signin');
+          console.log('SessionCheck: Data not found, rendering signin');
           Actions.signin();
           break;
         case 'ExpiredError':
-          Reactotron.log('SessionCheck: Data expired, rendering signin');
+          console.log('SessionCheck: Data expired, rendering signin');
           Actions.signin();
           break;
         default:
-          Reactotron.log(err.name);
+          console.log(err.name);
           Actions.signin();
       }
     })
