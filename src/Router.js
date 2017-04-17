@@ -89,10 +89,17 @@ export default class RouterComponent extends Component {
       fire: firebase,
       localdb: storage
     };
+
+    this.authListener();
   }
 
   componentWillMount() {
     console.log("Router will mount.");
+
+  }
+
+  authListener = () => {
+    console.log("Initialize authListener .");
     let user;
     this.state.fire.auth().onAuthStateChanged(data => {
       if (data) {
