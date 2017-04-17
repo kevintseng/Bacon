@@ -79,6 +79,9 @@ window.Blob = Blob;
       });
       if (res.didCancel) {
         console.log("ImagePicker: User cancelled image picker");
+        this.setState({
+          loading: false
+        });
         return;
       } else if (res.error) {
         console.error("ImagePicker Error: " + res.error);
