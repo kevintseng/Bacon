@@ -107,15 +107,18 @@ export default class Nearby extends Component {
   }
 
    componentWillMount() {
+    //this.getLocation();
     Reactotron.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false });
   }
 
 
-  getLocation = () =>{
+  getLocation = async() =>{
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         var initialPosition = JSON.parse(JSON.stringify(position));
+        console.log('Lat: ' + initialPosition.coords.latitude + ' | Long: ' + initialPosition.coords.longitude)
         //this.latitude = initialPosition.coords.latitude;
         //this.longitude = initialPosition.coords.longitude;
         //var location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
