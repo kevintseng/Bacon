@@ -16,7 +16,7 @@ import {
 import { observer } from 'mobx-react/native';
 import { Text, Button,ListItem,SocialIcon , FormLabel, FormInput,FormValidationMessage} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-import Reactotron from 'reactotron-react-native';
+
 import { autorun } from 'mobx'; // eslint-disable-line
 import FormErrorMsg from '../../components/FormErrorMsg';
 import MessageBarAlert from 'react-native-message-bar/MessageBar';
@@ -71,7 +71,7 @@ export default class ChangePassword extends Component {
 
       })
       .catch(err => {
-        Reactotron.error(err);
+        console.error(err);
         this.setState({
           OgPasswordErr: err.message,
           loading: false,
@@ -195,7 +195,7 @@ export default class ChangePassword extends Component {
 
 
   componentDidMount() {
-    Reactotron.log('ChangePassword rendered');
+    console.log('ChangePassword rendered');
     MessageBarManager.registerMessageBar(this.refs.alert);
   };
 

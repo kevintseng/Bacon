@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Dimensions } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import Reactotron from 'reactotron-react-native';
+
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import Gallery from './Gallery';
 import MyProfile from './MyProfile';
@@ -36,7 +36,7 @@ class Profile extends Component {
   }
 
   componentWillMount() {
-    Reactotron.log('Rendering Profile');
+    console.log('Rendering Profile');
     Actions.refresh({ key: 'drawer', open: false });
   }
 

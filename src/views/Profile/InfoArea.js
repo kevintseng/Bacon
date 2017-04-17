@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { FormLabel, FormValidationMessage, Icon} from 'react-native-elements';
 import AutoExpandingTextInput from 'react-native-auto-expanding-textinput';
-// import Reactotron from 'reactotron-react-native';
+// 
 
 const styles = {
   textAreaStyle: {
@@ -36,7 +36,7 @@ export default class InfoArea extends Component {
     }
 
     let minH = this.props.defaultValue ? Math.round(this.props.defaultValue.length * 0.6) : 30;
-    // Reactotron.log(minH);
+    // console.log(minH);
     if(minH < 30) minH = 30;
 
     this.state = {
@@ -58,7 +58,7 @@ export default class InfoArea extends Component {
   }
 
   _onChangeHeight = (before, after) => {
-    // Reactotron.log('before: ' + before + ' after: ' + after);
+    // console.log('before: ' + before + ' after: ' + after);
   }
 
   handleTextChange = text => {

@@ -3,7 +3,7 @@ import { View, Dimensions, StyleSheet, ListView, TextInput} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Text ,List, ListItem, FormInput, Button} from 'react-native-elements';
-import Reactotron from 'reactotron-react-native';
+
 //import * as firebase from 'firebase';
 // 将 Firebase 的 config 值引入
 //import { FirebaseConfig } from '../Configs';
@@ -39,7 +39,7 @@ export default class Settings extends Component {
   }
 
   componentWillMount() {
-    Reactotron.log('Rendering Reaction');
+    console.log('Rendering Reaction');
     Actions.refresh({ key: 'drawer', open: false });
   }
 

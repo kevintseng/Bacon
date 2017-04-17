@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Drawer from 'react-native-drawer';
 import { Actions, DefaultRenderer } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import Reactotron from 'reactotron-react-native';
 import SideBar from './SideBar';
 
 @observer
@@ -14,11 +13,11 @@ export default class DrawerPanel extends Component {
     this.db = this.props.localdb
   }
   componentWillMount() {
-    Reactotron.debug('Rendering DrawerPanel.');
+    console.debug('Rendering DrawerPanel.');
   }
 
   componentDidMount() {
-    Reactotron.debug('DrawerPanel rendered.');
+    console.debug('DrawerPanel rendered.');
   }
 
   render() {

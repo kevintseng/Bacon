@@ -1,4 +1,3 @@
-import Reactotron from 'reactotron-react-native';
 import ImageResizer from 'react-native-image-resizer';
 import RNFetchBlob from 'react-native-fetch-blob';
 import { Platform } from 'react-native';
@@ -51,7 +50,7 @@ export function presenceMonitor(user, fb) {
         lastOnline: timestamp,
         location: 'taipei'
       });
-      Reactotron.log('Connected');
+      console.log('Connected');
       ref.onDisconnect(ref=>{
         ref.set({
           online: false,
@@ -63,15 +62,15 @@ export function presenceMonitor(user, fb) {
 }
 
 export function resizeImage(uri, width, height, mime, quality) {
-  Reactotron.log('Resizing image...');
+  console.log('Resizing image...');
   const imageFileType = mime.replace("image/", "").toUpperCase();
   return ImageResizer.createResizedImage(uri, width, height, imageFileType, quality)
   .then((resizedImageUri) => {
-    Reactotron.log('Image resized: ' +  resizedImageUri);
+    console.log('Image resized: ' +  resizedImageUri);
     return resizedImageUri;
   })
   .catch(err => {
-    Reactotron.error(err.code);
+    console.error(err.code);
   });
 }
 
@@ -81,7 +80,7 @@ window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
 
 export function uploadImage(uri, firebaseRefObj, mime = 'image/jpeg') {
-  Reactotron.debug('Uploading image: ' + uri);
+  console.debug('Uploading image: ' + uri);
   const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
   let uploadBlob = null;
   const imageRef = firebaseRefObj;
@@ -98,7 +97,7 @@ export function uploadImage(uri, firebaseRefObj, mime = 'image/jpeg') {
       return imageRef.getDownloadURL();
     })
     .catch(err => {
-      Reactotron.error('Error in uploadImage ReadFile ');
-      Reactotron.error(err);
+      console.error('Error in uploadImage ReadFile ');
+      console.error(err);
     });
 }

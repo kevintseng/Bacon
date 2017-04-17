@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { View, Dimensions, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Button } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
+import { View, Dimensions, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Button, } from 'react-native-elements';
 import { observer } from 'mobx-react/native';
 import PhotoGrid from 'react-native-photo-grid';
-import Reactotron from 'reactotron-react-native';
 import ImagePicker from 'react-native-customized-image-picker';
 import Modal from 'react-native-simple-modal';
 import { uploadImage, resizeImage } from '../../Utils';
@@ -43,18 +41,18 @@ export default class Gallery extends Component {
 
     this.state = {
       items: [{ id: 'addImage', src: ADD_IMAGE }],
-      loading: false,
       photos: this.store.user.photos,
       showModal: false,
+      currentItem: null,
     };
   }
 
   componentDidMount() {
     const newItems = this.state.items;
-    Reactotron.log('items: ');
-    Reactotron.log(newItems);
-    Reactotron.log('user/photos: ');
-    Reactotron.log(this.store.user.photos);
+    console.log('items: ');
+    console.log(newItems);
+    console.log('user/photos: ');
+    console.log(this.store.user.photos);
     if(this.store.user.photos) {
       this.store.user.photos.forEach(item => {
         newItems.push(item);
@@ -62,8 +60,8 @@ export default class Gallery extends Component {
       this.setState({
         items: newItems,
       });
-      Reactotron.log('items: ');
-      Reactotron.log(newItems);
+      console.log('items: ');
+      console.log(newItems);
     }
   }
 
@@ -71,24 +69,23 @@ export default class Gallery extends Component {
     return this.firebase.database().ref('users/' + this.store.user.uid + '/photos').push().key;
   }
 
-  handlePhotoPressed = async photo => {
-    Reactotron.log('Photo pressed');
-    let gallery = [];
+  handlePressed = async photo => {
+    console.log('Photo pressed');
     if(photo.id === 'addImage') {
       await ImagePicker.openPicker({
         multiple: true
       })
       .then( images => {
-        this.setState({ loading: true });
-        images.forEach(async image => {
+        images.forEach(async (image) => {
+          const gallery = [];
           const filename = await this.generateFilename();
           const firebaseRefObj = this.firebase.storage().ref('userPhotos/' + this.store.user.uid + '/' + filename + '.jpg');
           // resizeImage(uri, width, height, mime, quality)
           const resizedUri = await resizeImage(image.path, 600, 600, image.mime, 80);
           const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, image.mime);
-          Reactotron.log(image);
-          Reactotron.log('resizedUri: ' + resizedUri);
-          Reactotron.log('downloadUrl: ' + downloadUrl);
+          console.log(image);
+          console.log('resizedUri: ' + resizedUri);
+          console.log('downloadUrl: ' + downloadUrl);
           gallery.push({ id: filename, src: {uri: downloadUrl }});
 
           if(gallery.length == images.length) {
@@ -99,36 +96,58 @@ export default class Gallery extends Component {
             });
 
             // update appstore and firebase
-            const newGallery = gallery;
+            let newGallery = gallery;
             if(this.store.user.photos) {
               newGallery = this.store.user.photos.concat(gallery);
             }
-            // Reactotron.log('Print new gallery');
-            // Reactotron.log(newGallery);
+            // console.log('Print new gallery');
+            // console.log(newGallery);
             this.store.setPhotos(newGallery);
-            this.setState({ loading: false });
             this.firebase.database().ref('users/' + this.store.user.uid + '/photos').set(newGallery);
           }
         });
       })
       .catch(err => {
-        this.setState({ loading: false });
-        Reactotron.log(err.code);
+        console.log(err.code);
       });
     } else {
+      console.log('Real photo pressed');
       this.setState({
         showModal: true,
+        currentItem: photo,
       });
     }
   }
 
+  handleSetAvatar = () => {
+    this.setState({showModal: false});
+    const user = this.firebase.auth().currentUser;
+    const photoURL = this.state.currentItem.src.uri;
+    this.store.setAvatar(photoURL);
+    this.firebase.database().ref('users/' + user.uid).update({photoURL})
+    user.updateProfile({
+      photoURL,
+    }).then(() => {
+      console.log('Update User Profile Succeed: ' + photoURL);
+      this.setState({
+        showModal: false
+      });
+    }, error => {
+      console.error(error);
+      console.log('Update User Profile failed: ' + photoURL);
+      this.setState({
+        showModal: false
+      });
+    });
+  }
+
+  handleDelete = () => {
+    alert('哈, 刪照片功能還沒寫好');
+  }
 
   render() {
     return(
       <View style={styles.viewWrapper}>
-        {
-          this.state.loading && <ActivityIndicator style={{ marginTop: 20 }} />
-        }
         <PhotoGrid
           style={styles.gallery}
           data = { this.state.items }
@@ -136,19 +155,18 @@ export default class Gallery extends Component {
           itemMargin = { 1 }
           renderItem = { (item, size=123) => {
             return(
-              <View>
-                <TouchableOpacity
-                  key = { item.id }
+              <TouchableOpacity
+                key = { item.id }
+                style = {{ width: size, height: size }}
+                onPress = {() => this.handlePressed(item)}
+                >
+                <Image
+                  resizeMode = 'cover'
                   style = {{ width: size, height: size }}
-                  onPress = {() => this.handlePhotoPressed(item)}
-                  >
-                  <Image
-                    resizeMode = "cover"
-                    style = {{ width: size, height: size }}
-                    source = {item.src}
-                  />
-                </TouchableOpacity>
-              </View>
+                  source = {item.src}
+
+                />
+              </TouchableOpacity>
             );
           }}
         />
@@ -158,9 +176,9 @@ export default class Gallery extends Component {
           overlayBackground={'rgba(0, 0, 0, 0.75)'}
           animationDuration={200}
           animationTension={40}
-          modalDidOpen={() => {Reactotron.log('modal open')}}
-          modalDidClose={() => {Reactotron.log('modal close')}}
-          closeOnTouchOutside={true}
+          modalDidOpen={() => {console.log('modal open')}}
+          modalDidClose={() => {this.setState({ showModal: false})}}
+          closeOnTouchOutside
           containerStyle={{
             justifyContent: 'center'
           }}
@@ -171,21 +189,24 @@ export default class Gallery extends Component {
             backgroundColor: '#F5F5F5'
           }}>
           <View>
-            <Text style={{ fontSize: 16 }}>將此照片設定為頭像? </Text>
-            <View>
               <Button
-                title='取消'
-                buttonStyle={{ margin: 5 }}
+                title='X'
+                buttonStyle={{ width: 50, height: 50, margin: 5, alignSelf: 'flex-end'}}
                 onPress={() => this.setState({showModal: false})}
-                backgroundColor={'orange'}
+                backgroundColor={'gray'}
                 />
               <Button
-                title='OK'
+                title='將此照片設為頭像'
                 backgroundColor={'green'}
                 buttonStyle={{ margin: 5 }}
-                onPress={() => this.setState({showModal: false})}
+                onPress={this.handleSetAvatar}
                 />
-            </View>
+              <Button
+                title='刪除此照片'
+                backgroundColor={'red'}
+                buttonStyle={{ margin: 5 }}
+                onPress={this.handleDelete}
+                />
           </View>
         </Modal>
       </View>

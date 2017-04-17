@@ -3,7 +3,7 @@ import { View, Dimensions,ListView, Image,TouchableHighlight } from 'react-nativ
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Text, Button, Avatar} from 'react-native-elements';
-import Reactotron from 'reactotron-react-native';
+
 import GeoFire from 'geofire';
 import moment from 'moment';
 
@@ -107,8 +107,8 @@ export default class Nearby extends Component {
   }
 
    componentWillMount() {
-    //this.getLocation();
-    Reactotron.log('Rendering Nearby');
+    //Reactotron.log('Rendering Nearby');
+    console.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false });
   }
 
@@ -118,10 +118,8 @@ export default class Nearby extends Component {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         var initialPosition = JSON.parse(JSON.stringify(position));
-        console.log('Lat: ' + initialPosition.coords.latitude + ' | Long: ' + initialPosition.coords.longitude)
-        //this.latitude = initialPosition.coords.latitude;
-        //this.longitude = initialPosition.coords.longitude;
-        //var location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
+        var location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
+        //console.log(location);
         this.getGeo(initialPosition.coords.latitude,initialPosition.coords.longitude);
       },
       (error) => alert(JSON.stringify(error)),
@@ -140,9 +138,9 @@ export default class Nearby extends Component {
 
     /**/
     geoFire.set(myUserId, [latitude, longitude ]).then(function() {
-        //Reactotron.log("Provided key has been added to GeoFire");
+        //console.log("Provided key has been added to GeoFire");
       }, function(error) {
-        //Reactotron.log("Error: " + error);
+        //console.log("Error: " + error);
       });
 
       var geoQuery = geoFire.query({

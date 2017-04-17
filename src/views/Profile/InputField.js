@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, TextInput } from 'react-native';
-import Reactotron from 'reactotron-react-native';
 
 const styles = {
   editViewStyle: {
@@ -18,7 +17,6 @@ const styles = {
     paddingBottom: 2,
     height: 30,
     fontSize: 14,
-    color: 'gray',
   },
   normalFieldStyle: {
     alignSelf: 'flex-start',

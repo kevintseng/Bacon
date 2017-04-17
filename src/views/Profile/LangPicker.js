@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, TextInput } from 'react-native';
 import { FormLabel, FormValidationMessage, Icon} from 'react-native-elements';
 import MultiSelect from 'react-native-multiple-select';
-import Reactotron from 'reactotron-react-native';
+
 
 const styles = {
   textAreaStyle: {
@@ -37,7 +37,7 @@ export default class LangPicker extends Component {
   }
 
   selectedItem = item => {
-    Reactotron.log(item);
+    console.log(item);
   }
 
   render() {
