@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Dimensions,ListView, Image,TouchableHighlight } from 'react-native';
+import { View, Dimensions,ListView, Image, TouchableHighlight,  } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Text, Button, Avatar} from 'react-native-elements';
@@ -78,8 +78,8 @@ export default class Nearby extends Component {
   }
 
   componentDidMount(){
-    //this.getLocation();
     this.getLocation();
+    // this.getLocation();
     //geoQuery.cancel();
     //this.getData();
   }
@@ -92,26 +92,27 @@ export default class Nearby extends Component {
 
     console.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false });
+    // this.getLocation();
   }
 
 
   getLocation = () =>{
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        var initialPosition = JSON.parse(JSON.stringify(position));
+        const initialPosition = JSON.parse(JSON.stringify(position));
         this.latitude = initialPosition.coords.latitude;
         this.longitude = initialPosition.coords.longitude;
-        //console.log(this.latitude);
-        //console.log(this.longitude);
+        console.log(this.latitude);
+        console.log(this.longitude);
         //this.setState({initialPosition});
-        //console.log('geoLocation sucess  ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds()  )
-        var location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
+        console.log('geoLocation sucess  ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds()  )
+        const location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
         //console.log(location);
         this.getGeo(initialPosition.coords.latitude,initialPosition.coords.longitude);
 
       },
-      (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 0, maximumAge: 1000}
+      (error) => console.log(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
 
   }
