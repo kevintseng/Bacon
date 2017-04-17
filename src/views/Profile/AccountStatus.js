@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Card, Icon, Text } from 'react-native-elements';
-import Reactotron from 'reactotron-react-native';
+
 
 const styles = {
   barStyle: {

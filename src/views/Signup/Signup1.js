@@ -8,7 +8,7 @@ import {
 import {CheckBox, FormLabel, FormInput, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
-import Reactotron from 'reactotron-react-native';
+
 import { observer } from 'mobx-react/native';
 import { getAge, checkEmail } from '../../Utils';
 import { Header } from '../../components';
@@ -70,12 +70,12 @@ class Signup1 extends Component {
   }
 
   componentWillMount() {
-    Reactotron.log('Will mount Signup1');
+    console.log('Will mount Signup1');
   }
 
   componentDidMount() {
     this.store.setInSignupProcess(true);
-    Reactotron.log('Signup 1 mounted');
+    console.log('Signup 1 mounted');
   }
 
   maxDay = () => {
@@ -216,7 +216,7 @@ class Signup1 extends Component {
       this.firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then((user) => {
         this.sustore.setUid(user.uid);
-        Reactotron.debug({'New user created': user, 'uid': user.uid});
+        console.debug({'New user created': user, 'uid': user.uid});
       })
       .then(() => {
         this.setState({
@@ -233,7 +233,7 @@ class Signup1 extends Component {
           loading: false,
           registerErr: err.message,
         });
-        Reactotron.error(err);
+        console.error(err);
       });
     }
   }

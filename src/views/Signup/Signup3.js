@@ -7,7 +7,7 @@ import {ButtonGroup, FormLabel, FormInput, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 // import { autorun } from 'mobx';
-import Reactotron from 'reactotron-react-native'; // eslint-disable-line
+ // eslint-disable-line
 import { Header, FormErrorMsg } from '../../components';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
@@ -32,12 +32,12 @@ class Signup3 extends Component {
   }
 
   componentWillMount() {
-    Reactotron.log('Will mount Signup3');
+    console.log('Will mount Signup3');
   }
 
   componentDidMount() {
     this.store.setInSignupProcess(true);
-    Reactotron.log('Signup 3 mounted');
+    console.log('Signup 3 mounted');
   }
 
   updateGender = (selected) => {
@@ -73,10 +73,10 @@ class Signup3 extends Component {
     }
 
     this.sustore.setGender(this.state.selectedGender);
-    Reactotron.log('gender: ' + this.state.selectedGender + ', selected: ' + this.state.selectedSexOrientation);
+    console.log('gender: ' + this.state.selectedGender + ', selected: ' + this.state.selectedSexOrientation);
     this.sustore.setSexOrientation(this.state.selectedGender, this.state.selectedSexOrientation);
     // autorun(() => {
-    //   Reactotron.log(this.sustore);
+    //   console.log(this.sustore);
     // });
     Actions.signup4({
       sustore: this.sustore

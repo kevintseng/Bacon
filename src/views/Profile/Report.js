@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { Radar } from 'react-native-pathjs-charts';
 import { observer } from 'mobx-react/native';
-import Reactotron from 'reactotron-react-native';
+
 
 const { width, height } = Dimensions.get('window');
 

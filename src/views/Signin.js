@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { Text, FormLabel, FormInput, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-import Reactotron from 'reactotron-react-native';
+
 import { observer } from 'mobx-react/native';
 import { FormErrorMsg } from '../components';
 import { checkEmail } from '../Utils';
@@ -39,7 +39,7 @@ export default class Welcome extends Component {
       });
       await this.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .catch(err => {
-        Reactotron.error(err);
+        console.error(err);
         this.setState({
           loginErr: err.message,
           loading: false,
@@ -48,13 +48,13 @@ export default class Welcome extends Component {
 
       const user = await this.firebase.auth().currentUser;
       if(user) {
-        Reactotron.log('User has signed in successfully.');
+        console.log('User has signed in successfully.');
         this.setState({
           loading: false
         });
         Actions.drawer();
       } else {
-        Reactotron.log('Signing in.....user.');
+        console.log('Signing in.....user.');
       }
     }
   }

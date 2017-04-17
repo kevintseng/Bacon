@@ -1,6 +1,5 @@
 import { observable, action } from 'mobx';
 // import autobind from 'autobind-decorator';
-import Reactotron from 'reactotron-react-native';
 
 // @autobind
 class AppStore {
@@ -14,7 +13,7 @@ class AppStore {
 
   @action setUser(user) {
     this.user = user;
-    Reactotron.log('Current User in AppStore: ' + user.uid);
+    console.log('Current User in AppStore: ' + user.uid);
   }
 
   @action setAvatar(uri) {
@@ -43,7 +42,7 @@ class AppStore {
 
   @action setLang(val) {
     this.user.lang = val;
-    Reactotron.log(this.user);
+    console.log(this.user);
   }
 
   @action upgradeMembership(firebase) {
@@ -67,7 +66,7 @@ class AppStore {
 
       setFirebase.set(val);
     } catch(err) {
-      Reactotron.log(err);
+      console.log(err);
     }
   }
 }

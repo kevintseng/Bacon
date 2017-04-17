@@ -3,7 +3,7 @@ import { View, Dimensions, } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Text } from 'react-native-elements';
-import Reactotron from 'reactotron-react-native';
+
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
@@ -27,7 +27,7 @@ export default class Messages extends Component {
   }
 
   componentWillMount() {
-    Reactotron.debug('Rendering Messages');
+    console.debug('Rendering Messages');
     Actions.refresh({ key: 'drawer', open: false });
   }
 

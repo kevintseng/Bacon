@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { View, Dimensions, ActivityIndicator } from "react-native";
 import { observer } from "mobx-react/native";
 import Moment from "moment";
-import { Actions } from "react-native-router-flux"; // eslint-disable-line
-import Reactotron from "reactotron-react-native"; // eslint-disable-line
+import { Actions } from "react-native-router-flux";
 import DeviceInfo from "react-native-device-info";
 import OthersProfile from "./OthersProfile";
 
@@ -24,20 +23,20 @@ export default class MeetCute extends Component {
       loading: true,
     };
     this.seekMeetQs(this.store.user.sexOrientation);
-    Reactotron.log(this.store.user.sexOrientation);
+    console.log(this.store.user.sexOrientation);
   }
 
   componentWillMount() {
-    Reactotron.debug("Rendering MeetCute");
+    console.debug("Rendering MeetCute");
     Actions.refresh({ key: "drawer", open: false });
   }
 
   componentDidMount() {
-    Reactotron.debug("MeetCute rendered");
+    console.debug("MeetCute rendered");
     const deviceId = DeviceInfo.getUniqueID();
     const locale = DeviceInfo.getDeviceLocale();
     const country = DeviceInfo.getDeviceCountry();
-    Reactotron.log(
+    console.log(
       "Device ID: " + deviceId + ", locale: " + locale + ", country: " + country
     );
   }
@@ -50,17 +49,17 @@ export default class MeetCute extends Component {
 
     query
       .once("value", snap => {
-        Reactotron.log("Executing mq cond:" + cond);
+        console.log("Executing mq cond:" + cond);
         snap.forEach(childsnap => {
           const _uid = childsnap.val().uid;
           _list.push(_uid);
         });
-        Reactotron.log("Print list");
-        Reactotron.log(_list);
+        console.log("Print list");
+        console.log(_list);
         this.setState({ list: _list });
       })
       .then(() => {
-        Reactotron.log(_list[0]);
+        console.log(_list[0]);
         this.getProfile(_list[0]);
       });
   };
@@ -68,8 +67,8 @@ export default class MeetCute extends Component {
   getProfile = uid => {
     const q = this.firebase.database().ref("users/" + uid);
     q.once("value", snap => {
-      Reactotron.log("Profile data:");
-      Reactotron.log(snap.val());
+      console.log("Profile data:");
+      console.log(snap.val());
       this.setState({
         data: snap.val(),
         loading: false,
@@ -100,9 +99,9 @@ export default class MeetCute extends Component {
     });
     const uid = this.state.data.uid;
     const list = this.state.list;
-    Reactotron.log("MeetCute: getNext() pressed");
+    console.log("MeetCute: getNext() pressed");
     const _index = list.indexOf(uid) + 1;
-    Reactotron.log(_index);
+    console.log(_index);
     if (list.length > _index) {
       this.getProfile(list[_index]);
     } else {
@@ -110,12 +109,12 @@ export default class MeetCute extends Component {
         loading: false,
       });
       alert('這是最後一位了, 在沒有有fu的對象我也沒辦法惹...GG');
-      Reactotron.log("This is the last user");
+      console.log("This is the last user");
     }
   };
 
   handleLike = uid => {
-    Reactotron.log('MeetCute: handleLike pressedL: ' + uid);
+    console.log('MeetCute: handleLike pressedL: ' + uid);
     const r = this.firebase.database().ref("users/" + this.store.user.uid + "/likes").child(uid);
     r.set({time: Moment().unix()});
     this.getNext();
@@ -133,8 +132,8 @@ export default class MeetCute extends Component {
         size="large"
       />
     );
-    Reactotron.log('this.state.data');
-    Reactotron.log(this.state.data);
+    console.log('this.state.data');
+    console.log(this.state.data);
     return (
       <View>
         {this.state.loading && indicator}

@@ -5,7 +5,6 @@ import { Router, Scene, Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
 import { Icon } from "react-native-elements";
 import * as Firebase from "firebase"; // eslint-disable-line
-import Reactotron from "reactotron-react-native";
 import MeetCute from "./views/MeetCute";
 import Nearby from "./views/Nearby";
 import Messages from "./views/Messages";
@@ -93,12 +92,12 @@ export default class RouterComponent extends Component {
   }
 
   componentWillMount() {
-    Reactotron.log("Router will mount.");
+    console.log("Router will mount.");
     let user;
     this.state.fire.auth().onAuthStateChanged(data => {
       if (data) {
-        Reactotron.log("Router: Got user data from firebase auth api:");
-        Reactotron.log(data);
+        console.log("Router: Got user data from firebase auth api:");
+        console.log(data);
         const dbRef = this.state.fire.database().ref("/users/" + data.uid);
         user = {
           uid: data.uid,
@@ -124,18 +123,18 @@ export default class RouterComponent extends Component {
                 _user.delete().then(
                   () => {},
                   _err => {
-                    Reactotron.error(_err);
+                    console.error(_err);
                   }
                 );
               }
               this.signOut();
-              Reactotron.log("Router: Incomplete sign up.");
+              console.log("Router: Incomplete sign up.");
               return;
             }
 
-            Reactotron.log({ CombinedUserProfile: user });
+            console.log({ CombinedUserProfile: user });
             this.state.store.setUser(user);
-            Reactotron.log("Router: User has been set in appstore");
+            console.log("Router: User has been set in appstore");
             this.setOnline(this.state.store.user.uid);
             this.state.localdb
               .save({
@@ -144,17 +143,17 @@ export default class RouterComponent extends Component {
                 expires: 1000 * 3600 * 24 * 30 // expires after 30 days
               })
               .catch(err => {
-                Reactotron.log("Router: Saving data to local db failed.");
-                Reactotron.log(err);
+                console.log("Router: Saving data to local db failed.");
+                console.log(err);
               });
           })
           .catch(err => {
-            Reactotron.error("Router: Get user data failed.");
-            Reactotron.error(err);
+            console.error("Router: Get user data failed.");
+            console.error(err);
           });
       } else {
         this.signOut();
-        Reactotron.log("Router: No valid user session.");
+        console.log("Router: No valid user session.");
       }
     });
   }

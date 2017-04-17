@@ -3,7 +3,7 @@ import { View, Dimensions, } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Card, Text, ListItem } from 'react-native-elements';
-import Reactotron from 'reactotron-react-native';
+
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
@@ -28,11 +28,11 @@ export default class Question extends Component {
   }
 
   componentWillMount() {
-    Reactotron.log('Rendering Profile');
+    console.log('Rendering Profile');
     Actions.refresh({ key: 'drawer', open: false });
     let user = this.fs.auth().currentUser;
 
-    Reactotron.debug(this.store.user);
+    console.debug(this.store.user);
   }
 
   emailPressed = () => {
