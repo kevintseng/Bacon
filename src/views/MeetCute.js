@@ -22,8 +22,6 @@ export default class MeetCute extends Component {
       data: null,
       loading: true,
     };
-    this.seekMeetQs(this.store.user.sexOrientation);
-    console.log(this.store.user.sexOrientation);
   }
 
   componentWillMount() {
@@ -39,6 +37,7 @@ export default class MeetCute extends Component {
     console.log(
       "Device ID: " + deviceId + ", locale: " + locale + ", country: " + country
     );
+    this.seekMeetQs(this.store.user.sexOrientation);
   }
 
   mq = cond => {
