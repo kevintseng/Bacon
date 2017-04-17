@@ -3,7 +3,7 @@ import { View, Dimensions, StyleSheet, ListView, TextInput, Alert, Navigator} fr
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { Text ,List, ListItem, FormInput, Button, CheckBox} from 'react-native-elements';
-import Reactotron from 'reactotron-react-native';
+
 import ActionSheet from 'react-native-actionsheet';
 import MessageBarAlert from 'react-native-message-bar/MessageBar';
 import MessageBarManager from 'react-native-message-bar/MessageBarManager';
@@ -191,7 +191,7 @@ export default class FeedBack extends Component {
   }
 
   componentDidMount() {
-    Reactotron.log('ChangePassword rendered');
+    console.log('ChangePassword rendered');
     MessageBarManager.registerMessageBar(this.refs.alert);
   };
 

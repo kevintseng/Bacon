@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
-import Reactotron from 'reactotron-react-native';
+
 import { List, ListItem, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
@@ -19,16 +19,16 @@ export default class SideBar extends Component {
   }
 
   componentWillMount() {
-    Reactotron.log('Rendering SideBar.');
+    console.log('Rendering SideBar.');
   }
 
   componentDidMount() {
-    Reactotron.log('SideBar rendered.');
+    console.log('SideBar rendered.');
   }
 
   handleImageChange = () => {
     // Do something
-    Reactotron.log('handleImageChange pressed.');
+    console.log('handleImageChange pressed.');
   };
 
   badgeShow = (newCount) => {

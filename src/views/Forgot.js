@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-import Reactotron from 'reactotron-react-native';
 import { checkEmail } from '../Utils';
 import { FormErrorMsg } from '../components';
 
@@ -30,7 +29,7 @@ export default class Forgot extends Component {
   }
 
   componentDidMount() {
-    Reactotron.debug('Forgot view rendered.');
+    console.debug('Forgot view rendered.');
   }
 
   onSubmit = () => {
@@ -51,7 +50,7 @@ export default class Forgot extends Component {
           emailErr: 'err.description',
           loading: false,
         });
-        Reactotron.log({code: err.code, desc: err.description});
+        console.log({code: err.code, desc: err.description});
       });
     }
   }

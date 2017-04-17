@@ -2,7 +2,6 @@
 import React, { PropTypes } from 'react';
 import { Text, View } from 'react-native';
 import { Col, Grid } from "react-native-easy-grid";
-import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 
 // Make a component
 const MainHeader = (props) => {
