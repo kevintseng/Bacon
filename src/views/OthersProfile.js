@@ -160,7 +160,7 @@ export default class OthersProfile extends Component {
             }}
           >
             <Text h4>{displayName}</Text>
-            <Text> {age}歲, {gender}, {city}</Text>
+            <Text> {age}歲</Text>
           </View>
           <Divider style={{ marginVertical: 5 }} />
           <Text style={{ color: "#6A5ACD" }}>
