@@ -1,30 +1,70 @@
 import React, { Component } from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, Platform} from 'react-native';
 
 const styles = {
   editViewStyle: {
-    borderBottomWidth: 0.3,
-    borderBottomColor: 'gray',
-    marginBottom: 3
+    ...Platform.select({
+      ios: {
+        borderBottomWidth: 0.3,
+        borderBottomColor: 'gray',
+        marginBottom: 3
+      },
+      android: {
+        borderBottomWidth: 0.3,
+        borderBottomColor: 'gray',
+        marginBottom: 3
+      }
+    })
   },
   normalViewStyle: {
-    marginBottom: 3,
+    ...Platform.select({
+      ios: {
+        marginBottom: 3,
+      },
+      android: {
+        marginBottom: 3,
+      }
+    })
   },
   editFieldStyle: {
-    alignSelf: 'flex-start',
-    width: 200,
-    paddingHorizontal: 5,
-    paddingBottom: 2,
-    height: 30,
-    fontSize: 14,
+    ...Platform.select({
+      ios: {
+        alignSelf: 'flex-start',
+        width: 200,
+        paddingHorizontal: 5,
+        paddingBottom: 2,
+        height: 30,
+        fontSize: 14,
+      },
+      android: {
+        alignSelf: 'flex-start',
+        width: 200,
+        paddingHorizontal: 5,
+        paddingBottom: 2,
+        height: 40,
+        fontSize: 14,
+      }
+    })
   },
   normalFieldStyle: {
-    alignSelf: 'flex-start',
-    width: 200,
-    paddingHorizontal: 5,
-    paddingBottom: 2,
-    height: 30,
-    fontSize: 14,
+    ...Platform.select({
+      ios: {
+        alignSelf: 'flex-start',
+        width: 200,
+        paddingHorizontal: 5,
+        paddingBottom: 2,
+        height: 30,
+        fontSize: 14,
+      },
+      android: {
+        alignSelf: 'flex-start',
+        width: 200,
+        paddingHorizontal: 5,
+        paddingBottom: 8,
+        height: 40,
+        fontSize: 14,
+      }
+    })
   },
 };
 

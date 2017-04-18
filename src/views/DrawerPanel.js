@@ -27,7 +27,7 @@ export default class DrawerPanel extends Component {
     return (
       <Drawer
         ref='navigation'
-        type='displace'
+        type='overlay'
         onOpen={() => Actions.refresh({ key: state.key, open: true })}
         onClose={() => Actions.refresh({ key: state.key, open: false })}
         open={state.open}
