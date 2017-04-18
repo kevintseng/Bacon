@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, Dimensions } from 'react-native';
 
 import { List, ListItem, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { SIDEBAR_LINKS } from '../Configs';
+
+const { height } = Dimensions.get('window'); //eslint-disable-line
 
 const list = SIDEBAR_LINKS;
 const loading = require('../images/loading.gif');
@@ -94,22 +96,23 @@ export default class SideBar extends Component {
       displayName = this.store.user.displayName;
       photoURL = { uri: this.store.user.photoURL };
     } else {
-      displayName = 'Loading..';
+      displayName = '載入中...';
       photoURL = loading;
     }
+
+    console.log('Height: ' + height);
 
     return (
       <ScrollView
         style={{
-          height: 800,
+          height,
+          backgroundColor: '#F5F5F5'
         }}
       >
         <List>
           <ListItem
-            containerStyle={{ height: 42 }}
-            rightIcon={{ name: 'first-page' }}
-            rightTitle='Close'
-            rightTitleStyle={{ color: '#616161' }}
+            containerStyle={{ height: 43, backgroundColor: '#F5F5F5', borderBottomWidth: 0.5, borderBottomColor: '#BDBDBD'}}
+            rightIcon={{ name: 'menu', color: 'black' }}
             onPress={() => Actions.refresh({ key: 'drawer', open: false })}
           />
           <ListItem
@@ -133,8 +136,8 @@ export default class SideBar extends Component {
         </List>
         <Button
           style={{ marginTop: 10 }}
-          backgroundColor='transparent'
-          color='#007AFF'
+          color={'black'}
+          backgroundColor={'#F5F5F5'}
           title={'登出'}
           onPress={this.signOut}
         />
