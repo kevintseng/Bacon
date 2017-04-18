@@ -107,7 +107,6 @@ export default class Nearby extends Component {
   }
 
    componentWillMount() {
-    //Reactotron.log('Rendering Nearby');
     console.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false });
   }
