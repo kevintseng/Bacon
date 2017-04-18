@@ -148,11 +148,7 @@ dependencies {
     compile project(':react-native-image-picker')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.facebook.react:react-native:+' // From node_modules
-<<<<<<< HEAD
-    compile('com.google.android.gms:play-services:10.2.1'){
-=======
     compile('com.google.android.gms:play-services:+'){
->>>>>>> frank_nearby_branch
       force = true
     }
     compile 'com.google.firebase:firebase-core:10.2.1';
