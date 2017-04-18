@@ -14,6 +14,7 @@ import Settings from "./views/Settings";
 import Signin from "./views/Signin";
 import SessionCheck from "./views/SessionCheck";
 import { Profile } from "./views/Profile";
+import Chat from "./views/Chat";
 import Favorites from "./views/Favorites";
 import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
 import DrawerPanel from "./views/DrawerPanel";
@@ -247,6 +248,7 @@ export default class RouterComponent extends Component {
                 component={Messages}
                 title="Messages"
                 renderLeftButton={menuButton}
+                hideTabBar
               />
               <Scene
                 key="likesyou"
@@ -294,6 +296,12 @@ export default class RouterComponent extends Component {
                 component={Profile}
                 title="關於我"
                 renderLeftButton={menuButton}
+                hideTabBar
+              />
+              <Scene
+                key="chat"
+                component={Chat}
+                title="Chat"
                 hideTabBar
               />
             </Scene>
