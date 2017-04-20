@@ -20,6 +20,7 @@ export default class Welcome extends Component {
     this.state = {
       loading: true,
     }
+    this.getUser();
   }
 
   componentWillMount() {
@@ -28,7 +29,6 @@ export default class Welcome extends Component {
 
   componentDidMount() {
     console.log('SessionCheck rendered');
-    this.getUser();
   }
 
   getUser = async () => {
@@ -46,36 +46,36 @@ export default class Welcome extends Component {
       });
       Actions.signin();
     }
-    // this.db.load({
-    //   key: 'user',
-    //   autoSync: false,
-    //   syncInBackground: false,
-    // }).then(ret => {
-    //   console.log('User existed in LocalDB: ');
-    //   console.log(ret);
-    //   if(ret) {
-    //     this.store.setUser(ret);
-    //     Actions.drawer();
-    //   } else {
-    //     console.log('SessionCheck: Rendering signin');
-    //     Actions.signin();
-    //   }
-    // }).catch(err => {
-    //   console.log(err.message);
-    //   switch (err.name) {
-    //     case 'NotFoundError':
-    //       console.log('SessionCheck: Data not found, rendering signin');
-    //       Actions.signin();
-    //       break;
-    //     case 'ExpiredError':
-    //       console.log('SessionCheck: Data expired, rendering signin');
-    //       Actions.signin();
-    //       break;
-    //     default:
-    //       console.log(err.name);
-    //       Actions.signin();
-    //   }
-    // });
+    this.db.load({
+      key: 'user',
+      autoSync: false,
+      syncInBackground: false,
+    }).then(ret => {
+      console.log('User existed in LocalDB: ');
+      console.log(ret);
+      if(ret) {
+        this.store.setUser(ret);
+        Actions.drawer();
+      } else {
+        console.log('SessionCheck: Rendering signin');
+        Actions.signin();
+      }
+    }).catch(err => {
+      console.log(err.message);
+      switch (err.name) {
+        case 'NotFoundError':
+          console.log('SessionCheck: Data not found, rendering signin');
+          Actions.signin();
+          break;
+        case 'ExpiredError':
+          console.log('SessionCheck: Data expired, rendering signin');
+          Actions.signin();
+          break;
+        default:
+          console.log(err.name);
+          Actions.signin();
+      }
+    });
   }
 
   render() {
