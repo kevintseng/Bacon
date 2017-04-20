@@ -57,7 +57,7 @@ const menuButton = () => (
 export default class RouterComponent extends Component {
   constructor() {
     super();
-    const storage = new Storage({
+    const localdb = new Storage({
       // maximum capacity, default 1000
       size: 1000,
 
@@ -80,18 +80,18 @@ export default class RouterComponent extends Component {
       }
     });
 
-    const firebase = Firebase.initializeApp(FirebaseConfig);
+    const fire = Firebase.initializeApp(FirebaseConfig);
 
     // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
-    const appstore = new AppStore();
+    const store = new AppStore();
 
     this.state = {
-      store: appstore,
-      fire: firebase,
-      localdb: storage
+      store,
+      fire,
+      localdb,
     };
 
-    this.authListener();
+    this.authListener(fire);
   }
 
   componentWillMount() {
@@ -99,14 +99,14 @@ export default class RouterComponent extends Component {
 
   }
 
-  authListener = () => {
+  authListener = (fire) => {
     console.log("Initialize authListener .");
     let user;
-    this.state.fire.auth().onAuthStateChanged(data => {
+    fire.auth().onAuthStateChanged(data => {
       if (data) {
         console.log("Router: Got user data from firebase auth api:");
         console.log(data);
-        const dbRef = this.state.fire.database().ref("/users/" + data.uid);
+        const dbRef = fire.database().ref("/users/" + data.uid);
         user = {
           uid: data.uid,
           displayName: data.displayName,
@@ -124,7 +124,7 @@ export default class RouterComponent extends Component {
 
             // Block incompleted signup users to login
             if (!user.signupCompleted && !this.state.store.inSignupProcess) {
-              const _user = this.state.fire.auth().currentUser;
+              const _user = fire.auth().currentUser;
               // In case the user dropped out during sign-up and want to sign-up again
               // TODO: Should also check firebase db to see if there's any other related data needs to be removed too
               if (_user) {
@@ -144,16 +144,16 @@ export default class RouterComponent extends Component {
             this.state.store.setUser(user);
             console.log("Router: User has been set in appstore");
             this.setOnline(this.state.store.user.uid);
-            // this.state.localdb
-            //   .save({
-            //     key: "user",
-            //     rawData: this.state.store.user,
-            //     expires: 1000 * 3600 * 24 * 30 // expires after 30 days
-            //   })
-            //   .catch(err => {
-            //     console.log("Router: Saving data to local db failed.");
-            //     console.log(err);
-            //   });
+            this.state.localdb
+              .save({
+                key: "user",
+                rawData: this.state.store.user,
+                expires: 1000 * 3600 * 24 * 30 // expires after 30 days
+              })
+              .catch(err => {
+                console.log("Router: Saving data to local db failed.");
+                console.log(err);
+              });
           })
           .catch(err => {
             console.error("Router: Get user data failed.");
