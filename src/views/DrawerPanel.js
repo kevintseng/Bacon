@@ -4,6 +4,11 @@ import { Actions, DefaultRenderer } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import SideBar from './SideBar';
 
+const drawerStyles = {
+  drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
+  main: {paddingLeft: 3},
+};
+
 @observer
 export default class DrawerPanel extends Component {
   constructor(props) {
@@ -28,6 +33,7 @@ export default class DrawerPanel extends Component {
       <Drawer
         ref='navigation'
         type='overlay'
+        styles={drawerStyles}
         onOpen={() => Actions.refresh({ key: state.key, open: true })}
         onClose={() => Actions.refresh({ key: state.key, open: false })}
         open={state.open}
