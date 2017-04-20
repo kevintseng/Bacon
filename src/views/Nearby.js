@@ -117,8 +117,14 @@ export default class Nearby extends Component {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        var initialPosition = JSON.parse(JSON.stringify(position));
-        var location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
+        const initialPosition = JSON.parse(JSON.stringify(position));
+        this.latitude = initialPosition.coords.latitude;
+        this.longitude = initialPosition.coords.longitude;
+//         console.log(this.latitude);
+//         console.log(this.longitude);
+        //this.setState({initialPosition});
+//         console.log('geoLocation sucess  ' + new Date().getSeconds() + ':' +  new Date().getMilliseconds()  )
+        const location = {lat: initialPosition.coords.latitude, long:initialPosition.coords.longitude};
         //console.log(location);
         this.getGeo(initialPosition.coords.latitude,initialPosition.coords.longitude);
       },

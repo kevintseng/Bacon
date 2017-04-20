@@ -17,55 +17,73 @@ export default class Welcome extends Component {
     this.firebase = this.props.fire;
     this.store = this.props.store;
     this.db = this.props.localdb;
-
+    this.state = {
+      loading: true,
+    }
   }
 
   componentWillMount() {
     console.log('Rendering SessionCheck');
-    this.getUser();
   }
 
   componentDidMount() {
     console.log('SessionCheck rendered');
+    this.getUser();
   }
 
-  getUser = () => {
-    this.db.load({
-      key: 'user',
-      autoSync: false,
-      syncInBackground: false,
-    }).then(ret => {
-      console.log('User existed in LocalDB: ');
-      console.log(ret);
-      if(ret) {
-        this.store.setUser(ret);
-        Actions.drawer();
-      } else {
-        console.log('SessionCheck: Rendering signin');
-        Actions.signin();
-      }
-    }).catch(err => {
-      console.log(err.message);
-      switch (err.name) {
-        case 'NotFoundError':
-          console.log('SessionCheck: Data not found, rendering signin');
-          Actions.signin();
-          break;
-        case 'ExpiredError':
-          console.log('SessionCheck: Data expired, rendering signin');
-          Actions.signin();
-          break;
-        default:
-          console.log(err.name);
-          Actions.signin();
-      }
-    })
+  getUser = async () => {
+    const _user = await this.firebase.auth().currentUser;
+    console.log('SessionCheck: currentUser');
+    console.log(_user);
+    if(_user) {
+      this.setState({
+        loading: false
+      });
+      Actions.drawer();
+    } else {
+      this.setState({
+        loading: false
+      });
+      Actions.signin();
+    }
+    // this.db.load({
+    //   key: 'user',
+    //   autoSync: false,
+    //   syncInBackground: false,
+    // }).then(ret => {
+    //   console.log('User existed in LocalDB: ');
+    //   console.log(ret);
+    //   if(ret) {
+    //     this.store.setUser(ret);
+    //     Actions.drawer();
+    //   } else {
+    //     console.log('SessionCheck: Rendering signin');
+    //     Actions.signin();
+    //   }
+    // }).catch(err => {
+    //   console.log(err.message);
+    //   switch (err.name) {
+    //     case 'NotFoundError':
+    //       console.log('SessionCheck: Data not found, rendering signin');
+    //       Actions.signin();
+    //       break;
+    //     case 'ExpiredError':
+    //       console.log('SessionCheck: Data expired, rendering signin');
+    //       Actions.signin();
+    //       break;
+    //     default:
+    //       console.log(err.name);
+    //       Actions.signin();
+    //   }
+    // });
   }
 
   render() {
     return (
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width, height }}>
-        <ActivityIndicator size='large' />
+        {
+          this.state.loading && <ActivityIndicator size='large' />
+        }
       </View>
     );
   }
