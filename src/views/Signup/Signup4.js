@@ -13,7 +13,6 @@ import { Actions } from 'react-native-router-flux'; // eslint-disable-line
 import RNFetchBlob from 'react-native-fetch-blob';
 import { observer } from 'mobx-react/native';
 import ImagePicker from 'react-native-image-picker';
-import Reactotron from 'reactotron-react-native'; // eslint-disable-line
 import { Header } from '../../components/Header';
 // import { FirebaseConfig } from '../../Configs';
 
