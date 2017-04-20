@@ -11,6 +11,15 @@ const { height } = Dimensions.get('window'); //eslint-disable-line
 const list = SIDEBAR_LINKS;
 const loading = require('../images/loading.gif');
 
+const styles = {
+  containerStyle: {
+    borderBottomWidth: 0,
+  },
+  wrapperStyle: {
+    paddingLeft: 43,
+  }
+};
+
 @observer
 export default class SideBar extends Component {
   constructor(props) {
@@ -117,6 +126,7 @@ export default class SideBar extends Component {
           />
           <ListItem
             roundAvatar
+            containerStyle={styles.containerStyle}
             avatar={ photoURL }
             title={ displayName }
             onPress={this.handleOnPress('profile')}
@@ -125,6 +135,8 @@ export default class SideBar extends Component {
             list.map((item, i) => (
               <ListItem
                 key={i}
+                containerStyle={styles.containerStyle}
+                wrapperStyle={styles.wrapperStyle}
                 underlayColor={'#f8f8f8'}
                 title={item.title}
                 leftIcon={{ name: item.icon }}
