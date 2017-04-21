@@ -113,7 +113,7 @@ export default class MeetCute extends Component {
   };
 
   handleLike = uid => {
-    console.log('MeetCute: handleLike pressedL: ' + uid);
+    console.log('MeetCute: handleLike pressed: ' + uid);
     const r = this.firebase.database().ref("users/" + this.store.user.uid + "/likes").child(uid);
     r.set({time: Moment().unix()});
     this.getNext();

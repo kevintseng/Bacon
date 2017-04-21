@@ -5,15 +5,15 @@ import { Icon, Button } from 'react-native-elements';
 
 const styles = {
   viewStyle: {
-    backgroundColor: '#F8F8F8',
+    backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    height: 60,
+    height: 64,
     paddingTop: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 0.1 },
-    shadowOpacity: 0.6,
-    elevation: 0.6,
-    position: 'relative'
+    elevation: 0.2,
+    borderBottomWidth: 0.5,
+    backgroundColor: '#F5F5F5',
+    borderBottomColor: '#BDBDBD',
+    position: 'relative',
   },
   gridStyle: {
     alignItems: 'center',
@@ -23,6 +23,7 @@ const styles = {
     alignSelf: 'center',
   },
   leftColStyle: {
+    marginLeft: 5,
     justifyContent: 'center',
     width: 100,
     alignItems: 'flex-start',
@@ -43,21 +44,22 @@ const styles = {
 // Make a component
 const Header = (props) => {
   const { titleStyle, gridStyle, buttonStyle, viewStyle, leftColStyle, rightColStyle } = styles;
-  let { leftColor, disableRight, disableLeft, onLeft, rightColor, onRight } = props;
+  let { leftIconName, leftColor, disableRight, disableLeft, onLeft, rightColor, onRight } = props;
   const { headerText, rightButtonText } = props;
   if(!leftColor) leftColor = 'transparent';
   if(!rightColor) rightColor = 'transparent';
   if(!onLeft) onLeft = () => {};
   if(!onRight) onRight = () => {};
+  if(!leftIconName) leftIconName = 'chevron-left';
 
   return (
     <View style={viewStyle}>
     <Grid style={gridStyle}>
       <Col style={leftColStyle}>
         <Icon
-          name='chevron-left'
+          name={leftIconName}
           color={leftColor}
-          size={32}
+          size={28}
           onPress={onLeft}
           disabled={disableLeft}
         />
@@ -80,14 +82,14 @@ const Header = (props) => {
   );
 };
 
-Header.propTypes = {
-  headerText: PropTypes.string,
-  rightButtonText: PropTypes.string,
-  rightColor:PropTypes.string,
-  onRight:PropTypes.func,
-  onLeft: PropTypes.func,
-  leftColor: PropTypes.string,
-}
+// Header.propTypes = {
+//   headerText: PropTypes.string,
+//   rightButtonText: PropTypes.string,
+//   rightColor:PropTypes.string,
+//   onRight:PropTypes.func,
+//   onLeft: PropTypes.func,
+//   leftColor: PropTypes.string,
+// }
 
 // Make the component available to other parts of the app
 export { Header };

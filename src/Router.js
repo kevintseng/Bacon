@@ -246,9 +246,10 @@ export default class RouterComponent extends Component {
               <Scene
                 key="messages"
                 component={Messages}
-                title="Messages"
+                title=''
                 renderLeftButton={menuButton}
                 hideTabBar
+                hideNavBar
               />
               <Scene
                 key="likesyou"
@@ -302,6 +303,7 @@ export default class RouterComponent extends Component {
                 key="chat"
                 component={Chat}
                 title="Chat"
+                hideNavBar={false}
                 hideTabBar
               />
             </Scene>
