@@ -2,15 +2,13 @@ import React, { Component } from "react";
 import {
   View,
   Dimensions,
-  Text,
   Picker,
   ScrollView,
-  TouchableOpacity
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
 import { List, ListItem, Button } from "react-native-elements";
-import Moment from "moment";
+// import Moment from "moment";
 import { Header } from "../components";
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
