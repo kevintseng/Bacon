@@ -73,53 +73,30 @@ export default class Messages extends Component {
   handleStatusChange = status => {
     this.setState({
       status,
-      buttonStyle: this.getButtonStyle(),
       pickerShow: false
     });
   };
 
-  getButtonStyle = () => {
-    switch (this.state.status) {
-      case 'spaceOut':
-        return styles.spaceOut;
-      case 'low':
-        return styles.low;
-      case 'busy':
-        return styles.busy;
-      default:
-        return styles.blank;
-    }
-  }
 
   getStatusLabel = () => {
     switch (this.state.status) {
       case 'spaceOut':
-        return '放空中...';
+        return '放空中';
       case 'low':
-        return '低潮中...';
+        return '低潮中';
       case 'busy':
-        return '忙碌中...';
+        return '忙碌中';
       default:
         return '我的狀態';
-    }
-  }
-
-  getStatusFontColor = () => {
-    switch (this.state.status) {
-      case 'spaceOut':
-        return 'gray';
-      case 'low':
-        return 'white';
-      case 'busy':
-        return 'white';
-      default:
-        return 'black';
     }
   }
 
   render() {
     return (
       <View style={this.state.size}>
+        <View>
+          
+        </View>
         <ScrollView>
           <Header
             headerText=""
@@ -129,9 +106,9 @@ export default class Messages extends Component {
           />
           <View style={styles.statusWrapper}>
             <Button
-              buttonStyle={this.getButtonStyle()}
+              buttonStyle={styles.blank}
               fontSize={14}
-              color={this.getStatusFontColor()}
+              color='black'
               borderRadius={25}
               title={this.getStatusLabel()}
               onPress={() => this.setState({pickerShow: true})}
