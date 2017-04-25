@@ -1,3 +1,5 @@
+//TODO: try this https://github.com/WheelerLee/react-native-dropdown-menu
+
 import React, { Component } from "react";
 import {
   View,
@@ -38,7 +40,7 @@ const styles = {
   busy: { width: 90, height: 25, backgroundColor: "orange" },
   low: { width: 90, height: 25, backgroundColor: "blue" },
   spaceOut: { width: 90, height: 25, backgroundColor: "#FDD835" },
-  blank: { width: 90, height: 25, backgroundColor: "transparent" }
+  blank: { width: 90, height: 30, justifyContent: 'space-around', backgroundColor: "transparent" }
 };
 
 @observer
@@ -95,7 +97,7 @@ export default class Messages extends Component {
     return (
       <View style={this.state.size}>
         <View>
-          
+
         </View>
         <ScrollView>
           <Header
@@ -109,7 +111,8 @@ export default class Messages extends Component {
               buttonStyle={styles.blank}
               fontSize={14}
               color='black'
-              borderRadius={25}
+              iconRight
+              icon={{ name: 'keyboard-arrow-down', color: 'black' }}
               title={this.getStatusLabel()}
               onPress={() => this.setState({pickerShow: true})}
             />
