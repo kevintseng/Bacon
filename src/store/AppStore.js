@@ -13,11 +13,17 @@ class AppStore {
 
   @action setUser(user) {
     this.user = user;
-    console.log('Current User in AppStore: ' + user.uid);
+    // console.log('Current User in AppStore: ' + user.uid);
   }
 
   @action setAvatar(uri) {
     this.user.photoURL = uri;
+  }
+
+  @action setChatStatus(firebase, status) {
+    this.user.chatStatus = status;
+    this.updateUserAtFirebase(firebase, 'chatStatus', status);
+    console.log('Updated user chatStatus: ', this.user.chatStatus);
   }
 
   @action signOut() {
@@ -63,7 +69,6 @@ class AppStore {
   updateUserAtFirebase(firebase, key, val) {
     try {
       const setFirebase = firebase.database().ref('users/' + this.user.uid + '/' + key);
-
       setFirebase.set(val);
     } catch(err) {
       console.log(err);

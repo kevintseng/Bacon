@@ -3229,7 +3229,7 @@ lodash@^3.5.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.11.1, lodash@^4.12.0, lodash@^4.14.0, lodash@^4.16.6, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
+lodash@^4.0.0, lodash@^4.11.1, lodash@^4.12.0, lodash@^4.14.0, lodash@^4.16.6, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -3802,6 +3802,13 @@ react-addons-pure-render-mixin@^15.0.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
+react-addons-shallow-compare@^15.4.1:
+  version "15.5.2"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.5.2.tgz#7cb0ee7acc8d7c93fcc202df0bf47ba916a7bdad"
+  dependencies:
+    fbjs "^0.8.4"
+    object-assign "^4.1.0"
+
 react-clone-referenced-element@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-clone-referenced-element/-/react-clone-referenced-element-1.0.1.tgz#2bba8c69404c5e4a944398600bcc4c941f860682"
@@ -3813,6 +3820,10 @@ react-deep-force-update@^1.0.0:
 react-native-actionsheet@^2.0.6:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/react-native-actionsheet/-/react-native-actionsheet-2.1.0.tgz#e1b58bd951f4fcc1c5ebbb769fff5c693f12e23a"
+
+react-native-animatable@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.1.1.tgz#00ddc72985f62f62a11a505abb1a06e77a92cd8a"
 
 react-native-auto-expanding-textinput@0.0.5:
   version "0.0.5"
@@ -3841,6 +3852,10 @@ react-native-drawer@^2.3.0:
   resolved "https://registry.yarnpkg.com/react-native-drawer/-/react-native-drawer-2.3.0.tgz#a0369ec80ff0b61c9f152dbdea91fe76c843113a"
   dependencies:
     tween-functions "^1.0.1"
+
+react-native-dropdown-menu@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-dropdown-menu/-/react-native-dropdown-menu-1.1.0.tgz#1f0eeea8ee3a49abaf15b4335df4156929598274"
 
 react-native-easy-grid@^0.1.8:
   version "0.1.8"
@@ -3937,6 +3952,12 @@ react-native-mobx@^0.3.1:
     mobx-react "^3.3.0"
     react-native-router-flux "^3.31.2"
 
+react-native-modal@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-2.3.2.tgz#d616355e312d378a9dcd99de5565523b7b5b4c84"
+  dependencies:
+    react-native-animatable "^1.1.1"
+
 react-native-parsed-text@0.0.16:
   version "0.0.16"
   resolved "https://registry.yarnpkg.com/react-native-parsed-text/-/react-native-parsed-text-0.0.16.tgz#788f6a51c3e2c224ad89101cc3d63f5993d37747"
@@ -3980,6 +4001,13 @@ react-native-side-menu@^0.20.1:
 react-native-simple-modal@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/react-native-simple-modal/-/react-native-simple-modal-5.0.0.tgz#c1c6bbf122d5a2310f15f44c1a46854a3da4c5f1"
+
+react-native-smooth-swipe-list@^1.1.15:
+  version "1.1.15"
+  resolved "https://registry.yarnpkg.com/react-native-smooth-swipe-list/-/react-native-smooth-swipe-list-1.1.15.tgz#43d2a7f0abacafd3f743b22d6bf63bcb9c5242ac"
+  dependencies:
+    lodash "^4.17.2"
+    react-addons-shallow-compare "^15.4.1"
 
 react-native-storage@^0.1.5:
   version "0.1.5"

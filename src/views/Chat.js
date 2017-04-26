@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from 'react';
-import { Platform, StyleSheet, View, Dimensions, } from 'react-native';
+import { Platform, StyleSheet, View, Text, Dimensions, } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import Moment from 'moment';
-import { Text } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
@@ -23,15 +23,16 @@ const styles = StyleSheet.create({
 
 @observer
 export default class Chat extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-  }
-
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.fs = this.props.fire;
+    this.name = this.props.name;
+    this.firebase = this.props.fire;
+    if(this.store.user.chatStatus === '我的狀態') {
+      this.title = this.name;
+    } else {
+      this.title = this.name + ', ' + this.store.user.chatStatus;
+    }
     this.state = {
       size: {
           width,
@@ -47,7 +48,7 @@ export default class Chat extends Component {
 
   componentWillMount() {
     console.debug('Rendering Messages');
-    Actions.refresh({ key: 'drawer', open: false });
+    Actions.refresh({title: this.title })
     this._isMounted = true;
     this.setState(() => {
       return {
@@ -170,6 +171,14 @@ export default class Chat extends Component {
     return null;
   }
 
+  toolBar = () => {
+    return (
+      <Button
+        title='BUTTON'
+        />
+    );
+  }
+
   render() {
     return(
       <GiftedChat
@@ -181,6 +190,8 @@ export default class Chat extends Component {
         user={{
           _id: 1,
         }}
+        renderActions={() => this.toolBar()}
+        onPressActionButton={() => {}}
         renderFooter={this.renderFooter}
       />
     );
