@@ -246,10 +246,9 @@ export default class RouterComponent extends Component {
               <Scene
                 key="messages"
                 component={Messages}
-                title=''
+                title='訊息中心'
                 renderLeftButton={menuButton}
                 hideTabBar
-                hideNavBar
               />
               <Scene
                 key="likesyou"

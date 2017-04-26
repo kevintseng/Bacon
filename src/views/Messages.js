@@ -1,20 +1,18 @@
-//TODO: try this https://github.com/WheelerLee/react-native-dropdown-menu
-
 import React, { Component } from "react";
 import {
   View,
   Dimensions,
-  Picker,
   ScrollView,
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
-import { List, ListItem, Button } from "react-native-elements";
+import { List, ListItem } from "react-native-elements";
+import SwipeList from 'react-native-smooth-swipe-list';
+import DropdownMenu from "react-native-dropdown-menu";
 // import Moment from "moment";
-import { Header } from "../components";
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
-
+const menuData = [['所有訊息', '未讀訊息', '訪客訊息'], ['我的狀態', '放空中', '忙碌中', '低潮中']];
 const list = [
   {
     name: "Amy Farha",
@@ -29,18 +27,7 @@ const list = [
 ];
 
 const styles = {
-  statusWrapper: {
-    flex: 1,
-    marginTop: -53,
-    height: 60,
-    flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "flex-end",
-  },
-  busy: { width: 90, height: 25, backgroundColor: "orange" },
-  low: { width: 90, height: 25, backgroundColor: "blue" },
-  spaceOut: { width: 90, height: 25, backgroundColor: "#FDD835" },
-  blank: { width: 90, height: 30, justifyContent: 'space-around', backgroundColor: "transparent" }
+
 };
 
 @observer
@@ -48,7 +35,7 @@ export default class Messages extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.fs = this.props.fire;
+    this.firebase = this.props.fire;
     this.state = {
       size: {
         width,
@@ -57,7 +44,9 @@ export default class Messages extends Component {
       chatrooms: [],
       isLoading: false,
       pickerShow: false,
-      status: this.store.user.chatStatus ? this.store.user.chatStatus : "blank"
+      status: this.store.user.chatStatus ? this.store.user.chatStatus : "我的狀態",
+      listFilter: 'all'
+
     };
     this._isMounted = false;
   }
@@ -72,75 +61,57 @@ export default class Messages extends Component {
     this._isMounted = true;
   }
 
-  handleStatusChange = status => {
-    this.setState({
-      status,
-      pickerShow: false
-    });
-  };
-
-
-  getStatusLabel = () => {
-    switch (this.state.status) {
-      case 'spaceOut':
-        return '放空中';
-      case 'low':
-        return '低潮中';
-      case 'busy':
-        return '忙碌中';
-      default:
-        return '我的狀態';
+  handleStatusChange = (val, selection, row) => {
+    let listFilter = 'all';
+    if(selection === 0) {
+      switch(row) {
+        case 1:
+          listFilter = 'unread';
+          break;
+        case 2:
+          listFilter = 'visitor';
+          break;
+        default:
+          listFilter = 'all';
+          break;
+      }
+      this.setState({
+        listFilter,
+      });
+    } else if(selection === 1) {
+      this.store.setChatStatus(this.firebase, val);
     }
-  }
+    // console.log('selection: ', selection, ' row: ', row, ' val: ', val, ' listFilter: ', listFilter);
+  };
 
   render() {
     return (
       <View style={this.state.size}>
-        <View>
-
-        </View>
-        <ScrollView>
-          <Header
-            headerText=""
-            leftIconName="menu"
-            leftColor="black"
-            onLeft={() => Actions.refresh({ key: "drawer", open: true })}
-          />
-          <View style={styles.statusWrapper}>
-            <Button
-              buttonStyle={styles.blank}
-              fontSize={14}
-              color='black'
-              iconRight
-              icon={{ name: 'keyboard-arrow-down', color: 'black' }}
-              title={this.getStatusLabel()}
-              onPress={() => this.setState({pickerShow: true})}
-            />
-          </View>
-          <List containerStyle={{ marginBottom: 20, marginTop: -8 }}>
-            {list.map((l, i) => (
-              <ListItem
-                roundAvatar
-                avatar={{ uri: l.avatar_url }}
-                key={i}
-                title={l.name}
-                onPress={() => {
-                  Actions.chat();
-                }}
-              />
-            ))}
-          </List>
+        <ScrollView style={{ marginTop: 5 }}>
+          <DropdownMenu style={{flex: 1 }}
+            arrowImg={require('../images/dropdown_arrow.png')}
+            checkImage={require('../images/menu_check.png')}
+            bgColor={"#FDD835"}
+            tintColor={"white"}
+            selectItemColor={"red"}
+            data={menuData}
+            maxHeight={410}
+            handler={(selection, row) => this.handleStatusChange(menuData[selection][row], selection, row)} >
+            <List containerStyle={{ marginBottom: 20, marginTop: -2 }}>
+              {list.map((l, i) => (
+                <ListItem
+                  roundAvatar
+                  avatar={{ uri: l.avatar_url }}
+                  key={i}
+                  title={l.name}
+                  onPress={() => {
+                    Actions.chat({name: l.name});
+                  }}
+                />
+              ))}
+            </List>
+          </DropdownMenu>
         </ScrollView>
-        {
-          this.state.pickerShow && <Picker
-          selectedValue={this.state.status}
-          onValueChange={(status) => this.setState({status, pickerShow: false})} prompt='狀態選項'>
-            <Picker.Item label='無' value='blank' />
-            <Picker.Item label='放空中' value='spaceOut' />
-            <Picker.Item label='忙碌中' value='busy' />
-            <Picker.Item label='低潮中' value='low' />
-          </Picker>
-        }
       </View>
     );
   }
