@@ -1,10 +1,10 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Text, Dimensions, } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import Moment from 'moment';
-import { Button } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
@@ -173,9 +173,10 @@ export default class Chat extends Component {
 
   toolBar = () => {
     return (
-      <Button
-        title='BUTTON'
-        />
+      <View style={{ flex: 0, width: 60, marginLeft: 5, flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-between'}}>
+        <Icon name='add' onPress={() => alert('plus')} />
+        <Icon name='tag-faces' onPress={() => alert('smily')}/>
+      </View>
     );
   }
 
@@ -191,7 +192,6 @@ export default class Chat extends Component {
           _id: 1,
         }}
         renderActions={() => this.toolBar()}
-        onPressActionButton={() => {}}
         renderFooter={this.renderFooter}
       />
     );
