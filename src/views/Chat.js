@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, View, Text, Dimensions, } from 'react-native';
+import { Keyboard, StyleSheet, View, Text, Dimensions, } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { GiftedChat } from 'react-native-gifted-chat';
@@ -42,6 +42,7 @@ export default class Chat extends Component {
       typingText: null,
       loadEarlier: true,
       isLoadingEarlier: false,
+      actions: false,
     };
     this._isMounted = false;
   }
@@ -55,6 +56,8 @@ export default class Chat extends Component {
         messages: require('./data/messages.js'),
       };
     });
+    // this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    // this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
 
   componentDidMount() {
@@ -75,13 +78,27 @@ export default class Chat extends Component {
     });
   }
 
+  // componentWillUnmount () {
+  //   this.keyboardDidShowListener.remove();
+  //   this.keyboardDidHideListener.remove();
+  // }
+  //
+  // _keyboardDidShow () {
+  //   alert('Keyboard Shown');
+  // }
+  //
+  // _keyboardDidHide () {
+  //   alert('Keyboard Hidden');
+  // }
+
   onSend = (messages = []) => {
     this.setState((previousState) => {
       return {
+        actions: false,
         messages: GiftedChat.append(previousState.messages, messages),
       };
     });
-
+    Keyboard.dismiss();
     // for demo purpose
    this.answerDemo(messages);
   }
@@ -111,7 +128,7 @@ export default class Chat extends Component {
       if ((messages[0].image || messages[0].location) || !this._isAlright) {
         this.setState((previousState) => {
           return {
-            typingText: '蠟筆小新正在輸入....'
+            typingText: '蠟筆小新正在輸入..'
           };
         });
       }
@@ -127,7 +144,7 @@ export default class Chat extends Component {
           } else {
             if (!this._isAlright) {
               this._isAlright = true;
-              this.onReceive('好喔');
+              this.onReceive('哩供蝦?');
             }
           }
         }
@@ -146,7 +163,7 @@ export default class Chat extends Component {
       return {
         messages: GiftedChat.append(previousState.messages, {
           _id: Math.round(Math.random() * 1000000),
-          text: text,
+          text,
           createdAt: new Date(),
           user: {
             _id: 2,
@@ -171,29 +188,131 @@ export default class Chat extends Component {
     return null;
   }
 
-  toolBar = () => {
+  //TODO: Rewrite this when have time
+  actions = () => {
+    if(!this.state.actions) {
+      return (
+        <View style={{ flex: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 2, alignSelf: 'center' }}>
+          <Icon
+            name='add'
+            onPress={() => {
+              Keyboard.dismiss();
+              this.setState({actions: 'plus'});
+              }
+            }
+            />
+          <Icon
+            name='tag-faces'
+            onPress={() => {
+              Keyboard.dismiss();
+              this.setState({actions: 'smily'});
+            }}
+            />
+        </View>
+      );
+    } else if(this.state.actions == 'plus') {
+      return (
+        <View style={{ flex: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 2, alignSelf: 'center' }}>
+          <Icon
+            name='keyboard'
+            onPress={() => {
+              this.setState({actions: false});
+              }
+            }
+            />
+          <Icon
+            name='tag-faces'
+            onPress={() => {
+              Keyboard.dismiss();
+              this.setState({actions: 'smily'});
+            }}
+            />
+        </View>
+      );
+    } else if(this.state.actions == 'smily') {
+      return (
+        <View style={{ flex: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 2, alignSelf: 'center' }}>
+          <Icon
+            name='add'
+            onPress={() => {
+              Keyboard.dismiss();
+              this.setState({actions: 'plus'});
+              }
+            }
+            />
+          <Icon
+            name='keyboard'
+            onPress={() => {
+              this.setState({actions: false});
+            }}
+            />
+        </View>
+      );
+    }
+  }
+
+  renderAccessory = () => {
+    console.log('renderAccessory: ', this.state.actions);
+    switch(this.state.actions) {
+      case 'smily':
+        return (
+          <View style={{ flex: 1, width: width-8, height: 44, alignSelf: 'center', backgroundColor: 'yellow', marginLeft: 3, marginRight: 4, marginBottom: 3 }}>
+          </View>
+        );
+      case 'plus':
+        return (
+          <View style={{ flex: 1, width: width-8, height: 44, alignSelf: 'center', backgroundColor: 'orange', marginLeft: 3, marginRight: 4, marginBottom: 3 }}>
+          </View>
+        );
+      default:
+        return;
+    }
+  }
+
+  sendButton = () => {
     return (
-      <View style={{ flex: 0, width: 60, marginLeft: 5, flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-between'}}>
-        <Icon name='add' onPress={() => alert('plus')} />
-        <Icon name='tag-faces' onPress={() => alert('smily')}/>
+      <View style={{ flex: 0, width: 30, marginLeft: 3, flexDirection: 'row', alignSelf: 'center'}}>
+        <Icon name='send'/>
       </View>
     );
   }
 
   render() {
-    return(
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={this.onSend}
-        loadEarlier={this.state.loadEarlier}
-        onLoadEarlier={this.onLoadEarlier}
-        isLoadingEarlier={this.state.isLoadingEarlier}
-        user={{
-          _id: 1,
-        }}
-        renderActions={() => this.toolBar()}
-        renderFooter={this.renderFooter}
-      />
+    console.log('this.state.actions: ', this.state.actions);
+    return (
+      <View style={[this.state.size, {marginTop: -60 }]}>
+      {
+        this.state.actions && <GiftedChat
+          messages={this.state.messages}
+          onSend={this.onSend}
+          label='test'
+          onLoadEarlier={this.onLoadEarlier}
+          isLoadingEarlier={this.state.isLoadingEarlier}
+          user={{
+            _id: 1,
+          }}
+          placeholder='輸入訊息...'
+          renderAccessory={this.renderAccessory}
+          renderActions={this.actions}
+          renderFooter={this.renderFooter}
+        />
+      }
+
+      {
+        !this.state.actions && <GiftedChat
+          messages={this.state.messages}
+          onSend={this.onSend}
+          onLoadEarlier={this.onLoadEarlier}
+          isLoadingEarlier={this.state.isLoadingEarlier}
+          user={{
+            _id: 1,
+          }}
+          placeholder='輸入訊息...'
+          renderActions={this.actions}
+          renderFooter={this.renderFooter}
+        />
+      }
+      </View>
     );
   }
 }
