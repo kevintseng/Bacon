@@ -3971,7 +3971,7 @@ react-native-lightbox@^0.6.0:
   dependencies:
     react-timer-mixin "^0.13.3"
 
-"react-native-lightbox@github:oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875":
+react-native-lightbox@oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875:
   version "0.6.0"
   resolved "https://codeload.github.com/oblador/react-native-lightbox/tar.gz/c84a8543d4511fe6a44c3d7820747c9c1bddd875"
   dependencies:
