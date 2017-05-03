@@ -211,18 +211,18 @@ export default class MyProfile extends Component {
             handleFunc={this.handleUpdateBio}
             />
           <InfoArea
+            label={'語言能力'}
+            defaultValue={this.state.lang}
+            minHeight={30}
+            maxLength={150}
+            handleFunc={this.handleUpdateLang}
+            />            
+          <InfoArea
             label={'興趣愛好'}
             defaultValue={this.state.hobby}
             minHeight={30}
             maxLength={150}
             handleFunc={this.handleUpdateHobby}
-            />
-          <InfoArea
-            label={'溝通語言'}
-            defaultValue={this.state.lang}
-            minHeight={30}
-            maxLength={150}
-            handleFunc={this.handleUpdateLang}
             />
           <View style={{ height: 20 }} />
       </ScrollView>

@@ -224,26 +224,26 @@ export default class RouterComponent extends Component {
           </Scene>
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
-              <Scene
+              <Scene //邂逅
                 key="meetcute"
                 component={MeetCute}
                 title="MeetCute"
                 renderLeftButton={menuButton}
                 hideTabBar
               />
-              <Scene
+              <Scene //巧遇
                 key="nearby"
                 component={Nearby}
                 title="Nearby"
                 renderLeftButton={menuButton}
               />
-              <Scene
+              <Scene //喜歡您
                 key="favorites"
                 component={Favorites}
                 title="Favorites"
                 renderLeftButton={menuButton}
               />
-              <Scene
+              <Scene //訊息
                 key="messages"
                 component={Messages}
                 title="Messages"
