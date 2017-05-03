@@ -4,7 +4,18 @@ import { Card, Icon, Text } from 'react-native-elements';
 
 
 const styles = {
-  barStyle: {
+  advancedMemberBarStyle: {
+    height: 80,
+    flex:1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    marginBottom: 3,
+    backgroundColor: '#4169e1',
+  },   
+  commonMemberBarStyle: {
     height: 80,
     flex:1,
     flexDirection: 'row',
@@ -14,7 +25,7 @@ const styles = {
     paddingVertical: 2,
     marginBottom: 3,
     backgroundColor: '#FF6F00',
-  },
+  }, 
   containerStyle: {
     flex: 1,
     flexDirection: 'row',
@@ -44,6 +55,16 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  noneCircleStyle: {
+    flex: 1,
+    width: 60,
+    height: 40,
+    borderWidth: 0,
+    borderRadius: 40,
+    borderColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   buttonTitle: {
     fontSize: 10,
     alignSelf: 'center',
@@ -63,26 +84,36 @@ export default class AccountStatus extends Component {
   }
 
   render() {
-
+    this.props.vip = true;
     return (
-      <View style={styles.barStyle}>
+      <View style={this.props.vip ? styles.advancedMemberBarStyle : styles.commonMemberBarStyle}>
         <View style={styles.containerStyle}>
-          <Text style={styles.statusName}>
-            { this.props.vip ? this.props.vip.toUpperCase() : '一般會員' }
-          </Text>
+          <View>
+            <Text style={styles.statusName}>
+              { this.props.vip ? '高級會員' : '一般會員' }
+            </Text>
+          </View>
+          <View style={styles.buttonWrapper}>
           {
-            !this.props.vip && <View style={styles.buttonWrapper}>
-              <TouchableOpacity
-                style={styles.buttonStyle}
-                onPress={this.handleUpgrade}>
-                <Icon name='star' color='#EEEEEE'/>
-                <Text style={styles.buttonTitle}>升級</Text>
-              </TouchableOpacity>
-            </View>
-          }
+            this.props.vip ? 
+            <TouchableOpacity style={styles.noneCircleStyle}>
+              <Icon name='star' color='#EEEEEE'/>
+              <Text style={styles.buttonTitle}></Text>
+            </TouchableOpacity> :
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={this.handleUpgrade}>
+              <Icon name='star' color='#EEEEEE'/>
+              <Text style={styles.buttonTitle}>升級</Text>
+            </TouchableOpacity>              
+          }             
+          </View>          
         </View>
         <View style={styles.containerStyle}>
-          <Text style={styles.statusName}>點數 3,237</Text>
+          <View>
+            <Text style={styles.statusName}>Q點</Text>
+            <Text style={styles.statusName}>點數 3,237</Text>
+          </View>
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
               style={styles.buttonStyle}

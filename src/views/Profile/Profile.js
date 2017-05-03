@@ -56,7 +56,7 @@ class Profile extends Component {
             store={this.store}
             fire={this.firebase}
             storage={this.storage}
-            tabLabel='交友自介'
+            tabLabel='我的檔案'
             />
           <Gallery
             store={this.store}
