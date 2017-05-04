@@ -13,7 +13,6 @@ import Visitors from "./views/Visitors";
 import Settings from "./views/Settings";
 import Signin from "./views/Signin";
 import SessionCheck from "./views/SessionCheck";
-import { Profile } from "./views/Profile";
 import Chat from "./views/Chat";
 import Favorites from "./views/Favorites";
 import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
@@ -224,13 +223,7 @@ export default class RouterComponent extends Component {
           </Scene>
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
-              <Scene
-                key="profile"
-                component={Profile}
-                title="關於我"
-                renderLeftButton={menuButton}
-                hideTabBar
-              />
+              {require("./views/Profile/ProfileRouter")}
               <Scene //邂逅
                 key="meetcute"
                 component={MeetCute}
