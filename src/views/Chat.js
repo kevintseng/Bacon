@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Keyboard, StyleSheet, View, Text, Dimensions } from "react-native";
+import { Keyboard, StyleSheet, View, Text, Dimensions, ActivityIndicator } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
 import { GiftedChat } from "react-native-gifted-chat";
-import Moment from "moment";
 import ImagePicker from "react-native-image-picker";
 import { Icon } from "react-native-elements";
+import { uploadImage, resizeImage } from '../Utils';
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
 const styles = StyleSheet.create({
@@ -51,7 +51,8 @@ export default class Chat extends Component {
       typingText: null,
       loadEarlier: true,
       isLoadingEarlier: false,
-      actions: false
+      actions: false,
+      image: null,
     };
     this._isMounted = false;
   }
@@ -81,7 +82,8 @@ export default class Chat extends Component {
             _id: 2,
             name: "Sex Machine",
             avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1"
-          }
+          },
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1",
         }
       ]
     });
@@ -101,10 +103,14 @@ export default class Chat extends Component {
   // }
 
   onSend = (messages = []) => {
+    if(this.state.image) {
+      messages[0].image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1";
+    }
     this.setState(previousState => {
       return {
         actions: false,
-        messages: GiftedChat.append(previousState.messages, messages)
+        messages: GiftedChat.append(previousState.messages, messages),
+        image: null,
       };
     });
     Keyboard.dismiss();
@@ -293,9 +299,10 @@ export default class Chat extends Component {
     }
   };
 
+
   handleCameraPicker = () => {
     console.log("handleCameraPicker called");
-    ImagePicker.launchCamera(ImagePickerOptions, response => {
+    ImagePicker.launchCamera(ImagePickerOptions, async response => {
       console.log("Response = ", response);
 
       if (response.didCancel) {
@@ -305,21 +312,27 @@ export default class Chat extends Component {
       } else if (response.customButton) {
         console.log("User tapped custom button: ", response.customButton);
       } else {
-        let source = { uri: response.uri };
-
+        console.log("Image data", response);
+        const firebaseRefObj = this.firebase.storage().ref('userPhotos/' + this.store.user.uid + '/' + filename + '.jpg');
+        const resizedUri = await resizeImage(response.uri, 600, 600, 'image/JPEG', 80);
+        const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, image.mime);
+        // let source = { uri: response.uri };
+        this.setState({
+          image: response.uri
+        });
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        this.setState({
-          avatarSource: source
-        });
+        this.onSend();
+        // this.setState({
+        //   avatarSource: source
+        // });
       }
     });
   };
 
   handlePhotoPicker = () => {
     console.log("handlePhotoPicker called");
-    ImagePicker.launchImageLibrary(ImagePickerOptions, response => {
+    ImagePicker.launchImageLibrary(ImagePickerOptions, async response => {
       console.log("Response = ", response);
 
       if (response.didCancel) {
@@ -329,13 +342,33 @@ export default class Chat extends Component {
       } else if (response.customButton) {
         console.log("User tapped custom button: ", response.customButton);
       } else {
-        let source = { uri: response.uri };
-
+        this.setState({ actions: 'uploading'});
+        console.log("Image data", response);
+        const firebaseRefObj = this.firebase.storage().ref('chatPhotos/' + this.store.user.uid + '/' + response.filename);
+        const resizedUri = await resizeImage(response.uri, 600, 600, 'image/JPEG', 80);
+        console.log("resizedUri", resizedUri);
+        const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, 'image/JPEG');
+        console.log("downloadUrl: ", downloadUrl);
+        // this.setState({
+        //   image: downloadUrl,
+        // });
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        this.setState({
-          avatarSource: source
+        this.setState(previousState => {
+          return {
+            messages: GiftedChat.append(previousState.messages, {
+              _id: Math.round(Math.random() * 1000000),
+              text: null,
+              createdAt: new Date(),
+              user: {
+                _id: this.store.user.uid,
+                name: this.store.user.displayName,
+                avatar: this.store.user.photoURL
+              },
+              image: downloadUrl
+            }),
+            actions: false,
+          };
         });
       }
     });
@@ -356,6 +389,23 @@ export default class Chat extends Component {
               marginRight: 4
             }}
           />
+        );
+      case "uploading":
+        return (
+          <View
+            style={{
+              flex: 1,
+              width: width - 10,
+              flexDirection: 'row',
+              alignSelf: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: 4
+            }}
+          >
+            <ActivityIndicator/>
+            <Text> 照片壓縮處理中...</Text>
+          </View>
         );
       case "plus":
         return (
@@ -431,6 +481,7 @@ export default class Chat extends Component {
   };
 
   render() {
+    console.log("this.state.messages: ", this.state.messages);
     console.log("this.state.actions: ", this.state.actions);
     return (
       <View style={[this.state.size, { marginTop: -60 }]}>
@@ -438,11 +489,11 @@ export default class Chat extends Component {
           <GiftedChat
             messages={this.state.messages}
             onSend={this.onSend}
-            label="test"
+            label="送出"
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
             user={{
-              _id: 1
+              _id: this.store.user.uid,
             }}
             minInputToolbarHeight={45}
             placeholder="輸入訊息..."
@@ -455,11 +506,13 @@ export default class Chat extends Component {
           <GiftedChat
             messages={this.state.messages}
             onSend={this.onSend}
+            label="送出"
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
             user={{
-              _id: 1
+              _id: this.store.user.uid,
             }}
+            imageProps={this.state.image}
             minInputToolbarHeight={45}
             placeholder="輸入訊息..."
             renderActions={this.actions}
