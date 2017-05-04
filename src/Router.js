@@ -224,6 +224,13 @@ export default class RouterComponent extends Component {
           </Scene>
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
+              <Scene
+                key="profile"
+                component={Profile}
+                title="關於我"
+                renderLeftButton={menuButton}
+                hideTabBar
+              />
               <Scene //邂逅
                 key="meetcute"
                 component={MeetCute}
@@ -291,13 +298,7 @@ export default class RouterComponent extends Component {
                 <Scene key="feedback" component={FeedBack} title="Feedback" />
               </Scene>
 
-              <Scene
-                key="profile"
-                component={Profile}
-                title="關於我"
-                renderLeftButton={menuButton}
-                hideTabBar
-              />
+
               <Scene
                 key="chat"
                 component={Chat}
