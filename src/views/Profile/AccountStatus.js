@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import { Card, Icon, Text } from 'react-native-elements';
-
+import React, { Component } from 'react'
+import { View, TouchableOpacity } from 'react-native'
+import { Icon, Text } from 'react-native-elements'
 
 const styles = {
-  advancedMemberBarStyle: {
+  barStyle:{
     height: 80,
     flex:1,
     flexDirection: 'row',
@@ -13,19 +12,8 @@ const styles = {
     paddingHorizontal: 10,
     paddingVertical: 2,
     marginBottom: 3,
-    backgroundColor: '#4169e1',
-  },   
-  commonMemberBarStyle: {
-    height: 80,
-    flex:1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-    marginBottom: 3,
-    backgroundColor: '#FF6F00',
-  }, 
+    backgroundColor: '#FF6F00',    
+  },
   containerStyle: {
     flex: 1,
     flexDirection: 'row',
@@ -55,16 +43,6 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  noneCircleStyle: {
-    flex: 1,
-    width: 60,
-    height: 40,
-    borderWidth: 0,
-    borderRadius: 40,
-    borderColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   buttonTitle: {
     fontSize: 10,
     alignSelf: 'center',
@@ -75,55 +53,55 @@ const styles = {
 
 export default class AccountStatus extends Component {
 
+  //state = { title: null, update: null, iconSize: null, additionBarStyle: null, additionButtonStyle: null}
+
+  componentWillMount = () => {
+    this.props.vip ? 
+    this.setState({ title: '高級會員', update: '', iconSize: 52, additionBarStyle: { backgroundColor: '#4169e1' }, additionButtonStyle: { borderWidth: 0 } }) : //高級會員
+    this.setState({ title: '一般會員', update: '升級', iconSize: 26}) //一般會員
+  }
+
   handleUpgrade = () => {
-    this.props.upgrade();
+    this.props.upgrade()
   }
 
   handleAddCredit = () => {
-    this.props.addCredit();
+    this.props.addCredit()
   }
 
   render() {
-    this.props.vip = true;
     return (
-      <View style={this.props.vip ? styles.advancedMemberBarStyle : styles.commonMemberBarStyle}>
-        <View style={styles.containerStyle}>
+      <View style={ [styles.barStyle, this.state.additionBarStyle] }>
+        <View style={ styles.containerStyle }>
           <View>
-            <Text style={styles.statusName}>
-              { this.props.vip ? '高級會員' : '一般會員' }
+            <Text style={ styles.statusName }>
+              { this.state.title }
             </Text>
           </View>
-          <View style={styles.buttonWrapper}>
-          {
-            this.props.vip ? 
-            <TouchableOpacity style={styles.noneCircleStyle}>
-              <Icon name='star' color='#EEEEEE'/>
-              <Text style={styles.buttonTitle}></Text>
-            </TouchableOpacity> :
+          <View style={ styles.buttonWrapper }>
             <TouchableOpacity
-              style={styles.buttonStyle}
-              onPress={this.handleUpgrade}>
-              <Icon name='star' color='#EEEEEE'/>
-              <Text style={styles.buttonTitle}>升級</Text>
-            </TouchableOpacity>              
-          }             
+              style={ [styles.buttonStyle, this.state.additionButtonStyle] }
+              onPress={ this.handleUpgrade }>
+              <Icon name='star' color='#EEEEEE' size={ this.state.iconSize } />
+              <Text style={ styles.buttonTitle }>{ this.state.update }</Text>
+            </TouchableOpacity>                       
           </View>          
         </View>
-        <View style={styles.containerStyle}>
+        <View style={ styles.containerStyle }>
           <View>
-            <Text style={styles.statusName}>Q點</Text>
-            <Text style={styles.statusName}>點數 3,237</Text>
+            <Text style={ styles.statusName }>Q點</Text>
+            <Text style={ styles.statusName }>點數 3,237</Text>
           </View>
-          <View style={styles.buttonWrapper}>
+          <View style={ styles.buttonWrapper }>
             <TouchableOpacity
-              style={styles.buttonStyle}
-              onPress={this.handleAddCredit}>
+              style={ styles.buttonStyle }
+              onPress={ this.handleAddCredit }>
               <Icon name='redeem' color='#EEEEEE'/>
-              <Text style={styles.buttonTitle}>儲值</Text>
+              <Text style={ styles.buttonTitle }>儲值</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
-    );
+    )
   }
 }
