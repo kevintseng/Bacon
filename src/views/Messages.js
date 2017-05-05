@@ -15,14 +15,18 @@ const { width, height } = Dimensions.get("window"); //eslint-disable-line
 const menuData = [['所有訊息', '未讀訊息', '訪客訊息'], ['我的狀態', '放空中', '忙碌中', '低潮中']];
 const list = [
   {
+    uid: 'sampleUser1',
     name: "Amy Farha",
     avatar_url: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-    subtitle: "Vice President"
+    subtitle: "Vice President",
+    chatStatus: '忙碌中',
   },
   {
+    uid: 'sampleUser2',
     name: "Chris Jackson",
     avatar_url: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
-    subtitle: "Vice Chairman"
+    subtitle: "Vice Chairman",
+    chatStatus: '忙碌中',
   }
 ];
 
@@ -102,10 +106,10 @@ export default class Messages extends Component {
                 <ListItem
                   roundAvatar
                   avatar={{ uri: l.avatar_url }}
-                  key={i}
+                  key={l.uid}
                   title={l.name}
                   onPress={() => {
-                    Actions.chat({name: l.name});
+                    Actions.chat({uid: l.uid, name: l.name, chatStatus: l.chatStatus});
                   }}
                 />
               ))}
