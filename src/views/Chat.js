@@ -37,6 +37,7 @@ export default class Chat extends Component {
     this.store = this.props.store;
     this.name = this.props.name;
     this.firebase = this.props.fire;
+    this.db = this.props.localdb;
     if (this.store.user.chatStatus === "我的狀態") {
       this.title = this.name;
     } else {
@@ -61,46 +62,87 @@ export default class Chat extends Component {
     console.debug("Rendering Messages");
     Actions.refresh({ title: this.title });
     this._isMounted = true;
+
     this.setState(() => {
       return {
         messages: require("./data/messages.js")
       };
     });
-    // this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
-    // this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
 
   componentDidMount() {
-    const t = new Date();
-    this.setState({
-      messages: [
-        {
-          _id: 1,
-          text: "安安, 你好..幾歲？住哪？給約嗎???",
-          createdAt: t,
-          user: {
-            _id: 2,
-            name: "Sex Machine",
-            avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1"
-          },
-          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1",
-        }
-      ]
+    this.db.load({
+      key: this.props.uid,
+      autoSync: false,
+      syncInBackground: false,
+    }).then(ret => {
+      console.log('message history: ', ret);
+      this.setState({
+        messages: ret,
+      });
+    }).catch(err => {
+      console.log(err.message);
+      switch (err.name) {
+        case 'NotFoundError':
+          console.log('SessionCheck: Data not found, rendering signin');
+          this.creatNewChat();
+          break;
+        case 'ExpiredError':
+          console.log('SessionCheck: Data expired, rendering signin');
+          Actions.pop();
+          break;
+        default:
+          console.log(err.name);
+          Actions.pop();
+      }
     });
+    // const t = new Date();
+    // this.setState({
+    //   messages: [
+    //     {
+    //       _id: this.props.uid,
+    //       text: "安安, 你好..幾歲？住哪？給約嗎???",
+    //       createdAt: t,
+    //       user: {
+    //         _id: 2,
+    //         name: "Sex Machine",
+    //         avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1"
+    //       },
+    //       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1",
+    //     }
+    //   ]
+    // });
   }
 
-  // componentWillUnmount () {
-  //   this.keyboardDidShowListener.remove();
-  //   this.keyboardDidHideListener.remove();
-  // }
-  //
-  // _keyboardDidShow () {
-  //   alert('Keyboard Shown');
-  // }
-  //
-  // _keyboardDidHide () {
-  //   alert('Keyboard Hidden');
-  // }
+  componentWillUnmount() {
+    this.updateChatToDB();
+  }
+
+  updateChatToDB = () => {
+    this.db
+      .save({
+        key: this.props.uid,
+        rawData: this.state.messages,
+        expires: 1000 * 3600 * 24 * 365 // expires after 30 days
+      })
+      .catch(err => {
+        console.log("Chat updateChatToDB: Saving data to local db failed.");
+        console.log(err);
+      });
+  }
+
+  creatNewChat = () => {
+    this.db
+      .save({
+        key: this.props.uid,
+        rawData: this.state.messages,
+        expires: 1000 * 3600 * 24 * 365 // expires after 30 days
+      })
+      .catch(err => {
+        console.log("Chat creatNewChat: Saving data to local db failed.");
+        console.log(err);
+      });
+  }
 
   onSend = (messages = []) => {
     if(this.state.image) {
@@ -233,13 +275,6 @@ export default class Chat extends Component {
               this.setState({ actions: "plus" });
             }}
           />
-          <Icon
-            name="tag-faces"
-            onPress={() => {
-              Keyboard.dismiss();
-              this.setState({ actions: "smily" });
-            }}
-          />
         </View>
       );
     } else if (this.state.actions == "plus") {
@@ -258,13 +293,6 @@ export default class Chat extends Component {
             name="keyboard-hide"
             onPress={() => {
               this.setState({ actions: false });
-            }}
-          />
-          <Icon
-            name="tag-faces"
-            onPress={() => {
-              Keyboard.dismiss();
-              this.setState({ actions: "smily" });
             }}
           />
         </View>
@@ -345,15 +373,10 @@ export default class Chat extends Component {
         this.setState({ actions: 'uploading'});
         console.log("Image data", response);
         const firebaseRefObj = this.firebase.storage().ref('chatPhotos/' + this.store.user.uid + '/' + response.filename);
-        const resizedUri = await resizeImage(response.uri, 600, 600, 'image/JPEG', 80);
+        const resizedUri = await resizeImage(response.uri, 600, 600, 'image/jpeg', 80);
         console.log("resizedUri", resizedUri);
-        const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, 'image/JPEG');
+        const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, 'image/jpeg');
         console.log("downloadUrl: ", downloadUrl);
-        // this.setState({
-        //   image: downloadUrl,
-        // });
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
         this.setState(previousState => {
           return {
             messages: GiftedChat.append(previousState.messages, {
@@ -377,19 +400,19 @@ export default class Chat extends Component {
   renderAccessory = () => {
     console.log("renderAccessory: ", this.state.actions);
     switch (this.state.actions) {
-      case "smily":
-        return (
-          <View
-            style={{
-              flex: 1,
-              width: width - 10,
-              height: 210,
-              alignSelf: "center",
-              backgroundColor: "yellow",
-              marginRight: 4
-            }}
-          />
-        );
+      // case "smily":
+      //   return (
+      //     <View
+      //       style={{
+      //         flex: 1,
+      //         width: width - 10,
+      //         height: 210,
+      //         alignSelf: "center",
+      //         backgroundColor: "yellow",
+      //         marginRight: 4
+      //       }}
+      //     />
+      //   );
       case "uploading":
         return (
           <View
