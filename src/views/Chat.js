@@ -131,6 +131,10 @@ export default class Chat extends Component {
       });
   }
 
+  updateChatToFirebase = () => {
+    
+  }
+
   creatNewChat = () => {
     this.db
       .save({
