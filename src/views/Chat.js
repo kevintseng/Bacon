@@ -6,6 +6,7 @@ import { GiftedChat } from "react-native-gifted-chat";
 import ImagePicker from "react-native-image-picker";
 import { Icon } from "react-native-elements";
 import { uploadImage, resizeImage } from '../Utils';
+import Moment from "moment";
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
 const styles = StyleSheet.create({
@@ -38,6 +39,7 @@ export default class Chat extends Component {
     this.name = this.props.name;
     this.firebase = this.props.fire;
     this.db = this.props.localdb;
+    this.msgRef = this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid);
     if (this.store.user.chatStatus === "我的狀態") {
       this.title = this.name;
     } else {
@@ -62,40 +64,64 @@ export default class Chat extends Component {
     console.debug("Rendering Messages");
     Actions.refresh({ title: this.title });
     this._isMounted = true;
-
-    this.setState(() => {
-      return {
-        messages: require("./data/messages.js")
-      };
-    });
+    this.msgRef.limitToLast(20).once('value').then(snap => {
+          return snap.val();
+        }, err => {
+          console.log('Load from firebase error: ', err.code);
+        });
+    // this.setState(() => {
+    //   return {
+    //     messages: this.msgRef.limitToLast(20).on('value', snap => {
+    //       return snap.val();
+    //     }, err => {
+    //       console.log('Load from firebase error: ', err.code);
+    //     })
+    //   };
+    // });
   }
 
   componentDidMount() {
-    this.db.load({
-      key: this.props.uid,
-      autoSync: false,
-      syncInBackground: false,
-    }).then(ret => {
-      console.log('message history: ', ret);
-      this.setState({
-        messages: ret,
+    this.msgRef.on('child_added', (child) => {
+      console.log('child_added', child.val());
+
+      this.setState(previousState => {
+        return {
+          messages: GiftedChat.append(previousState.messages, {
+            _id: child.val()._id,
+            text: child.val().text,
+            createdAt: child.val().createdAt,
+            user: child.val().user
+          })
+        };
       });
-    }).catch(err => {
-      console.log(err.message);
-      switch (err.name) {
-        case 'NotFoundError':
-          console.log('SessionCheck: Data not found, rendering signin');
-          this.creatNewChat();
-          break;
-        case 'ExpiredError':
-          console.log('SessionCheck: Data expired, rendering signin');
-          Actions.pop();
-          break;
-        default:
-          console.log(err.name);
-          Actions.pop();
-      }
+
     });
+
+    // this.db.load({
+    //   key: this.props.uid,
+    //   autoSync: false,
+    //   syncInBackground: false,
+    // }).then(ret => {
+    //   console.log('message history: ', ret);
+    //   this.setState({
+    //     messages: ret,
+    //   });
+    // }).catch(err => {
+    //   console.log(err.message);
+    //   switch (err.name) {
+    //     case 'NotFoundError':
+    //       console.log('SessionCheck: Data not found, rendering signin');
+    //       this.creatNewChat();
+    //       break;
+    //     case 'ExpiredError':
+    //       console.log('SessionCheck: Data expired, rendering signin');
+    //       Actions.pop();
+    //       break;
+    //     default:
+    //       console.log(err.name);
+    //       Actions.pop();
+    //   }
+    // });
     // const t = new Date();
     // this.setState({
     //   messages: [
@@ -132,7 +158,7 @@ export default class Chat extends Component {
   }
 
   updateChatToFirebase = () => {
-    
+
   }
 
   creatNewChat = () => {
@@ -149,46 +175,50 @@ export default class Chat extends Component {
   }
 
   onSend = (messages = []) => {
-    if(this.state.image) {
-      messages[0].image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1";
-    }
-    this.setState(previousState => {
-      return {
-        actions: false,
-        messages: GiftedChat.append(previousState.messages, messages),
-        image: null,
-      };
-    });
-    Keyboard.dismiss();
-    // for demo purpose
-    this.answerDemo(messages);
+    const createdAt = Moment(new Date()).unix();
+    messages[0].createdAt = createdAt;
+    console.log('onSend: ', messages[0].createdAt);
+    this.msgRef.push(messages[0]);
+    // if(this.state.image) {
+    //   messages[0].image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1";
+    // }
+    // this.setState(previousState => {
+    //   return {
+    //     actions: false,
+    //     messages: GiftedChat.append(previousState.messages, messages),
+    //     image: null,
+    //   };
+    // });
+    // Keyboard.dismiss();
+    // // for demo purpose
+    // this.answerDemo(messages);
   };
 
-  onLoadEarlier = () => {
-    this.setState(previousState => {
-      return {
-        isLoadingEarlier: true
-      };
-    });
-
-    setTimeout(
-      () => {
-        if (this._isMounted === true) {
-          this.setState(previousState => {
-            return {
-              messages: GiftedChat.prepend(
-                previousState.messages,
-                require("./data/old_messages.js")
-              ),
-              loadEarlier: false,
-              isLoadingEarlier: false
-            };
-          });
-        }
-      },
-      1000
-    ); // simulating network
-  };
+  // onLoadEarlier = () => {
+  //   this.setState(previousState => {
+  //     return {
+  //       isLoadingEarlier: true
+  //     };
+  //   });
+  //
+  //   setTimeout(
+  //     () => {
+  //       if (this._isMounted === true) {
+  //         this.setState(previousState => {
+  //           return {
+  //             messages: GiftedChat.prepend(
+  //               previousState.messages,
+  //               require("./data/old_messages.js")
+  //             ),
+  //             loadEarlier: false,
+  //             isLoadingEarlier: false
+  //           };
+  //         });
+  //       }
+  //     },
+  //     1000
+  //   ); // simulating network
+  // };
 
   answerDemo = messages => {
     if (messages.length > 0) {
