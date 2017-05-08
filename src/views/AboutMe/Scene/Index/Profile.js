@@ -1,5 +1,5 @@
 //TODO: 把 renderGallery拉出來變成一個component
-
+'use strict'
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
@@ -7,17 +7,17 @@ import { observer } from 'mobx-react/native';
 import { ListItem } from 'react-native-elements';
 
 import Moment from 'moment';
-import { BasicInfo } from './BasicInfo';
-import AccountStatus from './AccountStatus';
-//import InfoArea from './InfoArea';
-import NewInfoArea from './NewInfoArea';
+import { BasicInfo } from './Profile/BasicInfo';
+import AccountStatus from './Profile/AccountStatus';
+import { InfoArea } from './Profile/InfoArea';
+//import NewInfoArea from './Profile/NewInfoArea';
 // import LangPicker from './LangPicker';
 
 
-const ADD_IMAGE = require('../../images/addImage.png');
+const ADD_IMAGE = require('hookup/src/images/addImage.png');
 
 @observer
-export default class MyProfile extends Component {
+export default class Profile extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.store;
@@ -191,41 +191,10 @@ export default class MyProfile extends Component {
     // const userImg = {uri: user.photoURL};
     return(
       <ScrollView>
-        <BasicInfo
-          displayName={user.displayName}
-          location={user.city}
-          avatar={user.photoURL}
-          handleEditBasicInfo={this.handleEditBasicInfo}
-          />
-        <AccountStatus
-          vip={user.vip}
-          upgrade={this.handleUpgrade}
-          addCredit={this.handleAddCredit}
-          />
-          { emailVerificationItem }
-          { photoVerificationItem }
-          <NewInfoArea
-            label={'introduce'}
-            title={'自我介紹'}
-            defaultValue={this.state.bio}
-            minHeight={60}
-            maxLength={300}
-            />        
-          <NewInfoArea
-            label={'langauge'}
-            title={'語言能力'}
-            defaultValue={this.state.lang}
-            minHeight={30}
-            maxLength={150}
-            />            
-          <NewInfoArea
-            label={'interests'}
-            title={'興趣愛好'}
-            defaultValue={this.state.hobby}
-            minHeight={30}
-            maxLength={150}
-            />
-          <View style={{ height: 20 }} />
+        <BasicInfo displayName={user.displayName} location={user.city} avatar={user.photoURL} handleEditBasicInfo={this.handleEditBasicInfo} />
+        <AccountStatus vip={user.vip} upgrade={this.handleUpgrade} addCredit={this.handleAddCredit} />
+        <InfoArea introduce={this.state.bio} langauge={this.state.lang} interests={this.state.hobby} emailVerificationItem={ emailVerificationItem } photoVerificationItem={ photoVerificationItem }/>
+        <View style={{ height: 20 }} />
       </ScrollView>
     );
   }

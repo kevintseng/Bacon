@@ -2,8 +2,8 @@
 import React from 'react';
 import { Scene, Actions } from 'react-native-router-flux';
 import { Icon } from "react-native-elements";
-import { Profile } from './Profile';
-import Edit from './Edit';
+import { Index } from './Scene/Index';
+import Edit from './Scene/Edit';
 
 
 const menuButton = () => (
@@ -24,6 +24,6 @@ const rightTitle = () => {
 
 module.exports =
 <Scene key="profilerouter">
-  <Scene key="profile" component={Profile} title="關於我" renderLeftButton={menuButton} />
+  <Scene key="profile" component={Index} title="關於我" renderLeftButton={menuButton} />
   <Scene key="edit" component={Edit} title="編輯" renderLeftButton={menuButton} rightTitle={rightTitle()} onRight={handleOnRight}/>
 </Scene> 

@@ -223,7 +223,7 @@ export default class RouterComponent extends Component {
           </Scene>
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
-              {require("./views/Profile/ProfileRouter")}
+              {require("./views/AboutMe/Routes")}
               <Scene //邂逅
                 key="meetcute"
                 component={MeetCute}
