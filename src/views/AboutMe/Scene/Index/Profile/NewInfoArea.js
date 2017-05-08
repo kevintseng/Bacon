@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { Actions } from "react-native-router-flux";
+//import NickBirthday from './Edit/NickBirthday';
 //import AutoExpandingTextInput from 'react-native-auto-expanding-textinput';
 // 
 /*
@@ -55,7 +56,7 @@ export default class NewInfoArea extends Component {
 
 
   handleEndEditing = () => {
-    Actions.edit()
+    Actions.edit({content: this.props.content})
   }
 
   render() {
@@ -65,6 +66,7 @@ export default class NewInfoArea extends Component {
     return (
       <View>
       <ListItem
+        containerStyle = {this.props.containerStyle}
         key={this.props.label}
         title={this.props.title}
         rightTitle={"編輯"}

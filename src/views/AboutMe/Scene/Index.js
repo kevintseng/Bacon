@@ -5,9 +5,9 @@ import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
-import Gallery from './Gallery';
-import MyProfile from './MyProfile';
-import Report from './Report';
+import Gallery from './Index/Gallery';
+import Profile from './Index/Profile';
+import Report from './Index/Report';
 
 
 const { width, height } = Dimensions.get('window');
@@ -20,7 +20,7 @@ const styles = {
 };
 
 @observer
-class Profile extends Component {
+class Index extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.store;
@@ -52,7 +52,7 @@ class Profile extends Component {
           tabBarInactiveTextColor='grey'
           ref={(tabView) => { this.tabView = tabView; }}
           >
-          <MyProfile
+          <Profile
             store={this.store}
             fire={this.firebase}
             storage={this.storage}
@@ -75,4 +75,4 @@ class Profile extends Component {
   }
 }
 
-export { Profile };
+export { Index };
