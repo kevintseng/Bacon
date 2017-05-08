@@ -24,6 +24,6 @@ const rightTitle = () => {
 
 module.exports =
 <Scene key="profilerouter">
-  <Scene key="profile" component={Index} title="關於我" renderLeftButton={menuButton} />
+  <Scene key="index" component={Index} title="關於我" renderLeftButton={menuButton} />
   <Scene key="edit" component={Edit} title="編輯" renderLeftButton={menuButton} rightTitle={rightTitle()} onRight={handleOnRight}/>
 </Scene> 

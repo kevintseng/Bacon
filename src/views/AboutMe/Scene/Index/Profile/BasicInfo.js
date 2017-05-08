@@ -4,6 +4,7 @@ import { Avatar } from 'react-native-elements';
 //import InputField from './InputField'
 import NewInfoArea from './NewInfoArea';
 import NickBirthday from '../../Edit/NickBirthday';
+import Location from '../../Edit/Location';
 
 const styles = {
   container: {
@@ -79,6 +80,7 @@ const BasicInfo = (props) => {
             maxLength={300}
             /> 
           <NewInfoArea
+            content= {<Location/>}
             containerStyle ={{borderBottomWidth: 0}}
             label={'location'}
             defaultValue={location}
