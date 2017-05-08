@@ -1,4 +1,4 @@
-//TODO: 把 renderGallery拉出來變成一個component
+    //TODO: 把 renderGallery拉出來變成一個component
 'use strict'
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';

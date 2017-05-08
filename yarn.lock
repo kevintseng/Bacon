@@ -3818,6 +3818,10 @@ react-native-auto-expanding-textinput@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/react-native-auto-expanding-textinput/-/react-native-auto-expanding-textinput-0.0.5.tgz#fd5916eb790a088309ccab5ae1a5774f3860f864"
 
+react-native-check-box@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-check-box/-/react-native-check-box-1.0.4.tgz#228507af6df59fa07b334dfd569aeb709e9ca1e6"
+
 react-native-communications@2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.1.1.tgz#ff6f917c305e6d3fa935a89908aea5dc39b247d4"

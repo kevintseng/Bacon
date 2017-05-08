@@ -53,13 +53,9 @@ const styles = {
 
 export default class AccountStatus extends Component {
 
-  //state = { title: null, update: null, iconSize: null, additionBarStyle: null, additionButtonStyle: null}
-
-  componentWillMount = () => {
-    this.props.vip ? 
-    this.setState({ title: '高級會員', update: '', iconSize: 52, additionBarStyle: { backgroundColor: '#4169e1' }, additionButtonStyle: { borderWidth: 0 } }) : //高級會員
-    this.setState({ title: '一般會員', update: '升級', iconSize: 26}) //一般會員
-  }
+  content = () => {
+    return this.props.vip ? { title: '高級會員', update: '', iconSize: 52, additionBarStyle: { backgroundColor: '#4169e1' }, additionButtonStyle: { borderWidth: 0 } }:{ title: '一般會員', update: '升級', iconSize: 26}
+  } 
 
   handleUpgrade = () => {
     this.props.upgrade()
@@ -71,19 +67,19 @@ export default class AccountStatus extends Component {
 
   render() {
     return (
-      <View style={ [styles.barStyle, this.state.additionBarStyle] }>
+      <View style={ [styles.barStyle, this.content().additionBarStyle] }>
         <View style={ styles.containerStyle }>
           <View>
             <Text style={ styles.statusName }>
-              { this.state.title }
+              { this.content().title }
             </Text>
           </View>
           <View style={ styles.buttonWrapper }>
             <TouchableOpacity
-              style={ [styles.buttonStyle, this.state.additionButtonStyle] }
+              style={ [styles.buttonStyle, this.content().additionButtonStyle] }
               onPress={ this.handleUpgrade }>
-              <Icon name='star' color='#EEEEEE' size={ this.state.iconSize } />
-              <Text style={ styles.buttonTitle }>{ this.state.update }</Text>
+              <Icon name='star' color='#EEEEEE' size={ this.content().iconSize } />
+              <Text style={ styles.buttonTitle }>{ this.content().update }</Text>
             </TouchableOpacity>                       
           </View>          
         </View>
