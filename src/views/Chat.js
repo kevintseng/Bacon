@@ -40,10 +40,10 @@ export default class Chat extends Component {
     this.firebase = this.props.fire;
     this.db = this.props.localdb;
     this.msgRef = this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid);
-    if (this.store.user.chatStatus === "我的狀態") {
+    if (this.props.chatStatus === "我的狀態") {
       this.title = this.name;
     } else {
-      this.title = this.name + ", " + this.store.user.chatStatus;
+      this.title = this.name + ", " + this.props.age + ", " + this.props.chatStatus;
     }
     this.state = {
       size: {
@@ -64,7 +64,7 @@ export default class Chat extends Component {
     console.debug("Rendering Messages");
     Actions.refresh({ title: this.title });
     this._isMounted = true;
-    this.msgRef.limitToLast(20).once('value').then(snap => {
+    this.msgRef.limitToLast(30).once('value').then(snap => {
           return snap.val();
         }, err => {
           console.log('Load from firebase error: ', err.code);
@@ -83,14 +83,14 @@ export default class Chat extends Component {
   componentDidMount() {
     this.msgRef.on('child_added', (child) => {
       console.log('child_added', child.val());
-
       this.setState(previousState => {
         return {
           messages: GiftedChat.append(previousState.messages, {
             _id: child.val()._id,
             text: child.val().text,
             createdAt: child.val().createdAt,
-            user: child.val().user
+            user: child.val().user,
+            image: child.val().image,
           })
         };
       });
@@ -140,48 +140,47 @@ export default class Chat extends Component {
     // });
   }
 
-  componentWillUnmount() {
-    this.updateChatToDB();
-  }
+  // componentWillUnmount() {
+  //   this.updateChatToDB();
+  // }
 
-  updateChatToDB = () => {
-    this.db
-      .save({
-        key: this.props.uid,
-        rawData: this.state.messages,
-        expires: 1000 * 3600 * 24 * 365 // expires after 30 days
-      })
-      .catch(err => {
-        console.log("Chat updateChatToDB: Saving data to local db failed.");
-        console.log(err);
-      });
-  }
-
-  updateChatToFirebase = () => {
-
-  }
-
-  creatNewChat = () => {
-    this.db
-      .save({
-        key: this.props.uid,
-        rawData: this.state.messages,
-        expires: 1000 * 3600 * 24 * 365 // expires after 30 days
-      })
-      .catch(err => {
-        console.log("Chat creatNewChat: Saving data to local db failed.");
-        console.log(err);
-      });
-  }
+  // updateChatToDB = () => {
+  //   this.db
+  //     .save({
+  //       key: this.props.uid,
+  //       rawData: this.state.messages,
+  //       expires: 1000 * 3600 * 24 * 365 // expires after 30 days
+  //     })
+  //     .catch(err => {
+  //       console.log("Chat updateChatToDB: Saving data to local db failed.");
+  //       console.log(err);
+  //     });
+  // }
+  //
+  // creatNewChat = () => {
+  //   this.db
+  //     .save({
+  //       key: this.props.uid,
+  //       rawData: this.state.messages,
+  //       expires: 1000 * 3600 * 24 * 365 // expires after 30 days
+  //     })
+  //     .catch(err => {
+  //       console.log("Chat creatNewChat: Saving data to local db failed.");
+  //       console.log(err);
+  //     });
+  // }
 
   onSend = (messages = []) => {
-    const createdAt = Moment(new Date()).unix();
+    const createdAt = Moment().format();
+    messages[0].user.name = this.store.user.displayName;
+    messages[0].user.avatar = this.store.user.photoURL;
     messages[0].createdAt = createdAt;
     console.log('onSend: ', messages[0].createdAt);
-    this.msgRef.push(messages[0]);
-    // if(this.state.image) {
-    //   messages[0].image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1";
-    // }
+    const updates = {};
+    updates[messages[0]._id] = messages[0];
+    this.msgRef.update(updates);
+    // this.msgRef.push({messages[0]._id: messages[0]});
+
     // this.setState(previousState => {
     //   return {
     //     actions: false,
@@ -220,43 +219,23 @@ export default class Chat extends Component {
   //   ); // simulating network
   // };
 
-  answerDemo = messages => {
-    if (messages.length > 0) {
-      if (messages[0].image || messages[0].location || !this._isAlright) {
-        this.setState(previousState => {
-          return {
-            typingText: "蠟筆小新正在輸入.."
-          };
-        });
-      }
-    }
-
-    setTimeout(
-      () => {
-        if (this._isMounted === true) {
-          if (messages.length > 0) {
-            if (messages[0].image) {
-              this.onReceive("拍得不錯耶");
-            } else if (messages[0].location) {
-              this.onReceive("我最喜歡的地方");
-            } else {
-              if (!this._isAlright) {
-                this._isAlright = true;
-                this.onReceive("哩供蝦?");
-              }
-            }
+  appendMessage = (text, image) => {
+    this.setState(previousState => {
+      return {
+        messages: GiftedChat.append(previousState.messages, {
+              _id: Math.round(Math.random() * 1000000),
+              text,
+              createdAt: Moment().format(),
+              user: {
+                _id: this.store.user.uid,
+                name: this.store.user.displayName,
+                avatar: this.store.user.photoURL
+              },
+              image,
+            })
           }
-        }
-
-        this.setState(previousState => {
-          return {
-            typingText: null
-          };
-        });
-      },
-      1000
-    );
-  };
+    });
+  }
 
   onReceive = text => {
     this.setState(previousState => {
@@ -275,7 +254,7 @@ export default class Chat extends Component {
     });
   };
 
-  renderFooter = props => {
+  renderFooter = () => {
     if (this.state.typingText) {
       return (
         <View style={styles.footerContainer}>
@@ -289,7 +268,7 @@ export default class Chat extends Component {
   };
 
   //TODO: Rewrite this when have time
-  actions = () => {
+  renderActions = () => {
     if (!this.state.actions) {
       return (
         <View
@@ -361,7 +340,6 @@ export default class Chat extends Component {
     }
   };
 
-
   handleCameraPicker = () => {
     console.log("handleCameraPicker called");
     ImagePicker.launchCamera(ImagePickerOptions, async response => {
@@ -374,20 +352,35 @@ export default class Chat extends Component {
       } else if (response.customButton) {
         console.log("User tapped custom button: ", response.customButton);
       } else {
+        this.setState({ actions: 'uploading'});
         console.log("Image data", response);
-        const firebaseRefObj = this.firebase.storage().ref('userPhotos/' + this.store.user.uid + '/' + filename + '.jpg');
-        const resizedUri = await resizeImage(response.uri, 600, 600, 'image/JPEG', 80);
-        const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, image.mime);
-        // let source = { uri: response.uri };
-        this.setState({
-          image: response.uri
+        const firebaseRefObj = this.firebase.storage().ref('chatPhotos/' + this.store.user.uid + '/' + response.fileName.replace('JPG', 'jpg'));
+        const resizedUri = await resizeImage(response.uri, 600, 600, 'image/jpeg', 80);
+        console.log("resizedUri", resizedUri);
+        const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, 'image/jpeg');
+        console.log("downloadUrl: ", downloadUrl);
+        const _id = this.msgRef.push().key;
+        const msgObj = {
+          _id,
+          text: '',
+          createdAt: new Date(),
+          user: {
+            _id: this.store.user.uid,
+            name: this.store.user.displayName,
+            avatar: this.store.user.photoURL
+          },
+          image: downloadUrl
+        };
+
+        this.setState(previousState => {
+          return {
+            // messages: GiftedChat.append(previousState.messages, msgObj),
+            actions: false,
+          };
         });
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-        this.onSend();
-        // this.setState({
-        //   avatarSource: source
-        // });
+        const updates = {};
+        updates[_id] = msgObj;
+        this.msgRef.update(updates);
       }
     });
   };
@@ -406,27 +399,33 @@ export default class Chat extends Component {
       } else {
         this.setState({ actions: 'uploading'});
         console.log("Image data", response);
-        const firebaseRefObj = this.firebase.storage().ref('chatPhotos/' + this.store.user.uid + '/' + response.filename);
+        const firebaseRefObj = this.firebase.storage().ref('chatPhotos/' + this.store.user.uid + '/' + response.fileName.replace('JPG', 'jpg'));
         const resizedUri = await resizeImage(response.uri, 600, 600, 'image/jpeg', 80);
         console.log("resizedUri", resizedUri);
         const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, 'image/jpeg');
         console.log("downloadUrl: ", downloadUrl);
+        const _id = this.msgRef.push().key;
+        const msgObj = {
+          _id,
+          text: '',
+          createdAt: new Date(),
+          user: {
+            _id: this.store.user.uid,
+            name: this.store.user.displayName,
+            avatar: this.store.user.photoURL
+          },
+          image: downloadUrl
+        };
+
         this.setState(previousState => {
           return {
-            messages: GiftedChat.append(previousState.messages, {
-              _id: Math.round(Math.random() * 1000000),
-              text: null,
-              createdAt: new Date(),
-              user: {
-                _id: this.store.user.uid,
-                name: this.store.user.displayName,
-                avatar: this.store.user.photoURL
-              },
-              image: downloadUrl
-            }),
+            // messages: GiftedChat.append(previousState.messages, msgObj),
             actions: false,
           };
         });
+        const updates = {};
+        updates[_id] = msgObj;
+        this.msgRef.update(updates);
       }
     });
   };
@@ -521,22 +520,6 @@ export default class Chat extends Component {
     }
   };
 
-  sendButton = () => {
-    return (
-      <View
-        style={{
-          flex: 0,
-          width: 30,
-          marginLeft: 3,
-          flexDirection: "row",
-          alignSelf: "center"
-        }}
-      >
-        <Icon name="send" />
-      </View>
-    );
-  };
-
   render() {
     console.log("this.state.messages: ", this.state.messages);
     console.log("this.state.actions: ", this.state.actions);
@@ -545,6 +528,7 @@ export default class Chat extends Component {
         {this.state.actions &&
           <GiftedChat
             messages={this.state.messages}
+            messageIdGenerator={() => {return this.msgRef.push().key}}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
@@ -555,13 +539,14 @@ export default class Chat extends Component {
             minInputToolbarHeight={45}
             placeholder="輸入訊息..."
             renderAccessory={this.renderAccessory}
-            renderActions={this.actions}
+            renderActions={this.renderActions}
             renderFooter={this.renderFooter}
           />}
 
         {!this.state.actions &&
           <GiftedChat
             messages={this.state.messages}
+            messageIdGenerator={() => {return this.msgRef.push().key}}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
@@ -572,7 +557,7 @@ export default class Chat extends Component {
             imageProps={this.state.image}
             minInputToolbarHeight={45}
             placeholder="輸入訊息..."
-            renderActions={this.actions}
+            renderActions={this.renderActions}
             renderFooter={this.renderFooter}
           />}
       </View>
