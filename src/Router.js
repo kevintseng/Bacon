@@ -5,6 +5,7 @@ import { Router, Scene, Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
 import { Icon } from "react-native-elements";
 import * as Firebase from "firebase"; // eslint-disable-line
+import Welcome from "./views/Welcome";
 import MeetCute from "./views/MeetCute";
 import Nearby from "./views/Nearby";
 import Messages from "./views/Messages";
@@ -16,7 +17,7 @@ import SessionCheck from "./views/SessionCheck";
 import { Profile } from "./views/Profile";
 import Chat from "./views/Chat";
 import Favorites from "./views/Favorites";
-import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
+import { Signup1, Signup2, Signup3, Signup4, TempSignup1, TempSignup2, TempSignup3, TempSignup4  } from "./views/Signup";
 import DrawerPanel from "./views/DrawerPanel";
 import ErrorView from "./views/ErrorView";
 import AppStore from "./store/AppStore";
@@ -27,6 +28,8 @@ import Question from "./views/Settings/Question";
 import ChangePassword from "./views/Settings/ChangePassword";
 import FeedBack from "./views/Settings/FeedBack";
 import { FirebaseConfig } from "./Configs";
+import TempSignin from "./views/TempSignin";
+//import { TempSignup1, TempSignup2, TempSignup3, TempSignup4 } from "./views/Signup";
 
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
@@ -196,7 +199,7 @@ export default class RouterComponent extends Component {
     this.setState({ user: null });
 
     // Render SessionCheck and redirect to signin view
-    Actions.signin({ type: "reset" });
+    Actions.welcome({ type: "reset" });
   };
 
   render() {
@@ -209,7 +212,9 @@ export default class RouterComponent extends Component {
       >
         <Scene key="root" hideNavBar>
           <Scene key="sessioncheck" component={SessionCheck} />
-          <Scene key="signin" component={Signin} />
+          <Scene key="welcome" component={Welcome} hideTabBar/>
+          <Scene key="signin" component={Signin} hideTabBar/>
+          <Scene key="tempSignin" component={TempSignin} hideNavBar hideTabBar/>
           <Scene
             key="forgot"
             component={Forgot}
@@ -222,6 +227,14 @@ export default class RouterComponent extends Component {
             <Scene key="signup3" component={Signup3} />
             <Scene key="signup4" component={Signup4} />
           </Scene>
+
+          <Scene key="tempsignup" hideNavBar>
+            <Scene key="tempsignup1" component={TempSignup1} />
+            <Scene key="tempsignup2" component={TempSignup2} />
+            <Scene key="tempsignup3" component={TempSignup3} />
+            <Scene key="tempsignup4" component={TempSignup4} />
+          </Scene>
+
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
               <Scene
