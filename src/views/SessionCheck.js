@@ -44,7 +44,8 @@ export default class Welcome extends Component {
       this.setState({
         loading: false
       });
-      Actions.signin();
+      //Actions.signin();
+      Actions.welcome();
     }
     this.db.load({
       key: 'user',
@@ -58,22 +59,26 @@ export default class Welcome extends Component {
         Actions.drawer();
       } else {
         console.log('SessionCheck: Rendering signin');
-        Actions.signin();
+        //Actions.signin();
+        Actions.welcome();
       }
     }).catch(err => {
       console.log(err.message);
       switch (err.name) {
         case 'NotFoundError':
           console.log('SessionCheck: Data not found, rendering signin');
-          Actions.signin();
+          //Actions.signin();
+          Actions.welcome();
           break;
         case 'ExpiredError':
           console.log('SessionCheck: Data expired, rendering signin');
-          Actions.signin();
+          //Actions.signin();
+          Actions.welcome();
           break;
         default:
           console.log(err.name);
-          Actions.signin();
+          //Actions.signin();
+          Actions.welcome();
       }
     });
   }
