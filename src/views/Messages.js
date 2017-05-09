@@ -20,6 +20,7 @@ const list = [
     avatar_url: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
     subtitle: "Vice President",
     chatStatus: '忙碌中',
+    age: 31
   },
   {
     uid: 'sampleUser2',
@@ -27,6 +28,7 @@ const list = [
     avatar_url: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
     subtitle: "Vice Chairman",
     chatStatus: '忙碌中',
+    age: 22
   }
 ];
 
@@ -109,7 +111,7 @@ export default class Messages extends Component {
                   key={l.uid}
                   title={l.name}
                   onPress={() => {
-                    Actions.chat({uid: l.uid, name: l.name, chatStatus: l.chatStatus});
+                    Actions.chat({uid: l.uid, name: l.name, chatStatus: l.chatStatus, age: l.age});
                   }}
                 />
               ))}
