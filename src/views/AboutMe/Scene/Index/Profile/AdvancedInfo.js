@@ -3,9 +3,7 @@ import React from 'react';
 import { View, Text } from 'react-native'
 import { Item } from './Components/Item'
 
-const AdvancedInfo = (props) => {
-
-  const { onpressIntroduce, onpressLanguage, onpressInterests } = props
+const AdvancedInfo = ({ onpressIntroduce, onpressLanguage, onpressInterests }) => {
 
   return(
     <View>

@@ -3,9 +3,8 @@ import { View } from 'react-native'
 import { ListItem } from 'react-native-elements'
 
 
-const Verification = (props) => {
+const Verification = ({ emailVerified, emailRightTitle, handleSendVerifyEmail, photoVerified, handleVerifyPhoto }) => {
 
-  const { emailVerified, emailRightTitle, handleSendVerifyEmail, photoVerified, handleVerifyPhoto } = props
   return(
     <View>
       <View>
