@@ -1,8 +1,24 @@
 import React, { Component } from 'react';
-import { Dimensions, View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
+//import InputField from './Components/InputField'
 
-const { width } = Dimensions.get('window');
+const styles = {
+  NickBirthday: {
+    flex: 1
+  },
+  Birthday: {
+    paddingTop: 5
+  },
+  DataPicker: {
+    flexDirection: "row",
+    paddingTop: 10
+  },  
+  dataPicker: {
+    flex: 1
+  }
+}
+//const { width } = Dimensions.get('window');
 
 const maxDay = () => {
   const today = new Date();
@@ -17,33 +33,48 @@ const maxDay = () => {
 class NickBirthday extends Component {
   
   constructor(props) {
-    super(props);
-    this.state = { text: 'Useless Placeholder' };
+    super(props)
+    this.state = {}
   }
-  //let firebase = this.props.fire
 
   render(){
     return(
-      <View> 
-        <Text>暱稱</Text> 
-        <TextInput
-          style={{height: 40, width: 200}}
-          onChangeText={(text) => this.setState({text})}
-          value={this.state.text}
-        />
-        <DatePicker
-          style={{alignSelf: 'center', marginTop: 5, width: width*0.9}}
-          date="2017-01-01"
-          mode="date"
-          placeholder="您的生日"
-          format="YYYY-MM-DD"
-          minDate="1950-01-01"
-          maxDate={maxDay()}
-          confirmBtnText="完成"
-          cancelBtnText="取消"
-          showIcon={false}
-          onDateChange={date => this.updateBirthday(date)}
-        />    
+      <View style = { styles.NickBirthday }>
+
+        <View>
+          <View>
+            <Text>暱稱</Text> 
+          </View>
+          <View>
+            <TextInput
+              placeholder = "輸入暱稱"
+              onChangeText = { (text) => this.setState({ text }) }
+              value = { this.state.text }
+            />
+          </View>
+        </View>
+
+        <View style = { styles.Birthday }>
+          <View>
+            <Text>生日</Text> 
+          </View>
+          <View style = {styles.DataPicker}>
+            <DatePicker
+              style = { styles.dataPicker }
+              date = "2017-01-01"
+              mode = "date"
+              placeholder = "您的生日"
+              format = "YYYY-MM-DD"
+              minDate = "1950-01-01"
+              maxDate = { maxDay() }
+              confirmBtnText = "完成"
+              cancelBtnText = "取消"
+              showIcon = { false }
+              onDateChange = { date => this.updateBirthday(date) }
+            /> 
+          </View>
+        </View> 
+
       </View>
     )
   }

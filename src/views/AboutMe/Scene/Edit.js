@@ -1,13 +1,19 @@
-import React from 'react';
-import { View } from 'react-native';
+import React from 'react'
+import { View } from 'react-native'
+
+const styles = {
+  Edit: {
+    flex: 1,
+    padding: 10
+  }
+}
 
 const Edit = (props) => {
   return (
-    <View>
-      {props.content}
+    <View style = {styles.Edit }>
+      { props.content }
     </View>
   )
-
 }
 
-export default Edit;
+export { Edit }

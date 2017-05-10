@@ -1,13 +1,10 @@
-import React from 'react';
-import { View, Platform } from 'react-native';
-import { Avatar } from 'react-native-elements';
-//import InputField from './InputField'
-import NewInfoArea from './NewInfoArea';
-import NickBirthday from '../../Edit/NickBirthday';
-import Location from '../../Edit/Location';
+import React from 'react'
+import { View, Platform } from 'react-native'
+import { Avatar } from 'react-native-elements'
+import { Item } from './Components/Item'
 
 const styles = {
-  container: {
+  BasicInfo: {
     ...Platform.select({
       ios: {
         height: 90,
@@ -26,7 +23,7 @@ const styles = {
       },
     }),
   },
-  avatarview: {
+  Avatar: {
     ...Platform.select({
       ios: {
         flex: 1,
@@ -35,11 +32,11 @@ const styles = {
       android: {
         flex: 1,
         paddingVertical: 5,
-        //alignItems: 'center'
+          //alignItems: 'center'
       },
     }),
   },
-  inputview: {
+  Infomation: {
     ...Platform.select({
       ios: {
         marginLeft: 80,
@@ -50,47 +47,39 @@ const styles = {
         width: 200
       }
     })
+  },
+  Field: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
-};
+}
+
 
 const BasicInfo = (props) => {
+  // API
+  const { avatar, displayName, location, onpressDisplayName, onpressLocation } = props
 
-  const { displayName, location, avatar } = props;
-  
+  // return
   return (
-    <View style={styles.container}>
-      <View style={styles.avatarview}>
+    <View style = { styles.BasicInfo }>
+      <View style = { styles.Avatar }>
         <Avatar
           large
           rounded
-          icon={{type: 'user'}}
-          onPress={() => console.log("Works!")}
-          containerStyle={{ flex: 1 }}
-          activeOpacity={0.7}
-          source={{ uri: avatar }}
+          icon = { { type: 'user' } }
+          onPress = { () => console.log("Works!") }
+          containerStyle = { { flex: 1 } }
+          activeOpacity = { 0.7 }
+          source = { { uri: avatar } }
         />
       </View>
-      <View style={styles.inputview}>
-          <NewInfoArea
-            content= {<NickBirthday/>}
-            containerStyle ={{borderBottomWidth: 0}}
-            label={'displayName'}
-            defaultValue={displayName}
-            minHeight={60}
-            maxLength={300}
-            /> 
-          <NewInfoArea
-            content= {<Location/>}
-            containerStyle ={{borderBottomWidth: 0}}
-            label={'location'}
-            defaultValue={location}
-            minHeight={60}
-            maxLength={300}
-            />             
-      </View>
+
+      <View style = { styles.Infomation }>
+        <Item displayTitle title = { displayName } tag = "編輯" onpress = { onpressDisplayName}></Item>
+        <Item displayTitle title = { location } tag = "編輯" onpress = { onpressLocation }></Item>
+      </View>     
     </View>
-  );
-};
+  )
+}
 
-
-export { BasicInfo };
+export { BasicInfo }

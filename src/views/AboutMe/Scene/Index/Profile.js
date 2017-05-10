@@ -1,17 +1,18 @@
     //TODO: 把 renderGallery拉出來變成一個component
 'use strict'
 import React, { Component } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { ListItem } from 'react-native-elements';
 
 import Moment from 'moment';
-import { BasicInfo } from './Profile/BasicInfo';
 import AccountStatus from './Profile/AccountStatus';
-import { InfoArea } from './Profile/InfoArea';
-//import NewInfoArea from './Profile/NewInfoArea';
-// import LangPicker from './LangPicker';
+import { BasicInfo } from './Profile/BasicInfo';
+import { Verification } from './Profile/Verification';
+import { AdvancedInfo } from './Profile/AdvancedInfo';
+import NickBirthday from '../Edit/NickBirthday'
+import Location from '../Edit/Location'
 
 
 const ADD_IMAGE = require('hookup/src/images/addImage.png');
@@ -41,13 +42,14 @@ export default class Profile extends Component {
   }
 
   componentDidMount() {
-    console.log('Profile rendered');
+    //console.log('Profile rendered');
     Actions.refresh({ key: 'drawer', open: false });
     // Build an array of 60 photos
+    Alert.alert("componentDidMount")
   }
 
   componentWillUnmount() {
-
+    Alert.alert("componentWillUnmount")
   }
 
   emailPressed = () => {
@@ -69,17 +71,17 @@ export default class Profile extends Component {
     }
   }
 
-  handleEditBasicInfo = () => {
-    this.setState({
-      editBasicInfo: true,
-    })
-  }
+  //handleEditBasicInfo = () => {
+  //  this.setState({
+  //    editBasicInfo: true,
+  //  })
+  //}
 
-  handleSaveBasicInfo = () => {
-    this.setState({
-      editBasicInfo: false,
-    })
-  }
+  //handleSaveBasicInfo = () => {
+  //  this.setState({
+  //   editBasicInfo: false,
+  //  })
+  //}
 
   handleUpgrade = () => {
     this.store.upgradeMembership(this.firebase);
@@ -141,59 +143,28 @@ export default class Profile extends Component {
   }
 
   render() {
-    console.log(this.store.user);
+    //console.log(this.store.user);
     const user = this.store.user;
     // const age = this.getAge(user.birthday);
     // const gender = this.getGender(user.gender);
-
-    let emailVerificationItem = (<ListItem
-      key='email'
-      title='Email 認證'
-      rightTitle={this.state.emailVerificationButtonLabel}
-      rightTitleStyle={{ color: '#2962FF' }}
-      onPress={this.handleSendVerifyEmail}
-      hideChevron
-      subtitle='未完成'
-      />);
-
-    if(this.state.emailVerified) {
-      emailVerificationItem = (<ListItem
-        key='email'
-        title='Email 認證'
-        hideChevron
-        subtitle='已認證'
-        />);
-    }
-
-    let photoVerificationItem = (
-      <ListItem
-        key='verifiedPhoto'
-        title='相片認證'
-        rightTitle='進行認證'
-        rightTitleStyle={{ color: '#2962FF' }}
-        onPress={this.handleVerifyPhoto}
-        hideChevron
-        subtitle='未完成'
-        />
-    );
-
-    if(this.state.photoVerified) {
-      photoVerificationItem = (
-        <ListItem
-          key='verifiedPhoto'
-          title='相片認證'
-          hideChevron
-          subtitle='已認證'
-          />
-      );
-    }
-
     // const userImg = {uri: user.photoURL};
     return(
       <ScrollView>
-        <BasicInfo displayName={user.displayName} location={user.city} avatar={user.photoURL} handleEditBasicInfo={this.handleEditBasicInfo} />
+        <BasicInfo 
+          avatar = { user.photoURL }
+          displayName = { user.displayName } 
+          location = { user.city }
+          //handleEditBasicInfo = { this.handleEditBasicInfo }
+        />
         <AccountStatus vip={user.vip} upgrade={this.handleUpgrade} addCredit={this.handleAddCredit} />
-        <InfoArea introduce={this.state.bio} langauge={this.state.lang} interests={this.state.hobby} emailVerificationItem={ emailVerificationItem } photoVerificationItem={ photoVerificationItem }/>
+        <Verification 
+          emailVerified = { this.state.emailVerified }
+          emailRightTitle = { this.state.emailVerificationButtonLabel }
+          handleSendVerifyEmail = { this.handleSendVerifyEmail }
+          photoVerified = { this.state.photoVerified }
+          handleVerifyPhoto = { this.handleVerifyPhoto}
+        />
+        <AdvancedInfo introduce={this.state.bio} langauge={this.state.lang} interests={this.state.hobby}/>
         <View style={{ height: 20 }} />
       </ScrollView>
     );
