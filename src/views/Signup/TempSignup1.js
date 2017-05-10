@@ -81,6 +81,7 @@ class TempSignup1 extends Component {
     //   console.log(this.sustore);
     // });
     Actions.tempsignup2({
+      type: "reset",
       sustore: this.sustore
     });
   }

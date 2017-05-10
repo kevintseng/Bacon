@@ -160,7 +160,7 @@ class TempSignup4 extends Component {
     });
     */
     const postData = {
-      photoURL: this.sustore.avatar,
+      //photoURL: this.sustore.avatar,
       uid: this.sustore.uid,
       displayName: this.sustore.nickname,
       email: this.sustore.email,
@@ -210,14 +210,11 @@ class TempSignup4 extends Component {
               />
             }
             </View>
-            <Text style={{marginBottom: 10}}>
-              根據最新英國研究報告, 在交友app上顯示您的個人照片會提高配對成功機率喔！
-              無論你信不信, 反正我信了。</Text>
             <Button
               icon={{name: 'add'}}
               backgroundColor='#03A9F4'
               buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-              title='新增個人照片'
+              title='新增個人照片一張'
               onPress={this.addImage}
             />
           </Card>
@@ -225,7 +222,7 @@ class TempSignup4 extends Component {
             style={{ marginTop: 10 }}
             backgroundColor='transparent'
             color='#007AFF'
-            title={'完成'}
+            title={'完成 , 開始使用'}
             onPress={this.handleSubmit}
           />
         </View>

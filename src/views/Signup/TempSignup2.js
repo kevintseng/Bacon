@@ -61,6 +61,7 @@ class TempSignup2 extends Component {
   }
 
   goNext = () => {
+    /*
     if(this.state.dispLocationName == '') {
       alert('請提供所在的城市');
     } else {
@@ -73,6 +74,11 @@ class TempSignup2 extends Component {
         sustore: this.sustore
       });
     }
+    */
+    Actions.tempsignup3({
+      type: "reset",
+      sustore: this.sustore
+    });
   }
 
   render() {
@@ -88,35 +94,35 @@ class TempSignup2 extends Component {
           leftColor='#007AFF'
         />
         <GooglePlacesAutocomplete
-          placeholder={placeholder}
-          minLength={2}
-          autoFocus={true}
-          listViewDisplayed={true}
-          fetchDetails={true}
-          onPress={(data, details = null) => {
-            console.log({data, details});
-            this.updatePlace(data, details);
-          }}
-          getDefaultValue={() => dispLocationName}
-          query={{
-            key: 'AIzaSyBYTZDmeWcR9MEdiUTdgZGb80nDWYLnCSk',
-            language: 'en', // language of the results
-            types: 'geocode', // default: 'geocode'
-          }}
-          styles={{
-            description: {
-              fontWeight: 'bold',
-            },
-            predefinedPlacesDescription: {
-              color: '#1faadb',
-            },
-          }}
-          currentLocation={true}
-          currentLocationLabel="現在所在位置城市"
-          nearbyPlacesAPI='GoogleReverseGeocoding'
-          filterReverseGeocodingByTypes={['administrative_area_level_2', 'administrative_area_level_3']}
-          predefinedPlacesAlwaysVisible={true}
-        />
+            placeholder={placeholder}
+            minLength={2}
+            autoFocus={true}
+            listViewDisplayed={true}
+            fetchDetails={true}
+            onPress={(data, details = null) => {
+              console.log({data, details});
+              this.updatePlace(data, details);
+            }}
+            getDefaultValue={() => dispLocationName}
+            query={{
+              key: 'AIzaSyBYTZDmeWcR9MEdiUTdgZGb80nDWYLnCSk',
+              language: 'en', // language of the results
+              types: 'geocode', // default: 'geocode'
+            }}
+            styles={{
+              description: {
+                fontWeight: 'bold',
+              },
+              predefinedPlacesDescription: {
+                color: '#1faadb',
+              },
+            }}
+            currentLocation={true}
+            currentLocationLabel="現在所在位置城市"
+            nearbyPlacesAPI='GoogleReverseGeocoding'
+            filterReverseGeocodingByTypes={['administrative_area_level_2', 'administrative_area_level_3']}
+            predefinedPlacesAlwaysVisible={true}
+          />
       </View>
     );
   }
