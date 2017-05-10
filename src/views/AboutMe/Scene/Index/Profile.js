@@ -1,19 +1,20 @@
-    //TODO: 把 renderGallery拉出來變成一個component
 'use strict'
 import React, { Component } from 'react';
 import { ScrollView, View, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { ListItem } from 'react-native-elements';
-
 import Moment from 'moment';
+// Profile Layout
 import AccountStatus from './Profile/AccountStatus';
 import { BasicInfo } from './Profile/BasicInfo';
 import { Verification } from './Profile/Verification';
 import { AdvancedInfo } from './Profile/AdvancedInfo';
+// Profile correspond Edit Content
 import NickBirthday from '../Edit/NickBirthday'
 import Location from '../Edit/Location'
-
+import Introduce from '../Edit/Introduce'
+import Language from '../Edit/Language'
+import Interests from '../Edit/Interests'
 
 const ADD_IMAGE = require('hookup/src/images/addImage.png');
 
@@ -142,6 +143,30 @@ export default class Profile extends Component {
     setFirebase.set(val);
   }
 
+  // Edit Content CallBack
+
+  onpressDisplayName = () => {
+    Actions.edit({ content: <NickBirthday/>})
+  }
+
+  onpressLocation = () => {
+    Actions.edit({ content: <Location/>})
+  }
+
+  onpressIntroduce = () => {
+    Actions.edit({ content: <Introduce/>})
+  }
+
+  onpressLanguage = () => {
+    Actions.edit({ content: <Language/>})
+  }
+
+  onpressInterests = () => {
+    Actions.edit({ content: <Interests/>})
+  }
+
+  // Render Profile
+
   render() {
     //console.log(this.store.user);
     const user = this.store.user;
@@ -154,9 +179,15 @@ export default class Profile extends Component {
           avatar = { user.photoURL }
           displayName = { user.displayName } 
           location = { user.city }
+          onpressDisplayName = { this.onpressDisplayName }
+          onpressLocation = { this.onpressLocation }
           //handleEditBasicInfo = { this.handleEditBasicInfo }
         />
-        <AccountStatus vip={user.vip} upgrade={this.handleUpgrade} addCredit={this.handleAddCredit} />
+        <AccountStatus 
+          vip = { user.vip } 
+          upgrade = { this.handleUpgrade } 
+          addCredit = { this.handleAddCredit } 
+        />
         <Verification 
           emailVerified = { this.state.emailVerified }
           emailRightTitle = { this.state.emailVerificationButtonLabel }
@@ -164,7 +195,14 @@ export default class Profile extends Component {
           photoVerified = { this.state.photoVerified }
           handleVerifyPhoto = { this.handleVerifyPhoto}
         />
-        <AdvancedInfo introduce={this.state.bio} langauge={this.state.lang} interests={this.state.hobby}/>
+        <AdvancedInfo 
+          introduce = { this.state.bio } 
+          langauge = { this.state.lang } 
+          interests = { this.state.hobby }
+          onpressIntroduce = { this.onpressIntroduce }
+          onpressLanguage = { this.onpressLanguage }
+          onpressInterests = { this.onpressInterests }
+        />
         <View style={{ height: 20 }} />
       </ScrollView>
     );

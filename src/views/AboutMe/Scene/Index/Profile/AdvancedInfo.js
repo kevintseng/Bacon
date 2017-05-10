@@ -3,15 +3,33 @@ import React from 'react';
 import { View, Text } from 'react-native'
 import { Item } from './Components/Item'
 
-const AdvancedInfo = () => {
+const AdvancedInfo = (props) => {
 
-  //const { none } = props
+  const { onpressIntroduce, onpressLanguage, onpressInterests } = props
 
   return(
     <View>
-      <Item title = "自我介紹" displayTitle styleTitle = { { color: "#000000" } } tag = "編輯"><Text>我叫小曹</Text></Item>
-      <Item title = "語言能力" displayTitle styleTitle = { { color: "#000000" } } tag = "編輯"><Text>中文 英文</Text></Item>
-      <Item title = "興趣愛好" displayTitle styleTitle = { { color: "#000000" } } tag = "編輯"><Text>運動 看妹</Text></Item>
+      <Item 
+        title = "自我介紹" 
+        displayTitle styleTitle = { { color: "#000000" } } 
+        tag = "編輯" 
+        onpress = { onpressIntroduce } >
+        <Text>我叫小曹</Text>
+      </Item>
+      <Item 
+        title = "語言能力" 
+        displayTitle styleTitle = { { color: "#000000" } } 
+        tag = "編輯" 
+        onpress = { onpressLanguage } >
+        <Text>中文 英文</Text>
+      </Item>
+      <Item 
+        title = "興趣愛好" 
+        displayTitle styleTitle = { { color: "#000000" } } 
+        tag = "編輯" 
+        onpress = { onpressInterests } >
+        <Text>運動 看妹</Text>
+      </Item>
     </View>                           
     )
 }
