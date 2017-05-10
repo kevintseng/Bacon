@@ -4,9 +4,10 @@ import { Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
 import { GiftedChat } from "react-native-gifted-chat";
 import ImagePicker from "react-native-image-picker";
+import Moment from "moment";
 import { Icon } from "react-native-elements";
 import { uploadImage, resizeImage } from '../Utils';
-import Moment from "moment";
+
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
 const styles = StyleSheet.create({
@@ -39,12 +40,13 @@ export default class Chat extends Component {
     this.name = this.props.name;
     this.firebase = this.props.fire;
     this.db = this.props.localdb;
-    this.msgRef = this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid);
-    if (this.props.chatStatus === "我的狀態") {
-      this.title = this.name;
-    } else {
-      this.title = this.name + ", " + this.props.age + ", " + this.props.chatStatus;
-    }
+
+    //Ref to messages (訊息資料表)
+    this.msgRef = this.firebase.database().ref('messages/' + this.store.user.uid + '/' + this.props.uid);
+
+    //Ref to conversations (對話資料表)
+    this.convRef = this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid);
+
     this.state = {
       size: {
         width,
@@ -56,31 +58,42 @@ export default class Chat extends Component {
       isLoadingEarlier: false,
       actions: false,
       image: null,
+      firstTime: false,
     };
     this._isMounted = false;
   }
 
   componentWillMount() {
     console.debug("Rendering Messages");
+    if (this.props.chatStatus === "我的狀態") {
+      this.title = this.name;
+    } else {
+      this.title = this.name + ", " + this.props.age + ", " + this.props.chatStatus;
+    }
     Actions.refresh({ title: this.title });
     this._isMounted = true;
-    this.msgRef.limitToLast(30).once('value').then(snap => {
-          return snap.val();
-        }, err => {
-          console.log('Load from firebase error: ', err.code);
-        });
-    // this.setState(() => {
-    //   return {
-    //     messages: this.msgRef.limitToLast(20).on('value', snap => {
-    //       return snap.val();
-    //     }, err => {
-    //       console.log('Load from firebase error: ', err.code);
-    //     })
-    //   };
-    // });
   }
 
   componentDidMount() {
+    this.convRef.once('value').then(snap => {
+          console.log('Chat DidMount: ', snap.val());
+          const convData = {
+            uid: this.props.uid,
+            name: this.props.name,
+            chatStatus: this.props.chatStatus,
+            age: this.props.age,
+            avatarUrl: this.props.avatarUrl,
+          }
+          if(!snap.val()) {
+            this.setState({firstTime: true});
+            this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid).set(convData);
+          } else {
+            this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid).update(convData);
+          }
+        }, err => {
+          console.log('Load chats from firebase error: ', err.code);
+        });
+
     this.msgRef.on('child_added', (child) => {
       console.log('child_added', child.val());
       this.setState(previousState => {
@@ -94,7 +107,6 @@ export default class Chat extends Component {
           })
         };
       });
-
     });
 
     // this.db.load({
@@ -179,17 +191,9 @@ export default class Chat extends Component {
     const updates = {};
     updates[messages[0]._id] = messages[0];
     this.msgRef.update(updates);
-    // this.msgRef.push({messages[0]._id: messages[0]});
 
-    // this.setState(previousState => {
-    //   return {
-    //     actions: false,
-    //     messages: GiftedChat.append(previousState.messages, messages),
-    //     image: null,
-    //   };
-    // });
-    // Keyboard.dismiss();
-    // // for demo purpose
+    Keyboard.dismiss();
+    // for demo purpose
     // this.answerDemo(messages);
   };
 
@@ -521,8 +525,8 @@ export default class Chat extends Component {
   };
 
   render() {
-    console.log("this.state.messages: ", this.state.messages);
-    console.log("this.state.actions: ", this.state.actions);
+    console.log("this.state", this.state);
+
     return (
       <View style={[this.state.size, { marginTop: -60 }]}>
         {this.state.actions &&
