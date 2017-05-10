@@ -55,11 +55,8 @@ const styles = {
 }
 
 
-const BasicInfo = (props) => {
-  // API
-  const { avatar, displayName, location, onpressDisplayName, onpressLocation } = props
+const BasicInfo = ({ avatar, displayName, location, onpressDisplayName, onpressLocation }) => {
 
-  // return
   return (
     <View style = { styles.BasicInfo }>
       <View style = { styles.Avatar }>

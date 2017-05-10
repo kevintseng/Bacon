@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { View, Text, TextInput } from 'react-native';
-import DatePicker from 'react-native-datepicker';
-//import InputField from './Components/InputField'
+import React, { Component } from 'react'
+import { View, Text, TextInput } from 'react-native'
+import DatePicker from 'react-native-datepicker'
+import { Actions } from 'react-native-router-flux'
 
 const styles = {
   NickBirthday: {
@@ -35,7 +35,17 @@ class NickBirthday extends Component {
   constructor(props) {
     super(props)
     this.state = {}
+    //this.save = this.props._save
   }
+
+  _save = () => {
+    this.props.save()
+    Actions.index()
+  }
+
+  componentWillMount = () => {
+    Actions.refresh({rightTitle: "完成", onRight: this._save });
+  }  
 
   render(){
     return(

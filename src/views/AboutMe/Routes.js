@@ -10,7 +10,7 @@ const menuButton = () => (
 )
 
 const handleOnRight = () => {
-  Actions.profile()
+  Actions.index()
 }
 
 const rightTitle = () => {

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { ScrollView, View, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import Moment from 'moment';
+//import Moment from 'moment';
 // Profile Layout
 import AccountStatus from './Profile/AccountStatus';
 import { BasicInfo } from './Profile/BasicInfo';
@@ -46,32 +46,30 @@ export default class Profile extends Component {
     //console.log('Profile rendered');
     Actions.refresh({ key: 'drawer', open: false });
     // Build an array of 60 photos
-    Alert.alert("componentDidMount")
+    //Alert.alert("componentDidMount")
   }
 
   componentWillUnmount() {
-    Alert.alert("componentWillUnmount")
+    //Alert.alert("componentWillUnmount")
   }
 
-  emailPressed = () => {
-    this.setState({
-      tip: '未認證'
-    });
-  }
+  //getAge = (dob) => {
+  //  return Moment().diff(dob, 'years');
+  //}
 
-  getAge = (dob) => {
-    return Moment().diff(dob, 'years');
-  }
+  //getGender = (gender) => {
+  //  if(gender === 'm') {
+  //    return '男';
+  //  }
+  //  if(gender === 'f') {
+  //    return '女';
+  //  }
+  //}
 
-  getGender = (gender) => {
-    if(gender === 'm') {
-      return '男';
-    }
-    if(gender === 'f') {
-      return '女';
-    }
+  _onChangeHeight = (before, after) => {
+    console.log('before: ' + before + ' after: ' + after);
   }
-
+  // Bascic Infomation
   //handleEditBasicInfo = () => {
   //  this.setState({
   //    editBasicInfo: true,
@@ -84,6 +82,7 @@ export default class Profile extends Component {
   //  })
   //}
 
+  // Acount State
   handleUpgrade = () => {
     this.store.upgradeMembership(this.firebase);
     console.log('upgrade button pressed');
@@ -95,6 +94,14 @@ export default class Profile extends Component {
       message: '儲值鈕'
     });
     console.log('addCredit button pressed');
+  }
+
+  // Verification
+
+  emailPressed = () => {
+    this.setState({
+      tip: '未認證'
+    });
   }
 
   handleSendVerifyEmail = () => {
@@ -116,26 +123,31 @@ export default class Profile extends Component {
     console.log('Verify Photo Pressed');
   }
 
-  _onChangeHeight = (before, after) => {
-    console.log('before: ' + before + ' after: ' + after);
-  }
-
+  // AdvancedInfo
+  // Introduce
   handleUpdateBio = val => {
     this.store.setBio(val);
     console.log('setBio: ' + val);
     this.updateToFirebase('bio', val);
   }
 
-  handleUpdateHobby = val => {
-    this.store.setHobby(val);
-    console.log('setHobby: ' + val);
-    this.updateToFirebase('hobby', val);
-  }
+  // Language
 
+  test = () => {
+    Alert.alert("幹做直銷的滾拉")
+  }
+    
   handleUpdateLang = val => {
     this.store.setLang(val);
     this.updateToFirebase('lang', val);
     console.log('setLanguage: ' + val);
+  }
+
+  // Interests
+  handleUpdateHobby = val => {
+    this.store.setHobby(val);
+    console.log('setHobby: ' + val);
+    this.updateToFirebase('hobby', val);
   }
 
   updateToFirebase(key, val) {
@@ -146,7 +158,7 @@ export default class Profile extends Component {
   // Edit Content CallBack
 
   onpressDisplayName = () => {
-    Actions.edit({ content: <NickBirthday/>})
+    Actions.edit({ content: <NickBirthday save = { this.test } />})
   }
 
   onpressLocation = () => {
@@ -154,7 +166,7 @@ export default class Profile extends Component {
   }
 
   onpressIntroduce = () => {
-    Actions.edit({ content: <Introduce/>})
+    Actions.edit({ content: <Introduce save = { this.handleUpdateBio } />})
   }
 
   onpressLanguage = () => {

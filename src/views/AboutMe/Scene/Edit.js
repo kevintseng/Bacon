@@ -8,10 +8,12 @@ const styles = {
   }
 }
 
-const Edit = (props) => {
+
+const Edit = ({ content }) => {
+
   return (
     <View style = {styles.Edit }>
-      { props.content }
+      { content }
     </View>
   )
 }
