@@ -138,7 +138,7 @@ class TempSignup3 extends Component {
   emailCheck = async() => {
     if(checkEmail(this.state.email)){
       await this.firebase.database().ref('users/').orderByChild('email').equalTo(this.state.email.toString().toLowerCase().trim()).once("value", (data) => {
-        console.log(this.state.email.toString().toLowerCase());
+        console.log(this.state.email.toString().toLowerCase().trim());
         if(data.val() == null){
           console.log(data.val());
           console.log('Account is OK');
@@ -231,9 +231,9 @@ class TempSignup3 extends Component {
     if(emailOk && passwordOk && nameOk && bdayOk && termsOk){
       this.sustore.setBirthday(this.state.birthday);
       this.sustore.setNickname(this.state.nickname);
-      this.sustore.setPassword(this.state.password);
+      this.sustore.setPassword(this.state.password.trim());
       this.sustore.setTermsAgreement(this.state.termsAgreed);
-      this.sustore.setEmail(this.state.email);
+      this.sustore.setEmail(this.state.email.toString().toLowerCase().trim());
 
       Actions.tempsignup4({
         sustore: this.sustore
