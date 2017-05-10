@@ -39,6 +39,7 @@ class TempSignup3 extends Component {
     this.store = this.props.store;
     this.firebase = this.props.fire;
     //this.sustore = new SignupStore();
+    console.log(this.firebase);
     this.sustore = this.props.sustore;
     this.state = {
       size: {
@@ -73,9 +74,12 @@ class TempSignup3 extends Component {
   }
 
   componentDidMount() {
+
     this.store.setInSignupProcess(true);
     console.log('Signup 1 mounted');
   }
+
+
 
   maxDay = () => {
     const now = new Date();
@@ -131,15 +135,30 @@ class TempSignup3 extends Component {
     });
   }
 
-  emailCheck() {
+  emailCheck = async() => {
     if(checkEmail(this.state.email)){
-      return true;
-    }
-    this.setState({
-      emailErr: '咦？請再檢查一次email是否正確?',
-      loading: false,
-    })
-    return false;
+      await this.firebase.database().ref('users/').orderByChild('email').equalTo(this.state.email.toString().toLowerCase().trim()).once("value", (data) => {
+        console.log(this.state.email.toString().toLowerCase());
+        if(data.val() == null){
+          console.log(data.val());
+          console.log('Account is OK');
+          return true;
+        }else{
+          console.log('Account is already');
+          this.setState({
+            emailErr: '此Email已註冊',
+            loading: false,
+          })
+          return false;
+        }
+      });
+    }else {
+      this.setState({
+        emailErr: '咦？請再檢查一次email是否正確?',
+        loading: false,
+      })
+      return false;
+    };
   }
 
   passwordCheck() {
@@ -197,13 +216,18 @@ class TempSignup3 extends Component {
     return true;
   }
 
+
+
   handleSubmit() {
+    console.log(this.firebase)
     this.setState({loading: true});
     const emailOk = this.emailCheck();
     const passwordOk = this.passwordCheck();
     const nameOk = this.nicknameCheck();
     const bdayOk = this.birthdayCheck();
     const termsOk = this.termsCheck();
+
+
     if(emailOk && passwordOk && nameOk && bdayOk && termsOk){
       this.sustore.setBirthday(this.state.birthday);
       this.sustore.setNickname(this.state.nickname);
@@ -211,7 +235,12 @@ class TempSignup3 extends Component {
       this.sustore.setTermsAgreement(this.state.termsAgreed);
       this.sustore.setEmail(this.state.email);
 
+      Actions.tempsignup4({
+        sustore: this.sustore
+      });
+
       // Create a new user on Firebase
+      /*
       this.firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then((user) => {
         this.sustore.setUid(user.uid);
@@ -234,8 +263,28 @@ class TempSignup3 extends Component {
         });
         console.error(err);
       });
+      */
+
     }
-  }
+
+  };
+
+  accountCheck() {
+    console.log(this.firebase);
+
+    this.firebase.database().ref('users/').orderByChild('email').equalTo('Frank428p@gmail.com').on("value", (data) => {
+      if(data.val() == null){
+        console.log(data.val());
+        console.log('Account is OK');
+      }else{
+        console.log('Account is already')
+      }
+    });
+
+
+  };
+
+
 
   render() {
     const { termsAgreed, email, password, nickname, birthday } = this.state;
@@ -346,6 +395,12 @@ class TempSignup3 extends Component {
           onPress={this.handleSubmit}
           disabled={this.state.loading}
         />
+
+        <Button
+          raised
+          icon={{name: 'cached'}}
+          title='BUTTON WITH ICON'
+          onPress={this.accountCheck.bind(this)} />
         {
           registerErr &&
           <Text style={styles.errStyle}>
@@ -355,6 +410,7 @@ class TempSignup3 extends Component {
         {
           loading && <ActivityIndicator />
         }
+
       </View>
     );
   }

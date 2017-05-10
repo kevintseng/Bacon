@@ -80,7 +80,7 @@ export default class Welcome extends Component {
               raised
               backgroundColor='#03A9F4'
               title='登入'
-              onPress={Actions.signin} />
+              onPress={Actions.tempSignin} />
               <View style={{height:0}}></View>
               <Button
                 title='忘記密碼? 申請密碼重設'

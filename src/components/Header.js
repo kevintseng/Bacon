@@ -1,19 +1,34 @@
 import React, { PropTypes } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Platform } from 'react-native';
 import { Col, Grid } from "react-native-easy-grid";
 import { Icon, Button } from 'react-native-elements';
 
 const styles = {
   viewStyle: {
-    backgroundColor: '#F8F8F8',
-    alignItems: 'center',
-    height: 60,
-    paddingTop: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 0.1 },
-    shadowOpacity: 0.6,
-    elevation: 0.6,
-    position: 'relative'
+    ...Platform.select({
+      ios:{
+        backgroundColor: '#F8F8F8',
+        alignItems: 'center',
+        height: 60,
+        paddingTop: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 0.1 },
+        shadowOpacity: 0.6,
+        elevation: 0.6,
+        position: 'relative'
+      },
+      android:{
+        backgroundColor: '#F8F8F8',
+        alignItems: 'center',
+        height: 60,
+        paddingTop: 0,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 0.1 },
+        shadowOpacity: 0.6,
+        elevation: 0.6,
+        position: 'relative'
+      }
+    }),
   },
   gridStyle: {
     alignItems: 'center',
