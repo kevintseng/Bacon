@@ -82,7 +82,7 @@ export default class RouterComponent extends Component {
     const fire = Firebase.initializeApp(FirebaseConfig);
 
     // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
-    const store = new AppStore();
+    const store = new AppStore(fire);
 
     this.state = {
       store,
