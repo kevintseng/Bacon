@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
 const styles = {
@@ -11,11 +11,12 @@ class Introduce extends Component {
   
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = { text : this.props.initcontent }
+    //Alert.alert("重新初始化")
   }
 
   _save = () => {
-    this.props.save("這就是我的自我介紹")
+    this.props.save(this.state.text)
     Actions.index()
   }
 
@@ -33,12 +34,12 @@ class Introduce extends Component {
           <TextInput
             //underlineColorAndroid = 'transparent'
             textAlignVertical = 'top'
-            placeholder = "自我介紹"
+            placeholder = { this.state.text }
             multiline = { true }
             autoCorrect = { true }
             numberOfLines = { 100 }
             //editable = { true }
-            maxLength = {500}        
+            maxLength = { 500 }        
             onChangeText = { (text) => this.setState({ text }) }
             value = { this.state.text }
           /> 
