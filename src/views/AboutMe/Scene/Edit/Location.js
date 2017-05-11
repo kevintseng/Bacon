@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import { Actions } from 'react-native-router-flux'
 
 const styles = {
   Location: {
@@ -22,12 +23,32 @@ const styles = {
 //const workPlace = {description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
 
 class Location extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = { location: this.props.initcontent }
+    //Alert.alert("重新初始化")
+  }
+    
+  _save = () => {
+    this.props.save(this.state.location)
+    Actions.index()
+  }
+
+  componentWillMount = () => {
+    Actions.refresh({rightTitle: "完成", onRight: this._save });
+  }
+
+  updatePlace(data,details){
+    this.setState({ location: data })
+  }  
+
   render() {
     return (
       <View style = { styles.Location } >
         <GooglePlacesAutocomplete
           styles = { styles.googlePlacesAutocomplete }
-          placeholder = "請輸入所在城市名稱"
+          placeholder = "請輸入所在位置"
           minLength = { 2 }
           autoFocus = { true }
           listViewDisplayed = { true }

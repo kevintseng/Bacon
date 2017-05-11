@@ -34,12 +34,12 @@ class NickBirthday extends Component {
   
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = { text : this.props.initcontent }
     //this.save = this.props._save
   }
 
   _save = () => {
-    this.props.save()
+    this.props.save(this.state.text)
     Actions.index()
   }
 

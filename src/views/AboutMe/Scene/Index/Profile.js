@@ -1,9 +1,9 @@
 'use strict'
 import React, { Component } from 'react';
-import { ScrollView, View, Alert } from 'react-native';
+import { ScrollView, View, Alert, Button } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import _ from 'lodash'
+//import _ from 'lodash'
 //import Moment from 'moment';
 // Profile Layout
 import AccountStatus from './Profile/AccountStatus';
@@ -25,23 +25,19 @@ export default class Profile extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.firebase = this.props.fire;
-    this.storage = this.props.storage;
     this.state = {
       editBasicInfo: false,
       message: '',
       visible: false,
       tip: null,
       items: [{ id: 'addImage', src: ADD_IMAGE }],
-      bio: this.store.user.bio ? this.store.user.bio : '',
-      hobby: this.store.user.hobby ? this.store.user.hobby : '',
-      lang: this.store.user.lang ? this.store.user.lang : this.defaultLangauges(),
       emailVerified: this.store.user.emailVerified,
-      bioHeight: 50,
+      //bioHeight: 50,
       emailVerificationButtonLabel: '重寄認證信',
       photoVerified: this.store.user.photoVerified,
       vip: this.store.user.vip ? this.store.user.vip : false,
     };
+    //Alert.alert("初始化")
   }
 
   defaultLangauges = () => {
@@ -51,44 +47,8 @@ export default class Profile extends Component {
   }
 
   componentDidMount() {
-    //console.log('Profile rendered');
-    Actions.refresh({ key: 'drawer', open: false });
-    // Build an array of 60 photos
-    //Alert.alert("componentDidMount")
+    //Actions.refresh({ key: 'drawer', open: false });
   }
-
-  componentWillUnmount() {
-    //Alert.alert("componentWillUnmount")
-  }
-
-  //getAge = (dob) => {
-  //  return Moment().diff(dob, 'years');
-  //}
-
-  //getGender = (gender) => {
-  //  if(gender === 'm') {
-  //    return '男';
-  //  }
-  //  if(gender === 'f') {
-  //    return '女';
-  //  }
-  //}
-
-  _onChangeHeight = (before, after) => {
-    console.log('before: ' + before + ' after: ' + after);
-  }
-  // Bascic Infomation
-  //handleEditBasicInfo = () => {
-  //  this.setState({
-  //    editBasicInfo: true,
-  //  })
-  //}
-
-  //handleSaveBasicInfo = () => {
-  //  this.setState({
-  //   editBasicInfo: false,
-  //  })
-  //}
 
   // Acount State
   handleUpgrade = () => {
@@ -131,82 +91,73 @@ export default class Profile extends Component {
     console.log('Verify Photo Pressed');
   }
 
-  // AdvancedInfo
-  // Introduce
-  handleUpdateBio = val => {
-    this.store.setBio(val);
-    console.log('setBio: ' + val);
-    this.updateToFirebase('bio', val);
-  }
-
-  // Language
-    
-  handleUpdateLang = val => {
-    this.store.setLang(val);
-    this.updateToFirebase('lang', val);
-    console.log('setLanguage: ' + val);
-  }
-
-  // Interests
-  handleUpdateHobby = val => {
-    this.store.setHobby(val);
-    console.log('setHobby: ' + val);
-    this.updateToFirebase('hobby', val);
-  }
-
-  // Update Firevase //Maybe must migrate to AppStore
-
-  updateToFirebase(key, val) {
-    const setFirebase = this.firebase.database().ref('users/' + this.store.user.uid + '/' + key);
-    setFirebase.set(val);
-  }
-
   // Edit Content CallBack
 
   onpressDisplayName = () => {
-    Actions.edit({ content: <NickBirthday save = { this.test } />})
+    Actions.edit({ content: <NickBirthday initcontent = { this.displayName() } save = { this.store.setDisplayName } />})
   }
 
   onpressLocation = () => {
-    Actions.edit({ content: <Location/>})
+    Actions.edit({ content: <Location initcontent = { this.city() } save = { this.store.setCity } />})
   }
 
   onpressIntroduce = () => {
-    Actions.edit({ content: <Introduce initcontent = { this.state.bio } save = { this.handleUpdateBio } />})
+    Actions.edit({ content: <Introduce initcontent = { this.bio() } save = { this.store.setBio } />})
   }
 
   onpressLanguage = () => {
-    Actions.edit({ content: <Language  initcontent = { this.state.lang } save = { this.handleUpdateLang } />})
+    Actions.edit({ content: <Language  initcontent = { this.lang() } save = { this.store.setLang } />})
   }
 
   onpressInterests = () => {
-    Actions.edit({ content: <Interests/>})
+    Actions.edit({ content: <Interests initcontent = { this.hobby() } save = { this.store.setHobby } />})
   }
 
-  renderLanguages = () => {
-    return Object.keys(this.state.lang).filter(k => this.state.lang[k]).join(',')
+  // Compute
+  photoURL(){
+    return this.store.user.photoURL
   }
 
-  // Render Profile
+  displayName(){
+    return this.store.user.displayName
+  }
+
+  city(){
+    return this.store.user.city
+  }
+
+  vip(){
+    return this.store.user.vip
+  }
+
+  bio(){
+    return this.props.store.user.bio
+  }
+
+  lang(){
+    return this.props.store.user.lang
+  }
+
+  hobby(){
+    return this.props.store.user.hobby
+  }  
+
+  renderLanguages(){
+    return Object.keys(this.lang).filter(k => this.lang[k]).join(',')
+  }  
 
   render() {
-    //console.log(this.store.user);
-    const user = this.store.user;
-    // const age = this.getAge(user.birthday);
-    // const gender = this.getGender(user.gender);
-    // const userImg = {uri: user.photoURL};
     return(
       <ScrollView>
         <BasicInfo 
-          avatar = { user.photoURL }
-          displayName = { user.displayName } 
-          location = { user.city }
+          avatar = { this.photoURL() }
+          displayName = { this.displayName() } 
+          location = { this.city() }
           onpressDisplayName = { this.onpressDisplayName }
           onpressLocation = { this.onpressLocation }
-          //handleEditBasicInfo = { this.handleEditBasicInfo }
         />
         <AccountStatus 
-          vip = { user.vip } 
+          vip = { this.vip() } 
           upgrade = { this.handleUpgrade } 
           addCredit = { this.handleAddCredit } 
         />
@@ -218,9 +169,9 @@ export default class Profile extends Component {
           handleVerifyPhoto = { this.handleVerifyPhoto}
         />
         <AdvancedInfo 
-          introduce = { this.state.bio } 
+          introduce = { this.bio() } 
           language = { this.renderLanguages() } 
-          interests = { this.state.hobby }
+          interests = { this.hobby() }
           onpressIntroduce = { this.onpressIntroduce }
           onpressLanguage = { this.onpressLanguage }
           onpressInterests = { this.onpressInterests }
