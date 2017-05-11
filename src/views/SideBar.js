@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, Dimensions } from 'react-native';
 
-import { List, ListItem, Button } from 'react-native-elements';
+import { List, ListItem, Button, Badge } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { SIDEBAR_LINKS } from '../Configs';
@@ -16,8 +16,11 @@ const styles = {
     borderBottomWidth: 0,
   },
   wrapperStyle: {
-    paddingLeft: 43,
-  }
+    paddingLeft: 10,
+  },
+  leftIconStyle: {
+    marginRight: 3,
+  },
 };
 
 @observer
@@ -44,7 +47,9 @@ export default class SideBar extends Component {
 
   badgeShow = (newCount) => {
     if (newCount > 0) {
-      return { value: newCount, badgeContainerStyle: { backgroundColor: 'red' } };
+      return {
+        element: <Badge containerStyle={{ backgroundColor: '#f44336' }} value={newCount} />
+      };
     }
     return false;
   };
@@ -136,10 +141,9 @@ export default class SideBar extends Component {
               <ListItem
                 key={i}
                 containerStyle={styles.containerStyle}
-                wrapperStyle={styles.wrapperStyle}
                 underlayColor={'#f8f8f8'}
                 title={item.title}
-                leftIcon={{ name: item.icon }}
+                leftIcon={{ name: item.icon, style: styles.leftIconStyle }}
                 badge={this.badgeShow(item.new)}
                 onPress={this.handleOnPress(item.key)}
               />
