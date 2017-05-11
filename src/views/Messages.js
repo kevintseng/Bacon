@@ -111,40 +111,36 @@ export default class Messages extends Component {
   }
 
   renderSubtitle = (subtitle, status) => {
-    return (
-      <Badge containerStyle={{ backgroundColor: 'orange' }}>
-        <Text style={{ fontSize: 11, color: 'white' }}>status</Text>
-      </Badge>
-    );
-    // switch(status) {
-    //   case '忙碌中':
-    //    return (
-    //     <View style={{ flex: 1, marginHorizontal: 10, flexDirection: 'row' }}>
-    //       <Badge containerStyle={{ backgroundColor: 'orange' }}>
-    //         <Text style={{ fontSize: 11, color: 'white' }}>{status}</Text>
-    //       </Badge>
-    //       <Text style={{ fontSize: 11 }}>{subtitle}</Text>
-    //     </View>
-    //     );
-    //   case '放空中':
-    //    return (
-    //     <View style={{ flex: 1, marginHorizontal: 10, flexDirection: 'row' }}>
-    //       <Badge containerStyle={{ backgroundColor: 'Yellow' }}>
-    //         <Text style={{ fontSize: 11, color: 'gray' }}>{status}</Text>
-    //       </Badge>
-    //       <Text style={{ fontSize: 11 }}>{subtitle}</Text>
-    //     </View>
-    //    );
-    //   case '低潮中':
-    //     return (
-    //       <View style={{ flex: 1, marginHorizontal: 10, flexDirection: 'row' }}>
-    //         <Badge containerStyle={{ backgroundColor: 'blue' }}>
-    //           <Text style={{ fontSize: 11, color: 'white' }}>{status}</Text>
-    //         </Badge>
-    //         <Text style={{ fontSize: 11 }}>{subtitle}</Text>
-    //       </View>
-    //     );
-    // }
+    const sub = subtitle.length > 12 ? subtitle.substring(0, 9) + '...': subtitle;
+    switch(status) {
+      case '忙碌中':
+       return (
+        <View style={{ flex: 1, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <Badge containerStyle={{ backgroundColor: 'orange', marginRight: 5 }}>
+            <Text style={{ fontSize: 11, color: 'white', }}>{status}</Text>
+          </Badge>
+          <Text style={{ fontSize: 12 }}>{sub}</Text>
+        </View>
+        );
+      case '放空中':
+       return (
+        <View style={{ flex: 1, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <Badge containerStyle={{ backgroundColor: 'yellow', marginRight: 5 }}>
+            <Text style={{ fontSize: 11, color: 'gray' }}>{status}</Text>
+          </Badge>
+          <Text style={{ fontSize: 12 }}>{sub}</Text>
+        </View>
+       );
+      case '低潮中':
+        return (
+          <View style={{ flex: 1, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <Badge containerStyle={{ backgroundColor: 'blue', marginRight: 5 }}>
+              <Text style={{ fontSize: 11, color: 'white' }}>{status}</Text>
+            </Badge>
+            <Text style={{ fontSize: 12 }}>{sub}</Text>
+          </View>
+        );
+    }
   }
 
   handleStatusChange = (val, selection, row) => {

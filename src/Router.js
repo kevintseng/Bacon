@@ -99,6 +99,10 @@ export default class RouterComponent extends Component {
 
   }
 
+  componentWillUnmount() {
+    this.setOffline(this.state.store.user.uid);
+  }
+
   authListener = (fire) => {
     console.log("Initialize authListener .");
     let user;
