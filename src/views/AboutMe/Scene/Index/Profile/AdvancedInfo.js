@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text } from 'react-native'
 import { Item } from './Components/Item'
 
-const AdvancedInfo = ({ onpressIntroduce, onpressLanguage, onpressInterests }) => {
+const AdvancedInfo = ({ introduce, language, interests, onpressIntroduce, onpressLanguage, onpressInterests }) => {
 
   return(
     <View>
@@ -12,21 +12,21 @@ const AdvancedInfo = ({ onpressIntroduce, onpressLanguage, onpressInterests }) =
         displayTitle styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
         onpress = { onpressIntroduce } >
-        <Text>我叫小曹</Text>
+        <Text>{ introduce }</Text>
       </Item>
       <Item 
         title = "語言能力" 
         displayTitle styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
         onpress = { onpressLanguage } >
-        <Text>中文 英文</Text>
+        <Text>{ language }</Text>
       </Item>
       <Item 
         title = "興趣愛好" 
         displayTitle styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
         onpress = { onpressInterests } >
-        <Text>運動 看妹</Text>
+        <Text>{ interests }</Text>
       </Item>
     </View>                           
     )

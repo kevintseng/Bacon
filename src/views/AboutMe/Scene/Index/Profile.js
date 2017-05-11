@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { ScrollView, View, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
+import _ from 'lodash'
 //import Moment from 'moment';
 // Profile Layout
 import AccountStatus from './Profile/AccountStatus';
@@ -16,7 +17,8 @@ import Introduce from '../Edit/Introduce'
 import Language from '../Edit/Language'
 import Interests from '../Edit/Interests'
 
-const ADD_IMAGE = require('hookup/src/images/addImage.png');
+const ADD_IMAGE = require('hookup/src/images/addImage.png')
+const Language_Options = ["中文","英文","日文","韓文","菲律賓語","越南語"]
 
 @observer
 export default class Profile extends Component {
@@ -33,13 +35,19 @@ export default class Profile extends Component {
       items: [{ id: 'addImage', src: ADD_IMAGE }],
       bio: this.store.user.bio ? this.store.user.bio : '',
       hobby: this.store.user.hobby ? this.store.user.hobby : '',
-      lang: this.store.user.lang ? this.store.user.lang : '',
+      lang: this.store.user.lang ? this.store.user.lang : this.defaultLangauges(),
       emailVerified: this.store.user.emailVerified,
       bioHeight: 50,
       emailVerificationButtonLabel: '重寄認證信',
       photoVerified: this.store.user.photoVerified,
       vip: this.store.user.vip ? this.store.user.vip : false,
     };
+  }
+
+  defaultLangauges = () => {
+    const langauges = new Object
+    Language_Options.forEach((langauge) => { langauges[langauge] = false })
+    return langauges
   }
 
   componentDidMount() {
@@ -132,10 +140,6 @@ export default class Profile extends Component {
   }
 
   // Language
-
-  test = () => {
-    Alert.alert("幹做直銷的滾拉")
-  }
     
   handleUpdateLang = val => {
     this.store.setLang(val);
@@ -149,6 +153,8 @@ export default class Profile extends Component {
     console.log('setHobby: ' + val);
     this.updateToFirebase('hobby', val);
   }
+
+  // Update Firevase //Maybe must migrate to AppStore
 
   updateToFirebase(key, val) {
     const setFirebase = this.firebase.database().ref('users/' + this.store.user.uid + '/' + key);
@@ -166,15 +172,19 @@ export default class Profile extends Component {
   }
 
   onpressIntroduce = () => {
-    Actions.edit({ content: <Introduce save = { this.handleUpdateBio } />})
+    Actions.edit({ content: <Introduce initcontent = { this.state.bio } save = { this.handleUpdateBio } />})
   }
 
   onpressLanguage = () => {
-    Actions.edit({ content: <Language/>})
+    Actions.edit({ content: <Language  initcontent = { this.state.lang } save = { this.handleUpdateLang } />})
   }
 
   onpressInterests = () => {
     Actions.edit({ content: <Interests/>})
+  }
+
+  renderLanguages = () => {
+    return Object.keys(this.state.lang).filter(k => this.state.lang[k]).join(',')
   }
 
   // Render Profile
@@ -209,7 +219,7 @@ export default class Profile extends Component {
         />
         <AdvancedInfo 
           introduce = { this.state.bio } 
-          langauge = { this.state.lang } 
+          language = { this.renderLanguages() } 
           interests = { this.state.hobby }
           onpressIntroduce = { this.onpressIntroduce }
           onpressLanguage = { this.onpressLanguage }
