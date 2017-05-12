@@ -46,11 +46,11 @@ class Interests extends Component {
 
   _save = () => {
     //this.props.save(this.state.text)
-    Actions.aboutMeIndex()
+    Actions.aboutMeIndex({type: 'reset'})
   }
 
   componentWillMount = () => {
-    Actions.refresh({rightTitle: "完成", onRight: this._save });
+    Actions.refresh({title: "興趣", rightTitle: "完成", onRight: this._save });
   }  
 
   onKeyPress = () => {
