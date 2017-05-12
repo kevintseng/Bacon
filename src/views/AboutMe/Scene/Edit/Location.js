@@ -50,9 +50,9 @@ class Location extends Component {
           styles = { styles.googlePlacesAutocomplete }
           placeholder = "請輸入所在位置"
           minLength = { 2 }
-          autoFocus = { true }
-          listViewDisplayed = { true }
-          fetchDetails = { true }
+          autoFocus
+          listViewDisplayed
+          fetchDetails
           onPress = { 
             (data, details = null) => {
               //console.log({data, details});
@@ -67,11 +67,11 @@ class Location extends Component {
               types: 'geocode', // default: 'geocode'
             }
           }
-          currentLocation = { true }
+          currentLocation
           currentLocationLabel = "現在所在位置城市"
           nearbyPlacesAPI = 'GoogleReverseGeocoding'
           filterReverseGeocodingByTypes = { ['administrative_area_level_2','administrative_area_level_3'] }
-          predefinedPlacesAlwaysVisible = { true }
+          predefinedPlacesAlwaysVisible
         />
       </View>
     )
