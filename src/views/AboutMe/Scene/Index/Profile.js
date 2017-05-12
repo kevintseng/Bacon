@@ -1,10 +1,8 @@
 'use strict'
 import React, { Component } from 'react';
-import { ScrollView, View, Alert, Button } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-//import _ from 'lodash'
-//import Moment from 'moment';
 // Profile Layout
 import AccountStatus from './Profile/AccountStatus';
 import { BasicInfo } from './Profile/BasicInfo';
@@ -17,63 +15,36 @@ import Introduce from '../Edit/Introduce'
 import Language from '../Edit/Language'
 import Interests from '../Edit/Interests'
 
-const ADD_IMAGE = require('hookup/src/images/addImage.png')
+//const ADD_IMAGE = require('hookup/src/images/addImage.png')
 const Language_Options = ["中文","英文","日文","韓文","菲律賓語","越南語"]
 
 @observer
 export default class Profile extends Component {
   constructor(props) {
     super(props);
-    this.store = this.props.store;
-    this.state = {
-      editBasicInfo: false,
-      message: '',
-      visible: false,
-      tip: null,
-      items: [{ id: 'addImage', src: ADD_IMAGE }],
-      emailVerified: this.store.user.emailVerified,
-      //bioHeight: 50,
-      emailVerificationButtonLabel: '重寄認證信',
-      photoVerified: this.store.user.photoVerified,
-      vip: this.store.user.vip ? this.store.user.vip : false,
-    };
-    //Alert.alert("初始化")
+    this.store = this.props.store
+    //this.state = {
+    //  items: [{ id: 'addImage', src: ADD_IMAGE }],
+    //};
   }
 
   componentDidMount() {
-    Actions.refresh({ key: 'drawer', open: false });
+    Actions.refresh({ key: 'drawer', open: false })
   }
 
-  // Acount State
+  // 施工中...
   handleUpgrade = () => {
-    this.store.upgradeMembership(this.firebase);
-    console.log('upgrade button pressed');
+    alert('轉跳到升級頁面，施工中...')
+    //this.store.upgradeMembership(this.firebase);
   }
 
   handleAddCredit = () => {
-    this.setState({
-      visible: true,
-      message: '儲值鈕'
-    });
-    console.log('addCredit button pressed');
-  }
-
-  // Verification
-
-  emailPressed = () => {
-    this.setState({
-      tip: '未認證'
-    });
+    alert('轉跳到Q點儲值頁面，施工中...')
   }
 
   handleSendVerifyEmail = () => {
-    const user = this.firebase.auth().currentUser;
-    if(user) {
-      this.setState({
-        emailVerificationButtonLabel: '已寄出',
-      });
-    }
-    user.sendEmailVerification().then(() => {
+    this.firebase().auth().currentUser.sendEmailVerification().then(() => {
+      alert("認證信已寄出")
       console.log('Email verification request sent');
     }, error => {
       console.log(error);
@@ -81,11 +52,11 @@ export default class Profile extends Component {
   }
 
   handleVerifyPhoto = () => {
-    alert('相片認證被觸發');
-    console.log('Verify Photo Pressed');
+    alert('轉跳到相片認證頁面，施工中...');
   }
 
-  // Edit Content CallBack
+// Edit Content CallBack  
+
   onpressDisplayName = () => {
     Actions.aboutMeEdit({ content: <NickBirthday initcontent = { this.displayName() } save = { this.store.setDisplayName } />})
   }
@@ -111,6 +82,18 @@ export default class Profile extends Component {
     const langauges = new Object
     Language_Options.forEach((langauge) => { langauges[langauge] = false })
     return langauges
+  }
+
+  firebase(){
+    return this.props.store.firebase
+  }
+
+  emailVerified(){
+    return this.props.store.user.emailVerified
+  }
+
+  photoVerified(){
+    return this.props.store.user.photoVerified
   }
 
   photoURL(){
@@ -161,11 +144,11 @@ export default class Profile extends Component {
           addCredit = { this.handleAddCredit } 
         />
         <Verification 
-          emailVerified = { this.state.emailVerified }
-          emailRightTitle = { this.state.emailVerificationButtonLabel }
+          emailVerified = { this.emailVerified() }
+          emailRightTitle = { "重寄認證信" }
           handleSendVerifyEmail = { this.handleSendVerifyEmail }
-          photoVerified = { this.state.photoVerified }
-          handleVerifyPhoto = { this.handleVerifyPhoto}
+          photoVerified = { this.photoVerified() }
+          handleVerifyPhoto = { this.handleVerifyPhoto }
         />
         <AdvancedInfo 
           introduce = { this.bio() } 

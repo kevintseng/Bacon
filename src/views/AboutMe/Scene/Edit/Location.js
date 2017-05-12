@@ -32,11 +32,11 @@ class Location extends Component {
     
   _save = () => {
     this.props.save(this.state.location)
-    Actions.aboutMeIndex()
+    Actions.aboutMeIndex({type: 'reset'})
   }
 
   componentWillMount = () => {
-    Actions.refresh({rightTitle: "完成", onRight: this._save });
+    Actions.refresh({title: "位置", rightTitle: "完成", onRight: this._save });
   }
 
   updatePlace(data,details){

@@ -17,11 +17,11 @@ class Introduce extends Component {
 
   _save = () => {
     this.props.save(this.state.text)
-    Actions.aboutMeIndex()
+    Actions.aboutMeIndex({type: 'reset'})
   }
 
   componentWillMount = () => {
-    Actions.refresh({rightTitle: "完成", onRight: this._save });
+    Actions.refresh({title: "自我介紹", rightTitle: "完成", onRight: this._save });
   }  
 
   render(){

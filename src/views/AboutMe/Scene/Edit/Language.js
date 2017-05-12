@@ -37,11 +37,11 @@ class Language extends Component {
 
   _save = () => {
     this.props.save(this.state)
-    Actions.aboutMeIndex()
+    Actions.aboutMeIndex({type: 'reset'})
   }
 
   componentWillMount = () => {
-    Actions.refresh({rightTitle: "完成", onRight: this._save });
+    Actions.refresh({title: "語言", rightTitle: "完成", onRight: this._save });
   }  
 
   onPress = (langauge) => {
