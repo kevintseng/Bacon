@@ -26,8 +26,6 @@ import Question from "./views/Settings/Question";
 import ChangePassword from "./views/Settings/ChangePassword";
 import FeedBack from "./views/Settings/FeedBack";
 import { FirebaseConfig } from "./Configs";
-import { Index } from './views/AboutMe/Scene/Index';
-
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
   const style = {
