@@ -32,7 +32,7 @@ class Location extends Component {
     
   _save = () => {
     this.props.save(this.state.location)
-    Actions.index()
+    Actions.aboutMeIndex()
   }
 
   componentWillMount = () => {

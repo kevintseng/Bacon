@@ -40,7 +40,7 @@ class NickBirthday extends Component {
 
   _save = () => {
     this.props.save(this.state.text)
-    Actions.index()
+    Actions.aboutMeIndex()
   }
 
   componentWillMount = () => {

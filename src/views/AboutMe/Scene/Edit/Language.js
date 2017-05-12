@@ -37,7 +37,7 @@ class Language extends Component {
 
   _save = () => {
     this.props.save(this.state)
-    Actions.index()
+    Actions.aboutMeIndex()
   }
 
   componentWillMount = () => {
