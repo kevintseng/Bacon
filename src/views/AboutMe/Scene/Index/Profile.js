@@ -40,12 +40,6 @@ export default class Profile extends Component {
     //Alert.alert("初始化")
   }
 
-  defaultLangauges = () => {
-    const langauges = new Object
-    Language_Options.forEach((langauge) => { langauges[langauge] = false })
-    return langauges
-  }
-
   componentDidMount() {
     Actions.refresh({ key: 'drawer', open: false });
   }
@@ -92,7 +86,6 @@ export default class Profile extends Component {
   }
 
   // Edit Content CallBack
-
   onpressDisplayName = () => {
     Actions.aboutMeEdit({ content: <NickBirthday initcontent = { this.displayName() } save = { this.store.setDisplayName } />})
   }
@@ -114,6 +107,12 @@ export default class Profile extends Component {
   }
 
   // Compute
+  defaultLangauges(){
+    const langauges = new Object
+    Language_Options.forEach((langauge) => { langauges[langauge] = false })
+    return langauges
+  }
+
   photoURL(){
     return this.store.user.photoURL
   }
@@ -123,7 +122,7 @@ export default class Profile extends Component {
   }
 
   city(){
-    return this.store.user.city
+    return this.store.user.city.description
   }
 
   vip(){
@@ -135,7 +134,7 @@ export default class Profile extends Component {
   }
 
   lang(){
-    return this.props.store.user.lang
+    return this.props.store.user.lang ? this.props.store.user.lang : this.defaultLangauges
   }
 
   hobby(){
