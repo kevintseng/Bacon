@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, Dimensions } from 'react-native';
+import { ScrollView, Dimensions, Alert } from 'react-native';
 
 import { List, ListItem, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -89,10 +89,10 @@ export default class SideBar extends Component {
         return () => Actions.messages({type: 'reset'});
       case 'settings':
         return () => Actions.settings_wrapper({type: 'reset'});
-      case 'profile':
+      case 'aboutMeRoutes':
       // Go to profile view only when user data is loaded.
         if(this.store.user != null && this.store.user != '') {
-          return () => Actions.profile({type: 'reset'});
+          return () => Actions.aboutMeRoutes({type: 'reset'});
         }
         return () => {};
     }
@@ -129,7 +129,7 @@ export default class SideBar extends Component {
             containerStyle={styles.containerStyle}
             avatar={ photoURL }
             title={ displayName }
-            onPress={this.handleOnPress('profile')}
+            onPress={this.handleOnPress('aboutMeRoutes')}
           />
           {
             list.map((item, i) => (

@@ -26,6 +26,7 @@ import Question from "./views/Settings/Question";
 import ChangePassword from "./views/Settings/ChangePassword";
 import FeedBack from "./views/Settings/FeedBack";
 import { FirebaseConfig } from "./Configs";
+import { Index } from './views/AboutMe/Scene/Index';
 
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
@@ -223,7 +224,6 @@ export default class RouterComponent extends Component {
           </Scene>
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
-              {require("./views/AboutMe/Routes")}
               <Scene //邂逅
                 key="meetcute"
                 component={MeetCute}
@@ -290,8 +290,7 @@ export default class RouterComponent extends Component {
                 />
                 <Scene key="feedback" component={FeedBack} title="Feedback" />
               </Scene>
-
-
+              {require("./views/AboutMe/Routes")}
               <Scene
                 key="chat"
                 component={Chat}

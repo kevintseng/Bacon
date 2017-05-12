@@ -47,7 +47,7 @@ export default class Profile extends Component {
   }
 
   componentDidMount() {
-    //Actions.refresh({ key: 'drawer', open: false });
+    Actions.refresh({ key: 'drawer', open: false });
   }
 
   // Acount State
@@ -94,23 +94,23 @@ export default class Profile extends Component {
   // Edit Content CallBack
 
   onpressDisplayName = () => {
-    Actions.edit({ content: <NickBirthday initcontent = { this.displayName() } save = { this.store.setDisplayName } />})
+    Actions.aboutMeEdit({ content: <NickBirthday initcontent = { this.displayName() } save = { this.store.setDisplayName } />})
   }
 
   onpressLocation = () => {
-    Actions.edit({ content: <Location initcontent = { this.city() } save = { this.store.setCity } />})
+    Actions.aboutMeEdit({ content: <Location initcontent = { this.city() } save = { this.store.setCity } />})
   }
 
   onpressIntroduce = () => {
-    Actions.edit({ content: <Introduce initcontent = { this.bio() } save = { this.store.setBio } />})
+    Actions.aboutMeEdit({ content: <Introduce initcontent = { this.bio() } save = { this.store.setBio } />})
   }
 
   onpressLanguage = () => {
-    Actions.edit({ content: <Language  initcontent = { this.lang() } save = { this.store.setLang } />})
+    Actions.aboutMeEdit({ content: <Language  initcontent = { this.lang() } save = { this.store.setLang } />})
   }
 
   onpressInterests = () => {
-    Actions.edit({ content: <Interests initcontent = { this.hobby() } save = { this.store.setHobby } />})
+    Actions.aboutMeEdit({ content: <Interests initcontent = { this.hobby() } save = { this.store.setHobby } />})
   }
 
   // Compute
@@ -143,7 +143,7 @@ export default class Profile extends Component {
   }  
 
   renderLanguages(){
-    return Object.keys(this.lang).filter(k => this.lang[k]).join(',')
+    return Object.keys(this.lang()).filter(k => this.lang()[k]).join(',')
   }  
 
   render() {

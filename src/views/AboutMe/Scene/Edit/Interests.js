@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { TextInput, View } from 'react-native'
 import { Icon } from 'react-native-elements'
 import ChangeColorButton from './Components/ChangeColorButton'
+import { Actions } from 'react-native-router-flux'
 
 const styles = {
   Interests: {
@@ -42,6 +43,15 @@ class Interests extends Component {
     super(props)
     this.state = { initButtonColor: "#ffffff", showLists: [], defaultLists: ["旅遊","健身","逛街","美食","網購","遊戲","路跑","電影"] }
   }
+
+  _save = () => {
+    //this.props.save(this.state.text)
+    Actions.aboutMeIndex()
+  }
+
+  componentWillMount = () => {
+    Actions.refresh({rightTitle: "完成", onRight: this._save });
+  }  
 
   onKeyPress = () => {
     this.setState({ showLists: this.state.showLists.concat(this.state.text) })
