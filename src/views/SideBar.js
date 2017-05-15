@@ -5,12 +5,10 @@ import { List, ListItem } from 'react-native-elements'
 //import { Actions } from 'react-native-router-flux'
 import { observer } from 'mobx-react/native'
 import { SIDEBAR_LINKS } from '../Configs'
-//const loading = require('../images/loading.gif')
 
+const loading = require('../images/loading.gif')
 const { height } = Dimensions.get('window') //eslint-disable-line
-
 const list = SIDEBAR_LINKS
-
 const styles = {
   scrollView: {
     height,
@@ -39,14 +37,14 @@ const SideBar = observer(({ store }) => {
         <ListItem
             containerStyle = { [listItemContainerStyle,{height: 53, borderBottomWidth: 0.5, borderBottomColor: '#808080'}] }
             rightIcon = {{name: 'menu', color: 'black'}}  
-            //onPress         
+            onPress = { store.refreshDrawer }        
         />
         <ListItem
             roundAvatar
             containerStyle = { listItemContainerStyle }
-            avatar = { store.user.photoURL }
+            avatar = { store.user.photoURL ? store.user.photoURL : loading}
             title = { store.user.displayName }  
-            //onPress 
+            onPress = { store.handleOnPress('aboutMeRoutes') }
         />
         {
           list.map((item, i) => (
@@ -58,7 +56,7 @@ const SideBar = observer(({ store }) => {
                 title = { item.title }
                 leftIcon = {{name: item.icon}}
                 badge = { false }
-                //onPress
+                onPress = { store.handleOnPress(item.key) }
               />
           ))
         }
