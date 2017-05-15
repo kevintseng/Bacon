@@ -13,7 +13,6 @@ import Visitors from "./views/Visitors";
 import Settings from "./views/Settings";
 import Signin from "./views/Signin";
 import SessionCheck from "./views/SessionCheck";
-import { Profile } from "./views/Profile";
 import Chat from "./views/Chat";
 import Favorites from "./views/Favorites";
 import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
@@ -27,7 +26,6 @@ import Question from "./views/Settings/Question";
 import ChangePassword from "./views/Settings/ChangePassword";
 import FeedBack from "./views/Settings/FeedBack";
 import { FirebaseConfig } from "./Configs";
-
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
   const style = {
@@ -83,7 +81,7 @@ export default class RouterComponent extends Component {
     const fire = Firebase.initializeApp(FirebaseConfig);
 
     // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
-    const store = new AppStore();
+    const store = new AppStore(fire);
 
     this.state = {
       store,
@@ -224,26 +222,26 @@ export default class RouterComponent extends Component {
           </Scene>
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
-              <Scene
+              <Scene //邂逅
                 key="meetcute"
                 component={MeetCute}
                 title="MeetCute"
                 renderLeftButton={menuButton}
                 hideTabBar
               />
-              <Scene
+              <Scene //巧遇
                 key="nearby"
                 component={Nearby}
                 title="Nearby"
                 renderLeftButton={menuButton}
               />
-              <Scene
+              <Scene //喜歡您
                 key="favorites"
                 component={Favorites}
                 title="Favorites"
                 renderLeftButton={menuButton}
               />
-              <Scene
+              <Scene //訊息
                 key="messages"
                 component={Messages}
                 title="Messages"
@@ -290,14 +288,7 @@ export default class RouterComponent extends Component {
                 />
                 <Scene key="feedback" component={FeedBack} title="Feedback" />
               </Scene>
-
-              <Scene
-                key="profile"
-                component={Profile}
-                title="關於我"
-                renderLeftButton={menuButton}
-                hideTabBar
-              />
+              {require("./views/AboutMe/Routes")}
               <Scene
                 key="chat"
                 component={Chat}
