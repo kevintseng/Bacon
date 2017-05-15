@@ -47,7 +47,7 @@ const SIDEBAR_LINKS = [
   {
     title: '設定',
     icon: 'settings',
-    key: 'visitors',
+    key: 'settings',
     new: 5,
   }
 ];
