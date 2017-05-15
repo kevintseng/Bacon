@@ -1,5 +1,7 @@
+//TODO: track current scene in store
 import { observable, action } from 'mobx';
 // import autobind from 'autobind-decorator';
+
 
 // @autobind
 class AppStore {
