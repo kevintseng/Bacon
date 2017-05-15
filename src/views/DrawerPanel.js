@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import Drawer from 'react-native-drawer';
 import { Actions, DefaultRenderer } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import SideBar from './SideBar';
+import { SideBar } from './SideBar';
 
 const drawerStyles = {
-  drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
-  main: {paddingLeft: 3},
-};
+  drawer: { borderRightWidth: 1.8, borderRightColor: '#dcdcdc'},
+  main: { paddingLeft: 3 },
+}
 
 @observer
 export default class DrawerPanel extends Component {

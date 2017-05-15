@@ -24,41 +24,31 @@ const dev_FirebaseConfig = { //eslint-disable-line
 const SIDEBAR_LINKS = [
   {
     title: '邂逅',
-    icon: 'face',
+    icon: 'favorite',
     key: 'meetcute',
   },
   {
     title: '巧遇',
-    icon: 'explore',
+    icon: 'wifi-tethering',
     key: 'nearby',
   },
   {
     title: '訊息',
-    icon: 'message',
+    icon: 'chat',
     key: 'messages',
     new: 1,
   },
   {
-    title: '喜歡您',
-    icon: 'star',
+    title: '緣分',
+    icon: 'explore',
     key: 'likesyou',
     new: 2,
   },
   {
-    title: '訪客',
-    icon: 'visibility',
-    key: 'visitors',
-    new: 5,
-  },
-  {
-    title: '收藏',
-    icon: 'favorite',
-    key: 'favorites'
-  },
-  {
     title: '設定',
     icon: 'settings',
-    key: 'settings',
+    key: 'visitors',
+    new: 5,
   }
 ];
 
