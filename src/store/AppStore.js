@@ -28,6 +28,11 @@ class AppStore {
     console.log('Updated user chatStatus: ', this.user.chatStatus);
   }
 
+  @action updateConv(firebase, cid, key, value) {
+    const ref = firebase.database().ref('conversations/' + cid + '/' + this.user.uid);
+    ref.update({key: value});
+  }
+
   @action signOut() {
     this.user = '';
   }

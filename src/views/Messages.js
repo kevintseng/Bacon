@@ -46,10 +46,15 @@ export default class Messages extends Component {
     this.getConvs();
   }
 
+  componentWillUnmount() {
+
+  }
+
   getConvs = () => {
     this.convRef.once("value").then(snapForConvs => {
       // console.log('CHECK: ', snap.val());
       const convs = [];
+      const statusList = [];
       snapForConvs.forEach(childConv => {
         const queryKey = childConv.val().uid;
 
@@ -75,28 +80,62 @@ export default class Messages extends Component {
                 }
               });
             }
+            const userId = childConv.val().uid;
+            const key = convs.length;
             const data = {
-              uid: childConv.val().uid,
+              uid: userId,
               name: childConv.val().name,
               avatarUrl: childConv.val().avatarUrl,
-              chatStatus: childConv.val().chatStatus,
               age: childConv.val().age,
               type: childConv.val().type,
               priority: childConv.val().priority,
-              unread: childConv.val().unread > 0
-                ? childConv.val().unread
-                : false,
+              chatStatus: this.chatStatusListener(userId, key),
+              unread: this.unreadListener(userId, key),
               subtitle
             };
             convs.push(data);
             this.setState({
               convs,
-              isLoading: false
+              isLoading: false,
             });
           });
       });
     });
   };
+
+  unreadListener(uid, key) {
+    const ref = this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + uid + '/unread');
+    ref.on('value', snapshot => {
+      if(snapshot.exists()){
+        const newConvs = this.state.convs;
+        newConvs[key].unread = snapshot.val() > 0 ? snapshot.val(): false;
+        this.setState({
+          convs: newConvs,
+        });
+        return snapshot.val();
+      }
+      return false;
+    });
+  }
+
+  chatStatusListener(userId, key) {
+    const ref = this.firebase.database().ref('users/' + this.store.user.uid + '/chatStatus');
+    ref.on('value', snapshot => {
+      if(snapshot.exists()) {
+        console.log('listenChatStatus: ', snapshot.val());
+        const newConvs = this.state.convs;
+        newConvs[key].chatStatus = snapshot.val();
+        this.setState({
+          convs: newConvs,
+        });
+        return snapshot.val();
+      }
+      console.log("Appstore getChatStatus: snapshot doesn't exist");
+    }, err => {
+      console.log(err);
+      return null;
+    });
+  }
 
   renderSubtitle = (subtitle, status, unread) => {
     const sub = subtitle.length > 12
@@ -243,7 +282,11 @@ export default class Messages extends Component {
         listFilter
       });
     } else if (selection === 1) {
-      this.store.setChatStatus(this.firebase, val);
+      let _chatStatus = val;
+      if(val === '我的狀態') {
+        _chatStatus = null;
+      }
+      this.store.setChatStatus(this.firebase, _chatStatus);
     }
     // console.log('selection: ', selection, ' row: ', row, ' val: ', val, ' listFilter: ', listFilter);
   };
