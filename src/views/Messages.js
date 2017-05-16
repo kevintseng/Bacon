@@ -354,11 +354,11 @@ export default class Messages extends Component {
       <View style={this.state.size}>
         <ScrollView style={{ marginTop: 5 }}>
           <DropdownMenu
-            style={{ flex: 1 }}
+            style={{ flex: 1, backgroundColor: 'white' }}
             arrowImg={(require("../images/arrow_down.png"))}
             checkImage={(require("../images/menu_check.png"))}
             bgColor={"white"}
-            tintColor={"gray"}
+            tintColor={"black"}
             selectItemColor={"red"}
             data={menuData}
             maxHeight={410}
