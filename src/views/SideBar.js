@@ -20,7 +20,8 @@ const styles = {
     backgroundColor: '#ffffff'
   },
   listItemContainerStyle: {
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
+    //backgroundColor: '#f0f0f0'
   },
   wrapperStyle: {
     paddingLeft: 43
