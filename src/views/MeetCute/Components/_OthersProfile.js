@@ -132,7 +132,7 @@ export default class OthersProfile extends Component {
                   icon={{
                     name: "heart",
                     type: "evilicon",
-                    color: "white",
+                    color: "#ff0000",
                     size: 70
                   }}
                   backgroundColor="transparent"
@@ -142,7 +142,7 @@ export default class OthersProfile extends Component {
                   icon={{
                     name: "close-o",
                     type: "evilicon",
-                    color: "white",
+                    color: "#ff0000",
                     size: 70
                   }}
                   backgroundColor="transparent"
