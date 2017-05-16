@@ -1,15 +1,15 @@
 import React from "react"
 import { View, Text } from "react-native"
-import { observer, inject } from "mobx-react/native"
+//import { observer, inject } from "mobx-react/native"
 
-const DisplayName = inject("store")(observer(({ store }) => {
+const DisplayName = ({ data }) => {
   return(
     <View>
       <Text>
-        {store.user.displayName}
+        {data.displayName}
       </Text>
     </View>
   )
-}))
+}
 
 export { DisplayName }
