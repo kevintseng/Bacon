@@ -42,13 +42,13 @@ export default class MeetCute extends Component {
 
   mq = cond => {
     const _list = [];
-    const query = this.firebase
-      .database()
-      .ref(`seeking/${this.store.user.country}/${cond}`);
-
-    query
-      .once("value", snap => {
-        console.log("Executing mq cond:" + cond);
+    const query = this.firebase.database().ref("users")
+    //console.warn(query)
+      //.database()
+      //.ref(`seeking/${this.store.user.country}/${cond}`);
+    //ref.orderByKey().equalTo(cond,"sexOrientation")
+    query.orderByChild("sexOrientation").equalTo("fsm").once("value", snap => {
+        //console.log("Executing mq cond:" + cond);
         snap.forEach(childsnap => {
           const _uid = childsnap.val().uid;
           _list.push(_uid);
@@ -58,7 +58,7 @@ export default class MeetCute extends Component {
         this.setState({ list: _list });
       })
       .then(() => {
-        console.log(_list[0]);
+        //console.warn(_list[0]);
         this.getProfile(_list[0]);
       });
   };
