@@ -83,10 +83,11 @@ class Signup4 extends Component {
         loading: true
       });
       if(res.didCancel) {
-        Reactotron.log('ImagePicker: User cancelled image picker');
+        //Reactotron.log('ImagePicker: User cancelled image picker');
         return;
       } else if(res.error) {
-        Reactotron.error('ImagePicker Error: ' + res.error);
+        console.log(res.error);
+        //Reactotron.error('ImagePicker Error: ' + res.error);
         this.setState({
           loading: false,
         });
@@ -103,32 +104,37 @@ class Signup4 extends Component {
             imageTimestamp: res.timestamp,
           });
         }).catch((err) => {
-          Reactotron.error(err);
+          console.log('add err: ' + err )
+          //Reactotron.error(err);
         });
       }
     });
   }
 
   uploadImage = (uri, ref, mime = 'image/PNG') => {
-    Reactotron.debug('Uploading image');
+    //Reactotron.debug('Uploading image');
     const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
     let uploadBlob = null;
     const imageRef = this.firebase.storage().ref('images/avatars/' + this.sustore.uid);
     fs.readFile(uploadUri, 'base64')
       .then((data) => {
+        console.log('step 1: ' + data);
         return Blob.build(data, { type: `${mime};BASE64` });
       })
       .then((blob) => {
+        console.log('step 2:' + blob);
         uploadBlob = blob
         return imageRef.put(blob, { contentType: mime })
       })
       .then(() => {
+        console.log('step 3: getDownloadURL');
         uploadBlob.close()
         return imageRef.getDownloadURL();
       })
       .then((url) => {
-        Reactotron.debug('Url');
-        Reactotron.debug(url);
+        console.log('step 4: ' + url);
+        //Reactotron.debug('Url');
+        //Reactotron.debug(url);
         this.setState({
           photoUrl: url,
           loading: false,
@@ -136,8 +142,9 @@ class Signup4 extends Component {
         this.sustore.setAvatar(url);
       })
       .catch(err => {
-        Reactotron.error('ReadFile error: ');
-        Reactotron.error(err);
+        console.log('upload err: ' + err);
+        //Reactotron.error('ReadFile error: ');
+        //Reactotron.error(err);
       })
   }
 
@@ -152,10 +159,11 @@ class Signup4 extends Component {
       photoURL: this.state.photoUrl,
       displayName: this.sustore.nickname,
     }).then(() => {
-      Reactotron.debug('User profile updated');
+      //Reactotron.debug('User profile updated');
     }).catch(err => {
-      Reactotron.error('User profile update error');
-      Reactotron.error(err);
+      console.log(err);
+      //Reactotron.error('User profile update error');
+      //Reactotron.error(err);
     });
 
     const postData = {
@@ -176,11 +184,13 @@ class Signup4 extends Component {
     };
 
     await this.firebase.database().ref(`users/${this.sustore.uid}`).set(postData).then((res) => {
-      Reactotron.debug('Set user data to firebase');
-      Reactotron.debug(res);
+      console.log(res);
+      //Reactotron.debug('Set user data to firebase');
+      //Reactotron.debug(res);
     }).catch(err => {
-      Reactotron.error('Set user data failed');
-      Reactotron.error(err);
+      console.log(err);
+      //Reactotron.error('Set user data failed');
+      //Reactotron.error(err);
     });
     return Actions.sessioncheck();
   }

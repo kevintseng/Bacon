@@ -61,7 +61,7 @@ class TempSignup2 extends Component {
   }
 
   goNext = () => {
-    /*
+
     if(this.state.dispLocationName == '') {
       alert('請提供所在的城市');
     } else {
@@ -74,7 +74,7 @@ class TempSignup2 extends Component {
         sustore: this.sustore
       });
     }
-    */
+
     Actions.tempsignup3({
       type: "reset",
       sustore: this.sustore
@@ -86,7 +86,7 @@ class TempSignup2 extends Component {
     return (
       <View style={size}>
         <Header
-          headerText='常在城市'
+          headerImage
           rightButtonText='下一步'
           onRight={this.goNext}
           rightColor='#007AFF'

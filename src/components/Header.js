@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Text, View, Platform } from 'react-native';
+import { Text, View, Platform, Image } from 'react-native';
 import { Col, Grid } from "react-native-easy-grid";
 import { Icon, Button } from 'react-native-elements';
 
@@ -20,7 +20,7 @@ const styles = {
       android:{
         backgroundColor: '#F8F8F8',
         alignItems: 'center',
-        height: 60,
+        height: 50,
         paddingTop: 0,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 0.1 },
@@ -53,17 +53,48 @@ const styles = {
     paddingHorizontal: 0,
     paddingVertical: 10,
   },
+  logoColStyle:{
+    //justifyContent: 'center',
+    //alignItems: 'center',
+    flexDirection: 'column',
+    alignSelf:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 };
+
+const showHeader = (props) => {
+
+}
 
 // Make a component
 const Header = (props) => {
-  const { titleStyle, gridStyle, buttonStyle, viewStyle, leftColStyle, rightColStyle } = styles;
+  const { titleStyle, gridStyle, buttonStyle, viewStyle, leftColStyle, rightColStyle, logoColStyle } = styles;
   let { leftColor, disableRight, disableLeft, onLeft, rightColor, onRight } = props;
-  const { headerText, rightButtonText } = props;
+  const { headerText, rightButtonText, headerImage } = props;
   if(!leftColor) leftColor = 'transparent';
   if(!rightColor) rightColor = 'transparent';
   if(!onLeft) onLeft = () => {};
   if(!onRight) onRight = () => {};
+
+
+  const showHeader = () => {
+    if(headerText){
+      return(
+        <Text style={titleStyle}>{headerText}</Text>
+      );
+    }else if(headerImage){
+      return(
+        <View>
+        <Image
+          style={{maxWidth:100, maxHeight: 30}}
+          source={require('../images/MeeqLogo.png')}
+        />
+        </View>
+      );
+    };
+
+  };
 
   return (
     <View style={viewStyle}>
@@ -77,9 +108,11 @@ const Header = (props) => {
           disabled={disableLeft}
         />
       </Col>
-      <Col>
-      <Text style={titleStyle}>{headerText}</Text>
+
+      <Col style={logoColStyle}>
+      {showHeader()}
       </Col>
+
       <Col style={rightColStyle}>
         <Button
           buttonStyle={buttonStyle}
@@ -102,6 +135,7 @@ Header.propTypes = {
   onRight:PropTypes.func,
   onLeft: PropTypes.func,
   leftColor: PropTypes.string,
+  //headerImage: PropTypes.bool,
 }
 
 // Make the component available to other parts of the app

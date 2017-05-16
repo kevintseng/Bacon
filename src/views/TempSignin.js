@@ -98,6 +98,7 @@ export default class Welcome extends Component {
     return (
       <View style={[this.state.size, { marginTop: 0 }]}>
       <Header
+        headerImage
         onRight={this.handleSubmit}
         rightColor='#007AFF'
         disableRight={this.state.loading}

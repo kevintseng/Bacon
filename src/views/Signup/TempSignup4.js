@@ -83,10 +83,11 @@ class TempSignup4 extends Component {
         loading: true
       });
       if(res.didCancel) {
-        Reactotron.log('ImagePicker: User cancelled image picker');
+        //Reactotron.log('ImagePicker: User cancelled image picker');
         return;
       } else if(res.error) {
-        Reactotron.error('ImagePicker Error: ' + res.error);
+        console.log(res.error);
+        //Reactotron.error('ImagePicker Error: ' + res.error);
         this.setState({
           loading: false,
         });
@@ -103,32 +104,37 @@ class TempSignup4 extends Component {
             imageTimestamp: res.timestamp,
           });
         }).catch((err) => {
-          Reactotron.error(err);
+          console.log('add err: ' + err )
+          //Reactotron.error(err);
         });
       }
     });
   }
 
   uploadImage = (uri, ref, mime = 'image/PNG') => {
-    Reactotron.debug('Uploading image');
+    //Reactotron.debug('Uploading image');
     const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
     let uploadBlob = null;
     const imageRef = this.firebase.storage().ref('images/avatars/' + this.sustore.uid);
     fs.readFile(uploadUri, 'base64')
       .then((data) => {
+        console.log('step 1: ' + data);
         return Blob.build(data, { type: `${mime};BASE64` });
       })
       .then((blob) => {
+        console.log('step 2:' + blob);
         uploadBlob = blob
         return imageRef.put(blob, { contentType: mime })
       })
       .then(() => {
+        console.log('step 3: getDownloadURL');
         uploadBlob.close()
         return imageRef.getDownloadURL();
       })
       .then((url) => {
-        Reactotron.debug('Url');
-        Reactotron.debug(url);
+        console.log('step 4: ' + url);
+        //Reactotron.debug('Url');
+        //Reactotron.debug(url);
         this.setState({
           photoUrl: url,
           loading: false,
@@ -136,13 +142,85 @@ class TempSignup4 extends Component {
         this.sustore.setAvatar(url);
       })
       .catch(err => {
-        Reactotron.error('ReadFile error: ');
-        Reactotron.error(err);
+        console.log('upload err: ' + err);
+        //Reactotron.error('ReadFile error: ');
+        //Reactotron.error(err);
       })
   }
 
+  postUserData (userData) {
+    return new Promise((resolve, reject) => {
+      this.firebase.database().ref(`users/${this.sustore.uid}`).set(userData).then((res) => {
+        console.log('up4 res: ' + res);
+        console.log('------------------------register done------------------------')
+
+        const userPostData = {
+          uid: res.uid,
+          displayName: res.displayName,
+          photoURL: res.photoURL,
+          email: res.email,
+          emailVerified: res.emailVerified,
+          isAnonymous: res.isAnonymous,
+          providerId: res.providerId
+        };
+
+        console.log('up4 userdata: ' + userData);
+        return userPostData;
+        resolve(userPostData)
+        //return Actions.sessioncheck();
+      }).catch(err => {
+        console.log(err);
+        //Reactotron.error('Set user data failed');
+        //Reactotron.error(err);
+        //return Actions.sessioncheck();
+      });
+    })
+  };
+
+  postUserDataAsync(userData) {
+    this.firebase.database().ref(`users/${this.sustore.uid}`).set(userData).then((res) => {
+      console.log('up4 res: ' + res);
+      console.log('------------------------register done------------------------')
+
+      const userPostData = {
+        uid: res.uid,
+        displayName: res.displayName,
+        photoURL: res.photoURL,
+        email: res.email,
+        emailVerified: res.emailVerified,
+        isAnonymous: res.isAnonymous,
+        providerId: res.providerId
+      };
+
+      return userPostData;
+
+      console.log('up4 userdata: ' + userData);
+      resolve(userPostData)
+      //return Actions.sessioncheck();
+    }).catch(err => {
+      console.log(err);
+      //Reactotron.error('Set user data failed');
+      //Reactotron.error(err);
+      //return Actions.sessioncheck();
+    });
+  }
+
+  setLocalDB (userData) {
+    return new Promise((resolve, reject) => {
+      this.state.localdb
+        .save({
+          key: "user",
+          data: userData,
+          expires: 1000 * 3600 * 24 * 30 // expires after 30 days
+        },resolve('ok'))
+        .catch(err => {
+          console.log("Router: Saving data to local db failed.");
+          console.log(err);
+        });
+    })
+  }
+
   handleSubmit = async () => {
-    /*
     if(!this.state.photoUrl) {
       alert('請給偶一張您的美/帥照, 拜偷拜偷');
       return;
@@ -153,14 +231,15 @@ class TempSignup4 extends Component {
       photoURL: this.state.photoUrl,
       displayName: this.sustore.nickname,
     }).then(() => {
-      Reactotron.debug('User profile updated');
+      //Reactotron.debug('User profile updated');
     }).catch(err => {
-      Reactotron.error('User profile update error');
-      Reactotron.error(err);
+      console.log(err);
+      //Reactotron.error('User profile update error');
+      //Reactotron.error(err);
     });
-    */
+
     const postData = {
-      //photoURL: this.sustore.avatar,
+      photoURL: this.sustore.avatar,
       uid: this.sustore.uid,
       displayName: this.sustore.nickname,
       email: this.sustore.email,
@@ -176,22 +255,108 @@ class TempSignup4 extends Component {
       signupCompleted: true,
     };
 
-    await this.firebase.database().ref(`users/${this.sustore.uid}`).set(postData).then((res) => {
-      Reactotron.debug('Set user data to firebase');
-      Reactotron.debug(res);
-    }).catch(err => {
-      Reactotron.error('Set user data failed');
-      Reactotron.error(err);
-    });
-    return Actions.sessioncheck();
+    const checkPost = await postUserData(postData);
+    const postRes = await setLocalDB(checkPost);
+
+    console.log('-----Check Post----- ' + checkPost );
+    console.log('-----Check Post----- ' + postRes );
+
+    //return Actions.sessioncheck();
   }
+
+
+  confrimSubmit = async () => {
+    console.log('submit check');
+    if(!this.state.photoUrl) {
+      alert('請給偶一張您的美/帥照, 拜偷拜偷');
+      return;
+    };
+
+    const user = await this.firebase.auth().currentUser;
+
+    await user.updateProfile({
+      photoURL: this.state.photoUrl,
+      displayName: this.sustore.nickname,
+    }).then(() => {
+      //Reactotron.debug('User profile updated');
+    }).catch(err => {
+      console.log(err);
+      //Reactotron.error('User profile update error');
+      //Reactotron.error(err);
+    });
+
+    const postData = {
+      photoURL: this.sustore.avatar,
+      uid: this.sustore.uid,
+      displayName: this.sustore.nickname,
+      email: this.sustore.email,
+      birthday: this.sustore.birthday,
+      termsAgreed: this.sustore.termsAgreed,
+      city: this.sustore.city,
+      gender: this.sustore.gender,
+      sexOrientation: this.sustore.sexOrientation,
+      geocode: this.sustore.geocode,
+      placeID: this.sustore.placeID,
+      locale: this.sustore.locale,
+      country: this.sustore.country,
+      signupCompleted: true,
+    };
+
+    console.log('-----post Data-----' + JSON.stringify(postData));
+
+
+    //const reUserData = await postUserDataAsync(postData);
+    //console.log('---reUserData---' + reUserData);
+
+    const reValue = await this.postUserData(postData);
+
+    console.log('ReValue: ' + reValue);
+
+
+
+  };
+
+  testAsync = async(userData) => {
+    await this.firebase.database().ref('users/' + this.sustore.uid).set(userData).then((res) => {
+      console.log('up4 res: ' + res);
+      console.log('------------------------register done------------------------')
+
+      const userPostData = {
+        uid: res.uid,
+        displayName: res.displayName,
+        photoURL: res.photoURL,
+        email: res.email,
+        emailVerified: res.emailVerified,
+        isAnonymous: res.isAnonymous,
+        providerId: res.providerId
+      };
+
+      return userPostData;
+
+      console.log('Async:' + res);
+
+      console.log('up4 userdata: ' + userData);
+      //resolve(userPostData)
+      //return Actions.sessioncheck();
+    }).catch(err => {
+      console.log(err);
+      //Reactotron.error('Set user data failed');
+      //Reactotron.error(err);
+      //return Actions.sessioncheck();
+    });
+  };
+
+
+
+
+
 
   render() {
     const { nickname } = this.sustore;
     return (
       <View style={[this.state.size, {flexGrow: 1, }]}>
         <Header
-          headerText='上傳個人照'
+          headerImage
           rightButtonText='完成'
           onRight={this.handleSubmit}
           rightColor='#007AFF'
@@ -222,9 +387,18 @@ class TempSignup4 extends Component {
             style={{ marginTop: 10 }}
             backgroundColor='transparent'
             color='#007AFF'
-            title={'完成 , 開始使用'}
+            title={'完成'}
             onPress={this.handleSubmit}
           />
+
+          <Button
+            style={{ marginTop: 10 }}
+            backgroundColor='transparent'
+            color='#007AFF'
+            title={'Async/Await'}
+            onPress={this.confrimSubmit}
+          />
+
         </View>
       </View>
     );
