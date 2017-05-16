@@ -5,8 +5,8 @@ import { observer } from 'mobx-react/native';
 import { SideBar } from './SideBar';
 
 const drawerStyles = {
-  drawer: { borderRightWidth: 1.8, borderRightColor: '#dcdcdc'},
-  main: { paddingLeft: 3 },
+  drawer: { borderRightWidth: 1.8, borderRightColor: '#dcdcdc'}
+  //main: { paddingLeft: 3 },
 }
 
 @observer

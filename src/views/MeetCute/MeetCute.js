@@ -4,7 +4,7 @@ import { observer } from "mobx-react/native";
 import Moment from "moment";
 import { Actions } from "react-native-router-flux";
 import DeviceInfo from "react-native-device-info";
-import OthersProfile from "./OthersProfile";
+import { OthersProfile } from "./Components/OthersProfile";
 
 const width = Dimensions.get("window").with;
 
@@ -133,7 +133,7 @@ export default class MeetCute extends Component {
     );
     
     return (
-      <View>
+      <View style={{flex: 1}}>
         {this.state.loading && indicator}
         {
           this.state.data && !this.state.loading && <OthersProfile
