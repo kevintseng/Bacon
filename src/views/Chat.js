@@ -72,6 +72,7 @@ export default class Chat extends Component {
     }
     Actions.refresh({ title: this.title });
     this._isMounted = true;
+
   }
 
   componentDidMount() {
@@ -108,6 +109,8 @@ export default class Chat extends Component {
         };
       });
     });
+
+    this.clearUnread();
 
     // this.db.load({
     //   key: this.props.uid,
@@ -152,6 +155,14 @@ export default class Chat extends Component {
     // });
   }
 
+  clearUnread = () => {
+    this.convRef.update({unread: 0});
+  }
+
+  removeConversationPriority = () => {
+    this.convRef.update({priority: false, type: 'normal' });
+  }
+
   // componentWillUnmount() {
   //   this.updateChatToDB();
   // }
@@ -191,6 +202,8 @@ export default class Chat extends Component {
     const updates = {};
     updates[messages[0]._id] = messages[0];
     this.msgRef.update(updates);
+
+    this.removeConversationPriority(); //有發言後就取消.
 
     Keyboard.dismiss();
     // for demo purpose

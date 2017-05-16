@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, Dimensions, ScrollView } from "react-native";
+import { View, Dimensions, ScrollView, ActivityIndicator } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
 import { List, ListItem, Text, Badge } from "react-native-elements";
-import SwipeList from "react-native-smooth-swipe-list";
+// import SwipeList from "react-native-smooth-swipe-list";
 import DropdownMenu from "react-native-dropdown-menu";
 // import Moment from "moment";
 
@@ -29,8 +29,9 @@ export default class Messages extends Component {
       convs: [],
       isLoading: true,
       pickerShow: false,
-      status: this.store.user.chatStatus ? this.store.user.chatStatus : "我的狀態",
-      listFilter: "all"
+      status: null,
+      listFilter: "all",
+      noData: false,
     };
     this._isMounted = false;
   }
@@ -43,83 +44,122 @@ export default class Messages extends Component {
   componentDidMount() {
     console.debug("Messages mounted");
     this._isMounted = true;
-    this.getConvs();
+    this.getConvs('all');
   }
 
   componentWillUnmount() {
 
   }
 
-  getConvs = () => {
-    this.convRef.once("value").then(snapForConvs => {
+  getConvs = (filterType) => {
+    this.setState({ isLoading: true });
+
+    const getUnread = this.convRef.orderByChild('unread').startAt(1);
+    const getAll = this.convRef;
+    const getVisitor = this.convRef.orderByChild('type').equalTo('visitor');
+
+
+    let query = getAll;
+    switch(filterType) {
+      case 'unread':
+        query = getUnread;
+        break;
+      case 'visitor':
+        query = getVisitor;
+        break;
+      case 'all':
+        query = getAll;
+        break;
+    }
+
+    query.once("value").then(snapForConvs => {
       // console.log('CHECK: ', snap.val());
       const convs = [];
-      const statusList = [];
-      snapForConvs.forEach(childConv => {
-        const queryKey = childConv.val().uid;
+      let key = 0;
+      if(snapForConvs.exists()) {
+        snapForConvs.forEach(childConv => {
+          const queryKey = childConv.val().uid;
+          console.log('Key: ' + key + ' convData: ' + childConv.val().unread);
 
-        this.firebase
-          .database()
-          .ref("messages/" + this.store.user.uid + "/" + queryKey)
-          .limitToLast(1)
-          .once("value")
-          .then(snapshot => {
-            let subtitle = "";
+          this.firebase
+            .database()
+            .ref("messages/" + this.store.user.uid + "/" + queryKey)
+            .limitToLast(1)
+            .once("value")
+            .then(snapshot => {
+              let subtitle = "";
 
-            if (snapshot.exists()) {
-              snapshot.forEach(_msg => {
-                // console.log('_mag.val()', _msg.val());
-                if (_msg.child("image").exists()) {
-                  console.log("Image exists");
-                  subtitle = "傳了一張圖";
-                }
+              if (snapshot.exists()) {
+                snapshot.forEach(_msg => {
+                  // console.log('_mag.val()', _msg.val());
+                  if (_msg.child("image").exists()) {
+                    console.log("Image exists");
+                    subtitle = "傳了一張圖";
+                  }
 
-                if (_msg.child("text").exists() && _msg.val().text != "") {
-                  // console.log('Text exists');
-                  subtitle = _msg.val().text;
-                }
+                  if (_msg.child("text").exists() && _msg.val().text != "") {
+                    // console.log('Text exists');
+                    subtitle = _msg.val().text;
+                  }
+                });
+              }
+              const userId = childConv.val().uid;
+              const data = {
+                uid: userId,
+                name: childConv.val().name,
+                avatarUrl: childConv.val().avatarUrl,
+                age: childConv.val().age,
+                type: childConv.val().type,
+                priority: childConv.val().priority,
+                chatStatus: '我的狀態',
+                unread: childConv.val().unread,
+                subtitle
+              };
+
+              convs.push(data);
+              convs.sort(this.compare);
+
+              this.setState({
+                convs,
+                isLoading: false,
+                noData: false,
               });
-            }
-            const userId = childConv.val().uid;
-            const key = convs.length;
-            const data = {
-              uid: userId,
-              name: childConv.val().name,
-              avatarUrl: childConv.val().avatarUrl,
-              age: childConv.val().age,
-              type: childConv.val().type,
-              priority: childConv.val().priority,
-              chatStatus: this.chatStatusListener(userId, key),
-              unread: this.unreadListener(userId, key),
-              subtitle
-            };
-            convs.push(data);
-            this.setState({
-              convs,
-              isLoading: false,
+              return {userId, key};
+              // this.unreadListener(userId, key);
+              // this.chatStatusListener(userId, key);
+              // return convs;
+            }).then(retObj => {
+              this.unreadListener(retObj.userId, retObj.key);
+              this.chatStatusListener(retObj.userId, retObj.key);
+              key++;
             });
-          });
-      });
+        });
+      } else {
+        this.setState({ convs:[], noData: true, isLoading: false });
+      }
     });
   };
 
   unreadListener(uid, key) {
     const ref = this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + uid + '/unread');
+    console.log('Start listening to unread on uid: ' + uid + ' key: ' + key);
     ref.on('value', snapshot => {
       if(snapshot.exists()){
         const newConvs = this.state.convs;
-        newConvs[key].unread = snapshot.val() > 0 ? snapshot.val(): false;
+        console.log('listenUnread on uid: ', uid, ' val: ', snapshot.val());
+        newConvs[key].unread = snapshot.val();
         this.setState({
           convs: newConvs,
         });
-        return snapshot.val();
+        return;
       }
-      return false;
+      return;
     });
   }
 
   chatStatusListener(userId, key) {
     const ref = this.firebase.database().ref('users/' + this.store.user.uid + '/chatStatus');
+    console.log('Start listening to chatStatus on uid: ' + this.store.user.uid + ' key: ' + key);
     ref.on('value', snapshot => {
       if(snapshot.exists()) {
         console.log('listenChatStatus: ', snapshot.val());
@@ -128,13 +168,18 @@ export default class Messages extends Component {
         this.setState({
           convs: newConvs,
         });
-        return snapshot.val();
+        return;
       }
       console.log("Appstore getChatStatus: snapshot doesn't exist");
     }, err => {
       console.log(err);
-      return null;
+      return '我的狀態';
     });
+  }
+
+  compare(a) {
+    if(a.priority) return -1;
+    if(!a.priority) return 1;
   }
 
   renderSubtitle = (subtitle, status, unread) => {
@@ -204,7 +249,7 @@ export default class Messages extends Component {
         case "忙碌中":
           return (
             <View style={_styles.viewStyle}>
-              {unread &&
+              {unread>0 &&
                 <Badge containerStyle={_styles.unreadBadge1}>
                   <Text style={_styles.unreadBadgeText}>{unread}</Text>
                 </Badge>}
@@ -217,7 +262,7 @@ export default class Messages extends Component {
         case "放空中":
           return (
             <View style={_styles.viewStyle}>
-              {unread &&
+              {unread>0 &&
                 <Badge containerStyle={_styles.unreadBadge1}>
                   <Text style={_styles.unreadBadgeText}>{unread}</Text>
                 </Badge>}
@@ -230,7 +275,7 @@ export default class Messages extends Component {
         case "低潮中":
           return (
             <View style={_styles.viewStyle}>
-              {unread &&
+              {unread>0 &&
                 <Badge containerStyle={_styles.unreadBadge1}>
                   <Text style={_styles.unreadBadgeText}>{unread}</Text>
                 </Badge>}
@@ -243,7 +288,7 @@ export default class Messages extends Component {
         case "我的狀態":
           return (
             <View style={_styles.viewStyle}>
-              {unread &&
+              {unread>0 &&
                 <Badge containerStyle={_styles.unreadBadge2}>
                   <Text style={_styles.unreadBadgeText}>{unread}</Text>
                 </Badge>}
@@ -254,7 +299,7 @@ export default class Messages extends Component {
     } else {
       return (
         <View style={_styles.viewStyle}>
-          {unread &&
+          {unread>0 &&
             <Badge containerStyle={_styles.unreadBadge2}>
               <Text style={_styles.unreadBadgeText}>{unread}</Text>
             </Badge>}
@@ -265,26 +310,22 @@ export default class Messages extends Component {
   };
 
   handleStatusChange = (val, selection, row) => {
-    let listFilter = "all";
     if (selection === 0) {
       switch (row) {
         case 1:
-          listFilter = "unread";
+          this.getConvs('unread');
           break;
         case 2:
-          listFilter = "visitor";
+          this.getConvs('visitor');
           break;
         default:
-          listFilter = "all";
+          this.getConvs('all');
           break;
       }
-      this.setState({
-        listFilter
-      });
     } else if (selection === 1) {
       let _chatStatus = val;
       if(val === '我的狀態') {
-        _chatStatus = null;
+        _chatStatus = '';
       }
       this.store.setChatStatus(this.firebase, _chatStatus);
     }
@@ -298,6 +339,17 @@ export default class Messages extends Component {
 
   render() {
     console.log("this.state: ", this.state);
+    const indicator = (
+      <ActivityIndicator
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 8,
+          marginTop: 150,
+        }}
+        size="large"
+      />
+    );
     return (
       <View style={this.state.size}>
         <ScrollView style={{ marginTop: 5 }}>
@@ -313,6 +365,10 @@ export default class Messages extends Component {
             handler={(selection, row) =>
               this.handleStatusChange(menuData[selection][row], selection, row)}
           >
+          {
+            this.state.isLoading && indicator
+          }
+          { !this.state.noData && !this.state.isLoading &&
             <List containerStyle={{ marginBottom: 20, marginTop: -2 }}>
               {this.state.convs.map((l, i) => (
                 <ListItem
@@ -339,6 +395,14 @@ export default class Messages extends Component {
                 />
               ))}
             </List>
+          }
+          {
+            this.state.noData && !this.state.isLoading &&
+            <Text style={{
+              alignSelf: 'center',
+              marginTop: 150,
+            }}>沒有信息</Text>
+          }
           </DropdownMenu>
         </ScrollView>
       </View>
