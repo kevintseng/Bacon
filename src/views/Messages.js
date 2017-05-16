@@ -355,10 +355,10 @@ export default class Messages extends Component {
         <ScrollView style={{ marginTop: 5 }}>
           <DropdownMenu
             style={{ flex: 1 }}
-            arrowImg={require("../images/dropdown_arrow.png")}
-            checkImage={require("../images/menu_check.png")}
-            bgColor={"#FDD835"}
-            tintColor={"white"}
+            arrowImg={(require("../images/arrow_down.png"))}
+            checkImage={(require("../images/menu_check.png"))}
+            bgColor={"white"}
+            tintColor={"gray"}
             selectItemColor={"red"}
             data={menuData}
             maxHeight={410}
