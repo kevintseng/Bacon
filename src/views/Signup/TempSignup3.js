@@ -218,7 +218,7 @@ class TempSignup3 extends Component {
 
 
 
-  handleSubmit() {
+  handleSubmit = async() => {
     console.log(this.firebase)
     this.setState({loading: true});
     const emailOk = this.emailCheck();
@@ -234,14 +234,15 @@ class TempSignup3 extends Component {
       this.sustore.setPassword(this.state.password.trim());
       this.sustore.setTermsAgreement(this.state.termsAgreed);
       this.sustore.setEmail(this.state.email.toString().toLowerCase().trim());
-
+      /*
       Actions.tempsignup4({
         sustore: this.sustore
       });
+      */
 
       // Create a new user on Firebase
-      /*
-      this.firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+
+      await this.firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then((user) => {
         this.sustore.setUid(user.uid);
         console.debug({'New user created': user, 'uid': user.uid});
@@ -263,7 +264,7 @@ class TempSignup3 extends Component {
         });
         console.error(err);
       });
-      */
+
 
     }
 
@@ -293,7 +294,7 @@ class TempSignup3 extends Component {
     return (
       <View style={this.state.size}>
         <Header
-          headerText='建立新帳號'
+          headerImage
           rightButtonText='下一步'
           onRight={this.handleSubmit}
           rightColor='#007AFF'
@@ -396,11 +397,6 @@ class TempSignup3 extends Component {
           disabled={this.state.loading}
         />
 
-        <Button
-          raised
-          icon={{name: 'cached'}}
-          title='BUTTON WITH ICON'
-          onPress={this.accountCheck.bind(this)} />
         {
           registerErr &&
           <Text style={styles.errStyle}>
