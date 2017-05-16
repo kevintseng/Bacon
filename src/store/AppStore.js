@@ -1,4 +1,5 @@
-import { observable, action, useStrict } from 'mobx';
+import { observable, action, useStrict, autorun } from 'mobx'
+import { Actions } from 'react-native-router-flux'
 // import autobind from 'autobind-decorator';
 useStrict(true)
 // @autobind
@@ -74,6 +75,36 @@ class AppStore {
   @action setPhotos(gallery) {
     this.user.photos = gallery;
   }
+
+  @action refreshDrawer = () => {
+    Actions.refresh({ key: 'drawer', open: false })
+  }
+
+  @action handleOnPress(key) {
+    switch (key) {
+      case 'meetcute':
+        return () => Actions.meetcute({type: 'reset'})
+      case 'nearby':
+        return () => Actions.nearby({type: 'reset'})
+      case 'favorites':
+        return () => Actions.favorites({type: 'reset'})
+      case 'visitors':
+        return () => Actions.visitors({type: 'reset'})
+      case 'likesyou':
+        return () => Actions.likesyou({type: 'reset'})
+      case 'messages':
+        return () => Actions.messages({type: 'reset'})
+      case 'settings':
+        return () => Actions.settings_wrapper({type: 'reset'})
+      case 'aboutMeRoutes':
+        return () => Actions.aboutMeRoutes({type: 'reset'})
+      // Go to profile view only when user data is loaded.
+        //if(this.store.user != null && this.store.user != '') {
+        //  return () => Actions.aboutMeRoutes({type: 'reset'});
+        //}
+        //return () => {};
+    }
+  }  
 
   updateToFirebase(key, val){
     const setFirebase = this.firebase.database().ref('users/' + this.user.uid + '/' + key);
