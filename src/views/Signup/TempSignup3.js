@@ -5,6 +5,8 @@ import {
     ActivityIndicator,
     Dimensions,
     Text,
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
@@ -12,6 +14,8 @@ import { observer } from 'mobx-react/native';
 import { getAge, checkEmail } from '../../Utils';
 import { Header } from '../../components';
 import SignupStore from '../../store/SignupStore'
+import Modal from 'react-native-modal'
+import {serviceRule, securityRule} from '../../views/data/Rules.js'
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 const styles = {
@@ -19,7 +23,16 @@ const styles = {
     marginLeft: 20,
     color: 'red',
     fontSize: 12
-  }
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    maxHeight: 400
+  },
 };
 
 function maxDay() {
@@ -59,6 +72,7 @@ class TempSignup3 extends Component {
       emailErr: false,
       termsErr: false,
       registerErr: false,
+      visibleModal: null,
     };
 
     this.emailCheck = this.emailCheck.bind(this);
@@ -216,8 +230,6 @@ class TempSignup3 extends Component {
     return true;
   }
 
-
-
   handleSubmit = async() => {
     console.log(this.firebase)
     this.setState({loading: true});
@@ -281,9 +293,37 @@ class TempSignup3 extends Component {
         console.log('Account is already')
       }
     });
-
-
   };
+
+  _renderButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress}>
+      <View>
+        <Text style={{fontWeight:'bold',textDecorationLine:'underline'}}>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
+  _renderServiceContent = () => (
+    <View style={styles.modalContent}>
+    <Text style={{fontSize:14}}>{serviceRule.title}</Text>
+      <ScrollView>
+        <Text style={{fontSize:10}}>{serviceRule.context}</Text>
+      </ScrollView>
+      {this._renderButton('Close', () => this.setState({ visibleModal: null }))}
+    </View>
+  );
+
+  _renderSecurityContent = () => (
+    <View style={styles.modalContent}>
+      <Text style={{fontSize:14}}>{securityRule.title}</Text>
+      <View style={{borderColor:'black', borderWidth: 1,}}></View>
+
+      <ScrollView>
+        <Text style={{fontSize:10}}>{securityRule.context}</Text>
+      </ScrollView>
+      {this._renderButton('Close', () => this.setState({ visibleModal: null }))}
+    </View>
+  );
 
 
 
@@ -376,18 +416,27 @@ class TempSignup3 extends Component {
           showIcon={false}
           onDateChange={date => this.updateBirthday(date)}
         />
+        <View style={{flexDirection:'row'}}>
         <CheckBox
-          title='我同意Hookup隱私權政策及使用條款'
+          containerStyle={{maxWidth:70,backgroundColor:'white',borderColor:'white',borderWidth:0}}
           onBlur={this.termsCheck}
           checked={termsAgreed}
           onPress={this.updateTermAgreement}
         />
+          <View style={{paddingTop:20,flexDirection:'row'}}>
+            <Text>我同意MeeQ</Text>
+            {this._renderButton('隱私權政策', () => this.setState({ visibleModal: 1 }))}
+            <Text>及</Text>
+            {this._renderButton('服務條款', () => this.setState({ visibleModal: 2 }))}
+          </View>
+        </View>
         {
           termsErr &&
           <Text style={styles.errStyle}>
           {termsErr}
           </Text>
         }
+
         <Button
           style={{ marginTop: 10 }}
           backgroundColor='transparent'
@@ -406,6 +455,15 @@ class TempSignup3 extends Component {
         {
           loading && <ActivityIndicator />
         }
+
+
+
+       <Modal isVisible={this.state.visibleModal === 1}>
+         {this._renderSecurityContent()}
+       </Modal>
+       <Modal isVisible={this.state.visibleModal === 2}>
+         {this._renderServiceContent()}
+       </Modal>
 
       </View>
     );

@@ -76,8 +76,6 @@ const Header = (props) => {
   if(!rightColor) rightColor = 'transparent';
   if(!onLeft) onLeft = () => {};
   if(!onRight) onRight = () => {};
-
-
   const showHeader = () => {
     if(headerText){
       return(
@@ -93,7 +91,6 @@ const Header = (props) => {
         </View>
       );
     };
-
   };
 
   return (
@@ -108,11 +105,9 @@ const Header = (props) => {
           disabled={disableLeft}
         />
       </Col>
-
       <Col style={logoColStyle}>
       {showHeader()}
       </Col>
-
       <Col style={rightColStyle}>
         <Button
           buttonStyle={buttonStyle}

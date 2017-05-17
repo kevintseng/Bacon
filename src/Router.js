@@ -29,7 +29,7 @@ import ChangePassword from "./views/Settings/ChangePassword";
 import FeedBack from "./views/Settings/FeedBack";
 import { FirebaseConfig } from "./Configs";
 import TempSignin from "./views/TempSignin";
-//import TempPage from "./views/TempPage";
+import TempPage from "./views/TempPage";
 //import { TempSignup1, TempSignup2, TempSignup3, TempSignup4 } from "./views/Signup";
 
 // define this based on the styles/dimensions you use
@@ -218,6 +218,7 @@ export default class RouterComponent extends Component {
           <Scene key="welcome" component={Welcome} hideTabBar/>
           <Scene key="signin" component={Signin} hideTabBar/>
           <Scene key="tempSignin" component={TempSignin} hideNavBar hideTabBar/>
+          <Scene key="tempPage" component={TempPage} hideNavBar hideTabBar/>
           <Scene
             key="forgot"
             component={Forgot}

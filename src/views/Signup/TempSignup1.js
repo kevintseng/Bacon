@@ -94,8 +94,6 @@ class TempSignup1 extends Component {
     return (
       <View style={this.state.size}>
         <Header
-          //headerText='性別及對象'
-          //rightButtonText='下一步'
           headerImage
           onRight={this.handleSubmit}
           rightColor='#007AFF'
