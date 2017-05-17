@@ -47,7 +47,9 @@ export default class Chat extends Component {
     this.receiverMsgRef = this.firebase.database().ref('messages/' + this.props.uid + '/' + this.store.user.uid);
 
     //Ref to conversations (對話資料表)
-    this.convRef = this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid);
+    this.myConvRef = this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid);
+
+    this.otherConvRef = this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid);
 
     this.state = {
       size: {
@@ -78,7 +80,7 @@ export default class Chat extends Component {
   }
 
   componentDidMount() {
-    this.convRef.once('value').then(snap => {
+    this.myConvRef.once('value').then(snap => {
           console.log('Chat DidMount: ', snap.val());
           const myConvData = {
             uid: this.props.uid,
@@ -184,11 +186,11 @@ export default class Chat extends Component {
   }
 
   clearUnread = () => {
-    this.convRef.update({unread: 0});
+    this.myConvRef.update({unread: 0});
   }
 
   removeConversationPriority = () => {
-    this.convRef.update({priority: false, type: 'normal' });
+    this.myConvRef.update({priority: false, type: 'normal' });
   }
 
   // componentWillUnmount() {
@@ -221,6 +223,15 @@ export default class Chat extends Component {
   //     });
   // }
 
+  unreadAddOne = () => {
+    this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid + '/unread').once('value', snap => {
+      const unread = snap.val() + 1;
+      this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid + '/unread').set(unread);
+    }, err => {
+      console.log('Chat/onSend set unread error: ' + err);
+    });
+  }
+
   onSend = (messages = []) => {
     const createdAt = Moment().format();
     messages[0].user.name = this.store.user.displayName;
@@ -231,6 +242,8 @@ export default class Chat extends Component {
     updates[messages[0]._id] = messages[0];
     this.senderMsgRef.update(updates);
     this.receiverMsgRef.update(updates);
+
+    this.unreadAddOne();
 
     this.removeConversationPriority(); //有發言後就取消.
 
@@ -428,7 +441,7 @@ export default class Chat extends Component {
         updates[_id] = msgObj;
         this.senderMsgRef.update(updates);
         this.receiverMsgRef.update(updates);
-
+        this.unreadAddOne();
       }
     });
   };
@@ -475,6 +488,7 @@ export default class Chat extends Component {
         updates[_id] = msgObj;
         this.senderMsgRef.update(updates);
         this.receiverMsgRef.update(updates);
+        this.unreadAddOne();
       }
     });
   };

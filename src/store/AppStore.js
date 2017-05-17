@@ -25,10 +25,10 @@ class AppStore {
     this.user.photoURL = uri;
   }
 
-  @action setChatStatus(firebase, status) {
+  @action setChatStatus(status) {
     this.user.chatStatus = status;
-    this.updateUserAtFirebase(firebase, 'chatStatus', status);
-    console.log('Updated user chatStatus: ', this.user.chatStatus);
+    this.updateToFirebase('chatStatus', status);
+    // console.log('Updated user chatStatus: ', this.user.chatStatus);
   }
 
   @action updateConv(firebase, cid, key, value) {

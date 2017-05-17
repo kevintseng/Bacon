@@ -21,6 +21,7 @@ export default class Messages extends Component {
     this.convRef = this.firebase
       .database()
       .ref("conversations/" + this.store.user.uid);
+    const chatStatus = this.store.user.chatStatus ? this.store.user.chatStatus : '';
     this.state = {
       size: {
         width,
@@ -29,7 +30,7 @@ export default class Messages extends Component {
       convs: [],
       isLoading: true,
       pickerShow: false,
-      status: null,
+      status: chatStatus,
       listFilter: "all",
       noData: false
     };
@@ -107,18 +108,33 @@ export default class Messages extends Component {
                   }
                 });
               }
+
               const userId = childConv.val().uid;
+              const name = childConv.val().name;
+              const avatarUrl = childConv.val().avatarUrl;
+              const age = childConv.val().age;
+              const type = childConv.val().type;
+              const priority = childConv.val().priority;
+              const unread = childConv.val().unread;
+
+              const chatStatus = this.firebase.database().ref('users/' + userId + '/chatStatus').once('value', snap => {
+                if(snap.exists()) {
+                  return snap.val();
+                }
+                return '';
+              });
+
               const data = {
                 uid: userId,
-                name: childConv.val().name,
-                avatarUrl: childConv.val().avatarUrl,
-                age: childConv.val().age,
-                type: childConv.val().type,
-                priority: childConv.val().priority,
-                chatStatus: "我的狀態",
-                unread: childConv.val().unread,
+                name,
+                avatarUrl,
+                age,
+                type,
+                priority,
+                chatStatus,
+                unread,
                 online: false,
-                subtitle
+                subtitle,
               };
 
               convs.push(data);
@@ -217,7 +233,7 @@ export default class Messages extends Component {
     if (!a.priority) return 1;
   }
 
-  renderSubtitle = (subtitle, status, unread, online) => {
+  renderSubtitle = (subtitle, status, unread) => {
     const sub = subtitle.length > 11 ? subtitle.substring(0, 10) : subtitle;
     const _styles = {
       viewStyle: {
@@ -366,7 +382,7 @@ export default class Messages extends Component {
       if (val === "我的狀態") {
         _chatStatus = "";
       }
-      this.store.setChatStatus(this.firebase, _chatStatus);
+      this.store.setChatStatus(_chatStatus);
     }
     // console.log('selection: ', selection, ' row: ', row, ' val: ', val, ' listFilter: ', listFilter);
   };
