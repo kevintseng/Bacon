@@ -42,7 +42,9 @@ export default class Chat extends Component {
     this.db = this.props.localdb;
 
     //Ref to messages (訊息資料表)
-    this.msgRef = this.firebase.database().ref('messages/' + this.store.user.uid + '/' + this.props.uid);
+    this.senderMsgRef = this.firebase.database().ref('messages/' + this.store.user.uid + '/' + this.props.uid);
+
+    this.receiverMsgRef = this.firebase.database().ref('messages/' + this.props.uid + '/' + this.store.user.uid);
 
     //Ref to conversations (對話資料表)
     this.convRef = this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid);
@@ -65,8 +67,8 @@ export default class Chat extends Component {
 
   componentWillMount() {
     console.debug("Rendering Messages");
-    if (this.props.chatStatus === "我的狀態") {
-      this.title = this.name;
+    if (this.props.chatStatus === "我的狀態" || this.props.chatStatus === '') {
+      this.title = this.name + ", " + this.props.age;
     } else {
       this.title = this.name + ", " + this.props.age + ", " + this.props.chatStatus;
     }
@@ -78,24 +80,50 @@ export default class Chat extends Component {
   componentDidMount() {
     this.convRef.once('value').then(snap => {
           console.log('Chat DidMount: ', snap.val());
-          const convData = {
+          const myConvData = {
             uid: this.props.uid,
             name: this.props.name,
             chatStatus: this.props.chatStatus,
             age: this.props.age,
             avatarUrl: this.props.avatarUrl,
           }
+
+          const otherConvData = {
+            uid: this.store.user.uid,
+            name: this.store.user.displayName,
+            chatStatus: this.store.user.chatStatus,
+            age: Moment().diff(this.store.user.birthday, "years"),
+            avatarUrl: this.store.user.photoURL,
+          }
+
           if(!snap.val()) {
             this.setState({firstTime: true});
-            this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid).set(convData);
+            this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid).set(myConvData);
+            this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid).set(otherConvData);
           } else {
-            this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid).update(convData);
+            this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid).update(myConvData);
+            this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid).update(otherConvData);
           }
         }, err => {
           console.log('Load chats from firebase error: ', err.code);
         });
 
-    this.msgRef.on('child_added', (child) => {
+    this.senderMsgRef.on('child_added', (child) => {
+      console.log('child_added', child.val());
+      this.setState(previousState => {
+        return {
+          messages: GiftedChat.append(previousState.messages, {
+            _id: child.val()._id,
+            text: child.val().text,
+            createdAt: child.val().createdAt,
+            user: child.val().user,
+            image: child.val().image,
+          })
+        };
+      });
+    });
+
+    this.receiverMsgRef.on('child_added', (child) => {
       console.log('child_added', child.val());
       this.setState(previousState => {
         return {
@@ -201,7 +229,8 @@ export default class Chat extends Component {
     console.log('onSend: ', messages[0].createdAt);
     const updates = {};
     updates[messages[0]._id] = messages[0];
-    this.msgRef.update(updates);
+    this.senderMsgRef.update(updates);
+    this.receiverMsgRef.update(updates);
 
     this.removeConversationPriority(); //有發言後就取消.
 
@@ -376,7 +405,7 @@ export default class Chat extends Component {
         console.log("resizedUri", resizedUri);
         const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, 'image/jpeg');
         console.log("downloadUrl: ", downloadUrl);
-        const _id = this.msgRef.push().key;
+        const _id = this.senderMsgRef.push().key;
         const msgObj = {
           _id,
           text: '',
@@ -397,7 +426,9 @@ export default class Chat extends Component {
         });
         const updates = {};
         updates[_id] = msgObj;
-        this.msgRef.update(updates);
+        this.senderMsgRef.update(updates);
+        this.receiverMsgRef.update(updates);
+
       }
     });
   };
@@ -421,7 +452,7 @@ export default class Chat extends Component {
         console.log("resizedUri", resizedUri);
         const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, 'image/jpeg');
         console.log("downloadUrl: ", downloadUrl);
-        const _id = this.msgRef.push().key;
+        const _id = this.senderMsgRef.push().key;
         const msgObj = {
           _id,
           text: '',
@@ -442,7 +473,8 @@ export default class Chat extends Component {
         });
         const updates = {};
         updates[_id] = msgObj;
-        this.msgRef.update(updates);
+        this.senderMsgRef.update(updates);
+        this.receiverMsgRef.update(updates);
       }
     });
   };
@@ -545,7 +577,7 @@ export default class Chat extends Component {
         {this.state.actions &&
           <GiftedChat
             messages={this.state.messages}
-            messageIdGenerator={() => {return this.msgRef.push().key}}
+            messageIdGenerator={() => {return this.senderMsgRef.push().key}}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
@@ -563,7 +595,7 @@ export default class Chat extends Component {
         {!this.state.actions &&
           <GiftedChat
             messages={this.state.messages}
-            messageIdGenerator={() => {return this.msgRef.push().key}}
+            messageIdGenerator={() => {return this.senderMsgRef.push().key}}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}

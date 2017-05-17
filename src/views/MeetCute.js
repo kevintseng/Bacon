@@ -131,8 +131,7 @@ export default class MeetCute extends Component {
         size="large"
       />
     );
-    console.log('this.state.data');
-    console.log(this.state.data);
+    
     return (
       <View>
         {this.state.loading && indicator}

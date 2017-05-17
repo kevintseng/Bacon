@@ -89,14 +89,21 @@ export default class Messages extends Component {
               if (snapshot.exists()) {
                 snapshot.forEach(_msg => {
                   // console.log('_mag.val()', _msg.val());
+                  let sender;
+                  if(_msg.val().user._id === this.store.user.uid) {
+                    sender = '我: ';
+                  } else {
+                    sender = _msg.val().user.name + ': ';
+                  }
+
                   if (_msg.child("image").exists()) {
                     console.log("Image exists");
-                    subtitle = "傳了一張圖";
+                    subtitle = sender + "傳了一張圖";
                   }
 
                   if (_msg.child("text").exists() && _msg.val().text != "") {
                     // console.log('Text exists');
-                    subtitle = _msg.val().text;
+                    subtitle = sender + _msg.val().text;
                   }
                 });
               }
@@ -268,7 +275,7 @@ export default class Messages extends Component {
       busyText: { fontSize: 11, color: "white" },
       idleText: { fontSize: 11, color: "gray" },
       subText1: { marginTop: -20, fontSize: 13 },
-      subText2: { marginLeft: 15, fontSize: 13 },
+      subText2: { marginLeft: 10, fontSize: 13 },
       onlineBadge: {
         backgroundColor: "green"
       },
