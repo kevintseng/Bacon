@@ -47,11 +47,14 @@ export default class MeetCute extends Component {
       //.database()
       //.ref(`seeking/${this.store.user.country}/${cond}`);
     //ref.orderByKey().equalTo(cond,"sexOrientation")
-    query.orderByChild("sexOrientation").equalTo("fsm").once("value", snap => {
+    query.orderByChild("sexOrientation").equalTo("test1").once("value", snap => {
         //console.log("Executing mq cond:" + cond);
         snap.forEach(childsnap => {
-          const _uid = childsnap.val().uid;
-          _list.push(_uid);
+          if (childsnap.val().country === 'Taiwan')
+          {
+            const _uid = childsnap.val().uid;
+            _list.push(_uid);
+          }
         });
         console.log("Print list");
         console.log(_list);
