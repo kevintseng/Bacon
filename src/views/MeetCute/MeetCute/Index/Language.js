@@ -10,7 +10,7 @@ const renderLanguages = (langs) => {
 
 const Language = inject("store")(observer(({ store }) => {
   return(
-    <View style={{flexDirection: 'row'}}>
+    <View style={{flexDirection: 'row', margin: 10}}>
       <Icon name='language'></Icon>
       <Text>
         {renderLanguages(store.user.lang)}

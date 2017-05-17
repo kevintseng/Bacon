@@ -6,7 +6,7 @@ import { Icon } from 'react-native-elements'
 
 const Distance = inject("store")(observer(({ store }) => {
   return(
-    <View style={{flexDirection: 'row'}}>
+    <View style={{flexDirection: 'row', margin: 10}}>
      <Icon name='person-pin-circle'></Icon>
       <Text>
         你們距離大約 7.9 公里

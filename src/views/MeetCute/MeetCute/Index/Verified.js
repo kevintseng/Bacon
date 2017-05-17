@@ -14,9 +14,9 @@ const renderPhoto = (flag) => {
 
 const Verified = inject("store")(observer(({ store }) => {
   return(
-    <View style={{flexDirection: 'row'}}>
-      <Badge value={renderEmail(store.user.emailVerified)} textStyle={{fontSize: 10}} containerStyle={{ backgroundColor: '#7b68ee', width: 90}} />
-      <Badge value={renderPhoto(store.user.emailVerified)} textStyle={{fontSize: 10}} containerStyle={{ backgroundColor: '#ffa500', width: 90}} />
+    <View style={{flexDirection: 'row', margin: 10}}>
+      <Badge value={renderEmail(store.user.emailVerified)} textStyle={{fontSize: 10}} containerStyle={{ borderRadius: 64, backgroundColor: '#7b68ee', width: 77, marginRight: 10}} />
+      <Badge value={renderPhoto(store.user.emailVerified)} textStyle={{fontSize: 10}} containerStyle={{ borderRadius: 64, backgroundColor: '#ffa500', width: 77, marginRight: 10}} />
     </View>
   )
 }))

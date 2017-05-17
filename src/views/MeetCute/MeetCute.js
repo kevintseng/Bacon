@@ -4,7 +4,7 @@ import { observer } from "mobx-react/native";
 import Moment from "moment";
 import { Actions } from "react-native-router-flux";
 import DeviceInfo from "react-native-device-info";
-import { OthersProfile } from "./Components/OthersProfile";
+import { Index } from "./MeetCute/Index";
 
 const width = Dimensions.get("window").with;
 
@@ -47,7 +47,7 @@ export default class MeetCute extends Component {
       //.database()
       //.ref(`seeking/${this.store.user.country}/${cond}`);
     //ref.orderByKey().equalTo(cond,"sexOrientation")
-    query.orderByChild("sexOrientation").equalTo("test1").once("value", snap => {
+    query.orderByChild("sexOrientation").equalTo("test").once("value", snap => {
         //console.log("Executing mq cond:" + cond);
         snap.forEach(childsnap => {
           if (childsnap.val().country === 'Taiwan')
@@ -96,6 +96,7 @@ export default class MeetCute extends Component {
   };
 
   getNext = () => {
+    //alert("Next")
     this.setState({
       loading: true
     });
@@ -139,7 +140,8 @@ export default class MeetCute extends Component {
       <View style={{flex: 1}}>
         {this.state.loading && indicator}
         {
-          this.state.data && !this.state.loading && <OthersProfile
+          this.state.data && !this.state.loading && 
+          <Index
             data={this.state.data}
             getNext={this.getNext}
             handleLike={this.handleLike}
