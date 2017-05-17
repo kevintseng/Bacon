@@ -30,7 +30,7 @@ const render = ({ photoURL }) => {
 }
 //const { image, view } = styles
 
-const Picture = ({ photoURL, getNext}) => {
+const Collapse = ({ photoURL, getNext}) => {
 
   //const renderFunc = render.bind(getNext)
 
@@ -38,15 +38,15 @@ const Picture = ({ photoURL, getNext}) => {
     <View style={{flex: 1}}>
       <Carousel delay={2000} style={{ flex: 1, backgroundColor: "#ff1493" }} pageInfo autoplay={false} onAnimateNextPage={(p) => console.log(p)} >
         <Image resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
-          <View style={{ flex: 1, marginLeft: 10, marginBottom: 20, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
-            <Button icon={{ name: "heart", type: "evilicon", color: "#ff0000", size: 70 }} backgroundColor="transparent" onPress={getNext} />
-            <Button icon={{ name: "close-o", type: "evilicon", color: "#ff0000", size: 70 }} backgroundColor="transparent" onPress={getNext} />
+          <View style={{ flex: 1, marginLeft: 10, marginBottom: 10, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
+            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={getNext} />
+            <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={getNext} />
           </View>
         </Image> 
         <Image resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
-          <View style={{ flex: 1, marginLeft: 10, marginBottom: 20, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
-            <Button icon={{ name: "heart", type: "evilicon", color: "#ff0000", size: 70 }} backgroundColor="transparent" onPress={getNext} />
-            <Button icon={{ name: "close-o", type: "evilicon", color: "#ff0000", size: 70 }} backgroundColor="transparent" onPress={getNext} />
+          <View style={{ flex: 1, marginLeft: 10, marginBottom: 10, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
+            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={getNext} />
+            <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={getNext} />
           </View>
         </Image>                
       </Carousel> 
@@ -54,6 +54,6 @@ const Picture = ({ photoURL, getNext}) => {
   )
 }
 
-export { Picture }
+export { Collapse }
 //{PHOTO_URLS.map(renderFunc)}
     //<View style={[{ backgroundColor: '#BADA55' }, { width, height: 320 }]}><Text>1</Text></View>

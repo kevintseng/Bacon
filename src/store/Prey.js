@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux'
 useStrict(true)
 // @autobind
 
-class MeetCute {
+class Prey {
   @observable users;
 
   constructor(firebase) {

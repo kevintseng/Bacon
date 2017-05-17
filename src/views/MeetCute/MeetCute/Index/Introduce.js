@@ -4,7 +4,7 @@ import { observer, inject } from "mobx-react/native"
 
 const Introduce = inject("store")(observer(({ store }) => {
   return(
-    <View>
+    <View style = {{margin: 10}} >
       <Text>
         {store.user.bio}
       </Text>
