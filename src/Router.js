@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, AppState } from "react-native";
 import Storage from "react-native-storage";
 import { Router, Scene, Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
@@ -89,6 +89,7 @@ export default class RouterComponent extends Component {
       store,
       fire,
       localdb,
+      appState: AppState.currentState,
     };
 
     this.authListener(fire);
@@ -99,9 +100,15 @@ export default class RouterComponent extends Component {
 
   }
 
-  componentWillUnmount() {
-    this.setOffline(this.state.store.user.uid);
+  componentDidMount() {
+    // AppState.addEventListener('inactive', this.setOffline(this.state.store.user.uid));
   }
+
+  componentWillUnmount() {
+
+  }
+
+
 
   authListener = (fire) => {
     console.log("Initialize authListener .");
@@ -148,6 +155,8 @@ export default class RouterComponent extends Component {
             this.state.store.setUser(user);
             console.log("Router: User has been set in appstore");
             this.setOnline(this.state.store.user.uid);
+            AppState.addEventListener('change', this.handleAppStateChange);
+
             this.state.localdb
               .save({
                 key: "user",
@@ -177,6 +186,21 @@ export default class RouterComponent extends Component {
       lastOnline: timestamp,
       location: "Taipei, Taiwan"
     });
+  }
+
+  handleAppStateChange = nextAppState => {
+    console.log('AppState listner is on');
+    if(this.state.appState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
+      console.log('App is becoming inactive.');
+      this.setOffline(this.state.store.user.uid);
+    }
+
+    if(nextAppState === 'active') {
+      console.log('App is active');
+      this.setOnline(this.state.store.user.uid);
+    }
+
+    this.setState({appState: nextAppState});
   }
 
   setOffline(uid) {
