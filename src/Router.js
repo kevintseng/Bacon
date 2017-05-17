@@ -273,6 +273,7 @@ export default class RouterComponent extends Component {
                 title='訊息中心'
                 renderLeftButton={menuButton}
                 hideTabBar
+                hideNavBar
               />
               <Scene //緣分
                 key="fate"
