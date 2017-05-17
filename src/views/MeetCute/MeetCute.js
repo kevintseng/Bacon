@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Dimensions, ActivityIndicator } from "react-native";
-import { observer } from "mobx-react/native";
+import { observer, inject } from "mobx-react/native";
 import Moment from "moment";
 import { Actions } from "react-native-router-flux";
 import DeviceInfo from "react-native-device-info";
@@ -8,20 +8,21 @@ import { Index } from "./MeetCute/Index";
 
 const width = Dimensions.get("window").with;
 
-@observer
+@inject("prey") @observer
 export default class MeetCute extends Component {
   constructor(props) {
     super(props);
-    this.firebase = this.props.fire;
-    this.store = this.props.store;
-    this.db = this.props.localdb;
-    this.state = {
-      size: { width },
-      list: null,
-      next: null,
-      data: null,
-      loading: true,
-    };
+    this.prey = this.props.prey
+    //this.firebase = this.props.fire;
+    //this.store = this.props.store;
+    //this.db = this.props.localdb;
+    //this.state = {
+     // size: { width },
+    //  list: null,
+    //  next: null,
+    //  data: null,
+    //  loading: true,
+    //};
   }
 
   componentWillMount() {
@@ -30,14 +31,15 @@ export default class MeetCute extends Component {
   }
 
   componentDidMount() {
-    console.debug("MeetCute rendered");
-    const deviceId = DeviceInfo.getUniqueID();
-    const locale = DeviceInfo.getDeviceLocale();
-    const country = DeviceInfo.getDeviceCountry();
-    console.log(
-      "Device ID: " + deviceId + ", locale: " + locale + ", country: " + country
-    );
-    this.seekMeetQs(this.store.user.sexOrientation);
+    this.props.prey.grepUsers(this.store.user.sexOrientation)
+    ///console.debug("MeetCute rendered");
+    //const deviceId = DeviceInfo.getUniqueID();
+    //const locale = DeviceInfo.getDeviceLocale();
+    //const country = DeviceInfo.getDeviceCountry();
+    //console.log(
+    //  "Device ID: " + deviceId + ", locale: " + locale + ", country: " + country
+    //);
+    //this.seekMeetQs(this.store.user.sexOrientation);
   }
 
   mq = cond => {
