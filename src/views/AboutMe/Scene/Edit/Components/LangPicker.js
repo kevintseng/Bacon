@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { View, TextInput } from 'react-native';
-import { FormLabel, FormValidationMessage, Icon} from 'react-native-elements';
-import MultiSelect from 'react-native-multiple-select';
+import React, { Component } from 'react'
+//import { View, TextInput } from 'react-native';
+//import { FormLabel, FormValidationMessage, Icon} from 'react-native-elements';
+import MultiSelect from 'react-native-multiple-select'
 
 
 const styles = {
