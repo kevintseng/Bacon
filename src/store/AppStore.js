@@ -25,10 +25,15 @@ class AppStore {
     this.user.photoURL = uri;
   }
 
-  @action setChatStatus(status) {
-    this.user.chatStatus = status;
-    this.updateToFirebase('chatStatus', status);
-    // console.log('Updated user chatStatus: ', this.user.chatStatus);
+  getChatStatus() {
+    this.firebase.database().ref('users/' + this.user.uid + '/chatStatus').once('value', snap => {
+      if(snap.exists()) {
+        return snap.val();
+      }
+      return null;
+    }, err => {
+      console.log('AppStore/getChatStatus error: ' +  err);
+    });
   }
 
   @action updateConv(firebase, cid, key, value) {

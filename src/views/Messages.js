@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import { View, Dimensions, ScrollView, ActivityIndicator } from "react-native";
+import { View, Dimensions, Text, ScrollView, ActivityIndicator, TouchableHighlight } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
-import { List, ListItem, Text, Badge, Icon } from "react-native-elements";
+import { List, ListItem, Badge, Icon, Button } from "react-native-elements";
 // import SwipeList from "react-native-smooth-swipe-list";
 import DropdownMenu from "react-native-dropdown-menu";
+import { Grid, Col, Row } from "react-native-easy-grid";
+import Modal from 'react-native-modal'
 // import Moment from "moment";
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
-const menuData = [["所有訊息", "未讀訊息", "訪客訊息"], ["我的狀態", "放空中", "忙碌中", "低潮中"]];
+const menuData = [["所有訊息", "未讀訊息", "訪客訊息"]];
 
 const styles = {};
 
@@ -30,9 +32,9 @@ export default class Messages extends Component {
       convs: [],
       isLoading: true,
       pickerShow: false,
-      status: chatStatus,
       listFilter: "all",
-      noData: false
+      noData: false,
+      statusModalShow: false,
     };
     this._isMounted = false;
   }
@@ -85,29 +87,23 @@ export default class Messages extends Component {
             .limitToLast(1)
             .once("value")
             .then(snapshot => {
-              let subtitle = "";
+              let _subtitle = '';
 
               if (snapshot.exists()) {
                 snapshot.forEach(_msg => {
-                  // console.log('_mag.val()', _msg.val());
-                  let sender;
-                  if(_msg.val().user._id === this.store.user.uid) {
-                    sender = '我: ';
-                  } else {
-                    sender = _msg.val().user.name + ': ';
-                  }
 
                   if (_msg.child("image").exists()) {
-                    console.log("Image exists");
-                    subtitle = sender + "傳了一張圖";
+                    _subtitle = "傳了一張圖";
                   }
 
                   if (_msg.child("text").exists() && _msg.val().text != "") {
                     // console.log('Text exists');
-                    subtitle = sender + _msg.val().text;
+                    _subtitle = _msg.val().text;
                   }
                 });
               }
+
+              console.log("Messages/getConvs/subtitle: " + _subtitle);
 
               const userId = childConv.val().uid;
               const name = childConv.val().name;
@@ -134,7 +130,7 @@ export default class Messages extends Component {
                 chatStatus,
                 unread,
                 online: false,
-                subtitle,
+                subtitle: _subtitle,
               };
 
               convs.push(data);
@@ -171,22 +167,27 @@ export default class Messages extends Component {
     ref.on("value", snapshot => {
       if (snapshot.exists()) {
         const newConvs = this.state.convs;
-        console.log("listenUnread on uid: ", uid, " val: ", snapshot.val());
+        // console.log("listenUnread on uid: ", uid, " val: ", snapshot.val());
         newConvs[key].unread = snapshot.val();
         this.setState({
           convs: newConvs
         });
         return;
       }
+
+      const newConvs = this.state.convs;
+      // console.log("listenUnread on uid: ", uid, " val: ", snapshot.val());
+      newConvs[key].unread = 0;
+      this.setState({
+        convs: newConvs
+      });
       return;
     });
   }
 
   chatStatusListener(userId, key) {
     const ref = this.firebase.database().ref("users/" + userId + "/chatStatus");
-    console.log(
-      "Start listening to chatStatus on uid: " + userId + " key: " + key
-    );
+
     ref.on(
       "value",
       snapshot => {
@@ -199,7 +200,12 @@ export default class Messages extends Component {
           });
           return;
         }
-        console.log("Appstore getChatStatus: snapshot doesn't exist");
+        const newConvs = this.state.convs;
+        newConvs[key].chatStatus = '';
+        this.setState({
+          convs: newConvs
+        });
+        return;
       },
       err => {
         console.log("Messages/chatStatusListener error: ", err);
@@ -235,6 +241,7 @@ export default class Messages extends Component {
 
   renderSubtitle = (subtitle, status, unread) => {
     const sub = subtitle.length > 11 ? subtitle.substring(0, 10) : subtitle;
+    console.log('sub: ' + sub);
     const _styles = {
       viewStyle: {
         flex: 1,
@@ -290,7 +297,7 @@ export default class Messages extends Component {
       },
       busyText: { fontSize: 11, color: "white" },
       idleText: { fontSize: 11, color: "gray" },
-      subText1: { marginTop: -20, fontSize: 13 },
+      subText1: { marginTop: -20, marginLeft: -8, fontSize: 13 },
       subText2: { marginLeft: 10, fontSize: 13 },
       onlineBadge: {
         backgroundColor: "green"
@@ -377,14 +384,7 @@ export default class Messages extends Component {
           this.getConvs("all");
           break;
       }
-    } else if (selection === 1) {
-      let _chatStatus = val;
-      if (val === "我的狀態") {
-        _chatStatus = "";
-      }
-      this.store.setChatStatus(_chatStatus);
     }
-    // console.log('selection: ', selection, ' row: ', row, ' val: ', val, ' listFilter: ', listFilter);
   };
 
   handlePriority = priority => {
@@ -406,6 +406,36 @@ export default class Messages extends Component {
     return { width: 56, height: 56, borderRadius: 28 };
   };
 
+  renderHeader = () => {
+    const myStatus = this.store.user.chatStatus ? this.store.user.chatStatus : '我的狀態';
+
+    return (
+      <View style={{ flex: 0, paddingTop: 20, paddingHorizontal: 10, width, height: 64, backgroundColor: '#EFEFF2', borderBottomWidth: 1, borderBottomColor: 'gray' }}>
+        <Grid style={{ flex: 1, alignItems: 'center' }}>
+          <Col style={{ flex:1, alignItems: 'flex-start', width: 100 }}>
+            <Icon
+              name="menu"
+              color="#000"
+              onPress={() => Actions.refresh({ key: "drawer", open: value => !value })}
+            />
+          </Col>
+          <Col  style={{ flex:1, alignItems: 'center', width: 100 }}>
+            <Text>訊息中心</Text>
+          </Col>
+          <Col style={{ flex:1, alignItems: 'flex-end', width: 100 }}>
+            <TouchableHighlight onPress={this.handleSetChatStatus}>
+              <Text>{myStatus}</Text>
+            </TouchableHighlight>
+          </Col>
+        </Grid>
+      </View>
+    );
+  };
+
+  handleSetChatStatus = () => {
+    this.setState({ statusModalShow: true });
+  };
+
   render() {
     console.log("this.state: ", this.state);
     const indicator = (
@@ -420,8 +450,19 @@ export default class Messages extends Component {
       />
     );
 
+    const modalContent = {
+      backgroundColor: 'white',
+      padding: 22,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 4,
+      borderColor: 'rgba(0, 0, 0, 0.1)',
+    };
+
+    const headerBar = this.renderHeader();
     return (
       <View style={this.state.size}>
+        {headerBar}
         <ScrollView style={{ marginTop: 5 }}>
           <DropdownMenu
             style={{ flex: 1, backgroundColor: "white" }}
@@ -476,6 +517,12 @@ export default class Messages extends Component {
               </Text>}
           </DropdownMenu>
         </ScrollView>
+        <Modal isVisible={this.state.statusModalShow}>
+          <View style={modalContent}>
+            <Text>Hi</Text>
+            <Button title='close' onPress={() =>  this.setState({ statusModalShow: false })} />
+          </View>
+        </Modal>
       </View>
     );
   }
