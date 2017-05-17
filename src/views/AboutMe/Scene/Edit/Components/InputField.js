@@ -103,14 +103,14 @@ export default class InputField extends Component {
 
     return (
       <View style={viewStyle}>
-        <TextInput
+        <TextInput underlineColorAndroid='transparent'
           multiline={multiline}
           style={fieldStyle}
-          autoFocus={autoFocus}
-          onFocus={() => this.setState({ editMode: true })}
-          onEndEditing={() => this.setState({ editMode: false })}
+          //autoFocus={autoFocus}
+          //onFocus={() => this.setState({ editMode: true })}
+          //onEndEditing={() => this.setState({ editMode: false })}
           autoCapitalize="none"
-          onChangeText={(text) => this.setState({text})}
+          //onChangeText={(text) => this.setState({text})}
           value={text}
           maxLength = {maxLength}
           />
