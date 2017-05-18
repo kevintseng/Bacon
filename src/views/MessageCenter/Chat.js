@@ -6,7 +6,7 @@ import { GiftedChat } from "react-native-gifted-chat";
 import ImagePicker from "react-native-image-picker";
 import Moment from "moment";
 import { Icon } from "react-native-elements";
-import { uploadImage, resizeImage } from '../Utils';
+import { uploadImage, resizeImage } from '../../Utils';
 
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
@@ -42,7 +42,7 @@ export default class Chat extends Component {
     this.db = this.props.localdb;
 
     //Ref to messages (訊息資料表)
-    this.senderMsgRef = this.firebase.database().ref('messages/' + this.store.user.uid + '/' + this.props.uid);
+    this.msgRef = this.firebase.database().ref('messages/' + this.store.user.uid + '/' + this.props.uid);
 
     this.receiverMsgRef = this.firebase.database().ref('messages/' + this.props.uid + '/' + this.store.user.uid);
 
@@ -141,48 +141,6 @@ export default class Chat extends Component {
     });
 
     this.clearUnread();
-
-    // this.db.load({
-    //   key: this.props.uid,
-    //   autoSync: false,
-    //   syncInBackground: false,
-    // }).then(ret => {
-    //   console.log('message history: ', ret);
-    //   this.setState({
-    //     messages: ret,
-    //   });
-    // }).catch(err => {
-    //   console.log(err.message);
-    //   switch (err.name) {
-    //     case 'NotFoundError':
-    //       console.log('SessionCheck: Data not found, rendering signin');
-    //       this.creatNewChat();
-    //       break;
-    //     case 'ExpiredError':
-    //       console.log('SessionCheck: Data expired, rendering signin');
-    //       Actions.pop();
-    //       break;
-    //     default:
-    //       console.log(err.name);
-    //       Actions.pop();
-    //   }
-    // });
-    // const t = new Date();
-    // this.setState({
-    //   messages: [
-    //     {
-    //       _id: this.props.uid,
-    //       text: "安安, 你好..幾歲？住哪？給約嗎???",
-    //       createdAt: t,
-    //       user: {
-    //         _id: 2,
-    //         name: "Sex Machine",
-    //         avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1"
-    //       },
-    //       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1",
-    //     }
-    //   ]
-    // });
   }
 
   clearUnread = () => {
@@ -193,43 +151,17 @@ export default class Chat extends Component {
     this.myConvRef.update({priority: false, type: 'normal' });
   }
 
-  // componentWillUnmount() {
-  //   this.updateChatToDB();
-  // }
 
-  // updateChatToDB = () => {
-  //   this.db
-  //     .save({
-  //       key: this.props.uid,
-  //       rawData: this.state.messages,
-  //       expires: 1000 * 3600 * 24 * 365 // expires after 30 days
-  //     })
-  //     .catch(err => {
-  //       console.log("Chat updateChatToDB: Saving data to local db failed.");
-  //       console.log(err);
-  //     });
-  // }
-  //
-  // creatNewChat = () => {
-  //   this.db
-  //     .save({
-  //       key: this.props.uid,
-  //       rawData: this.state.messages,
-  //       expires: 1000 * 3600 * 24 * 365 // expires after 30 days
-  //     })
-  //     .catch(err => {
-  //       console.log("Chat creatNewChat: Saving data to local db failed.");
-  //       console.log(err);
-  //     });
-  // }
-
-  unreadAddOne = () => {
+  unreadAddOne = (mid) => {
     this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid + '/unread').once('value', snap => {
       const unread = snap.val() + 1;
-      this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid + '/unread').set(unread);
+      this.otherConvRef.update({unread});
     }, err => {
       console.log('Chat/onSend set unread error: ' + err);
     });
+
+    this.myConvRef.child('msgs').push(mid);
+    this.otherConvRef.child('msgs').push(mid);
   }
 
   onSend = (messages = []) => {
@@ -243,74 +175,13 @@ export default class Chat extends Component {
     this.senderMsgRef.update(updates);
     this.receiverMsgRef.update(updates);
 
-    this.unreadAddOne();
+    this.unreadAddOne(messages[0]._id);
 
     this.removeConversationPriority(); //有發言後就取消.
 
     Keyboard.dismiss();
     // for demo purpose
     // this.answerDemo(messages);
-  };
-
-  // onLoadEarlier = () => {
-  //   this.setState(previousState => {
-  //     return {
-  //       isLoadingEarlier: true
-  //     };
-  //   });
-  //
-  //   setTimeout(
-  //     () => {
-  //       if (this._isMounted === true) {
-  //         this.setState(previousState => {
-  //           return {
-  //             messages: GiftedChat.prepend(
-  //               previousState.messages,
-  //               require("./data/old_messages.js")
-  //             ),
-  //             loadEarlier: false,
-  //             isLoadingEarlier: false
-  //           };
-  //         });
-  //       }
-  //     },
-  //     1000
-  //   ); // simulating network
-  // };
-
-  appendMessage = (text, image) => {
-    this.setState(previousState => {
-      return {
-        messages: GiftedChat.append(previousState.messages, {
-              _id: Math.round(Math.random() * 1000000),
-              text,
-              createdAt: Moment().format(),
-              user: {
-                _id: this.store.user.uid,
-                name: this.store.user.displayName,
-                avatar: this.store.user.photoURL
-              },
-              image,
-            })
-          }
-    });
-  }
-
-  onReceive = text => {
-    this.setState(previousState => {
-      return {
-        messages: GiftedChat.append(previousState.messages, {
-          _id: Math.round(Math.random() * 1000000),
-          text,
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: "Sex Machine",
-            avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvReCHzABatvAp0XfAMa6VyACoQuG50YDpkdL9hoUx8W5zCY1"
-          }
-        })
-      };
-    });
   };
 
   renderFooter = () => {
@@ -441,7 +312,7 @@ export default class Chat extends Component {
         updates[_id] = msgObj;
         this.senderMsgRef.update(updates);
         this.receiverMsgRef.update(updates);
-        this.unreadAddOne();
+        this.unreadAddOne(_id);
       }
     });
   };
@@ -488,7 +359,7 @@ export default class Chat extends Component {
         updates[_id] = msgObj;
         this.senderMsgRef.update(updates);
         this.receiverMsgRef.update(updates);
-        this.unreadAddOne();
+        this.unreadAddOne(_id);
       }
     });
   };
