@@ -7,13 +7,13 @@ import { Icon } from "react-native-elements";
 import * as Firebase from "firebase"; // eslint-disable-line
 import MeetCute from "./views/MeetCute";
 import Nearby from "./views/Nearby";
-import Messages from "./views/Messages";
+import Messages from "./views/MessageCenter/Messages";
 import LikesYou from "./views/LikesYou";
 import Visitors from "./views/Visitors";
 import Settings from "./views/Settings";
 import Signin from "./views/Signin";
 import SessionCheck from "./views/SessionCheck";
-import Chat from "./views/Chat";
+import Chat from "./views/MessageCenter/Chat";
 import Favorites from "./views/Favorites";
 import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
 import DrawerPanel from "./views/DrawerPanel";

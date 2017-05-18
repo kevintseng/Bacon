@@ -25,17 +25,6 @@ class AppStore {
     this.user.photoURL = uri;
   }
 
-  getChatStatus() {
-    this.firebase.database().ref('users/' + this.user.uid + '/chatStatus').once('value', snap => {
-      if(snap.exists()) {
-        return snap.val();
-      }
-      return null;
-    }, err => {
-      console.log('AppStore/getChatStatus error: ' +  err);
-    });
-  }
-
   @action updateConv(firebase, cid, key, value) {
     const ref = firebase.database().ref('conversations/' + cid + '/' + this.user.uid);
     ref.update({key: value});
@@ -51,6 +40,11 @@ class AppStore {
 
   @action setInSignupProcess(val) {
     this.inSignupProcess = val;
+  }
+
+  @action setChatStatus(val) {
+    this.user.chatStatus = val;
+    this.updateToFirebase('chatStatus', val);
   }
 
   @action setDisplayName = (val) => {
