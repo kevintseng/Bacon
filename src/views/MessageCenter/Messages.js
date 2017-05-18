@@ -461,9 +461,27 @@ export default class Messages extends Component {
     });
   }
 
+  getSelfChatStatus = () => {
+    switch(this.props.store.user.chatStatus) {
+      case '放空中':
+        return null;
+      case '忙碌中':
+        return null;
+      case '低潮中':
+        return null;
+      case '我的狀態':
+        return null;
+      default:
+        return this.props.store.user.chatStatus;
+    }
+  }
+
   render() {
     const myStatus = this.props.store.user.chatStatus ? this.props.store.user.chatStatus : '我的狀態';
-    console.log("this.state: ", this.state);
+
+    const selfInputStatus = this.getSelfChatStatus();
+
+    // console.log("this.state: ", this.state);
     const indicator = (
       <ActivityIndicator
         style={{
@@ -478,30 +496,27 @@ export default class Messages extends Component {
 
     const chatStatusStyles = {
       containerStyle: {
-        borderBottomWidth: 1,
-        width: 300,
-        borderBottomColor: '#BDBDBD',
+        width: 260,
         alignItems: 'center'
       },
       buttonStyle: {
         backgroundColor: 'white',
       },
       textStyle: {
-        color: '#03A9F4',
         backgroundColor: 'white',
       },
       saveButtonStyle: {
         marginTop: 15,
         backgroundColor: 'white',
-        borderColor: '#03A9F4',
+        borderColor: 'black',
         borderWidth: 1,
         borderRadius: 5,
         padding: 5,
       },
       inputContainerStyle: {
         borderBottomWidth: 1,
-        paddingLeft: 20,
-        width: 200,
+        paddingLeft: 30,
+        width: 100,
         borderBottomColor: '#BDBDBD',
         alignItems: 'center'
       }
@@ -510,10 +525,12 @@ export default class Messages extends Component {
     const modalContent = {
       backgroundColor: 'white',
       padding: 20,
+      width: 240,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 10,
+      borderRadius: 5,
       borderColor: 'rgba(0, 0, 0, 0.1)',
+      marginBottom: 150,
     };
 
     return (
@@ -532,7 +549,7 @@ export default class Messages extends Component {
             </Col>
             <Col style={{ flex:1, alignItems: 'flex-end', width: 100 }}>
               <TouchableHighlight onPress={this.onChatStatusPressed}>
-                <Text>{myStatus}</Text>
+                <Text style={{ color: '#03A9F4' }}>{myStatus}</Text>
               </TouchableHighlight>
             </Col>
           </Grid>
@@ -584,39 +601,45 @@ export default class Messages extends Component {
               <Text
                 style={{
                   alignSelf: "center",
-                  marginTop: 150
+                  marginTop: 100
                 }}
               >
                 沒有信息
               </Text>}
           </DropdownMenu>
         </ScrollView>
-        <Modal isVisible={this.state.statusModalShow}>
+        <Modal style={{ alignItems: 'center' }} isVisible={this.state.statusModalShow}>
           <View style={modalContent}>
-            <Text style={{alignSelf: 'center', fontSize: 16 }}>聊天狀態設定</Text>
             <Button title='放空中' onPress={() =>  this.handleUpdateStatus('放空中') }
+              color='black'
                textStyle={chatStatusStyles.textStyle}
-               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}/>
+               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle} iconRight icon={{name:'chevron-right', color: 'gray'}} />
              <Button title='忙碌中' onPress={() => this.handleUpdateStatus('忙碌中') }
+               color='black'
                textStyle={chatStatusStyles.textStyle}
-               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}/>
+               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle} iconRight icon={{name:'chevron-right', color: 'gray'}}/>
              <Button title='低潮中' onPress={() => this.handleUpdateStatus('低潮中')}
+               color='black'
                textStyle={chatStatusStyles.textStyle}
-               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}/>
-             <Button title='清除狀態' onPress={() => this.handleUpdateStatus('我的狀態') }
+               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle} iconRight icon={{name:'chevron-right', color: 'gray'}}/>
+             <Button title='取消狀態' onPress={() => this.handleUpdateStatus('我的狀態') }
+               color='black'
                textStyle={chatStatusStyles.textStyle}
-               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}/>
-             <FormInput containerStyle={chatStatusStyles.inputContainerStyle} onChangeText={this.handleChatStatusChange} placeholder='VIP會員可自行定義' maxLength={3} editable={this.props.store.user.vip}/>
+               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}
+               iconRight icon={{name:'chevron-right', color: 'gray'}}/>
+             <FormInput containerStyle={chatStatusStyles.inputContainerStyle} onChangeText={this.handleChatStatusChange} placeholder='自定義' value={selfInputStatus} maxLength={3} editable={!this.props.store.user.vip}/>
               {
                this.state.selfInputChatStatus &&
-               <Button title='儲存' onPress={() => this.handleUpdateStatus(this.state.selfInputChatStatus) }
+               <Button title='送出' onPress={() => this.handleUpdateStatus(this.state.selfInputChatStatus) }
                textStyle={chatStatusStyles.textStyle}
+               color='black'
                buttonStyle={chatStatusStyles.saveButtonStyle} />
               }
               {
-                !this.props.store.user.vip &&
-                <Button title='現在就升級 VIP' onPress={this.handleUpgradeToVIP}
+                this.props.store.user.vip &&
+                <Button title='會員升級' onPress={this.handleUpgradeToVIP}
                 textStyle={chatStatusStyles.textStyle}
+                color='#03A9F4'
                 buttonStyle={chatStatusStyles.saveButtonStyle} />
                }
           </View>

@@ -1,13 +1,19 @@
 import React, { Component } from "react";
-import { Keyboard, StyleSheet, View, Text, Dimensions, ActivityIndicator } from "react-native";
+import {
+  Keyboard,
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+  ActivityIndicator
+} from "react-native";
 import { Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
 import { GiftedChat } from "react-native-gifted-chat";
 import ImagePicker from "react-native-image-picker";
 import Moment from "moment";
 import { Icon } from "react-native-elements";
-import { uploadImage, resizeImage } from '../../Utils';
-
+import { uploadImage, resizeImage } from "../../Utils";
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
 const styles = StyleSheet.create({
@@ -41,15 +47,10 @@ export default class Chat extends Component {
     this.firebase = this.props.fire;
     this.db = this.props.localdb;
 
-    //Ref to messages (訊息資料表)
-    this.msgRef = this.firebase.database().ref('messages/' + this.store.user.uid + '/' + this.props.uid);
-
-    this.receiverMsgRef = this.firebase.database().ref('messages/' + this.props.uid + '/' + this.store.user.uid);
-
     //Ref to conversations (對話資料表)
-    this.myConvRef = this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid);
-
-    this.otherConvRef = this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid);
+    this.convRef = this.firebase
+      .database()
+      .ref("conversations/" + this.props.convId);
 
     this.state = {
       size: {
@@ -63,55 +64,82 @@ export default class Chat extends Component {
       actions: false,
       image: null,
       firstTime: false,
+      theOtherData: {
+        uid: this.props.uid,
+        name: this.props.name,
+        chatStatus: this.props.chatStatus,
+        age: this.props.age,
+        avatarUrl: this.props.avatarUrl,
+        unread: 0,
+        deleted: false
+      },
+      myData: {
+        uid: this.props.uid,
+        name: this.store.user.displayName,
+        chatStatus: this.store.user.chatStatus,
+        age: Moment().diff(this.store.user.birthday, "years"),
+        avatarUrl: this.store.user.photoURL,
+        unread: 0,
+        deleted: false
+      }
     };
     this._isMounted = false;
   }
 
   componentWillMount() {
     console.debug("Rendering Messages");
-    if (this.props.chatStatus === "我的狀態" || this.props.chatStatus === '') {
+    if (this.props.chatStatus === "我的狀態" || this.props.chatStatus === "") {
       this.title = this.name + ", " + this.props.age;
     } else {
-      this.title = this.name + ", " + this.props.age + ", " + this.props.chatStatus;
+      this.title =
+        this.name + ", " + this.props.age + ", " + this.props.chatStatus;
     }
     Actions.refresh({ title: this.title });
     this._isMounted = true;
-
   }
 
   componentDidMount() {
-    this.myConvRef.once('value').then(snap => {
-          console.log('Chat DidMount: ', snap.val());
-          const myConvData = {
-            uid: this.props.uid,
-            name: this.props.name,
-            chatStatus: this.props.chatStatus,
-            age: this.props.age,
-            avatarUrl: this.props.avatarUrl,
-          }
+    this.convRef.once("value").then(
+      snap => {
+        console.log("Chat DidMount: ", snap.val());
+        const me = this.props.store.user.uid;
+        const theOther = this.props.uid;
+        const convData = {
+          users: [
+            this.state.theOtherData,
+            this.state.myData,
+          ],
+          msgs: []
+        };
 
-          const otherConvData = {
-            uid: this.store.user.uid,
-            name: this.store.user.displayName,
-            chatStatus: this.store.user.chatStatus,
-            age: Moment().diff(this.store.user.birthday, "years"),
-            avatarUrl: this.store.user.photoURL,
-          }
-
-          if(!snap.val()) {
-            this.setState({firstTime: true});
-            this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid).set(myConvData);
-            this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid).set(otherConvData);
+        if (!snap.val()) {
+          this.setState({ firstTime: true });
+          this.firebase.database().ref("conversations").push(convData);
+        } else {
+          this.firebase
+            .database()
+            .ref("conversations/" + this.props.convId)
+            .update(convData);
+          if(snap.val().users[0].uid === me) {
+            this.setState({me: 0, theOther: 1});
+          } else if(snap.val().users[1].uid === me) {
+            this.setState({me: 1, theOther: 2});
           } else {
-            this.firebase.database().ref('conversations/' + this.store.user.uid + '/' + this.props.uid).update(myConvData);
-            this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid).update(otherConvData);
+            console.log('The current user is not in the conversation.')
           }
-        }, err => {
-          console.log('Load chats from firebase error: ', err.code);
-        });
+        }
+      },
+      err => {
+        console.log("Chat/ Get conversation data from firebase error: ", err.code);
+      }
+    );
 
-    this.senderMsgRef.on('child_added', (child) => {
-      console.log('child_added', child.val());
+    const msgRef = this.firebase
+      .database()
+      .ref("conversations/" + this.props.convId + "/msg");
+
+    msgRef.on("child_added", child => {
+      console.log("child_added", child.val());
       this.setState(previousState => {
         return {
           messages: GiftedChat.append(previousState.messages, {
@@ -119,57 +147,58 @@ export default class Chat extends Component {
             text: child.val().text,
             createdAt: child.val().createdAt,
             user: child.val().user,
-            image: child.val().image,
+            image: child.val().image
           })
         };
       });
     });
 
-    this.receiverMsgRef.on('child_added', (child) => {
-      console.log('child_added', child.val());
-      this.setState(previousState => {
-        return {
-          messages: GiftedChat.append(previousState.messages, {
-            _id: child.val()._id,
-            text: child.val().text,
-            createdAt: child.val().createdAt,
-            user: child.val().user,
-            image: child.val().image,
-          })
-        };
-      });
-    });
-
-    this.clearUnread();
+    this.clearUnread(this.state.me);
   }
 
+ //@20170518
   clearUnread = () => {
-    this.myConvRef.update({unread: 0});
-  }
+    this.state.myData.unread: 0
+    const msgRef = this.firebase
+      .database()
+      .ref("conversations/" + this.props.convId + '/users')
+  };
 
   removeConversationPriority = () => {
-    this.myConvRef.update({priority: false, type: 'normal' });
-  }
+    this.myConvRef.update({ priority: false, type: "normal" });
+  };
 
+  unreadAddOne = mid => {
+    this.firebase
+      .database()
+      .ref(
+        "conversations/" +
+          this.props.uid +
+          "/" +
+          this.store.user.uid +
+          "/unread"
+      )
+      .once(
+        "value",
+        snap => {
+          const unread = snap.val() + 1;
+          this.otherConvRef.update({ unread });
+        },
+        err => {
+          console.log("Chat/onSend set unread error: " + err);
+        }
+      );
 
-  unreadAddOne = (mid) => {
-    this.firebase.database().ref('conversations/' + this.props.uid + '/' + this.store.user.uid + '/unread').once('value', snap => {
-      const unread = snap.val() + 1;
-      this.otherConvRef.update({unread});
-    }, err => {
-      console.log('Chat/onSend set unread error: ' + err);
-    });
-
-    this.myConvRef.child('msgs').push(mid);
-    this.otherConvRef.child('msgs').push(mid);
-  }
+    this.myConvRef.child("msgs").push(mid);
+    this.otherConvRef.child("msgs").push(mid);
+  };
 
   onSend = (messages = []) => {
     const createdAt = Moment().format();
     messages[0].user.name = this.store.user.displayName;
     messages[0].user.avatar = this.store.user.photoURL;
     messages[0].createdAt = createdAt;
-    console.log('onSend: ', messages[0].createdAt);
+    console.log("onSend: ", messages[0].createdAt);
     const updates = {};
     updates[messages[0]._id] = messages[0];
     this.senderMsgRef.update(updates);
@@ -282,17 +311,34 @@ export default class Chat extends Component {
       } else if (response.customButton) {
         console.log("User tapped custom button: ", response.customButton);
       } else {
-        this.setState({ actions: 'uploading'});
+        this.setState({ actions: "uploading" });
         console.log("Image data", response);
-        const firebaseRefObj = this.firebase.storage().ref('chatPhotos/' + this.store.user.uid + '/' + response.fileName.replace('JPG', 'jpg'));
-        const resizedUri = await resizeImage(response.uri, 600, 600, 'image/jpeg', 80);
+        const firebaseRefObj = this.firebase
+          .storage()
+          .ref(
+            "chatPhotos/" +
+              this.store.user.uid +
+              "/" +
+              response.fileName.replace("JPG", "jpg")
+          );
+        const resizedUri = await resizeImage(
+          response.uri,
+          600,
+          600,
+          "image/jpeg",
+          80
+        );
         console.log("resizedUri", resizedUri);
-        const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, 'image/jpeg');
+        const downloadUrl = await uploadImage(
+          resizedUri,
+          firebaseRefObj,
+          "image/jpeg"
+        );
         console.log("downloadUrl: ", downloadUrl);
         const _id = this.senderMsgRef.push().key;
         const msgObj = {
           _id,
-          text: '',
+          text: "",
           createdAt: new Date(),
           user: {
             _id: this.store.user.uid,
@@ -305,7 +351,7 @@ export default class Chat extends Component {
         this.setState(previousState => {
           return {
             // messages: GiftedChat.append(previousState.messages, msgObj),
-            actions: false,
+            actions: false
           };
         });
         const updates = {};
@@ -329,17 +375,34 @@ export default class Chat extends Component {
       } else if (response.customButton) {
         console.log("User tapped custom button: ", response.customButton);
       } else {
-        this.setState({ actions: 'uploading'});
+        this.setState({ actions: "uploading" });
         console.log("Image data", response);
-        const firebaseRefObj = this.firebase.storage().ref('chatPhotos/' + this.store.user.uid + '/' + response.fileName.replace('JPG', 'jpg'));
-        const resizedUri = await resizeImage(response.uri, 600, 600, 'image/jpeg', 80);
+        const firebaseRefObj = this.firebase
+          .storage()
+          .ref(
+            "chatPhotos/" +
+              this.store.user.uid +
+              "/" +
+              response.fileName.replace("JPG", "jpg")
+          );
+        const resizedUri = await resizeImage(
+          response.uri,
+          600,
+          600,
+          "image/jpeg",
+          80
+        );
         console.log("resizedUri", resizedUri);
-        const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, 'image/jpeg');
+        const downloadUrl = await uploadImage(
+          resizedUri,
+          firebaseRefObj,
+          "image/jpeg"
+        );
         console.log("downloadUrl: ", downloadUrl);
         const _id = this.senderMsgRef.push().key;
         const msgObj = {
           _id,
-          text: '',
+          text: "",
           createdAt: new Date(),
           user: {
             _id: this.store.user.uid,
@@ -352,7 +415,7 @@ export default class Chat extends Component {
         this.setState(previousState => {
           return {
             // messages: GiftedChat.append(previousState.messages, msgObj),
-            actions: false,
+            actions: false
           };
         });
         const updates = {};
@@ -386,14 +449,14 @@ export default class Chat extends Component {
             style={{
               flex: 1,
               width: width - 10,
-              flexDirection: 'row',
+              flexDirection: "row",
               alignSelf: "center",
-              justifyContent: 'center',
-              alignItems: 'center',
+              justifyContent: "center",
+              alignItems: "center",
               marginRight: 4
             }}
           >
-            <ActivityIndicator/>
+            <ActivityIndicator />
             <Text> 照片壓縮處理中...</Text>
           </View>
         );
@@ -408,12 +471,12 @@ export default class Chat extends Component {
               alignSelf: "center",
               justifyContent: "space-between",
               borderTopWidth: 0.5,
-              borderColor: '#E0E0E0',
+              borderColor: "#E0E0E0",
               alignItems: "center",
-              marginRight: 4,
+              marginRight: 4
             }}
           >
-            <View style={{ flex: 1, alignItems: "center", }}>
+            <View style={{ flex: 1, alignItems: "center" }}>
               <Icon
                 name="collections"
                 size={25}
@@ -462,13 +525,15 @@ export default class Chat extends Component {
         {this.state.actions &&
           <GiftedChat
             messages={this.state.messages}
-            messageIdGenerator={() => {return this.senderMsgRef.push().key}}
+            messageIdGenerator={() => {
+              return this.senderMsgRef.push().key;
+            }}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
             user={{
-              _id: this.store.user.uid,
+              _id: this.store.user.uid
             }}
             minInputToolbarHeight={45}
             placeholder="輸入訊息..."
@@ -480,13 +545,15 @@ export default class Chat extends Component {
         {!this.state.actions &&
           <GiftedChat
             messages={this.state.messages}
-            messageIdGenerator={() => {return this.senderMsgRef.push().key}}
+            messageIdGenerator={() => {
+              return this.senderMsgRef.push().key;
+            }}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
             user={{
-              _id: this.store.user.uid,
+              _id: this.store.user.uid
             }}
             imageProps={this.state.image}
             minInputToolbarHeight={45}
