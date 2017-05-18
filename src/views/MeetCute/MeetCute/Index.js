@@ -16,15 +16,15 @@ const { width, height } = Dimensions.get('window')
 //['https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14523254_10205912479689697_9039309889239665813_n.jpg?oh=d5c8c264afd125e35eafd4627cac6cca&oe=597CD498',
 //'https://scontent-tpe1-1.xx.fbcdn.net/v/t31.0-8/14991236_10205971680689685_610830410193140380_o.jpg?oh=01075df4eddf07bfa4967dbbd851e05a&oe=59BDAD66']
 const photoURL = 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14523254_10205912479689697_9039309889239665813_n.jpg?oh=d5c8c264afd125e35eafd4627cac6cca&oe=597CD498'
-const Index = ({data, getNext, handleLike}) => {
+const Index = () => {
   return(
     <View>
       <ScrollView style={{width, height}}>
           <View style={{width, height: width}}>
-            <Collapse photoURL={photoURL} getNext={getNext} handleLike={handleLike}/>
+            <Collapse photoURL={photoURL}/>
           </View>
           <View>   
-            <BasicInfo data={data}/>
+            <BasicInfo/>
             <Introduce/>
             <Interests/>
             <Language/>

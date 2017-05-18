@@ -1,11 +1,7 @@
 import { observable, action, useStrict } from 'mobx'
 import Moment from "moment"
-//import { Actions } from 'react-native-router-flux'
-//import { Alert } from "react-native";
-//import DeviceInfo from "react-native-device-info"
-// import autobind from 'autobind-decorator';
+
 useStrict(false)
-// @autobind
 
 class Prey {
   @observable user;
@@ -24,39 +20,6 @@ class Prey {
     //const locale = DeviceInfo.getDeviceLocale();
     //const country = DeviceInfo.getDeviceCountry();
     this.seekMeetQs(sexOrientation)
-    //console.warn(this.list)
-  }
-
-  @action getNext = () => {
-    //alert("Next")
-    //console.warn(this.loading)
-    this.loading = true
-    //this.setState({
-    //  loading: true
-    //});
-    //console.warn(this.user)
-    const uid = this.user.uid;
-    const list = this.list;
-    //console.log("MeetCute: getNext() pressed");
-    const _index = list.indexOf(uid) + 1;
-    //console.log(_index);
-    if (list.length > _index) {
-      this.getProfile(list[_index]);
-    } else {
-      //this.setState({
-      //  loading: false,
-      //});
-      this.loading = false
-      alert('這是最後一位了, 在沒有有fu的對象我也沒辦法惹...GG');
-      //console.log("This is the last user");
-    }
-  }  
-
-  @action handleLike = () => {
-    //console.log('MeetCute: handleLike pressed: ' + uid);
-    const r = this.firebase.database().ref("users/" + this.user.uid + "/likes").child(this.user.uid);
-    r.set({time: Moment().unix()});
-    this.getNext();
   }
 
   @action seekMeetQs(sexOrientation) {
@@ -76,49 +39,51 @@ class Prey {
     }
   }
 
-  @action mq(cond) {
-    cond = 'test'
-    //console.warn(cond)
-    //const _list = [];
+  @action mq(sexOrientation) {
+    sexOrientation = 'test'
     const query = this.firebase.database().ref("users")
-    //console.warn(query)
       //.database()
       //.ref(`seeking/${this.store.user.country}/${cond}`);
     //ref.orderByKey().equalTo(cond,"sexOrientation")
-    //console.warn(query)
-    query.orderByChild("sexOrientation").equalTo('test').once("value", snap => {
-        //console.log("Executing mq cond:" + cond);
+    query.orderByChild("sexOrientation").equalTo(sexOrientation).once("value", snap => {
         snap.forEach(childsnap => {
           //if (childsnap.val().country === 'Taiwan')
           //{
-            const _uid = childsnap.val().uid;
-            //console.warn(_uid)
-            this.list.push(_uid);
+            this.list.push(childsnap.val());
           //}
-        });
-        //console.log("Print list");
-        //console.log(_list);
-        //this.setState({ list: this.list });
+        })
       })
       .then(() => {
-        //console.warn(_list[0]);
-        this.getProfile(this.list[0]);
-      })
-  }
-
-  @action getProfile(uid) {
-    const q = this.firebase.database().ref("users/" + uid);
-    q.once("value", snap => {
-      this.user = snap.val()
-      //console.warn(this.user)
-      this.loading = false
-      //console.warn(this.user)
-      //this.setState({
-      //  data: snap.val(),
-      //  loading: false,
-      //})
+        this.setUser(this.list[0]);
     })
-  }   
+  } 
+
+  @action handleLike = () => {
+    const r = this.firebase.database().ref("users/" + this.user.uid + "/likes").child(this.user.uid);
+    r.set({time: Moment().unix()});
+    this.getNext();
+  } 
+
+  @action getNext = async () => {
+    this.loading = true
+    await this.sleep(1000)
+    const _index = this.list.indexOf(this.user) + 1;
+    if (this.list.length > _index) {
+      this.setUser(this.list[_index]);
+    } else {
+      this.loading = false
+      alert('這是最後一位了, 在沒有有fu的對象我也沒辦法惹...GG');
+    }
+  } 
+
+  @action setUser(user){
+    this.user = user
+    this.loading = false
+  } 
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }     
 }
 
 export default Prey;

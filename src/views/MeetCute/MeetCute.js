@@ -1,18 +1,12 @@
 import React, { Component } from "react";
-import { View, Dimensions, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { observer, inject } from "mobx-react/native";
-//import Moment from "moment";
 import { Actions } from "react-native-router-flux";
-//import DeviceInfo from "react-native-device-info";
 import { Index } from "./MeetCute/Index";
-
-//const width = Dimensions.get("window").with;
+//import DeviceInfo from "react-native-device-info";
 
 @inject("prey","store") @observer
 export default class MeetCute extends Component {
-  //constructor(props) {
-    //super(props);
-  //}
 
   componentWillMount() {
     Actions.refresh({ key: "drawer", open: false });
@@ -20,20 +14,7 @@ export default class MeetCute extends Component {
 
   componentDidMount() {
     this.props.prey.grepLists(this.props.store.user.sexOrientation)
-    //const deviceId = DeviceInfo.getUniqueID();
-    //const locale = DeviceInfo.getDeviceLocale();
-    //const country = DeviceInfo.getDeviceCountry();
-    //this.seekMeetQs(this.store.user.sexOrientation);
   }
-/*
-
-  handleLike = uid => {
-    console.log('MeetCute: handleLike pressed: ' + uid);
-    const r = this.firebase.database().ref("users/" + this.store.user.uid + "/likes").child(uid);
-    r.set({time: Moment().unix()});
-    this.getNext();
-  };
-*/
 
   render() {
     const indicator = (
@@ -54,13 +35,16 @@ export default class MeetCute extends Component {
         {
           this.props.prey.user && !this.props.prey.loading && 
           <Index
-            data={this.props.prey.user}
-            getNext={this.props.prey.getNext}
-            handleLike={this.props.prey.handleLike}
+            //user = {this.props.prey.user}
+            //getNext = {this.props.prey.getNext}
+            //handleLike = {this.props.prey.handleLike}
           />
         }
       </View>
     );
   }
-
 }
+    //const deviceId = DeviceInfo.getUniqueID();
+    //const locale = DeviceInfo.getDeviceLocale();
+    //const country = DeviceInfo.getDeviceCountry();
+    //this.seekMeetQs(this.store.user.sexOrientation);
