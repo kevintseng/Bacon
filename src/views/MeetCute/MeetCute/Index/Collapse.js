@@ -30,7 +30,7 @@ const render = ({ photoURL }) => {
 }
 //const { image, view } = styles
 
-const Collapse = ({ photoURL, getNext}) => {
+const Collapse = ({ photoURL, getNext, handleLike}) => {
 
   //const renderFunc = render.bind(getNext)
 
@@ -39,13 +39,13 @@ const Collapse = ({ photoURL, getNext}) => {
       <Carousel delay={2000} style={{ flex: 1, backgroundColor: "#ff1493" }} pageInfo autoplay={false} onAnimateNextPage={(p) => console.log(p)} >
         <Image resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
           <View style={{ flex: 1, marginLeft: 10, marginBottom: 10, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
-            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={getNext} />
+            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={handleLike} />
             <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={getNext} />
           </View>
         </Image> 
         <Image resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
           <View style={{ flex: 1, marginLeft: 10, marginBottom: 10, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
-            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={getNext} />
+            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={handleLike} />
             <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={getNext} />
           </View>
         </Image>                
