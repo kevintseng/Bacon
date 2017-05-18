@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Dimensions, Text, ScrollView, ActivityIndicator, TouchableHighlight } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
-import { List, ListItem, Badge, Icon, Button } from "react-native-elements";
+import { List, ListItem, Badge, Icon, Button, FormInput } from "react-native-elements";
 // import SwipeList from "react-native-smooth-swipe-list";
 import DropdownMenu from "react-native-dropdown-menu";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -23,7 +23,7 @@ export default class Messages extends Component {
     this.convRef = this.firebase
       .database()
       .ref("conversations/" + this.store.user.uid);
-    const chatStatus = this.store.user.chatStatus ? this.store.user.chatStatus : '';
+
     this.state = {
       size: {
         width,
@@ -35,6 +35,7 @@ export default class Messages extends Component {
       listFilter: "all",
       noData: false,
       statusModalShow: false,
+      selfInputChatStatus: null,
     };
     this._isMounted = false;
   }
@@ -406,9 +407,7 @@ export default class Messages extends Component {
     return { width: 56, height: 56, borderRadius: 28 };
   };
 
-  renderHeader = () => {
-    const myStatus = this.store.user.chatStatus ? this.store.user.chatStatus : '我的狀態';
-
+  renderHeader = (myStatus) => {
     return (
       <View style={{ flex: 0, paddingTop: 20, paddingHorizontal: 10, width, height: 64, backgroundColor: '#EFEFF2', borderBottomWidth: 1, borderBottomColor: 'gray' }}>
         <Grid style={{ flex: 1, alignItems: 'center' }}>
@@ -423,7 +422,7 @@ export default class Messages extends Component {
             <Text>訊息中心</Text>
           </Col>
           <Col style={{ flex:1, alignItems: 'flex-end', width: 100 }}>
-            <TouchableHighlight onPress={this.handleSetChatStatus}>
+            <TouchableHighlight onPress={this.onChatStatusPressed}>
               <Text>{myStatus}</Text>
             </TouchableHighlight>
           </Col>
@@ -432,11 +431,38 @@ export default class Messages extends Component {
     );
   };
 
-  handleSetChatStatus = () => {
+  onChatStatusPressed = () => {
     this.setState({ statusModalShow: true });
   };
 
+  handleUpdateStatus = status => {
+    if(status === '我的狀態') {
+      this.setState({
+        selfInputChatStatus: null
+      });
+    }
+    this.props.store.setChatStatus(status);
+    this.setState({ statusModalShow: false });
+  }
+
+  handleChatStatusChange = val => {
+    let status = val;
+    if(val === '') {
+      status = null;
+    }
+    this.setState({
+      selfInputChatStatus: status,
+    });
+  }
+
+  handleUpgradeToVIP = () => {
+    this.setState({
+      statusModalShow: false,
+    });
+  }
+
   render() {
+    const myStatus = this.props.store.user.chatStatus ? this.props.store.user.chatStatus : '我的狀態';
     console.log("this.state: ", this.state);
     const indicator = (
       <ActivityIndicator
@@ -450,24 +476,72 @@ export default class Messages extends Component {
       />
     );
 
+    const chatStatusStyles = {
+      containerStyle: {
+        borderBottomWidth: 1,
+        width: 300,
+        borderBottomColor: '#BDBDBD',
+        alignItems: 'center'
+      },
+      buttonStyle: {
+        backgroundColor: 'white',
+      },
+      textStyle: {
+        color: '#03A9F4',
+        backgroundColor: 'white',
+      },
+      saveButtonStyle: {
+        marginTop: 15,
+        backgroundColor: 'white',
+        borderColor: '#03A9F4',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 5,
+      },
+      inputContainerStyle: {
+        borderBottomWidth: 1,
+        paddingLeft: 20,
+        width: 200,
+        borderBottomColor: '#BDBDBD',
+        alignItems: 'center'
+      }
+    }
+
     const modalContent = {
       backgroundColor: 'white',
-      padding: 22,
+      padding: 20,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 4,
+      borderRadius: 10,
       borderColor: 'rgba(0, 0, 0, 0.1)',
     };
 
-    const headerBar = this.renderHeader();
     return (
       <View style={this.state.size}>
-        {headerBar}
+        <View style={{ flex: 0, paddingTop: 20, paddingHorizontal: 10, width, height: 64, backgroundColor: '#EFEFF2', borderBottomWidth: 1, borderBottomColor: 'gray' }}>
+          <Grid style={{ flex: 1, alignItems: 'center' }}>
+            <Col style={{ flex:1, alignItems: 'flex-start', width: 100 }}>
+              <Icon
+                name="menu"
+                color="#000"
+                onPress={() => Actions.refresh({ key: "drawer", open: value => !value })}
+              />
+            </Col>
+            <Col  style={{ alignItems: 'center', width: 100 }}>
+              <Text style={{ fontSize: 18 }}>訊息中心</Text>
+            </Col>
+            <Col style={{ flex:1, alignItems: 'flex-end', width: 100 }}>
+              <TouchableHighlight onPress={this.onChatStatusPressed}>
+                <Text>{myStatus}</Text>
+              </TouchableHighlight>
+            </Col>
+          </Grid>
+        </View>
         <ScrollView style={{ marginTop: 5 }}>
           <DropdownMenu
-            style={{ flex: 1, backgroundColor: "white" }}
-            arrowImg={require("../images/arrow_down.png")}
-            checkImage={require("../images/menu_check.png")}
+            style={{ backgroundColor: "white" }}
+            arrowImg={require("../../images/arrow_down.png")}
+            checkImage={require("../../images/menu_check.png")}
             bgColor={"white"}
             tintColor={"black"}
             selectItemColor={"red"}
@@ -519,8 +593,32 @@ export default class Messages extends Component {
         </ScrollView>
         <Modal isVisible={this.state.statusModalShow}>
           <View style={modalContent}>
-            <Text>Hi</Text>
-            <Button title='close' onPress={() =>  this.setState({ statusModalShow: false })} />
+            <Text style={{alignSelf: 'center', fontSize: 16 }}>聊天狀態設定</Text>
+            <Button title='放空中' onPress={() =>  this.handleUpdateStatus('放空中') }
+               textStyle={chatStatusStyles.textStyle}
+               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}/>
+             <Button title='忙碌中' onPress={() => this.handleUpdateStatus('忙碌中') }
+               textStyle={chatStatusStyles.textStyle}
+               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}/>
+             <Button title='低潮中' onPress={() => this.handleUpdateStatus('低潮中')}
+               textStyle={chatStatusStyles.textStyle}
+               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}/>
+             <Button title='清除狀態' onPress={() => this.handleUpdateStatus('我的狀態') }
+               textStyle={chatStatusStyles.textStyle}
+               buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}/>
+             <FormInput containerStyle={chatStatusStyles.inputContainerStyle} onChangeText={this.handleChatStatusChange} placeholder='VIP會員可自行定義' maxLength={3} editable={this.props.store.user.vip}/>
+              {
+               this.state.selfInputChatStatus &&
+               <Button title='儲存' onPress={() => this.handleUpdateStatus(this.state.selfInputChatStatus) }
+               textStyle={chatStatusStyles.textStyle}
+               buttonStyle={chatStatusStyles.saveButtonStyle} />
+              }
+              {
+                !this.props.store.user.vip &&
+                <Button title='現在就升級 VIP' onPress={this.handleUpgradeToVIP}
+                textStyle={chatStatusStyles.textStyle}
+                buttonStyle={chatStatusStyles.saveButtonStyle} />
+               }
           </View>
         </Modal>
       </View>
