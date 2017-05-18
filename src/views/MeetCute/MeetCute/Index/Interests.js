@@ -1,12 +1,15 @@
 import React from "react"
-import { View, Text } from "react-native"
+import { View } from "react-native"
 import { observer, inject } from "mobx-react/native"
 import { Badge } from 'react-native-elements'
 
-const Interests = inject("store")(observer(({ store }) => {
+const Interests = inject("prey")(observer(({ prey }) => {
+
+  const renderHelper = prey.user.interests.map((interest) => (<Badge key={interest} value={interest} textStyle={{fontSize: 10, color: "#000000"}} containerStyle={{ borderWidth: 0.5, borderColor: '#000000', backgroundColor: '#ffffff', width: 50, marginRight: 10}}/>))
+
   return(
     <View style={{flexDirection: 'row', margin: 10}}>
-      <Badge value={"電影"} textStyle={{fontSize: 10, color: "#000000"}} containerStyle={{ borderWidth: 0.5, borderColor: '#000000', backgroundColor: '#ffffff', width: 50}} />
+      { renderHelper }
     </View>
   )
 }))

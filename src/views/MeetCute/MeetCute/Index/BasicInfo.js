@@ -1,6 +1,6 @@
 import React from "react"
 import { View, Text } from "react-native"
-//import { observer, inject } from "mobx-react/native"
+import { observer, inject } from "mobx-react/native"
 
 
 const calculateAge = (birthday) => { // birthday is a date
@@ -9,14 +9,14 @@ const calculateAge = (birthday) => { // birthday is a date
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
-const BasicInfo = ({ data }) => {
+const BasicInfo = inject("prey")(observer(({ prey }) => {
   return(
     <View style = {{margin: 10}}>
       <Text style = {{fontSize: 24, color: "#000000"}}>
-        {data.displayName}, {calculateAge(new Date(data.birthday))}
+        {prey.user.displayName}, {calculateAge(new Date(prey.user.birthday))}
       </Text>
     </View>
   )
-}
+}))
 
 export { BasicInfo }

@@ -1,8 +1,10 @@
 import React from "react"
-import { View, Image, Text } from "react-native"
+import { View, Image } from "react-native"
 import Carousel from "react-native-looped-carousel"
 import { Button } from "react-native-elements"
+import { observer, inject } from "mobx-react/native"
 
+/*
 const styles = {
   view:{
     //height: 1000,
@@ -29,8 +31,8 @@ const render = ({ photoURL }) => {
   )
 }
 //const { image, view } = styles
-
-const Collapse = ({ photoURL, getNext, handleLike}) => {
+*/
+const Collapse = inject("prey")(observer(({ prey, photoURL }) => {
 
   //const renderFunc = render.bind(getNext)
 
@@ -39,20 +41,20 @@ const Collapse = ({ photoURL, getNext, handleLike}) => {
       <Carousel delay={2000} style={{ flex: 1, backgroundColor: "#ff1493" }} pageInfo autoplay={false} onAnimateNextPage={(p) => console.log(p)} >
         <Image resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
           <View style={{ flex: 1, marginLeft: 10, marginBottom: 10, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
-            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={handleLike} />
-            <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={getNext} />
+            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={prey.handleLike} />
+            <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={prey.getNext} />
           </View>
         </Image> 
         <Image resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
           <View style={{ flex: 1, marginLeft: 10, marginBottom: 10, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
-            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={handleLike} />
-            <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={getNext} />
+            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={prey.handleLike} />
+            <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={prey.getNext} />
           </View>
         </Image>                
       </Carousel> 
     </View>
   )
-}
+}))
 
 export { Collapse }
 //{PHOTO_URLS.map(renderFunc)}
