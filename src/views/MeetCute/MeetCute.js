@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import { View, Dimensions, ActivityIndicator } from "react-native";
 import { observer, inject } from "mobx-react/native";
-import Moment from "moment";
+//import Moment from "moment";
 import { Actions } from "react-native-router-flux";
-import DeviceInfo from "react-native-device-info";
+//import DeviceInfo from "react-native-device-info";
 import { Index } from "./MeetCute/Index";
 
-const width = Dimensions.get("window").with;
+//const width = Dimensions.get("window").with;
 
-@inject("prey") @observer
+@inject("prey","store") @observer
 export default class MeetCute extends Component {
   constructor(props) {
     super(props);
-    this.prey = this.props.prey
+    //console.warn(this.props.prey.user.displayName)
+    //this.prey = this.props.prey
     //this.firebase = this.props.fire;
     //this.store = this.props.store;
     //this.db = this.props.localdb;
@@ -26,12 +27,15 @@ export default class MeetCute extends Component {
   }
 
   componentWillMount() {
-    console.debug("Rendering MeetCute");
+    //console.debug("Rendering MeetCute");
+    this.props.prey.grepLists(this.props.store.user.sexOrientation)
     Actions.refresh({ key: "drawer", open: false });
   }
 
   componentDidMount() {
-    this.props.prey.grepUsers(this.store.user.sexOrientation)
+    //console.warn(this.props.store.user.sexOrientation)
+    //this.props.prey.grepLists(this.props.store.user.sexOrientation)
+    //console.warn(this.props.prey.user.displayName)
     ///console.debug("MeetCute rendered");
     //const deviceId = DeviceInfo.getUniqueID();
     //const locale = DeviceInfo.getDeviceLocale();
@@ -41,7 +45,7 @@ export default class MeetCute extends Component {
     //);
     //this.seekMeetQs(this.store.user.sexOrientation);
   }
-
+/*
   mq = cond => {
     const _list = [];
     const query = this.firebase.database().ref("users")
@@ -67,7 +71,8 @@ export default class MeetCute extends Component {
         this.getProfile(_list[0]);
       });
   };
-
+*/
+/*
   getProfile = uid => {
     const q = this.firebase.database().ref("users/" + uid);
     q.once("value", snap => {
@@ -124,7 +129,39 @@ export default class MeetCute extends Component {
     r.set({time: Moment().unix()});
     this.getNext();
   };
+*/
 
+  render() {
+    const indicator = (
+      <ActivityIndicator
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 8,
+          marginTop: 150
+        }}
+        size="large"
+      />
+    );
+    
+    return (
+      <View style={{flex: 1}}>
+        {this.props.prey.loading && indicator}
+        {
+          this.props.prey.user && !this.props.prey.loading && 
+          <Index
+            data={this.props.prey.user}
+            getNext={this.props.prey.getNext}
+            //handleLike={this.handleLike}
+          />
+        }
+      </View>
+    );
+  }
+
+}
+
+/*
   render() {
     const indicator = (
       <ActivityIndicator
@@ -152,4 +189,4 @@ export default class MeetCute extends Component {
       </View>
     );
   }
-}
+*/
