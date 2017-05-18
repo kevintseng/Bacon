@@ -1,4 +1,5 @@
 import { observable, action, useStrict } from 'mobx'
+import Moment from "moment"
 //import { Actions } from 'react-native-router-flux'
 //import { Alert } from "react-native";
 //import DeviceInfo from "react-native-device-info"
@@ -51,6 +52,12 @@ class Prey {
     }
   }  
 
+  @action handleLike = () => {
+    //console.log('MeetCute: handleLike pressed: ' + uid);
+    const r = this.firebase.database().ref("users/" + this.user.uid + "/likes").child(this.user.uid);
+    r.set({time: Moment().unix()});
+    this.getNext();
+  }
 
   @action seekMeetQs(sexOrientation) {
     switch (sexOrientation) {
