@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { observer, inject } from "mobx-react/native";
 import { Actions } from "react-native-router-flux";
-import { Index } from "./MeetCute/Index";
+import { MeetCute } from "./MeetCuteContainer/MeetCute";
 //import DeviceInfo from "react-native-device-info";
 
 @inject("prey","store") @observer
-export default class MeetCute extends Component {
+export default class MeetCuteContainer extends Component {
 
   componentWillMount() {
     Actions.refresh({ key: "drawer", open: false });
@@ -37,7 +37,7 @@ export default class MeetCute extends Component {
         {prey.loading && indicator}
         {
           prey.prey && !prey.loading && 
-          <Index/>
+          <MeetCute/>
         }
       </View>
     );

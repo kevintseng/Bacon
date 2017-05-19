@@ -5,7 +5,7 @@ import { Router, Scene, Actions } from "react-native-router-flux";
 import { observer, Provider } from "mobx-react/native";
 import { Icon } from "react-native-elements";
 import * as Firebase from "firebase"; // eslint-disable-line
-import MeetCute from "./views/MeetCute/MeetCute";
+import MeetCuteContainer from "./views/MeetCuteContainer";
 import MeetChanceContainer from "./views/MeetChanceContainer";
 import FateContainer from "./views/FateContainer";
 import Messages from "./views/Messages";
@@ -253,7 +253,7 @@ export default class RouterComponent extends Component {
             <Scene key="main" hideTabBar hideNavBar={false}>
               <Scene //邂逅
                 key="meetcute"
-                component={MeetCute}
+                component={MeetCuteContainer}
                 title="邂逅"
                 renderLeftButton={menuButton}
                 hideTabBar
