@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import { View, Dimensions, Text, ScrollView, ActivityIndicator, TouchableHighlight } from "react-native";
+import { View, Dimensions, Text, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { observer } from "mobx-react/native";
 import { List, ListItem, Badge, Icon, Button, FormInput } from "react-native-elements";
 // import SwipeList from "react-native-smooth-swipe-list";
 import DropdownMenu from "react-native-dropdown-menu";
-import { Grid, Col, Row } from "react-native-easy-grid";
+import { Grid, Col } from "react-native-easy-grid";
 import Modal from 'react-native-modal'
 // import Moment from "moment";
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
 const menuData = [["所有訊息", "未讀訊息", "訪客訊息"]];
 
-const styles = {};
+// const styles = {};
 
 @observer
 export default class Messages extends Component {
@@ -513,10 +513,18 @@ export default class Messages extends Component {
         borderRadius: 5,
         padding: 5,
       },
+      upgradeButtonStyle: {
+        marginTop: 15,
+        backgroundColor: 'white',
+        borderColor: '#03A9F4',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 5,
+      },
       inputContainerStyle: {
         borderBottomWidth: 1,
-        paddingLeft: 30,
-        width: 100,
+        paddingLeft: 10,
+        width: 70,
         borderBottomColor: '#BDBDBD',
         alignItems: 'center'
       }
@@ -548,9 +556,12 @@ export default class Messages extends Component {
               <Text style={{ fontSize: 18 }}>訊息中心</Text>
             </Col>
             <Col style={{ flex:1, alignItems: 'flex-end', width: 100 }}>
-              <TouchableHighlight onPress={this.onChatStatusPressed}>
+              <TouchableOpacity
+                style={{ borderRadius: 8, padding: 6, marginTop: 5 }}
+                onPress={this.onChatStatusPressed}
+                >
                 <Text style={{ color: '#03A9F4' }}>{myStatus}</Text>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </Col>
           </Grid>
         </View>
@@ -627,20 +638,20 @@ export default class Messages extends Component {
                textStyle={chatStatusStyles.textStyle}
                buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}
                iconRight icon={{name:'chevron-right', color: 'gray'}}/>
-             <FormInput containerStyle={chatStatusStyles.inputContainerStyle} onChangeText={this.handleChatStatusChange} placeholder='自定義' value={selfInputStatus} maxLength={3} editable={!this.props.store.user.vip}/>
+             <FormInput containerStyle={chatStatusStyles.inputContainerStyle} onChangeText={this.handleChatStatusChange} placeholder='自定義' value={selfInputStatus} maxLength={3} editable={this.props.store.user.vip}/>
               {
                this.state.selfInputChatStatus &&
                <Button title='送出' onPress={() => this.handleUpdateStatus(this.state.selfInputChatStatus) }
                textStyle={chatStatusStyles.textStyle}
-               color='black'
+               color='gray'
                buttonStyle={chatStatusStyles.saveButtonStyle} />
               }
               {
-                this.props.store.user.vip &&
+                !this.props.store.user.vip &&
                 <Button title='會員升級' onPress={this.handleUpgradeToVIP}
                 textStyle={chatStatusStyles.textStyle}
                 color='#03A9F4'
-                buttonStyle={chatStatusStyles.saveButtonStyle} />
+                buttonStyle={chatStatusStyles.upgradeButtonStyle} />
                }
           </View>
         </Modal>

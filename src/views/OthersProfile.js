@@ -58,7 +58,7 @@ export default class OthersProfile extends Component {
       uid: this.state.data.uid,
       name: this.state.data.displayName,
       chatStatus: this.state.data.chatStatus ? this.state.data.chatStatus : '',
-      age: Moment().diff(this.state.data.birthday, "years"),
+      birthday: this.state.data.birthday,
       avatarUrl: this.state.data.photoURL,
     });
   };

@@ -47,16 +47,20 @@ export default class Chat extends Component {
     this.firebase = this.props.fire;
     this.db = this.props.localdb;
 
-    //Ref to conversations (對話資料表)
-    this.convRef = this.firebase
-      .database()
-      .ref("conversations/" + this.props.convId);
-
+    let convKey = null;
+    if(this.props.convKey) {
+      convKey = this.props.convKey;
+    } else if(!this.props.store.user.conversations[this.props.uid]) {
+      this.createNewConv(this.props.uid);
+    } else {
+      convKey = this.props.store.user.conversations[this.props.uid].convKey;
+    }
     this.state = {
       size: {
         width,
         height
       },
+      convKey,
       messages: [],
       typingText: null,
       loadEarlier: true,
@@ -67,16 +71,14 @@ export default class Chat extends Component {
       theOtherData: {
         uid: this.props.uid,
         name: this.props.name,
-        chatStatus: this.props.chatStatus,
-        age: this.props.age,
+        age: Moment().diff(this.props.birthday, "years"),
         avatarUrl: this.props.avatarUrl,
         unread: 0,
         deleted: false
       },
       myData: {
-        uid: this.props.uid,
+        uid: this.props.store.user.uid,
         name: this.store.user.displayName,
-        chatStatus: this.store.user.chatStatus,
         age: Moment().diff(this.store.user.birthday, "years"),
         avatarUrl: this.store.user.photoURL,
         unread: 0,
@@ -99,22 +101,24 @@ export default class Chat extends Component {
   }
 
   componentDidMount() {
+    //Ref to conversations (對話資料表)
+    this.convRef = this.firebase
+      .database()
+      .ref("conversations/" + this.state.convKey);
     this.convRef.once("value").then(
       snap => {
         console.log("Chat DidMount: ", snap.val());
         const me = this.props.store.user.uid;
         const theOther = this.props.uid;
+        const users = {};
+        users[me] = this.state.myData;
+        users[theOther] = this.state.theOtherData;
         const convData = {
-          users: [
-            this.state.theOtherData,
-            this.state.myData,
-          ],
-          msgs: []
+          users,
         };
 
-        if (!snap.val()) {
-          this.setState({ firstTime: true });
-          this.firebase.database().ref("conversations").push(convData);
+        if (!snap.exists()) {
+          
         } else {
           this.firebase
             .database()
@@ -156,9 +160,38 @@ export default class Chat extends Component {
     this.clearUnread(this.state.me);
   }
 
- //@20170518
+  createNewConv = (uid) => {
+    const _convKey = this.firebase.database().ref("conversations").push().key
+    const users = {};
+    users[this.props.uid] = {
+      uid: this.props.uid,
+      name: this.props.name,
+      age: Moment().diff(this.props.birthday, "years"),
+      avatarUrl: this.props.avatarUrl,
+      unread: 0,
+      deleted: false
+    };
+    users[this.props.store.user.uid] = {
+      uid: this.props.store.user.uid,
+      name: this.store.user.displayName,
+      age: Moment().diff(this.store.user.birthday, "years"),
+      avatarUrl: this.store.user.photoURL,
+      unread: 0,
+      deleted: false
+    };
+
+    const convData = {
+      users,
+    }
+
+    this.setState({convKey: _convKey});
+
+    this.firebase.database().ref("conversations/" + _convKey).update(convData);
+    this.props.store.addNewConv(uid, _convKey);
+  }
+
   clearUnread = () => {
-    this.state.myData.unread: 0
+
     const msgRef = this.firebase
       .database()
       .ref("conversations/" + this.props.convId + '/users')
