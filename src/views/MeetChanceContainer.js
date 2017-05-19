@@ -2,10 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { View, Dimensions,ListView, Image, TouchableHighlight,  } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { Text, Button, Avatar} from 'react-native-elements';
+import { Text } from 'react-native-elements';
 
 import GeoFire from 'geofire';
-import moment from 'moment';
+import { MeetChance } from './MeetChanceContainer/MeetChance'
+//import moment from 'moment';
 
 
 const { width, height } = Dimensions.get('window'); //eslint-disable-line
@@ -73,7 +74,7 @@ const styles = {
 
 
 @observer
-export default class Nearby extends Component {
+export default class MeetChanceContainer extends Component {
   static propTypes = {
     store: PropTypes.object,
     fire: PropTypes.object,
@@ -102,16 +103,15 @@ export default class Nearby extends Component {
     }
   }
 
-  componentDidMount(){
-    this.getLocation();
-  }
-
-   componentWillMount() {
+  componentWillMount() {
     console.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false });
     // this.getLocation();
   }
 
+  componentDidMount(){
+    this.getLocation();
+  }
 
   getLocation = async() =>{
 
@@ -214,20 +214,7 @@ export default class Nearby extends Component {
     const list = this.state.usersLocation;
     console.log()
     return(
-      <View style={{flex: 1 ,alignSelf: 'center'}}>
-          <View style={{alignSelf: 'center',marginTop:20}}>
-             <Image source={{uri:this.store.user.photoURL}} style={styles.itemImageStyle}/>
-          </View>
-          <View style={{alignSelf: 'center',marginBottom:-20}}>
-             <Text>{this.store.user.displayName}</Text>
-          </View>
-          <ListView
-              dataSource={this.state.dataSource}
-              renderRow={this.renderRow}
-              contentContainerStyle={styles.contentViewStyle}
-              enableEmptySections = {true}
-          />
-      </View>
+      <MeetChance/>
     );
   };
 
@@ -251,9 +238,9 @@ export default class Nearby extends Component {
     return(
       <TouchableHighlight onPress={() => console.log(rowData.uid)} underlayColor = 'white' style={{height:80, marginTop:30}}>
       <View style={styles.itemStyle}>
-          <Image source={{uri:rowData.photoURL}} style={styles.itemImageStyle}/>
+          <Image source={{uri:'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14523254_10205912479689697_9039309889239665813_n.jpg?oh=d5c8c264afd125e35eafd4627cac6cca&oe=597CD498'}} style={styles.itemImageStyle}/>
           {onlineState}
-          <Text>{rowData.name}</Text>
+          <Text>{'rowData.name'}</Text>
       </View>
       </TouchableHighlight>
     );
