@@ -41,7 +41,7 @@ const SIDEBAR_LINKS = [
   {
     title: '緣分',
     icon: 'explore',
-    key: 'likesyou',
+    key: 'fate',
     new: 2,
   },
   {

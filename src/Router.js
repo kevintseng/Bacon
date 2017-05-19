@@ -5,16 +5,14 @@ import { Router, Scene, Actions } from "react-native-router-flux";
 import { observer, Provider } from "mobx-react/native";
 import { Icon } from "react-native-elements";
 import * as Firebase from "firebase"; // eslint-disable-line
-import MeetCute from "./views/MeetCute/MeetCute";
-import Nearby from "./views/Nearby";
+import MeetCuteContainer from "./views/MeetCuteContainer";
+import MeetChanceContainer from "./views/MeetChanceContainer";
+import FateContainer from "./views/FateContainer";
 import Messages from "./views/Messages";
-import LikesYou from "./views/LikesYou";
-import Visitors from "./views/Visitors";
 import Settings from "./views/Settings";
 import Signin from "./views/Signin";
 import SessionCheck from "./views/SessionCheck";
 import Chat from "./views/Chat";
-import Favorites from "./views/Favorites";
 import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
 import DrawerPanel from "./views/DrawerPanel";
 import ErrorView from "./views/ErrorView";
@@ -255,21 +253,15 @@ export default class RouterComponent extends Component {
             <Scene key="main" hideTabBar hideNavBar={false}>
               <Scene //邂逅
                 key="meetcute"
-                component={MeetCute}
+                component={MeetCuteContainer}
                 title="邂逅"
                 renderLeftButton={menuButton}
                 hideTabBar
               />
               <Scene //巧遇
                 key="nearby"
-                component={Nearby}
-                title="Nearby"
-                renderLeftButton={menuButton}
-              />
-              <Scene //喜歡您
-                key="favorites"
-                component={Favorites}
-                title="Favorites"
+                component={MeetChanceContainer}
+                title="巧遇"
                 renderLeftButton={menuButton}
               />
               <Scene //訊息
@@ -279,17 +271,12 @@ export default class RouterComponent extends Component {
                 renderLeftButton={menuButton}
                 hideTabBar
               />
-              <Scene
-                key="likesyou"
-                component={LikesYou}
-                title="LikesYou"
+              <Scene //緣分
+                key="fate"
+                component={FateContainer}
+                title='緣分'
                 renderLeftButton={menuButton}
-              />
-              <Scene
-                key="visitors"
-                component={Visitors}
-                title="Visitors"
-                renderLeftButton={menuButton}
+                hideTabBar
               />
               <Scene
                 key="settings"
