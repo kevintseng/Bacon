@@ -25,6 +25,10 @@ class AppStore {
     this.user.photoURL = uri;
   }
 
+  @action addNewConv(withUid, convKey) {
+    this.user.conversations[withUid].convKey = convKey;
+  }
+
   @action updateConv(firebase, cid, key, value) {
     const ref = firebase.database().ref('conversations/' + cid + '/' + this.user.uid);
     ref.update({key: value});
