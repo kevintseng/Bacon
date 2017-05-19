@@ -206,8 +206,10 @@ class TempSignup4 extends Component {
   }
 
   setLocalDB (userData) {
+    console.log('DB:' + userData)
+    const locaoldb = this.state.localdb;
     return new Promise((resolve, reject) => {
-      this.state.localdb
+      localdb
         .save({
           key: "user",
           data: userData,
@@ -307,16 +309,69 @@ class TempSignup4 extends Component {
 
     //const reUserData = await postUserDataAsync(postData);
     //console.log('---reUserData---' + reUserData);
+    /*
+    await this.firebase.database().ref('users/' + this.sustore.uid).set(postData, function(error,res,snap){
+      console.log('error: ' + error);
+      console.log('res: ' + res);
+      console.log('snap: ' + snap);
+    });
+    */
+    //this.setAsync(postData);
 
-    const reValue = await this.postUserData(postData);
-
-    console.log('ReValue: ' + reValue);
+  this.writeData(postData).then( value => {
+    console.log('then~~~~: ' + value);
+  }).then(this.loadData(this.sustore.uid)).then(this.setLocalDB(postData)).then(this.actionSession());
 
 
 
   };
 
-  testAsync = async(userData) => {
+
+
+
+ callset = async (postData) =>{
+    const setrevalue = await this.setAsync(postData);
+    console.log('setrevalue ' + setrevalue);
+  }
+
+  writeData = (userData) => {
+    //console.log('Firest pro = ' + this.firebase);
+    //console.log('userDATA~~ ' + JSON.stringify(userData));
+    const fs = this.firebase;
+    const uid = this.sustore.uid
+     return new Promise(function(resolve, reject){
+       console.log('pro = ' + fs);
+       fs.database().ref('users/' + uid).set(userData).then(function(error){
+         if(error){
+            resolve('error');
+         }else{
+           resolve('success');
+         }
+       })
+     })
+  }
+
+  loadData = () => {
+    const fs = this.firebase;
+    const uid = this.sustore.uid;
+    return new Promise(function(resolve, reject){
+      fs.database().ref('users/' + uid).on("value",function(snapshot){
+        console.log('loadData: ' + snapshot.val())
+        resolve(snapshot.val());
+      })
+    })
+  }
+
+  actionSession = (userData) => {
+    Actions.SessionCheck();
+  }
+
+
+
+
+
+
+ async testAsync(userData) {
     await this.firebase.database().ref('users/' + this.sustore.uid).set(userData).then((res) => {
       console.log('up4 res: ' + res);
       console.log('------------------------register done------------------------')
@@ -345,6 +400,14 @@ class TempSignup4 extends Component {
       //return Actions.sessioncheck();
     });
   };
+
+  async testUpload(userData) {
+    try{
+      await this.firebase.database().ref('users/' + this.sustore.uid).set(userData);
+    } catch (error) {
+      console.log(error.toString())
+    }
+  }
 
 
 
