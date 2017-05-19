@@ -6,7 +6,7 @@ import { observer, Provider } from "mobx-react/native";
 import { Icon } from "react-native-elements";
 import * as Firebase from "firebase"; // eslint-disable-line
 import MeetCute from "./views/MeetCute/MeetCute";
-import Nearby from "./views/Nearby";
+import MeetChanceContainer from "./views/MeetChanceContainer";
 import Messages from "./views/Messages";
 import LikesYou from "./views/LikesYou";
 import Visitors from "./views/Visitors";
@@ -262,8 +262,8 @@ export default class RouterComponent extends Component {
               />
               <Scene //巧遇
                 key="nearby"
-                component={Nearby}
-                title="Nearby"
+                component={MeetChanceContainer}
+                title="巧遇"
                 renderLeftButton={menuButton}
               />
               <Scene //喜歡您
