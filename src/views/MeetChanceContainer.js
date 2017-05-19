@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { View, Dimensions,ListView, Image, TouchableHighlight,  } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
-import { Text, Button, Avatar} from 'react-native-elements';
+import { Text } from 'react-native-elements';
 
 import GeoFire from 'geofire';
 import { MeetChance } from './MeetChanceContainer/MeetChance'
