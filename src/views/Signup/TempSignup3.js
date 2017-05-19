@@ -328,11 +328,11 @@ class TempSignup3 extends Component {
   _renderSecurityContent = () => (
     <View style={styles.modalContent}>
       <Text style={{fontSize:14,marginBottom:10}}>{securityRule.title}</Text>
-      <View style={{borderBottomWidth: 1,borderBottomColor: 'black', width:width*0.8,marginBottom:5}}></View>
+      <View style={{borderBottomWidth: 1,borderBottomColor: 'gray', width:width*0.8,marginBottom:5}}></View>
       <ScrollView>
         <Text style={{fontSize:10}}>{securityRule.context}</Text>
       </ScrollView>
-      <View style={{borderBottomWidth: 1,borderBottomColor: 'black', width:width*0.8,marginTop:5}}></View>
+      <View style={{borderBottomWidth: 1,borderBottomColor: 'gray', width:width*0.8,marginTop:5}}></View>
       {this._renderCloseButton('我知道了', () => this.setState({ visibleModal: null }))}
     </View>
   );
@@ -363,6 +363,7 @@ class TempSignup3 extends Component {
           </Text>
         }
         <FormInput
+          underlineColorAndroid='transparent'
           autoFocus
           autoCorrect={false}
           value={email}
