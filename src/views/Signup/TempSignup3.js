@@ -27,8 +27,8 @@ const styles = {
   modalContent: {
     backgroundColor: 'white',
     padding: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
+    //justifyContent: 'center',
+    //alignItems: 'center',
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
     maxHeight: 400
@@ -296,32 +296,44 @@ class TempSignup3 extends Component {
   };
 
   _renderButton = (text, onPress) => (
+
     <TouchableOpacity onPress={onPress}>
       <View>
         <Text style={{fontWeight:'bold',textDecorationLine:'underline'}}>{text}</Text>
+      </View>
+    </TouchableOpacity>
+
+  );
+
+  _renderCloseButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={{justifyContent:'flex-end',alignItems:'flex-end',marginTop:10}}>
+        <Text style={{fontWeight:'bold'}}>{text}</Text>
       </View>
     </TouchableOpacity>
   );
 
   _renderServiceContent = () => (
     <View style={styles.modalContent}>
-    <Text style={{fontSize:14}}>{serviceRule.title}</Text>
-      <ScrollView>
-        <Text style={{fontSize:10}}>{serviceRule.context}</Text>
-      </ScrollView>
-      {this._renderButton('Close', () => this.setState({ visibleModal: null }))}
+      <Text style={{fontSize:14,marginBottom:10}}>{serviceRule.title}</Text>
+      <View style={{borderBottomWidth: 1,borderBottomColor: 'gray', width:width*0.8,marginBottom:5}}></View>
+        <ScrollView>
+          <Text style={{fontSize:10}}>{serviceRule.context}</Text>
+        </ScrollView>
+      <View style={{borderBottomWidth: 1,borderBottomColor: 'gray', width:width*0.8,marginTop:5}}></View>
+      {this._renderCloseButton('我知道了', () => this.setState({ visibleModal: null }))}
     </View>
   );
 
   _renderSecurityContent = () => (
     <View style={styles.modalContent}>
-      <Text style={{fontSize:14}}>{securityRule.title}</Text>
-      <View style={{borderColor:'black', borderWidth: 1,}}></View>
-
+      <Text style={{fontSize:14,marginBottom:10}}>{securityRule.title}</Text>
+      <View style={{borderBottomWidth: 1,borderBottomColor: 'black', width:width*0.8,marginBottom:5}}></View>
       <ScrollView>
         <Text style={{fontSize:10}}>{securityRule.context}</Text>
       </ScrollView>
-      {this._renderButton('Close', () => this.setState({ visibleModal: null }))}
+      <View style={{borderBottomWidth: 1,borderBottomColor: 'black', width:width*0.8,marginTop:5}}></View>
+      {this._renderCloseButton('我知道了', () => this.setState({ visibleModal: null }))}
     </View>
   );
 
