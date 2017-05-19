@@ -17,6 +17,9 @@ export default class MeetCute extends Component {
   }
 
   render() {
+
+    const { prey } = this.props 
+    
     const indicator = (
       <ActivityIndicator
         style={{
@@ -31,20 +34,16 @@ export default class MeetCute extends Component {
     
     return (
       <View style={{flex: 1}}>
-        {this.props.prey.loading && indicator}
+        {prey.loading && indicator}
         {
-          this.props.prey.prey && !this.props.prey.loading && 
-          <Index
-            //user = {this.props.prey.user}
-            //getNext = {this.props.prey.getNext}
-            //handleLike = {this.props.prey.handleLike}
-          />
+          prey.prey && !prey.loading && 
+          <Index/>
         }
       </View>
     );
   }
 }
-    //const deviceId = DeviceInfo.getUniqueID();
-    //const locale = DeviceInfo.getDeviceLocale();
-    //const country = DeviceInfo.getDeviceCountry();
-    //this.seekMeetQs(this.store.user.sexOrientation);
+//const deviceId = DeviceInfo.getUniqueID();
+//const locale = DeviceInfo.getDeviceLocale();
+//const country = DeviceInfo.getDeviceCountry();
+//this.seekMeetQs(this.store.user.sexOrientation);
