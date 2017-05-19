@@ -13,7 +13,7 @@ export default class MeetCute extends Component {
   }
 
   componentDidMount() {
-    this.props.prey.grepLists(this.props.store.user.sexOrientation)
+    this.props.prey.fetchPreyLists(this.props.store.user.sexOrientation)
   }
 
   render() {
@@ -33,7 +33,7 @@ export default class MeetCute extends Component {
       <View style={{flex: 1}}>
         {this.props.prey.loading && indicator}
         {
-          this.props.prey.user && !this.props.prey.loading && 
+          this.props.prey.prey && !this.props.prey.loading && 
           <Index
             //user = {this.props.prey.user}
             //getNext = {this.props.prey.getNext}

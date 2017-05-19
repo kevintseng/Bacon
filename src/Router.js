@@ -83,7 +83,7 @@ export default class RouterComponent extends Component {
 
     // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
     const store = new AppStore(fire);
-    const prey = new Prey(fire);
+    const prey = new Prey(fire,store);
     this.state = {
       store,
       fire,

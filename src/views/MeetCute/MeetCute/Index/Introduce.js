@@ -6,7 +6,7 @@ const Introduce = inject("prey")(observer(({ prey }) => {
   return(
     <View style = {{margin: 10}} >
       <Text>
-        {prey.user.bio}
+        {prey.introduce}
       </Text>
     </View>
   )
