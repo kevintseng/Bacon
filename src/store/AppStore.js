@@ -95,22 +95,18 @@ class AppStore {
 
   @action handleOnPress(key) {
     switch (key) {
+      case 'aboutMeRoutes':
+        return () => Actions.aboutMeRoutes({type: 'reset'})
       case 'meetcute':
         return () => Actions.meetcute({type: 'reset'})
       case 'nearby':
         return () => Actions.nearby({type: 'reset'})
-      case 'favorites':
-        return () => Actions.favorites({type: 'reset'})
-      case 'visitors':
-        return () => Actions.visitors({type: 'reset'})
-      case 'likesyou':
-        return () => Actions.likesyou({type: 'reset'})
       case 'messages':
         return () => Actions.messages({type: 'reset'})
+      case 'fate':
+        return () => Actions.fate({type: 'reset'})
       case 'settings':
         return () => Actions.settings_wrapper({type: 'reset'})
-      case 'aboutMeRoutes':
-        return () => Actions.aboutMeRoutes({type: 'reset'})
       // Go to profile view only when user data is loaded.
         //if(this.store.user != null && this.store.user != '') {
         //  return () => Actions.aboutMeRoutes({type: 'reset'});
