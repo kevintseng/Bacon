@@ -2,20 +2,15 @@ import React from "react"
 import { View, Text } from "react-native"
 import { observer, inject } from "mobx-react/native"
 import { Icon } from 'react-native-elements'
-import geolib from 'geolib'
+//import geolib from 'geolib'
 
-const Distance = inject("prey","store")(observer(({ prey, store }) => {
-
-  const distance = geolib.getDistance(
-      {latitude: store.user.geocode.lat, longitude: store.user.geocode.lng},
-      {latitude: prey.user.geocode.lat, longitude: prey.user.geocode.lng}
-  )
+const Distance = inject("prey","store")(observer(({ prey }) => {
 
   return(
     <View style={{flexDirection: 'row', margin: 10}}>
      <Icon name='person-pin-circle'></Icon>
       <Text>
-        你們距離大約 {distance/1000} 公里
+        你們距離大約 {prey.distance} 公里
       </Text>
     </View>
   )

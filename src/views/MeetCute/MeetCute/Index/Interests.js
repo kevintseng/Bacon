@@ -5,11 +5,11 @@ import { Badge } from 'react-native-elements'
 
 const Interests = inject("prey")(observer(({ prey }) => {
 
-  const renderHelper = prey.user.interests.map((interest) => (<Badge key={interest} value={interest} textStyle={{fontSize: 10, color: "#000000"}} containerStyle={{ borderWidth: 0.5, borderColor: '#000000', backgroundColor: '#ffffff', width: 50, marginRight: 10}}/>))
+  const renderInterests = prey.interests.map((interest) => (<Badge key={interest} value={interest} textStyle={{fontSize: 10, color: "#000000"}} containerStyle={{ borderWidth: 0.5, borderColor: '#000000', backgroundColor: '#ffffff', width: 50, marginRight: 10}}/>))
 
   return(
     <View style={{flexDirection: 'row', margin: 10}}>
-      { renderHelper }
+      { renderInterests }
     </View>
   )
 }))

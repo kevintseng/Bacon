@@ -8,12 +8,12 @@ const renderLanguages = (langs) => {
     return Object.keys(langs).filter(k => langs[k]).join(',')
   }  
 
-const Language = inject("store")(observer(({ store }) => {
+const Language = inject("prey")(observer(({ prey }) => {
   return(
     <View style={{flexDirection: 'row', margin: 10}}>
       <Icon name='language'></Icon>
       <Text>
-        {renderLanguages(store.user.lang)}
+        {renderLanguages(prey.languages)}
       </Text>
     </View>
   )
