@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { AsyncStorage, AppState } from "react-native";
 import Storage from "react-native-storage";
 import { Router, Scene, Actions } from "react-native-router-flux";
-import { observer } from "mobx-react/native";
+import { observer, Provider } from "mobx-react/native";
 import { Icon } from "react-native-elements";
 import * as Firebase from "firebase"; // eslint-disable-line
-import MeetCute from "./views/MeetCute";
+import MeetCute from "./views/MeetCute/MeetCute";
 import Nearby from "./views/Nearby";
 import Messages from "./views/Messages";
 import LikesYou from "./views/LikesYou";
@@ -19,6 +19,7 @@ import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
 import DrawerPanel from "./views/DrawerPanel";
 import ErrorView from "./views/ErrorView";
 import AppStore from "./store/AppStore";
+import Prey from "./store/Prey";
 import Forgot from "./views/Forgot";
 import Account from "./views/Settings/Account";
 import PushNotification from "./views/Settings/PushNotification";
@@ -37,7 +38,7 @@ const getSceneStyle = (props, computedProps) => {
     shadowRadius: null
   };
   if (computedProps.isActive) {
-    style.marginTop = computedProps.hideNavBar ? 0 : 58;
+    style.marginTop = computedProps.hideNavBar ? 0 : 54;
     style.marginBottom = computedProps.hideTabBar ? 0 : 50;
   }
   return style;
@@ -82,11 +83,12 @@ export default class RouterComponent extends Component {
 
     // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
     const store = new AppStore(fire);
-
+    const prey = new Prey(fire,store);
     this.state = {
       store,
       fire,
       localdb,
+      prey,
       appState: AppState.currentState,
     };
 
@@ -227,6 +229,7 @@ export default class RouterComponent extends Component {
 
   render() {
     return (
+      <Provider store={this.state.store} prey={this.state.prey}>
       <Router
         fire={this.state.fire}
         store={this.state.store}
@@ -253,7 +256,7 @@ export default class RouterComponent extends Component {
               <Scene //邂逅
                 key="meetcute"
                 component={MeetCute}
-                title="MeetCute"
+                title="邂逅"
                 renderLeftButton={menuButton}
                 hideTabBar
               />
@@ -330,6 +333,7 @@ export default class RouterComponent extends Component {
 
         </Scene>
       </Router>
+      </Provider>
     );
   }
 }
