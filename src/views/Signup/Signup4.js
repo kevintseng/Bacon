@@ -363,13 +363,13 @@ class Signup4 extends Component {
     this.asyncSetDB(dataval);
   }
 
-  asyncSetDB = async(data) => {
+  asyncSetDB = async(userdata) => {
     console.log('setDB!-----------')
-    console.log(data);
+    console.log(userdata);
     await this.db.save({
         key: "user",
         //id: '1001',
-        data: data,
+        data: userdata,
         expires: 1000 * 3600 * 24 * 30 // expires after 30 days
     })
     this.asyncActions();
@@ -387,8 +387,7 @@ class Signup4 extends Component {
     };
 
     var db = storage;
-
-    db.save({
+     db.save({
       key: 'user',
       data: savedata
     });
@@ -544,7 +543,6 @@ class Signup4 extends Component {
             title={'完成，開始使用'}
             onPress={this.confrimSubmit}
           />
-
 
         </View>
       </View>
