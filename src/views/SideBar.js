@@ -27,14 +27,29 @@ export default class SideBar extends Component {
     this.store = this.props.store;
     this.firebase = this.props.fire;
     this.db = this.props.localdb;
+    this.state = {
+      displayName: '載入中...',
+      photoURL: loading
+    };
+    console.log('-----store-----')
+    console.log(this.store.user);
   }
 
   componentWillMount() {
     console.log('Rendering SideBar.');
+
   }
 
   componentDidMount() {
     console.log('SideBar rendered.');
+    if(this.store.user != 'undefined' && this.store.user != '') {
+      //displayName = this.store.user.displayName;
+      //photoURL = this.store.user.photoURL;
+      this.setState({
+        displayName: this.store.user.displayName,
+        photoURL: this.store.user.photoURL
+      })
+    };
   }
 
   handleImageChange = () => {
@@ -100,14 +115,15 @@ export default class SideBar extends Component {
 
   render() {
 
-    let displayName, photoURL;
-    if(this.store.user != null && this.store.user != '') {
+    var displayName, photoURL;
+    if(this.store.user != 'undefined' && this.store.user != '') {
       displayName = this.store.user.displayName;
-      photoURL = { uri: this.store.user.photoURL };
+      photoURL = this.store.user.photoURL;
     } else {
       displayName = '載入中...';
       photoURL = loading;
     }
+
 
     console.log('Height: ' + height);
 
@@ -127,8 +143,8 @@ export default class SideBar extends Component {
           <ListItem
             roundAvatar
             containerStyle={styles.containerStyle}
-            avatar={ photoURL }
-            title={ displayName }
+            avatar={{uri:photoURL}}
+            title={displayName}
             onPress={this.handleOnPress('profile')}
           />
           {

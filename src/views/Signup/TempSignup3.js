@@ -347,7 +347,7 @@ class TempSignup3 extends Component {
       <View style={this.state.size}>
         <Header
           headerImage
-          rightButtonText='下一步'
+          //rightButtonText='下一步'
           onRight={this.handleSubmit}
           rightColor='#007AFF'
           disableRight={this.state.loading}
@@ -363,7 +363,6 @@ class TempSignup3 extends Component {
           </Text>
         }
         <FormInput
-          underlineColorAndroid='transparent'
           autoFocus
           autoCorrect={false}
           value={email}
@@ -454,7 +453,7 @@ class TempSignup3 extends Component {
           style={{ marginTop: 10 }}
           backgroundColor='transparent'
           color='#007AFF'
-          title={'下一步'}
+          title={'最後一步'}
           onPress={this.handleSubmit}
           disabled={this.state.loading}
         />
