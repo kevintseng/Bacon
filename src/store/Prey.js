@@ -1,6 +1,7 @@
 import { observable, action, computed, useStrict } from 'mobx'
-import Moment from "moment"
+import Moment from 'moment'
 import geolib from 'geolib'
+import GeoFire from 'geofire'
 
 useStrict(false)
 
@@ -67,7 +68,36 @@ class Prey {
     this.user = this.store.user
   }
 
-  @action fetchPreyLists(sexOrientation){
+  @action initPreyList(){
+    this.preyList = []
+    this.loading = true
+  }
+
+  @action fetchPreyListsByMeetChance(latitude, longitude){
+    //console.warn(latitude,longitude)
+    this.seekNearBy(latitude, longitude)
+  }
+
+  @action seekNearBy(latitude, longitude){
+    const query = this.firebase.database().ref("/user_locations/")
+    const geoFire = new GeoFire(query)
+    const geoQuery = geoFire.query({
+      center: [latitude, longitude],
+      radius: 1000
+    })
+    geoQuery.on("key_entered", (key, location, distance) => {
+      this.setPreyListByKey(key)
+    })
+    geoQuery.on("ready", () => {
+      this.loading = false
+    })
+  }
+
+  @action setPreyListByKey(key){
+    this.firebase.database().ref('users/' + key).once('value').then(snap => { this.preyList.push(snap.val()) })
+  }
+
+  @action fetchPreyListsByMeetCute(sexOrientation){
     //const deviceId = DeviceInfo.getUniqueID();
     //const locale = DeviceInfo.getDeviceLocale();
     //const country = DeviceInfo.getDeviceCountry();

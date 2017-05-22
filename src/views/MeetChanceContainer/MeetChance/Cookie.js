@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native'
+import { View, Image, Text, Dimensions } from 'react-native'
+
+const { width } = Dimensions.get('window')
 
 const styles = {
     contentViewStyle: {
@@ -63,14 +65,17 @@ const styles = {
     }
 }
 
-const Cookie = () => {
+const ADD_IMAGE = require('hookup/src/images/addImage.png')
+
+const Cookie = ({ name, photoURL }) => {
+
   return(
-    <View style={{alignItems: 'center', margin: 10}}>
-      <View >
-        <Image source={{uri:"https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14523254_10205912479689697_9039309889239665813_n.jpg?oh=d5c8c264afd125e35eafd4627cac6cca&oe=597CD498"}} style={styles.itemImageStyle}/>
+    <View style={{alignItems: 'center', margin: 10, width: width/5 }}>
+      <View>
+        <Image source={ photoURL ? { uri: photoURL } : ADD_IMAGE } style={styles.itemImageStyle}/>
       </View>
-      <View >
-        <Text>test</Text>
+      <View>
+        <Text lineBreakMode="tail" numberOfLines={1} >{ name }</Text>
       </View>
     </View>
   )

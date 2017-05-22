@@ -1,79 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Dimensions,ListView, Image, TouchableHighlight,  } from 'react-native';
+import { View, ActivityIndicator, Dimensions} from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { observer } from 'mobx-react/native';
-import { Text } from 'react-native-elements';
-
-import GeoFire from 'geofire';
+import { observer, inject } from "mobx-react/native";
 import { MeetChance } from './MeetChanceContainer/MeetChance'
 //import moment from 'moment';
 
 
 const { width, height } = Dimensions.get('window'); //eslint-disable-line
-const styles = {
-    contentViewStyle: {
-        // 主轴方向
-        //flexDirection:'row',
-        // 换行
-        //flexWrap:'wrap'
-        justifyContent: 'center',
-        flexDirection: 'row',
-        flexWrap: 'wrap'
-    },
 
-    itemStyle: {
-        // 对齐方式
-        alignItems:'center',
-        justifyContent:'center',
-        // 尺寸
-        width:80,
-        height:80,
-        // 左边距
-        //marginLeft:20,
-        marginTop:20,
-        margin: 10,
-    },
-
-    itemImageStyle: {
-        // 尺寸
-        width:80,
-        height:80,
-        // 间距
-        marginBottom:5,
-        borderRadius: 80/2,
-    },
-
-    online:{
-      position: 'absolute',
-      bottom: 15,
-      right: 1,
-      height: 15,
-      width: 15,
-      backgroundColor: '#46ec2c',
-      //backgroundColor: '#e5e5e5',
-      borderRadius: 15/2,
-      borderStyle: 'solid',
-      borderColor: '#ffffff',
-      borderWidth: 2
-    },
-
-    offline:{
-      position: 'absolute',
-      bottom: 15,
-      right: 1,
-      height: 15,
-      width: 15,
-      //backgroundColor: '#46ec2c',
-      backgroundColor: '#e5e5e5',
-      borderRadius: 15/2,
-      borderStyle: 'solid',
-      borderColor: '#ffffff',
-      borderWidth: 2
-    }
-};
-
-
-@observer
+@inject("prey","store") @observer
 export default class MeetChanceContainer extends Component {
   static propTypes = {
     store: PropTypes.object,
@@ -88,31 +23,34 @@ export default class MeetChanceContainer extends Component {
     //lastPosition: PropTypes.number,
   }
 
-  constructor(props) {
-    super(props);
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.store = this.props.store;
-    this.fs = this.props.fire;
-    this.state = {
-      usersLocation: [],
-      dataSource: ds.cloneWithRows([]),
-      myAccount:{
-        url:'',
-        name:''
-      }
-    }
-  }
+  //constructor(props) {
+    //super(props);
+    //var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    //this.store = this.props.store;
+    //this.fs = this.props.fire;
+    //this.state = {
+    //  usersLocation: [],
+    //  dataSource: ds.cloneWithRows([]),
+    //  myAccount:{
+    //    url:'',
+    //    name:''
+    //  }
+    //}
+  //}
 
   componentWillMount() {
-    console.log('Rendering Nearby');
+    //console.log('Rendering Nearby');
+    this.props.prey.initPreyList()
     Actions.refresh({ key: 'drawer', open: false });
     // this.getLocation();
   }
 
   componentDidMount(){
-    this.getLocation();
+    this.props.prey.fetchPreyListsByMeetChance(this.props.store.user.geocode.lat, this.props.store.user.geocode.lng)
+    //console.warn('componentDidMount')
+    //this.getGeo(25.001542,121.497097);
   }
-
+/*
   getLocation = async() =>{
 
     navigator.geolocation.getCurrentPosition(
@@ -133,41 +71,51 @@ export default class MeetChanceContainer extends Component {
     );
 
   }
+*/
 
 
+  //getGeo = async (latitude, longitude) =>{
 
-  getGeo = async (latitude, longitude) =>{
-
-    var myUserId = this.fs.auth().currentUser.uid;
-    var firebaseRef = this.fs.database().ref('/user_locations/')
-    var geoFire = new GeoFire(firebaseRef);
+    //const myUserId = this.fs.auth().currentUser.uid;
+    //const firebaseRef = this.fs.database().ref('/user_locations/')
+    //const geoFire = new GeoFire(firebaseRef);
 
     /**/
-    geoFire.set(myUserId, [latitude, longitude ]).then(function() {
+    //geoFire.set(myUserId, [latitude, longitude ]).then(() => {
         //console.log("Provided key has been added to GeoFire");
-      }, function(error) {
-        //console.log("Error: " + error);
-      });
+    //  }, (error) => {
+    //    console.log("Error: " + error);
+    //  });
 
-      var geoQuery = geoFire.query({
-        center: [latitude, longitude],
-        radius: 50
-      });
-      var center = geoQuery.center();
-      var nearBy = [];
+      //const geoQuery = geoFire.query({
+      //  center: [latitude, longitude],
+      //  radius: 500
+      //});
+      //const center = geoQuery.center();
+      //var nearBy = [];
+      //console.warn(center)
 
-      geoQuery.on("ready", async () => {
-        await geoQuery.on('key_entered', (key, location, distance) => {
-          if(key != myUserId){
-            this.getUsers(nearBy, key, distance);
-          }
-        });
-      });
-  }
+      //geoQuery.on("key_entered", (key, location, distance) => {
+      //  nearBy.push(key)
+      //});
+
+      //geoQuery.on("ready", (key, location, distance) => {
+        //console.warn("完成")
+      //})
+      //console.warn(nearBy)
+      //geoQuery.on("ready", () => {
+      //  geoQuery.on('key_entered', (key, location, distance) => {
+          //if(key != myUserId){
+      //      nearBy.push(key)
+            //this.getUsers(nearBy, key, distance);
+          //}
+      //  });
+      //  console.warn(nearBy)
+      //});
+  //}
 
 
-
-
+/*
   getUsers = async (nearBy, key, distance) => {
      await this.fs.database().ref('users/' + key).once('value').then(snapshot =>{
        this.getOnlineState(nearBy, key, distance, snapshot.val().displayName, snapshot.val().photoURL);
@@ -205,19 +153,37 @@ export default class MeetChanceContainer extends Component {
      this.setState({dataSource: ds.cloneWithRows(nearBy)})
   }
 
-
-
-
-
+*/
 
   render() {
-    const list = this.state.usersLocation;
-    console.log()
-    return(
-      <MeetChance/>
-    );
-  };
 
+    const { prey } = this.props 
+    
+    const indicator = (
+      <ActivityIndicator
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 8,
+          marginTop: 150
+        }}
+        size="large"
+      />
+    )
+
+    return(
+      <View style={{flex: 1}}>
+      { prey.loading && indicator }
+      {
+        prey.preyList && !prey.loading && 
+        <MeetChance/>
+      }
+      </View>
+    );
+  }
+}
+
+/*
   renderRow = (rowData) => {
 
     const online = rowData.online;
@@ -245,9 +211,4 @@ export default class MeetChanceContainer extends Component {
       </TouchableHighlight>
     );
   }
-
-
-
-
-
-}
+*/

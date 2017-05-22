@@ -9,16 +9,17 @@ import { MeetCute } from "./MeetCuteContainer/MeetCute";
 export default class MeetCuteContainer extends Component {
 
   componentWillMount() {
-    Actions.refresh({ key: "drawer", open: false });
+    this.props.prey.initPreyList()
+    Actions.refresh({ key: "drawer", open: false })
   }
 
   componentDidMount() {
-    this.props.prey.fetchPreyLists(this.props.store.user.sexOrientation)
+    this.props.prey.fetchPreyListsByMeetCute(this.props.store.user.sexOrientation)
   }
 
   render() {
 
-    const { prey } = this.props 
+    const { prey } = this.props
     
     const indicator = (
       <ActivityIndicator
@@ -30,7 +31,7 @@ export default class MeetCuteContainer extends Component {
         }}
         size="large"
       />
-    );
+    )
     
     return (
       <View style={{flex: 1}}>
