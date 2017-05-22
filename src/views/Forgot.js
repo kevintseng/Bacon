@@ -114,8 +114,8 @@ export default class Forgot extends Component {
         }
         <View style={{ height: 20 }} />
         <Button
-          raised
-          backgroundColor='#03A9F4'
+          backgroundColor='transparent'
+          color='#007AFF'
           title={this.state.loading ? '重設密碼信寄送中...' : '送出'}
           onPress={this.onSubmit}
         />

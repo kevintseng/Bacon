@@ -17,7 +17,7 @@ import SessionCheck from "./views/SessionCheck";
 import { Profile } from "./views/Profile";
 import Chat from "./views/Chat";
 import Favorites from "./views/Favorites";
-import { Signup1, Signup2, Signup3, Signup4, TempSignup1, TempSignup2, TempSignup3, TempSignup4  } from "./views/Signup";
+import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
 import DrawerPanel from "./views/DrawerPanel";
 import ErrorView from "./views/ErrorView";
 import AppStore from "./store/AppStore";
@@ -28,9 +28,6 @@ import Question from "./views/Settings/Question";
 import ChangePassword from "./views/Settings/ChangePassword";
 import FeedBack from "./views/Settings/FeedBack";
 import { FirebaseConfig } from "./Configs";
-import TempSignin from "./views/TempSignin";
-import TempPage from "./views/TempPage";
-//import { TempSignup1, TempSignup2, TempSignup3, TempSignup4 } from "./views/Signup";
 
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
@@ -216,27 +213,18 @@ export default class RouterComponent extends Component {
         <Scene key="root" hideNavBar>
           <Scene key="sessioncheck" component={SessionCheck} />
           <Scene key="welcome" component={Welcome} hideTabBar/>
-          <Scene key="signin" component={Signin} hideTabBar/>
-          <Scene key="tempSignin" component={TempSignin} hideNavBar hideTabBar/>
-          <Scene key="tempPage" component={TempPage} hideNavBar hideTabBar/>
+          <Scene key="signin" component={Signin} hideNavBar hideTabBar/>
           <Scene
             key="forgot"
             component={Forgot}
             title="申請密碼重設"
             hideNavBar={false}
           />
-          <Scene key="signup" hideNavBar>
+          <Scene key="signup" hideNavBar hideTabBar>
             <Scene key="signup1" component={Signup1} />
             <Scene key="signup2" component={Signup2} />
             <Scene key="signup3" component={Signup3} />
             <Scene key="signup4" component={Signup4} />
-          </Scene>
-
-          <Scene key="tempsignup" hideNavBar hideTabBar>
-            <Scene key="tempsignup1" component={TempSignup1} />
-            <Scene key="tempsignup2" component={TempSignup2} />
-            <Scene key="tempsignup3" component={TempSignup3} />
-            <Scene key="tempsignup4" component={TempSignup4} />
           </Scene>
 
           <Scene key="drawer" component={DrawerPanel} open={false}>

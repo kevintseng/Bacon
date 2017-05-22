@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { Text, FormLabel, FormInput, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-
+import { Header } from '../components';
 import { observer } from 'mobx-react/native';
 import { FormErrorMsg } from '../components';
 import { checkEmail } from '../Utils';
@@ -96,9 +96,17 @@ export default class Welcome extends Component {
 
   render() {
     return (
-      <View style={[this.state.size, { marginTop: 20 }]}>
+      <View style={[this.state.size, { marginTop: 0 }]}>
+      <Header
+        headerImage
+        onRight={this.handleSubmit}
+        rightColor='#007AFF'
+        disableRight={this.state.loading}
+        disableLeft={this.state.loading}
+        onLeft={() => Actions.pop()}
+        leftColor='#007AFF'
+      />
         <View>
-          <Text h3> 歡迎使用 Hookup </Text>
           <FormLabel>登入 Email</FormLabel>
           <FormInput
             autoFocus
@@ -130,9 +138,10 @@ export default class Welcome extends Component {
           }
           <View style={{ height: 10 }} />
           <Button
-            raised
-            icon={ this.state.loading ? {name: 'sync'} : {name: 'chevron-right'}}
-            backgroundColor='#03A9F4'
+            //raised
+            color='#007AFF'
+            //icon={ this.state.loading ? {name: 'sync'} : {name: 'chevron-right'}}
+            backgroundColor='transparent'
             title={this.state.loading ? '登入中...' : '登入'}
             onPress={this.signin}
           />
@@ -142,12 +151,7 @@ export default class Welcome extends Component {
             alignItems: 'center',
             justifyContent: 'space-between'}}
           >
-            <Button
-              title='您還不是會員嗎? 馬上免費加入'
-              color='black'
-              backgroundColor='transparent'
-              onPress={Actions.signup}
-            />
+
             <Button
               title='忘記密碼? 申請密碼重設'
               color='grey'

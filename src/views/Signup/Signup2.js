@@ -7,7 +7,7 @@ import {
 import { Actions } from 'react-native-router-flux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 // import { autorun } from 'mobx';
-
+import { Text, FormLabel, FormInput, Button } from 'react-native-elements';
 import { Header } from '../../components';
 import { observer } from 'mobx-react/native';
 
@@ -61,6 +61,7 @@ class Signup2 extends Component {
   }
 
   goNext = () => {
+
     if(this.state.dispLocationName == '') {
       alert('請提供所在的城市');
     } else {
@@ -69,9 +70,15 @@ class Signup2 extends Component {
       this.sustore.setGeocode(this.state.geocode);
 
       Actions.signup3({
+        type: "reset",
         sustore: this.sustore
       });
     }
+
+    Actions.signup3({
+      type: "reset",
+      sustore: this.sustore
+    });
   }
 
   render() {
@@ -79,7 +86,7 @@ class Signup2 extends Component {
     return (
       <View style={size}>
         <Header
-          headerText='常在城市'
+          headerImage
           rightButtonText='下一步'
           onRight={this.goNext}
           rightColor='#007AFF'
@@ -87,35 +94,35 @@ class Signup2 extends Component {
           leftColor='#007AFF'
         />
         <GooglePlacesAutocomplete
-          placeholder={placeholder}
-          minLength={2}
-          autoFocus={true}
-          listViewDisplayed={true}
-          fetchDetails={true}
-          onPress={(data, details = null) => {
-            console.log({data, details});
-            this.updatePlace(data, details);
-          }}
-          getDefaultValue={() => dispLocationName}
-          query={{
-            key: 'AIzaSyBYTZDmeWcR9MEdiUTdgZGb80nDWYLnCSk',
-            language: 'en', // language of the results
-            types: 'geocode', // default: 'geocode'
-          }}
-          styles={{
-            description: {
-              fontWeight: 'bold',
-            },
-            predefinedPlacesDescription: {
-              color: '#1faadb',
-            },
-          }}
-          currentLocation={true}
-          currentLocationLabel="現在所在位置城市"
-          nearbyPlacesAPI='GoogleReverseGeocoding'
-          filterReverseGeocodingByTypes={['administrative_area_level_2', 'administrative_area_level_3']}
-          predefinedPlacesAlwaysVisible={true}
-        />
+            placeholder={placeholder}
+            minLength={2}
+            autoFocus={true}
+            listViewDisplayed={true}
+            fetchDetails={true}
+            onPress={(data, details = null) => {
+              console.log({data, details});
+              this.updatePlace(data, details);
+            }}
+            getDefaultValue={() => dispLocationName}
+            query={{
+              key: 'AIzaSyBYTZDmeWcR9MEdiUTdgZGb80nDWYLnCSk',
+              language: 'en', // language of the results
+              types: 'geocode', // default: 'geocode'
+            }}
+            styles={{
+              description: {
+                fontWeight: 'bold',
+              },
+              predefinedPlacesDescription: {
+                color: '#1faadb',
+              },
+            }}
+            currentLocation={true}
+            currentLocationLabel="現在所在位置城市"
+            nearbyPlacesAPI='GoogleReverseGeocoding'
+            filterReverseGeocodingByTypes={['administrative_area_level_2', 'administrative_area_level_3']}
+            predefinedPlacesAlwaysVisible={true}
+          />
       </View>
     );
   }
