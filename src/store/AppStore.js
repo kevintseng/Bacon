@@ -1,5 +1,5 @@
 
-import { observable, action, useStrict, autorun } from 'mobx'
+import { observable, action, useStrict } from 'mobx'
 import { Actions } from 'react-native-router-flux'
 // import autobind from 'autobind-decorator';
 useStrict(true)
@@ -25,8 +25,18 @@ class AppStore {
     this.user.photoURL = uri;
   }
 
-  @action addNewConv(withUid, convKey) {
-    this.user.conversations[withUid].convKey = convKey;
+  @action addNewConv(withUid, convKey, chatType) {
+    console.log('AppStore/addNewConv params: withUid: ' + withUid + ', convKey: ' + convKey);
+    this.user.conversations = {};
+    this.user.conversations[withUid] = {convKey};
+    // console.log('this.user.conversations[' + withUid + ']: ' + this.user.conversations[withUid].convKey);
+
+    //Sync to firebase
+    const addToMyConvList = this.firebase.database().ref("users/" + this.user.uid + "/conversations").child(withUid);
+    addToMyConvList.set({convKey});
+
+    const addToOtherConvList = this.firebase.database().ref("users/" + withUid + "/conversations").child(this.user.uid);
+    addToOtherConvList.set({ convKey, chatType, priority: false });
   }
 
   @action updateConv(firebase, cid, key, value) {

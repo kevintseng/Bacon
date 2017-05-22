@@ -60,6 +60,7 @@ export default class OthersProfile extends Component {
       chatStatus: this.state.data.chatStatus ? this.state.data.chatStatus : '',
       birthday: this.state.data.birthday,
       avatarUrl: this.state.data.photoURL,
+      chatType: 'visitor',
     });
   };
 
