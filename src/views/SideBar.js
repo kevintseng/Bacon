@@ -45,7 +45,6 @@ export default class SideBar extends Component {
 
   componentWillMount() {
     console.log('Rendering SideBar.');
-  }
 }
 
 
