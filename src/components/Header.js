@@ -38,6 +38,7 @@ const styles = {
     alignSelf: 'center',
   },
   leftColStyle: {
+    marginLeft: 5,
     justifyContent: 'center',
     width: 100,
     alignItems: 'flex-start',
@@ -76,6 +77,7 @@ const Header = (props) => {
   if(!rightColor) rightColor = 'transparent';
   if(!onLeft) onLeft = () => {};
   if(!onRight) onRight = () => {};
+
   const showHeader = () => {
     if(headerText){
       return(
@@ -93,14 +95,17 @@ const Header = (props) => {
     };
   };
 
+  if(!leftIconName) leftIconName = 'chevron-left';
+
+
   return (
     <View style={viewStyle}>
     <Grid style={gridStyle}>
       <Col style={leftColStyle}>
         <Icon
-          name='chevron-left'
+          name={leftIconName}
           color={leftColor}
-          size={32}
+          size={28}
           onPress={onLeft}
           disabled={disableLeft}
         />
@@ -132,6 +137,7 @@ Header.propTypes = {
   leftColor: PropTypes.string,
   //headerImage: PropTypes.bool,
 }
+
 
 // Make the component available to other parts of the app
 export { Header };
