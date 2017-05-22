@@ -73,14 +73,14 @@ export default class Welcome extends Component {
               raised
               backgroundColor='#FECE00'
               title='免費加入'
-              onPress={Actions.tempsignup} />
+              onPress={Actions.signup} />
             <View style={{height:10}}></View>
             <Button
               large
               raised
               backgroundColor='#03A9F4'
               title='登入'
-              onPress={Actions.tempSignin} />
+              onPress={Actions.signin} />
               <View style={{height:0}}></View>
               <Button
                 title='忘記密碼? 申請密碼重設'
