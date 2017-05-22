@@ -6,7 +6,6 @@ import { observer, Provider } from "mobx-react/native";
 import { Icon } from "react-native-elements";
 import * as Firebase from "firebase"; // eslint-disable-line
 import Welcome from "./views/Welcome";
-import MeetCute from "./views/MeetCute";
 import Nearby from "./views/Nearby";
 import MeetCuteContainer from "./views/MeetCuteContainer";
 import MeetChanceContainer from "./views/MeetChanceContainer";
