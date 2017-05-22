@@ -14,6 +14,8 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import { observer } from 'mobx-react/native';
 import ImagePicker from 'react-native-image-picker';
 import { Header } from '../../components/Header';
+import { AsyncStorage } from 'react-native';
+import Storage from 'react-native-storage';
 // import { FirebaseConfig } from '../../Configs';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
@@ -63,6 +65,7 @@ class TempSignup4 extends Component {
     this.sustore = this.props.sustore;
     this.store = this.props.store;
     this.firebase = this.props.fire;
+    this.db = this.props.localdb;
     this.state = {
       size: {
           width,
@@ -205,11 +208,13 @@ class TempSignup4 extends Component {
     });
   }
 
-  setLocalDB (userData) {
+  setLocalDB = (userData) => {
     console.log('DB:' + userData)
-    const locaoldb = this.state.localdb;
+    const Slocaoldb = this.db;
+    console.log(Slocaldb);
+    /*
     return new Promise((resolve, reject) => {
-      localdb
+      Slocaldb
         .save({
           key: "user",
           data: userData,
@@ -220,6 +225,7 @@ class TempSignup4 extends Component {
           console.log(err);
         });
     })
+    */
   }
 
   handleSubmit = async () => {
@@ -269,6 +275,7 @@ class TempSignup4 extends Component {
 
   confrimSubmit = async () => {
     console.log('submit check');
+    console.log(this.db)
     if(!this.state.photoUrl) {
       alert('請給偶一張您的美/帥照, 拜偷拜偷');
       return;
@@ -315,24 +322,100 @@ class TempSignup4 extends Component {
       console.log('res: ' + res);
       console.log('snap: ' + snap);
     });
-    */
-    //this.setAsync(postData);
+
 
   this.writeData(postData).then( value => {
-    console.log('then~~~~: ' + value);
-  }).then(this.loadData(this.sustore.uid)).then(this.setLocalDB(postData)).then(this.actionSession());
+    console.log('then~~~~');
+    console.log(value);
+  }).then(this.loadData(this.sustore.uid).then( value => {
+    console.log('then2~~~:');
+    console.log(value)
+  })).then(this.setLocalDB().then( value =>{
+    console.log('DB: ' + value)
+  }))
+  */
+  //this.writeData(postData).then(this.loadData()).then(this.setDB(postData)).then(this.actionSession());
+  //Actions.sessioncheck();
 
+  this.asyncWriteData(postData);
 
 
   };
 
+  asyncWriteData = async(data) => {
+    await this.firebase.database().ref('users/' + this.sustore.uid).set(data).then(function(error){
+      if(error){
 
+      } else{
 
+      }
+    })
+    this.asyncLoadData();
+  };
 
- callset = async (postData) =>{
-    const setrevalue = await this.setAsync(postData);
-    console.log('setrevalue ' + setrevalue);
+  asyncLoadData = async () => {
+    var dataval
+    await this.firebase.database().ref('users/' + this.sustore.uid).once("value",function(snapshot){
+      dataval = snapshot.val()
+    })
+    console.log('dataval~~')
+    console.log(dataval)
+    this.asyncSetDB(dataval);
   }
+
+  asyncSetDB = async(data) => {
+    console.log('setDB!-----------')
+    console.log(data);
+    await this.db.save({
+        key: "user",
+        //id: '1001',
+        data: data,
+        expires: 1000 * 3600 * 24 * 30 // expires after 30 days
+    })
+    this.asyncActions();
+    //this.showDB();
+  }
+
+  asyncActions = () => {
+    Actions.sessioncheck();
+  }
+
+  saveDB = () => {
+    var savedata = {
+      uid: 'frank428p',
+      age: '27'
+    };
+
+    var db = storage;
+
+    db.save({
+      key: 'user',
+      data: savedata
+    });
+  }
+
+  showDB = () => {
+    console.log('in Show DB-------');
+    console.log(this.db);
+    var db = storage;
+    db.load({
+	     key: 'user',
+       autoSync: true,
+       syncInBackground: true,
+       //id: '1001'
+    }).then(ret => {
+    	// found data goes to then()
+    	console.log(ret.uid);
+    }).catch(err => {
+    	// any exception including data not found
+    	// goes to catch()
+    	console.warn(err.message);
+    });
+  }
+
+
+
+
 
   writeData = (userData) => {
     //console.log('Firest pro = ' + this.firebase);
@@ -355,15 +438,23 @@ class TempSignup4 extends Component {
     const fs = this.firebase;
     const uid = this.sustore.uid;
     return new Promise(function(resolve, reject){
-      fs.database().ref('users/' + uid).on("value",function(snapshot){
+      fs.database().ref('users/' + uid).once("value",function(snapshot){
         console.log('loadData: ' + snapshot.val())
         resolve(snapshot.val());
       })
     })
   }
+  setDB = (data) => {
 
+
+    this.db.save({
+        key: "user",
+        data: data,
+        expires: 1000 * 3600 * 24 * 30 // expires after 30 days
+    })
+  }
   actionSession = (userData) => {
-    Actions.SessionCheck();
+    Actions.sessioncheck();
   }
 
 
@@ -420,7 +511,6 @@ class TempSignup4 extends Component {
       <View style={[this.state.size, {flexGrow: 1, }]}>
         <Header
           headerImage
-          rightButtonText='完成'
           onRight={this.handleSubmit}
           rightColor='#007AFF'
           onLeft={() => Actions.pop()}
@@ -446,21 +536,15 @@ class TempSignup4 extends Component {
               onPress={this.addImage}
             />
           </Card>
-          <Button
-            style={{ marginTop: 10 }}
-            backgroundColor='transparent'
-            color='#007AFF'
-            title={'完成'}
-            onPress={this.handleSubmit}
-          />
 
           <Button
             style={{ marginTop: 10 }}
             backgroundColor='transparent'
             color='#007AFF'
-            title={'Async/Await'}
+            title={'完成，開始使用'}
             onPress={this.confrimSubmit}
           />
+
 
         </View>
       </View>

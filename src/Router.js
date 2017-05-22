@@ -83,6 +83,7 @@ export default class RouterComponent extends Component {
         // we'll talk about the details later.
       }
     });
+    global.storage = localdb;
 
     const fire = Firebase.initializeApp(FirebaseConfig);
 
@@ -100,7 +101,6 @@ export default class RouterComponent extends Component {
 
   componentWillMount() {
     console.log("Router will mount.");
-
   }
 
   authListener = (fire) => {

@@ -39,7 +39,7 @@ export default class Welcome extends Component {
       this.setState({
         loading: false
       });
-      Actions.drawer();
+      //Actions.drawer();
     } else {
       this.setState({
         loading: false
@@ -47,6 +47,7 @@ export default class Welcome extends Component {
       //Actions.signin();
       Actions.welcome();
     }
+
     this.db.load({
       key: 'user',
       autoSync: false,
@@ -55,8 +56,9 @@ export default class Welcome extends Component {
       console.log('User existed in LocalDB: ');
       console.log(ret);
       if(ret) {
-        this.store.setUser(ret);
-        Actions.drawer();
+        //this.store.setUser(ret);
+        //Actions.drawer();
+        this.storeUser(ret);
       } else {
         console.log('SessionCheck: Rendering signin');
         //Actions.signin();
@@ -81,6 +83,17 @@ export default class Welcome extends Component {
           Actions.welcome();
       }
     });
+  }
+
+  storeUser = async (data) => {
+    console.log('-----storeUser-----')
+    console.log(data);
+    await this.store.setUser(data);
+    this.actionsmove();
+  }
+
+  actionsmove = () => {
+    Actions.drawer();
   }
 
   render() {

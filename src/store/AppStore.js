@@ -14,6 +14,7 @@ class AppStore {
   @action setUser(user) {
     this.user = user;
     console.log('Current User in AppStore: ' + user.uid);
+    console.log(user)
   }
 
   @action setAvatar(uri) {

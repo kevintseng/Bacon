@@ -138,9 +138,10 @@ export default class Welcome extends Component {
           }
           <View style={{ height: 10 }} />
           <Button
-            raised
-            icon={ this.state.loading ? {name: 'sync'} : {name: 'chevron-right'}}
-            backgroundColor='#03A9F4'
+            //raised
+            color='#007AFF'
+            //icon={ this.state.loading ? {name: 'sync'} : {name: 'chevron-right'}}
+            backgroundColor='transparent'
             title={this.state.loading ? '登入中...' : '登入'}
             onPress={this.signin}
           />
@@ -150,12 +151,7 @@ export default class Welcome extends Component {
             alignItems: 'center',
             justifyContent: 'space-between'}}
           >
-            <Button
-              title='您還不是會員嗎? 馬上免費加入'
-              color='black'
-              backgroundColor='transparent'
-              onPress={Actions.signup}
-            />
+
             <Button
               title='忘記密碼? 申請密碼重設'
               color='grey'

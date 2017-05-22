@@ -3,7 +3,7 @@ import {
     View,
     Dimensions,
 } from 'react-native';
-import {ButtonGroup, FormLabel, FormInput, Button} from 'react-native-elements'; // eslint-disable-line
+import {ButtonGroup, FormLabel, FormInput, Button, Text} from 'react-native-elements'; // eslint-disable-line
 import { Actions } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 // import { autorun } from 'mobx';
@@ -125,6 +125,11 @@ class TempSignup1 extends Component {
           {
             this.state.soErr &&   <FormErrorMsg>{this.state.soErr}</FormErrorMsg>
           }
+        </View>
+        <View style={{flexDirection:'row',marginLeft:20}}>
+          <Text>提醒：請注意性別與性向是</Text>
+          <Text style={{color:'red',fontWeight:'bold'}}>不能更改</Text>
+          <Text>的</Text>
         </View>
         <Button
           style={{ marginTop: 10 }}
