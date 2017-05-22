@@ -1,19 +1,27 @@
-import React, { Component } from 'react';
-import { ScrollView, Dimensions } from 'react-native';
+import React from 'react'
+import { ScrollView, Dimensions } from 'react-native'
 
-import { List, ListItem, Button } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
-import { observer } from 'mobx-react/native';
-import { SIDEBAR_LINKS } from '../Configs';
+import { List, ListItem } from 'react-native-elements'
+//import { Actions } from 'react-native-router-flux'
+import { observer } from 'mobx-react/native'
+import { SIDEBAR_LINKS } from '../Configs'
 
-const { height } = Dimensions.get('window'); //eslint-disable-line
-
-const list = SIDEBAR_LINKS;
-const loading = require('../images/loading.gif');
-
+const loading = require('../images/loading.gif')
+const { height } = Dimensions.get('window') //eslint-disable-line
+const list = SIDEBAR_LINKS
 const styles = {
-  containerStyle: {
+  scrollView: {
+    height,
+    backgroundColor: '#ffffff'
+  },
+  listContainerStyle:{
+    marginTop: 0,
     borderBottomWidth: 0,
+    backgroundColor: '#ffffff'
+  },
+  listItemContainerStyle: {
+    borderBottomWidth: 0,
+    //backgroundColor: '#f0f0f0'
   },
   wrapperStyle: {
     paddingLeft: 43,
@@ -37,8 +45,9 @@ export default class SideBar extends Component {
 
   componentWillMount() {
     console.log('Rendering SideBar.');
-
   }
+}
+
 
   componentDidMount() {
     console.log('SideBar rendered.');
@@ -127,49 +136,44 @@ export default class SideBar extends Component {
 
     console.log('Height: ' + height);
 
-    return (
-      <ScrollView
-        style={{
-          height,
-          backgroundColor: '#F5F5F5'
-        }}
-      >
-        <List>
-          <ListItem
-            containerStyle={{ height: 43, backgroundColor: '#F5F5F5', borderBottomWidth: 0.5, borderBottomColor: '#BDBDBD'}}
-            rightIcon={{ name: 'menu', color: 'black' }}
-            onPress={() => Actions.refresh({ key: 'drawer', open: false })}
-          />
-          <ListItem
+const SideBar = observer(({ store }) => {
+
+  const { scrollView, listContainerStyle, listItemContainerStyle, wrapperStyle } = styles
+
+
+  return(
+    <ScrollView style = { scrollView } >
+      <List containerStyle = { listContainerStyle } >
+        <ListItem
+            containerStyle = { [listItemContainerStyle,{height: 53, borderBottomWidth: 0.5, borderBottomColor: '#808080'}] }
+            rightIcon = {{name: 'menu', color: 'black'}}
+            onPress = { store.refreshDrawer }
+        />
+        <ListItem
             roundAvatar
             containerStyle={styles.containerStyle}
             avatar={{uri:photoURL}}
             title={displayName}
             onPress={this.handleOnPress('profile')}
           />
-          {
-            list.map((item, i) => (
+        {
+          list.map((item, i) => (
               <ListItem
-                key={i}
-                containerStyle={styles.containerStyle}
-                wrapperStyle={styles.wrapperStyle}
-                underlayColor={'#f8f8f8'}
-                title={item.title}
-                leftIcon={{ name: item.icon }}
-                badge={this.badgeShow(item.new)}
-                onPress={this.handleOnPress(item.key)}
+                key = { i }
+                containerStyle = { listItemContainerStyle }
+                wrapperStyle = { wrapperStyle }
+                underlayColor = { '#f8f8f8' }
+                title = { item.title }
+                leftIcon = {{name: item.icon}}
+                badge = { false }
+                onPress = { store.handleOnPress(item.key) }
               />
-            ))
-          }
-        </List>
-        <Button
-          style={{ marginTop: 10 }}
-          color={'black'}
-          backgroundColor={'#F5F5F5'}
-          title={'登出'}
-          onPress={this.signOut}
-        />
-      </ScrollView>
-    );
-  }
-}
+          ))
+        }
+      </List>
+    </ScrollView>
+  )
+ }
+)
+
+export { SideBar }

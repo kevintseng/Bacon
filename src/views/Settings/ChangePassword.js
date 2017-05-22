@@ -24,6 +24,20 @@ import MessageBarManager from 'react-native-message-bar/MessageBarManager';
 
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
+const styles = {
+  buttonTop: {
+    marginTop: 20
+  },
+
+  wrapper: {
+   borderRadius: 5,
+   marginBottom: 5,
+ },
+ button: {
+   backgroundColor: '#eeeeee',
+   padding: 10,
+ },
+}
 
 @observer
 export default class ChangePassword extends Component {
@@ -281,19 +295,4 @@ export default class ChangePassword extends Component {
       </View>
     );
   }
-}
-
-const styles = {
-  buttonTop: {
-    marginTop: 20
-  },
-
-  wrapper: {
-   borderRadius: 5,
-   marginBottom: 5,
- },
- button: {
-   backgroundColor: '#eeeeee',
-   padding: 10,
- },
 }

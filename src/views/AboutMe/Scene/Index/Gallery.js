@@ -5,12 +5,12 @@ import { observer } from 'mobx-react/native';
 import PhotoGrid from 'react-native-photo-grid';
 import ImagePicker from 'react-native-customized-image-picker';
 import Modal from 'react-native-simple-modal';
-import { uploadImage, resizeImage } from '../../Utils';
+import { uploadImage, resizeImage } from '../../../../Utils';
 
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
-const ADD_IMAGE = require('../../images/addImage.png'); //eslint-disable-line
-const PLACEHOLDER = require('../../images/cameraPlaceholder.jpg'); //eslint-disable-line
+const ADD_IMAGE = require('hookup/src/images/addImage.png'); //eslint-disable-line
+const PLACEHOLDER = require('hookup/src/images/cameraPlaceholder.jpg'); //eslint-disable-line
 const styles = {
   viewWrapper: {
     width,

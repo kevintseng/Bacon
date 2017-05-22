@@ -1,26 +1,26 @@
 import React, { Component } from "react";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, AppState } from "react-native";
 import Storage from "react-native-storage";
 import { Router, Scene, Actions } from "react-native-router-flux";
-import { observer } from "mobx-react/native";
+import { observer, Provider } from "mobx-react/native";
 import { Icon } from "react-native-elements";
 import * as Firebase from "firebase"; // eslint-disable-line
 import Welcome from "./views/Welcome";
 import MeetCute from "./views/MeetCute";
 import Nearby from "./views/Nearby";
+import MeetCuteContainer from "./views/MeetCuteContainer";
+import MeetChanceContainer from "./views/MeetChanceContainer";
+import FateContainer from "./views/FateContainer";
 import Messages from "./views/Messages";
-import LikesYou from "./views/LikesYou";
-import Visitors from "./views/Visitors";
 import Settings from "./views/Settings";
 import Signin from "./views/Signin";
 import SessionCheck from "./views/SessionCheck";
-import { Profile } from "./views/Profile";
 import Chat from "./views/Chat";
-import Favorites from "./views/Favorites";
 import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
 import DrawerPanel from "./views/DrawerPanel";
 import ErrorView from "./views/ErrorView";
 import AppStore from "./store/AppStore";
+import Prey from "./store/Prey";
 import Forgot from "./views/Forgot";
 import Account from "./views/Settings/Account";
 import PushNotification from "./views/Settings/PushNotification";
@@ -28,7 +28,6 @@ import Question from "./views/Settings/Question";
 import ChangePassword from "./views/Settings/ChangePassword";
 import FeedBack from "./views/Settings/FeedBack";
 import { FirebaseConfig } from "./Configs";
-
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
   const style = {
@@ -40,7 +39,7 @@ const getSceneStyle = (props, computedProps) => {
     shadowRadius: null
   };
   if (computedProps.isActive) {
-    style.marginTop = computedProps.hideNavBar ? 0 : 58;
+    style.marginTop = computedProps.hideNavBar ? 0 : 54;
     style.marginBottom = computedProps.hideTabBar ? 0 : 50;
   }
   return style;
@@ -85,12 +84,14 @@ export default class RouterComponent extends Component {
     const fire = Firebase.initializeApp(FirebaseConfig);
 
     // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
-    const store = new AppStore();
-
+    const store = new AppStore(fire);
+    const prey = new Prey(fire,store);
     this.state = {
       store,
       fire,
       localdb,
+      prey,
+      appState: AppState.currentState,
     };
 
     this.authListener(fire);
@@ -99,6 +100,16 @@ export default class RouterComponent extends Component {
   componentWillMount() {
     console.log("Router will mount.");
   }
+
+  componentDidMount() {
+    // AppState.addEventListener('inactive', this.setOffline(this.state.store.user.uid));
+  }
+
+  componentWillUnmount() {
+
+  }
+
+
 
   authListener = (fire) => {
     console.log("Initialize authListener .");
@@ -145,7 +156,7 @@ export default class RouterComponent extends Component {
             this.state.store.setUser(user);
             console.log("Router: User has been set in appstore");
             this.setOnline(this.state.store.user.uid);
-            console.log('frank V: ' + JSON.stringify(this.state.store.user));
+            AppState.addEventListener('change', this.handleAppStateChange);
             this.state.localdb
               .save({
                 key: "user",
@@ -177,6 +188,21 @@ export default class RouterComponent extends Component {
     });
   }
 
+  handleAppStateChange = nextAppState => {
+    console.log('AppState listner is on');
+    if(this.state.appState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
+      console.log('App is becoming inactive.');
+      this.setOffline(this.state.store.user.uid);
+    }
+
+    if(nextAppState === 'active') {
+      console.log('App is active');
+      this.setOnline(this.state.store.user.uid);
+    }
+
+    this.setState({appState: nextAppState});
+  }
+
   setOffline(uid) {
     // const timestamp = Math.floor(Date.now() / 1000);
     this.state.fire.database().ref("/online/" + uid).remove();
@@ -203,6 +229,7 @@ export default class RouterComponent extends Component {
 
   render() {
     return (
+      <Provider store={this.state.store} prey={this.state.prey}>
       <Router
         fire={this.state.fire}
         store={this.state.store}
@@ -229,43 +256,32 @@ export default class RouterComponent extends Component {
 
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
-              <Scene
+              <Scene //邂逅
                 key="meetcute"
-                component={MeetCute}
-                title="MeetCute"
+                component={MeetCuteContainer}
+                title="邂逅"
                 renderLeftButton={menuButton}
                 hideTabBar
               />
-              <Scene
+              <Scene //巧遇
                 key="nearby"
-                component={Nearby}
-                title="Nearby"
+                component={MeetChanceContainer}
+                title="巧遇"
                 renderLeftButton={menuButton}
               />
-              <Scene
-                key="favorites"
-                component={Favorites}
-                title="Favorites"
-                renderLeftButton={menuButton}
-              />
-              <Scene
+              <Scene //訊息
                 key="messages"
                 component={Messages}
-                title="Messages"
+                title='訊息中心'
                 renderLeftButton={menuButton}
                 hideTabBar
               />
-              <Scene
-                key="likesyou"
-                component={LikesYou}
-                title="LikesYou"
+              <Scene //緣分
+                key="fate"
+                component={FateContainer}
+                title='緣分'
                 renderLeftButton={menuButton}
-              />
-              <Scene
-                key="visitors"
-                component={Visitors}
-                title="Visitors"
-                renderLeftButton={menuButton}
+                hideTabBar
               />
               <Scene
                 key="settings"
@@ -295,18 +311,12 @@ export default class RouterComponent extends Component {
                 />
                 <Scene key="feedback" component={FeedBack} title="Feedback" />
               </Scene>
-
-              <Scene
-                key="profile"
-                component={Profile}
-                title="關於我"
-                renderLeftButton={menuButton}
-                hideTabBar
-              />
+              {require("./views/AboutMe/Routes")}
               <Scene
                 key="chat"
                 component={Chat}
                 title="Chat"
+                hideNavBar={false}
                 hideTabBar
               />
             </Scene>
@@ -315,6 +325,7 @@ export default class RouterComponent extends Component {
 
         </Scene>
       </Router>
+      </Provider>
     );
   }
 }

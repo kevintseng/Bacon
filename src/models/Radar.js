@@ -1,4 +1,4 @@
-import {reaction, observable, observe, computed, autorun} from 'mobx'; // eslint-disable-line
+import {observable, computed, action, autorun, reaction} from 'mobx'; // eslint-disable-line
 
 export default class Radar {
   @observable views = 0;

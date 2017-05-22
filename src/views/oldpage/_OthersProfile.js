@@ -10,7 +10,7 @@ import { Card, Divider, Button, Text } from "react-native-elements";
 import Carousel from "react-native-looped-carousel";
 import Moment from "moment";
 import { observer } from "mobx-react/native";
-// import { Actions } from "react-native-router-flux";
+import { Actions } from "react-native-router-flux";
 
 
 const { width } = Dimensions.get("window");
@@ -28,7 +28,7 @@ export default class OthersProfile extends Component {
   }
 
   componentWillMount() {
-    console.debug("Rendering Profile");
+    console.debug("Rendering OthersProfile");
   }
 
   componentDidMount() {
@@ -54,6 +54,13 @@ export default class OthersProfile extends Component {
 
   handleLike = () => {
     this.props.handleLike(this.state.data.uid);
+    Actions.chat({
+      uid: this.state.data.uid,
+      name: this.state.data.displayName,
+      chatStatus: this.state.data.chatStatus ? this.state.data.chatStatus : '',
+      age: Moment().diff(this.state.data.birthday, "years"),
+      avatarUrl: this.state.data.photoURL,
+    });
   };
 
   render() {
@@ -67,6 +74,7 @@ export default class OthersProfile extends Component {
       photoVerified,
       vip,
       emailVerified,
+      chatStatus,
       hobby,
       photos
     } = this.state.data;
@@ -124,7 +132,7 @@ export default class OthersProfile extends Component {
                   icon={{
                     name: "heart",
                     type: "evilicon",
-                    color: "white",
+                    color: "#ff0000",
                     size: 70
                   }}
                   backgroundColor="transparent"
@@ -134,7 +142,7 @@ export default class OthersProfile extends Component {
                   icon={{
                     name: "close-o",
                     type: "evilicon",
-                    color: "white",
+                    color: "#ff0000",
                     size: 70
                   }}
                   backgroundColor="transparent"
