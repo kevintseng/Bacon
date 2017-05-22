@@ -43,24 +43,16 @@ export default class Chat extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.store;
-    this.name = this.props.name;
     this.firebase = this.props.fire;
     this.db = this.props.localdb;
+    // console.log("Store prop: ", this.store);
 
-    let convKey = null;
-    if(this.props.convKey) {
-      convKey = this.props.convKey;
-    } else if(!this.props.store.user.conversations[this.props.uid]) {
-      this.createNewConv(this.props.uid);
-    } else {
-      convKey = this.props.store.user.conversations[this.props.uid].convKey;
-    }
     this.state = {
       size: {
         width,
         height
       },
-      convKey,
+      convKey: null,
       messages: [],
       typingText: null,
       loadEarlier: true,
@@ -68,116 +60,165 @@ export default class Chat extends Component {
       actions: false,
       image: null,
       firstTime: false,
-      theOtherData: {
-        uid: this.props.uid,
-        name: this.props.name,
-        age: Moment().diff(this.props.birthday, "years"),
-        avatarUrl: this.props.avatarUrl,
-        unread: 0,
-        deleted: false
-      },
-      myData: {
-        uid: this.props.store.user.uid,
-        name: this.store.user.displayName,
-        age: Moment().diff(this.store.user.birthday, "years"),
-        avatarUrl: this.store.user.photoURL,
-        unread: 0,
-        deleted: false
-      }
+      users: {},
     };
     this._isMounted = false;
   }
 
   componentWillMount() {
     console.debug("Rendering Messages");
-    if (this.props.chatStatus === "我的狀態" || this.props.chatStatus === "") {
-      this.title = this.name + ", " + this.props.age;
+    const age = Moment().diff(this.props.birthday, "years");
+    const name = this.props.name;
+    const chatStatus = this.props.chatStatus ? this.props.chatStatus : '';
+    if (chatStatus === "我的狀態" || chatStatus === "") {
+      this.title = name + ", " + age;
     } else {
       this.title =
-        this.name + ", " + this.props.age + ", " + this.props.chatStatus;
+        name + ", " + age + ", " + chatStatus;
     }
     Actions.refresh({ title: this.title });
     this._isMounted = true;
   }
 
   componentDidMount() {
-    //Ref to conversations (對話資料表)
-    this.convRef = this.firebase
-      .database()
-      .ref("conversations/" + this.state.convKey);
-    this.convRef.once("value").then(
-      snap => {
-        console.log("Chat DidMount: ", snap.val());
-        const me = this.props.store.user.uid;
-        const theOther = this.props.uid;
-        const users = {};
-        users[me] = this.state.myData;
-        users[theOther] = this.state.theOtherData;
-        const convData = {
-          users,
-        };
+    this.initChatRoom();
+  }
 
-        if (!snap.exists()) {
-          
-        } else {
-          this.firebase
-            .database()
-            .ref("conversations/" + this.props.convId)
-            .update(convData);
-          if(snap.val().users[0].uid === me) {
-            this.setState({me: 0, theOther: 1});
-          } else if(snap.val().users[1].uid === me) {
-            this.setState({me: 1, theOther: 2});
-          } else {
-            console.log('The current user is not in the conversation.')
-          }
-        }
-      },
-      err => {
-        console.log("Chat/ Get conversation data from firebase error: ", err.code);
-      }
-    );
+//這邊 createNewConv 的 convKey 等不到
+asdfasdfasldl;
 
-    const msgRef = this.firebase
-      .database()
-      .ref("conversations/" + this.props.convId + "/msg");
+  initChatRoom = async () => {
+    let convKey;
+    if(this.props.convKey) {
+      convKey = this.props.convKey;
+      this.setState({
+        convKey,
+      });
+      this.loadAndUpdate(convKey);
+      this.convRef = this.props.fire.database().ref('conversations/' + convKey);
+    } else if(!this.props.store.user.conversations || !this.props.store.user.conversations[this.props.uid]) {
+      console.log('Initializing new conversation');
+      convKey = await this.createNewConv(this.props.uid);
+      this.setState({
+        convKey,
+      });
+      this.loadAndUpdate(convKey);
+      this.convRef = this.props.fire.database().ref('conversations/' + convKey);
+    } else {
+      console.log('Found existing conversation: ' + this.props.store.user.conversations[this.props.uid]);
+      convKey = this.props.store.user.conversations[this.props.uid].convKey;
+      this.setState({
+        convKey,
+      });
+      this.loadAndUpdate(convKey);
+      this.convRef = this.props.fire.database().ref('conversations/' + convKey);
+    }
 
-    msgRef.on("child_added", child => {
-      console.log("child_added", child.val());
+  }
+
+  loadMessages = (_convKey, startAt = 0) => {
+    //Load previous 25 msgs from firebase.
+    this.firebase.database().ref('conversations/' + _convKey + '/messages').orderByChild('_id').startAt(startAt).on('child_added', msgSnap => {
+      console.log('child_added: ' + msgSnap.key);
       this.setState(previousState => {
+
+        const msgId = msgSnap.val()._id;
+
+        //Update lastRead
+        this.props.fire.database().ref('conversations/' + this.state.convKey + '/users/' + this.props.store.user.uid).update({ lastRead: msgId });
+
+        const _users = this.state.users;
+        _users[this.props.store.user.uid].lastRead = msgId;
+
         return {
-          messages: GiftedChat.append(previousState.messages, {
-            _id: child.val()._id,
-            text: child.val().text,
-            createdAt: child.val().createdAt,
-            user: child.val().user,
-            image: child.val().image
-          })
+          messages: GiftedChat.append(previousState.messages, msgSnap.val()),
+          users: _users,
         };
       });
     });
-
-    this.clearUnread(this.state.me);
   }
 
-  createNewConv = (uid) => {
-    const _convKey = this.firebase.database().ref("conversations").push().key
+  // updateLastRead = (msgId) => {
+  //   this.props.fire.database().ref('conversations/' + this.state.convKey + '/users/' + this.props.store.user.uid).update({ lastRead: msgId });
+  // }
+
+  loadAndUpdate= (_convKey) => {
+    const me = this.props.store.user.uid;
+    const theOther = this.props.uid;
+    let _users;
+    this.props.fire.database().ref('conversations/' + _convKey + '/users').once('value').then(snap=> {
+      console.log('snap.val()' + snap.val()[theOther].name);
+      _users = snap.val();
+      return _users;
+    }).then(_users => {
+      const users = [];
+      users[theOther] = {
+        name: this.props.name,
+        age: Moment().diff(this.props.birthday, "years"),
+        avatarUrl: this.props.avatarUrl,
+        unread: 0,
+      };
+
+      users[me] = {
+        name: this.props.store.user.displayName,
+        age: Moment().diff(this.props.store.user.birthday, "years"),
+        avatarUrl: this.props.store.user.photoURL,
+        unread: 0,
+      };
+      // console.log('user[theOther]' + users[theOther].name);
+      // console.log('_user[theOther]' + _users[theOther].name);
+      users[theOther] = this.updateDiff(_users[theOther], users[theOther]);
+      users[me] = this.updateDiff(_users[me], users[me]);
+      this.firebase.database().ref('conversations/' + _convKey + '/users').set(users);
+
+      this.firebase.database().ref('conversations/' + _convKey + '/chatType').set('normal');
+
+      this.setState({ users });
+      return users;
+    }).then(users => {
+      this.loadMessages(_convKey, users[this.props.store.user.uid].deleted);
+    });
+  }
+
+  updateDiff = (u1, u2) => {
+    const u = u1;
+    if(u.name != u2.name) {
+      u.name = u2.name;
+    }
+    if(u.avatarUrl != u2.avatarUrl) {
+      u.avatarUrl = u2.avatarUrl;
+    }
+    if(u.age != u2.age) {
+      u.age = u2.age;
+    }
+    u.unread = 0;
+    // console.log('updateDiff return: ' + u.lastRead + ', age: ' + u.age + ', name: ' + u.name);
+    return u;
+  }
+
+  createNewConv = (_other) => {
+    const _convKey = this.firebase.database().ref("conversations").push().key;
+    console.log('Get new conversation key from firebase: ' + _convKey);
+    const _me = this.props.store.user.uid;
+    const chatType = this.props.chatType ? this.props.chatType : 'normal';
     const users = {};
-    users[this.props.uid] = {
-      uid: this.props.uid,
+    users[_other] = {
+      uid: _other,
       name: this.props.name,
       age: Moment().diff(this.props.birthday, "years"),
       avatarUrl: this.props.avatarUrl,
       unread: 0,
-      deleted: false
+      deleted: false,
+      lastRead: 0,
     };
-    users[this.props.store.user.uid] = {
-      uid: this.props.store.user.uid,
+    users[_me] = {
+      uid: _me,
       name: this.store.user.displayName,
       age: Moment().diff(this.store.user.birthday, "years"),
       avatarUrl: this.store.user.photoURL,
       unread: 0,
-      deleted: false
+      deleted: false,
+      lastRead: 0,
     };
 
     const convData = {
@@ -185,9 +226,16 @@ export default class Chat extends Component {
     }
 
     this.setState({convKey: _convKey});
+    // console.log('createNewConv: ' + _convKey);
+    //Create a new conversation in conversations bucket
 
-    this.firebase.database().ref("conversations/" + _convKey).update(convData);
-    this.props.store.addNewConv(uid, _convKey);
+    this.firebase.database().ref("conversations/" + _convKey).update(convData).then(()=> {
+      this.props.store.addNewConv(_other, _convKey, chatType);
+      console.log('AppStore/this.user.conversations: ' + this.props.store.user.conversations);
+      return _convKey;
+    });
+
+    return null;
   }
 
   clearUnread = () => {
@@ -205,10 +253,8 @@ export default class Chat extends Component {
     this.firebase
       .database()
       .ref(
-        "conversations/" +
+        "conversations/" + this.state.convKey + '/users/' +
           this.props.uid +
-          "/" +
-          this.store.user.uid +
           "/unread"
       )
       .once(
@@ -227,6 +273,7 @@ export default class Chat extends Component {
   };
 
   onSend = (messages = []) => {
+    const _msgRef = this.firebase.database().ref('conversations/' + this.state.convKey + '/messages');
     const createdAt = Moment().format();
     messages[0].user.name = this.store.user.displayName;
     messages[0].user.avatar = this.store.user.photoURL;
@@ -234,12 +281,12 @@ export default class Chat extends Component {
     console.log("onSend: ", messages[0].createdAt);
     const updates = {};
     updates[messages[0]._id] = messages[0];
-    this.senderMsgRef.update(updates);
-    this.receiverMsgRef.update(updates);
+    _msgRef.update(updates);
 
-    this.unreadAddOne(messages[0]._id);
 
-    this.removeConversationPriority(); //有發言後就取消.
+    // this.unreadAddOne(messages[0]._id);
+
+    // this.removeConversationPriority(); //有發言後就取消.
 
     Keyboard.dismiss();
     // for demo purpose
@@ -397,6 +444,7 @@ export default class Chat extends Component {
   };
 
   handlePhotoPicker = () => {
+    const msgRef = this.props.fire.database().ref('conversations/' + this.state.convKey);
     console.log("handlePhotoPicker called");
     ImagePicker.launchImageLibrary(ImagePickerOptions, async response => {
       console.log("Response = ", response);
@@ -432,7 +480,7 @@ export default class Chat extends Component {
           "image/jpeg"
         );
         console.log("downloadUrl: ", downloadUrl);
-        const _id = this.senderMsgRef.push().key;
+        const _id = msgRef.child('messages').push().key;
         const msgObj = {
           _id,
           text: "",
@@ -447,15 +495,14 @@ export default class Chat extends Component {
 
         this.setState(previousState => {
           return {
-            // messages: GiftedChat.append(previousState.messages, msgObj),
+            messages: GiftedChat.append(previousState.messages, msgObj),
             actions: false
           };
         });
         const updates = {};
         updates[_id] = msgObj;
-        this.senderMsgRef.update(updates);
-        this.receiverMsgRef.update(updates);
-        this.unreadAddOne(_id);
+        msgRef.child('messages').update(updates);
+        // this.unreadAddOne(_id);
       }
     });
   };
@@ -559,7 +606,7 @@ export default class Chat extends Component {
           <GiftedChat
             messages={this.state.messages}
             messageIdGenerator={() => {
-              return this.senderMsgRef.push().key;
+              return this.convRef.child('messages').push().key;
             }}
             onSend={this.onSend}
             label="送出"
@@ -579,7 +626,7 @@ export default class Chat extends Component {
           <GiftedChat
             messages={this.state.messages}
             messageIdGenerator={() => {
-              return this.senderMsgRef.push().key;
+              return this.convRef.child('messages').push().key;
             }}
             onSend={this.onSend}
             label="送出"
