@@ -71,13 +71,13 @@ const showHeader = (props) => {
 // Make a component
 const Header = (props) => {
   const { titleStyle, gridStyle, buttonStyle, viewStyle, leftColStyle, rightColStyle, logoColStyle } = styles;
-  let { leftColor, disableRight, disableLeft, onLeft, rightColor, onRight } = props;
+  let { leftIconName, leftColor, disableRight, disableLeft, onLeft, rightColor, onRight } = props;
   const { headerText, rightButtonText, headerImage } = props;
   if(!leftColor) leftColor = 'transparent';
   if(!rightColor) rightColor = 'transparent';
   if(!onLeft) onLeft = () => {};
   if(!onRight) onRight = () => {};
-
+  if(!leftIconName) leftIconName = 'chevron-left';
   const showHeader = () => {
     if(headerText){
       return(
@@ -94,9 +94,6 @@ const Header = (props) => {
       );
     };
   };
-
-  if(!leftIconName) leftIconName = 'chevron-left';
-
 
   return (
     <View style={viewStyle}>
