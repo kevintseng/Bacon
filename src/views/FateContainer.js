@@ -1,9 +1,8 @@
 import React, {Component, PropTypes} from 'react';
-import { View, Dimensions, } from 'react-native';
+import { Dimensions, } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 // import { autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
-import { Text } from 'react-native-elements';
 import { Fate } from './FateContainer/Fate'
 
 

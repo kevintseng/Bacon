@@ -67,15 +67,20 @@ const styles = {
 
 const ADD_IMAGE = require('hookup/src/images/addImage.png')
 
-const Cookie = ({ name, photoURL }) => {
+const Cookie = ({ name, ages, photoURL, children }) => {
 
   return(
-    <View style={{alignItems: 'center', margin: 10, width: width/5 }}>
+    <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
       <View>
         <Image source={ photoURL ? { uri: photoURL } : ADD_IMAGE } style={styles.itemImageStyle}/>
       </View>
-      <View>
-        <Text lineBreakMode="tail" numberOfLines={1} >{ name }</Text>
+      <View style={{marginLeft:20}}>
+        <View>
+          <Text style={{color: '#000000'}}>{ name }, { ages }</Text>
+        </View>
+        <View>
+          { children }
+        </View>
       </View>
     </View>
   )
