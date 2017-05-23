@@ -26,15 +26,16 @@ class AppStore {
   }
 
   @action addNewConv(withUid, convKey, chatType) {
-    console.log('AppStore/addNewConv params: withUid: ' + withUid + ', convKey: ' + convKey);
+    // console.log('AppStore/addNewConv params: withUid: ' + withUid + ', convKey: ' + convKey);
+    //Add new conversation to AppStore user profile
     this.user.conversations = {};
-    this.user.conversations[withUid] = {convKey};
-    // console.log('this.user.conversations[' + withUid + ']: ' + this.user.conversations[withUid].convKey);
+    this.user.conversations[withUid] = {convKey, chatType, priority: false };
 
-    //Sync to firebase
+    //Add new conversation to my user profile on firebase
     const addToMyConvList = this.firebase.database().ref("users/" + this.user.uid + "/conversations").child(withUid);
-    addToMyConvList.set({convKey});
+    addToMyConvList.set({convKey, chatType, priority: false });
 
+    //Add new conversation to the other person's user profile on firebase
     const addToOtherConvList = this.firebase.database().ref("users/" + withUid + "/conversations").child(this.user.uid);
     addToOtherConvList.set({ convKey, chatType, priority: false });
   }
