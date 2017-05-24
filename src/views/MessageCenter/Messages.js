@@ -1,3 +1,11 @@
+/*
+  @Firebase db structure for conversations and Messages
+
+  conversations: there's a main conversations bucket that stores conversation data, which has two sub buckets: messages and users.
+
+  In each user's user data, there's also a conversations list, each item in the list is indexed with conversation key from the main conversations bucket, and each item has "chatType", "convKey", and "priority".
+*/
+
 import React, { Component } from "react";
 import { View, Dimensions, Text, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
 import { Actions } from "react-native-router-flux";
@@ -12,17 +20,10 @@ import Modal from 'react-native-modal'
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
 const menuData = [["所有訊息", "未讀訊息", "訪客訊息"]];
 
-// const styles = {};
-
 @observer
 export default class Messages extends Component {
   constructor(props) {
     super(props);
-    this.store = this.props.store;
-    this.firebase = this.props.fire;
-    this.convRef = this.firebase
-      .database()
-      .ref("conversations/" + this.store.user.uid);
 
     this.state = {
       size: {
@@ -55,10 +56,10 @@ export default class Messages extends Component {
 
   getConvs = filterType => {
     this.setState({ isLoading: true });
-
-    const getUnread = this.convRef.orderByChild("unread").startAt(1);
-    const getAll = this.convRef;
-    const getVisitor = this.convRef.orderByChild("type").equalTo("visitor");
+    const myConvList = this.props.fire.database().ref('users/' + this.props.store.user.uid + '/conversations');
+    const getUnread = myConvList.orderByChild("unread").startAt(1);
+    const getAll = myConvList;
+    const getVisitor = myConvList.orderByChild("chatType").equalTo("visitor");
 
     let query = getAll;
     switch (filterType) {
@@ -73,18 +74,18 @@ export default class Messages extends Component {
         break;
     }
 
-    query.once("value").then(snapForConvs => {
+    query.once("value").then(convSnap => {
       // console.log('CHECK: ', snap.val());
       const convs = [];
       let key = 0;
-      if (snapForConvs.exists()) {
-        snapForConvs.forEach(childConv => {
-          const queryKey = childConv.val().uid;
-          console.log("Key: " + key + " convData: " + childConv.val().unread);
+      if (convSnap.exists()) {
+        convSnap.forEach(childConv => {
+          const queryKey = childConv.val().convKey;
 
-          this.firebase
+
+          this.props.fire
             .database()
-            .ref("messages/" + this.store.user.uid + "/" + queryKey)
+            .ref("messages/" + this.props.store.user.uid + "/" + queryKey)
             .limitToLast(1)
             .once("value")
             .then(snapshot => {
@@ -114,7 +115,7 @@ export default class Messages extends Component {
               const priority = childConv.val().priority;
               const unread = childConv.val().unread;
 
-              const chatStatus = this.firebase.database().ref('users/' + userId + '/chatStatus').once('value', snap => {
+              const chatStatus = this.props.fire.database().ref('users/' + userId + '/chatStatus').once('value', snap => {
                 if(snap.exists()) {
                   return snap.val();
                 }
@@ -161,9 +162,9 @@ export default class Messages extends Component {
   };
 
   unreadListener(uid, key) {
-    const ref = this.firebase
+    const ref = this.props.fire
       .database()
-      .ref("conversations/" + this.store.user.uid + "/" + uid + "/unread");
+      .ref("conversations/" + this.props.store.user.uid + "/" + uid + "/unread");
     console.log("Start listening to unread on uid: " + uid + " key: " + key);
     ref.on("value", snapshot => {
       if (snapshot.exists()) {
@@ -187,7 +188,7 @@ export default class Messages extends Component {
   }
 
   chatStatusListener(userId, key) {
-    const ref = this.firebase.database().ref("users/" + userId + "/chatStatus");
+    const ref = this.props.fire.database().ref("users/" + userId + "/chatStatus");
 
     ref.on(
       "value",
@@ -216,7 +217,7 @@ export default class Messages extends Component {
   }
 
   onlineListener(userId, key) {
-    const ref = this.firebase.database().ref("online/" + userId);
+    const ref = this.props.fire.database().ref("online/" + userId);
     ref.on(
       "value",
       snap => {
@@ -422,9 +423,9 @@ export default class Messages extends Component {
             <Text>訊息中心</Text>
           </Col>
           <Col style={{ flex:1, alignItems: 'flex-end', width: 100 }}>
-            <TouchableHighlight onPress={this.onChatStatusPressed}>
+            <TouchableOpacity onPress={this.onChatStatusPressed}>
               <Text>{myStatus}</Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </Col>
         </Grid>
       </View>

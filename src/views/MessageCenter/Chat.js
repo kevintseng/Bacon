@@ -1,3 +1,10 @@
+/*
+  @Firebase db structure for conversations and Messages
+
+  conversations: there's a main conversations bucket that stores conversation data, which has two sub buckets: messages and users.
+
+  In each user's user data, there's also a conversations list, each item in the list is indexed with conversation key from the main conversations bucket, and each item has "chatType", "convKey", and "priority".
+*/
 import React, { Component } from "react";
 import {
   Keyboard,
@@ -42,10 +49,7 @@ const ImagePickerOptions = {
 export default class Chat extends Component {
   constructor(props) {
     super(props);
-    this.store = this.props.store;
-    this.firebase = this.props.fire;
-    this.db = this.props.localdb;
-    // console.log("Store prop: ", this.store);
+    // console.log("Store prop: ", this.props.store);
 
     this.state = {
       size: {
@@ -110,7 +114,7 @@ export default class Chat extends Component {
 
   loadAndListenMessages = (_convKey, startAt = 0) => {
     //Load previous 25 msgs from firebase.
-    this.firebase.database().ref('conversations/' + _convKey + '/messages').orderByChild('_id').startAt(startAt).on('child_added', msgSnap => {
+    this.props.fire.database().ref('conversations/' + _convKey + '/messages').orderByChild('_id').startAt(startAt).on('child_added', msgSnap => {
       console.log('child_added: ' + msgSnap.key);
       this.setState(previousState => {
 
@@ -168,27 +172,28 @@ export default class Chat extends Component {
       //Update difference
       users[theOther] = this.updateDiff(_users[theOther], users[theOther]);
       users[me] = this.updateDiff(_users[me], users[me]);
-      this.firebase.database().ref('conversations/' + _convKey + '/users').set(users);
-
-      //update chatType
-      this.setChatType(me, theOther, 'normal');
+      this.props.fire.database().ref('conversations/' + _convKey + '/users').set(users);
 
       this.setState({ users });
       return users;
     }).then(users => {
       //load message data
       this.loadAndListenMessages(_convKey, users[this.props.store.user.uid].deleted);
+      //reset current user's unread count of this conversation in firebase db
+      this.clearUnread(_convKey, this.props.store.user.uid);
     });
   }
 
-  setChatType = (uid1, uid2, chatType) => {
-    //update chatType
-    this.firebase.database().ref('users/' + uid1 + '/conversations/' + uid2 + '/chatType').set(chatType);
+  // //set the chat type on firebase db
+  // setChatType = (uid1, uid2, chatType) => {
+  //   //update chatType
+  //   this.props.fire.database().ref('users/' + uid1 + '/conversations/' + uid2 + '/chatType').set(chatType);
+  //
+  //   //update chatType
+  //   this.props.fire.database().ref('users/' + uid2 + '/conversations/' + uid1 + '/chatType').set(chatType);
+  // }
 
-    //update chatType
-    this.firebase.database().ref('users/' + uid2 + '/conversations/' + uid1 + '/chatType').set(chatType);
-  }
-
+  //check users' name, avatar, age, and update
   updateDiff = (u1, u2) => {
     const u = u1;
     if(u.name != u2.name) {
@@ -206,7 +211,7 @@ export default class Chat extends Component {
   }
 
   createNewConv = (_other) => {
-    const _convKey = this.firebase.database().ref("conversations").push().key;
+    const _convKey = this.props.fire.database().ref("conversations").push().key;
     console.log('Get new conversation key from firebase: ' + _convKey);
     const _me = this.props.store.user.uid;
     const chatType = this.props.chatType ? this.props.chatType : 'normal';
@@ -222,9 +227,9 @@ export default class Chat extends Component {
     };
     users[_me] = {
       uid: _me,
-      name: this.store.user.displayName,
-      age: Moment().diff(this.store.user.birthday, "years"),
-      avatarUrl: this.store.user.photoURL,
+      name: this.props.store.user.displayName,
+      age: Moment().diff(this.props.store.user.birthday, "years"),
+      avatarUrl: this.props.store.user.photoURL,
       unread: 0,
       deleted: false,
       lastRead: 0,
@@ -237,7 +242,7 @@ export default class Chat extends Component {
     this.setState({convKey: _convKey});
 
     //Add a new conv to firebase db conversations, then add to each person's user profile and current user's local Appstore
-    this.firebase.database().ref("conversations/" + _convKey).update(convData).then(()=> {
+    this.props.fire.database().ref("conversations/" + _convKey).update(convData).then(()=> {
       this.props.store.addNewConv(_other, _convKey, chatType);
       this.loadAndUpdate(_convKey);
       this.setState({
@@ -249,59 +254,67 @@ export default class Chat extends Component {
     return null;
   }
 
+  //reset unread count
   clearUnread = (convKey, uid) => {
-    const unreadRef = this.firebase
+    const unreadRef = this.props.fire
       .database()
       .ref("conversations/" + convKey + '/users/' + uid);
     unreadRef.set({unread: 0});
   };
 
+  // Only removes the priority of current user's conversation record
   removeConversationPriority = () => {
-    this.myConvRef.update({ priority: false, type: "normal" });
+    const myUid = this.props.store.user.uid;
+    const otherUid = this.props.uid;
+    const myConvRef = this.props.fire.database().ref('users/' + myUid + '/conversations/' + otherUid);
+
+    myConvRef.update({ priority: false, type: "normal" });
   };
 
-  unreadAddOne = mid => {
-    this.firebase
+  //adds 1 to unread
+  unreadAddOne = (convKey, uid) => {
+    const convRef = this.props.fire.database().ref("conversations/" + convKey + "/users/" + uid);
+    this.props.fire
       .database()
       .ref(
         "conversations/" + this.state.convKey + '/users/' +
-          this.props.uid +
+          uid +
           "/unread"
       )
       .once(
         "value",
         snap => {
           const unread = snap.val() + 1;
-          this.otherConvRef.update({ unread });
+          //update new unread count
+          convRef.update({ unread });
         },
         err => {
           console.log("Chat/onSend set unread error: " + err);
         }
       );
 
-    this.myConvRef.child("msgs").push(mid);
-    this.otherConvRef.child("msgs").push(mid);
+
   };
 
   onSend = (messages = []) => {
-    const _msgRef = this.firebase.database().ref('conversations/' + this.state.convKey + '/messages');
+    const msgRef = this.props.fire.database().ref('conversations/' + this.state.convKey + '/messages');
     const createdAt = Moment().format();
-    messages[0].user.name = this.store.user.displayName;
-    messages[0].user.avatar = this.store.user.photoURL;
+    messages[0].user.name = this.props.store.user.displayName;
+    messages[0].user.avatar = this.props.store.user.photoURL;
     messages[0].createdAt = createdAt;
     console.log("onSend: ", messages[0].createdAt);
     const updates = {};
     updates[messages[0]._id] = messages[0];
-    _msgRef.update(updates);
+    //adds this new message to firebase
+    msgRef.update(updates);
 
+    //adds 1 to the other user's conversation bucket's unread field
+    this.unreadAddOne(this.state.convKey, this.props.uid);
 
-    // this.unreadAddOne(messages[0]._id);
-
-    // this.removeConversationPriority(); //有發言後就取消.
+    //有發言回應後就取消 priority
+    this.removeConversationPriority();
 
     Keyboard.dismiss();
-    // for demo purpose
-    // this.answerDemo(messages);
   };
 
   renderFooter = () => {
@@ -391,9 +404,10 @@ export default class Chat extends Component {
   };
 
   handleCameraPicker = () => {
+    const msgRef = this.props.fire.database().ref("conversations/" + this.state.convKey + "/messages");
     console.log("handleCameraPicker called");
     ImagePicker.launchCamera(ImagePickerOptions, async response => {
-      console.log("Response = ", response);
+      // console.log("Response = ", response);
 
       if (response.didCancel) {
         console.log("User cancelled image picker");
@@ -404,11 +418,11 @@ export default class Chat extends Component {
       } else {
         this.setState({ actions: "uploading" });
         console.log("Image data", response);
-        const firebaseRefObj = this.firebase
+        const firebaseRefObj = this.props.fire
           .storage()
           .ref(
             "chatPhotos/" +
-              this.store.user.uid +
+              this.props.store.user.uid +
               "/" +
               response.fileName.replace("JPG", "jpg")
           );
@@ -426,36 +440,39 @@ export default class Chat extends Component {
           "image/jpeg"
         );
         console.log("downloadUrl: ", downloadUrl);
-        const _id = this.senderMsgRef.push().key;
+        const _id = msgRef.push().key;
         const msgObj = {
           _id,
           text: "",
           createdAt: new Date(),
           user: {
-            _id: this.store.user.uid,
-            name: this.store.user.displayName,
-            avatar: this.store.user.photoURL
+            _id: this.props.store.user.uid,
+            name: this.props.store.user.displayName,
+            avatar: this.props.store.user.photoURL
           },
           image: downloadUrl
         };
 
         this.setState(previousState => {
           return {
-            // messages: GiftedChat.append(previousState.messages, msgObj),
+            messages: GiftedChat.append(previousState.messages, msgObj),
             actions: false
           };
         });
         const updates = {};
         updates[_id] = msgObj;
-        this.senderMsgRef.update(updates);
-        this.receiverMsgRef.update(updates);
-        this.unreadAddOne(_id);
+        //save message to firebase
+        msgRef.update(updates);
+        //adds 1 to conversation
+        this.unreadAddOne(this.state.convKey, this.props.uid);
+        //有發言回應後就取消 priority
+        this.removeConversationPriority();
       }
     });
   };
 
   handlePhotoPicker = () => {
-    const msgRef = this.props.fire.database().ref('conversations/' + this.state.convKey);
+    const msgRef = this.props.fire.database().ref("conversations/" + this.state.convKey + "/messages");
     console.log("handlePhotoPicker called");
     ImagePicker.launchImageLibrary(ImagePickerOptions, async response => {
       console.log("Response = ", response);
@@ -469,11 +486,11 @@ export default class Chat extends Component {
       } else {
         this.setState({ actions: "uploading" });
         console.log("Image data", response);
-        const firebaseRefObj = this.firebase
+        const firebaseRefObj = this.props.fire
           .storage()
           .ref(
             "chatPhotos/" +
-              this.store.user.uid +
+              this.props.store.user.uid +
               "/" +
               response.fileName.replace("JPG", "jpg")
           );
@@ -491,15 +508,15 @@ export default class Chat extends Component {
           "image/jpeg"
         );
         console.log("downloadUrl: ", downloadUrl);
-        const _id = msgRef.child('messages').push().key;
+        const _id = msgRef.push().key;
         const msgObj = {
           _id,
           text: "",
           createdAt: new Date(),
           user: {
-            _id: this.store.user.uid,
-            name: this.store.user.displayName,
-            avatar: this.store.user.photoURL
+            _id: this.props.store.user.uid,
+            name: this.props.store.user.displayName,
+            avatar: this.props.store.user.photoURL
           },
           image: downloadUrl
         };
@@ -512,8 +529,12 @@ export default class Chat extends Component {
         });
         const updates = {};
         updates[_id] = msgObj;
-        msgRef.child('messages').update(updates);
-        // this.unreadAddOne(_id);
+        //save message to firebase
+        msgRef.update(updates);
+        //adds 1 to conversation
+        this.unreadAddOne(this.state.convKey, this.props.uid);
+        //有發言回應後就取消 priority
+        this.removeConversationPriority();
       }
     });
   };
@@ -609,7 +630,8 @@ export default class Chat extends Component {
   };
 
   render() {
-    console.log("this.state", this.state);
+    // console.log("this.state", this.state);
+    const msgRef = this.props.fire.database().ref("conversations/" + this.state.convKey + "/messages");
 
     return (
       <View style={[this.state.size, { marginTop: -60 }]}>
@@ -617,14 +639,14 @@ export default class Chat extends Component {
           <GiftedChat
             messages={this.state.messages}
             messageIdGenerator={() => {
-              return this.convRef.child('messages').push().key;
+              return msgRef.push().key;
             }}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
             user={{
-              _id: this.store.user.uid
+              _id: this.props.store.user.uid
             }}
             minInputToolbarHeight={45}
             placeholder="輸入訊息..."
@@ -637,14 +659,14 @@ export default class Chat extends Component {
           <GiftedChat
             messages={this.state.messages}
             messageIdGenerator={() => {
-              return this.convRef.child('messages').push().key;
+              return msgRef.push().key;
             }}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
             user={{
-              _id: this.store.user.uid
+              _id: this.props.store.user.uid
             }}
             imageProps={this.state.image}
             minInputToolbarHeight={45}
