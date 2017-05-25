@@ -1,15 +1,35 @@
 import React from 'react'
-import { View, Text, } from 'react-native'
+import { View, Text, ActivityIndicator } from 'react-native'
 import { Cookie } from './components/Cookie'
+import { observer, inject } from "mobx-react/native"
+import { autorun } from 'mobx'
 
-const GoodImpression = () => {
+const GoodImpression = inject("fate")(observer(({ fate }) => {
+
+  const renderGoodImpression = fate.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName }><Text style={{color: '#000000'}}>你們距離大約 7.9 公里</Text></Cookie>))
+
+  const indicator = (
+    <ActivityIndicator
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 8,
+        marginTop: 150
+      }}
+      size="large"
+    />
+  )
+
+  //autorun(() => { console.warn("AAAA") })
+
   return(
     <View style={{flex: 1}}>
-      <Cookie name='A'><Text style={{color: '#000000'}}>你們距離大約 7.9 公里 </Text></Cookie>
-      <Cookie name='B'><Text style={{color: '#000000'}}>你們距離大約 7.9 公里 </Text></Cookie>
-      <Cookie name='C'><Text style={{color: '#000000'}}>你們距離大約 7.9 公里 </Text></Cookie>
+      { fate.loading && indicator }
+      {
+        fate.preyList && !fate.loading && renderGoodImpression
+      }
     </View>
   )
-}
+}))
 
 export { GoodImpression }

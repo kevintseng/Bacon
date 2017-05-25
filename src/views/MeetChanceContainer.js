@@ -10,18 +10,18 @@ const { width, height } = Dimensions.get('window'); //eslint-disable-line
 
 @inject("prey","store") @observer
 export default class MeetChanceContainer extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-    usersLocation: PropTypes.object,
-    latlong: PropTypes.object,
-    myPhotoUrl: PropTypes.string,
-    myDisplayName: PropTypes.string,
+  //static propTypes = {
+    //store: PropTypes.object,
+    //fire: PropTypes.object,
+    //latitude: PropTypes.number,
+    //longitude: PropTypes.number,
+    //usersLocation: PropTypes.object,
+    //latlong: PropTypes.object,
+    //myPhotoUrl: PropTypes.string,
+   // myDisplayName: PropTypes.string,
     //initialPosition: PropTypes.number,
     //lastPosition: PropTypes.number,
-  }
+  //}
 
   //constructor(props) {
     //super(props);
@@ -40,8 +40,8 @@ export default class MeetChanceContainer extends Component {
 
   componentWillMount() {
     //console.log('Rendering Nearby');
+    Actions.refresh({ key: 'drawer', open: false })
     this.props.prey.initPreyList()
-    Actions.refresh({ key: 'drawer', open: false });
     // this.getLocation();
   }
 

@@ -1,38 +1,37 @@
 import React, {Component, PropTypes} from 'react';
-import { Dimensions, } from 'react-native';
+import { Dimensions, Text, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-// import { autorun } from 'mobx';
-import { observer } from 'mobx-react/native';
+//import { autorun } from 'mobx';
+import { observer,inject } from 'mobx-react/native';
 import { Fate } from './FateContainer/Fate'
 
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
-@observer
+@inject("fate") @observer
 export default class FateContainer extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    fire: PropTypes.object,
-  }
+  //static propTypes = {
+  //  store: PropTypes.object,
+  //  fire: PropTypes.object,
+  //}
 
-  constructor(props) {
-    super(props);
-    this.store = this.props.store;
-    this.fs = this.props.fire;
-    this.state = {
-      size: {
-          width,
-          height
-      },
-    };
+  componentWillReact() {
+    //console.warn("Re-render FateContainer!!");
   }
 
   componentWillMount() {
-    console.log('Rendering LikesYou');
-    Actions.refresh({ key: 'drawer', open: false });
+    Actions.refresh({ key: 'drawer', open: false })
+    this.props.fate.initPreyList()
   }
 
+  componentDidMount(){
+    //this.props.fate.test()
+  }
+
+  //autorun(() => { console.warn("AAAA") })
+
   render() {
+    //console.warn("render")
     return(
       <Fate/>
     );

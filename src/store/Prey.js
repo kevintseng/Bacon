@@ -14,7 +14,7 @@ class Prey {
     this.preyList = []
     this.user = {}
     this.prey = {}
-    this.loading = true
+    this.loading = false
     this.store = store
     this.firebase = firebase
   }
@@ -69,15 +69,42 @@ class Prey {
   }
 
   @action initPreyList(){
-    this.preyList = []
     this.loading = true
+    //this.sleepSynchronize(5000)
+  }
+
+  //@action fetchPreyListsByFate(){
+  //
+  //}
+/*
+  @action fetchPreyListsByVisitors(){
+    const query = this.firebase.database().ref("users/" + this.store.user.uid + "/visitors")
+    query.once("value", snap => (
+       snap.forEach(childsnap => this.setPreyListByKey(childsnap.key) )
+      )
+    )
+    this.loading = false
+  }
+
+  @action fetchPreyListsByGoodImpression(){
+    console.warn('GoodImpression')
+  }
+
+  @action fetchPreyListsByMate(){
+    console.warn('Mate')
+  }
+
+  @action fetchPreyListsByCollection(){
+    console.warn('Collection')
   }
 
   @action fetchPreyListsByMeetChance(latitude, longitude){
-    //console.warn(latitude,longitude)
+    //this.loading = true
+    //await this.sleep(10000)
+    this.preyList = []
     this.seekNearBy(latitude, longitude)
   }
-
+*/
   @action seekNearBy(latitude, longitude){
     const query = this.firebase.database().ref("/user_locations/")
     const geoFire = new GeoFire(query)
@@ -101,6 +128,12 @@ class Prey {
     //const deviceId = DeviceInfo.getUniqueID();
     //const locale = DeviceInfo.getDeviceLocale();
     //const country = DeviceInfo.getDeviceCountry();
+    this.preyList = ["A","B"]
+    this.loading = false
+    this.loading = true
+    this.loading = false
+    this.loading = true
+    this.preyList = []
     this.seekMeetQs(sexOrientation)
   }
 
@@ -187,7 +220,16 @@ class Prey {
 
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }     
+  }  
+
+  sleepSynchronize(milliseconds) {
+  const start = new Date().getTime();
+  for (let i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+      }
+    }
+  }   
 }
 
 export default Prey;
