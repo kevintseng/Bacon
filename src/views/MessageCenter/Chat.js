@@ -63,8 +63,6 @@ export default class Chat extends Component {
       isLoadingEarlier: false,
       actions: false,
       image: null,
-      firstTime: false,
-      users: {},
     };
     this._isMounted = false;
   }
@@ -112,197 +110,131 @@ export default class Chat extends Component {
     this.convRef = this.props.fire.database().ref('conversations/' + convKey);
   }
 
-  loadAndListenMessages = (_convKey, startAt = 0) => {
-    //Load previous 25 msgs from firebase.
-    this.props.fire.database().ref('conversations/' + _convKey + '/messages').orderByChild('_id').startAt(startAt).on('child_added', msgSnap => {
-      console.log('child_added: ' + msgSnap.key);
-      this.setState(previousState => {
-
-        const msgId = msgSnap.val()._id;
-
-        //Update lastRead
-        this.updateLastRead(_convKey, msgId, this.props.store.user.uid);
-
-        const _users = this.state.users;
-        _users[this.props.store.user.uid].lastRead = msgId;
-        return {
-          messages: GiftedChat.append(previousState.messages, msgSnap.val()),
-          users: _users,
-        };
-      });
-    });
-  }
-
   //update last read and clear unread count
   updateLastRead = (convKey, msgId, uid) => {
     this.props.fire.database().ref('conversations/' + convKey + '/users/' + uid ).update({ lastRead: msgId, unread: 0 });
   }
 
-
-  //load conversation data(including messages)
-  loadAndUpdate= (_convKey) => {
-    console.log('Executing loadAndUpdate');
-    const me = this.props.store.user.uid;
-    const theOther = this.props.uid;
-    let _users;
-
-    //Get conversation.users' data
-    this.props.fire.database().ref('conversations/' + _convKey + '/users').once('value').then(snap=> {
-      console.log('loadAndUpdate/load convData: ' + snap.val()[theOther].name);
-      _users = snap.val();
-      return _users;
-
-    //update onversation.users' data
-    }).then(_users => {
-      const users = [];
-      users[theOther] = {
-        name: this.props.name,
-        age: Moment().diff(this.props.birthday, "years"),
-        avatarUrl: this.props.avatarUrl,
-        unread: 0,
-      };
-
-      users[me] = {
-        name: this.props.store.user.displayName,
-        age: Moment().diff(this.props.store.user.birthday, "years"),
-        avatarUrl: this.props.store.user.photoURL,
-        unread: 0,
-      };
-
-      //Update difference
-      users[theOther] = this.updateDiff(_users[theOther], users[theOther]);
-      users[me] = this.updateDiff(_users[me], users[me]);
-      this.props.fire.database().ref('conversations/' + _convKey + '/users').set(users);
-
-      this.setState({ users });
-      return users;
-    }).then(users => {
-      //load message data
-      this.loadAndListenMessages(_convKey, users[this.props.store.user.uid].deleted);
-      //reset current user's unread count of this conversation in firebase db
-      this.clearUnread(_convKey, this.props.store.user.uid);
+  loadAndListenMessages = (_convKey, startAt = 0) => {
+    //Load previous 25 msgs from firebase.
+    this.props.fire.database().ref("conversations/" + this.state.convKey + "/messages").orderByChild('_id').startAt(startAt).on('child_added', msgSnap => {
+      console.log('child_added: ' + msgSnap.key);
+      this.setState(previousState => {
+        const msgId = msgSnap.val()._id;
+        //Update lastRead
+        this.updateLastRead(_convKey, msgId, this.props.store.user.uid);
+        return {
+          messages: GiftedChat.append(previousState.messages, msgSnap.val()),
+        };
+      });
     });
   }
 
-  // //set the chat type on firebase db
-  // setChatType = (uid1, uid2, chatType) => {
-  //   //update chatType
-  //   this.props.fire.database().ref('users/' + uid1 + '/conversations/' + uid2 + '/chatType').set(chatType);
-  //
-  //   //update chatType
-  //   this.props.fire.database().ref('users/' + uid2 + '/conversations/' + uid1 + '/chatType').set(chatType);
-  // }
+  //load conversation data(including messages)
+  loadAndUpdate= (_convKey) => {
+    const me = this.props.store.user.uid;
+    const theOther = this.props.uid;
 
-  //check users' name, avatar, age, and update
-  updateDiff = (u1, u2) => {
-    const u = u1;
-    if(u.name != u2.name) {
-      u.name = u2.name;
-    }
-    if(u.avatarUrl != u2.avatarUrl) {
-      u.avatarUrl = u2.avatarUrl;
-    }
-    if(u.age != u2.age) {
-      u.age = u2.age;
-    }
-    u.unread = 0;
-    // console.log('updateDiff return: ' + u.lastRead + ', age: ' + u.age + ', name: ' + u.name);
-    return u;
+    //load conversation data
+    this.props.fire.database().ref('conversations/' + _convKey +
+    '/users').once('value').then(snap=> {
+      const users = snap.val();
+      //If user has changed name and avatar since last time, update.
+      users[theOther].name = this.props.name;
+      users[theOther].avatarUrl = this.props.avatarUrl;
+      users[me].name = this.props.store.user.displayName;
+      users[me].avatarUrl = this.props.store.user.photoURL;
+
+      this.props.fire.database().ref('conversations/' + _convKey + '/users').update(users);
+
+      //load and listening to messages
+      this.loadAndListenMessages(_convKey, users[this.props.store.user.uid].deleted);
+    });
   }
 
   createNewConv = (_other) => {
     const _convKey = this.props.fire.database().ref("conversations").push().key;
-    console.log('Get new conversation key from firebase: ' + _convKey);
+    // console.log('Got new conversation key from firebase: ' + _convKey);
     const _me = this.props.store.user.uid;
     const chatType = this.props.chatType ? this.props.chatType : 'normal';
     const users = {};
     users[_other] = {
-      uid: _other,
       name: this.props.name,
-      age: Moment().diff(this.props.birthday, "years"),
+      birthday: this.props.birthday,
       avatarUrl: this.props.avatarUrl,
       unread: 0,
       deleted: false,
       lastRead: 0,
+      chatType,
+      priority: false,
     };
     users[_me] = {
-      uid: _me,
       name: this.props.store.user.displayName,
-      age: Moment().diff(this.props.store.user.birthday, "years"),
+      birthday: this.props.store.user.birthday,
       avatarUrl: this.props.store.user.photoURL,
       unread: 0,
       deleted: false,
       lastRead: 0,
+      chatType: 'normal',
+      priority: false,
     };
 
     const convData = {
       users,
+      createTime: Moment().unix()
     }
 
     this.setState({convKey: _convKey});
 
-    //Add a new conv to firebase db conversations, then add to each person's user profile and current user's local Appstore
+    //Add new conv to user profile
     this.props.fire.database().ref("conversations/" + _convKey).update(convData).then(()=> {
-      this.props.store.addNewConv(_other, _convKey, chatType);
+      //update user profile
+      this.props.store.addNewConv(_other, _convKey);
+      //loadAndUpdate conversation and messages
       this.loadAndUpdate(_convKey);
-      this.setState({
-        convKey: _convKey,
-      });
-      return _convKey;
     });
-
-    return null;
   }
 
   //reset unread count
   clearUnread = (convKey, uid) => {
     const unreadRef = this.props.fire
       .database()
-      .ref("conversations/" + convKey + '/users/' + uid);
-    unreadRef.set({unread: 0});
+      .ref("conversations/" + convKey + "/users/" + uid);
+    unreadRef.update({unread: 0});
   };
 
   // Only removes the priority of current user's conversation record
   removeConversationPriority = () => {
     const myUid = this.props.store.user.uid;
-    const otherUid = this.props.uid;
-    const myConvRef = this.props.fire.database().ref('users/' + myUid + '/conversations/' + otherUid);
+    const myConvRef = this.props.fire.database().ref('conversations/' + this.state.convKey + '/users/' + myUid);
 
-    myConvRef.update({ priority: false, type: "normal" });
+    myConvRef.update({ priority: false, chatType: "normal" });
   };
 
   //adds 1 to unread
   unreadAddOne = (convKey, uid) => {
     const convRef = this.props.fire.database().ref("conversations/" + convKey + "/users/" + uid);
-    this.props.fire
-      .database()
-      .ref(
-        "conversations/" + this.state.convKey + '/users/' +
-          uid +
-          "/unread"
-      )
-      .once(
+    convRef.once(
         "value",
         snap => {
-          const unread = snap.val() + 1;
+          const unread = snap.val().unread + 1;
           //update new unread count
           convRef.update({ unread });
         },
         err => {
-          console.log("Chat/onSend set unread error: " + err);
+          console.log("Chat/unreadAddOne error: " + err);
         }
       );
-
-
   };
 
   onSend = (messages = []) => {
-    const msgRef = this.props.fire.database().ref('conversations/' + this.state.convKey + '/messages');
+    const msgRef = this.props.fire.database().ref("conversations/" + this.state.convKey + "/messages");
     const createdAt = Moment().format();
     messages[0].user.name = this.props.store.user.displayName;
     messages[0].user.avatar = this.props.store.user.photoURL;
     messages[0].createdAt = createdAt;
-    console.log("onSend: ", messages[0].createdAt);
+    // console.log("onSend: ", messages[0].createdAt);
+
     const updates = {};
     updates[messages[0]._id] = messages[0];
     //adds this new message to firebase
@@ -459,10 +391,7 @@ export default class Chat extends Component {
             actions: false
           };
         });
-        const updates = {};
-        updates[_id] = msgObj;
-        //save message to firebase
-        msgRef.update(updates);
+
         //adds 1 to conversation
         this.unreadAddOne(this.state.convKey, this.props.uid);
         //有發言回應後就取消 priority
@@ -527,10 +456,7 @@ export default class Chat extends Component {
             actions: false
           };
         });
-        const updates = {};
-        updates[_id] = msgObj;
-        //save message to firebase
-        msgRef.update(updates);
+
         //adds 1 to conversation
         this.unreadAddOne(this.state.convKey, this.props.uid);
         //有發言回應後就取消 priority

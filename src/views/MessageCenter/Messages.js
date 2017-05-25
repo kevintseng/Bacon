@@ -38,28 +38,27 @@ export default class Messages extends Component {
       statusModalShow: false,
       selfInputChatStatus: null,
     };
-    this._isMounted = false;
   }
 
   componentWillMount() {
     console.debug("Rendering Messages");
-    this._isMounted = false;
-    Actions.refresh({ key: "drawer", open: false });
   }
   componentDidMount() {
     console.debug("Messages mounted");
-    this._isMounted = true;
-    this.getConvs("all");
+    Actions.refresh({ key: "drawer", open: false });
+    this.getUserConvs("all");
   }
 
   componentWillUnmount() {}
 
-  getConvs = filterType => {
+  getUserConvs = filterType => {
     this.setState({ isLoading: true });
-    const myConvList = this.props.fire.database().ref('users/' + this.props.store.user.uid + '/conversations');
-    const getUnread = myConvList.orderByChild("unread").startAt(1);
-    const getAll = myConvList;
-    const getVisitor = myConvList.orderByChild("chatType").equalTo("visitor");
+    const myConvListRef = this.props.fire.database().ref('users/' + this.props.store.user.uid + '/conversations');
+
+    //根據不同的filter去擷取conversation list
+    const getUnread = myConvListRef.orderByChild("unread").startAt(1);
+    const getAll = myConvListRef;
+    const getVisitor = myConvListRef.orderByChild("chatType").equalTo("visitor");
 
     let query = getAll;
     switch (filterType) {
@@ -74,86 +73,80 @@ export default class Messages extends Component {
         break;
     }
 
+
     query.once("value").then(convSnap => {
       // console.log('CHECK: ', snap.val());
       const convs = [];
       let key = 0;
       if (convSnap.exists()) {
         convSnap.forEach(childConv => {
-          const queryKey = childConv.val().convKey;
+          const convKey = childConv.val().convKey;
+          const theOtherUid = childConv.key;
 
+          const convRef = this.props.fire.database().ref("conversations/" + convKey);
 
-          this.props.fire
-            .database()
-            .ref("messages/" + this.props.store.user.uid + "/" + queryKey)
-            .limitToLast(1)
-            .once("value")
-            .then(snapshot => {
-              let _subtitle = '';
+          let convData = {};
 
-              if (snapshot.exists()) {
-                snapshot.forEach(_msg => {
+          convRef.once("value").then(snap => {
 
-                  if (_msg.child("image").exists()) {
-                    _subtitle = "傳了一張圖";
-                  }
+            const data = snap.val();
+            const myUid = this.props.store.user.uid;
+            const myData = data.users[myUid];
+            const theOtherData = data.users[theOtherUid];
+            console.log("getConvData myPriority: ", myData.priority);
+            convData = {
+              convKey,
+              uid: theOtherUid,
+              unread: myData.unread,
+              lastRead: myData.lastRead,
+              chatType: myData.chatType,
+              chatStatus: "",
+              priority: myData.priority,
+              name: theOtherData.name,
+              avatarUrl: theOtherData.avatarUrl,
+              birthday: theOtherData.birthday,
+              online: false,
+              subtitle: '',
+            }
 
-                  if (_msg.child("text").exists() && _msg.val().text != "") {
-                    // console.log('Text exists');
-                    _subtitle = _msg.val().text;
-                  }
+            this.props.fire.database().ref("conversations/" + convKey + "/messages").limitToLast(1).once("value").then(msgSnap => {
+              if(msgSnap.exists()){
+                msgSnap.forEach(obj => {
+                  console.log("last message: ", obj.val().text);
+                  const text = obj.val().text ? obj.val().text : "傳送了一張圖像";
+                  convData.subtitle = text;
+                  // convs[theOtherUid] = convData;
+                  convs.push(convData);
+                  console.log("convs before: ", convs);
+                  convs.sort(this.compare);
+                  console.log("convs after: ", convs);
+                  this.setState({
+                    convs,
+                    isLoading: false,
+                    noData: false,
+                  });
+                });
+              } else {
+                // convs[theOtherUid] = convData;
+                convs.push(convData);
+                console.log("convs before: ", convs);
+                convs.sort(this.compare);
+                console.log("convs after: ", convs);
+                this.setState({
+                  convs,
+                  isLoading: false,
+                  noData: false,
                 });
               }
-
-              console.log("Messages/getConvs/subtitle: " + _subtitle);
-
-              const userId = childConv.val().uid;
-              const name = childConv.val().name;
-              const avatarUrl = childConv.val().avatarUrl;
-              const age = childConv.val().age;
-              const type = childConv.val().type;
-              const priority = childConv.val().priority;
-              const unread = childConv.val().unread;
-
-              const chatStatus = this.props.fire.database().ref('users/' + userId + '/chatStatus').once('value', snap => {
-                if(snap.exists()) {
-                  return snap.val();
-                }
-                return '';
-              });
-
-              const data = {
-                uid: userId,
-                name,
-                avatarUrl,
-                age,
-                type,
-                priority,
-                chatStatus,
-                unread,
-                online: false,
-                subtitle: _subtitle,
-              };
-
-              convs.push(data);
-              convs.sort(this.compare);
-
-              this.setState({
-                convs,
-                isLoading: false,
-                noData: false
-              });
-              return { userId, key };
-              // this.unreadListener(userId, key);
-              // this.chatStatusListener(userId, key);
-              // return convs;
-            })
-            .then(retObj => {
-              this.unreadListener(retObj.userId, retObj.key);
-              this.chatStatusListener(retObj.userId, retObj.key);
-              this.onlineListener(retObj.userId, retObj.key);
+              return {theOtherUid, key};
+            }).then( retObj => {
+              console.log("theOtherUid: ", retObj.theOtherUid);
+              this.unreadListener(convKey, myUid, retObj.key);
+              this.chatStatusListener(retObj.theOtherUid, retObj.key);
+              this.onlineListener(retObj.theOtherUid, retObj.key);
               key++;
             });
+          });
         });
       } else {
         this.setState({ convs: [], noData: true, isLoading: false });
@@ -161,10 +154,10 @@ export default class Messages extends Component {
     });
   };
 
-  unreadListener(uid, key) {
+  unreadListener(convKey, uid, key) {
     const ref = this.props.fire
       .database()
-      .ref("conversations/" + this.props.store.user.uid + "/" + uid + "/unread");
+      .ref("conversations/" + convKey + "/users/" + uid + "/unread");
     console.log("Start listening to unread on uid: " + uid + " key: " + key);
     ref.on("value", snapshot => {
       if (snapshot.exists()) {
@@ -374,16 +367,28 @@ export default class Messages extends Component {
   };
 
   handleStatusChange = (val, selection, row) => {
+    let convs = this.state.convs;
     if (selection === 0) {
       switch (row) {
+        //unread
         case 1:
-          this.getConvs("unread");
+          convs = convs.filter(conv => {return conv.unread > 0});
+          if(convs.length === 0) {
+            this.setState({ convs, noData: true });
+          } else {
+            this.setState({ convs });
+          }
           break;
         case 2:
-          this.getConvs("visitor");
+          convs = convs.filter(conv => {return conv.chatType === "visitor"});
+          if(convs.length === 0) {
+            this.setState({ convs, noData: true });
+          } else {
+            this.setState({ convs });
+          }
           break;
         default:
-          this.getConvs("all");
+          this.getUserConvs("all");
           break;
       }
     }
@@ -478,6 +483,9 @@ export default class Messages extends Component {
   }
 
   render() {
+    console.log("Messages.js state log: ",  this.state);
+
+
     const myStatus = this.props.store.user.chatStatus ? this.props.store.user.chatStatus : '我的狀態';
 
     const selfInputStatus = this.getSelfChatStatus();
@@ -601,7 +609,7 @@ export default class Messages extends Component {
                         uid: l.uid,
                         name: l.name,
                         chatStatus: l.chatStatus,
-                        age: l.age,
+                        birthday: l.birthday,
                         avatarUrl: l.avatarUrl
                       });
                     }}

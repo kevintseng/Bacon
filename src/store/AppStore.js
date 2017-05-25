@@ -25,24 +25,20 @@ class AppStore {
     this.user.photoURL = uri;
   }
 
-  @action addNewConv(withUid, convKey, chatType) {
+  @action addNewConv(withUid, convKey) {
     // console.log('AppStore/addNewConv params: withUid: ' + withUid + ', convKey: ' + convKey);
     //Add new conversation to AppStore user profile
+    const data = { convKey };
     this.user.conversations = {};
-    this.user.conversations[withUid] = {convKey, chatType, priority: false };
+    this.user.conversations[withUid] = data;
 
     //Add new conversation to my user profile on firebase
     const addToMyConvList = this.firebase.database().ref("users/" + this.user.uid + "/conversations").child(withUid);
-    addToMyConvList.set({convKey, chatType, priority: false });
+    addToMyConvList.set(data);
 
     //Add new conversation to the other person's user profile on firebase
     const addToOtherConvList = this.firebase.database().ref("users/" + withUid + "/conversations").child(this.user.uid);
-    addToOtherConvList.set({ convKey, chatType, priority: false });
-  }
-
-  @action updateConv(firebase, cid, key, value) {
-    const ref = firebase.database().ref('conversations/' + cid + '/' + this.user.uid);
-    ref.update({key: value});
+    addToOtherConvList.set(data);
   }
 
   @action signOut() {
