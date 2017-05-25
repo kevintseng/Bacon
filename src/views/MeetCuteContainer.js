@@ -8,18 +8,28 @@ import { MeetCute } from "./MeetCuteContainer/MeetCute";
 @inject("prey","store") @observer
 export default class MeetCuteContainer extends Component {
 
+  componentWillReact() {
+    //console.warn("I will re-render, since the component has changed!");
+  }
+
   componentWillMount() {
-    this.props.prey.initPreyList()
+    //console.warn("componentWillMount")
     Actions.refresh({ key: "drawer", open: false })
+    this.props.prey.initPreyList()
   }
 
   componentDidMount() {
     this.props.prey.fetchPreyListsByMeetCute(this.props.store.user.sexOrientation)
   }
 
-  render() {
+  componentWillUnmount(){
 
+  }
+
+  render() {
     const { prey } = this.props
+
+    //{ this.props.prey.initPreyList() }
     
     const indicator = (
       <ActivityIndicator

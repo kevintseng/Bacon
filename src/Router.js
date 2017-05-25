@@ -19,6 +19,7 @@ import DrawerPanel from "./views/DrawerPanel";
 import ErrorView from "./views/ErrorView";
 import AppStore from "./store/AppStore";
 import Prey from "./store/Prey";
+import Fate from "./store/Fate";
 import Forgot from "./views/Forgot";
 import Account from "./views/Settings/Account";
 import PushNotification from "./views/Settings/PushNotification";
@@ -84,11 +85,13 @@ export default class RouterComponent extends Component {
     // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
     const store = new AppStore(fire);
     const prey = new Prey(fire,store);
+    const fate = new Fate(fire,store);
     this.state = {
       store,
       fire,
       localdb,
       prey,
+      fate,
       appState: AppState.currentState,
     };
 
@@ -227,7 +230,7 @@ export default class RouterComponent extends Component {
 
   render() {
     return (
-      <Provider store={this.state.store} prey={this.state.prey}>
+      <Provider store={this.state.store} prey={this.state.prey} fate={this.state.fate}>
       <Router
         fire={this.state.fire}
         store={this.state.store}
