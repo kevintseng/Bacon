@@ -3933,7 +3933,6 @@ react-native-animatable@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.2.0.tgz#fd279c6ee4b49161c6cc3b951ed7765b35a73467"
 
-
 react-native-auto-expanding-textinput@^0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/react-native-auto-expanding-textinput/-/react-native-auto-expanding-textinput-0.0.5.tgz#fd5916eb790a088309ccab5ae1a5774f3860f864"
@@ -3971,7 +3970,6 @@ react-native-easy-grid@^0.1.8:
   resolved "https://registry.yarnpkg.com/react-native-easy-grid/-/react-native-easy-grid-0.1.8.tgz#7953fb85e0e2c316d814bbd189cb9efdf56ff2a5"
   dependencies:
     lodash "^4.11.1"
-
 
 react-native-elements@^0.12.0:
   version "0.12.1"
@@ -4037,13 +4035,7 @@ react-native-invertible-scroll-view@1.0.0:
     react-clone-referenced-element "^1.0.1"
     react-native-scrollable-mixin "^1.0.1"
 
-react-native-lightbox@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-lightbox/-/react-native-lightbox-0.6.0.tgz#291701fb3dd0d7eaf88cebb5f105d7891bea5452"
-  dependencies:
-    react-timer-mixin "^0.13.3"
-
-react-native-lightbox@oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875:
+react-native-lightbox@^0.6.0, react-native-lightbox@oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875:
   version "0.6.0"
   resolved "https://codeload.github.com/oblador/react-native-lightbox/tar.gz/c84a8543d4511fe6a44c3d7820747c9c1bddd875"
   dependencies:
@@ -4064,7 +4056,6 @@ react-native-mobx@^0.3.1:
     mobx "^2.2.0"
     mobx-react "^3.3.0"
     react-native-router-flux "^3.31.2"
-
 
 react-native-modal@^2.4.0:
   version "2.4.0"
