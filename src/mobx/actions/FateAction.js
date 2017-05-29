@@ -1,29 +1,15 @@
-import { observable, action, computed, useStrict, runInAction, autorun } from 'mobx'
-//import Moment from 'moment'
-//import geolib from 'geolib'
+import { action } from 'mobx'
 //import GeoFire from 'geofire'
 
-useStrict(false)
-
-class Fate {
-  @observable preyList
-  @observable prey
-  @observable loading
-
-  constructor(firebase,store) {
-    this.preyList = []
-    this.prey = {}
-    this.loading = true
-    this.store = store
-    this.firebase = firebase
-  }
-
-  @action initPreyList(){
-    this.loading = true
-    this.preyList = []
-  }
+//useStrict(true)
+const FateAction = {
   
-  @action async fetchPreyListsByVisitors(){
+  initPreyList: action(function initPreyList(){
+    this.loading = true
+    this.preyList = []
+  }),
+  
+  fetchPreyListsByVisitors: action(async function fetchPreyListsByVisitors(){
     try{
       this.loading = true
       this.preyList = []
@@ -36,9 +22,9 @@ class Fate {
     } catch(err) {
       console.warn(err);
     }
-  }
+  }),
 
-  @action async fetchPreyListsByGoodImpression(){
+  fetchPreyListsByGoodImpression: action(async function functionfetchPreyListsByGoodImpression(){
     this.loading = true
     this.preyList = []
     const query = this.firebase.database().ref("GoodImpression")
@@ -47,33 +33,21 @@ class Fate {
       )
     )
     this.loading = false
-  }
+  }),
 
-  @action fetchPreyListsByMate(){
+  fetchPreyListsByMate: action(function fetchPreyListsByMate(){
+    this.loading = false
     console.warn('Mate')
-  }
+  }),
 
-  @action fetchPreyListsByCollection(){
+  fetchPreyListsByCollection: action(function fetchPreyListsByCollection(){
+    this.loading = false
     console.warn('Collection')
-  }
+  }),
 
-  @action setPreyListByKey(key){
+  setPreyListByKey: action(function setPreyListByKey(key){
     this.firebase.database().ref('users/' + key).once('value').then(snap => { this.preyList.push(snap.val()) })
-  }
-
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }  
-
-  sleepSynchronize(milliseconds) {
-    const start = new Date().getTime();
-    for (let i = 0; i < 1e7; i++) {
-      if ((new Date().getTime() - start) > milliseconds){
-        break;
-        }
-      }
-  } 
-
+  })
 }
 
-export default Fate;
+export default FateAction

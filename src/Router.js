@@ -4,11 +4,7 @@ import Storage from "react-native-storage";
 import { Router, Scene, Actions } from "react-native-router-flux";
 import { observer, Provider } from "mobx-react/native";
 import { Icon } from "react-native-elements";
-import * as Firebase from "firebase"; // eslint-disable-line
 import Welcome from "./views/Welcome";
-import MeetCuteContainer from "./views/MeetCuteContainer";
-import MeetChanceContainer from "./views/MeetChanceContainer";
-import FateContainer from "./views/FateContainer";
 import Messages from "./views/MessageCenter/Messages";
 import Settings from "./views/Settings";
 import Signin from "./views/Signin";
@@ -17,19 +13,19 @@ import Chat from "./views/MessageCenter/Chat";
 import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
 import DrawerPanel from "./views/DrawerPanel";
 import ErrorView from "./views/ErrorView";
-import AppStore from "./store/AppStore";
-import Prey from "./store/Prey";
-import Fate from "./store/Fate";
 import Forgot from "./views/Forgot";
 import Account from "./views/Settings/Account";
 import PushNotification from "./views/Settings/PushNotification";
 import Question from "./views/Settings/Question";
 import ChangePassword from "./views/Settings/ChangePassword";
 import FeedBack from "./views/Settings/FeedBack";
-import { FirebaseConfig } from "./Configs";
-import { MeetCuteActions } from "./store/Actions/MeetCuteActions";
-import { MeetChanceActions } from "./store/Actions/MeetChanceActions";
-import { FateActions } from "./store/Actions/FateActions";
+// hocs
+import ContainerWithProvider from "./hocs/ContainerWithProvider"
+// containers
+import MeetCuteContainer from "./containers/MeetCuteContainer"
+import MeetChanceContainer from "./containers/MeetChanceContainer"
+import FateContainer from "./containers/FateContainer"
+
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
   const style = {
@@ -57,8 +53,8 @@ const menuButton = () => (
 
 @observer
 export default class RouterComponent extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const localdb = new Storage({
       // maximum capacity, default 1000
       size: 1000,
@@ -82,43 +78,13 @@ export default class RouterComponent extends Component {
       }
     });
     global.storage = localdb;
-
-    const fire = Firebase.initializeApp(FirebaseConfig);
-
     // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
-    const store = new AppStore(fire);
-    const MeetCuteStore = new Prey(fire,store);
-    const MeetChanceStore = new Prey(fire,store);
-    const FateStore = new Prey(fire,store);
-    Object.assign(MeetCuteStore,MeetCuteActions)
-    Object.assign(MeetChanceStore,MeetChanceActions)
-    Object.assign(FateStore,FateActions)
-    //console.warn(Object.getOwnPropertyNames(prey))
-    const fate = new Fate(fire,store);
     this.state = {
-      store,
-      fire,
       localdb,
-      MeetCuteStore,
-      MeetChanceStore,
-      FateStore,
-      fate,
       appState: AppState.currentState,
     };
 
-    this.authListener(fire);
-  }
-
-  componentWillMount() {
-    console.log("Router will mount.");
-  }
-
-  componentDidMount() {
-    // AppState.addEventListener('inactive', this.setOffline(this.state.store.user.uid));
-  }
-
-  componentWillUnmount() {
-
+    this.authListener(this.props.fire)
   }
 
   authListener = (fire) => {
@@ -145,7 +111,7 @@ export default class RouterComponent extends Component {
             Object.assign(user, user, snap.val());
 
             // Block incompleted signup users to login
-            if (!user.signupCompleted && !this.state.store.inSignupProcess) {
+            if (!user.signupCompleted && !this.props.self.inSignupProcess) {
               const _user = fire.auth().currentUser;
               // In case the user dropped out during sign-up and want to sign-up again
               // TODO: Should also check firebase db to see if there's any other related data needs to be removed too
@@ -163,14 +129,14 @@ export default class RouterComponent extends Component {
             }
 
             console.log({ CombinedUserProfile: user });
-            this.state.store.setUser(user);
+            this.props.self.setUser(user);
             console.log("Router: User has been set in appstore");
-            this.setOnline(this.state.store.user.uid);
+            this.setOnline(this.props.self.user.uid);
             AppState.addEventListener('change', this.handleAppStateChange);
             this.state.localdb
               .save({
                 key: "user",
-                data: this.state.store.user,
+                data: this.props.self.user,
                 expires: 1000 * 3600 * 24 * 30 // expires after 30 days
               })
               .catch(err => {
@@ -191,7 +157,7 @@ export default class RouterComponent extends Component {
 
   setOnline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    const dbRef = this.state.fire.database().ref("/online/" + uid);
+    const dbRef = this.props.fire.database().ref("/online/" + uid);
     dbRef.set({
       lastOnline: timestamp,
       location: "Taipei, Taiwan"
@@ -202,12 +168,12 @@ export default class RouterComponent extends Component {
     console.log('AppState listner is on');
     if(this.state.appState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
       console.log('App is becoming inactive.');
-      this.setOffline(this.state.store.user.uid);
+      this.setOffline(this.props.self.user.uid);
     }
 
     if(nextAppState === 'active') {
       console.log('App is active');
-      this.setOnline(this.state.store.user.uid);
+      this.setOnline(this.props.self.user.uid);
     }
 
     this.setState({appState: nextAppState});
@@ -215,17 +181,17 @@ export default class RouterComponent extends Component {
 
   setOffline(uid) {
     // const timestamp = Math.floor(Date.now() / 1000);
-    this.state.fire.database().ref("/online/" + uid).remove();
+    this.props.fire.database().ref("/online/" + uid).remove();
   }
 
   signOut = () => {
     // Clear out appstore's user data
-    if (this.state.store.user) {
-      this.setOffline(this.state.store.user.uid);
+    if (this.props.self.user) {
+      this.setOffline(this.props.self.user.uid);
     }
 
     // Sign out from firebase
-    this.state.fire.auth().signOut();
+    this.props.fire.auth().signOut();
 
     // Clear out local database's user data
     this.state.localdb.remove({
@@ -239,14 +205,14 @@ export default class RouterComponent extends Component {
 
   render() {
 
-    const MeetCuteContainer_ = (() => (<Provider store={this.state.store} prey={this.state.MeetCuteStore} ><MeetCuteContainer/></Provider>))
-    const MeetChanceContainer_ = (() => (<Provider store={this.state.store} prey={this.state.MeetChanceStore} ><MeetChanceContainer/></Provider>))
-    const FateContainer_ = (() => (<Provider store={this.state.store} prey={this.state.FateStore} ><FateContainer/></Provider>))
+    const MeetCuteScene = ContainerWithProvider(MeetCuteContainer,{ HunterStore: this.props.self, PreyStore: this.props.meetCute })
+    const MeetChanceScene = ContainerWithProvider(MeetChanceContainer,{ HunterStore: this.props.self, PreyStore: this.props.meetChance })
+    const FateScene = ContainerWithProvider(FateContainer,{ HunterStore: this.props.self, PreyStore: this.props.fate })
 
     return (
       <Router
-        fire={this.state.fire}
-        store={this.state.store}
+        fire={this.props.fire}
+        store={this.props.self}
         localdb={this.state.localdb}
         getSceneStyle={getSceneStyle}
       >
@@ -270,16 +236,17 @@ export default class RouterComponent extends Component {
 
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
+              {require("./views/AboutMe/Routes")}
               <Scene //邂逅
                 key="meetcute"
-                component={MeetCuteContainer_}
+                component={MeetCuteScene}
                 title="邂逅"
                 renderLeftButton={menuButton}
                 hideTabBar
               />
               <Scene //巧遇
                 key="nearby"
-                component={MeetChanceContainer_}
+                component={MeetChanceScene}
                 title="巧遇"
                 renderLeftButton={menuButton}
               />
@@ -293,7 +260,7 @@ export default class RouterComponent extends Component {
               />
               <Scene //緣分
                 key="fate"
-                component={FateContainer_}
+                component={FateScene}
                 title='緣分'
                 renderLeftButton={menuButton}
                 hideTabBar
@@ -326,7 +293,6 @@ export default class RouterComponent extends Component {
                 />
                 <Scene key="feedback" component={FeedBack} title="Feedback" />
               </Scene>
-              {require("./views/AboutMe/Routes")}
               <Scene
                 key="chat"
                 component={Chat}

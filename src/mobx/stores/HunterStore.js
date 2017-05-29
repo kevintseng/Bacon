@@ -6,7 +6,7 @@ useStrict(true)
 
 // @autobind
 
-class AppStore {
+class HunterStore {
   @observable user;
   @observable inSignupProcess;
 
@@ -140,4 +140,4 @@ class AppStore {
   }
 }
 
-export default AppStore;
+export default HunterStore

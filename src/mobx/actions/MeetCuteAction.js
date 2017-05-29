@@ -3,7 +3,7 @@ import GeoFire from 'geofire'
 import Moment from 'moment'
 
 //useStrict(true)
-const MeetCuteActions = {
+const MeetCuteAction = {
 
   setUser: action(function setUser(){
     this.user = this.store.user
@@ -103,4 +103,4 @@ const MeetCuteActions = {
   
 }
 
-export { MeetCuteActions }
+export default MeetCuteAction

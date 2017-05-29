@@ -81,4 +81,4 @@ const Cookie = ({ name, photoURL }) => {
   )
 }
 
-export { Cookie }
+export default Cookie

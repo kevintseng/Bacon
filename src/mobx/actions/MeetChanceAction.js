@@ -2,7 +2,7 @@ import { action } from 'mobx'
 import GeoFire from 'geofire'
 
 //useStrict(true)
-const MeetChanceActions = {
+const MeetChanceAction = {
 
   initPreyList: action(function initPreyList(){
     this.loading = true
@@ -30,4 +30,4 @@ const MeetChanceActions = {
   
 }
 
-export { MeetChanceActions }
+export default MeetChanceAction

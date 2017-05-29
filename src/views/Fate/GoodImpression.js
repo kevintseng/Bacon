@@ -3,13 +3,9 @@ import { View, Text, ActivityIndicator } from 'react-native'
 import { Cookie } from './components/Cookie'
 import { observer, inject } from "mobx-react/native"
 
-const Visitors = inject("prey")(observer(({ prey }) => {
+const GoodImpression = inject("PreyStore")(observer(({ PreyStore }) => {
 
-  console.warn("Render Visitors!!")
-  
-  const renderVisitors = (
-    prey.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName }><Text style={{color: '#000000'}}>剛剛來訪</Text></Cookie>))
-  )
+  const renderGoodImpression = PreyStore.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName }><Text style={{color: '#000000'}}>你們距離大約 7.9 公里</Text></Cookie>))
 
   const indicator = (
     <ActivityIndicator
@@ -25,12 +21,12 @@ const Visitors = inject("prey")(observer(({ prey }) => {
 
   return(
     <View style={{flex: 1}}>
-     { prey.loading && indicator }
-     {
-      prey.preyList && !prey.loading && renderVisitors
-     }
+      { PreyStore.loading && indicator }
+      {
+        PreyStore.preyList && !PreyStore.loading && renderGoodImpression
+      }
     </View>
   )
 }))
 
-export { Visitors }
+export { GoodImpression }
