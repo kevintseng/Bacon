@@ -4,9 +4,9 @@ import { Cookie } from './components/Cookie'
 import { observer, inject } from "mobx-react/native"
 import { autorun } from 'mobx'
 
-const GoodImpression = inject("fate")(observer(({ fate }) => {
+const GoodImpression = inject("prey")(observer(({ prey }) => {
 
-  const renderGoodImpression = fate.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName }><Text style={{color: '#000000'}}>你們距離大約 7.9 公里</Text></Cookie>))
+  const renderGoodImpression = prey.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName }><Text style={{color: '#000000'}}>你們距離大約 7.9 公里</Text></Cookie>))
 
   const indicator = (
     <ActivityIndicator
@@ -24,9 +24,9 @@ const GoodImpression = inject("fate")(observer(({ fate }) => {
 
   return(
     <View style={{flex: 1}}>
-      { fate.loading && indicator }
+      { prey.loading && indicator }
       {
-        fate.preyList && !fate.loading && renderGoodImpression
+        prey.preyList && !prey.loading && renderGoodImpression
       }
     </View>
   )

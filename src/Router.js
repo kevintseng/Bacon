@@ -27,6 +27,9 @@ import Question from "./views/Settings/Question";
 import ChangePassword from "./views/Settings/ChangePassword";
 import FeedBack from "./views/Settings/FeedBack";
 import { FirebaseConfig } from "./Configs";
+import { MeetCuteActions } from "./store/Actions/MeetCuteActions";
+import { MeetChanceActions } from "./store/Actions/MeetChanceActions";
+import { FateActions } from "./store/Actions/FateActions";
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
   const style = {
@@ -84,13 +87,21 @@ export default class RouterComponent extends Component {
 
     // TODO: Find a way to tie Firestack and mobx store to achieve auto sync
     const store = new AppStore(fire);
-    const prey = new Prey(fire,store);
+    const MeetCuteStore = new Prey(fire,store);
+    const MeetChanceStore = new Prey(fire,store);
+    const FateStore = new Prey(fire,store);
+    Object.assign(MeetCuteStore,MeetCuteActions)
+    Object.assign(MeetChanceStore,MeetChanceActions)
+    Object.assign(FateStore,FateActions)
+    //console.warn(Object.getOwnPropertyNames(prey))
     const fate = new Fate(fire,store);
     this.state = {
       store,
       fire,
       localdb,
-      prey,
+      MeetCuteStore,
+      MeetChanceStore,
+      FateStore,
       fate,
       appState: AppState.currentState,
     };
@@ -109,8 +120,6 @@ export default class RouterComponent extends Component {
   componentWillUnmount() {
 
   }
-
-
 
   authListener = (fire) => {
     console.log("Initialize authListener .");
@@ -229,8 +238,12 @@ export default class RouterComponent extends Component {
   };
 
   render() {
+
+    const MeetCuteContainer_ = (() => (<Provider store={this.state.store} prey={this.state.MeetCuteStore} ><MeetCuteContainer/></Provider>))
+    const MeetChanceContainer_ = (() => (<Provider store={this.state.store} prey={this.state.MeetChanceStore} ><MeetChanceContainer/></Provider>))
+    const FateContainer_ = (() => (<Provider store={this.state.store} prey={this.state.FateStore} ><FateContainer/></Provider>))
+
     return (
-      <Provider store={this.state.store} prey={this.state.prey} fate={this.state.fate}>
       <Router
         fire={this.state.fire}
         store={this.state.store}
@@ -259,14 +272,14 @@ export default class RouterComponent extends Component {
             <Scene key="main" hideTabBar hideNavBar={false}>
               <Scene //邂逅
                 key="meetcute"
-                component={MeetCuteContainer}
+                component={MeetCuteContainer_}
                 title="邂逅"
                 renderLeftButton={menuButton}
                 hideTabBar
               />
               <Scene //巧遇
                 key="nearby"
-                component={MeetChanceContainer}
+                component={MeetChanceContainer_}
                 title="巧遇"
                 renderLeftButton={menuButton}
               />
@@ -280,7 +293,7 @@ export default class RouterComponent extends Component {
               />
               <Scene //緣分
                 key="fate"
-                component={FateContainer}
+                component={FateContainer_}
                 title='緣分'
                 renderLeftButton={menuButton}
                 hideTabBar
@@ -327,7 +340,6 @@ export default class RouterComponent extends Component {
 
         </Scene>
       </Router>
-      </Provider>
     );
   }
 }

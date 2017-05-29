@@ -1,26 +1,17 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { View, Text, ActivityIndicator } from 'react-native'
 import { Cookie } from './components/Cookie'
 import { observer, inject } from "mobx-react/native"
-import { autorun } from 'mobx'
 
-//autorun(() => { console.warn("BBBB") })
+const Visitors = inject("prey")(observer(({ prey }) => {
 
-@inject("fate") @observer
-export default class Visitors extends Component {
-
-  //const a = autorun(() => { console.warn("BBBB") })
-
-
-  componentWillReact() {
-    //console.warn("Re-render FateContainer!!");
-  }
+  console.warn("Render Visitors!!")
   
- renderVisitors = () => (
-    this.props.fate.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName }><Text style={{color: '#000000'}}>剛剛來訪</Text></Cookie>))
+  const renderVisitors = (
+    prey.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName }><Text style={{color: '#000000'}}>剛剛來訪</Text></Cookie>))
   )
 
-  indicator = () => (
+  const indicator = (
     <ActivityIndicator
       style={{
         alignItems: "center",
@@ -32,15 +23,14 @@ export default class Visitors extends Component {
     />
   )
 
-  render(){
   return(
     <View style={{flex: 1}}>
-     { this.props.fate.loading && this.indicator() }
+     { prey.loading && indicator }
      {
-      this.props.fate.preyList && !this.props.fate.loading && this.renderVisitors()
+      prey.preyList && !prey.loading && renderVisitors
      }
     </View>
-  )}
-}
+  )
+}))
 
-//export { Visitors
+export { Visitors }
