@@ -88,7 +88,7 @@ const Header = (props) => {
         <View>
         <Image
           style={{maxWidth:100, maxHeight: 30}}
-          source={require('../images/MeeqLogo.png')}
+          source={require('hookup/src/images/MeeqLogo.png')}
         />
         </View>
       );

@@ -13,7 +13,7 @@ import DatePicker from 'react-native-datepicker';
 import { observer } from 'mobx-react/native';
 import { getAge, checkEmail } from '../../Utils';
 import { Header } from '../../components';
-import SignupStore from '../../mobx/stores/SignupStore'
+//import SignupStore from '../../../mobx/stores/SignupStore'
 import Modal from 'react-native-modal'
 import {serviceRule, securityRule} from '../../views/data/Rules.js'
 

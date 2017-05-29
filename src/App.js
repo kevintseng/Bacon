@@ -10,7 +10,7 @@ import MeetCuteAction from "./mobx/actions/MeetCuteAction"
 import MeetChanceAction from "./mobx/actions/MeetChanceAction"
 import FateAction from "./mobx/actions/FateAction"
 // Router
-import RouterComponent from "./Router"
+import RouterComponent from "./app/Router"
 
 // 初始化 stores
 const AppInitStates = {
