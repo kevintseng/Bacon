@@ -1,4 +1,4 @@
-const recommends = [
+const Recommends = [
   {
     uid: "default_2017",
     name: "Vivian",
@@ -92,4 +92,4 @@ const recommends = [
   },
 ];
 
-export default recommends;
+export default Recommends;

@@ -4,7 +4,7 @@ import { ScrollView, Dimensions } from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 //import { Actions } from 'react-native-router-flux'
 import { observer } from 'mobx-react/native'
-import { SIDEBAR_LINKS } from '../Configs'
+import SIDEBAR_LINKS from '../configs/SidebarLinks'
 
 const loading = require('../images/loading.gif')
 const { height } = Dimensions.get('window') //eslint-disable-line

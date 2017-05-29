@@ -1,10 +1,7 @@
 import React from "react"
-import RouterComponent from "./Router"
-// Using <Provider/> to inject global store
-//import { Provider } from "mobx-react/native"
 // Firebase
 import Firebase from "firebase"
-import { FirebaseConfig } from "./Configs"
+import { FirebaseConfig } from "./configs/Firebase"
 // Stores Classes
 import HunterStore from "./mobx/stores/HunterStore"
 import PreyStore from "./mobx/stores/PreyStore"
@@ -12,6 +9,8 @@ import PreyStore from "./mobx/stores/PreyStore"
 import MeetCuteAction from "./mobx/actions/MeetCuteAction"
 import MeetChanceAction from "./mobx/actions/MeetChanceAction"
 import FateAction from "./mobx/actions/FateAction"
+// Router
+import RouterComponent from "./Router"
 
 // 初始化 stores
 const AppInitStates = {

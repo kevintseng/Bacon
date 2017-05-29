@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { AsyncStorage, AppState } from "react-native";
 import Storage from "react-native-storage";
 import { Router, Scene, Actions } from "react-native-router-flux";
-import { observer, Provider } from "mobx-react/native";
+import { observer } from "mobx-react/native";
 import { Icon } from "react-native-elements";
 import Welcome from "./views/Welcome";
 import Messages from "./views/MessageCenter/Messages";
