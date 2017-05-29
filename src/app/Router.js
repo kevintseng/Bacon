@@ -1,24 +1,25 @@
-import React, { Component } from "react";
-import { AsyncStorage, AppState } from "react-native";
-import Storage from "react-native-storage";
-import { Router, Scene, Actions } from "react-native-router-flux";
-import { observer } from "mobx-react/native";
-import { Icon } from "react-native-elements";
-import Welcome from "./views/Welcome";
-import Messages from "./views/MessageCenter/Messages";
-import Settings from "./views/Settings";
-import Signin from "./views/Signin";
-import SessionCheck from "./views/SessionCheck";
-import Chat from "./views/MessageCenter/Chat";
-import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup";
-import DrawerPanel from "./views/DrawerPanel";
-import ErrorView from "./views/ErrorView";
-import Forgot from "./views/Forgot";
-import Account from "./views/Settings/Account";
-import PushNotification from "./views/Settings/PushNotification";
-import Question from "./views/Settings/Question";
-import ChangePassword from "./views/Settings/ChangePassword";
-import FeedBack from "./views/Settings/FeedBack";
+import React, { Component } from "react"
+import { AsyncStorage, AppState } from "react-native"
+import Storage from "react-native-storage"
+import { Router, Scene, Actions } from "react-native-router-flux"
+import { observer } from "mobx-react/native"
+import { Icon } from "react-native-elements"
+// views
+import Welcome from "./views/Welcome"
+import Messages from "./views/MessageCenter/Messages"
+import Settings from "./views/Settings"
+import Signin from "./views/Signin"
+import SessionCheck from "./views/SessionCheck"
+import Chat from "./views/MessageCenter/Chat"
+import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup"
+import DrawerPanel from "./views/DrawerPanel"
+import ErrorView from "./views/ErrorView"
+import Forgot from "./views/Forgot"
+import Account from "./views/Settings/Account"
+import PushNotification from "./views/Settings/PushNotification"
+import Question from "./views/Settings/Question"
+import ChangePassword from "./views/Settings/ChangePassword"
+import FeedBack from "./views/Settings/FeedBack"
 // hocs
 import ContainerWithProvider from "./hocs/ContainerWithProvider"
 // containers

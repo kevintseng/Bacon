@@ -59,7 +59,7 @@ export default class Welcome extends Component {
           <View style={{flexDirection: 'column', alignSelf:'center'}}>
             <Image
               style={{maxWidth:280, maxHeight: 100}}
-              source={require('../images/MeeqLogo.png')}
+              source={require('hookup/src/images/MeeqLogo.png')}
             />
             <Text h4 style={{alignSelf:'center'}}>最懂你的交友 APP</Text>
           </View>
