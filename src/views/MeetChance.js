@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, ScrollView, Dimensions } from 'react-native'
-import { Cookie } from './MeetChance/Cookie'
 import { observer, inject } from "mobx-react/native"
-
+// components
+import Cookie from './MeetChance/Cookie'
 
 const { width, height } = Dimensions.get('window')
 
-const MeetChance = inject("prey")(observer(({ prey }) => {
+const MeetChance = inject("PreyStore")(observer(({ PreyStore }) => {
 
-  const renderCookie = prey.preyList.map((prey)=>( <Cookie name={prey.displayName} photoURL={prey.photoURL} key={prey.uid}/> ))
+  const renderCookie = PreyStore.preyList.map((prey)=>( <Cookie name={prey.displayName} photoURL={prey.photoURL} key={prey.uid}/> ))
 
   return(
     <View>
@@ -24,4 +24,4 @@ const MeetChance = inject("prey")(observer(({ prey }) => {
   )
 }))
 
-export { MeetChance }
+export default MeetChance

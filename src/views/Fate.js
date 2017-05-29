@@ -16,9 +16,9 @@ const styles = {
   }
 };
 
-const Fate = inject("prey")(observer(({ prey }) => {
+const Fate = inject("PreyStore")(observer(({ PreyStore }) => {
 
-  console.warn("Render ScrollableTabView!!")
+  //console.warn("Render ScrollableTabView!!")
 
   return(
     <ScrollableTabView
@@ -29,7 +29,7 @@ const Fate = inject("prey")(observer(({ prey }) => {
       tabBarBackgroundColor='white'
       tabBarActiveTextColor='#2962FF'
       tabBarInactiveTextColor='grey'
-      onChangeTab={ ({ ref })=> { prey["fetchPreyListsBy" + ref.props.label]() } }
+      onChangeTab={ ({ ref })=> { PreyStore["fetchPreyListsBy" + ref.props.label]() } }
       ref={ (tabView) => { this.tabView = tabView} }
       >
       <Visitors label='Visitors' tabLabel='來訪' />
@@ -40,4 +40,4 @@ const Fate = inject("prey")(observer(({ prey }) => {
   )
 }))
 
-export { Fate }
+export default Fate

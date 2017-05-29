@@ -1,11 +1,13 @@
 import { observable, computed, useStrict } from 'mobx'
+//import autobind from 'autobind-decorator'
 //import Moment from 'moment'
 import geolib from 'geolib'
 //import GeoFire from 'geofire'
 
-useStrict(true)
+useStrict(false)
 
-class Prey {
+//@autobind
+class PreyStore {
   @observable prey
   @observable preyList
   @observable loading
@@ -88,4 +90,4 @@ class Prey {
    
 }
 
-export default Prey;
+export default PreyStore

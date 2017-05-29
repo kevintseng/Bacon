@@ -32,7 +32,7 @@ const render = ({ photoURL }) => {
 }
 //const { image, view } = styles
 */
-const Collapse = inject("prey")(observer(({ prey }) => {
+const Collapse = inject("PreyStore")(observer(({ PreyStore }) => {
 
   //const renderFunc = render.bind(getNext)
 
@@ -43,17 +43,17 @@ const Collapse = inject("prey")(observer(({ prey }) => {
   const unit = (
            <Image key={photoURL} resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
           <View style={{ flex: 1, marginLeft: 10, marginBottom: 10, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
-            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={prey.handleLike.bind(prey)} />
-            <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={prey.getNext.bind(prey)} />
+            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={PreyStore.handleLike.bind(PreyStore)} />
+            <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={PreyStore.getNext.bind(PreyStore)} />
           </View>
         </Image>
   )
 
-  const renderCollapse = prey.photos.map((photo) => ( 
+  const renderCollapse = PreyStore.photos.map((photo) => ( 
        <Image key={photo.src.uri} resizeMode="contain" style={{flex: 1}} source={{uri: photo.src.uri}}>
           <View style={{ flex: 1, marginLeft: 10, marginBottom: 10, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
-            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={prey.handleLike.bind(prey)} />
-            <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={prey.getNext.bind(prey)} />
+            <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={PreyStore.handleLike.bind(PreyStore)} />
+            <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={PreyStore.getNext.bind(PreyStore)} />
           </View>
         </Image> ))
 

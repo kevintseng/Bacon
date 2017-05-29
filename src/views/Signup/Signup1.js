@@ -9,7 +9,7 @@ import { observer } from 'mobx-react/native';
 // import { autorun } from 'mobx';
  // eslint-disable-line
 import { Header, FormErrorMsg } from '../../components';
-import SignupStore from '../../store/SignupStore'
+import SignupStore from '../../mobx/stores/SignupStore'
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 

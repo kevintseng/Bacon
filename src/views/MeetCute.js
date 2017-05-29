@@ -36,7 +36,7 @@ const MeetCute = () => {
   )
 }
 
-export { MeetCute }
+export default MeetCute
 
 /*
 

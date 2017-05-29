@@ -14,11 +14,11 @@ const renderPhoto = (flag) => {
  : null
 }
 
-const Verified = inject("prey")(observer(({ prey }) => {
+const Verified = inject("PreyStore")(observer(({ PreyStore }) => {
   return(
     <View style={{flexDirection: 'row', margin: 10}}>
-      {renderEmail(prey.emailVerified)}
-      {renderPhoto(prey.photoVerified)}
+      {renderEmail(PreyStore.emailVerified)}
+      {renderPhoto(PreyStore.photoVerified)}
     </View>
   )
 }))

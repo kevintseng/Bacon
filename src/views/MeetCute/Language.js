@@ -2,18 +2,21 @@ import React from "react"
 import { View, Text } from "react-native"
 import { observer, inject } from "mobx-react/native"
 import { Icon } from 'react-native-elements'
-//import geolib from 'geolib'
 
-const Distance = inject("prey","store")(observer(({ prey }) => {
 
+const renderLanguages = (langs) => {
+    return Object.keys(langs).filter(k => langs[k]).join(',')
+  }  
+
+const Language = inject("PreyStore")(observer(({ PreyStore }) => {
   return(
     <View style={{flexDirection: 'row', margin: 10}}>
-     <Icon name='person-pin-circle'></Icon>
+      <Icon name='language'></Icon>
       <Text>
-        你們距離大約 {prey.distance} 公里
+        {renderLanguages(PreyStore.languages)}
       </Text>
     </View>
   )
 }))
 
-export { Distance }
+export { Language }
