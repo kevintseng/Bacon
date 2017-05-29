@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
-import Visitors from './Fate/Visitors'
+import { Visitors } from './Fate/Visitors'
 import { GoodImpression } from './Fate/GoodImpression'
 import { Mate } from './Fate/Mate'
 import { Collection } from './Fate/Collection'
@@ -16,7 +16,10 @@ const styles = {
   }
 };
 
-const Fate = inject("fate")(observer(({ fate }) => {
+const Fate = inject("prey")(observer(({ prey }) => {
+
+  console.warn("Render ScrollableTabView!!")
+
   return(
     <ScrollableTabView
       style={styles.wrapperStyle}
@@ -26,7 +29,7 @@ const Fate = inject("fate")(observer(({ fate }) => {
       tabBarBackgroundColor='white'
       tabBarActiveTextColor='#2962FF'
       tabBarInactiveTextColor='grey'
-      onChangeTab={ ({ ref })=> { fate["fetchPreyListsBy" + ref.props.label]() } }
+      onChangeTab={ ({ ref })=> { prey["fetchPreyListsBy" + ref.props.label]() } }
       ref={ (tabView) => { this.tabView = tabView} }
       >
       <Visitors label='Visitors' tabLabel='來訪' />

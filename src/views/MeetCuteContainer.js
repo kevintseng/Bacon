@@ -16,6 +16,7 @@ export default class MeetCuteContainer extends Component {
     //console.warn("componentWillMount")
     Actions.refresh({ key: "drawer", open: false })
     this.props.prey.initPreyList()
+    //this.props.prey.test()
   }
 
   componentDidMount() {
@@ -44,13 +45,13 @@ export default class MeetCuteContainer extends Component {
     )
     
     return (
-      <View style={{flex: 1}}>
-        {prey.loading && indicator}
-        {
-          prey.prey && !prey.loading && 
-          <MeetCute/>
-        }
-      </View>
+        <View style={{flex: 1}}>
+          {prey.loading && indicator}
+          {
+            prey.prey && !prey.loading && 
+            <MeetCute/>
+          }
+        </View>
     );
   }
 }

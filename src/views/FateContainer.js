@@ -1,14 +1,14 @@
-import React, {Component, PropTypes} from 'react';
-import { Dimensions, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { Dimensions } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 //import { autorun } from 'mobx';
-import { observer,inject } from 'mobx-react/native';
+//import { observer,inject } from 'mobx-react/native';
 import { Fate } from './FateContainer/Fate'
 
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
-@inject("fate") @observer
+//@inject("fate") @observer
 export default class FateContainer extends Component {
   //static propTypes = {
   //  store: PropTypes.object,
@@ -16,12 +16,12 @@ export default class FateContainer extends Component {
   //}
 
   componentWillReact() {
-    //console.warn("Re-render FateContainer!!");
+    console.warn("Re-render FateContainer!!");
   }
 
   componentWillMount() {
     Actions.refresh({ key: 'drawer', open: false })
-    this.props.fate.initPreyList()
+    //this.props.fate.initPreyList()
   }
 
   componentDidMount(){
