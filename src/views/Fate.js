@@ -18,8 +18,6 @@ const styles = {
 
 const Fate = inject("PreyStore")(observer(({ PreyStore }) => {
 
-  //console.warn("Render ScrollableTabView!!")
-
   return(
     <ScrollableTabView
       style={styles.wrapperStyle}
