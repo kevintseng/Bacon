@@ -1,5 +1,4 @@
-
-import { observable, action, useStrict } from 'mobx'
+import { observable, action, computed, useStrict } from 'mobx'
 import { Actions } from 'react-native-router-flux'
 // import autobind from 'autobind-decorator';
 useStrict(true)
@@ -16,6 +15,32 @@ class HunterStore {
     this.firebase = firebase
   }
 
+  // report
+  @computed get analysis(){
+    return this.user.analysis ? this.user.analysis : { charm: "0", popularity: "0", likeness: "0", friendliness: "0", activity: "0" }
+  }
+
+  @computed get charm(){
+    return this.user.analysis.charm ? this.user.analysis.charm : 0
+  }
+
+  @computed get popularity(){
+    return this.user.analysis.popularity ? this.user.analysis.popularity : 0
+  }
+
+  @computed get likeness(){
+    return this.user.analysis.likeness ? this.user.analysis.likeness : 0
+  }
+
+  @computed get friendliness(){
+    return this.user.analysis.friendliness ? this.user.analysis.friendliness : 0
+  }
+
+  @computed get activity(){
+    return this.user.analysis.activity ? this.user.analysis.activity : 0
+  }
+
+  // actions
   @action setUser(user) {
     this.user = user;
     console.log('Current User in AppStore: ' + user.uid);
