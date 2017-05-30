@@ -37,12 +37,18 @@ const FateAction = {
 
   fetchPreyListsByMate: action(function fetchPreyListsByMate(){
     this.loading = false
-    console.warn('Mate')
+    //console.warn('Mate')
   }),
 
-  fetchPreyListsByCollection: action(function fetchPreyListsByCollection(){
+  fetchPreyListsByCollection: action(async function fetchPreyListsByCollection(){
+    this.loading = true
+    this.preyList = []
+    const query = this.firebase.database().ref("Collection")
+    await query.orderByChild("prey").equalTo(this.store.user.uid).once("value", snap => (
+       snap.forEach(childsnap => this.setPreyListByKey(childsnap.val().hunter))
+      )
+    )
     this.loading = false
-    console.warn('Collection')
   }),
 
   setPreyListByKey: action(function setPreyListByKey(key){
