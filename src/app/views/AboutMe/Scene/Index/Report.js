@@ -31,7 +31,7 @@ export default class Report extends Component {
   }
 
   render() {
-    const { charm, popularity, likeness, friendliness, activity } = this.store.user.analysis;
+    const { charm, popularity, likeness, friendliness, activity } = this.store.analysis
     const data = [{
       "魅力值": charm,
       "熱門度": popularity,
