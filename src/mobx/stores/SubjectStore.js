@@ -1,25 +1,26 @@
 import React from 'react'
-import { Text } from 'react-native'
 import { observable, action, computed, useStrict } from 'mobx'
 import { Actions } from 'react-native-router-flux'
 // AboutMe
 import NickBirthday from '../../app/views/AboutMe/Edit/NickBirthday'
 import Location from '../../app/views/AboutMe/Edit/Location'
-// import autobind from 'autobind-decorator';
-useStrict(true)
+import Introduce from '../../app/views/AboutMe/Edit/Introduce'
+import Language from '../../app/views/AboutMe/Edit/Language'
+// configs
+import DefaultLanguages from '../../configs/DefaultLanguages'
 
-// @autobind
+useStrict(true)
 
 class SubjectStore {
   @observable user;
   @observable inSignupProcess;
 
   constructor(firebase) {
-    this.user = null;
-    this.inSignupProcess = false;
+    this.user = null
+    this.inSignupProcess = false
     this.firebase = firebase
   }
-  //
+  //AboutMe
 
   @computed get emailVerified(){
     return this.user.emailVerified
@@ -42,7 +43,7 @@ class SubjectStore {
   }
 
   @computed get city(){
-    return this.user.city.description
+    return this.user.city
   }
 
   @computed get vip(){
@@ -53,8 +54,12 @@ class SubjectStore {
     return this.user.bio
   }
 
+  @computed get langRaw(){
+    return this.user.lang ? this.user.lang : this.user.lang = DefaultLanguages
+  }
+
   @computed get lang(){
-    return this.user.lang ? this.user.lang : { "中文": true }
+    return this.user.lang ? Object.keys(this.user.lang).filter(k => this.user.lang[k]).join(',') : ""
   }
 
   @computed get hobby(){
@@ -88,11 +93,91 @@ class SubjectStore {
   // actions AboutMe
 
   @action onpressDisplayName(){
-    Actions.AboutMeEdit({ content: <NickBirthday/>, title: 'sssss', onRight: this.updateNickBirthday })
+    Actions.AboutMeEdit({ content: <NickBirthday/>, title: '暱稱生日', onRight: this.updateNickBirthday })
   }
 
   @action onpressLocation(){
-    Actions.AboutMeEdit({ content: <Location initcontent = { this.city } save = { this.setCity } />})
+    Actions.AboutMeEdit({ content: <Location/>, title: '位置', onRight: this.updateCity })
+  }
+
+  @action onpressIntroduce() {
+    Actions.AboutMeEdit({ content: <Introduce/>, title: '自我介紹', onRight: this.updateBio })
+  }
+
+  @action onpressLanguage() {
+    Actions.AboutMeEdit({ content: <Language/>, title: '擅長語言', onRight: this.updateLang })
+  }
+
+  @action handleUpgrade() {
+    alert('轉跳到升級頁面，施工中...')
+    //this.store.upgradeMembership(this.firebase);
+  }
+
+  @action handleAddCredit() {
+    alert('轉跳到Q點儲值頁面，施工中...')
+  }
+
+  @action handleSendVerifyEmail() {
+    this.firebase.auth().currentUser.sendEmailVerification().then(() => {
+      alert("認證信已寄出")
+      console.log('Email verification request sent')
+    }, error => {
+      console.log(error)
+    })
+  }
+
+  @action handleVerifyPhoto() {
+    alert('轉跳到相片認證頁面，施工中...');
+  }
+
+  @action setDisplayName(val){
+    if (val.length > 0 ) {
+      this.user.displayName = val
+    }
+  }
+
+  @action setBirthday(val){
+    if (val) {
+      this.user.birthday = val
+    }    
+  }
+
+  @action setCity(data){
+    if (data.description) {
+      this.user.city = data.description
+    }
+  } 
+
+  @action setBio(val){
+    if (val) {
+      this.user.bio = val
+    }  
+  } 
+
+  @action setLang(val) {
+    this.user.lang[val] = !this.user.lang[val]
+  }
+
+  @action updateNickBirthday(){
+    this.updateToFirebase('displayName', this.user.displayName)
+    this.updateToFirebase('birthday', this.user.birthday)
+    Actions.AboutMeShow({type: 'reset'})    
+  }
+
+  @action updateCity(){
+    this.updateToFirebase('city', this.user.city)
+    Actions.AboutMeShow({type: 'reset'})    
+  }
+
+  @action updateBio(){
+    this.updateToFirebase('bio', this.user.bio)
+    Actions.AboutMeShow({type: 'reset'})    
+  }
+
+  @action updateLang(){
+    console.log(this.user.lang)
+    this.updateToFirebase('lang', this.user.lang)
+    Actions.AboutMeShow({type: 'reset'})     
   }
 
   // actions
@@ -136,40 +221,6 @@ class SubjectStore {
   @action setChatStatus(val) {
     this.user.chatStatus = val;
     this.updateToFirebase('chatStatus', val);
-  }
-
-  @action setDisplayName(val){
-    if (val.length > 0 ) {
-      this.user.displayName = val
-    }
-  }
-
-  @action setBirthday(val){
-    if (val) {
-      this.user.birthday = val
-    }    
-  }
-
-  @action updateNickBirthday(){
-    this.updateToFirebase('displayName', this.user.displayName)
-    this.updateToFirebase('birthday', this.user.birthday)
-    Actions.AboutMeShow({type: 'reset'})    
-  }
-
-  @action setCity = (val) => {
-    this.user.city = val
-    this.updateToFirebase('city', val);
-  }
-
-  @action setBio = (val) => {
-    this.user.bio = val
-    this.updateToFirebase('bio', val);
-  }
-
-  @action setLang = (val) => {
-    this.user.lang = val
-    this.updateToFirebase('lang', val)
-    //console.log(this.user);
   }
 
   @action setHobby = (val) => {

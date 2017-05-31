@@ -1,13 +1,10 @@
 import React from 'react'
 import { Dimensions } from 'react-native'
-//import { Actions } from 'react-native-router-flux'
-//import { observer } from 'mobx-react/native'
-
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
+// views
 import Profile from './Show/Profile'
-//import Gallery from './Show/Gallery'
-//import Report from './Show/Report'
-
+import Album from './Show/Album'
+import Report from './Show/Report'
 
 const { width } = Dimensions.get('window');
 const styles = {
@@ -32,29 +29,10 @@ const ShowView = () => {
       ref={(tabView) => { this.tabView = tabView; }}
     >
     <Profile tabLabel='我的檔案'/>
+    <Album tabLabel='個人相簿'/>
+    <Report tabLabel='互動分析'/>
     </ScrollableTabView>
   )
 }
 
 export default ShowView
-
-/*
-          <Profile
-            store={this.store}
-            fire={this.firebase}
-            storage={this.storage}
-            tabLabel='我的檔案'
-            />
-          <Gallery
-            store={this.store}
-            fire={this.firebase}
-            storage={this.storage}
-            tabLabel='個人相簿'
-            />
-          <Report
-            store={this.store}
-            fire={this.firebase}
-            storage={this.storage}
-            tabLabel='互動分析'
-            />
-            */

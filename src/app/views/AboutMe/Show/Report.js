@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Dimensions,
 } from 'react-native';
 import { Radar } from 'react-native-pathjs-charts';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 
 
 const { width, height } = Dimensions.get('window');
@@ -18,29 +18,20 @@ const styles = {
     width,
     height,
   }
-};
+}
 
-@observer
-export default class Report extends Component {
-  constructor(props) {
-    super(props);
-    this.store = this.props.store;
-  }
+const Report = inject("SubjectStore")(observer(({ SubjectStore }) => {
 
-  componentDidMount() {
-  }
-
-  render() {
-    const { charm, popularity, likeness, friendliness, activity } = this.store.analysis
-    const data = [{
+  const { charm, popularity, likeness, friendliness, activity } = SubjectStore.analysis
+  const data = [{
       "魅力值": charm,
       "熱門度": popularity,
       "好感度": likeness,
       "友好度": friendliness,
       "活耀度": activity,
-    }];
+  }];
 
-    const options = {
+  const options = {
       width,
       height: 300,
       r: 130,
@@ -57,12 +48,13 @@ export default class Report extends Component {
         fontWeight: true,
         fill: '#34495E'
       }
-    };
-
-    return(
-      <View style={styles.container}>
-        <Radar data={data} options={options} />
-      </View>
-    );
   }
-}
+
+  return(
+    <View style={styles.container}>
+      <Radar data={data} options={options} />
+    </View>
+  )
+}))
+
+export default Report
