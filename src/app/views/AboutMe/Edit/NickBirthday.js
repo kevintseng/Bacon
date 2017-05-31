@@ -20,42 +20,56 @@ const styles = {
   }
 }
 
+const maxDay = () => {
+  const today = new Date();
+  const nowYear = today.getFullYear();
+  const year = nowYear - 18;
+  const month = ('0' + (today.getMonth() + 1).toString()).slice(-2); // Jan = 0, Feb = 1.
+  const day = ('0' + today.getDate().toString()).slice(-2);
+  const maxDate = year.toString() + '-' + month.toString() + '-' + day;
+  return maxDate;
+}
+
 const NickBirthday = inject("SubjectStore")(observer(({ SubjectStore }) => {
   
-  //constructor(props) {
-    //super(props)
-    //this.state = { text : this.props.initcontent }
-    //this.save = this.props._save
-  //}
-
-  //_save = () => {
-  //  this.props.save(this.state.text)
-  //  Actions.AboutMeShow({type: 'reset'})
-  //}
-
-  //componentWillMount = () => {
-  //  Actions.refresh({title: "暱稱生日", rightTitle: "完成", onRight: this._save });
-  //}  
-
-
-    return(
-      <View style = { styles.NickBirthday }>
-
+  return(
+    <View style = { styles.NickBirthday }>
+      <View>
         <View>
-          <View>
-            <Text>NickName</Text> 
-          </View>
-          <View>
-            <TextInput
-              placeholder="NickName"
-              onChangeText={(text) => SubjectStore.setDisplayName(text)}
-              value={SubjectStore.displayName}
-            />
-          </View>
+          <Text>暱稱</Text> 
         </View>
-
+        <View>
+          <TextInput
+            maxLength = { 10 }
+            onChangeText = { (text) => SubjectStore.setDisplayName(text) }
+            value = { SubjectStore.displayName }
+          />
+        </View>
       </View>
-    )
+
+      <View style = { styles.Birthday }>
+        <View>
+          <Text>生日</Text> 
+        </View>
+        <View style = {styles.DataPicker}>
+          <DatePicker
+            style = { styles.dataPicker }
+            date = { SubjectStore.birthday }
+            mode = "date"
+            placeholder = "您的生日"
+            format = "YYYY-MM-DD"
+            minDate = "1950-01-01"
+            maxDate = { maxDay() }
+            confirmBtnText = "完成"
+            cancelBtnText = "取消"
+            showIcon = { false }
+            onDateChange = { date => SubjectStore.setBirthday(date) }
+          /> 
+        </View>
+      </View> 
+
+    </View>
+  )
 }))
 
 export default NickBirthday
