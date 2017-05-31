@@ -33,7 +33,7 @@ class SubjectStore {
   }
 
   @computed get displayName(){
-    return this.user.displayName
+    return this.user.displayName ? this.user.displayName : " "
   }
 
   @computed get city(){
@@ -83,7 +83,7 @@ class SubjectStore {
   // actions AboutMe
 
   @action onpressDisplayName(){
-    Actions.AboutMeEdit({ content: <NickBirthday/>, title: 'sssss'})
+    Actions.AboutMeEdit({ content: <NickBirthday/>, title: 'sssss', onRight: this.updateDisplayName })
   }
 
   @action onpressLocation(){
@@ -137,9 +137,10 @@ class SubjectStore {
     this.user.displayName = val
   }
 
-  //@action updateDisplayNamw = () => {
-  //  this.updateToFirebase('displayName', val)    
-  //}
+  @action updateDisplayName(){
+    this.updateToFirebase('displayName', this.user.displayName)
+    Actions.AboutMeShow({type: 'reset'})    
+  }
 
   @action setCity = (val) => {
     this.user.city = val
