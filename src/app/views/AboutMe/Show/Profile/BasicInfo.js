@@ -75,7 +75,7 @@ const BasicInfo = inject("SubjectStore")(observer(({ SubjectStore }) => {
 
       <View style = { styles.Infomation }>
         <Item displayTitle title = { SubjectStore.displayName } tag = "編輯" onpress = { SubjectStore.onpressDisplayName.bind(SubjectStore) }></Item>
-        <Item displayTitle title = { SubjectStore.location } tag = "編輯" onpress = { SubjectStore.onpressLocation.bind(SubjectStore) }></Item>
+        <Item displayTitle title = { SubjectStore.city } tag = "編輯" onpress = { SubjectStore.onpressLocation.bind(SubjectStore) }></Item>
       </View>     
     </View>
   )

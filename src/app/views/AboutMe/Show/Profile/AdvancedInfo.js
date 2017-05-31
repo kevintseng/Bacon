@@ -1,41 +1,38 @@
-'use strict'
-import React from 'react';
+//'use strict'
+import React from 'react'
 import { View, Text } from 'react-native'
 import { Item } from './Components/Item'
+import { observer, inject } from 'mobx-react/native'
 
-const AdvancedInfo = ({ introduce, language, interests, onpressIntroduce, onpressLanguage, onpressInterests }) => {
-
+const AdvancedInfo = inject("SubjectStore")(observer(({ SubjectStore }) => {
   return(
     <View>
       <Item 
         title = "自我介紹" 
         displayTitle styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
-        onpress = { onpressIntroduce } >
-        <Text>{ introduce }</Text>
+        onpress = { SubjectStore.onpressIntroduce.bind(SubjectStore) } >
+        <Text>{ SubjectStore.bio }</Text>
       </Item>
       <Item 
         title = "語言能力" 
         displayTitle styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
-        onpress = { onpressLanguage } >
-        <Text>{ language }</Text>
+        onpress = { SubjectStore.onpressLanguage.bind(SubjectStore) } >
+        <Text>{ SubjectStore.lang }</Text>
       </Item>
+    </View>                           
+  )
+}))
+
+export default AdvancedInfo
+
+/*
       <Item 
         title = "興趣愛好" 
         displayTitle styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
-        onpress = { onpressInterests } >
-        <Text>{ interests }</Text>
+        onpress = { SubjectStore.onpressInterests.bind(SubjectStore) } >
+        <Text>{ SubjectStore.interests }</Text>
       </Item>
-    </View>                           
-    )
-}
-
-export { AdvancedInfo }
-
-/*
-        <Field label = { 'introduce' } title = { '自我介紹' } content = { props.introduce } />
-        <Field label = { 'langauge' } title = { '語言能力' } content = { props.langauge } />  
-        <Field label = { 'interests' } title = { '興趣愛好' } content = { props.interests } /> 
 */

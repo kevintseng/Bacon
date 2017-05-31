@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Dimensions, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Dimensions, Image, TouchableOpacity, Text } from 'react-native';
 import { Button, } from 'react-native-elements';
 import { observer } from 'mobx-react/native';
 import PhotoGrid from 'react-native-photo-grid';
@@ -29,8 +29,16 @@ const styles = {
   photo: {
       flex: 1
   }
-};
+}
 
+const Album = () => {
+  return(
+    <View><Text>相簿施工中</Text></View>
+  )
+}
+
+export default Album
+/*
 @observer
 export default class Gallery extends Component {
   constructor(props) {
@@ -145,7 +153,13 @@ export default class Gallery extends Component {
     alert('哈, 刪照片功能還沒寫好');
   }
 
-  render() {
+  render(){
+    alert("施工中")
+  }
+}
+
+
+render() {
     return(
       <View style={styles.viewWrapper}>
         <PhotoGrid
@@ -212,4 +226,4 @@ export default class Gallery extends Component {
       </View>
     );
   }
-}
+*/
