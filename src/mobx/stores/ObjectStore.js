@@ -7,7 +7,7 @@ import geolib from 'geolib'
 useStrict(false)
 
 //@autobind
-class PreyStore {
+class ObjectStore {
   @observable prey
   @observable preyList
   @observable loading
@@ -90,4 +90,4 @@ class PreyStore {
    
 }
 
-export default PreyStore
+export default ObjectStore

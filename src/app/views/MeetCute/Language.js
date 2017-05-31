@@ -5,12 +5,12 @@ import { Icon } from 'react-native-elements'
 
 const renderLanguages = (langs) => (Object.keys(langs).filter(k => langs[k]).join(','))
 
-const Language = inject("PreyStore")(observer(({ PreyStore }) => {
+const Language = inject("ObjectStore")(observer(({ ObjectStore }) => {
   return(
     <View style={{flexDirection: 'row', margin: 10}}>
       <Icon name='language'></Icon>
       <Text>
-        {renderLanguages(PreyStore.languages)}
+        {renderLanguages(ObjectStore.languages)}
       </Text>
     </View>
   )
