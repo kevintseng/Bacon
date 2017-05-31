@@ -1,4 +1,5 @@
 import React from 'react'
+import { Text } from 'react-native'
 import { observable, action, computed, useStrict } from 'mobx'
 import { Actions } from 'react-native-router-flux'
 // AboutMe
@@ -33,7 +34,7 @@ class SubjectStore {
   }
 
   @computed get displayName(){
-    return this.user.displayName ? this.user.displayName : " "
+    return this.user.displayName ? this.user.displayName : <Text></Text>
   }
 
   @computed get city(){

@@ -43,15 +43,13 @@ const NickBirthday = inject("SubjectStore")(observer(({ SubjectStore }) => {
 
         <View>
           <View>
-            <Text>暱稱</Text> 
+            <Text>NickName</Text> 
           </View>
           <View>
             <TextInput
-              autoFocus
-              placeholder = "輸入暱稱"
-              onChangeText = { (text) => SubjectStore.setDisplayName(text) }
-              value = { SubjectStore.displayName }
-              //onEndEditing={(text) => {this.refs.body.focus()}}
+              placeholder="NickName"
+              onChangeText={(text) => SubjectStore.setDisplayName(text)}
+              value={SubjectStore.displayName}
             />
           </View>
         </View>
