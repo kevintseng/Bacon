@@ -7,7 +7,7 @@ import MeetChance from "../views/MeetChance"
 
 //const { width, height } = Dimensions.get('window')
 
-@inject("HunterStore","PreyStore") @observer
+@inject("SubjectStore","ObjectStore") @observer
 export default class MeetChanceContainer extends Component {
   //static propTypes = {
     //store: PropTypes.object,
@@ -24,19 +24,19 @@ export default class MeetChanceContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.HunterStore = props.HunterStore
-    this.PreyStore = props.PreyStore
+    this.SubjectStore = props.SubjectStore
+    this.ObjectStore = props.ObjectStore
   }
 
   componentWillMount() {
     //console.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false })
-    this.PreyStore.initPreyList()
+    this.ObjectStore.initPreyList()
     // this.getLocation();
   }
 
   componentDidMount(){
-    this.PreyStore.fetchPreyListsByMeetChance(this.HunterStore.user.geocode.lat, this.HunterStore.user.geocode.lng)
+    this.ObjectStore.fetchPreyListsByMeetChance(this.SubjectStore.user.geocode.lat, this.SubjectStore.user.geocode.lng)
     //console.warn('componentDidMount')
     //this.getGeo(25.001542,121.497097);
   }
@@ -147,7 +147,7 @@ export default class MeetChanceContainer extends Component {
 
   render() {
 
-    const { PreyStore } = this.props
+    const { ObjectStore } = this.props
     
     const indicator = (
       <ActivityIndicator
@@ -163,9 +163,9 @@ export default class MeetChanceContainer extends Component {
 
     return(
       <View style={{flex: 1}}>
-      { PreyStore.loading && indicator }
+      { ObjectStore.loading && indicator }
       {
-        PreyStore.preyList && !PreyStore.loading && 
+        ObjectStore.preyList && !ObjectStore.loading && 
         <MeetChance/>
       }
       </View>

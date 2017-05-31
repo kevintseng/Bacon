@@ -1,5 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
+//import { observer, inject } from 'mobx-react/native'
 
 const styles = {
   Edit: {
@@ -8,14 +9,13 @@ const styles = {
   }
 }
 
-
-const Edit = ({ content }) => {
+const EditView = ({ content }) => {
 
   return (
-    <View style = {styles.Edit }>
+    <View style = {styles.Edit}>
       { content }
     </View>
   )
 }
 
-export { Edit }
+export default EditView

@@ -1,11 +1,15 @@
+import React from 'react'
 import { observable, action, computed, useStrict } from 'mobx'
 import { Actions } from 'react-native-router-flux'
+// AboutMe
+import NickBirthday from '../../app/views/AboutMe/Edit/NickBirthday'
+import Location from '../../app/views/AboutMe/Edit/Location'
 // import autobind from 'autobind-decorator';
 useStrict(true)
 
 // @autobind
 
-class HunterStore {
+class SubjectStore {
   @observable user;
   @observable inSignupProcess;
 
@@ -14,6 +18,43 @@ class HunterStore {
     this.inSignupProcess = false;
     this.firebase = firebase
   }
+  //
+
+  @computed get emailVerified(){
+    return this.user.emailVerified
+  }
+
+  @computed get photoVerified(){
+    return this.user.photoVerified
+  }
+
+  @computed get photoURL(){
+    return this.user.photoURL ? this.user.photoURL : 'hookup/src/images/addImage.png'
+  }
+
+  @computed get displayName(){
+    return this.user.displayName
+  }
+
+  @computed get city(){
+    return this.user.city.description
+  }
+
+  @computed get vip(){
+    return this.user.vip
+  }
+
+  @computed get bio(){
+    return this.user.bio
+  }
+
+  @computed get lang(){
+    return this.user.lang ? this.user.lang : { "中文": true }
+  }
+
+  @computed get hobby(){
+    return this.user.hobby
+  }  
 
   // report
   @computed get analysis(){
@@ -38,6 +79,15 @@ class HunterStore {
 
   @computed get activity(){
     return this.user.analysis.activity ? this.user.analysis.activity : 0
+  }
+  // actions AboutMe
+
+  @action onpressDisplayName(){
+    Actions.AboutMeEdit({ content: <NickBirthday/>, title: 'sssss'})
+  }
+
+  @action onpressLocation(){
+    Actions.AboutMeEdit({ content: <Location initcontent = { this.city } save = { this.setCity } />})
   }
 
   // actions
@@ -83,10 +133,13 @@ class HunterStore {
     this.updateToFirebase('chatStatus', val);
   }
 
-  @action setDisplayName = (val) => {
+  @action setDisplayName(val){
     this.user.displayName = val
-    this.updateToFirebase('displayName', val);
   }
+
+  //@action updateDisplayNamw = () => {
+  //  this.updateToFirebase('displayName', val)    
+  //}
 
   @action setCity = (val) => {
     this.user.city = val
@@ -130,8 +183,8 @@ class HunterStore {
 
   @action handleOnPress(key) {
     switch (key) {
-      case 'aboutMeRoutes':
-        return () => Actions.aboutMeRoutes({type: 'reset'})
+      case 'AboutMe':
+        return () => Actions.AboutMe({type: 'reset'})
       case 'meetcute':
         return () => Actions.meetcute({type: 'reset'})
       case 'nearby':
@@ -165,4 +218,4 @@ class HunterStore {
   }
 }
 
-export default HunterStore
+export default SubjectStore
