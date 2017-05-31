@@ -34,7 +34,11 @@ class SubjectStore {
   }
 
   @computed get displayName(){
-    return this.user.displayName ? this.user.displayName : <Text></Text>
+    return this.user.displayName
+  }
+
+  @computed get birthday(){
+    return this.user.birthday
   }
 
   @computed get city(){
@@ -84,7 +88,7 @@ class SubjectStore {
   // actions AboutMe
 
   @action onpressDisplayName(){
-    Actions.AboutMeEdit({ content: <NickBirthday/>, title: 'sssss', onRight: this.updateDisplayName })
+    Actions.AboutMeEdit({ content: <NickBirthday/>, title: 'sssss', onRight: this.updateNickBirthday })
   }
 
   @action onpressLocation(){
@@ -135,11 +139,20 @@ class SubjectStore {
   }
 
   @action setDisplayName(val){
-    this.user.displayName = val
+    if (val.length > 0 ) {
+      this.user.displayName = val
+    }
   }
 
-  @action updateDisplayName(){
+  @action setBirthday(val){
+    if (val) {
+      this.user.birthday = val
+    }    
+  }
+
+  @action updateNickBirthday(){
     this.updateToFirebase('displayName', this.user.displayName)
+    this.updateToFirebase('birthday', this.user.birthday)
     Actions.AboutMeShow({type: 'reset'})    
   }
 
@@ -206,8 +219,7 @@ class SubjectStore {
   }
 
   updateToFirebase(key, val){
-    const setFirebase = this.firebase.database().ref('users/' + this.user.uid + '/' + key);
-    setFirebase.set(val);
+    this.firebase.database().ref('users/' + this.user.uid + '/' + key).set(val)
   }
 
   updateUserAtFirebase(firebase, key, val){
