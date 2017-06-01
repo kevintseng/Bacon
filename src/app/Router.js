@@ -235,7 +235,6 @@ export default class RouterComponent extends Component {
 
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
-              { AboutMeScene }
               <Scene //邂逅
                 key="meetcute"
                 component={MeetCuteProvider}
@@ -270,6 +269,7 @@ export default class RouterComponent extends Component {
                 title="Settings"
                 renderLeftButton={menuButton}
               />
+              { AboutMeScene }
               <Scene key="account" component={Account} title="Account" />
               <Scene key="settings_wrapper">
                 <Scene
