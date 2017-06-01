@@ -3,7 +3,7 @@ import { View, Dimensions, Image, TouchableOpacity, Text } from 'react-native';
 import { Button, } from 'react-native-elements';
 import { observer } from 'mobx-react/native';
 import PhotoGrid from 'react-native-photo-grid';
-import ImagePicker from 'react-native-customized-image-picker';
+//import ImagePicker from 'react-native-customized-image-picker';
 import Modal from 'react-native-simple-modal';
 import { uploadImage, resizeImage } from '../../../Utils';
 
