@@ -43,7 +43,7 @@ class SubjectStore {
   }
 
   @computed get city(){
-    return this.user.city
+    return typeof(this.user.city) === 'string' ? this.user.city : this.user.city.description
   }
 
   @computed get vip(){

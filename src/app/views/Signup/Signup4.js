@@ -2,10 +2,10 @@ import React, {Component, PropTypes} from 'react';
 import {
     View,
     Dimensions,
-    Text,
     ActivityIndicator,
-    Platform,
+    Platform
   } from 'react-native'; // eslint-disable-line
+//import Storage from 'react-native-storage'
 import UserAvatar from 'react-native-user-avatar';
 import ImageResizer from 'react-native-image-resizer';
 import { Card, Button } from 'react-native-elements'; // eslint-disable-line
@@ -14,8 +14,7 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import { observer } from 'mobx-react/native';
 import ImagePicker from 'react-native-image-picker';
 import { Header } from '../../components/Header';
-import { AsyncStorage } from 'react-native';
-import Storage from 'react-native-storage';
+//import { AsyncStorage } from 'react-native';
 // import { FirebaseConfig } from '../../Configs';
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
