@@ -16,7 +16,7 @@ const styles = {
   }
 };
 
-const Fate = inject("PreyStore")(observer(({ PreyStore }) => {
+const Fate = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
   return(
     <ScrollableTabView
@@ -27,7 +27,7 @@ const Fate = inject("PreyStore")(observer(({ PreyStore }) => {
       tabBarBackgroundColor='white'
       tabBarActiveTextColor='#2962FF'
       tabBarInactiveTextColor='grey'
-      onChangeTab={ ({ ref })=> { PreyStore["fetchPreyListsBy" + ref.props.label]() } }
+      onChangeTab={ ({ ref })=> { ObjectStore["fetchPreyListsBy" + ref.props.label]() } }
       ref={ (tabView) => { this.tabView = tabView} }
       >
       <Visitors label='Visitors' tabLabel='來訪' />

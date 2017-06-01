@@ -3,13 +3,13 @@ import { View, Text } from "react-native"
 import { observer, inject } from "mobx-react/native"
 import { Icon } from 'react-native-elements'
 
-const Distance = inject("PreyStore")(observer(({ PreyStore }) => {
+const Distance = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
   return(
     <View style={{flexDirection: 'row', margin: 10}}>
      <Icon name='person-pin-circle'></Icon>
       <Text>
-        你們距離大約 {PreyStore.distance} 公里
+        你們距離大約 {ObjectStore.distance} 公里
       </Text>
     </View>
   )

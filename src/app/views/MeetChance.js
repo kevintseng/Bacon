@@ -6,9 +6,9 @@ import Cookie from './MeetChance/Cookie'
 
 const { width, height } = Dimensions.get('window')
 
-const MeetChance = inject("PreyStore")(observer(({ PreyStore }) => {
+const MeetChance = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
-  const renderCookie = PreyStore.preyList.map((prey)=>( <Cookie name={prey.displayName} photoURL={prey.photoURL} key={prey.uid}/> ))
+  const renderCookie = ObjectStore.preyList.map((prey)=>( <Cookie name={prey.displayName} photoURL={prey.photoURL} key={prey.uid}/> ))
 
   return(
     <View>

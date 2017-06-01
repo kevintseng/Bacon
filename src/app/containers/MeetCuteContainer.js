@@ -5,13 +5,13 @@ import { Actions } from "react-native-router-flux"
 // views
 import MeetCute from "../views/MeetCute"
 
-@inject("HunterStore","PreyStore") @observer
+@inject("SubjectStore","ObjectStore") @observer
 export default class MeetCuteContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.HunterStore = props.HunterStore
-    this.PreyStore = props.PreyStore
+    this.SubjectStore = props.SubjectStore
+    this.ObjectStore = props.ObjectStore
   }
 
   componentWillReact() {
@@ -20,11 +20,11 @@ export default class MeetCuteContainer extends Component {
 
   componentWillMount() {
     Actions.refresh({ key: "drawer", open: false })
-    this.PreyStore.initPreyList()
+    this.ObjectStore.initPreyList()
   }
 
   componentDidMount() {
-    this.PreyStore.fetchPreyListsByMeetCute(this.HunterStore.user.sexOrientation)
+    this.ObjectStore.fetchPreyListsByMeetCute(this.SubjectStore.user.sexOrientation)
   }
 
   componentWillUnmount(){
@@ -32,7 +32,7 @@ export default class MeetCuteContainer extends Component {
   }
 
   render() {
-    const { PreyStore } = this.props
+    const { ObjectStore } = this.props
     
     const indicator = (
       <ActivityIndicator
@@ -48,9 +48,9 @@ export default class MeetCuteContainer extends Component {
     
     return (
       <View style={{flex: 1}}>
-        { PreyStore.loading && indicator }
+        { ObjectStore.loading && indicator }
         {
-          PreyStore.prey && !PreyStore.loading && 
+          ObjectStore.prey && !ObjectStore.loading && 
           <MeetCute/>
         }
       </View>

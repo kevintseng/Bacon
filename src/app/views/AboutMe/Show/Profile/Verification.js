@@ -1,14 +1,15 @@
 import React from 'react'
 import { View } from 'react-native'
 import { ListItem } from 'react-native-elements'
+import { observer, inject } from 'mobx-react/native'
 
 
-const Verification = ({ emailVerified, emailRightTitle, handleSendVerifyEmail, photoVerified, handleVerifyPhoto }) => {
+const Verification = inject("SubjectStore")(observer(({ SubjectStore }) => {
 
   return(
     <View>
       <View>
-        { emailVerified ? 
+        { SubjectStore.emailVerified ? 
             <ListItem
             key='email'
             title='信箱認證'
@@ -20,16 +21,16 @@ const Verification = ({ emailVerified, emailRightTitle, handleSendVerifyEmail, p
               key = 'email'
               title ='信箱認證'
               titleStyle = { { color: '#000000' } }
-              rightTitle = { emailRightTitle }
+              rightTitle = "重寄認證信"
               rightTitleStyle = { { color: '#2962FF', paddingRight: 5 } }
-              onPress = { handleSendVerifyEmail }
+              onPress = { SubjectStore.handleSendVerifyEmail.bind(SubjectStore) }
               hideChevron
               subtitle = '未完成'
             />
           }
       </View> 
       <View>
-        { photoVerified ? 
+        { SubjectStore.photoVerified ? 
             <ListItem
               key = 'verifiedPhoto'
               title = '相片認證'
@@ -43,7 +44,7 @@ const Verification = ({ emailVerified, emailRightTitle, handleSendVerifyEmail, p
               titleStyle = { { color: '#000000' } }
               rightTitle = '進行認證'
               rightTitleStyle = { { color: '#2962FF', paddingRight: 5 } }
-              onPress = { handleVerifyPhoto }
+              onPress = { SubjectStore.handleVerifyPhoto.bind(SubjectStore) }
               hideChevron
               subtitle = '未完成'
               />
@@ -51,6 +52,6 @@ const Verification = ({ emailVerified, emailRightTitle, handleSendVerifyEmail, p
       </View>
     </View>
   )
-}
+}))
 
-export { Verification }
+export default Verification

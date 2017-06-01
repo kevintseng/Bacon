@@ -1,6 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import { Icon, Text } from 'react-native-elements'
+import { observer, inject } from 'mobx-react/native'
+
 
 const styles = {
   barStyle:{
@@ -51,36 +53,27 @@ const styles = {
 
 };
 
-export default class AccountStatus extends Component {
+const AccountStatus = inject("SubjectStore")(observer(({ SubjectStore }) => {
 
-  content = () => {
-    return this.props.vip ? { title: '高級會員', update: '', iconSize: 52, additionBarStyle: { backgroundColor: '#4169e1' }, additionButtonStyle: { borderWidth: 0 } }:{ title: '一般會員', update: '升級', iconSize: 26}
+  const content = () => {
+    return SubjectStore.vip ? { title: '高級會員', update: '', iconSize: 52, additionBarStyle: { backgroundColor: '#4169e1' }, additionButtonStyle: { borderWidth: 0 } }:{ title: '一般會員', update: '升級', iconSize: 26}
   } 
 
-  handleUpgrade = () => {
-    this.props.upgrade()
-  }
-
-  handleAddCredit = () => {
-    this.props.addCredit()
-  }
-
-  render() {
-    return (
-      <View style={ [styles.barStyle, this.content().additionBarStyle] }>
-        <View style={ styles.containerStyle }>
-          <View>
-            <Text style={ styles.statusName }>
-              { this.content().title }
-            </Text>
-          </View>
-          <View style={ styles.buttonWrapper }>
-            <TouchableOpacity
-              style={ [styles.buttonStyle, this.content().additionButtonStyle] }
-              onPress={ this.handleUpgrade }>
-              <Icon name='star' color='#EEEEEE' size={ this.content().iconSize } />
-              <Text style={ styles.buttonTitle }>{ this.content().update }</Text>
-            </TouchableOpacity>                       
+  return (
+    <View style={ [styles.barStyle, content().additionBarStyle] }>
+      <View style={ styles.containerStyle }>
+        <View>
+          <Text style={ styles.statusName }>
+            { content().title }
+          </Text>
+        </View>
+        <View style={ styles.buttonWrapper }>
+          <TouchableOpacity
+            style={ [styles.buttonStyle, content().additionButtonStyle] }
+            onPress={ SubjectStore.handleUpgrade.bind(SubjectStore) }>
+            <Icon name='star' color='#EEEEEE' size={ content().iconSize } />
+            <Text style={ styles.buttonTitle }>{ content().update }</Text>
+          </TouchableOpacity>                       
           </View>          
         </View>
         <View style={ styles.containerStyle }>
@@ -91,13 +84,14 @@ export default class AccountStatus extends Component {
           <View style={ styles.buttonWrapper }>
             <TouchableOpacity
               style={ styles.buttonStyle }
-              onPress={ this.handleAddCredit }>
+              onPress={ SubjectStore.handleAddCredit.bind(SubjectStore) }>
               <Icon name='redeem' color='#EEEEEE'/>
               <Text style={ styles.buttonTitle }>儲值</Text>
-            </TouchableOpacity>
-          </View>
+           </TouchableOpacity>
         </View>
       </View>
+    </View>
     )
-  }
-}
+}))
+ 
+export default AccountStatus

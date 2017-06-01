@@ -45,7 +45,7 @@ const SideBar = observer(({ store }) => {
             containerStyle = { listItemContainerStyle }
             avatar = { store.user.photoURL ? store.user.photoURL : loading}
             title = { store.user.displayName }
-            onPress = { store.handleOnPress('aboutMeRoutes') }
+            onPress = { store.handleOnPress('AboutMe') }
         />
         {
           list.map((item, i) => (
