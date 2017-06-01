@@ -3,9 +3,9 @@ import { View, Text, ActivityIndicator } from 'react-native'
 import { Cookie } from './components/Cookie'
 import { observer, inject } from "mobx-react/native"
 
-const GoodImpression = inject("PreyStore")(observer(({ PreyStore }) => {
+const GoodImpression = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
-  const renderGoodImpression = PreyStore.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName }><Text style={{color: '#000000'}}>你們距離大約 7.9 公里</Text></Cookie>))
+  const renderGoodImpression = ObjectStore.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName }><Text style={{color: '#000000'}}>你們距離大約 7.9 公里</Text></Cookie>))
 
   const indicator = (
     <ActivityIndicator
@@ -21,9 +21,9 @@ const GoodImpression = inject("PreyStore")(observer(({ PreyStore }) => {
 
   return(
     <View style={{flex: 1}}>
-      { PreyStore.loading && indicator }
+      { ObjectStore.loading && indicator }
       {
-        PreyStore.preyList && !PreyStore.loading && renderGoodImpression
+        ObjectStore.preyList && !ObjectStore.loading && renderGoodImpression
       }
     </View>
   )

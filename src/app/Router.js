@@ -20,12 +20,10 @@ import PushNotification from "./views/Settings/PushNotification"
 import Question from "./views/Settings/Question"
 import ChangePassword from "./views/Settings/ChangePassword"
 import FeedBack from "./views/Settings/FeedBack"
-// hocs
-import ContainerWithProvider from "./hocs/ContainerWithProvider"
-// containers
-import MeetCuteContainer from "./containers/MeetCuteContainer"
-import MeetChanceContainer from "./containers/MeetChanceContainer"
-import FateContainer from "./containers/FateContainer"
+// scenes
+import AboutMeScene from "./scenes/AboutMeScene"
+// providers
+import { MeetCuteProvider, MeetChanceProvider, FateProvider } from "./providers/Provider"
 
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
@@ -85,7 +83,7 @@ export default class RouterComponent extends Component {
       appState: AppState.currentState,
     };
 
-    this.authListener(this.props.fire)
+    this.authListener(this.props.firebase)
   }
 
   authListener = (fire) => {
@@ -112,7 +110,7 @@ export default class RouterComponent extends Component {
             Object.assign(user, user, snap.val());
 
             // Block incompleted signup users to login
-            if (!user.signupCompleted && !this.props.self.inSignupProcess) {
+            if (!user.signupCompleted && !this.props.wooer.inSignupProcess) {
               const _user = fire.auth().currentUser;
               // In case the user dropped out during sign-up and want to sign-up again
               // TODO: Should also check firebase db to see if there's any other related data needs to be removed too
@@ -130,14 +128,14 @@ export default class RouterComponent extends Component {
             }
 
             console.log({ CombinedUserProfile: user });
-            this.props.self.setUser(user);
+            this.props.wooer.setUser(user);
             console.log("Router: User has been set in appstore");
-            this.setOnline(this.props.self.user.uid);
+            this.setOnline(this.props.wooer.user.uid);
             AppState.addEventListener('change', this.handleAppStateChange);
             this.state.localdb
               .save({
                 key: "user",
-                data: this.props.self.user,
+                data: this.props.wooer.user,
                 expires: 1000 * 3600 * 24 * 30 // expires after 30 days
               })
               .catch(err => {
@@ -158,7 +156,7 @@ export default class RouterComponent extends Component {
 
   setOnline(uid) {
     const timestamp = Math.floor(Date.now() / 1000);
-    const dbRef = this.props.fire.database().ref("/online/" + uid);
+    const dbRef = this.props.firebase.database().ref("/online/" + uid);
     dbRef.set({
       lastOnline: timestamp,
       location: "Taipei, Taiwan"
@@ -169,12 +167,12 @@ export default class RouterComponent extends Component {
     console.log('AppState listner is on');
     if(this.state.appState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
       console.log('App is becoming inactive.');
-      this.setOffline(this.props.self.user.uid);
+      this.setOffline(this.props.wooer.user.uid);
     }
 
     if(nextAppState === 'active') {
       console.log('App is active');
-      this.setOnline(this.props.self.user.uid);
+      this.setOnline(this.props.wooer.user.uid);
     }
 
     this.setState({appState: nextAppState});
@@ -182,17 +180,17 @@ export default class RouterComponent extends Component {
 
   setOffline(uid) {
     // const timestamp = Math.floor(Date.now() / 1000);
-    this.props.fire.database().ref("/online/" + uid).remove();
+    this.props.firebase.database().ref("/online/" + uid).remove();
   }
 
   signOut = () => {
     // Clear out appstore's user data
-    if (this.props.self.user) {
-      this.setOffline(this.props.self.user.uid);
+    if (this.props.wooer.user) {
+      this.setOffline(this.props.wooer.user.uid);
     }
 
     // Sign out from firebase
-    this.props.fire.auth().signOut();
+    this.props.firebase.auth().signOut();
 
     // Clear out local database's user data
     this.state.localdb.remove({
@@ -206,14 +204,14 @@ export default class RouterComponent extends Component {
 
   render() {
 
-    const MeetCuteScene = ContainerWithProvider(MeetCuteContainer,{ HunterStore: this.props.self, PreyStore: this.props.meetCute })
-    const MeetChanceScene = ContainerWithProvider(MeetChanceContainer,{ HunterStore: this.props.self, PreyStore: this.props.meetChance })
-    const FateScene = ContainerWithProvider(FateContainer,{ HunterStore: this.props.self, PreyStore: this.props.fate })
+    //const MeetCuteScene = ContainerWithProvider(MeetCuteContainer,{ HunterStore: this.props.wooer, PreyStore: this.props.meetCute })
+    //const MeetChanceScene = ContainerWithProvider(MeetChanceContainer,{ HunterStore: this.props.wooer, PreyStore: this.props.meetChance })
+    //const FateScene = ContainerWithProvider(FateContainer,{ HunterStore: this.props.wooer, PreyStore: this.props.fate })
 
     return (
       <Router
-        fire={this.props.fire}
-        store={this.props.self}
+        fire={this.props.firebase}
+        store={this.props.wooer}
         localdb={this.state.localdb}
         getSceneStyle={getSceneStyle}
       >
@@ -237,17 +235,17 @@ export default class RouterComponent extends Component {
 
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
-              {require("./views/AboutMe/Routes")}
+              { AboutMeScene }
               <Scene //邂逅
                 key="meetcute"
-                component={MeetCuteScene}
+                component={MeetCuteProvider}
                 title="邂逅"
                 renderLeftButton={menuButton}
                 hideTabBar
               />
               <Scene //巧遇
                 key="nearby"
-                component={MeetChanceScene}
+                component={MeetChanceProvider}
                 title="巧遇"
                 renderLeftButton={menuButton}
               />
@@ -261,7 +259,7 @@ export default class RouterComponent extends Component {
               />
               <Scene //緣分
                 key="fate"
-                component={FateScene}
+                component={FateProvider}
                 title='緣分'
                 renderLeftButton={menuButton}
                 hideTabBar

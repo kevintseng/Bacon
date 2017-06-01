@@ -2,6 +2,8 @@ import React from 'react'
 import { View, Platform } from 'react-native'
 import { Avatar } from 'react-native-elements'
 import { Item } from './Components/Item'
+import { observer, inject } from 'mobx-react/native'
+
 
 const styles = {
   BasicInfo: {
@@ -55,7 +57,7 @@ const styles = {
 }
 
 
-const BasicInfo = ({ avatar, displayName, location, onpressDisplayName, onpressLocation }) => {
+const BasicInfo = inject("SubjectStore")(observer(({ SubjectStore }) => {
 
   return (
     <View style = { styles.BasicInfo }>
@@ -67,16 +69,16 @@ const BasicInfo = ({ avatar, displayName, location, onpressDisplayName, onpressL
           onPress = { () => console.log("Works!") }
           containerStyle = { { flex: 1 } }
           activeOpacity = { 0.7 }
-          source = { { uri: avatar } }
+          source = { { uri: SubjectStore.photoURL } }
         />
       </View>
 
       <View style = { styles.Infomation }>
-        <Item displayTitle title = { displayName } tag = "編輯" onpress = { onpressDisplayName}></Item>
-        <Item displayTitle title = { location } tag = "編輯" onpress = { onpressLocation }></Item>
+        <Item displayTitle title = { SubjectStore.displayName } tag = "編輯" onpress = { SubjectStore.onpressDisplayName.bind(SubjectStore) }></Item>
+        <Item displayTitle title = { SubjectStore.city } tag = "編輯" onpress = { SubjectStore.onpressLocation.bind(SubjectStore) }></Item>
       </View>     
     </View>
   )
-}
+}))
 
-export { BasicInfo }
+export default BasicInfo
