@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { TextInput, View } from 'react-native'
-import { Icon } from 'react-native-elements'
-import ChangeColorButton from './Components/ChangeColorButton'
-import { Actions } from 'react-native-router-flux'
+import { Icon, Badge } from 'react-native-elements'
+import { observer, inject } from 'mobx-react/native'
+import DefaultInterests from '../../../../configs/DefaultInterests'
 
 const styles = {
   Interests: {
@@ -27,105 +27,47 @@ const styles = {
   },  
   EditIcon: {
     flex: 0.05,
-    paddingTop: 25
+    paddingTop: 15
   },
   PopularTag: {
     //flex: 1,
     flexWrap: 'wrap',
     flexDirection: 'row-reverse',
     justifyContent: 'flex-end',
+    marginTop: 10
   }
 }
 
-class Interests extends Component {
+const Interests = inject("SubjectStore")(observer(({SubjectStore}) => {
 
-  constructor(props) {
-    super(props)
-    this.state = { initButtonColor: "#ffffff", showLists: [], defaultLists: ["旅遊","健身","逛街","美食","網購","遊戲","路跑","電影"] }
-  }
+  const renderDefaultInterests = DefaultInterests.map((hobby) => (<Badge key={hobby}  onPress={ () => {SubjectStore.setHobby(hobby)} } containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
+    
+  const renderInterests = SubjectStore.hobby.map((hobby) => (<Badge key={hobby} containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
 
-  _save = () => {
-    //this.props.save(this.state.text)
-    Actions.aboutMeIndex({type: 'reset'})
-  }
+  return(
+    <View style = { styles.Interests }> 
+      <View style = { [styles.ShowTag,{ paddingBottom: 70 }] }>
+        {renderInterests}
+      </View>       
+      <View style = { styles.Edit }>
+        <View style = { styles.Input }>
+          <TextInput
+            placeholder = "輸入興趣"
+            onSubmitEditing = { () => { SubjectStore.setHobby() } }     
+            onChangeText = { (text) => SubjectStore.updateHobbyInput(text) }
+            value = { SubjectStore.hobbyInput }
+          /> 
+        </View>
 
-  componentWillMount = () => {
-    Actions.refresh({title: "興趣", rightTitle: "完成", onRight: this._save });
-  }  
-
-  onKeyPress = () => {
-    this.setState({ showLists: this.state.showLists.concat(this.state.text) })
-  }
-
-  renderButton = (list) => { return <ChangeColorButton key = { list } initButtonColor = { this.state.initButtonColor } changedButtonColor = "#000000" initTextColor = "#696969" changedTextColor = "#ffffff" title = { list } /> }
-
-  renderShowTag = () => {
-    return this.state.showLists.map(this.renderButton)
-  }
-
-  renderPopularTag = () => {
-    return this.state.defaultLists.map(this.renderButton)
-  } 
-
-  onPressA = () => {
-    this.setState({ initButtonColor: "#fffacd" })
-  }
-
-  onPressB = () => {
-    this.setState({ initButtonColor: "#4169e1" })
-  }
-
-  calcuatePaddingBottom = () => {
-    return (this.state.showLists.length/4)*100
-  }  
-
-  render(){
-    return(
-      <View style = { styles.Interests }> 
-
-        <View style = { [styles.ShowTag,{ paddingBottom: 70 }] }>
-          { this.renderShowTag() }
-        </View>       
-        <View style = { styles.Edit }>
-
-          <View style = { styles.Input }>
-            <TextInput
-              placeholder = "輸入興趣"
-              onSubmitEditing = { this.onKeyPress }     
-              onChangeText = { (text) => this.setState({ text }) }
-              value = { this.state.text }
-            /> 
+      <View style = { styles.EditIcon }>
+          <Icon name = "border-color" color = "#000000" size = { 20 } />  
           </View>
+      </View>
+      <View style = { styles.PopularTag }>
+          {renderDefaultInterests}
+      </View>          
+    </View>  
+  )
+}))
 
-          <View style = { styles.EditIcon }>
-            <Icon name = "border-color" color = "#000000" size = { 20 } />  
-          </View>
-        </View>
-        <View style = { styles.PopularTag }>
-          { this.renderPopularTag() }
-        </View>          
-      </View>  
-    )
-  }
-}
-/*
-        <View>
-          <View>
-            <Text style = { { color: "#ff0000" } }>熱門</Text>
-          </View>
-          <View style = { styles.popularTag }>
-            { this.renderdefaultLists() }
-          </View>         
-        </View>
-        */
-      /*
-        <View><Text></Text></View>  
-        <View>
-          <Button color="#fffacd" title="Set InitButtonColor" onPress={this.onPressA}/>
-        </View>
-        <View><Text></Text></View> 
-        <View>
-          <Button color="#4169e1" title="Set InitButtonColor" onPress={this.onPressB}/>
-        </View>
-        */
-export default Interests;
+export default Interests
