@@ -6,16 +6,20 @@ import NickBirthday from '../../app/views/AboutMe/Edit/NickBirthday'
 import Location from '../../app/views/AboutMe/Edit/Location'
 import Introduce from '../../app/views/AboutMe/Edit/Introduce'
 import Language from '../../app/views/AboutMe/Edit/Language'
+import Interests from '../../app/views/AboutMe/Edit/Interests'
 // configs
 import DefaultLanguages from '../../configs/DefaultLanguages'
 
-useStrict(true)
+useStrict(false)
 
 class SubjectStore {
   @observable user;
   @observable inSignupProcess;
+  @observable hobbyInput;
+  //@observable sampleArray
 
   constructor(firebase) {
+    this.hobbyInput = null
     this.user = null
     this.inSignupProcess = false
     this.firebase = firebase
@@ -43,7 +47,7 @@ class SubjectStore {
   }
 
   @computed get city(){
-    return typeof(this.user.city) === 'string' ? this.user.city : this.user.city.description
+    return typeof(this.user.city) === 'string' ? this.user.city : ''
   }
 
   @computed get vip(){
@@ -65,6 +69,10 @@ class SubjectStore {
   @computed get hobby(){
     return this.user.hobby
   }  
+
+  //@computed get hobbyInput(){
+  //  return this.hobbyInput
+  //}
 
   // report
   @computed get analysis(){
@@ -92,6 +100,10 @@ class SubjectStore {
   }
   // actions AboutMe
 
+  @action updateHobbyInput(val){
+    this.hobbyInput = val
+  }
+
   @action onpressDisplayName(){
     Actions.AboutMeEdit({ content: <NickBirthday/>, title: '暱稱生日', onRight: this.updateNickBirthday })
   }
@@ -106,6 +118,10 @@ class SubjectStore {
 
   @action onpressLanguage() {
     Actions.AboutMeEdit({ content: <Language/>, title: '擅長語言', onRight: this.updateLang })
+  }
+
+  @action onpressInterests() {
+    Actions.AboutMeEdit({ content: <Interests/>, title: '興趣嗜好', onRight: this.updateHobby })
   }
 
   @action handleUpgrade() {
@@ -158,6 +174,14 @@ class SubjectStore {
     this.user.lang[val] = !this.user.lang[val]
   }
 
+  @action setHobby(val) {
+    if (val) {
+      this.user.hobby.push(val)
+    } else {
+      this.user.hobby.push(this.hobbyInput)
+    }
+  }
+
   @action updateNickBirthday(){
     this.updateToFirebase('displayName', this.user.displayName)
     this.updateToFirebase('birthday', this.user.birthday)
@@ -175,9 +199,15 @@ class SubjectStore {
   }
 
   @action updateLang(){
-    console.log(this.user.lang)
+    //console.log(this.user.lang)
     this.updateToFirebase('lang', this.user.lang)
     Actions.AboutMeShow({type: 'reset'})     
+  }
+
+  @action updateHobby(){
+    this.hobbyInput = null
+    this.updateToFirebase('hobby', this.user.hobby.slice())
+    Actions.AboutMeShow({type: 'reset'})   
   }
 
   // actions
@@ -223,11 +253,6 @@ class SubjectStore {
     this.updateToFirebase('chatStatus', val);
   }
 
-  @action setHobby = (val) => {
-    this.user.hobby = val
-    this.updateToFirebase('hobby', val)
-  }
-
   @action upgradeMembership(firebase) {
     if(!this.user.vip) {
       this.user.vip = 'vip1';
@@ -268,6 +293,10 @@ class SubjectStore {
         //return () => {};
     }
   }
+
+  //updateToFirebase2(key, val){
+  //  this.firebase.database().ref('users/' + this.user.uid + '/' + key).push(val)
+  //}
 
   updateToFirebase(key, val){
     this.firebase.database().ref('users/' + this.user.uid + '/' + key).set(val)

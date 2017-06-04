@@ -1,6 +1,6 @@
 'use strict'
 import React from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView } from 'react-native'
 // Profile Layouts
 import BasicInfo from './Profile/BasicInfo'
 import AccountStatus from './Profile/AccountStatus'
@@ -9,12 +9,11 @@ import AdvancedInfo from './Profile/AdvancedInfo'
 
 const Profile = () => {
   return(
-    <ScrollView>
+    <ScrollView style={{flex: 1}}>
       <BasicInfo/>
       <AccountStatus/>
       <Verification/>
       <AdvancedInfo/>
-      <View style={{ height: 20 }} />
     </ScrollView>
   )
 }
