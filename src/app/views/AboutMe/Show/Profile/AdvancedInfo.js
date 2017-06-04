@@ -3,8 +3,14 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import { Item } from './Components/Item'
 import { observer, inject } from 'mobx-react/native'
+import { Badge } from 'react-native-elements'
 
 const AdvancedInfo = inject("SubjectStore")(observer(({ SubjectStore }) => {
+
+  const renderhobby = SubjectStore.hobby.map(
+    (hobby) => (<Badge key={hobby} containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>)
+    )
+
   return(
     <View>
       <Item 
@@ -21,18 +27,18 @@ const AdvancedInfo = inject("SubjectStore")(observer(({ SubjectStore }) => {
         onpress = { SubjectStore.onpressLanguage.bind(SubjectStore) } >
         <Text>{ SubjectStore.lang }</Text>
       </Item>
-    </View>                           
-  )
-}))
-
-export default AdvancedInfo
-
-/*
       <Item 
         title = "興趣愛好" 
         displayTitle styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
         onpress = { SubjectStore.onpressInterests.bind(SubjectStore) } >
-        <Text>{ SubjectStore.interests }</Text>
+        <View style={{flexDirection: 'row', marginTop: 5, flexWrap: 'wrap'}}>
+          {renderhobby}
+        </View>
+
       </Item>
-*/
+    </View>                           
+  )
+}))
+
+export default AdvancedInfo

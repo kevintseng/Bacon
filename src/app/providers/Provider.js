@@ -32,7 +32,7 @@ export const FateProvider = () => (
 
 // AboutMe
 export const ShowProvider = () => (
-  <Provider SubjectStore = { AppInitStore.wooer } >
+  <Provider SubjectStore = { AppInitStore.wooer } displayName={AppInitStore.wooer.displayName} city={AppInitStore.wooer.city} >
     <ShowContainer/>
   </Provider>  
 )
