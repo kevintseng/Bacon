@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Image } from "react-native"
+import { View, Image, Text } from "react-native"
 import Carousel from "react-native-looped-carousel"
 import { Button } from "react-native-elements"
 import { observer, inject } from "mobx-react/native"
@@ -10,7 +10,11 @@ const Collapse = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
 
   const unit = (
-           <Image key={photoURL} resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
+        <Image key={photoURL} resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
+          <View style={{ flexDirection: "row", alignItems: "flex-end", marginRight: 10, marginTop: 10 }}>
+            <View style={{ flex: 1 }}></View>
+            <View style={{ borderWidth: 3, borderColor: "#f0f0f0", padding: 7, borderRadius: 7 }} ><Text style={{color: "#f0f0f0"}}>15</Text></View>
+          </View>
           <View style={{ flex: 1, marginLeft: 10, marginBottom: 10, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
             <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={ObjectStore.handleLike.bind(ObjectStore)} />
             <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={ObjectStore.getNext.bind(ObjectStore)} />
@@ -19,8 +23,12 @@ const Collapse = inject("ObjectStore")(observer(({ ObjectStore }) => {
   )
 
   const renderCollapse = ObjectStore.photos.map((photo) => ( 
-       <Image key={photo.src.uri} resizeMode="contain" style={{flex: 1}} source={{uri: photo.src.uri}}>
-          <View style={{ flex: 1, marginLeft: 10, marginBottom: 10, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
+        <Image key={photo.src.uri} resizeMode="contain" style={{flex: 1, alignItems: "center"}} source={{uri: photo.src.uri}}>
+          <View style={{ flexDirection: "row", alignItems: "flex-end", marginRight: 10, marginTop: 10 }}>
+            <View style={{ flex: 1 }}></View>
+            <View style={{ borderWidth: 3, borderColor: "#f0f0f0", padding: 7, borderRadius: 7 }} ><Text style={{color: "#f0f0f0"}}>15</Text></View>
+          </View>
+          <View style={{ flex: 1, marginLeft: 20, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
             <Button icon={{ name: "check", type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={ObjectStore.handleLike.bind(ObjectStore)} />
             <Button icon={{ name: "close-o", type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={ObjectStore.getNext.bind(ObjectStore)} />
           </View>
@@ -28,7 +36,7 @@ const Collapse = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
   return(
     <View style={{flex: 1}}>
-      <Carousel delay={2000} style={{ flex: 1, backgroundColor: "#ff1493" }} pageInfo autoplay={false}> 
+      <Carousel delay={2000} style={{ flex: 1 }} pageInfo autoplay={false}> 
         { renderCollapse.length > 0 ? renderCollapse : unit }
       </Carousel> 
     </View>

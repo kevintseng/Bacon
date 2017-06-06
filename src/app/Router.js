@@ -48,7 +48,23 @@ const menuButton = () => (
     color="#000"
     onPress={() => Actions.refresh({ key: "drawer", open: value => !value })}
   />
-);
+)
+
+const meetCuteSettingButton = () => (
+  <Icon
+    name="settings"
+    color="#000"
+    onPress={() => console.warn("邂逅設定頁")}
+  />
+)
+
+const meetChanceSettingButton = () => (
+  <Icon
+    name="settings"
+    color="#000"
+    onPress={() => console.warn("巧遇設定頁")}
+  />  
+)
 
 @observer
 export default class RouterComponent extends Component {
@@ -240,6 +256,7 @@ export default class RouterComponent extends Component {
                 component={MeetCuteProvider}
                 title="邂逅"
                 renderLeftButton={menuButton}
+                renderRightButton={meetCuteSettingButton}
                 hideTabBar
               />
               <Scene //巧遇
@@ -247,6 +264,7 @@ export default class RouterComponent extends Component {
                 component={MeetChanceProvider}
                 title="巧遇"
                 renderLeftButton={menuButton}
+                renderRightButton={meetChanceSettingButton}
               />
               <Scene //訊息
                 key="messages"
