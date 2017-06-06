@@ -44,6 +44,8 @@ export default class Settings extends Component {
 
   handleOnPress(key) {
     switch (key) {
+      case 'aboutmeeq':
+        return () => Actions.aboutmeeq();
       case 'account':
         return () => Actions.account();
       case 'pushnotification':
@@ -55,90 +57,36 @@ export default class Settings extends Component {
     }
   }
 
-
-
-
   render() {
     return(
         <View style={styles.viewWrapper}>
-
           <ListItem
             roundAvatar
-            hideChevron
-            title='帳號管理'
-            //onPress={()=> {Actions.Account({type: 'reset'})}}
-            onPress={this.handleOnPress('account')}
-          />
-
+            title='關於MeeQ'
+            onPress={this.handleOnPress('aboutmeeq')}/>
           <ListItem
             roundAvatar
-            hideChevron
-            title='推播通知'
-            onPress={this.handleOnPress('pushnotification')}
-          />
-
+            title='帳號設定'
+            onPress={this.handleOnPress('account')}/>
           <ListItem
             roundAvatar
-            hideChevron
-            title='常見問題'
-            onPress={this.handleOnPress('question')}
-          />
-
-          <ListItem
-            roundAvatar
-            hideChevron
             title='意見反應'
-            onPress={this.handleOnPress('feedback')}
-          />
-
+            onPress={this.handleOnPress('feedback')}/>
           <ListItem
             roundAvatar
-            hideChevron
-            title='版本資訊'
-          />
-
+            title='提示設定'/>
           <ListItem
             roundAvatar
-            hideChevron
-            title='隱私權聲明'
-          />
-
-          <ListItem
-            roundAvatar
-            hideChevron
-            title='使用條款'
-          />
-
-
+            title='隱身設定'/>
         </View>
-
-
-
-
     );
   }
-
-
-
-
 }
 
 const styles = {
-    subtitleView: {
-      paddingTop: 0,
-      marginTop: 0
-    },
-    ratingImage: {
-      height: 19.21,
-      width: 100
-    },
-    ratingText: {
-      paddingLeft: 10,
-      color: 'grey'
-    },
     viewWrapper: {
       width: width,
       height: height,
-      marginTop: 10,
+      marginTop: 15,
     }
   }
