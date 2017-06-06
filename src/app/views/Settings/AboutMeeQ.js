@@ -58,7 +58,7 @@ export default class AboutMeeQ extends Component {
       <View style={{flexDirection: 'column', alignSelf:'center',marginTop:60,marginBottom:30}}>
         <Image
           style={{maxWidth:180, maxHeight: 50}}
-          source={require('../../images/MeeqLogo.png')}
+          source={require('../../../images/MeeqLogo.png')}
         />
         <Text style={{alignSelf:'center'}}>V 1.678</Text>
         <Text style={{alignSelf:'center',marginBottom:30}}>20170511</Text>

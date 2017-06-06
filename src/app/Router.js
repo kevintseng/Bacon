@@ -24,7 +24,7 @@ import FeedBack from "./views/Settings/FeedBack"
 import AboutMeScene from "./scenes/AboutMeScene"
 // providers
 import { MeetCuteProvider, MeetChanceProvider, FateProvider } from "./providers/Provider"
-
+import AboutMeeQ from "./views/Settings/AboutMeeQ"
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
   const style = {
@@ -278,6 +278,7 @@ export default class RouterComponent extends Component {
                   title="Settings"
                   renderLeftButton={menuButton}
                 />
+                <Scene key="aboutmeeq" component={AboutMeeQ} title="關於MeeQ" />
                 <Scene key="account" component={Account} title="Account" />
                 <Scene
                   key="pushnotification"
