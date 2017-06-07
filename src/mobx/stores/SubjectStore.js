@@ -279,7 +279,7 @@ class SubjectStore {
       case 'meetcute':
         return () => Actions.meetcute({type: 'reset'})
       case 'nearby':
-        return () => Actions.nearby({type: 'reset'})
+        return () => Actions.nearbyAll({type: 'reset'})
       case 'messages':
         return () => Actions.messages({type: 'reset'})
       case 'fate':

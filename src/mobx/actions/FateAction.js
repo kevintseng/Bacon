@@ -1,4 +1,6 @@
 import { action } from 'mobx'
+import { Actions } from 'react-native-router-flux'
+
 //import GeoFire from 'geofire'
 
 //useStrict(true)
@@ -53,6 +55,26 @@ const FateAction = {
 
   setPreyListByKey: action(function setPreyListByKey(key){
     this.firebase.database().ref('users/' + key).once('value').then(snap => { this.preyList.push(snap.val()) })
+  }),
+
+  goToNearbySingle: action(function goToNearbySingle(prey){
+    //const _index = this.preyList.indexOf(this.prey)
+    this.loading = false
+    //this.setprey(prey)
+    Actions.nearbySingle()
+  }),
+
+  goToMeetCute: action(function goToMeetCute(prey){
+    //const _index = this.preyList.indexOf(this.prey)
+    this.loading = false
+    //this.setprey(prey)
+    Actions.meetcute()
+  }),
+
+  setprey: action(function setprey(prey){
+    console.warn(this.prey)
+    console.warn(prey)
+    //this.prey = prey
   })
 }
 

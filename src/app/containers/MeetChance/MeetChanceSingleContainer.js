@@ -1,6 +1,8 @@
 import React, { Component } from "react"
-import { View, ActivityIndicator } from "react-native"
+import { View } from "react-native"
 import { observer, inject } from "mobx-react/native"
+import { Actions } from "react-native-router-flux"
+
 //import { Actions } from "react-native-router-flux"
 // views
 import MeetChanceSingle from "../../views/MeetChance/MeetChanceSingle"
@@ -18,7 +20,7 @@ export default class MeetChanceSingleContainer extends Component {
 
   componentWillMount() {
     //console.log('Rendering Nearby');
-    //Actions.refresh({ key: 'drawer', open: false })
+    Actions.refresh({ key: 'drawer', open: false })
     //this.ObjectStore.initPreyList()
     // this.getLocation();
   }

@@ -22,11 +22,12 @@ const SettingButton = () => (
   />  
 )
 
-const MeetChanceScene = (
-<Scene key = "nearby">
+const MeetChanceAllScene = (
   <Scene key = "nearbyAll" hideTabBar component = { MeetChanceAllProvider } title = "巧遇" renderLeftButton = { menuButton } renderRightButton={ SettingButton }/>
-  <Scene key = "nearbySingle" hideTabBar component = { MeetChanceSingleProvider } title = "巧遇" renderLeftButton = { menuButton } renderRightButton={ SettingButton }/>
-</Scene>
 )
 
-export default MeetChanceScene
+const MeetChanceSingleScene = (
+  <Scene key = "nearbySingle" hideTabBar component = { MeetChanceSingleProvider } title = "巧遇" renderLeftButton = { menuButton } renderRightButton={ SettingButton }/>
+)
+
+export { MeetChanceAllScene, MeetChanceSingleScene }

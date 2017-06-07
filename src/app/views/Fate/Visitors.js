@@ -5,7 +5,7 @@ import { observer, inject } from "mobx-react/native"
 
 const Visitors = inject("ObjectStore")(observer(({ ObjectStore }) => {
   
-  const renderVisitors = (ObjectStore.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName } onPressButton={() => {console.warn("轉到巧遇")}}><Text style={{color: '#000000'}}>剛剛來訪</Text></Cookie>)))
+  const renderVisitors = (ObjectStore.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName } onPressButton={ function(prey){ ObjectStore.goToNearbySingle(prey) }}><Text style={{color: '#000000'}}>剛剛來訪</Text></Cookie>)))
 
   const indicator = (
     <ActivityIndicator
