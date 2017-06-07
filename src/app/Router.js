@@ -22,9 +22,10 @@ import ChangePassword from "./views/Settings/ChangePassword"
 import FeedBack from "./views/Settings/FeedBack"
 // scenes
 import AboutMeScene from "./scenes/AboutMeScene"
-import { MeetChanceAllScene, MeetChanceSingleScene } from "./scenes/MeetChanceScene"
+import MeetCuteScene from "./scenes/MeetCuteScene"
+import { MeetChanceAllScene, MeetChanceSingleScene, MeetChanceEdit } from "./scenes/MeetChanceScene"
 // providers
-import { MeetCuteProvider, FateProvider } from "./providers/Provider"
+import { FateProvider } from "./providers/Provider"
 import AboutMeeQ from "./views/Settings/AboutMeeQ"
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
@@ -48,14 +49,6 @@ const menuButton = () => (
     name="menu"
     color="#000"
     onPress={() => Actions.refresh({ key: "drawer", open: value => !value })}
-  />
-)
-
-const meetCuteSettingButton = () => (
-  <Icon
-    name="settings"
-    color="#000"
-    onPress={() => console.warn("邂逅設定頁")}
   />
 )
 
@@ -244,16 +237,10 @@ export default class RouterComponent extends Component {
 
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
-              <Scene //邂逅
-                key="meetcute"
-                component={MeetCuteProvider}
-                title="邂逅"
-                renderLeftButton={menuButton}
-                renderRightButton={meetCuteSettingButton}
-                hideTabBar
-              />
+              { MeetCuteScene }
               { MeetChanceAllScene }
               { MeetChanceSingleScene }
+              { MeetChanceEdit }
               <Scene //訊息
                 key="messages"
                 component={Messages}
