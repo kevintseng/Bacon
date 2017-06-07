@@ -5,17 +5,27 @@ import { Provider } from "mobx-react/native"
 // AppInitStore
 import AppInitStore from "../../configs/AppInitStore"
 // containers
-import MeetCuteContainer from "../containers/MeetCuteContainer"
+import MeetCuteShowContainer from "../containers/MeetCute/MeetCuteShowContainer"
+import MeetCuteEditContainer from "../containers/MeetCute/MeetCuteEditContainer"
+
 import MeetChanceAllContainer from "../containers/MeetChance/MeetChanceAllContainer"
 import MeetChanceSingleContainer from "../containers/MeetChance/MeetChanceSingleContainer"
+import MeetChanceEditContainer from "../containers/MeetChance/MeetChanceEditContainer"
+
 import FateContainer from "../containers/FateContainer"
 // AboutMe containers
 import ShowContainer from "../containers/AboutMe/ShowContainer"
 import EditContainer from "../containers/AboutMe/EditContainer"
 
-export const MeetCuteProvider = () => (
+export const MeetCuteShowProvider = () => (
   <Provider SubjectStore = { AppInitStore.wooer } ObjectStore = { AppInitStore.meetCute } >
-    <MeetCuteContainer/>
+    <MeetCuteShowContainer/>
+  </Provider>
+)
+
+export const MeetCuteEditProvider = () => (
+  <Provider SubjectStore = { AppInitStore.wooer } ObjectStore = { AppInitStore.meetCute } >
+    <MeetCuteEditContainer/>
   </Provider>
 )
 
@@ -28,6 +38,12 @@ export const MeetChanceAllProvider = () => (
 export const MeetChanceSingleProvider = () => (
   <Provider SubjectStore = { AppInitStore.wooer } ObjectStore = { AppInitStore.meetChance } >
     <MeetChanceSingleContainer/>
+  </Provider>
+)
+
+export const MeetChanceEditProvider = () => (
+  <Provider SubjectStore = { AppInitStore.wooer } ObjectStore = { AppInitStore.meetChance } >
+    <MeetChanceEditContainer/>
   </Provider>
 )
 
