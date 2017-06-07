@@ -1,19 +1,19 @@
 import React from "react"
 import { View, Dimensions, ScrollView } from "react-native"
-import { Collapse } from "./MeetCute/Collapse"
-import { BasicInfo } from "./MeetCute/BasicInfo"
-import { Introduce } from "./MeetCute/Introduce"
-import { Interests } from "./MeetCute/Interests"
-import { Language } from "./MeetCute/Language"
-import { Distance } from "./MeetCute/Distance"
-import { Verified } from "./MeetCute/Verified"
+import { Collapse } from "./HuntingGrounds/Collapse"
+import { BasicInfo } from "./HuntingGrounds/BasicInfo"
+import { Introduce } from "./HuntingGrounds/Introduce"
+import { Interests } from "./HuntingGrounds/Interests"
+import { Language } from "./HuntingGrounds/Language"
+import { Distance } from "./HuntingGrounds/Distance"
+import { Verified } from "./HuntingGrounds/Verified"
 //import Carousel from "react-native-looped-carousel"
 
 const { width, height } = Dimensions.get('window')
 
-const MeetCute = () => {
+const HuntingGrounds = () => {
   return(
-    <View>
+    <View style={{flex: 1}}>
       <ScrollView style={{width, height}}>
           <View style={{width, height: width}}>
             <Collapse/>
@@ -31,4 +31,4 @@ const MeetCute = () => {
   )
 }
 
-export default MeetCute
+export default HuntingGrounds

@@ -16,8 +16,8 @@ const rightTitle = () => ('完成')
 
 const AboutMeScene = (
 <Scene key = "AboutMe">
-  <Scene key = "AboutMeShow" component = { ShowProvider } title = "關於我" renderLeftButton = { menuButton } />
-  <Scene key = "AboutMeEdit" component = { EditProvider } title = "編輯" renderLeftButton = { menuButton } rightTitle = { rightTitle() } onRight = { handleOnRight } />
+  <Scene key = "AboutMeShow" hideTabBar component = { ShowProvider } title = "關於我" renderLeftButton = { menuButton } />
+  <Scene key = "AboutMeEdit" hideTabBar component = { EditProvider } title = "編輯" renderLeftButton = { menuButton } rightTitle = { rightTitle() } onRight = { handleOnRight } />
 </Scene>
 )
 
