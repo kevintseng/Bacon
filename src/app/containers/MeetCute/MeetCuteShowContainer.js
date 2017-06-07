@@ -3,10 +3,10 @@ import { View, ActivityIndicator } from "react-native"
 import { observer, inject } from "mobx-react/native"
 import { Actions } from "react-native-router-flux"
 // views
-import MeetCute from "../views/MeetCute"
+import MeetCute from "../../views/MeetCute/MeetCuteShow"
 
 @inject("SubjectStore","ObjectStore") @observer
-export default class MeetCuteContainer extends Component {
+export default class MeetCuteShowContainer extends Component {
 
   constructor(props) {
     super(props);

@@ -9,7 +9,7 @@ const Language = inject("ObjectStore")(observer(({ ObjectStore }) => {
   return(
     <View style={{flexDirection: 'row', margin: 10}}>
       <Icon name='language'></Icon>
-      <Text>
+      <Text style={{marginLeft: 2, marginTop: 2 }}>
         {renderLanguages(ObjectStore.languages)}
       </Text>
     </View>
