@@ -3,12 +3,12 @@ import { View, ActivityIndicator } from "react-native"
 import { observer, inject } from "mobx-react/native"
 import { Actions } from "react-native-router-flux"
 // views
-import MeetChance from "../views/MeetChance"
+import MeetChanceAll from "../../views/MeetChance/MeetChanceAll"
 
 //const { width, height } = Dimensions.get('window')
 
 @inject("SubjectStore","ObjectStore") @observer
-export default class MeetChanceContainer extends Component {
+export default class MeetChanceAllContainer extends Component {
   //static propTypes = {
     //store: PropTypes.object,
     //fire: PropTypes.object,
@@ -166,7 +166,7 @@ export default class MeetChanceContainer extends Component {
       { ObjectStore.loading && indicator }
       {
         ObjectStore.preyList && !ObjectStore.loading && 
-        <MeetChance/>
+        <MeetChanceAll/>
       }
       </View>
     );

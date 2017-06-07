@@ -7,7 +7,7 @@ import { observer, inject } from 'mobx-react/native'
 const styles = {
   barStyle:{
     height: 80,
-    flex:1,
+    //flex:1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

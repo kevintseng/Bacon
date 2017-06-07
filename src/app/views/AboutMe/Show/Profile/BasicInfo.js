@@ -10,7 +10,7 @@ const styles = {
     ...Platform.select({
       ios: {
         height: 90,
-        flex: 1,
+        //flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',

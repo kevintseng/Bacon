@@ -22,8 +22,9 @@ import ChangePassword from "./views/Settings/ChangePassword"
 import FeedBack from "./views/Settings/FeedBack"
 // scenes
 import AboutMeScene from "./scenes/AboutMeScene"
+import MeetChanceScene from "./scenes/MeetChanceScene"
 // providers
-import { MeetCuteProvider, MeetChanceProvider, FateProvider } from "./providers/Provider"
+import { MeetCuteProvider, FateProvider } from "./providers/Provider"
 import AboutMeeQ from "./views/Settings/AboutMeeQ"
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
@@ -56,14 +57,6 @@ const meetCuteSettingButton = () => (
     color="#000"
     onPress={() => console.warn("邂逅設定頁")}
   />
-)
-
-const meetChanceSettingButton = () => (
-  <Icon
-    name="settings"
-    color="#000"
-    onPress={() => console.warn("巧遇設定頁")}
-  />  
 )
 
 @observer
@@ -259,13 +252,7 @@ export default class RouterComponent extends Component {
                 renderRightButton={meetCuteSettingButton}
                 hideTabBar
               />
-              <Scene //巧遇
-                key="nearby"
-                component={MeetChanceProvider}
-                title="巧遇"
-                renderLeftButton={menuButton}
-                renderRightButton={meetChanceSettingButton}
-              />
+              { MeetChanceScene }
               <Scene //訊息
                 key="messages"
                 component={Messages}
