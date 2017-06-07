@@ -9,9 +9,9 @@ const Mate = () => {
         <Text>你目前已與<Text style={{color: '#4169e1'}}>14</Text>個會員互有好感!</Text>
       </View>
       <View>
-        <Cookie name='A'><Text style={{color: '#000000'}}>你們在<Text style={{color: '#4169e1'}}>2017年5月</Text>互有好感</Text></Cookie>
-        <Cookie name='B'><Text style={{color: '#000000'}}>你們在<Text style={{color: '#4169e1'}}>2017年5月</Text>互有好感</Text></Cookie>
-        <Cookie name='C'><Text style={{color: '#000000'}}>你們在<Text style={{color: '#4169e1'}}>2017年5月</Text>互有好感</Text></Cookie>
+        <Cookie name='A' onPressButton={() => {console.warn("轉到巧遇")}}><Text style={{color: '#000000'}}>你們在<Text style={{color: '#4169e1'}}>2017年5月</Text>互有好感</Text></Cookie>
+        <Cookie name='B' onPressButton={() => {console.warn("轉到巧遇")}}><Text style={{color: '#000000'}}>你們在<Text style={{color: '#4169e1'}}>2017年5月</Text>互有好感</Text></Cookie>
+        <Cookie name='C' onPressButton={() => {console.warn("轉到巧遇")}}><Text style={{color: '#000000'}}>你們在<Text style={{color: '#4169e1'}}>2017年5月</Text>互有好感</Text></Cookie>
       </View>
     </View>
   )

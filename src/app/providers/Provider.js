@@ -6,7 +6,8 @@ import { Provider } from "mobx-react/native"
 import AppInitStore from "../../configs/AppInitStore"
 // containers
 import MeetCuteContainer from "../containers/MeetCuteContainer"
-import MeetChanceContainer from "../containers/MeetChanceContainer"
+import MeetChanceAllContainer from "../containers/MeetChance/MeetChanceAllContainer"
+import MeetChanceSingleContainer from "../containers/MeetChance/MeetChanceSingleContainer"
 import FateContainer from "../containers/FateContainer"
 // AboutMe containers
 import ShowContainer from "../containers/AboutMe/ShowContainer"
@@ -18,9 +19,15 @@ export const MeetCuteProvider = () => (
   </Provider>
 )
 
-export const MeetChanceProvider = () => (
+export const MeetChanceAllProvider = () => (
   <Provider SubjectStore = { AppInitStore.wooer } ObjectStore = { AppInitStore.meetChance } >
-    <MeetChanceContainer/>
+    <MeetChanceAllContainer/>
+  </Provider>
+)
+
+export const MeetChanceSingleProvider = () => (
+  <Provider SubjectStore = { AppInitStore.wooer } ObjectStore = { AppInitStore.meetChance } >
+    <MeetChanceSingleContainer/>
   </Provider>
 )
 

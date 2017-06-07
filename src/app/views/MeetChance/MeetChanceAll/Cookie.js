@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, Dimensions } from 'react-native'
+import { View, Image, Text, Dimensions, TouchableHighlight } from 'react-native'
 
 const { width } = Dimensions.get('window')
 
@@ -67,13 +67,13 @@ const styles = {
 
 const ADD_IMAGE = require('hookup/src/images/addImage.png')
 
-const Cookie = ({ name, photoURL }) => {
+const Cookie = ({ name, photoURL, onPressButton }) => {
 
   return(
     <View style={{alignItems: 'center', margin: 10, width: width/5 }}>
-      <View>
+      <TouchableHighlight onPress={onPressButton}>
         <Image source={ photoURL ? { uri: photoURL } : ADD_IMAGE } style={styles.itemImageStyle}/>
-      </View>
+      </TouchableHighlight>
       <View>
         <Text lineBreakMode="tail" numberOfLines={1} >{ name }</Text>
       </View>
