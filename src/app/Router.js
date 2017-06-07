@@ -22,7 +22,7 @@ import ChangePassword from "./views/Settings/ChangePassword"
 import FeedBack from "./views/Settings/FeedBack"
 // scenes
 import AboutMeScene from "./scenes/AboutMeScene"
-import MeetChanceScene from "./scenes/MeetChanceScene"
+import { MeetChanceAllScene, MeetChanceSingleScene } from "./scenes/MeetChanceScene"
 // providers
 import { MeetCuteProvider, FateProvider } from "./providers/Provider"
 import AboutMeeQ from "./views/Settings/AboutMeeQ"
@@ -252,7 +252,8 @@ export default class RouterComponent extends Component {
                 renderRightButton={meetCuteSettingButton}
                 hideTabBar
               />
-              { MeetChanceScene }
+              { MeetChanceAllScene }
+              { MeetChanceSingleScene }
               <Scene //訊息
                 key="messages"
                 component={Messages}
