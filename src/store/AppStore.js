@@ -41,6 +41,18 @@ class AppStore {
     addToOtherConvList.set(data);
   }
 
+  @action deductCredit(amount) {
+    const balance = this.user.credit - amount;
+    this.user.credit = balance;
+    this.updateToFirebase("credit", balance);
+  }
+
+  @action addCredit(amount) {
+    const balance = this.user.credit + amount;
+    this.user.credit = balance;
+    this.updateToFirebase("credit", balance);
+  }
+
   @action signOut() {
     this.user = '';
   }
