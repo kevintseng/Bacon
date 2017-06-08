@@ -2,6 +2,7 @@ import { observable, action, computed, useStrict } from 'mobx'
 import Moment from 'moment'
 import geolib from 'geolib'
 import GeoFire from 'geofire'
+import { Actions } from 'react-native-router-flux'
 
 useStrict(false)
 
@@ -138,13 +139,14 @@ class Prey {
       .then(() => {
         this.setprey(this.preyList[0]);
     })
-  } 
+  }
 
   @action handleLike = () => {
     const r = this.firebase.database().ref("preys/" + this.prey.uid + "/likes").child(this.prey.uid);
     r.set({time: Moment().unix()});
-    this.getNext();
-  } 
+    Actions.chat({ name: this.prey.displayName, uid: this.prey.uid, chatType: "visitor", birthday: this.prey.birthday, avatarUrl: "https://freeiconshop.com/wp-content/uploads/edd/person-outline-filled.png" })
+    // this.getNext();
+  }
 
   @action getNext = async () => {
     this.loading = true
@@ -156,21 +158,21 @@ class Prey {
       this.loading = false
       alert('這是最後一位了, 在沒有有fu的對象我也沒辦法惹...GG');
     }
-  } 
+  }
 
   @action setprey(prey){
     this.prey = prey
     this.loading = false
-  } 
+  }
 
   checkGeocode(){
     if(this.checkObject(this.prey.geocode) && this.checkObject(this.user.geocode)) {
-      if (typeof(this.prey.geocode.lat) === 'number' && typeof(this.prey.geocode.lng) === 'number'){ 
+      if (typeof(this.prey.geocode.lat) === 'number' && typeof(this.prey.geocode.lng) === 'number'){
         return true
-      } else { 
+      } else {
       return false
       }
-    } else { 
+    } else {
       return false
     }
   }
@@ -187,7 +189,7 @@ class Prey {
 
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }     
+  }
 }
 
 export default Prey;
