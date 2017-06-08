@@ -19,7 +19,8 @@ import { observer } from "mobx-react/native";
 import { GiftedChat } from "react-native-gifted-chat";
 import ImagePicker from "react-native-image-picker";
 import Moment from "moment";
-import { Icon } from "react-native-elements";
+import { Icon, Button } from "react-native-elements";
+import Modal from "react-native-modal";
 import { uploadImage, resizeImage } from "../../Utils";
 
 const { width, height } = Dimensions.get("window"); //eslint-disable-line
@@ -63,6 +64,7 @@ export default class Chat extends Component {
       isLoadingEarlier: false,
       actions: false,
       image: null,
+      showVisitorModal: true,
     };
     this._isMounted = false;
   }
@@ -580,7 +582,12 @@ export default class Chat extends Component {
             renderActions={this.renderActions}
             renderFooter={this.renderFooter}
           />}
-
+        <Modal isVisible={this.state.showVisitorModal}>
+          <View>
+            <Button title="與他/她聊聊"></Button>
+            <Button title="不感興趣"></Button>
+          </View>
+        </Modal>
         {!this.state.actions &&
           <GiftedChat
             messages={this.state.messages}
