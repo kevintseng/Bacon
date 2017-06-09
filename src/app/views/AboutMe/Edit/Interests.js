@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextInput, View } from 'react-native'
+import { TextInput, View, Text } from 'react-native'
 import { Icon, Badge } from 'react-native-elements'
 import { observer, inject } from 'mobx-react/native'
 import DefaultInterests from '../../../../configs/DefaultInterests'
@@ -12,8 +12,9 @@ const styles = {
   },
   ShowTag: {
     flexWrap: 'wrap',
-    flexDirection: 'row-reverse',
-    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    //justifyContent: 'flex-end',
+    alignItems: 'flex-start'
   },  
   Edit: {
     //flex: 1,
@@ -32,23 +33,25 @@ const styles = {
   PopularTag: {
     //flex: 1,
     flexWrap: 'wrap',
-    flexDirection: 'row-reverse',
-    justifyContent: 'flex-end',
-    marginTop: 10
+    flexDirection: 'row',
+    alignItems: 'flex-start'
+    //marginTop: 10
   }
 }
 
 const Interests = inject("SubjectStore")(observer(({SubjectStore}) => {
 
-  const renderDefaultInterests = DefaultInterests.map((hobby) => (<Badge key={hobby}  onPress={ () => {SubjectStore.setHobby(hobby)} } containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
+  const renderDefaultInterests = DefaultInterests.map((hobby) => (<Badge key={hobby}  onPress={ () => {SubjectStore.setHobby(hobby)} } containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
     
-  const renderInterests = SubjectStore.hobby.map((hobby) => (<Badge key={hobby} containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
+  const renderInterests = SubjectStore.hobby.map((hobby) => (<Badge key={hobby} containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
 
   return(
     <View style = { styles.Interests }> 
-      <View style = { [styles.ShowTag,{ paddingBottom: 70 }] }>
+
+      <View style = { styles.ShowTag }>
         {renderInterests}
-      </View>       
+      </View>
+
       <View style = { styles.Edit }>
         <View style = { styles.Input }>
           <TextInput
@@ -58,14 +61,17 @@ const Interests = inject("SubjectStore")(observer(({SubjectStore}) => {
             value = { SubjectStore.hobbyInput }
           /> 
         </View>
-
-      <View style = { styles.EditIcon }>
-          <Icon name = "border-color" color = "#000000" size = { 20 } />  
-          </View>
+        <View style = { styles.EditIcon }>
+            <Icon name = "border-color" color = "#000000" size = { 20 } />  
+        </View>
       </View>
+
+      <View><Text style={{color: "red", marginTop: 10}}>熱門</Text></View>
+
       <View style = { styles.PopularTag }>
           {renderDefaultInterests}
-      </View>          
+      </View>
+
     </View>  
   )
 }))

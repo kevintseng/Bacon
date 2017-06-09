@@ -56,7 +56,7 @@ const styles = {
   }
 }
 
-const BasicInfo = inject("SubjectStore","displayName","city")(observer(({ SubjectStore, displayName, city }) => {
+const BasicInfo = inject("SubjectStore")(observer(({ SubjectStore }) => {
 
   return (
     <View style = { styles.BasicInfo }>
@@ -73,16 +73,16 @@ const BasicInfo = inject("SubjectStore","displayName","city")(observer(({ Subjec
       </View>
 
       <View style = { styles.Infomation }>
-        <Item displayTitle title = { displayName } tag = "編輯" onpress = { SubjectStore.onpressDisplayName.bind(SubjectStore) }></Item>
-        <Item displayTitle title = { city } tag = "編輯" onpress = { SubjectStore.onpressLocation.bind(SubjectStore) }></Item>
+        <Item displayTitle title = { SubjectStore.displayName } tag = "編輯" onpress = { SubjectStore.onpressDisplayName.bind(SubjectStore) }></Item>
+        <Item displayTitle title = { SubjectStore.city } tag = "編輯" onpress = { SubjectStore.onpressLocation.bind(SubjectStore) }></Item>
       </View>     
     </View>
   )
 }))
 
 BasicInfo.wrappedComponent.propTypes = {
-  displayName: React.PropTypes.string.isRequired,
-  city: React.PropTypes.string.isRequired
+  //displayName: React.PropTypes.string.isRequired,
+  //city: React.PropTypes.string.isRequired
 }
 
 export default BasicInfo

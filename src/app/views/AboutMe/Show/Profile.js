@@ -1,23 +1,23 @@
 'use strict'
 import React from 'react'
-import { ScrollView, Dimensions } from 'react-native'
+import { ScrollView } from 'react-native'
+import { observer } from 'mobx-react/native'
+
 // Profile Layouts
 import BasicInfo from './Profile/BasicInfo'
 import AccountStatus from './Profile/AccountStatus'
 import Verification from './Profile/Verification'
 import AdvancedInfo from './Profile/AdvancedInfo'
 
-const { width, height } = Dimensions.get('window');
-
-const Profile = () => {
+const Profile = observer(() => {
   return(
-    <ScrollView style={{backgroundColor: "#f0f0f0", width, height: 100}}>
+    <ScrollView>
       <BasicInfo/>
       <AccountStatus/>
       <Verification/>
       <AdvancedInfo/>
     </ScrollView>
   )
-}
+})
 
 export default Profile

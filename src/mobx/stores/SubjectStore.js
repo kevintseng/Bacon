@@ -35,7 +35,8 @@ class SubjectStore {
   }
 
   @computed get photoURL(){
-    return this.user.photoURL ? this.user.photoURL : 'hookup/src/images/addImage.png'
+    return this.user.photoURL
+    //return this.user.photoURL ? this.user.photoURL : 'hookup/src/images/addImage.png'
   }
 
   @computed get displayName(){
@@ -47,7 +48,8 @@ class SubjectStore {
   }
 
   @computed get city(){
-    return typeof(this.user.city) === 'string' ? this.user.city : ''
+    return this.user.city
+    //return typeof(this.user.city) === 'string' ? this.user.city : ''
   }
 
   @computed get vip(){
@@ -59,15 +61,18 @@ class SubjectStore {
   }
 
   @computed get langRaw(){
-    return this.user.lang ? this.user.lang : this.user.lang = DefaultLanguages
+    return this.user.lang
+    //return this.user.lang ? this.user.lang : this.user.lang = DefaultLanguages
   }
 
   @computed get lang(){
-    return this.user.lang ? Object.keys(this.user.lang).filter(k => this.user.lang[k]).join(',') : ""
+    return Object.keys(this.user.lang).filter(k => this.user.lang[k]).join(',')
+    //return this.user.lang ? Object.keys(this.user.lang).filter(k => this.user.lang[k]).join(',') : ""
   }
 
   @computed get hobby(){
     return this.user.hobby
+    //return this.user.hobby ? this.user.hobby : []
   }  
 
   //@computed get hobbyInput(){
@@ -109,7 +114,7 @@ class SubjectStore {
   }
 
   @action onpressLocation(){
-    Actions.AboutMeEdit({ content: <Location/>, title: '位置', onRight: this.updateCity })
+    Actions.AboutMeEdit({ content: <Location/>, title: '所在位置', onRight: this.updateCity })
   }
 
   @action onpressIntroduce() {
@@ -117,11 +122,11 @@ class SubjectStore {
   }
 
   @action onpressLanguage() {
-    Actions.AboutMeEdit({ content: <Language/>, title: '擅長語言', onRight: this.updateLang })
+    Actions.AboutMeEdit({ content: <Language/>, title: '語言能力', onRight: this.updateLang })
   }
 
   @action onpressInterests() {
-    Actions.AboutMeEdit({ content: <Interests/>, title: '興趣嗜好', onRight: this.updateHobby })
+    Actions.AboutMeEdit({ content: <Interests/>, title: '興趣愛好', onRight: this.updateHobby })
   }
 
   @action handleUpgrade() {
@@ -179,6 +184,21 @@ class SubjectStore {
       this.user.hobby.push(val)
     } else {
       this.user.hobby.push(this.hobbyInput)
+    }
+  }
+
+  @action initAboutMeShow(){
+    if (this.user.hobby == null) {
+      this.user.hobby = []
+    }
+    if (this.user.lang == null) {
+      this.user.lang = DefaultLanguages
+    } 
+    if (this.user.bio == null) {
+      this.user.bio = "請填入自我介紹"
+    }
+    if (this.user.photoURL == null) {
+      this.user.photoURL = "hookup/src/images/addImage.png"
     }
   }
 
