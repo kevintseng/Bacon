@@ -237,6 +237,7 @@ export default class RouterComponent extends Component {
 
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
+              { AboutMeScene }
               { MeetCuteScene }
               { MeetChanceAllScene }
               { MeetChanceSingleScene }
@@ -262,7 +263,6 @@ export default class RouterComponent extends Component {
                 title="Settings"
                 renderLeftButton={menuButton}
               />
-              { AboutMeScene }
               <Scene key="account" component={Account} title="Account" />
               <Scene key="settings_wrapper">
                 <Scene

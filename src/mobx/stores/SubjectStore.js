@@ -66,7 +66,7 @@ class SubjectStore {
   }
 
   @computed get lang(){
-    return Object.keys(this.user.lang).filter(k => this.user.lang[k]).join(',')
+    return Object.keys(this.user.lang).filter(k => this.user.lang[k]).join(',') || "MeetQ語"
     //return this.user.lang ? Object.keys(this.user.lang).filter(k => this.user.lang[k]).join(',') : ""
   }
 
@@ -107,6 +107,11 @@ class SubjectStore {
 
   @action updateHobbyInput(val){
     this.hobbyInput = val
+  }
+
+  @action onPressMeetChance(){
+    Actions.AboutMe()
+    //console.warn("Go to AboutMe")
   }
 
   @action onpressDisplayName(){
@@ -189,17 +194,23 @@ class SubjectStore {
 
   @action initAboutMeShow(){
     if (this.user.hobby == null) {
-      this.user.hobby = []
+      this.user.hobby = ["MeetQ"]
+      this.updateToFirebase('hobby',this.user.hobby)
     }
     if (this.user.lang == null) {
       this.user.lang = DefaultLanguages
+      this.updateToFirebase('lang',this.user.lang)
     } 
     if (this.user.bio == null) {
-      this.user.bio = "請填入自我介紹"
+      this.user.bio = "您好，我是MeetQ新進會員"
+      this.updateToFirebase('bio',this.user.bio)
     }
     if (this.user.photoURL == null) {
-      this.user.photoURL = "hookup/src/images/addImage.png"
+      this.user.photoURL = "https://firebasestorage.googleapis.com/v0/b/kjyl-150415.appspot.com/o/addImage.png?alt=media&token=2f51bf34-eeb3-4963-8b79-00d4fadfbd7f"
+      this.updateToFirebase('photoURL',this.user.photoURL)
     }
+    //this.user.meetCuteHistory = [this.user.uid]
+    //this.updateToFirebase("meetCuteHistory",[this.user.uid])
   }
 
   @action updateNickBirthday(){

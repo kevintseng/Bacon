@@ -6,11 +6,10 @@ import { observer, inject } from "mobx-react/native"
 
 const Collapse = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
-  const photoURL = 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14523254_10205912479689697_9039309889239665813_n.jpg?oh=d5c8c264afd125e35eafd4627cac6cca&oe=597CD498'
-
+  const photoURL = 'https://firebasestorage.googleapis.com/v0/b/kjyl-150415.appspot.com/o/collapse.jpg?alt=media&token=020621ab-6347-46ef-9b65-97beb6ce80f4'
 
   const unit = (
-        <Image key={photoURL} resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
+        <Image resizeMode="contain" style={{flex: 1}} source={{uri: photoURL}}>
           <View style={{ flexDirection: "row", alignItems: "flex-end", marginRight: 10, marginTop: 10 }}>
             <View style={{ flex: 1 }}></View>
             <View style={{ borderWidth: 3, borderColor: "#f0f0f0", padding: 7, borderRadius: 7 }} ><Text style={{color: "#f0f0f0"}}>15</Text></View>

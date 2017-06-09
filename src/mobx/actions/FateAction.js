@@ -15,9 +15,9 @@ const FateAction = {
     try{
       this.loading = true
       this.preyList = []
-      const query = this.firebase.database().ref("Visitors")
+      const query = this.firebase.database().ref("visitors")
       await query.orderByChild("prey").equalTo(this.store.user.uid).once("value", snap => (
-         snap.forEach(childsnap => this.setPreyListByKey(childsnap.val().hunter))
+         snap.forEach(childsnap => this.setPreyListByKey(childsnap.val().wooer))
         )
       ) //|| this.sleep(2000)
       this.loading = false
@@ -29,9 +29,9 @@ const FateAction = {
   fetchPreyListsByGoodImpression: action(async function functionfetchPreyListsByGoodImpression(){
     this.loading = true
     this.preyList = []
-    const query = this.firebase.database().ref("GoodImpression")
+    const query = this.firebase.database().ref("goodImpression")
     await query.orderByChild("prey").equalTo(this.store.user.uid).once("value", snap => (
-       snap.forEach(childsnap => this.setPreyListByKey(childsnap.val().hunter))
+       snap.forEach(childsnap => this.setPreyListByKey(childsnap.val().wooer))
       )
     )
     this.loading = false

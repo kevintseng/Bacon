@@ -18,14 +18,14 @@ const AdvancedInfo = inject("SubjectStore")(observer(({ SubjectStore }) => {
         displayTitle styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
         onpress = { SubjectStore.onpressIntroduce.bind(SubjectStore) } >
-        <Text>{ SubjectStore.bio }</Text>
+        <Text numberOfLines={1}>{ SubjectStore.bio }</Text>
       </Item>
       <Item 
         title = "語言能力" 
         displayTitle styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
         onpress = { SubjectStore.onpressLanguage.bind(SubjectStore) } >
-        <Text>{ SubjectStore.lang }</Text>
+        <Text numberOfLines={1}>{ SubjectStore.lang }</Text>
       </Item>
       <Item 
         title = "興趣愛好" 
