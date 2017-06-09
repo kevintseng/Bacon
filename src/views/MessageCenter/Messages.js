@@ -610,7 +610,8 @@ export default class Messages extends Component {
                         name: l.name,
                         chatStatus: l.chatStatus,
                         birthday: l.birthday,
-                        avatarUrl: l.avatarUrl
+                        avatarUrl: l.avatarUrl,
+                        chatType: l.chatType,
                       });
                     }}
                   />

@@ -1,9 +1,9 @@
 /*
   @Firebase db structure for conversations and Messages
 
-  conversations: there's a main conversations bucket that stores conversation data, which has two sub buckets: messages and users.
+  conversations: there"s a main conversations bucket that stores conversation data, which has two sub buckets: messages and users.
 
-  In each user's user data, there's also a conversations list, each item in the list is indexed with conversation key from the main conversations bucket, and each item has "chatType", "convKey", and "priority".
+  In each user"s user data, there"s also a conversations list, each item in the list is indexed with conversation key from the main conversations bucket, and each item has "chatType", "convKey", and "priority".
 */
 import React, { Component } from "react";
 import {
@@ -36,24 +36,24 @@ const styles = StyleSheet.create({
     color: "#aaa"
   },
   modalButton1: {
-    backgroundColor: '#7197C8',
+    backgroundColor: "#7197C8",
     paddingVertical: 25,
     paddingHorizontal: 12,
     margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderColor: "rgba(0, 0, 0, 0.1)"
   },
   modalButton2: {
     backgroundColor: "lightblue",
     padding: 12,
     margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  }
 });
 
 const ImagePickerOptions = {
@@ -69,268 +69,299 @@ const ImagePickerOptions = {
 export default class Chat extends Component {
   constructor(props) {
     super(props);
-    this.store = this.props.store;
-    this.firebase = this.props.fire;
+    this.uid = this.props.store.user.uid;
+    this.otherUid = this.props.uid;
+    this.convKey = this.props.convKey ? this.props.convKey : null;
+    this.loadAfterMsgId = 0;
+    this.title = "";
 
     this.state = {
       size: {
         width,
         height
       },
-      convKey: null,
       messages: [],
-      visitorLimit: false,
+      visitorMsgLimit: false,
       typingText: null,
-      loadEarlier: true,
+      loadEarlier: false,
       isLoadingEarlier: false,
       actions: false,
       image: null,
-      showVisitorModal: true,
+      showVisitorModal: false,
       showMsgLimitModal: false,
       showPriorityModal: false,
       showInsufficientCreditModal: false,
       showTooManyVisitorMsgSentModal: false,
-      showTooManyVisitorMsgReceivedModal:false,
+      showTooManyVisitorMsgReceivedModal: false,
     };
-    this._isMounted = false;
   }
 
   componentWillMount() {
-    console.debug("Rendering Messages");
-    const age = Moment().diff(this.props.birthday, "years");
-    const name = this.props.name;
-    const chatStatus = this.props.chatStatus ? this.props.chatStatus : '';
+    const age = this.props.birthday ? Moment().diff(this.props.birthday, "years") : "";
+    const name = this.props.name ? this.props.name : "";
+    const chatStatus = this.props.chatStatus ? this.props.chatStatus : "";
     if (chatStatus === "我的狀態" || chatStatus === "") {
       this.title = name + ", " + age;
     } else {
-      this.title =
-        name + ", " + age + ", " + chatStatus;
+      this.title = name + ", " + age + ", " + chatStatus;
     }
     Actions.refresh({ title: this.title });
-    this._isMounted = true;
+    this.mounted = false;
   }
 
   componentDidMount() {
+    this.mounted = true;
     this.initChatRoom();
   }
 
-  initChatRoom = async () => {
-    let convKey;
-    if(this.props.convKey) {
-      convKey = this.props.convKey;
-      this.setState({
-        convKey,
-      });
-      this.loadAndUpdate(convKey);
-      this.convRef = this.props.fire.database().ref('conversations/' + convKey);
-    } else if(!this.props.store.user.conversations || !this.props.store.user.conversations[this.props.uid]) {
-      console.log('Create new conversation');
-      this.createNewConv(this.props.uid);
-    } else {
-      console.log('Found existing conversation: ' + this.props.store.user.conversations[this.props.uid]);
-      convKey = this.props.store.user.conversations[this.props.uid].convKey;
-      this.setState({
-        convKey,
-      });
-      this.loadAndUpdate(convKey);
-    }
+  initChatRoom = () => {
+    if(this.mounted) {
+      if (this.convKey) {
+        //convKey is given
+        this.updateAndLoad(this.convKey);
+      } else if (
+        !this.props.store.user.conversations ||
+        !this.props.store.user.conversations[this.otherUid]
+      ) {
+        //Create a new conversation
+        this.createNewConv();
+      } else {
+        //convKey not given but theOtherUid is given
+        this.convKey = this.props.store.user.conversations[this.otherUid].convKey;
+        this.updateAndLoad(this.convKey);
+      }
 
-    this.convRef = this.props.fire.database().ref('conversations/' + convKey);
-  }
+      if (this.props.chatType === "visitor") {
+        this.setState({
+          showVisitorModal: true
+        });
+      }
+    }
+  };
 
   //update last read and clear unread count
   updateLastRead = (convKey, msgId, uid) => {
-    this.props.fire.database().ref('conversations/' + convKey + '/users/' + uid ).update({ lastRead: msgId, unread: 0 });
-  }
+    this.props.fire
+      .database()
+      .ref("conversations/" + convKey + "/users/" + uid)
+      .update({ lastRead: msgId, unread: 0 });
+  };
 
-  loadAndListenMessages = (_convKey, startAt = 0) => {
+  loadAndListenMessages = (convKey, startAt, uid) => {
     //Load previous 25 msgs from firebase.
-    this.props.fire.database().ref("conversations/" + this.state.convKey + "/messages").orderByChild('_id').startAt(startAt).on('child_added', msgSnap => {
-      console.log('child_added: ' + msgSnap.key);
-      this.setState(previousState => {
-        const msgId = msgSnap.val()._id;
-        //Update lastRead
-        this.updateLastRead(_convKey, msgId, this.props.store.user.uid);
-        return {
-          messages: GiftedChat.append(previousState.messages, msgSnap.val()),
-        };
+    this.props.fire
+      .database()
+      .ref("conversations/" + convKey + "/messages")
+      .orderByChild("_id")
+      .startAt(startAt)
+      .on("child_added", msgSnap => {
+        console.log("child_added: " + msgSnap.key);
+        this.setState(previousState => {
+          const msgId = msgSnap.val()._id;
+          //Update lastRead
+          this.updateLastRead(convKey, msgId, uid);
+          this.clearUnread(convKey, uid);
+          return {
+            messages: GiftedChat.append(previousState.messages, msgSnap.val())
+          };
+        });
       });
-    });
-  }
+  };
 
-  //load conversation data(including messages)
-  loadAndUpdate= (_convKey) => {
-    const me = this.props.store.user.uid;
-    const theOther = this.props.uid;
+  //update users' profile in conversation data
+  updateAndLoad = _convKey => {
+    const me = this.uid;
+    const theOther = this.otherUid;
 
     //load conversation data
-    this.props.fire.database().ref('conversations/' + _convKey +
-    '/users').once('value').then(snap=> {
-      const users = snap.val();
-      //If user has changed name and avatar since last time, update.
-      users[theOther].name = this.props.name;
-      users[theOther].avatarUrl = this.props.avatarUrl;
-      users[me].name = this.props.store.user.displayName;
-      users[me].avatarUrl = this.props.store.user.photoURL;
+    this.props.fire
+      .database()
+      .ref("conversations/" + _convKey + "/users")
+      .once("value")
+      .then(snap => {
+        const users = snap.val();
+        //If user has changed name and avatar since last time, update.
+        users[theOther].name = this.props.name;
+        users[theOther].avatarUrl = this.props.avatarUrl;
+        users[me].name = this.props.store.user.displayName;
+        users[me].avatarUrl = this.props.store.user.photoURL;
+        this.loadAfterMsgId = users[me].deleted;
 
-      this.props.fire.database().ref('conversations/' + _convKey + '/users').update(users);
+        this.props.fire
+          .database()
+          .ref("conversations/" + _convKey + "/users")
+          .update(users);
+      }).then( () => {
+        this.loadAndListenMessages(
+          this.convKey,
+          this.loadAfterMsgId,
+          me,
+        );
+        this.updateVisitorMsgLimit(this.convKey, this.uid);
+      });
+  };
 
-      //load and listening to messages
-      this.loadAndListenMessages(_convKey, users[this.props.store.user.uid].deleted);
-    });
-  }
-
-  createNewConv = (_other) => {
-    const _convKey = this.props.fire.database().ref("conversations").push().key;
-    // console.log('Got new conversation key from firebase: ' + _convKey);
-    const _me = this.props.store.user.uid;
-    const chatType = this.props.chatType ? this.props.chatType : 'normal';
+  createNewConv = () => {
+    this.convKey = this.props.fire.database().ref("conversations").push().key;
     const users = {};
-    users[_other] = {
+    users[this.OtherUid] = {
       name: this.props.name,
       birthday: this.props.birthday,
       avatarUrl: this.props.avatarUrl,
       unread: 0,
       deleted: false,
       lastRead: 0,
-      chatType,
+      chatType: "visitor",
       priority: false,
     };
-    users[_me] = {
+
+    users[this.uid] = {
       name: this.props.store.user.displayName,
       birthday: this.props.store.user.birthday,
       avatarUrl: this.props.store.user.photoURL,
       unread: 0,
       deleted: false,
       lastRead: 0,
-      chatType: 'normal', //開發期間先設為visitor, 本應為"normal"
+      chatType: "normal",
       priority: false,
+      visitorMsgLimit: 2,
     };
 
     const convData = {
       users,
       createTime: Moment().unix()
-    }
+    };
 
-    this.setState({convKey: _convKey});
-    this.setVisitorLimit(_convKey, this.props.store.user.uid);
+    this.setState({ visitorMsgLimit: 2 });
 
     //Add new conv to user profile
-    this.props.fire.database().ref("conversations/" + _convKey).update(convData).then(()=> {
-      //update user profile
-      this.props.store.addNewConv(_other, _convKey);
-      //loadAndUpdate conversation and messages
-      this.loadAndUpdate(_convKey);
-    });
-  }
+    this.props.fire
+      .database()
+      .ref("conversations/" + this.convKey)
+      .update(convData)
+      .then(this.props.store.addNewConv(this.otherUid, this.convKey)).then(//update and load conversation and messages
+      this.updateAndLoad(this.convKey));
+  };
 
   //reset unread count
   clearUnread = (convKey, uid) => {
     const unreadRef = this.props.fire
       .database()
       .ref("conversations/" + convKey + "/users/" + uid);
-    unreadRef.update({unread: 0});
+    unreadRef.update({ unread: 0 });
   };
 
-  // Only removes the priority of current user's conversation record
-  removeConversationPriority = () => {
-    const myUid = this.props.store.user.uid;
-    const myConvRef = this.props.fire.database().ref('conversations/' + this.state.convKey + '/users/' + myUid);
+  // Only removes the priority of current user"s conversation record
+  removeConversationPriority = (convKey, uid) => {
+    const convRef = this.props.fire
+      .database()
+      .ref("conversations/" + convKey + "/users/" + uid);
 
-    myConvRef.update({ priority: false, chatType: "normal" });
+    convRef.update({ priority: false, chatType: "normal" });
   };
 
-  getPriority = () => {
-    this.props.fire.database().ref('conversations/' + this.state.convKey + '/users/' + this.props.uid + "/priority").once("value", snap => {
-      return snap.val();
-    },
-    err => {
-      console.log("Chat/getPriority error: " + err);
-    });
-  }
+  getPriority = (convKey, uid) => {
+    this.props.fire
+      .database()
+      .ref(
+        "conversations/" + convKey + "/users/" + uid + "/priority"
+      )
+      .once(
+        "value",
+        snap => {
+          return snap.val();
+        },
+        err => {
+          console.log("Chat/getPriority error: " + err);
+        }
+      );
+  };
 
-  makeConversationPriority = () => {
-    const toUid = this.props.uid;
-    const convRef = this.props.fire.database().ref('conversations/' + this.state.convKey + '/users/' + toUid);
+  makeConversationPriority = (convKey, uid) => {
+    const convRef = this.props.fire
+      .database()
+      .ref("conversations/" + convKey + "/users/" + uid);
     convRef.update({ priority: true });
   };
 
   //adds 1 to unread
   unreadAddOne = (convKey, uid) => {
-    const convRef = this.props.fire.database().ref("conversations/" + convKey + "/users/" + uid);
+    const convRef = this.props.fire
+      .database()
+      .ref("conversations/" + convKey + "/users/" + uid);
     convRef.once(
-        "value",
-        snap => {
-          const unread = snap.val().unread + 1;
-          //update new unread count
-          convRef.update({ unread });
-        },
-        err => {
-          console.log("Chat/unreadAddOne error: " + err);
-        }
-      );
+      "value",
+      snap => {
+        const unread = snap.val().unread + 1;
+        //update new unread count
+        convRef.update({ unread });
+      },
+      err => {
+        console.log("Chat/unreadAddOne error: " + err);
+      }
+    );
   };
 
   visitorMsgLimitDeductOne = (convKey, uid) => {
-    const convRef = this.props.fire.database().ref("conversations/" + convKey + "/users/" + uid + "/visitorLimit");
+    const convRef = this.props.fire
+      .database()
+      .ref("conversations/" + convKey + "/users/" + uid + "/visitorMsgLimit");
     convRef.once(
-        "value",
-        snap => {
-          const limit = snap.val();
-          if(limit === 0) {
-            this.setState({ showMsgLimitModal: true });
-            return
-          }
-          const newLimit = limit - 1;
-          //update new unread count
-          this.setState({ visitorLimit: newLimit });
-          convRef.set(newLimit);
-        },
-        err => {
-          console.log("Chat/visitorMsgLimitDeductOne error: " + err);
-        }
-      );
-  }
+      "value",
+      snap => {
+        const limit = snap.val();
+        const newLimit = limit - 1;
+        //update new unread count
+        this.setState({ visitorMsgLimit: newLimit });
+        convRef.set(newLimit);
+      },
+      err => {
+        console.log("Chat/visitorMsgLimitDeductOne error: " + err);
+      }
+    );
+  };
 
-  setVisitorLimit = (convKey, uid) => {
-    const convRef = this.props.fire.database().ref("conversations/" + convKey + "/users/" + uid + "/visitorLimit");
+  updateVisitorMsgLimit = (convKey, uid) => {
+    const convRef = this.props.fire
+      .database()
+      .ref("conversations/" + convKey + "/users/" + uid + "/visitorMsgLimit");
     convRef.once(
-        "value",
-        snap => {
-          this.setState({ visitorLimit: snap.val() });
-        },
-        err => {
-          console.log("Chat/getVisitorLimit error: " + err);
-        }
-      );
-  }
+      "value",
+      snap => {
+        this.setState({ visitorMsgLimit: snap.val() });
+      },
+      err => {
+        console.log("Chat/updateVisitorMsgLimit error: " + err);
+      }
+    );
+  };
 
   visitorMsgLimitAddOne = (convKey, uid) => {
-    const convRef = this.props.fire.database().ref("conversations/" + convKey + "/users/" + uid + "/visitorLimit");
+    const convRef = this.props.fire
+      .database()
+      .ref("conversations/" + convKey + "/users/" + uid + "/visitorMsgLimit");
     convRef.once(
-        "value",
-        snap => {
-          const limit = snap.val() + 1;
-          this.setState({ visitorLimit: limit });
-          //update new unread count
-          convRef.set(limit);
-        },
-        err => {
-          console.log("Chat/visitorMsgLimitDeductOne error: " + err);
-        }
-      );
-  }
-
-  getUnreadVisitorCount = (uid) => {
-    //TODO
-  }
+      "value",
+      snap => {
+        const limit = snap.val() + 1;
+        this.setState({ visitorMsgLimit: limit });
+        //update new unread count
+        convRef.set(limit);
+      },
+      err => {
+        console.log("Chat/visitorMsgLimitDeductOne error: " + err);
+      }
+    );
+  };
 
   onSend = (messages = []) => {
-    if(!this.state.visitorLimit || this.state.visitorLimit === 0) {
+    if (this.state.visitorMsgLimit <= 0) {
       this.setState({ showMsgLimitModal: true });
       return;
     }
-    const msgRef = this.props.fire.database().ref("conversations/" + this.state.convKey + "/messages");
+    const msgRef = this.props.fire
+      .database()
+      .ref("conversations/" + this.convKey + "/messages");
     const createdAt = Moment().format();
     messages[0].user.name = this.props.store.user.displayName;
     messages[0].user.avatar = this.props.store.user.photoURL;
@@ -342,18 +373,21 @@ export default class Chat extends Component {
     //adds this new message to firebase
     msgRef.update(updates);
 
-    //adds 1 to the other user's conversation bucket's unread field
-    this.unreadAddOne(this.state.convKey, this.props.uid);
-    if(this.state.visitorLimit > 0) {
-      this.visitorMsgLimitDeductOne(this.state.convKey, this.props.store.user.uid);
+    //adds 1 to the other user"s conversation bucket"s unread field
+    this.unreadAddOne(this.convKey, this.otherUid);
+    if (this.state.visitorLimit > 0) {
+      this.visitorMsgLimitDeductOne(
+        this.convKey,
+        this.uid
+      );
     }
 
-    if(this.props.chatType === "visitor" ) {
+    if (this.props.chatType === "visitor") {
       //有發言回應後就取消 priority
-      this.removeConversationPriority();
+      this.removeConversationPriority(this.convKey, this.uid);
     }
 
-    if(!this.getPriority()) {
+    if (!this.getPriority(this.convKey, this.uid)) {
       this.setState({ showPriorityModal: true });
     }
 
@@ -447,7 +481,9 @@ export default class Chat extends Component {
   };
 
   handleCameraPicker = () => {
-    const msgRef = this.props.fire.database().ref("conversations/" + this.state.convKey + "/messages");
+    const msgRef = this.props.fire
+      .database()
+      .ref("conversations/" + this.convKey + "/messages");
     console.log("handleCameraPicker called");
     ImagePicker.launchCamera(ImagePickerOptions, async response => {
       // console.log("Response = ", response);
@@ -465,7 +501,7 @@ export default class Chat extends Component {
           .storage()
           .ref(
             "chatPhotos/" +
-              this.props.store.user.uid +
+              this.uid +
               "/" +
               response.fileName.replace("JPG", "jpg")
           );
@@ -489,7 +525,7 @@ export default class Chat extends Component {
           text: "",
           createdAt: new Date(),
           user: {
-            _id: this.props.store.user.uid,
+            _id: this.uid,
             name: this.props.store.user.displayName,
             avatar: this.props.store.user.photoURL
           },
@@ -504,15 +540,17 @@ export default class Chat extends Component {
         });
 
         //adds 1 to conversation
-        this.unreadAddOne(this.state.convKey, this.props.uid);
+        this.unreadAddOne(this.convKey, this.otherUid);
         //有發言回應後就取消 priority
-        this.removeConversationPriority();
+        this.removeConversationPriority(this.convKey, this.uid);
       }
     });
   };
 
   handlePhotoPicker = () => {
-    const msgRef = this.props.fire.database().ref("conversations/" + this.state.convKey + "/messages");
+    const msgRef = this.props.fire
+      .database()
+      .ref("conversations/" + this.convKey + "/messages");
     console.log("handlePhotoPicker called");
     ImagePicker.launchImageLibrary(ImagePickerOptions, async response => {
       console.log("Response = ", response);
@@ -530,7 +568,7 @@ export default class Chat extends Component {
           .storage()
           .ref(
             "chatPhotos/" +
-              this.props.store.user.uid +
+              this.uid +
               "/" +
               response.fileName.replace("JPG", "jpg")
           );
@@ -554,7 +592,7 @@ export default class Chat extends Component {
           text: "",
           createdAt: new Date(),
           user: {
-            _id: this.props.store.user.uid,
+            _id: this.uid,
             name: this.props.store.user.displayName,
             avatar: this.props.store.user.photoURL
           },
@@ -569,9 +607,9 @@ export default class Chat extends Component {
         });
 
         //adds 1 to conversation
-        this.unreadAddOne(this.state.convKey, this.props.uid);
+        this.unreadAddOne(this.convKey, this.otherUid);
         //有發言回應後就取消 priority
-        this.removeConversationPriority();
+        this.removeConversationPriority(this.convKey, this.uid);
       }
     });
   };
@@ -667,23 +705,56 @@ export default class Chat extends Component {
   };
 
   notInterested = () => {
-    this.setState({showVisitorModal: false});
-  }
+    this.setState({ showVisitorModal: false });
+  };
 
   startChatting = () => {
-    this.setState({showVisitorModal: false});
-  }
+    this.setState({ showVisitorModal: false });
+  };
 
-  useCredit = (val) => {
-    this.visitorMsgLimitAddOne(this.state.convKey, this.props.store.user.uid);
-    this.setState({showMsgLimitModal: false});
+  useCredit = (reason, val) => {
     this.props.store.deductCredit(val);
-  }
+
+    switch (reason) {
+      case "visitorMsgLimit":
+        this.visitorMsgLimitAddOne(
+          this.convKey,
+          this.uid
+        );
+        this.setState({
+          showMsgLimitModal: false
+        });
+        break;
+      case "priority":
+        this.makeConversationPriority(this.otherUid);
+        this.setState({
+          showPriorityModal: false
+        });
+        break;
+      case "visitorSentLimit":
+        this.setState({
+          showTooManyVisitorMsgSentModal: false
+        });
+        break;
+      case "visitorReceivedLimit":
+        this.setState({
+          showTooManyVisitorMsgReceivedModal: false
+        });
+        break;
+    }
+  };
 
   buyCredit = () => {
-    this.setState({showMsgLimitModal: false});
+    this.setState({
+      showMsgLimitModal: false,
+      showVisitorModal: false,
+      showPriorityModal: false,
+      showInsufficientCreditModal: false,
+      showTooManyVisitorMsgSentModal: false,
+      showTooManyVisitorMsgReceivedModal: false
+    });
     this.props.store.addCredit(100);
-  }
+  };
 
   cancelSend = () => {
     this.setState({
@@ -692,30 +763,30 @@ export default class Chat extends Component {
       showPriorityModal: false,
       showInsufficientCreditModal: false,
       showTooManyVisitorMsgSentModal: false,
-      showTooManyVisitorMsgReceivedModal: false,
+      showTooManyVisitorMsgReceivedModal: false
     });
+  };
+
+  msgKeyGenerator = async () => {
+    const key = await this.props.fire
+      .database()
+      .ref("conversations/" + this.convKey + "/messages").push().key;
+    return key;
   }
 
-
-
   render() {
-    // console.log("this.state", this.state);
-    const msgRef = this.props.fire.database().ref("conversations/" + this.state.convKey + "/messages");
-
     return (
       <View style={[this.state.size, { marginTop: -60 }]}>
         {this.state.actions &&
           <GiftedChat
             messages={this.state.messages}
-            messageIdGenerator={() => {
-              return msgRef.push().key;
-            }}
+            messageIdGenerator={this.msgKeyGenerator}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
             user={{
-              _id: this.props.store.user.uid
+              _id: this.uid
             }}
             minInputToolbarHeight={45}
             placeholder="輸入訊息..."
@@ -723,84 +794,16 @@ export default class Chat extends Component {
             renderActions={this.renderActions}
             renderFooter={this.renderFooter}
           />}
-        <Modal isVisible={this.state.showVisitorModal} backdropColor="black" backdropOpacity={0.6}>
-          <View style={{ alignItems: "center", justifyContent: "center", padding: 10 }}>
-            <Text style={{ margin: 10, color: "white" }}>新的來訪留言</Text>
-            <Button title="與他/她聊聊" buttonStyle={styles.modalButton1} onPress={this.startChatting}/>
-            <Button title="不感興趣" buttonStyle={styles.modalButton2} onPress={this.notInterested}/>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.showMsgLimitModal} backdropColor="black" backdropOpacity={0.6}>
-          <View style={{ alignItems: "center", justifyContent: "center", padding: 10 }}>
-            <Text style={{ margin: 10, color: "white" }}>請等待對方回覆或是使用Q點繼續留言</Text>
-            <Button title="使用Q點數(每一則30點)" buttonStyle={styles.modalButton1} onPress={this.useCredit(30)}/>
-            <Button title="取消" buttonStyle={styles.modalButton2} onPress={this.cancelSend}/>
-            <Text style={{ color: "white" }}>
-              --------------------------------------
-            </Text>
-            <Text style={{ margin: 10, color: "white" }}>您目前有 {this.store.user.credit} Q點</Text>
-            <Button title="Q點儲值" buttonStyle={styles.modalButton2} onPress={this.buyCredit}/>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.showPriorityModal} backdropColor="black" backdropOpacity={0.6}>
-          <View style={{ alignItems: "center", justifyContent: "center", padding: 10 }}>
-            <Text style={{ margin: 10, color: "white" }}>可以使用Q點讓你的留言先被看到！</Text>
-            <Button title="使用Q點(100點)" buttonStyle={styles.modalButton1} onPress={this.useCredit(100)}/>
-            <Button title="不用" buttonStyle={styles.modalButton2} onPress={this.cancelSend}/>
-            <Text style={{ color: "white" }}>
-              --------------------------------------
-            </Text>
-            <Text style={{ margin: 10, color: "white" }}>您目前有 {this.store.user.credit} Q點</Text>
-            <Button title="Q點儲值" buttonStyle={styles.modalButton2} onPress={this.buyCredit}/>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.showTooManyVisitorMsgReceivedModal} backdropColor="black" backdropOpacity={0.6}>
-          <View style={{ alignItems: "center", justifyContent: "center", padding: 10 }}>
-            <Text style={{ margin: 10, color: "white" }}>抱歉, 對方的未讀來訪留言過多, 請稍後再試試或是使用Q點特權留言</Text>
-            <Button title="使用Q點(50點)" buttonStyle={styles.modalButton1} onPress={this.useCredit(50)}/>
-            <Button title="取消" buttonStyle={styles.modalButton2} onPress={this.cancelSend}/>
-            <Text style={{ color: "white" }}>
-              --------------------------------------
-            </Text>
-            <Text style={{ margin: 10, color: "white" }}>您目前有 {this.store.user.credit} Q點</Text>
-            <Button title="Q點儲值" buttonStyle={styles.modalButton2} onPress={this.buyCredit}/>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.showTooManyVisitorMsgSentModal} backdropColor="black" backdropOpacity={0.6}>
-          <View style={{ alignItems: "center", justifyContent: "center", padding: 10 }}>
-            <Text style={{ margin: 10, color: "white" }}>訪客留言次數已用完：你今天已經留言給10位新對象了, 可以使用Q點增加10個對象</Text>
-            <Button title="使用Q點(100點)" buttonStyle={styles.modalButton1} onPress={this.useCredit(100)}/>
-            <Button title="取消" buttonStyle={styles.modalButton2} onPress={this.cancelSend}/>
-            <Text style={{ color: "white" }}>
-              --------------------------------------
-            </Text>
-            <Text style={{ margin: 10, color: "white" }}>您目前有 {this.store.user.credit} Q點</Text>
-            <Button title="Q點儲值" buttonStyle={styles.modalButton2} onPress={this.buyCredit}/>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.showInsufficientCreditModal} backdropColor="black" backdropOpacity={0.6}>
-          <View style={{ alignItems: "center", justifyContent: "center", padding: 10 }}>
-            <Text style={{ margin: 10, color: "white" }}>抱歉, 你的Q點餘額不足哦！</Text>
-            <Button title="Q點儲值" buttonStyle={styles.modalButton2} onPress={this.buyCredit}/>
-            <Button title="取消" buttonStyle={styles.modalButton2} onPress={this.cancelSend}/>
-            <Text style={{ color: "white" }}>
-              --------------------------------------
-            </Text>
-            <Text style={{ margin: 10, color: "white" }}>您目前有 {this.store.user.credit} Q點</Text>
-          </View>
-        </Modal>
         {!this.state.actions &&
           <GiftedChat
             messages={this.state.messages}
-            messageIdGenerator={() => {
-              return msgRef.push().key;
-            }}
+            messageIdGenerator={this.msgKeyGenerator}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
             user={{
-              _id: this.props.store.user.uid
+              _id: this.uid
             }}
             imageProps={this.state.image}
             minInputToolbarHeight={45}
@@ -808,7 +811,215 @@ export default class Chat extends Component {
             renderActions={this.renderActions}
             renderFooter={this.renderFooter}
           />}
+        <Modal
+          isVisible={this.state.showVisitorModal}
+          backdropColor="black"
+          backdropOpacity={0.6}
+        >
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 10
+            }}
+          >
+            <Text style={{ margin: 10, color: "white" }}>新的來訪留言</Text>
+            <Button
+              title="與他/她聊聊"
+              buttonStyle={styles.modalButton1}
+              onPress={this.startChatting}
+            />
+            <Button
+              title="不感興趣"
+              buttonStyle={styles.modalButton2}
+              onPress={this.notInterested}
+            />
+          </View>
+        </Modal>
+
+
       </View>
     );
   }
 }
+// <Modal
+//   isVisible={this.state.showMsgLimitModal}
+//   backdropColor="black"
+//   backdropOpacity={0.6}
+// >
+//   <View
+//     style={{
+//       alignItems: "center",
+//       justifyContent: "center",
+//       padding: 10
+//     }}
+//   >
+//     <Text style={{ margin: 10, color: "white" }}>
+//       請等待對方回覆或是使用Q點繼續留言
+//     </Text>
+//     <Button
+//       title="使用Q點數(每一則30點)"
+//       buttonStyle={styles.modalButton1}
+//       onPress={this.useCredit("visitorMsgLimit", 30)}
+//     />
+//     <Button
+//       title="取消"
+//       buttonStyle={styles.modalButton2}
+//       onPress={this.cancelSend}
+//     />
+//     <Text style={{ color: "white" }}>
+//       --------------------------------------
+//     </Text>
+//     <Text style={{ margin: 10, color: "white" }}>
+//       您目前有 {this.props.store.user.credit} Q點
+//     </Text>
+//     <Button
+//       title="Q點儲值"
+//       buttonStyle={styles.modalButton2}
+//       onPress={this.buyCredit}
+//     />
+//   </View>
+// </Modal>
+// <Modal
+//           isVisible={this.state.showPriorityModal}
+//           backdropColor="black"
+//           backdropOpacity={0.6}
+//         >
+//           <View
+//             style={{
+//               alignItems: "center",
+//               justifyContent: "center",
+//               padding: 10
+//             }}
+//           >
+//             <Text style={{ margin: 10, color: "white" }}>可以使用Q點讓你的留言先被看到！</Text>
+//             <Button
+//               title="使用Q點(100點)"
+//               buttonStyle={styles.modalButton1}
+//               onPress={this.useCredit("priority", 100)}
+//             />
+//             <Button
+//               title="不用"
+//               buttonStyle={styles.modalButton2}
+//               onPress={this.cancelSend}
+//             />
+//             <Text style={{ color: "white" }}>
+//               --------------------------------------
+//             </Text>
+//             <Text style={{ margin: 10, color: "white" }}>
+//               您目前有 {this.props.store.user.credit} Q點
+//             </Text>
+//             <Button
+//               title="Q點儲值"
+//               buttonStyle={styles.modalButton2}
+//               onPress={this.buyCredit}
+//             />
+//           </View>
+//         </Modal>
+//         <Modal
+//           isVisible={this.state.showTooManyVisitorMsgReceivedModal}
+//           backdropColor="black"
+//           backdropOpacity={0.6}
+//         >
+//           <View
+//             style={{
+//               alignItems: "center",
+//               justifyContent: "center",
+//               padding: 10
+//             }}
+//           >
+//             <Text style={{ margin: 10, color: "white" }}>
+//               抱歉, 對方的未讀來訪留言過多, 請稍後再試試或是使用Q點特權留言
+//             </Text>
+//             <Button
+//               title="使用Q點(50點)"
+//               buttonStyle={styles.modalButton1}
+//               onPress={this.useCredit("visitorReceivedLimit", 50)}
+//             />
+//             <Button
+//               title="取消"
+//               buttonStyle={styles.modalButton2}
+//               onPress={this.cancelSend}
+//             />
+//             <Text style={{ color: "white" }}>
+//               --------------------------------------
+//             </Text>
+//             <Text style={{ margin: 10, color: "white" }}>
+//               您目前有 {this.props.store.user.credit} Q點
+//             </Text>
+//             <Button
+//               title="Q點儲值"
+//               buttonStyle={styles.modalButton2}
+//               onPress={this.buyCredit}
+//             />
+//           </View>
+//         </Modal>
+//         <Modal
+//           isVisible={this.state.showTooManyVisitorMsgSentModal}
+//           backdropColor="black"
+//           backdropOpacity={0.6}
+//         >
+//           <View
+//             style={{
+//               alignItems: "center",
+//               justifyContent: "center",
+//               padding: 10
+//             }}
+//           >
+//             <Text style={{ margin: 10, color: "white" }}>
+//               訪客留言次數已用完：你今天已經留言給10位新對象了, 可以使用Q點增加10個對象
+//             </Text>
+//             <Button
+//               title="使用Q點(100點)"
+//               buttonStyle={styles.modalButton1}
+//               onPress={this.useCredit("visitorSentLimit", 100)}
+//             />
+//             <Button
+//               title="取消"
+//               buttonStyle={styles.modalButton2}
+//               onPress={this.cancelSend}
+//             />
+//             <Text style={{ color: "white" }}>
+//               --------------------------------------
+//             </Text>
+//             <Text style={{ margin: 10, color: "white" }}>
+//               您目前有 {this.props.store.user.credit} Q點
+//             </Text>
+//             <Button
+//               title="Q點儲值"
+//               buttonStyle={styles.modalButton2}
+//               onPress={this.buyCredit}
+//             />
+//           </View>
+//         </Modal>
+//         <Modal
+//           isVisible={this.state.showInsufficientCreditModal}
+//           backdropColor="black"
+//           backdropOpacity={0.6}
+//         >
+//           <View
+//             style={{
+//               alignItems: "center",
+//               justifyContent: "center",
+//               padding: 10
+//             }}
+//           >
+//             <Text style={{ margin: 10, color: "white" }}>抱歉, 你的Q點餘額不足哦！</Text>
+//             <Button
+//               title="Q點儲值"
+//               buttonStyle={styles.modalButton2}
+//               onPress={this.buyCredit}
+//             />
+//             <Button
+//               title="取消"
+//               buttonStyle={styles.modalButton2}
+//               onPress={this.cancelSend}
+//             />
+//             <Text style={{ color: "white" }}>
+//               --------------------------------------
+//             </Text>
+//             <Text style={{ margin: 10, color: "white" }}>
+//               您目前有 {this.props.store.user.credit} Q點
+//             </Text>
+//           </View>
+//         </Modal>
