@@ -8,7 +8,7 @@ import { Badge } from 'react-native-elements'
 const AdvancedInfo = inject("SubjectStore")(observer(({ SubjectStore }) => {
 
   const renderhobby = SubjectStore.hobby.map(
-    (hobby) => (<Badge key={hobby} containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>)
+    (hobby) => (<Badge key={hobby} containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>)
     )
 
   return(
@@ -32,10 +32,9 @@ const AdvancedInfo = inject("SubjectStore")(observer(({ SubjectStore }) => {
         displayTitle styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
         onpress = { SubjectStore.onpressInterests.bind(SubjectStore) } >
-        <View style={{flexDirection: 'row', marginTop: 5, flexWrap: 'wrap'}}>
-          {renderhobby}
-        </View>
-
+          <View style={{alignItems: 'flex-start',flexDirection: 'row', marginTop: 5, flexWrap: 'wrap'}}>
+            {renderhobby}
+          </View>
       </Item>
     </View>                           
   )
