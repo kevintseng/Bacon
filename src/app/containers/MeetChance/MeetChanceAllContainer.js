@@ -31,7 +31,7 @@ export default class MeetChanceAllContainer extends Component {
   componentWillMount() {
     //console.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false })
-    this.ObjectStore.initPreyList()
+    this.ObjectStore.initMeetChanceAll()
     // this.getLocation();
   }
 
