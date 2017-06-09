@@ -27,7 +27,7 @@ const MeetCuteEdit = () => {
       </View>
       <MultiSlider values={[3,7]} sliderLength={280} onValuesChange={sliderOneValuesChange}/>
       <View>
-        <Text>進階篩選，只限高級會員</Text>
+        <Text>進階篩選(只限高級會員)</Text>
       </View>
       <View style={{alignItems: "flex-start"}}>
         <CheckBox
