@@ -55,7 +55,7 @@ export const FateProvider = () => (
 
 // AboutMe
 export const ShowProvider = () => (
-  <Provider SubjectStore = { AppInitStore.wooer } displayName={AppInitStore.wooer.displayName} city={AppInitStore.wooer.city} >
+  <Provider SubjectStore = { AppInitStore.wooer } >
     <ShowContainer/>
   </Provider>  
 )
