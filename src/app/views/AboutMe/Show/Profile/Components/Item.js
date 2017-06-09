@@ -15,7 +15,8 @@ const styles = {
     paddingRight: 20,  
     paddingLeft: 20,
     paddingTop: 10,
-    paddingBottom: 10 
+    paddingBottom: 10,
+    //justifyContent: "flex-start"
     //marginBottom: 8,
     //marginHorizontal: 10,      
   },

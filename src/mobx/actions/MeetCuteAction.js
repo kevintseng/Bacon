@@ -69,7 +69,9 @@ const MeetCuteAction = {
         })
       })
       .then(() => {
-        this.setprey(this.preyList[0]);
+        if (this.preyList.length > 0){
+          this.setprey(this.preyList[0])
+        }
     })
   }),  
 
