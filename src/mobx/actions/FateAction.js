@@ -60,8 +60,8 @@ const FateAction = {
     this.loading = true
     this.preyList = []
     const query = this.firebase.database().ref("collection")
-    await query.orderByChild("prey").equalTo(this.store.user.uid).once("value", snap => (
-       snap.forEach(childsnap => this.setPreyListByKey(childsnap.val().wooer))
+    await query.orderByChild("wooer").equalTo(this.store.user.uid).once("value", snap => (
+       snap.forEach(childsnap => this.setPreyListByKey(childsnap.val().prey))
       )
     )
     this.loading = false

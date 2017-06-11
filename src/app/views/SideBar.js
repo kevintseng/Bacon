@@ -58,6 +58,7 @@ const SideBar = observer(({ store }) => {
                 leftIcon = {{name: item.icon}}
                 badge = { false }
                 onPress = { store.handleOnPress(item.key) }
+                //onLongPress = { store.handleOnPress(item.key) }
               />
           ))
         }
