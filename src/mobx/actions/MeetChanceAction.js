@@ -4,12 +4,8 @@ import { Actions } from 'react-native-router-flux'
 
 //useStrict(true)
 const MeetChanceAction = {
-
-  setUser: action(function setUser(){
-    this.user = this.store.user
-  }),
   
-  initPreyList: action(function initPreyList(){
+  initMeetChanceAll: action(function initMeetChanceAll(){
     this.loading = true
   }),
 
@@ -26,11 +22,7 @@ const MeetChanceAction = {
     })
     geoQuery.on("ready", () => {
       this.loading = false
-    //  console.warn(this.preyList.length)
-      //this.setprey(this.preyList[0])
     })
-    //console.warn(this.preyList.length)
-    //console.warn(this.preyList.length)
   }),
 
   setPreyListByKey: action(function setPreyListByKey(key){
@@ -42,7 +34,6 @@ const MeetChanceAction = {
   }),
 
   onPressButton: action(function onPressButton(prey){
-    //const _index = this.preyList.indexOf(this.prey)
     this.setprey(prey)
     Actions.nearbySingle()
   }),
@@ -53,7 +44,19 @@ const MeetChanceAction = {
 
   getNext: action(function handleLike(){
     console.warn(this)
-  }) 
+  }),
+
+  setUser: action(function setUser(){
+    this.user = this.store.user
+  }),
+
+  setAgeMin: action(function setAgeMin(age_min){
+    this.age_min = age_min
+  }),
+
+  setAgeMax: action(function setAgeMax(age_max){
+    this.age_max = age_max
+  }),
 }
 
 export default MeetChanceAction

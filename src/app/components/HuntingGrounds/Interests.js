@@ -5,11 +5,11 @@ import { Badge } from 'react-native-elements'
 
 const Interests = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
-  const renderInterests = ObjectStore.interests.map((interest) => (<Badge key={interest} value={interest} textStyle={{fontSize: 10, color: "#000000"}} containerStyle={{ borderWidth: 0.5, borderColor: '#000000', backgroundColor: '#ffffff', marginRight: 10}}/>))
+  const renderhobby = ObjectStore.interests.map((interest) => (<Badge key={interest} value={interest} textStyle={{fontSize: 10, color: "#000000"}} containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}}/>))
 
   return(
-    <View style={{flexDirection: 'row', margin: 10}}>
-      { renderInterests }
+    <View style={{alignItems: 'flex-start',flexDirection: 'row', marginLeft: 7, marginTop: 5, flexWrap: 'wrap'}}>
+      {renderhobby}
     </View>
   )
 }))

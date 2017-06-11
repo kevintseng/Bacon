@@ -6,13 +6,13 @@ import Cookie from './MeetChanceAll/Cookie'
 
 const { width, height } = Dimensions.get('window')
 
-const MeetChanceAll = inject("ObjectStore")(observer(({ ObjectStore }) => {
+const MeetChanceAll = inject("SubjectStore","ObjectStore")(observer(({ SubjectStore, ObjectStore }) => {
 
   const renderCookie = ObjectStore.preyList.map((prey)=>( <Cookie name={prey.displayName} photoURL={prey.photoURL} key={prey.uid} onPressButton={ function(prey){ ObjectStore.onPressButton(prey) }}/> ))
   return(
     <View style={{width, height}}>
       <View style = {{backgroundColor: "#e6e6fa", justifyContent: 'center', alignItems: 'center'}}>
-        <Cookie/>
+        <Cookie name={SubjectStore.displayName} photoURL={SubjectStore.photoURL} onPressButton={ SubjectStore.onPressMeetChance.bind(SubjectStore)}/> 
       </View>
       <ScrollView >
         <View style = {{flexDirection: 'row', flexWrap: 'wrap', alignItems:'flex-start', backgroundColor: "#ff0000"}}> 

@@ -5,7 +5,7 @@ import { observer, inject } from "mobx-react/native"
 const Introduce = inject("ObjectStore")(observer(({ ObjectStore }) => {
   return(
     <View style = {{margin: 10}} >
-      <Text>
+      <Text numberOfLines={1}>
         {ObjectStore.introduce}
       </Text>
     </View>
