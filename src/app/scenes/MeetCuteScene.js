@@ -8,11 +8,11 @@ const menuButton = () => (
   <Icon name = "menu" color = "#000" onPress = { () => Actions.refresh({ key: "drawer", open: value => !value }) } />
 )
 
-//const handleOnRight = () => {
-//  Actions.AboutMeShow()
-//}
+const handleOnRight = () => {
+  Actions.MeetCuteShow()
+}
 
-//const rightTitle = () => ('完成')
+const rightTitle = () => ('完成')
 
 const SettingButton = () => (
   <Icon
@@ -25,7 +25,7 @@ const SettingButton = () => (
 const MeetCuteScene = (
 <Scene key = "meetcute">
   <Scene key = "MeetCuteShow" hideTabBar component = { MeetCuteShowProvider } title = "邂逅" renderLeftButton = { menuButton } renderRightButton = {SettingButton} />
-  <Scene key = "MeetCuteEdit" hideTabBar component = { MeetCuteEditProvider } title = "邂逅設定" renderLeftButton = { menuButton } renderRightButton = {SettingButton} />
+  <Scene key = "MeetCuteEdit" hideTabBar component = { MeetCuteEditProvider } title = "邂逅設定" renderLeftButton = { menuButton } rightTitle = { rightTitle() } onRight = { handleOnRight }/>
 </Scene>
 )
 

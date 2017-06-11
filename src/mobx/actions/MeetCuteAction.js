@@ -117,6 +117,14 @@ const MeetCuteAction = {
     this.user = this.store.user
   }),
 
+  setAgeMin: action(function setAgeMin(age_min){
+    this.age_min = age_min
+  }),
+
+  setAgeMax: action(function setAgeMax(age_max){
+    this.age_max = age_max
+  }),
+
   updateToFirebase: function updateToFirebase(key, val){
     this.firebase.database().ref('users/' + this.user.uid + '/' + key).set(val)
   },

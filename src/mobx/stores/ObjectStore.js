@@ -11,6 +11,8 @@ class ObjectStore {
   @observable prey
   @observable preyList
   @observable loading
+  @observable age_max
+  @observable age_min
 
   constructor(firebase,store) {
     this.preyList = []
@@ -19,6 +21,8 @@ class ObjectStore {
     this.loading = false
     this.store = store
     this.firebase = firebase
+    this.age_min = 0
+    this.age_max = 10
   }
 
   @computed get displayName(){
