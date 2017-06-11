@@ -1,5 +1,6 @@
 import React from 'react'
 import { observable, action, computed, useStrict } from 'mobx'
+import GeoFire from 'geofire'
 import { Actions } from 'react-native-router-flux'
 // AboutMe
 import NickBirthday from '../../app/views/AboutMe/Edit/NickBirthday'
@@ -209,8 +210,16 @@ class SubjectStore {
       this.user.photoURL = "https://firebasestorage.googleapis.com/v0/b/kjyl-150415.appspot.com/o/addImage.png?alt=media&token=2f51bf34-eeb3-4963-8b79-00d4fadfbd7f"
       this.updateToFirebase('photoURL',this.user.photoURL)
     }
+    const query = this.firebase.database().ref("/user_locations/")
+    const geoFire = new GeoFire(query)
+    //geoFire.setLocation(this.user.id, new GeoLocation(this.user.geocode.lat, this.user.geocode.lng))
     //this.user.meetCuteHistory = [this.user.uid]
     //this.updateToFirebase("meetCuteHistory",[this.user.uid])
+    geoFire.set(this.user.uid, [this.user.geocode.lat, this.user.geocode.lng ]).then(() => {
+        console.log("Provided key has been added to GeoFire");
+      }, (error) => {
+        console.log("Error: " + error);
+      })
   }
 
   @action updateNickBirthday(){
@@ -304,19 +313,22 @@ class SubjectStore {
   }
 
   @action handleOnPress(key) {
+    //console.warn(key)
     switch (key) {
       case 'AboutMe':
         return () => Actions.AboutMe({type: 'reset'})
       case 'meetcute':
         return () => Actions.meetcute({type: 'reset'})
-      case 'nearby':
-        return () => Actions.nearbyAll({type: 'reset'})
+      case 'meetchance':
+        return () => Actions.meetchance({type: 'reset'})
       case 'messages':
         return () => Actions.messages({type: 'reset'})
       case 'fate':
         return () => Actions.fate({type: 'reset'})
       case 'settings':
         return () => Actions.settings_wrapper({type: 'reset'})
+      //default:
+        //Actions.refresh({ key: 'drawer', open: false })
       // Go to profile view only when user data is loaded.
         //if(this.store.user != null && this.store.user != '') {
         //  return () => Actions.aboutMeRoutes({type: 'reset'});

@@ -70,7 +70,7 @@ const ADD_IMAGE = require('hookup/src/images/addImage.png')
 const Cookie = ({ name, photoURL, onPressButton }) => {
 
   return(
-    <View style={{alignItems: 'center', margin: 10, width: width/5 }}>
+    <View style={{alignItems: 'center', margin: 5, width: width/5 }}>
       <TouchableHighlight onPress={onPressButton}>
         <Image source={ photoURL ? { uri: photoURL } : ADD_IMAGE } style={styles.itemImageStyle}/>
       </TouchableHighlight>

@@ -7,6 +7,7 @@ const MeetChanceAction = {
   
   initMeetChanceAll: action(function initMeetChanceAll(){
     this.loading = true
+    this.setUser()
   }),
 
   fetchPreyListsByMeetChance: action(function fetchPreyListsByMeetChance(latitude, longitude){
@@ -18,7 +19,9 @@ const MeetChanceAction = {
       radius: 1000
     })
     geoQuery.on("key_entered", (key) => {
-      this.setPreyListByKey(key)
+      if (!(key === this.user.uid)){
+        this.setPreyListByKey(key)
+      }
     })
     geoQuery.on("ready", () => {
       this.loading = false
@@ -29,21 +32,37 @@ const MeetChanceAction = {
     this.firebase.database().ref('users/' + key).once('value').then(snap => { this.preyList.push(snap.val()) })
   }),
 
-  setprey: action(function setprey(prey){
-    this.prey = prey
-  }),
-
   onPressButton: action(function onPressButton(prey){
     this.setprey(prey)
-    Actions.nearbySingle()
+    Actions.meetChanceSingle()
   }),
 
-  handleLike: action(function handleLike(){
-    console.warn(this)
-  }),
+  onPressAboutMe: function onPressAboutMe(){
+    Actions.AboutMe()
+  },
 
-  getNext: action(function handleLike(){
-    console.warn(this)
+  handleLike: function handleLike(){
+    alert("轉到留言頁面")
+  },
+
+  getNext: function getNext(){
+    const query = this.firebase.database().ref("collection")
+    let conut = 0
+    query.orderByChild("prey").equalTo(this.prey.uid).once("value",snap => { 
+      //console.warn(snap.asArray().length)
+      snap.forEach(() => { conut++ })
+      if (conut > 0) {
+        alert("已在您的收藏清單中")
+      } else {
+        this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})  
+      }
+    })
+    //this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})
+    //alert("已收藏")
+  },
+
+  setprey: action(function setprey(prey){
+    this.prey = prey
   }),
 
   setUser: action(function setUser(){

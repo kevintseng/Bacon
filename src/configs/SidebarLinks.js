@@ -7,7 +7,7 @@ const SIDEBAR_LINKS = [
   {
     title: '巧遇',
     icon: 'wifi-tethering',
-    key: 'nearby',
+    key: 'meetchance',
   },
   {
     title: '訊息',
