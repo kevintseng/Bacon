@@ -11,14 +11,18 @@ class ObjectStore {
   @observable prey
   @observable preyList
   @observable loading
+  @observable age_max
+  @observable age_min
 
   constructor(firebase,store) {
     this.preyList = []
     this.user = {}
-    this.prey = {}
+    this.prey = null
     this.loading = false
     this.store = store
     this.firebase = firebase
+    this.age_min = 0
+    this.age_max = 10
   }
 
   @computed get displayName(){
@@ -30,16 +34,17 @@ class ObjectStore {
   }
 
   @computed get introduce(){
-    return this.prey.bio ? this.prey.bio : ""
+    return this.prey.bio ? this.prey.bio : "您好，我是MeetQ新進會員"
   }
 
   @computed get interests(){
+    //return this.prey.hobby
     //console.warn(Object.prototype.toString.call( this.prey.interests ))
-    return Object.prototype.toString.call( this.prey.interests ) === '[object Object]' ? this.prey.interests : []
+    return Object.prototype.toString.call( this.prey.hobby ) === '[object Object]' ? this.prey.hobby : ["MeetQ"]
   }
 
   @computed get languages(){
-    return Object.prototype.toString.call( this.prey.lang ) === '[object Object]' ? this.prey.lang : {}
+    return Object.prototype.toString.call( this.prey.lang ) === '[object Object]' ? this.prey.lang : { "MeetQ語": true }
   }
 
   @computed get distance(){

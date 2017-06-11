@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { View, ActivityIndicator } from "react-native"
+import { View, ActivityIndicator, Text } from "react-native"
 import { observer, inject } from "mobx-react/native"
 import { Actions } from "react-native-router-flux"
 // views
@@ -20,7 +20,7 @@ export default class MeetCuteShowContainer extends Component {
 
   componentWillMount() {
     Actions.refresh({ key: "drawer", open: false })
-    this.ObjectStore.initPreyList()
+    this.ObjectStore.initMeetCuteShow()
   }
 
   componentDidMount() {
@@ -45,6 +45,8 @@ export default class MeetCuteShowContainer extends Component {
         size="large"
       />
     )
+
+    const nonprey = <Text>沒有對象了</Text>
     
     return (
       <View style={{flex: 1}}>
@@ -53,6 +55,7 @@ export default class MeetCuteShowContainer extends Component {
           ObjectStore.prey && !ObjectStore.loading && 
           <MeetCute/>
         }
+        { ObjectStore.prey == null && !ObjectStore.loading && nonprey } 
       </View>
     )
   }

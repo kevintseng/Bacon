@@ -23,9 +23,10 @@ import FeedBack from "./views/Settings/FeedBack"
 // scenes
 import AboutMeScene from "./scenes/AboutMeScene"
 import MeetCuteScene from "./scenes/MeetCuteScene"
+import FateScene from "./scenes/FateScene"
 import { MeetChanceAllScene, MeetChanceSingleScene, MeetChanceEdit } from "./scenes/MeetChanceScene"
 // providers
-import { FateProvider } from "./providers/Provider"
+//import { FateProvider } from "./providers/Provider"
 import AboutMeeQ from "./views/Settings/AboutMeeQ"
 // define this based on the styles/dimensions you use
 const getSceneStyle = (props, computedProps) => {
@@ -237,6 +238,7 @@ export default class RouterComponent extends Component {
 
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
+              { AboutMeScene }
               { MeetCuteScene }
               { MeetChanceAllScene }
               { MeetChanceSingleScene }
@@ -249,20 +251,13 @@ export default class RouterComponent extends Component {
                 hideTabBar
                 hideNavBar
               />
-              <Scene //緣分
-                key="fate"
-                component={FateProvider}
-                title='緣分'
-                renderLeftButton={menuButton}
-                hideTabBar
-              />
+              { FateScene }
               <Scene
                 key="settings"
                 component={Settings}
                 title="Settings"
                 renderLeftButton={menuButton}
               />
-              { AboutMeScene }
               <Scene key="account" component={Account} title="Account" />
               <Scene key="settings_wrapper">
                 <Scene

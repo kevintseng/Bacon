@@ -8,11 +8,11 @@ const menuButton = () => (
   <Icon name = "menu" color = "#000" onPress = { () => Actions.refresh({ key: "drawer", open: value => !value }) } />
 )
 
-//const handleOnRight = () => {
-//  Actions.AboutMeShow()
-//}
+const handleOnRight = () => {
+  Actions.nearbyAll(({type: 'reset'})  )
+}
 
-//const rightTitle = () => ('完成')
+const rightTitle = () => ('完成')
 
 const SettingButton = () => (
   <Icon
@@ -31,7 +31,7 @@ const MeetChanceSingleScene = (
 )
 
 const MeetChanceEdit = (
-  <Scene key = "MeetChanceEdit" hideTabBar component = { MeetChanceEditProvider } title = "巧遇設定" renderLeftButton = { menuButton } />
+  <Scene key = "MeetChanceEdit" hideTabBar component = { MeetChanceEditProvider } title = "巧遇設定" renderLeftButton = { menuButton } rightTitle = { rightTitle() } onRight = { handleOnRight }/>
 )
 
 export { MeetChanceAllScene, MeetChanceSingleScene, MeetChanceEdit }
