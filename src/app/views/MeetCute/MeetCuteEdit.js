@@ -30,7 +30,7 @@ const MeetCuteEdit = inject("ObjectStore")(observer(({ ObjectStore } ) => {
           <Text style={{color: 'blue'}}>{ObjectStore.age_max}</Text>
         </View>
       </View>
-      <MultiSlider values={[0,10]} sliderLength={280} onValuesChange={sliderOneValuesChange}/>
+      <MultiSlider values={[ObjectStore.age_min,ObjectStore.age_max]} sliderLength={280} onValuesChange={sliderOneValuesChange}/>
       <View>
         <Text>進階篩選(只限高級會員)</Text>
       </View>
