@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 // views
-import Fate from "../views/Fate"
+import FateSingle from "../../views/Fate/FateSingle"
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
 
@@ -23,7 +23,7 @@ export default class FateContainer extends Component {
 
   render() {
     return(
-      <Fate/>
+      <FateSingle/>
     );
   }
 }

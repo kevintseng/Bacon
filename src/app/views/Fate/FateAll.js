@@ -1,10 +1,10 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
-import { Visitors } from './Fate/Visitors'
-import { GoodImpression } from './Fate/GoodImpression'
-import { Mate } from './Fate/Mate'
-import { Collection } from './Fate/Collection'
+import { Visitors } from './FateAll/Visitors'
+import { GoodImpression } from './FateAll/GoodImpression'
+import { Mate } from './FateAll/Mate'
+import { Collection } from './FateAll/Collection'
 import { observer, inject } from "mobx-react/native"
 
 const { width } = Dimensions.get('window');
@@ -16,7 +16,7 @@ const styles = {
   }
 };
 
-const Fate = inject("ObjectStore")(observer(({ ObjectStore }) => {
+const FateAll = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
   return(
     <ScrollableTabView
@@ -38,4 +38,4 @@ const Fate = inject("ObjectStore")(observer(({ ObjectStore }) => {
   )
 }))
 
-export default Fate
+export default FateAll
