@@ -9,7 +9,7 @@ const menuButton = () => (
 )
 
 const handleOnRight = () => {
-  Actions.MeetCuteShow()
+  Actions.MeetCuteShow({type: 'reset'})  
 }
 
 const rightTitle = () => ('完成')

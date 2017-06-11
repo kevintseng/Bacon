@@ -2,14 +2,14 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import MultiSlider from '@ptomasroos/react-native-multi-slider'
 import { CheckBox } from 'react-native-elements'
+import { observer, inject } from "mobx-react/native"
 
+const MeetChanceEdit = inject("ObjectStore")(observer(({ObjectStore}) => {
 
-const sliderOneValuesChange = (values) => {
-  console.warn(values[0])
-  console.warn(values[1])
-}
-
-const MeetChanceEdit = () => {
+  const sliderOneValuesChange = (values) => {
+    ObjectStore.setAgeMin(values[0])
+    ObjectStore.setAgeMax(values[1])
+  }
 
   return(
     <View style={{flex: 1, marginTop: 54, alignItems: "center"}}>
@@ -18,12 +18,12 @@ const MeetChanceEdit = () => {
           <Text>年齡篩選</Text> 
         </View>
         <View style={{flexDirection: 'row', flex: 1, justifyContent: "flex-end"}}>
-          <Text style={{color: 'blue'}}>25</Text>
+          <Text style={{color: 'blue'}}>{ObjectStore.age_min}</Text>
           <Text> - </Text>
-          <Text style={{color: 'blue'}}>37</Text>
+          <Text style={{color: 'blue'}}>{ObjectStore.age_max}</Text>
         </View>
       </View>
-      <MultiSlider values={[3,7]} sliderLength={280} onValuesChange={sliderOneValuesChange}/>
+      <MultiSlider values={[ObjectStore.age_min,ObjectStore.age_max]} sliderLength={280} onValuesChange={sliderOneValuesChange}/>
       <View>
         <Text>進階篩選(只限高級會員)</Text>
       </View>
@@ -41,6 +41,6 @@ const MeetChanceEdit = () => {
       </View>
     </View>
   )
-}
+}))
 
 export default MeetChanceEdit
