@@ -37,17 +37,31 @@ const FateAction = {
     this.loading = false
   }),
 
-  fetchPreyListsByMate: action(function fetchPreyListsByMate(){
+  fetchPreyListsByMate: action(async function fetchPreyListsByMate(){
+    this.loading = true
+    this.preyList = []
+    const who_is_like_me_arr = []
+    const peopele_i_like_arr = []
+    const query = this.firebase.database().ref("goodImpression")
+    await query.orderByChild("prey").equalTo(this.store.user.uid).once("value", snap => (
+       snap.forEach(childsnap => who_is_like_me_arr.push(childsnap.val().wooer))
+      )
+    )
+    await query.orderByChild("wooer").equalTo(this.store.user.uid).once("value", snap => (
+       snap.forEach(childsnap => peopele_i_like_arr.push(childsnap.val().prey))
+      )
+    )
+    const intersect_arr = this.intersect(who_is_like_me_arr,peopele_i_like_arr)
+    intersect_arr.forEach((id) => this.setPreyListByKey(id))
     this.loading = false
-    //console.warn('Mate')
   }),
 
   fetchPreyListsByCollection: action(async function fetchPreyListsByCollection(){
     this.loading = true
     this.preyList = []
-    const query = this.firebase.database().ref("Collection")
+    const query = this.firebase.database().ref("collection")
     await query.orderByChild("prey").equalTo(this.store.user.uid).once("value", snap => (
-       snap.forEach(childsnap => this.setPreyListByKey(childsnap.val().hunter))
+       snap.forEach(childsnap => this.setPreyListByKey(childsnap.val().wooer))
       )
     )
     this.loading = false
@@ -57,25 +71,54 @@ const FateAction = {
     this.firebase.database().ref('users/' + key).once('value').then(snap => { this.preyList.push(snap.val()) })
   }),
 
-  goToNearbySingle: action(function goToNearbySingle(prey){
+  goToFateSingle: action(function goToFateSingle(prey){
     //const _index = this.preyList.indexOf(this.prey)
+    this.loading = true
+    //console.warn(prey)
+    this.setprey(prey)
     this.loading = false
-    //this.setprey(prey)
-    Actions.nearbySingle()
+    Actions.fateSingle()
   }),
 
-  goToMeetCute: action(function goToMeetCute(prey){
+  //goToNearbySingle: action(function goToNearbySingle(prey){
     //const _index = this.preyList.indexOf(this.prey)
-    this.loading = false
+  //  this.loading = false
     //this.setprey(prey)
-    Actions.meetcute()
-  }),
+  //  Actions.nearbySingle()
+  //}),
+
+  //goToMeetCute: action(function goToMeetCute(prey){
+    //const _index = this.preyList.indexOf(this.prey)
+  //  this.loading = false
+    //this.setprey(prey)
+  //  Actions.meetcute()
+  //}),
 
   setprey: action(function setprey(prey){
-    console.warn(this.prey)
-    console.warn(prey)
-    //this.prey = prey
-  })
+    //console.warn(this.prey)
+    //console.warn(prey)
+    this.prey = prey
+  }),
+
+  handleLike: action(function handleLike(){
+    //console.warn(this)
+  }),
+
+  getNext: action(function handleLike(){
+    //console.warn(this)
+  }),
+
+  setUser: action(function setUser(){
+    this.user = this.store.user
+  }),
+
+  intersect: function intersect(a, b) {
+    let t
+    if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+    return a.filter((e) => {
+        return b.indexOf(e) > -1;
+    });
+}
 }
 
 export default FateAction

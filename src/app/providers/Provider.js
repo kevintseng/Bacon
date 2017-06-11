@@ -12,7 +12,8 @@ import MeetChanceAllContainer from "../containers/MeetChance/MeetChanceAllContai
 import MeetChanceSingleContainer from "../containers/MeetChance/MeetChanceSingleContainer"
 import MeetChanceEditContainer from "../containers/MeetChance/MeetChanceEditContainer"
 
-import FateContainer from "../containers/FateContainer"
+import FateAllContainer from "../containers/Fate/FateAllContainer"
+import FateSingleContainer from "../containers/Fate/FateSingleContainer"
 // AboutMe containers
 import ShowContainer from "../containers/AboutMe/ShowContainer"
 import EditContainer from "../containers/AboutMe/EditContainer"
@@ -47,9 +48,15 @@ export const MeetChanceEditProvider = () => (
   </Provider>
 )
 
-export const FateProvider = () => (
+export const FateAllProvider = () => (
   <Provider SubjectStore = { AppInitStore.wooer } ObjectStore = { AppInitStore.fate } >
-    <FateContainer/>
+    <FateAllContainer/>
+  </Provider>
+)
+
+export const FateSingleProvider = () => (
+  <Provider SubjectStore = { AppInitStore.wooer } ObjectStore = { AppInitStore.fate } >
+    <FateSingleContainer/>
   </Provider>
 )
 
