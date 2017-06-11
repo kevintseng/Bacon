@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Dimensions, Image, TouchableOpacity, Text } from 'react-native';
+import { View, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { Button, } from 'react-native-elements';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 import PhotoGrid from 'react-native-photo-grid';
-//import ImagePicker from 'react-native-customized-image-picker';
+import ImagePicker from 'react-native-customized-image-picker';
 import Modal from 'react-native-simple-modal';
 import { uploadImage, resizeImage } from '../../../Utils';
 
@@ -30,7 +30,7 @@ const styles = {
       flex: 1
   }
 }
-
+/*
 const Album = () => {
   return(
     <View><Text>相簿施工中</Text></View>
@@ -38,14 +38,17 @@ const Album = () => {
 }
 
 export default Album
-/*
-@observer
-export default class Gallery extends Component {
+*/
+@inject("SubjectStore") @observer
+export default class Album extends Component {
   constructor(props) {
-    super(props);
-    this.store = this.props.store;
-    this.firebase = this.props.fire;
-    this.storage = this.props.storage;
+    super(props)
+    //this.store = this.props.store;
+    //this.firebase = this.props.fire;
+    //this.storage = this.props.storage;
+
+    this.store = this.props.SubjectStore
+    this.firebase = this.props.SubjectStore.firebase
 
     this.state = {
       items: [{ id: 'addImage', src: ADD_IMAGE }],
@@ -153,12 +156,6 @@ export default class Gallery extends Component {
     alert('哈, 刪照片功能還沒寫好');
   }
 
-  render(){
-    alert("施工中")
-  }
-}
-
-
 render() {
     return(
       <View style={styles.viewWrapper}>
@@ -226,4 +223,4 @@ render() {
       </View>
     );
   }
-*/
+}
