@@ -33,7 +33,7 @@ const Item = (props) => {
   return (
     <View style = { styles.Item }>
       <View style = { styles.columnOne }>
-        <Text style = { styleTitle }>{ displayTitle ? title : null }</Text>
+        <Text numberOfLines={1} style = { styleTitle }>{ displayTitle ? title : null }</Text>
         <EditIcon textstyle = { styleTag } text = { tag } onpress = { onpress }></EditIcon>
       </View>
       <View>
