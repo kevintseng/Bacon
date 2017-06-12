@@ -1,12 +1,13 @@
 import React from 'react'
-import { View, Dimensions } from 'react-native'
+//import { Dimensions, PixelRatio } from 'react-native'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 // views
 import Profile from './Show/Profile'
 import Album from './Show/Album'
 import Report from './Show/Report'
 
-const { width, height } = Dimensions.get('window');
+//const { width, height } = Dimensions.get('window');
+//const pixelRatio = PixelRatio.get()
 const styles = {
   wrapperStyle: {
     marginTop: 7,
