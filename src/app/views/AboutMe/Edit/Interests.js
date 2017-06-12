@@ -43,7 +43,7 @@ const Interests = inject("SubjectStore")(observer(({SubjectStore}) => {
 
   const renderDefaultInterests = DefaultInterests.map((hobby) => (<Badge key={hobby}  onPress={ () => {SubjectStore.setHobby(hobby)} } containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
     
-  const renderInterests = SubjectStore.hobby.map((hobby) => (<Badge key={hobby} containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
+  const renderInterests = SubjectStore.hobby.map((hobby) => (<Badge key={hobby} onPress= {()=> alert(hobby)} containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
 
   return(
     <View style = { styles.Interests }> 
