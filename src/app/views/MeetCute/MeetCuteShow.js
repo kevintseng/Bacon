@@ -6,7 +6,7 @@ import HuntingGrounds from "../../components/HuntingGrounds"
 
 const MeetCuteShow = () => {
   return(
-    <HuntingGrounds/>
+    <HuntingGrounds leftIcon={"check"} rightIcon={"close-o"} showbutton/>
   )
 }
 
