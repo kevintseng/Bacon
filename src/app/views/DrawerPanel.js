@@ -3,9 +3,12 @@ import Drawer from 'react-native-drawer';
 import { Actions, DefaultRenderer } from 'react-native-router-flux';
 import { observer } from 'mobx-react/native';
 import { SideBar } from './SideBar';
+import { Dimensions } from 'react-native'
+
+const { height, width } = Dimensions.get('window') //eslint-disable-line
 
 const drawerStyles = {
-  drawer: { borderRightWidth: 1.8, borderRightColor: '#dcdcdc'}
+  drawer: { borderRightWidth: 1.8, borderRightColor: '#dcdcdc', width}
   //main: { paddingLeft: 3 },
 }
 
