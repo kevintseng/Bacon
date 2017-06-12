@@ -7,6 +7,7 @@ import { Interests } from "./HuntingGrounds/Interests"
 import { Language } from "./HuntingGrounds/Language"
 import { Distance } from "./HuntingGrounds/Distance"
 import { Verified } from "./HuntingGrounds/Verified"
+import { Interaction } from "./HuntingGrounds/Interaction"
 //import Carousel from "react-native-looped-carousel"
 
 const { width, height } = Dimensions.get('window')
@@ -25,6 +26,7 @@ const HuntingGrounds = () => {
             <Language/>
             <Distance/>
             <Verified/>
+            <Interaction/>
           </View>        
       </ScrollView>
     </View>
