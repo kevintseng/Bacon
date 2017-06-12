@@ -4,7 +4,7 @@ import HuntingGrounds from "../../components/HuntingGrounds"
 const MeetChanceSingle = () => {
 
   return(
-    <HuntingGrounds/>
+    <HuntingGrounds leftIcon={"comment"} rightIcon={"paperclip"} showbutton/>
   )
 }
 
