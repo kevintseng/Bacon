@@ -8,18 +8,25 @@ import Location from '../../app/views/AboutMe/Edit/Location'
 import Introduce from '../../app/views/AboutMe/Edit/Introduce'
 import Language from '../../app/views/AboutMe/Edit/Language'
 import Interests from '../../app/views/AboutMe/Edit/Interests'
+import Vip from '../../app/views/AboutMe/Edit/Vip'
 // configs
 import DefaultLanguages from '../../configs/DefaultLanguages'
 
 useStrict(false)
 
 class SubjectStore {
-  @observable user;
-  @observable inSignupProcess;
-  @observable hobbyInput;
+  @observable user
+  @observable inSignupProcess
+  @observable hobbyInput
+  @observable onlyShowTherePhotos
+  @observable interaction
+  @observable showOnline
   //@observable sampleArray
 
   constructor(firebase) {
+    this.onlyShowTherePhotos = false
+    this.interaction = false
+    this.showOnline = false
     this.hobbyInput = null
     this.user = null
     this.inSignupProcess = false
@@ -136,8 +143,9 @@ class SubjectStore {
   }
 
   @action handleUpgrade() {
-    alert('轉跳到升級頁面，施工中...')
+    //alert('轉跳到升級頁面，施工中...')
     //this.store.upgradeMembership(this.firebase);
+    Actions.AboutMeEdit({ content: <Vip/>, title: '會員升級', onRight: this.updateVip })
   }
 
   @action handleAddCredit() {
@@ -193,6 +201,22 @@ class SubjectStore {
     }
   }
 
+  @action setVip() {
+    this.user.vip = !this.user.vip
+  }
+
+  @action setOnlyShowTherePhotos(){
+    this.onlyShowTherePhotos = !this.onlyShowTherePhotos
+  }
+
+  @action setInteraction(){
+    this.interaction = !this.interaction
+  }
+
+  @action setShowOnline(){
+    this.showOnline = !this.showOnline
+  }
+
   @action initAboutMeShow(){
     if (this.user.hobby == null) {
       this.user.hobby = ["MeetQ"]
@@ -209,6 +233,10 @@ class SubjectStore {
     if (this.user.photoURL == null) {
       this.user.photoURL = "https://firebasestorage.googleapis.com/v0/b/kjyl-150415.appspot.com/o/addImage.png?alt=media&token=2f51bf34-eeb3-4963-8b79-00d4fadfbd7f"
       this.updateToFirebase('photoURL',this.user.photoURL)
+    }
+    if (this.user.vip == null) {
+      this.user.vip = false
+      this.updateToFirebase('vip',this.user.vip)
     }
     const query = this.firebase.database().ref("/user_locations/")
     const geoFire = new GeoFire(query)
@@ -248,6 +276,11 @@ class SubjectStore {
     this.hobbyInput = null
     this.updateToFirebase('hobby', this.user.hobby.slice())
     Actions.AboutMeShow({type: 'reset'})   
+  }
+
+  @action updateVip(){
+    this.updateToFirebase('vip', this.user.vip)
+    Actions.AboutMeShow({type: 'reset'}) 
   }
 
   // actions

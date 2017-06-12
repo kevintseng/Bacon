@@ -9,7 +9,7 @@ import { observer, inject } from "mobx-react/native"
 
 //const { width, height } = Dimensions.get('window')
 
-const MeetCuteEdit = inject("ObjectStore")(observer(({ ObjectStore } ) => {
+const MeetCuteEdit = inject("SubjectStore","ObjectStore")(observer(({ SubjectStore, ObjectStore } ) => {
 
   const sliderOneValuesChange = (values) => {
     ObjectStore.setAgeMin(values[0])
@@ -17,6 +17,28 @@ const MeetCuteEdit = inject("ObjectStore")(observer(({ ObjectStore } ) => {
     //console.warn(values[0])
     //console.warn(values[1])
   }
+
+  const renderPaidMemberOptions = (
+      <View>
+        <View>
+          <Text>進階篩選(只限高級會員)</Text>
+        </View>
+        <View style={{alignItems: "flex-start"}}>
+          <CheckBox
+            center
+            title='只顯示三張照片以上的會員'
+            checked = {SubjectStore.onlyShowTherePhotos}
+            onPress={SubjectStore.setOnlyShowTherePhotos.bind(SubjectStore)}
+          />
+          <CheckBox
+            center
+            title='對方互動狀態分析可見'
+            checked = {SubjectStore.interaction}
+            onPress={SubjectStore.setInteraction.bind(SubjectStore)}
+          />
+        </View>
+      </View>
+  )
 
   return(
     <View style={{flex: 1, marginTop: 54, alignItems: "center"}}>
@@ -31,21 +53,7 @@ const MeetCuteEdit = inject("ObjectStore")(observer(({ ObjectStore } ) => {
         </View>
       </View>
       <MultiSlider values={[ObjectStore.age_min,ObjectStore.age_max]} sliderLength={280} onValuesChange={sliderOneValuesChange}/>
-      <View>
-        <Text>進階篩選(只限高級會員)</Text>
-      </View>
-      <View style={{alignItems: "flex-start"}}>
-        <CheckBox
-          center
-          title='只顯示三張照片以上的會員'
-          checked
-        />
-        <CheckBox
-          center
-          title='對方互動狀態分析可見'
-          checked
-        />
-      </View>
+      { SubjectStore.vip && renderPaidMemberOptions }
     </View>
 
   )
