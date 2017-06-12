@@ -15,12 +15,18 @@ import DefaultLanguages from '../../configs/DefaultLanguages'
 useStrict(false)
 
 class SubjectStore {
-  @observable user;
-  @observable inSignupProcess;
-  @observable hobbyInput;
+  @observable user
+  @observable inSignupProcess
+  @observable hobbyInput
+  @observable onlyShowTherePhotos
+  @observable interaction
+  @observable showOnline
   //@observable sampleArray
 
   constructor(firebase) {
+    this.onlyShowTherePhotos = false
+    this.interaction = false
+    this.showOnline = false
     this.hobbyInput = null
     this.user = null
     this.inSignupProcess = false
@@ -197,6 +203,18 @@ class SubjectStore {
 
   @action setVip() {
     this.user.vip = !this.user.vip
+  }
+
+  @action setOnlyShowTherePhotos(){
+    this.onlyShowTherePhotos = !this.onlyShowTherePhotos
+  }
+
+  @action setInteraction(){
+    this.interaction = !this.interaction
+  }
+
+  @action setShowOnline(){
+    this.showOnline = !this.showOnline
   }
 
   @action initAboutMeShow(){
