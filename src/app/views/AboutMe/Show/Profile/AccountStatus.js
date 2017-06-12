@@ -11,7 +11,7 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 10,
+    //paddingHorizontal: 10,
     paddingVertical: 2,
     marginBottom: 3,
     backgroundColor: '#FF6F00',    
