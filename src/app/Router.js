@@ -242,6 +242,7 @@ export default class RouterComponent extends Component {
               { AboutMeScene }
               { MeetCuteScene }
               { MeetChanceScene }
+              { FateScene }
               <Scene //訊息
                 key="messages"
                 component={Messages}
@@ -250,7 +251,6 @@ export default class RouterComponent extends Component {
                 hideTabBar
                 hideNavBar
               />
-              { FateScene }
               <Scene
                 key="settings"
                 component={Settings}

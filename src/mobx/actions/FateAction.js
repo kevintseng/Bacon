@@ -118,7 +118,14 @@ const FateAction = {
     return a.filter((e) => {
         return b.indexOf(e) > -1;
     });
-}
+  },
+  testFate: async function testFate(){
+    await this.sleep(100)
+  },
+
+  sleep: function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
 
 export default FateAction
