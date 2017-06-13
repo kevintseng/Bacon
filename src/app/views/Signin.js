@@ -3,11 +3,11 @@ import {
     View,
     Dimensions,
 } from 'react-native';
-import { Text, FormLabel, FormInput, Button } from 'react-native-elements';
+import { FormLabel, FormInput, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-import { Header } from '../components';
+import { Header } from '../components/Header';
 import { observer } from 'mobx-react/native';
-import { FormErrorMsg } from '../components';
+import { FormErrorMsg } from '../components/FormErrorMsg';
 import { checkEmail } from '../Utils';
 
 const { width, height } = Dimensions.get('window');
@@ -37,18 +37,32 @@ export default class Welcome extends Component {
       this.setState({
         loading: true
       });
+      
+      try {
+        await this.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+      } catch (error) {
+        console.warn(error.toString())
+        this.setState({
+          loginErr: error.message,
+          loading: false,
+        })
+      }
+      /*
       await this.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .catch(err => {
-        console.error(err);
+        console.warn(err);
         this.setState({
           loginErr: err.message,
           loading: false,
         });
       }); // end firebase.auth().signInWithEmailAndPassword
-
+      */
+      //console.warn("登入中")
       const user = await this.firebase.auth().currentUser;
       if(user) {
         console.log('User has signed in successfully.');
+        await this.firebase.database().ref("users/" + user.uid).once("value",(snap) => this.store.setUser(snap.val()))
+        //console.warn(this.store.user.bio)
         this.setState({
           loading: false
         });
@@ -99,11 +113,11 @@ export default class Welcome extends Component {
       <View style={[this.state.size, { marginTop: 0 }]}>
       <Header
         headerImage
-        onRight={this.handleSubmit}
+        //onRight={this.handleSubmit}
         rightColor='#007AFF'
         disableRight={this.state.loading}
         disableLeft={this.state.loading}
-        onLeft={() => Actions.pop()}
+        //onLeft={() => Actions.pop()}
         leftColor='#007AFF'
       />
         <View>
