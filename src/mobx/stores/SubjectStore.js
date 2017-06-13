@@ -218,6 +218,13 @@ class SubjectStore {
   }
 
   @action initAboutMeShow(){
+    const query = this.firebase.database().ref("/user_locations/")
+    const geoFire = new GeoFire(query)
+    geoFire.set(this.user.uid, [this.user.geocode.lat, this.user.geocode.lng ]).then(() => {
+        console.log("Provided key has been added to GeoFire");
+      }, (error) => {
+        console.log("Error: " + error);
+      })
     if (this.user.hobby == null) {
       this.user.hobby = ["MeetQ"]
       this.updateToFirebase('hobby',this.user.hobby)
@@ -238,16 +245,7 @@ class SubjectStore {
       this.user.vip = false
       this.updateToFirebase('vip',this.user.vip)
     }
-    const query = this.firebase.database().ref("/user_locations/")
-    const geoFire = new GeoFire(query)
-    //geoFire.setLocation(this.user.id, new GeoLocation(this.user.geocode.lat, this.user.geocode.lng))
-    //this.user.meetCuteHistory = [this.user.uid]
-    //this.updateToFirebase("meetCuteHistory",[this.user.uid])
-    geoFire.set(this.user.uid, [this.user.geocode.lat, this.user.geocode.lng ]).then(() => {
-        console.log("Provided key has been added to GeoFire");
-      }, (error) => {
-        console.log("Error: " + error);
-      })
+    this.firebase.database().ref("users/" + this.user.uid).once("value",(snap) => this.setUser(snap.val()) )
   }
 
   @action updateNickBirthday(){
