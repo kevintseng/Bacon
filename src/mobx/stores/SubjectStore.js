@@ -21,9 +21,11 @@ class SubjectStore {
   @observable onlyShowTherePhotos
   @observable interaction
   @observable showOnline
+  @observable loading
   //@observable sampleArray
 
   constructor(firebase) {
+    this.loading = false
     this.onlyShowTherePhotos = false
     this.interaction = false
     this.showOnline = false
@@ -57,7 +59,6 @@ class SubjectStore {
 
   @computed get city(){
     return this.user.city
-    //return typeof(this.user.city) === 'string' ? this.user.city : ''
   }
 
   @computed get vip(){
@@ -70,17 +71,16 @@ class SubjectStore {
 
   @computed get langRaw(){
     return this.user.lang
-    //return this.user.lang ? this.user.lang : this.user.lang = DefaultLanguages
   }
 
   @computed get lang(){
+    //const test = { 國文: false, 英文: true}
+    //console.warn(Object.keys(this.user))
     return Object.keys(this.user.lang).filter(k => this.user.lang[k]).join(',') || "MeetQ語"
-    //return this.user.lang ? Object.keys(this.user.lang).filter(k => this.user.lang[k]).join(',') : ""
   }
 
   @computed get hobby(){
     return this.user.hobby
-    //return this.user.hobby ? this.user.hobby : []
   }  
 
   //@computed get hobbyInput(){
@@ -217,7 +217,8 @@ class SubjectStore {
     this.showOnline = !this.showOnline
   }
 
-  @action initAboutMeShow(){
+  @action async initAboutMeShow(){
+    this.loading = true
     const query = this.firebase.database().ref("/user_locations/")
     const geoFire = new GeoFire(query)
     geoFire.set(this.user.uid, [this.user.geocode.lat, this.user.geocode.lng ]).then(() => {
@@ -227,25 +228,26 @@ class SubjectStore {
       })
     if (this.user.hobby == null) {
       this.user.hobby = ["MeetQ"]
-      this.updateToFirebase('hobby',this.user.hobby)
+      await this.updateToFirebase('hobby',this.user.hobby)
     }
     if (this.user.lang == null) {
       this.user.lang = DefaultLanguages
-      this.updateToFirebase('lang',this.user.lang)
+      await this.updateToFirebase('lang',this.user.lang)
     } 
     if (this.user.bio == null) {
       this.user.bio = "您好，我是MeetQ新進會員"
-      this.updateToFirebase('bio',this.user.bio)
+      await this.updateToFirebase('bio',this.user.bio)
     }
     if (this.user.photoURL == null) {
       this.user.photoURL = "https://firebasestorage.googleapis.com/v0/b/kjyl-150415.appspot.com/o/addImage.png?alt=media&token=2f51bf34-eeb3-4963-8b79-00d4fadfbd7f"
-      this.updateToFirebase('photoURL',this.user.photoURL)
+      await this.updateToFirebase('photoURL',this.user.photoURL)
     }
     if (this.user.vip == null) {
       this.user.vip = false
-      this.updateToFirebase('vip',this.user.vip)
+      await this.updateToFirebase('vip',this.user.vip)
     }
-    this.firebase.database().ref("users/" + this.user.uid).once("value",(snap) => this.setUser(snap.val()) )
+    await this.firebase.database().ref("users/" + this.user.uid).once("value",(snap) => this.setUser(snap.val()) )
+    this.loading = false
   }
 
   @action updateNickBirthday(){
@@ -346,8 +348,8 @@ class SubjectStore {
   @action handleOnPress(key) {
     //console.warn(key)
     switch (key) {
-      case 'AboutMe':
-        return () => Actions.AboutMe({type: 'reset'})
+      case 'aboutme':
+        return () => Actions.aboutme({type: 'reset'})
       case 'meetcute':
         return () => Actions.meetcute({type: 'reset'})
       case 'meetchance':
