@@ -17,6 +17,7 @@
     "react": "~15.4.1",
     "react-native": "0.42.3",
     "react-native-actionsheet": "^2.0.6",
+    "react-native-billing": "^2.3.0",
     "react-native-customized-image-picker": "^0.0.28",
     "react-native-datepicker": "^1.4.4",
     "react-native-device-info": "^0.10.2",
