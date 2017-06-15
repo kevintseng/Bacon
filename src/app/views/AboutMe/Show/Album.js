@@ -52,7 +52,7 @@ export default class Album extends Component {
 
     this.state = {
       items: [{ id: 'addImage', src: ADD_IMAGE }],
-      photos: this.store.user.photos,
+      photos: this.store.photos,
       showModal: false,
       currentItem: null,
     };
@@ -60,12 +60,12 @@ export default class Album extends Component {
 
   componentDidMount() {
     const newItems = this.state.items;
-    console.log('items: ');
-    console.log(newItems);
-    console.log('user/photos: ');
-    console.log(this.store.user.photos);
-    if(this.store.user.photos) {
-      this.store.user.photos.forEach(item => {
+    //console.log('items: ');
+    //console.log(newItems);
+    //console.log('user/photos: ');
+    //console.log(this.store.user.photos);
+    if(this.store.photos) {
+      this.store.photos.forEach(item => {
         newItems.push(item);
       });
       this.setState({
@@ -82,21 +82,22 @@ export default class Album extends Component {
 
   handlePressed = async photo => {
     console.log('Photo pressed');
-    if(photo.id === 'addImage') {
+    console.warn(this.state.photos.length)
+    if(photo.id === 'addImage' && this.state.photos.length < 9) {
       await ImagePicker.openPicker({
         multiple: true
       })
       .then( images => {
+        const gallery = [];
         images.forEach(async (image) => {
-          const gallery = [];
           const filename = await this.generateFilename();
           const firebaseRefObj = this.firebase.storage().ref('userPhotos/' + this.store.user.uid + '/' + filename + '.jpg');
           // resizeImage(uri, width, height, mime, quality)
           const resizedUri = await resizeImage(image.path, 600, 600, image.mime, 80);
           const downloadUrl = await uploadImage(resizedUri, firebaseRefObj, image.mime);
-          console.log(image);
-          console.log('resizedUri: ' + resizedUri);
-          console.log('downloadUrl: ' + downloadUrl);
+          //console.log(image);
+          //console.log('resizedUri: ' + resizedUri);
+          //console.log('downloadUrl: ' + downloadUrl);
           gallery.push({ id: filename, src: {uri: downloadUrl }});
 
           if(gallery.length == images.length) {
@@ -108,8 +109,8 @@ export default class Album extends Component {
 
             // update appstore and firebase
             let newGallery = gallery;
-            if(this.store.user.photos) {
-              newGallery = this.store.user.photos.concat(gallery);
+            if(this.store.photos) {
+              newGallery = this.store.photos.concat(gallery);
             }
             // console.log('Print new gallery');
             // console.log(newGallery);
@@ -121,6 +122,8 @@ export default class Album extends Component {
       .catch(err => {
         console.log(err.code);
       });
+    } else if (photo.id === 'addImage' && this.state.photos.length > 8) {
+      alert('照片已到達九張了，請刪除一些照片')
     } else {
       console.log('Real photo pressed');
       this.setState({
