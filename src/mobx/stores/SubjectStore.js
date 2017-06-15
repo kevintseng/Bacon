@@ -49,6 +49,11 @@ class SubjectStore {
     //return this.user.photoURL ? this.user.photoURL : 'hookup/src/images/addImage.png'
   }
 
+  @computed get photos(){
+    return this.user.photos || []
+    //return this.user.photoURL ? this.user.photoURL : 'hookup/src/images/addImage.png'
+  }
+
   @computed get displayName(){
     return this.user.displayName
   }

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.idehub.Billing.InAppBillingBridgePackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.horcrux.svg.RNSvgPackage;
 import com.mg.app.PickerPackage;
@@ -32,6 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new InAppBillingBridgePackage(),
             new RNDeviceInfo(),
             new RNSvgPackage(),
             new PickerPackage(),
