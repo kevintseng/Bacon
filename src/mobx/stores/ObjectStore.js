@@ -21,8 +21,8 @@ class ObjectStore {
     this.loading = false
     this.store = store
     this.firebase = firebase
-    this.age_min = 0
-    this.age_max = 10
+    this.age_min = 25
+    this.age_max = 60
   }
 
   @computed get displayName(){

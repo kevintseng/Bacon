@@ -45,7 +45,7 @@ const MeetChanceEdit = inject("SubjectStore","ObjectStore")(observer(({ SubjectS
           <Text style={{color: 'blue'}}>{ObjectStore.age_max}</Text>
         </View>
       </View>
-      <MultiSlider values={[ObjectStore.age_min,ObjectStore.age_max]} sliderLength={280} onValuesChange={sliderOneValuesChange}/>
+      <MultiSlider step={1} min={18} max={99} values={[ObjectStore.age_min,ObjectStore.age_max]} sliderLength={280} onValuesChange={sliderOneValuesChange}/>
       { SubjectStore.vip && renderPaidMemberOptions }
     </View>
   )
