@@ -10,11 +10,11 @@ const MeetChanceAll = inject("SubjectStore","ObjectStore")(observer(({ SubjectSt
 
   const renderCookie = ObjectStore.preyList.map((prey)=>( <Cookie name={prey.displayName} photoURL={prey.photoURL} key={prey.uid} onPressButton={ function onPressButton(){ ObjectStore.onPressButton(prey) } }/> ))
   return(
-    <View style={{width, height}}>
+    <View style={{width}}>
       <View style = {{justifyContent: 'center', alignItems: 'center'}}>
         <Cookie name={SubjectStore.displayName} photoURL={SubjectStore.photoURL} onPressButton={ ObjectStore.onPressAboutMe }/> 
       </View>
-      <ScrollView >
+      <ScrollView>
         <View style = {{flexDirection: 'row', flexWrap: 'wrap', alignItems:'flex-start'}}> 
           { renderCookie }
         </View>        
