@@ -201,6 +201,7 @@ class SubjectStore {
   }
 
   @action setHobby(val) {
+    this.user.hobby = this.user.hobby || []
     if (val) {
       this.user.hobby.push(val)
     } else {
