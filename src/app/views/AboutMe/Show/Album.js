@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react/native';
 import PhotoGrid from 'react-native-photo-grid';
 import ImagePicker from 'react-native-customized-image-picker';
 import Modal from 'react-native-simple-modal';
+//import update from 'react-addons-update'
 import { uploadImage, resizeImage } from '../../../Utils';
 
 
@@ -82,8 +83,8 @@ export default class Album extends Component {
 
   handlePressed = async photo => {
     console.log('Photo pressed');
-    console.warn(this.state.photos.length)
-    if(photo.id === 'addImage' && this.state.photos.length < 9) {
+    //console.warn(this.state.photos.length)
+    if(photo.id === 'addImage' && this.state.items.length < 9) {
       await ImagePicker.openPicker({
         multiple: true
       })
@@ -115,14 +116,14 @@ export default class Album extends Component {
             // console.log('Print new gallery');
             // console.log(newGallery);
             this.store.setPhotos(newGallery);
-            this.firebase.database().ref('users/' + this.store.user.uid + '/photos').set(newGallery);
+            //this.firebase.database().ref('users/' + this.store.user.uid + '/photos').set(newGallery);
           }
         });
       })
       .catch(err => {
         console.log(err.code);
       });
-    } else if (photo.id === 'addImage' && this.state.photos.length > 8) {
+    } else if (photo.id === 'addImage' && this.state.items.length > 10) {
       alert('照片已到達九張了，請刪除一些照片')
     } else {
       console.log('Real photo pressed');
@@ -156,7 +157,16 @@ export default class Album extends Component {
   }
 
   handleDelete = () => {
-    alert('哈, 刪照片功能還沒寫好');
+    const index = this.state.items.indexOf(this.state.currentItem)
+    this.removeItem(index)
+    this.store.removePhotos(this.store.photos.indexOf(this.state.currentItem))
+  }
+
+  removeItem(index) {
+    this.setState({
+      items: this.state.items.filter((_, i) => i !== index), 
+      showModal: false
+    })
   }
 
 render() {
