@@ -38,7 +38,7 @@ const MeetChanceAction = {
   }),
 
   onPressAboutMe: function onPressAboutMe(){
-    Actions.AboutMe()
+    Actions.aboutme()
   },
 
   handleLike: function handleLike(){

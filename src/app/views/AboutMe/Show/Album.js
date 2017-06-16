@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react/native';
 import PhotoGrid from 'react-native-photo-grid';
 import ImagePicker from 'react-native-customized-image-picker';
 import Modal from 'react-native-simple-modal';
+import { Actions } from 'react-native-router-flux'
 //import update from 'react-addons-update'
 import { uploadImage, resizeImage } from '../../../Utils';
 
@@ -157,9 +158,10 @@ export default class Album extends Component {
   }
 
   handleDelete = () => {
-    const index = this.state.items.indexOf(this.state.currentItem)
-    this.removeItem(index)
-    this.store.removePhotos(this.store.photos.indexOf(this.state.currentItem))
+    Actions.AboutMePhoto()
+    //const index = this.state.items.indexOf(this.state.currentItem)
+    //this.removeItem(index)
+    //this.store.removePhotos(this.store.photos.indexOf(this.state.currentItem))
   }
 
   removeItem(index) {
