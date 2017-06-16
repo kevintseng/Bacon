@@ -22,6 +22,7 @@ class SubjectStore {
   @observable interaction
   @observable showOnline
   @observable loading
+  @observable deleteHobby
   //@observable sampleArray
 
   constructor(firebase) {
@@ -33,6 +34,7 @@ class SubjectStore {
     this.user = null
     this.inSignupProcess = false
     this.firebase = firebase
+    this.deleteHobby = []
   }
   //AboutMe
 
@@ -85,7 +87,7 @@ class SubjectStore {
   }
 
   @computed get hobby(){
-    return this.user.hobby
+    return this.user.hobby || []
   }  
 
   //@computed get hobbyInput(){
@@ -206,6 +208,12 @@ class SubjectStore {
     }
   }
 
+  @action setDeleteHobby(val){
+    if (val) {
+      this.deleteHobby.push(val)
+    }  
+  }
+
   @action setVip() {
     this.user.vip = !this.user.vip
   }
@@ -232,7 +240,7 @@ class SubjectStore {
         console.log("Error: " + error);
       })
     if (this.user.hobby == null) {
-      this.user.hobby = ["MeetQ"]
+      this.user.hobby = ["Bacon"]
       await this.updateToFirebase('hobby',this.user.hobby)
     }
     if (this.user.lang == null) {
@@ -279,7 +287,12 @@ class SubjectStore {
 
   @action updateHobby(){
     this.hobbyInput = null
+    const filterd_hobby = this.user.hobby.filter( ( el ) => {
+      return this.deleteHobby.indexOf( el ) < 0;
+    } )
+    this.user.hobby = filterd_hobby
     this.updateToFirebase('hobby', this.user.hobby.slice())
+    this.deleteHobby = []
     Actions.AboutMeShow({type: 'reset'})   
   }
 
