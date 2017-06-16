@@ -377,6 +377,12 @@ class SubjectStore {
 
   @action setPhotos(gallery) {
     this.user.photos = gallery;
+    this.updateToFirebase('photos', gallery.slice())
+  }
+
+  @action removePhotos(index){
+    this.user.photos.splice(index, 1)
+    this.updateToFirebase('photos', this.user.photos.slice())
   }
 
   @action refreshDrawer = () => {
