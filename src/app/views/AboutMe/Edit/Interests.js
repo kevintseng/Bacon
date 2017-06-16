@@ -43,7 +43,20 @@ const Interests = inject("SubjectStore")(observer(({SubjectStore}) => {
 
   const renderDefaultInterests = DefaultInterests.map((hobby) => (<Badge key={hobby}  onPress={ () => {SubjectStore.setHobby(hobby)} } containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
     
-  const renderInterests = SubjectStore.hobby.map((hobby) => (<Badge key={hobby} onPress= {()=> alert(hobby)} containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
+  const renderInterests = SubjectStore.hobby.map((hobby) => 
+    {
+      let _backgroundColor = "#ffffff"
+      let _textStyle = "#000000"
+      //console.warn(hobby.indexOf(SubjectStore.deleteHobby))
+      if(SubjectStore.deleteHobby.indexOf(hobby) > -1) {
+        _backgroundColor = "#000000"
+        _textStyle = "#ffffff"
+      }
+      return (<Badge key={hobby} onPress= {()=> {SubjectStore.setDeleteHobby(hobby)}} containerStyle={{ backgroundColor: _backgroundColor, borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: _textStyle }} value={hobby}/>)
+    }
+  )
+
+  //const renderDelete = SubjectStore.deleteHobby.map((hobby) => (<Badge key={hobby}  containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
 
   return(
     <View style = { styles.Interests }> 
