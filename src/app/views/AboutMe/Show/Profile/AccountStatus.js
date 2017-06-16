@@ -79,7 +79,7 @@ const AccountStatus = inject("SubjectStore")(observer(({ SubjectStore }) => {
         <View style={ styles.containerStyle }>
           <View>
             <Text style={ styles.statusName }>Q點</Text>
-            <Text style={ styles.statusName }>點數 3,237</Text>
+            <Text style={ styles.statusName }>點數 {SubjectStore.credit}</Text>
           </View>
           <View style={ styles.buttonWrapper }>
             <TouchableOpacity
