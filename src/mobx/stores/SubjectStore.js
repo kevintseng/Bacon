@@ -9,6 +9,7 @@ import Introduce from '../../app/views/AboutMe/Edit/Introduce'
 import Language from '../../app/views/AboutMe/Edit/Language'
 import Interests from '../../app/views/AboutMe/Edit/Interests'
 import Vip from '../../app/views/AboutMe/Edit/Vip'
+import Credit from '../../app/views/AboutMe/Edit/Credit'
 // configs
 import DefaultLanguages from '../../configs/DefaultLanguages'
 
@@ -23,6 +24,7 @@ class SubjectStore {
   @observable showOnline
   @observable loading
   @observable deleteHobby
+  @observable creditButton
   //@observable sampleArray
 
   constructor(firebase) {
@@ -35,6 +37,7 @@ class SubjectStore {
     this.inSignupProcess = false
     this.firebase = firebase
     this.deleteHobby = []
+    this.creditButton = false
   }
   //AboutMe
 
@@ -90,6 +93,9 @@ class SubjectStore {
     return this.user.hobby || []
   }  
 
+  @computed get credit(){
+    return this.user.credit || 0
+  }
   //@computed get hobbyInput(){
   //  return this.hobbyInput
   //}
@@ -156,7 +162,7 @@ class SubjectStore {
   }
 
   @action handleAddCredit() {
-    alert('轉跳到Q點儲值頁面，施工中...')
+    Actions.AboutMeEdit({ content: <Credit/>, title: '儲值Q點', onRight: this.updateCredit })
   }
 
   @action handleSendVerifyEmail() {
@@ -217,6 +223,10 @@ class SubjectStore {
 
   @action setVip() {
     this.user.vip = !this.user.vip
+  }
+
+  @action setCredit(){
+    this.creditButton = !this.creditButton
   }
 
   @action setOnlyShowTherePhotos(){
@@ -300,6 +310,15 @@ class SubjectStore {
   @action updateVip(){
     this.updateToFirebase('vip', this.user.vip)
     Actions.AboutMeShow({type: 'reset'}) 
+  }
+
+  @action updateCredit(){
+    this.user.credit = this.user.credit || 0
+    if (this.creditButton) {
+      this.user.credit += 100
+    }
+    this.updateToFirebase('credit', this.user.credit)
+    Actions.AboutMeShow({type: 'reset'})
   }
 
   // actions
