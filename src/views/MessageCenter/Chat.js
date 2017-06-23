@@ -706,6 +706,7 @@ export default class Chat extends Component {
 
   notInterested = () => {
     this.setState({ showVisitorModal: false });
+    Actions.pop();
   };
 
   startChatting = () => {
@@ -836,190 +837,190 @@ export default class Chat extends Component {
             />
           </View>
         </Modal>
+        <Modal
+          isVisible={this.state.showMsgLimitModal}
+          backdropColor="black"
+          backdropOpacity={0.6}
+        >
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 10
+            }}
+          >
+            <Text style={{ margin: 10, color: "white" }}>
+              請等待對方回覆或是使用Q點繼續留言
+            </Text>
+            <Button
+              title="使用Q點數(每一則30點)"
+              buttonStyle={styles.modalButton1}
+              onPress={() => this.useCredit("visitorMsgLimit", 30)}
+            />
+            <Button
+              title="取消"
+              buttonStyle={styles.modalButton2}
+              onPress={this.cancelSend}
+            />
+            <Text style={{ color: "white" }}>
+              --------------------------------------
+            </Text>
+            <Text style={{ margin: 10, color: "white" }}>
+              您目前有 {this.props.store.user.credit} Q點
+            </Text>
+            <Button
+              title="Q點儲值"
+              buttonStyle={styles.modalButton2}
+              onPress={this.buyCredit}
+            />
+          </View>
+        </Modal>
+        <Modal
+                  isVisible={this.state.showPriorityModal}
+                  backdropColor="black"
+                  backdropOpacity={0.6}
+                >
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 10
+                    }}
+                  >
+                    <Text style={{ margin: 10, color: "white" }}>可以使用Q點讓你的留言先被看到！</Text>
+                    <Button
+                      title="使用Q點(100點)"
+                      buttonStyle={styles.modalButton1}
+                      onPress={() => this.useCredit("priority", 100)}
+                    />
+                    <Button
+                      title="不用"
+                      buttonStyle={styles.modalButton2}
+                      onPress={this.cancelSend}
+                    />
+                    <Text style={{ color: "white" }}>
+                      --------------------------------------
+                    </Text>
+                    <Text style={{ margin: 10, color: "white" }}>
+                      您目前有 {this.props.store.user.credit} Q點
+                    </Text>
+                    <Button
+                      title="Q點儲值"
+                      buttonStyle={styles.modalButton2}
+                      onPress={this.buyCredit}
+                    />
+                  </View>
+                </Modal>
+                <Modal
+                  isVisible={this.state.showTooManyVisitorMsgReceivedModal}
+                  backdropColor="black"
+                  backdropOpacity={0.6}
+                >
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 10
+                    }}
+                  >
+                    <Text style={{ margin: 10, color: "white" }}>
+                      抱歉, 對方的未讀來訪留言過多, 請稍後再試試或是使用Q點特權留言
+                    </Text>
+                    <Button
+                      title="使用Q點(50點)"
+                      buttonStyle={styles.modalButton1}
+                      onPress={() => this.useCredit("visitorReceivedLimit", 50)}
+                    />
+                    <Button
+                      title="取消"
+                      buttonStyle={styles.modalButton2}
+                      onPress={this.cancelSend}
+                    />
+                    <Text style={{ color: "white" }}>
+                      --------------------------------------
+                    </Text>
+                    <Text style={{ margin: 10, color: "white" }}>
+                      您目前有 {this.props.store.user.credit} Q點
+                    </Text>
+                    <Button
+                      title="Q點儲值"
+                      buttonStyle={styles.modalButton2}
+                      onPress={this.buyCredit}
+                    />
+                  </View>
+                </Modal>
+                <Modal
+                  isVisible={this.state.showTooManyVisitorMsgSentModal}
+                  backdropColor="black"
+                  backdropOpacity={0.6}
+                >
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 10
+                    }}
+                  >
+                    <Text style={{ margin: 10, color: "white" }}>
+                      訪客留言次數已用完：你今天已經留言給10位新對象了, 可以使用Q點增加10個對象
+                    </Text>
+                    <Button
+                      title="使用Q點(100點)"
+                      buttonStyle={styles.modalButton1}
+                      onPress={() => this.useCredit("visitorSentLimit", 100)}
+                    />
+                    <Button
+                      title="取消"
+                      buttonStyle={styles.modalButton2}
+                      onPress={this.cancelSend}
+                    />
+                    <Text style={{ color: "white" }}>
+                      --------------------------------------
+                    </Text>
+                    <Text style={{ margin: 10, color: "white" }}>
+                      您目前有 {this.props.store.user.credit} Q點
+                    </Text>
+                    <Button
+                      title="Q點儲值"
+                      buttonStyle={styles.modalButton2}
+                      onPress={this.buyCredit}
+                    />
+                  </View>
+                </Modal>
+                <Modal
+                  isVisible={this.state.showInsufficientCreditModal}
+                  backdropColor="black"
+                  backdropOpacity={0.6}
+                >
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 10
+                    }}
+                  >
+                    <Text style={{ margin: 10, color: "white" }}>抱歉, 你的Q點餘額不足哦！</Text>
+                    <Button
+                      title="Q點儲值"
+                      buttonStyle={styles.modalButton2}
+                      onPress={this.buyCredit}
+                    />
+                    <Button
+                      title="取消"
+                      buttonStyle={styles.modalButton2}
+                      onPress={this.cancelSend}
+                    />
+                    <Text style={{ color: "white" }}>
+                      --------------------------------------
+                    </Text>
+                    <Text style={{ margin: 10, color: "white" }}>
+                      您目前有 {this.props.store.user.credit} Q點
+                    </Text>
+                  </View>
+                </Modal>
 
 
       </View>
     );
   }
 }
-// <Modal
-//   isVisible={this.state.showMsgLimitModal}
-//   backdropColor="black"
-//   backdropOpacity={0.6}
-// >
-//   <View
-//     style={{
-//       alignItems: "center",
-//       justifyContent: "center",
-//       padding: 10
-//     }}
-//   >
-//     <Text style={{ margin: 10, color: "white" }}>
-//       請等待對方回覆或是使用Q點繼續留言
-//     </Text>
-//     <Button
-//       title="使用Q點數(每一則30點)"
-//       buttonStyle={styles.modalButton1}
-//       onPress={this.useCredit("visitorMsgLimit", 30)}
-//     />
-//     <Button
-//       title="取消"
-//       buttonStyle={styles.modalButton2}
-//       onPress={this.cancelSend}
-//     />
-//     <Text style={{ color: "white" }}>
-//       --------------------------------------
-//     </Text>
-//     <Text style={{ margin: 10, color: "white" }}>
-//       您目前有 {this.props.store.user.credit} Q點
-//     </Text>
-//     <Button
-//       title="Q點儲值"
-//       buttonStyle={styles.modalButton2}
-//       onPress={this.buyCredit}
-//     />
-//   </View>
-// </Modal>
-// <Modal
-//           isVisible={this.state.showPriorityModal}
-//           backdropColor="black"
-//           backdropOpacity={0.6}
-//         >
-//           <View
-//             style={{
-//               alignItems: "center",
-//               justifyContent: "center",
-//               padding: 10
-//             }}
-//           >
-//             <Text style={{ margin: 10, color: "white" }}>可以使用Q點讓你的留言先被看到！</Text>
-//             <Button
-//               title="使用Q點(100點)"
-//               buttonStyle={styles.modalButton1}
-//               onPress={this.useCredit("priority", 100)}
-//             />
-//             <Button
-//               title="不用"
-//               buttonStyle={styles.modalButton2}
-//               onPress={this.cancelSend}
-//             />
-//             <Text style={{ color: "white" }}>
-//               --------------------------------------
-//             </Text>
-//             <Text style={{ margin: 10, color: "white" }}>
-//               您目前有 {this.props.store.user.credit} Q點
-//             </Text>
-//             <Button
-//               title="Q點儲值"
-//               buttonStyle={styles.modalButton2}
-//               onPress={this.buyCredit}
-//             />
-//           </View>
-//         </Modal>
-//         <Modal
-//           isVisible={this.state.showTooManyVisitorMsgReceivedModal}
-//           backdropColor="black"
-//           backdropOpacity={0.6}
-//         >
-//           <View
-//             style={{
-//               alignItems: "center",
-//               justifyContent: "center",
-//               padding: 10
-//             }}
-//           >
-//             <Text style={{ margin: 10, color: "white" }}>
-//               抱歉, 對方的未讀來訪留言過多, 請稍後再試試或是使用Q點特權留言
-//             </Text>
-//             <Button
-//               title="使用Q點(50點)"
-//               buttonStyle={styles.modalButton1}
-//               onPress={this.useCredit("visitorReceivedLimit", 50)}
-//             />
-//             <Button
-//               title="取消"
-//               buttonStyle={styles.modalButton2}
-//               onPress={this.cancelSend}
-//             />
-//             <Text style={{ color: "white" }}>
-//               --------------------------------------
-//             </Text>
-//             <Text style={{ margin: 10, color: "white" }}>
-//               您目前有 {this.props.store.user.credit} Q點
-//             </Text>
-//             <Button
-//               title="Q點儲值"
-//               buttonStyle={styles.modalButton2}
-//               onPress={this.buyCredit}
-//             />
-//           </View>
-//         </Modal>
-//         <Modal
-//           isVisible={this.state.showTooManyVisitorMsgSentModal}
-//           backdropColor="black"
-//           backdropOpacity={0.6}
-//         >
-//           <View
-//             style={{
-//               alignItems: "center",
-//               justifyContent: "center",
-//               padding: 10
-//             }}
-//           >
-//             <Text style={{ margin: 10, color: "white" }}>
-//               訪客留言次數已用完：你今天已經留言給10位新對象了, 可以使用Q點增加10個對象
-//             </Text>
-//             <Button
-//               title="使用Q點(100點)"
-//               buttonStyle={styles.modalButton1}
-//               onPress={this.useCredit("visitorSentLimit", 100)}
-//             />
-//             <Button
-//               title="取消"
-//               buttonStyle={styles.modalButton2}
-//               onPress={this.cancelSend}
-//             />
-//             <Text style={{ color: "white" }}>
-//               --------------------------------------
-//             </Text>
-//             <Text style={{ margin: 10, color: "white" }}>
-//               您目前有 {this.props.store.user.credit} Q點
-//             </Text>
-//             <Button
-//               title="Q點儲值"
-//               buttonStyle={styles.modalButton2}
-//               onPress={this.buyCredit}
-//             />
-//           </View>
-//         </Modal>
-//         <Modal
-//           isVisible={this.state.showInsufficientCreditModal}
-//           backdropColor="black"
-//           backdropOpacity={0.6}
-//         >
-//           <View
-//             style={{
-//               alignItems: "center",
-//               justifyContent: "center",
-//               padding: 10
-//             }}
-//           >
-//             <Text style={{ margin: 10, color: "white" }}>抱歉, 你的Q點餘額不足哦！</Text>
-//             <Button
-//               title="Q點儲值"
-//               buttonStyle={styles.modalButton2}
-//               onPress={this.buyCredit}
-//             />
-//             <Button
-//               title="取消"
-//               buttonStyle={styles.modalButton2}
-//               onPress={this.cancelSend}
-//             />
-//             <Text style={{ color: "white" }}>
-//               --------------------------------------
-//             </Text>
-//             <Text style={{ margin: 10, color: "white" }}>
-//               您目前有 {this.props.store.user.credit} Q點
-//             </Text>
-//           </View>
-//         </Modal>
