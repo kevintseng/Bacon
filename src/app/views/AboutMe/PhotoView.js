@@ -1,24 +1,42 @@
-import React from 'react'
-import { View, Image } from 'react-native'
+import React from 'react';
+import { View, StatusBar } from 'react-native';
+import PhotoBrowser from 'react-native-photo-browser';
+import { Actions } from 'react-native-router-flux'
 
-//const { width, height } = Dimensions.get('window');
-//const pixelRatio = PixelRatio.get()
-/*
-const styles = {
-  wrapperStyle: {
-    marginTop: 7,
-    paddingTop: 52
-  }
-}
-*/
+const media = [{
+      photo: 'http://farm3.static.flickr.com/2667/4072710001_f36316ddc7_b.jpg',
+      selected: true,
+      caption: 'Grotto of the Madonna',
+    }, {
+      photo: 'http://farm3.static.flickr.com/2449/4052876281_6e068ac860_b.jpg',
+      caption: 'Broadchurch Scene',
+    }, {
+      photo: 'http://farm3.static.flickr.com/2449/4052876281_6e068ac860_b.jpg',
+      thumb: 'http://farm3.static.flickr.com/2449/4052876281_6e068ac860_q.jpg',
+      selected: false,
+      caption: 'Beautiful Eyes',
+    }]
 
 const PhotoView = () => {
   return(
-    <View style={{flex: 1}}>
-      <Image
-        style={{flex: 1}}
-        source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
-      />
+    <View style={{flex:1}}>
+        <PhotoBrowser
+          style={{flex: 1}}
+          displayTopBar
+          onBack={()=>{ Actions.AboutMeShow() }}
+          mediaList={media}
+          //initialIndex={initialIndex}
+          displayNavArrows
+          displaySelectionButtons
+          displayActionButton
+          startOnGrid
+          enableGrid
+          useCircleProgress
+          //controlsDisplayed={false}
+          alwaysShowControls
+          //onSelectionChanged={this._onSelectionChanged}
+          //onActionButton
+        />
     </View>
   )
 }
