@@ -1,7 +1,7 @@
 import React from 'react';
-//import { View } from 'react-native';
-//import { Actions } from 'react-native-router-flux'
+import { View, StatusBar } from 'react-native';
 import PhotoBrowser from 'react-native-photo-browser';
+import { Actions } from 'react-native-router-flux'
 
 const media = [{
       photo: 'http://farm3.static.flickr.com/2667/4072710001_f36316ddc7_b.jpg',
@@ -15,20 +15,15 @@ const media = [{
       thumb: 'http://farm3.static.flickr.com/2449/4052876281_6e068ac860_q.jpg',
       selected: false,
       caption: 'Beautiful Eyes',
-    },
-    {
-      photo: 'http://farm3.static.flickr.com/2667/4072710001_f36316ddc7_b.jpg',
-      selected: true,
-      caption: 'Grotto of the Madonna',
     }]
 
-const Album = () => {
+const PhotoView = () => {
   return(
-
+    <View style={{flex:1}}>
         <PhotoBrowser
           style={{flex: 1}}
-          displayTopBar = {false}
-          //onBack={()=>{ Actions.AboutMeShow() }}
+          displayTopBar
+          onBack={()=>{ Actions.AboutMeShow() }}
           mediaList={media}
           //initialIndex={initialIndex}
           displayNavArrows
@@ -38,12 +33,12 @@ const Album = () => {
           enableGrid
           useCircleProgress
           //controlsDisplayed={false}
-          //alwaysShowControls
+          alwaysShowControls
           //onSelectionChanged={this._onSelectionChanged}
           //onActionButton
         />
-
+    </View>
   )
 }
 
-export default Album
+export default PhotoView
