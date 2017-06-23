@@ -9,6 +9,7 @@ import Introduce from '../../app/views/AboutMe/Edit/Introduce'
 import Language from '../../app/views/AboutMe/Edit/Language'
 import Interests from '../../app/views/AboutMe/Edit/Interests'
 import Vip from '../../app/views/AboutMe/Edit/Vip'
+import Credit from '../../app/views/AboutMe/Edit/Credit'
 // configs
 import DefaultLanguages from '../../configs/DefaultLanguages'
 
@@ -22,6 +23,8 @@ class SubjectStore {
   @observable interaction
   @observable showOnline
   @observable loading
+  @observable deleteHobby
+  @observable creditButton
   //@observable sampleArray
 
   constructor(firebase) {
@@ -33,6 +36,8 @@ class SubjectStore {
     this.user = null
     this.inSignupProcess = false
     this.firebase = firebase
+    this.deleteHobby = []
+    this.creditButton = false
   }
   //AboutMe
 
@@ -85,9 +90,12 @@ class SubjectStore {
   }
 
   @computed get hobby(){
-    return this.user.hobby
+    return this.user.hobby || []
   }  
 
+  @computed get credit(){
+    return this.user.credit || 0
+  }
   //@computed get hobbyInput(){
   //  return this.hobbyInput
   //}
@@ -154,7 +162,7 @@ class SubjectStore {
   }
 
   @action handleAddCredit() {
-    alert('轉跳到Q點儲值頁面，施工中...')
+    Actions.AboutMeEdit({ content: <Credit/>, title: '儲值Q點', onRight: this.updateCredit })
   }
 
   @action handleSendVerifyEmail() {
@@ -199,6 +207,7 @@ class SubjectStore {
   }
 
   @action setHobby(val) {
+    this.user.hobby = this.user.hobby || []
     if (val) {
       this.user.hobby.push(val)
     } else {
@@ -206,8 +215,18 @@ class SubjectStore {
     }
   }
 
+  @action setDeleteHobby(val){
+    if (val) {
+      this.deleteHobby.push(val)
+    }  
+  }
+
   @action setVip() {
     this.user.vip = !this.user.vip
+  }
+
+  @action setCredit(){
+    this.creditButton = !this.creditButton
   }
 
   @action setOnlyShowTherePhotos(){
@@ -232,7 +251,7 @@ class SubjectStore {
         console.log("Error: " + error);
       })
     if (this.user.hobby == null) {
-      this.user.hobby = ["MeetQ"]
+      this.user.hobby = ["Bacon"]
       await this.updateToFirebase('hobby',this.user.hobby)
     }
     if (this.user.lang == null) {
@@ -279,13 +298,27 @@ class SubjectStore {
 
   @action updateHobby(){
     this.hobbyInput = null
+    const filterd_hobby = this.user.hobby.filter( ( el ) => {
+      return this.deleteHobby.indexOf( el ) < 0;
+    } )
+    this.user.hobby = filterd_hobby
     this.updateToFirebase('hobby', this.user.hobby.slice())
+    this.deleteHobby = []
     Actions.AboutMeShow({type: 'reset'})   
   }
 
   @action updateVip(){
     this.updateToFirebase('vip', this.user.vip)
     Actions.AboutMeShow({type: 'reset'}) 
+  }
+
+  @action updateCredit(){
+    this.user.credit = this.user.credit || 0
+    if (this.creditButton) {
+      this.user.credit += 100
+    }
+    this.updateToFirebase('credit', this.user.credit)
+    Actions.AboutMeShow({type: 'reset'})
   }
 
   // actions
@@ -344,6 +377,12 @@ class SubjectStore {
 
   @action setPhotos(gallery) {
     this.user.photos = gallery;
+    this.updateToFirebase('photos', gallery.slice())
+  }
+
+  @action removePhotos(index){
+    this.user.photos.splice(index, 1)
+    this.updateToFirebase('photos', this.user.photos.slice())
   }
 
   @action refreshDrawer = () => {

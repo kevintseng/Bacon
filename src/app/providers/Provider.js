@@ -17,6 +17,7 @@ import FateSingleContainer from "../containers/Fate/FateSingleContainer"
 // AboutMe containers
 import ShowContainer from "../containers/AboutMe/ShowContainer"
 import EditContainer from "../containers/AboutMe/EditContainer"
+import PhotoContainer from "../containers/AboutMe/PhotoContainer"
 
 export const MeetCuteShowProvider = () => (
   <Provider SubjectStore = { AppInitStore.wooer } ObjectStore = { AppInitStore.meetCute } >
@@ -71,4 +72,10 @@ export const EditProvider = (props) => (
   <Provider SubjectStore = { AppInitStore.wooer } >
     <EditContainer {...props}/>
   </Provider>  
+)
+
+export const PhotoProvider = () => (
+  <Provider SubjectStore = { AppInitStore.wooer } >
+    <PhotoContainer/>
+  </Provider>   
 )

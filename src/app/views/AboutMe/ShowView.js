@@ -11,7 +11,7 @@ import Report from './Show/Report'
 const styles = {
   wrapperStyle: {
     marginTop: 7,
-    paddingTop: 52
+    paddingTop: 49
   }
 }
 
