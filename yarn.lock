@@ -5846,9 +5846,9 @@ react-native-pathjs-charts@^0.0.26:
     paths-js "^0.4.5"
     react-native-svg "~4.5.0"
 
-react-native-photo-browser@^0.3.1:
+"react-native-photo-browser@https://github.com/tsaohucn/react-native-photo-browser.git#0272797":
   version "0.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-photo-browser/-/react-native-photo-browser-0.3.1.tgz#4adfebf3ec090d10ca36ae497b1633f6d437bb35"
+  resolved "https://github.com/tsaohucn/react-native-photo-browser.git#0272797"
   dependencies:
     react-native-progress "^3.2.0"
 

@@ -18,7 +18,7 @@ const AboutMeScene = (
 <Scene key = "aboutme">
   <Scene key = "AboutMeShow" hideTabBar component = { ShowProvider } title = "關於我" renderLeftButton = { menuButton } />
   <Scene key = "AboutMeEdit" hideTabBar component = { EditProvider } title = "編輯" renderLeftButton = { menuButton } rightTitle = { rightTitle() } onRight = { handleOnRight } />
-  <Scene key = "AboutMePhoto" hideTabBar component = { PhotoProvider } title = "照片" renderLeftButton = { menuButton } />
+  <Scene key = "AboutMePhoto" hideNavBar hideTabBar component = { PhotoProvider } renderLeftButton = { menuButton } />
 </Scene>
 )
 

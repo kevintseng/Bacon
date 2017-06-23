@@ -3,7 +3,7 @@ import React from 'react'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 // views
 import Profile from './Show/Profile'
-import PhotoBrowserExample from './Show/PhotoBrowserExample'
+import Album from './Show/Album'
 import Report from './Show/Report'
 
 //const { width, height } = Dimensions.get('window');
@@ -11,7 +11,7 @@ import Report from './Show/Report'
 const styles = {
   wrapperStyle: {
     marginTop: 7,
-    paddingTop: 52
+    paddingTop: 49
   }
 }
 
@@ -29,7 +29,7 @@ const ShowView = () => {
       ref={(tabView) => { this.tabView = tabView; }}
     >
       <Profile tabLabel='我的檔案'/>
-      <PhotoBrowserExample tabLabel='個人相簿'/>
+      <Album tabLabel='個人相簿'/>
       <Report tabLabel='互動分析'/>
     </ScrollableTabView>
   )

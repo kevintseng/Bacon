@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    paddingTop: 54,
+    //paddingTop: 54,
     paddingLeft: 16,
   },
   row: {

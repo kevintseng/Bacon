@@ -37,7 +37,7 @@
     "react-native-mobx": "^0.3.1",
     "react-native-modal": "^2.4.0",
     "react-native-pathjs-charts": "^0.0.26",
-    "react-native-photo-browser": "^0.3.1",
+    "react-native-photo-browser": "https://github.com/tsaohucn/react-native-photo-browser.git#0272797",
     "react-native-photo-grid": "^0.0.2",
     "react-native-router-flux": "3.38.0",
     "react-native-scrollable-tab-view": "^0.7.3",
