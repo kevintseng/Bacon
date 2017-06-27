@@ -96,7 +96,7 @@ class SubjectStore {
 
   @computed get hobby(){
     return this.user.hobby || []
-  }  
+  }
 
   @computed get credit(){
     return this.user.credit || 0
@@ -201,20 +201,20 @@ class SubjectStore {
   @action setBirthday(val){
     if (val) {
       this.user.birthday = val
-    }    
+    }
   }
 
   @action setCity(data){
     if (data.description) {
       this.user.city = data.description
     }
-  } 
+  }
 
   @action setBio(val){
     //if (val) {
       this.user.bio = val
-    //}  
-  } 
+    //}
+  }
 
   @action setLang(val) {
     this.user.lang[val] = !this.user.lang[val]
@@ -232,7 +232,7 @@ class SubjectStore {
   @action setDeleteHobby(val){
     if (val) {
       this.deleteHobby.push(val)
-    }  
+    }
   }
 
   @action setVip() {
@@ -271,7 +271,7 @@ class SubjectStore {
     if (this.user.lang == null) {
       this.user.lang = DefaultLanguages
       await this.updateToFirebase('lang',this.user.lang)
-    } 
+    }
     if (this.user.bio == null) {
       this.user.bio = "您好，我是MeetQ新進會員"
       await this.updateToFirebase('bio',this.user.bio)
@@ -293,26 +293,26 @@ class SubjectStore {
     this.user.birthday = this.ui.birthday
     this.updateToFirebase('displayName', this.user.displayName)
     this.updateToFirebase('birthday', this.user.birthday)
-    Actions.AboutMeShow({type: 'reset'})    
+    Actions.AboutMeShow({type: 'reset'})
   }
 
   @action updateCity(){
     this.user.city = this.ui.city
     this.updateToFirebase('city', this.user.city)
-    Actions.AboutMeShow({type: 'reset'})    
+    Actions.AboutMeShow({type: 'reset'})
   }
 
   @action updateBio(){
     this.user.bio = this.ui.bio
     this.updateToFirebase('bio', this.user.bio)
-    Actions.AboutMeShow({type: 'reset'})    
+    Actions.AboutMeShow({type: 'reset'})
   }
 
   @action updateLang(){
     //console.log(this.user.lang)
     this.user.lang = this.ui.langRaw
     this.updateToFirebase('lang', this.user.lang)
-    Actions.AboutMeShow({type: 'reset'})     
+    Actions.AboutMeShow({type: 'reset'})
   }
 
   @action updateHobby(){
@@ -325,12 +325,12 @@ class SubjectStore {
     this.user.hobby = filterd_hobby
     this.updateToFirebase('hobby', this.user.hobby.slice())
     this.deleteHobby = []
-    Actions.AboutMeShow({type: 'reset'})   
+    Actions.AboutMeShow({type: 'reset'})
   }
 
   @action updateVip(){
     this.updateToFirebase('vip', this.user.vip)
-    Actions.AboutMeShow({type: 'reset'}) 
+    Actions.AboutMeShow({type: 'reset'})
   }
 
   @action updateCredit(){
@@ -385,15 +385,11 @@ class SubjectStore {
     this.updateToFirebase('chatStatus', val);
   }
 
-  @action upgradeMembership(firebase) {
+  @action upgradeMembership() {
     if(!this.user.vip) {
-      this.user.vip = 'vip1';
-      this.updateUserAtFirebase(firebase, 'vip', 'vip1');
-    } else if(this.user.vip === 'vip1') {
-      this.updateUserAtFirebase(firebase, 'vip', 'vip2');
-      this.user.vip = 'vip2';
+      this.user.vip = true;
+      this.updateToFirebase('vip', true);
     }
-
   }
 
   @action setPhotos(gallery) {
@@ -435,9 +431,11 @@ class SubjectStore {
     }
   }
 
-  //updateToFirebase2(key, val){
-  //  this.firebase.database().ref('users/' + this.user.uid + '/' + key).push(val)
-  //}
+  @action addCredit(amount) {
+    const balance = this.user.credit + amount;
+    this.user.credit = balance;
+    this.updateToFirebase("credit", balance);
+  }
 
   updateToFirebase(key, val){
     this.firebase.database().ref('users/' + this.user.uid + '/' + key).set(val)
