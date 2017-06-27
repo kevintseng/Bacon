@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get('window')
 
 const MeetChanceAll = inject("SubjectStore","ObjectStore")(observer(({ SubjectStore, ObjectStore }) => {
 
-  const renderCookie = ObjectStore.preyList.map((prey)=>( <Cookie name={prey.displayName} photoURL={prey.photoURL} key={prey.uid} onPressButton={ function onPressButton(){ ObjectStore.onPressButton(prey) } }/> ))
+  const renderCookie = ObjectStore.preyList.map((prey)=>( <Cookie key={prey.uid} name={prey.displayName} photoURL={prey.photoURL} onPressButton={ function onPressButton(){ ObjectStore.onPressButton(prey) } }/> ))
   return(
     <View style={{width}}>
       <View style = {{justifyContent: 'center', alignItems: 'center'}}>

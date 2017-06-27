@@ -29,11 +29,11 @@ const styles = {
 
     itemImageStyle: {
         // 尺寸
-        width:80,
-        height:80,
+        width: width*0.3,
+        height: width*0.3,
         // 间距
         marginBottom:5,
-        borderRadius: 80/2,
+        borderRadius: width*0.3/2,
     },
 
     online:{
@@ -70,7 +70,7 @@ const ADD_IMAGE = require('hookup/src/images/addImage.png')
 const Cookie = ({ name, photoURL, onPressButton }) => {
 
   return(
-    <View style={{alignItems: 'center', margin: 5, width: 80 }}>
+    <View style={{alignItems: 'center', margin: 5, width: width*0.3 }}>
       <TouchableHighlight onPress={onPressButton}>
         <Image source={ photoURL ? { uri: photoURL } : ADD_IMAGE } style={styles.itemImageStyle}/>
       </TouchableHighlight>

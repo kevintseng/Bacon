@@ -1,8 +1,11 @@
 import React from 'react'
-import { TextInput, View, Text } from 'react-native'
+import { TextInput, View, Text, Platform, Dimensions } from 'react-native'
 import { Icon, Badge } from 'react-native-elements'
 import { observer, inject } from 'mobx-react/native'
 import DefaultInterests from '../../../../configs/DefaultInterests'
+
+const { width, height } = Dimensions.get('window')
+
 
 const styles = {
   Interests: {
@@ -24,7 +27,15 @@ const styles = {
     //backgroundColor: '#f0f0f0',
   },
   Input: {
-    flex: 0.95
+    ...Platform.select({
+      ios:{
+        flex: 0.95,
+        paddingTop: 10
+      },
+      android:{
+        flex: 0.95
+      }
+    })
   },  
   EditIcon: {
     flex: 0.05,
@@ -36,23 +47,33 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'flex-start'
     //marginTop: 10
+  },
+  TextInput:{
+    ...Platform.select({
+      ios:{
+        height: 30, 
+        width
+      },
+      android:{
+      }
+    })
   }
 }
 
-const Interests = inject("SubjectStore")(observer(({SubjectStore}) => {
+const Interests = inject("UIStore")(observer(({UIStore}) => {
 
-  const renderDefaultInterests = DefaultInterests.map((hobby) => (<Badge key={hobby}  onPress={ () => {SubjectStore.setHobby(hobby)} } containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
+  const renderDefaultInterests = DefaultInterests.map((hobby) => (<Badge key={hobby}  onPress={ () => {UIStore.setHobby(hobby)} } containerStyle={{ backgroundColor: '#ffffff', borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: '#000000' }} value={hobby}/>))
     
-  const renderInterests = SubjectStore.hobby.map((hobby) => 
+  const renderInterests = UIStore.hobby.map((hobby) => 
     {
       let _backgroundColor = "#ffffff"
       let _textStyle = "#000000"
       //console.warn(hobby.indexOf(SubjectStore.deleteHobby))
-      if(SubjectStore.deleteHobby.indexOf(hobby) > -1) {
+      if(UIStore.deleteHobby.indexOf(hobby) > -1) {
         _backgroundColor = "#000000"
         _textStyle = "#ffffff"
       }
-      return (<Badge key={hobby} onPress= {()=> {SubjectStore.setDeleteHobby(hobby)}} containerStyle={{ backgroundColor: _backgroundColor, borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: _textStyle }} value={hobby}/>)
+      return (<Badge key={hobby} onPress= {()=> {UIStore.setDeleteHobby(hobby)}} containerStyle={{ backgroundColor: _backgroundColor, borderWidth: 1, marginTop: 10, marginRight: 10}} textStyle={{ color: _textStyle }} value={hobby}/>)
     }
   )
 
@@ -68,10 +89,13 @@ const Interests = inject("SubjectStore")(observer(({SubjectStore}) => {
       <View style = { styles.Edit }>
         <View style = { styles.Input }>
           <TextInput
+            maxLength = { 5 }
+            numberOfLines = { 1 }
+            style={styles.TextInput}
             placeholder = "輸入興趣"
-            onSubmitEditing = { () => { SubjectStore.setHobby() } }     
-            onChangeText = { (text) => SubjectStore.updateHobbyInput(text) }
-            value = { SubjectStore.hobbyInput }
+            onSubmitEditing = { () => { UIStore.setHobby() } }     
+            onChangeText = { (text) => UIStore.updateHobbyInput(text) }
+            value = { UIStore.hobbyInput }
           /> 
         </View>
         <View style = { styles.EditIcon }>

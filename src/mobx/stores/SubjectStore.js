@@ -27,7 +27,8 @@ class SubjectStore {
   @observable creditButton
   //@observable sampleArray
 
-  constructor(firebase) {
+  constructor(firebase,ui) {
+    this.ui = ui
     this.loading = false
     this.onlyShowTherePhotos = false
     this.interaction = false
@@ -67,8 +68,12 @@ class SubjectStore {
     return this.user.birthday
   }
 
+  @computed get age(){
+    return this.user.birthday ? this.calculateAge() : 18
+  }
+
   @computed get city(){
-    return this.user.city
+    return this.user.city.length > 15 ? this.user.city.substring(0,15) + "..." : this.user.city
   }
 
   @computed get vip(){
@@ -136,22 +141,30 @@ class SubjectStore {
   }
 
   @action onpressDisplayName(){
+    this.ui.displayName = this.displayName
+    this.ui.birthday = this.birthday
     Actions.AboutMeEdit({ content: <NickBirthday/>, title: '暱稱生日', onRight: this.updateNickBirthday })
   }
 
   @action onpressLocation(){
+    this.ui.city = this.user.city
     Actions.AboutMeEdit({ content: <Location/>, title: '所在位置', onRight: this.updateCity })
   }
 
   @action onpressIntroduce() {
+    this.ui.bio = this.bio
     Actions.AboutMeEdit({ content: <Introduce/>, title: '自我介紹', onRight: this.updateBio })
   }
 
   @action onpressLanguage() {
+    this.ui.langRaw = Object.assign({}, this.langRaw)
     Actions.AboutMeEdit({ content: <Language/>, title: '語言能力', onRight: this.updateLang })
   }
 
   @action onpressInterests() {
+    this.ui.hobbyInput = null
+    this.ui.deleteHobby = []
+    this.ui.hobby = this.hobby.slice()
     Actions.AboutMeEdit({ content: <Interests/>, title: '興趣愛好', onRight: this.updateHobby })
   }
 
@@ -179,9 +192,10 @@ class SubjectStore {
   }
 
   @action setDisplayName(val){
-    if (val.length > 0 ) {
+    //if (val.length > -1 ) {
       this.user.displayName = val
-    }
+      //console.warn(val)
+    //}
   }
 
   @action setBirthday(val){
@@ -197,9 +211,9 @@ class SubjectStore {
   } 
 
   @action setBio(val){
-    if (val) {
+    //if (val) {
       this.user.bio = val
-    }  
+    //}  
   } 
 
   @action setLang(val) {
@@ -275,29 +289,36 @@ class SubjectStore {
   }
 
   @action updateNickBirthday(){
+    this.user.displayName = this.ui.displayName
+    this.user.birthday = this.ui.birthday
     this.updateToFirebase('displayName', this.user.displayName)
     this.updateToFirebase('birthday', this.user.birthday)
     Actions.AboutMeShow({type: 'reset'})    
   }
 
   @action updateCity(){
+    this.user.city = this.ui.city
     this.updateToFirebase('city', this.user.city)
     Actions.AboutMeShow({type: 'reset'})    
   }
 
   @action updateBio(){
+    this.user.bio = this.ui.bio
     this.updateToFirebase('bio', this.user.bio)
     Actions.AboutMeShow({type: 'reset'})    
   }
 
   @action updateLang(){
     //console.log(this.user.lang)
+    this.user.lang = this.ui.langRaw
     this.updateToFirebase('lang', this.user.lang)
     Actions.AboutMeShow({type: 'reset'})     
   }
 
   @action updateHobby(){
-    this.hobbyInput = null
+    this.ui.hobbyInput = null
+    this.user.hobby = this.ui.hobby
+    this.deleteHobby = this.ui.deleteHobby
     const filterd_hobby = this.user.hobby.filter( ( el ) => {
       return this.deleteHobby.indexOf( el ) < 0;
     } )
@@ -324,7 +345,7 @@ class SubjectStore {
   // actions
   @action setUser(user) {
     this.user = user;
-    console.log('Current User in AppStore: ' + user.uid);
+    //console.log('Current User in AppStore: ' + user.uid);
   }
 
   @action setAvatar(uri) {
@@ -429,6 +450,12 @@ class SubjectStore {
     } catch(err) {
       console.log(err);
     }
+  }
+
+  calculateAge(){
+    const ageDifMs = Date.now() - new Date(this.user.birthday).getTime()
+    const ageDate = new Date(ageDifMs)
+    return Math.abs(ageDate.getUTCFullYear() - 1970)
   }
 }
 

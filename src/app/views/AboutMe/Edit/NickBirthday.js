@@ -1,15 +1,49 @@
-import React, { Component } from 'react'
-import { View, Text, TextInput } from 'react-native'
+import React from 'react'
+import { View, Text, TextInput, Platform, Dimensions } from 'react-native'
 import DatePicker from 'react-native-datepicker'
-import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react/native'
+
+const { width, height } = Dimensions.get('window')
 
 const styles = {
   NickBirthday: {
-    flex: 1
+    ...Platform.select({
+      ios:{
+        flex: 1
+      },
+      android:{
+        flex: 1
+      }
+    })
+  },
+  TextView: {
+    ...Platform.select({
+      ios:{
+        paddingTop: 15
+      },
+      android:{
+      }
+    })
+  },
+  TextInput:{
+    ...Platform.select({
+      ios:{
+        height:30, 
+        width
+      },
+      android:{
+      }
+    })
   },
   Birthday: {
-    paddingTop: 5
+    ...Platform.select({
+      ios:{
+        paddingTop: 15
+      },
+      android:{
+        paddingTop: 5
+      }
+    })
   },
   DataPicker: {
     flexDirection: "row",
@@ -30,19 +64,22 @@ const maxDay = () => {
   return maxDate;
 }
 
-const NickBirthday = inject("SubjectStore")(observer(({ SubjectStore }) => {
+const NickBirthday = inject("UIStore")(observer(({ UIStore }) => {
   
   return(
     <View style = { styles.NickBirthday }>
-      <View>
+      <View style = {styles.TextView}>
         <View>
           <Text>暱稱</Text> 
         </View>
         <View>
           <TextInput
+            //placeholder = { UIStore.displayName }
+            style={styles.TextInput}
             maxLength = { 10 }
-            onChangeText = { (text) => SubjectStore.setDisplayName(text) }
-            value = { SubjectStore.displayName }
+            numberOfLines = { 1 }
+            onChangeText = { (text) => UIStore.setDisplayName(text) }
+            value = { UIStore.displayName }
           />
         </View>
       </View>
@@ -54,7 +91,7 @@ const NickBirthday = inject("SubjectStore")(observer(({ SubjectStore }) => {
         <View style = {styles.DataPicker}>
           <DatePicker
             style = { styles.dataPicker }
-            date = { SubjectStore.birthday }
+            date = { UIStore.birthday }
             mode = "date"
             placeholder = "您的生日"
             format = "YYYY-MM-DD"
@@ -63,7 +100,7 @@ const NickBirthday = inject("SubjectStore")(observer(({ SubjectStore }) => {
             confirmBtnText = "完成"
             cancelBtnText = "取消"
             showIcon = { false }
-            onDateChange = { date => SubjectStore.setBirthday(date) }
+            onDateChange = { date => UIStore.setBirthday(date) }
           /> 
         </View>
       </View> 
