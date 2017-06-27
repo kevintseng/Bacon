@@ -345,7 +345,7 @@ class SubjectStore {
   // actions
   @action setUser(user) {
     this.user = user;
-    console.log('Current User in AppStore: ' + user.uid);
+    //console.log('Current User in AppStore: ' + user.uid);
   }
 
   @action setAvatar(uri) {
