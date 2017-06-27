@@ -1,8 +1,11 @@
 import React from 'react'
-import { TextInput, View, Text } from 'react-native'
+import { TextInput, View, Text, Platform, Dimensions } from 'react-native'
 import { Icon, Badge } from 'react-native-elements'
 import { observer, inject } from 'mobx-react/native'
 import DefaultInterests from '../../../../configs/DefaultInterests'
+
+const { width, height } = Dimensions.get('window')
+
 
 const styles = {
   Interests: {
@@ -24,7 +27,15 @@ const styles = {
     //backgroundColor: '#f0f0f0',
   },
   Input: {
-    flex: 0.95
+    ...Platform.select({
+      ios:{
+        flex: 0.95,
+        paddingTop: 10
+      },
+      android:{
+        flex: 0.95
+      }
+    })
   },  
   EditIcon: {
     flex: 0.05,
@@ -36,6 +47,16 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'flex-start'
     //marginTop: 10
+  },
+  TextInput:{
+    ...Platform.select({
+      ios:{
+        height: 30, 
+        width
+      },
+      android:{
+      }
+    })
   }
 }
 
@@ -68,6 +89,9 @@ const Interests = inject("UIStore")(observer(({UIStore}) => {
       <View style = { styles.Edit }>
         <View style = { styles.Input }>
           <TextInput
+            maxLength = { 5 }
+            numberOfLines = { 1 }
+            style={styles.TextInput}
             placeholder = "輸入興趣"
             onSubmitEditing = { () => { UIStore.setHobby() } }     
             onChangeText = { (text) => UIStore.updateHobbyInput(text) }

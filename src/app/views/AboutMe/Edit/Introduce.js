@@ -1,11 +1,29 @@
 import React from 'react'
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, Platform, Dimensions } from 'react-native'
 import { observer, inject } from 'mobx-react/native'
 
+const { width, height } = Dimensions.get('window')
 
 const styles = {
   Introduce : {
-    flex: 1
+    ...Platform.select({
+      ios:{
+        paddingTop: 10
+      },
+      android:{
+        flex: 1
+      }
+    })
+  },
+  TextInput:{
+    ...Platform.select({
+      ios:{
+        height, 
+        width
+      },
+      android:{
+      }
+    })
   }
 }
 const Introduce = inject("UIStore")(observer(({ UIStore }) => {
@@ -16,6 +34,7 @@ const Introduce = inject("UIStore")(observer(({ UIStore }) => {
       </View>
       <View>
         <TextInput
+          style={styles.TextInput}
           //underlineColorAndroid = 'transparent'
           textAlignVertical = 'top'
           //placeholder = { UIStore.bio }
