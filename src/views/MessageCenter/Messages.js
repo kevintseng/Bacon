@@ -96,12 +96,12 @@ export default class Messages extends Component {
             console.log("getConvData myPriority: ", myData.priority);
             convData = {
               convKey,
-              uid: theOtherUid,
               unread: myData.unread,
               lastRead: myData.lastRead,
               chatType: myData.chatType,
-              chatStatus: "",
               priority: myData.priority,
+              uid: theOtherUid,
+              chatStatus: theOtherData.chatStatus,
               name: theOtherData.name,
               avatarUrl: theOtherData.avatarUrl,
               birthday: theOtherData.birthday,
@@ -167,40 +167,40 @@ export default class Messages extends Component {
         this.setState({
           convs: newConvs
         });
-        return;
-      }
+      } else {
 
-      const newConvs = this.state.convs;
-      // console.log("listenUnread on uid: ", uid, " val: ", snapshot.val());
-      newConvs[key].unread = 0;
-      this.setState({
-        convs: newConvs
-      });
-      return;
+        const newConvs = this.state.convs;
+        // console.log("listenUnread on uid: ", uid, " val: ", snapshot.val());
+        newConvs[key].unread = 0;
+        this.setState({
+          convs: newConvs
+        });
+      }
     });
   }
 
   chatStatusListener(userId, key) {
     const ref = this.props.fire.database().ref("users/" + userId + "/chatStatus");
-
     ref.on(
       "value",
       snapshot => {
         if (snapshot.exists()) {
           console.log("listenChatStatus: ", snapshot.val());
-          const newConvs = this.state.convs;
-          newConvs[key].chatStatus = snapshot.val();
+          console.log("key: ", key);
+          const updatedConvs = this.state.convs;
+          updatedConvs[key].chatStatus = snapshot.val();
+          console.log("updatedConvs: ", updatedConvs);
           this.setState({
-            convs: newConvs
+            convs: updatedConvs
           });
-          return;
+        } else {
+          const updatedConvs = this.state.convs;
+          updatedConvs[key].chatStatus = '';
+          this.setState({
+            convs: updatedConvs
+          });
         }
-        const newConvs = this.state.convs;
-        newConvs[key].chatStatus = '';
-        this.setState({
-          convs: newConvs
-        });
-        return;
+        console.log("this.state.convs: ", this.state.convs);
       },
       err => {
         console.log("Messages/chatStatusListener error: ", err);
@@ -266,7 +266,7 @@ export default class Messages extends Component {
       busyBadge: {
         marginTop: 26,
         marginLeft: -35,
-        backgroundColor: "orange",
+        backgroundColor: "#FF9800",
         marginRight: 5,
         borderWidth: 1.3,
         borderColor: "white",
@@ -275,7 +275,7 @@ export default class Messages extends Component {
       idleBadge: {
         marginTop: 26,
         marginLeft: -35,
-        backgroundColor: "#FFF305",
+        backgroundColor: "#FFC107",
         marginRight: 5,
         borderWidth: 1.3,
         borderColor: "white",
@@ -284,7 +284,16 @@ export default class Messages extends Component {
       blueBadge: {
         marginTop: 26,
         marginLeft: -35,
-        backgroundColor: "#607D8B",
+        backgroundColor: "#1976D2",
+        marginRight: 5,
+        borderWidth: 1.3,
+        borderColor: "white",
+        padding: 6
+      },
+      defaultBadge: {
+        marginTop: 26,
+        marginLeft: -35,
+        backgroundColor: "#4CAF50",
         marginRight: 5,
         borderWidth: 1.3,
         borderColor: "white",
@@ -349,6 +358,19 @@ export default class Messages extends Component {
                 <Badge containerStyle={_styles.unreadBadge2}>
                   <Text style={_styles.unreadBadgeText}>{unread}</Text>
                 </Badge>}
+              <Text style={_styles.subText2}>{sub}</Text>
+            </View>
+          );
+        default:
+          return (
+            <View style={_styles.viewStyle}>
+              {unread > 0 &&
+                <Badge containerStyle={_styles.unreadBadge2}>
+                  <Text style={_styles.unreadBadgeText}>{unread}</Text>
+                </Badge>}
+                <Badge containerStyle={_styles.defaultBadge}>
+                  <Text style={_styles.busyText}>{status}</Text>
+                </Badge>
               <Text style={_styles.subText2}>{sub}</Text>
             </View>
           );
@@ -592,31 +614,33 @@ export default class Messages extends Component {
             {!this.state.noData &&
               !this.state.isLoading &&
               <List containerStyle={{ marginBottom: 20, marginTop: -2 }}>
-                {this.state.convs.map((l, i) => (
-                  <ListItem
-                    avatar={{ uri: l.avatarUrl }}
-                    avatarStyle={this.getAvatarStyle(l.online)}
-                    key={l.uid}
-                    title={l.name}
-                    titleStyle={{ marginLeft: 20 }}
-                    subtitle={this.renderSubtitle(
-                      l.subtitle,
-                      l.chatStatus,
-                      l.unread
-                    )}
-                    rightIcon={this.handlePriority(l.priority)}
-                    onPress={() => {
-                      Actions.chat({
-                        uid: l.uid,
-                        name: l.name,
-                        chatStatus: l.chatStatus,
-                        birthday: l.birthday,
-                        avatarUrl: l.avatarUrl,
-                        chatType: l.chatType,
-                      });
-                    }}
-                  />
-                ))}
+                {
+                  this.state.convs.map((l, i) => (
+                    <ListItem
+                      avatar={{ uri: l.avatarUrl }}
+                      avatarStyle={this.getAvatarStyle(l.online)}
+                      key={i}
+                      title={l.name}
+                      titleStyle={{ marginLeft: 20 }}
+                      subtitle={this.renderSubtitle(
+                        l.subtitle,
+                        l.chatStatus,
+                        l.unread
+                      )}
+                      rightIcon={this.handlePriority(l.priority)}
+                      onPress={() => {
+                        Actions.chat({
+                          uid: l.uid,
+                          name: l.name,
+                          chatStatus: l.chatStatus,
+                          birthday: l.birthday,
+                          avatarUrl: l.avatarUrl,
+                          chatType: l.chatType,
+                        });
+                      }}
+                    />
+                  ))
+                }
               </List>}
             {this.state.noData &&
               !this.state.isLoading &&
