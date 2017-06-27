@@ -40,7 +40,9 @@ const NickBirthday = inject("SubjectStore")(observer(({ SubjectStore }) => {
         </View>
         <View>
           <TextInput
+            placeholder = { SubjectStore.displayName }
             maxLength = { 10 }
+            numberOfLines = { 1 }
             onChangeText = { (text) => SubjectStore.setDisplayName(text) }
             value = { SubjectStore.displayName }
           />
