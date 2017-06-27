@@ -67,6 +67,10 @@ class SubjectStore {
     return this.user.birthday
   }
 
+  @computed get age(){
+    return this.user.birthday ? this.calculateAge() : 18
+  }
+
   @computed get city(){
     return this.user.city.length > 15 ? this.user.city.substring(0,15) + "..." : this.user.city
   }
@@ -430,6 +434,12 @@ class SubjectStore {
     } catch(err) {
       console.log(err);
     }
+  }
+
+  calculateAge(){
+    const ageDifMs = Date.now() - new Date(this.user.birthday).getTime()
+    const ageDate = new Date(ageDifMs)
+    return Math.abs(ageDate.getUTCFullYear() - 1970)
   }
 }
 
