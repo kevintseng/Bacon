@@ -42,7 +42,7 @@ const MeetChanceAction = {
   },
 
   handleLike: function handleLike(){
-    alert("轉到留言頁面")
+    Actions.chat({ uid: this.user.uid, name: this.user.displayName, avatarUrl: this.user.photoURL, birthday: this.user.birthday,  chatType: "visitor" })
   },
 
   getNext: function getNext(){
