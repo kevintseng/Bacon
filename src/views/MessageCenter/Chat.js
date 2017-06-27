@@ -714,7 +714,25 @@ export default class Chat extends Component {
     this.setState({ showVisitorModal: false });
   };
 
+  handleInsufficientCredit = () => {
+    this.setState({
+      showInsufficientCreditModal: true,
+    });
+  }
+
   useCredit = (reason, val) => {
+    const balance = this.props.store.user.credit;
+    if(balance - val <= 0) {
+      this.setState({
+        showMsgLimitModal: false,
+        showVisitorModal: false,
+        showPriorityModal: false,
+        showTooManyVisitorMsgSentModal: false,
+        showTooManyVisitorMsgReceivedModal: false,
+      });
+      setTimeout(() => { this.handleInsufficientCredit(); }, 1000);
+      return;
+    }
     this.props.store.deductCredit(val);
 
     switch (reason) {
@@ -776,6 +794,7 @@ export default class Chat extends Component {
   };
 
   render() {
+    console.log("this.state.showInsufficientCreditModal: ", this.state.showInsufficientCreditModal);
     return (
       <View style={[this.state.size, { marginTop: -60 }]}>
         {this.state.actions &&
@@ -1025,7 +1044,6 @@ export default class Chat extends Component {
             </Text>
           </View>
         </Modal>
-
       </View>
     );
   }
