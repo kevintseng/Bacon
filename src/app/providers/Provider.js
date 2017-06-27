@@ -69,7 +69,7 @@ export const ShowProvider = () => (
 )
 
 export const EditProvider = (props) => (
-  <Provider SubjectStore = { AppInitStore.wooer } >
+  <Provider SubjectStore = { AppInitStore.wooer } UIStore = { AppInitStore.ui }>
     <EditContainer {...props}/>
   </Provider>  
 )

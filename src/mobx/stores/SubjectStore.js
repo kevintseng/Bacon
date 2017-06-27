@@ -27,7 +27,8 @@ class SubjectStore {
   @observable creditButton
   //@observable sampleArray
 
-  constructor(firebase) {
+  constructor(firebase,ui) {
+    this.ui = ui
     this.loading = false
     this.onlyShowTherePhotos = false
     this.interaction = false
@@ -140,22 +141,30 @@ class SubjectStore {
   }
 
   @action onpressDisplayName(){
+    this.ui.displayName = this.displayName
+    this.ui.birthday = this.birthday
     Actions.AboutMeEdit({ content: <NickBirthday/>, title: '暱稱生日', onRight: this.updateNickBirthday })
   }
 
   @action onpressLocation(){
+    this.ui.city = this.user.city
     Actions.AboutMeEdit({ content: <Location/>, title: '所在位置', onRight: this.updateCity })
   }
 
   @action onpressIntroduce() {
+    this.ui.bio = this.bio
     Actions.AboutMeEdit({ content: <Introduce/>, title: '自我介紹', onRight: this.updateBio })
   }
 
   @action onpressLanguage() {
+    this.ui.langRaw = Object.assign({}, this.langRaw)
     Actions.AboutMeEdit({ content: <Language/>, title: '語言能力', onRight: this.updateLang })
   }
 
   @action onpressInterests() {
+    this.ui.hobbyInput = null
+    this.ui.deleteHobby = []
+    this.ui.hobby = this.hobby.slice()
     Actions.AboutMeEdit({ content: <Interests/>, title: '興趣愛好', onRight: this.updateHobby })
   }
 
@@ -280,29 +289,36 @@ class SubjectStore {
   }
 
   @action updateNickBirthday(){
+    this.user.displayName = this.ui.displayName
+    this.user.birthday = this.ui.birthday
     this.updateToFirebase('displayName', this.user.displayName)
     this.updateToFirebase('birthday', this.user.birthday)
     Actions.AboutMeShow({type: 'reset'})    
   }
 
   @action updateCity(){
+    this.user.city = this.ui.city
     this.updateToFirebase('city', this.user.city)
     Actions.AboutMeShow({type: 'reset'})    
   }
 
   @action updateBio(){
+    this.user.bio = this.ui.bio
     this.updateToFirebase('bio', this.user.bio)
     Actions.AboutMeShow({type: 'reset'})    
   }
 
   @action updateLang(){
     //console.log(this.user.lang)
+    this.user.lang = this.ui.langRaw
     this.updateToFirebase('lang', this.user.lang)
     Actions.AboutMeShow({type: 'reset'})     
   }
 
   @action updateHobby(){
-    this.hobbyInput = null
+    this.ui.hobbyInput = null
+    this.user.hobby = this.ui.hobby
+    this.deleteHobby = this.ui.deleteHobby
     const filterd_hobby = this.user.hobby.filter( ( el ) => {
       return this.deleteHobby.indexOf( el ) < 0;
     } )
