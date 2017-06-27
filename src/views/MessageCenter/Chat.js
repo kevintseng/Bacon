@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
     backgroundColor: "lightblue",
     padding: 12,
     margin: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)"
-  }
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
 });
 
 const ImagePickerOptions = {
@@ -69,6 +69,7 @@ const ImagePickerOptions = {
 export default class Chat extends Component {
   constructor(props) {
     super(props);
+    
     this.uid = this.props.store.user.uid;
     this.otherUid = this.props.uid;
     this.convKey = this.props.convKey ? this.props.convKey : null;
