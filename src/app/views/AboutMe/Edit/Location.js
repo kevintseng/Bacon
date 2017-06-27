@@ -22,18 +22,18 @@ const styles = {
 //const homePlace = {description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
 //const workPlace = {description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
 
-const Location = inject("SubjectStore")(observer(({ SubjectStore }) => {
+const Location = inject("UIStore")(observer(({ UIStore }) => {
 
   return (
     <View style = { styles.Location } >
       <GooglePlacesAutocomplete
         styles = { styles.googlePlacesAutocomplete }
-        placeholder = {SubjectStore.city}
-        minLength = { 2 }
+        placeholder = {UIStore.city}
+        minLength = { 1 }
         autoFocus
         listViewDisplayed
         fetchDetails
-        onPress = { (data) => {SubjectStore.setCity(data)} }
+        onPress = { (data) => {UIStore.setCity(data)} }
         getDefaultValue = { () => "" }
         query = {   
           {
