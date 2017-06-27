@@ -462,6 +462,7 @@ export default class Messages extends Component {
   }
 
   handleUpgradeToVIP = () => {
+    this.props.store.upgradeMembership();
     this.setState({
       statusModalShow: false,
     });
@@ -648,7 +649,7 @@ export default class Messages extends Component {
                textStyle={chatStatusStyles.textStyle}
                buttonStyle={chatStatusStyles.buttonStyle} style={chatStatusStyles.containerStyle}
                iconRight icon={{name:'chevron-right', color: 'gray'}}/>
-             <FormInput containerStyle={chatStatusStyles.inputContainerStyle} onChangeText={this.handleChatStatusChange} placeholder='自定義' value={selfInputStatus} maxLength={3} editable={this.props.store.user.vip}/>
+             <FormInput containerStyle={chatStatusStyles.inputContainerStyle} onChangeText={this.handleChatStatusChange} placeholder='自定義' defaultValue={selfInputStatus} maxLength={3} editable={this.props.store.user.vip}/>
               {
                this.state.selfInputChatStatus &&
                <Button title='送出' onPress={() => this.handleUpdateStatus(this.state.selfInputChatStatus) }

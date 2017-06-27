@@ -96,15 +96,11 @@ class AppStore {
     this.updateToFirebase('hobby', val)
   }
 
-  @action upgradeMembership(firebase) {
+  @action upgradeMembership() {
     if(!this.user.vip) {
-      this.user.vip = 'vip1';
-      this.updateUserAtFirebase(firebase, 'vip', 'vip1');
-    } else if(this.user.vip === 'vip1') {
-      this.updateUserAtFirebase(firebase, 'vip', 'vip2');
-      this.user.vip = 'vip2';
+      this.user.vip = true;
+      this.updateToFirebase('vip', true);
     }
-
   }
 
   @action setPhotos(gallery) {
@@ -140,15 +136,6 @@ class AppStore {
   updateToFirebase(key, val){
     const setFirebase = this.firebase.database().ref('users/' + this.user.uid + '/' + key);
     setFirebase.set(val);
-  }
-
-  updateUserAtFirebase(firebase, key, val){
-    try {
-      const setFirebase = firebase.database().ref('users/' + this.user.uid + '/' + key);
-      setFirebase.set(val);
-    } catch(err) {
-      console.log(err);
-    }
   }
 }
 
