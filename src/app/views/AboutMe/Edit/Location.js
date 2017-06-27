@@ -29,7 +29,7 @@ const Location = inject("SubjectStore")(observer(({ SubjectStore }) => {
       <GooglePlacesAutocomplete
         styles = { styles.googlePlacesAutocomplete }
         placeholder = {SubjectStore.city}
-        minLength = { 2 }
+        minLength = { 1 }
         autoFocus
         listViewDisplayed
         fetchDetails
