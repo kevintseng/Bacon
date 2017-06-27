@@ -71,7 +71,13 @@ export default class Chat extends Component {
     super(props);
 
     this.uid = this.props.store.user.uid;
-    this.otherUid = this.props.uid;
+    this.other = {
+      uid: this.props.uid,
+      name: this.props.name,
+      birthday: this.props.birthday,
+      avatarUrl: this.props.avatarUrl,
+      chatStatus: this.props.chatStatus,
+    }
     this.convKey = this.props.convKey ? this.props.convKey : null;
     this.loadAfterMsgId = 0;
     this.title = "";
@@ -99,11 +105,11 @@ export default class Chat extends Component {
   }
 
   componentWillMount() {
-    const age = this.props.birthday
-      ? Moment().diff(this.props.birthday, "years")
+    const age = this.other.birthday
+      ? Moment().diff(this.other.birthday, "years")
       : "";
-    const name = this.props.name ? this.props.name : "";
-    const chatStatus = this.props.chatStatus ? this.props.chatStatus : "";
+    const name = this.other.name ? this.other.name : "";
+    const chatStatus = this.other.chatStatus ? this.other.chatStatus : "";
     if (chatStatus === "我的狀態" || chatStatus === "") {
       this.title = name + ", " + age;
     } else {
@@ -125,23 +131,18 @@ export default class Chat extends Component {
         this.updateAndLoad(this.convKey);
       } else if (
         !this.props.store.user.conversations ||
-        !this.props.store.user.conversations[this.otherUid]
+        !this.props.store.user.conversations[this.other.uid]
       ) {
         //Create a new conversation
         this.createNewConv();
       } else {
         //convKey not given but theOtherUid is given
         this.convKey = this.props.store.user.conversations[
-          this.otherUid
+          this.other.uid
         ].convKey;
         this.updateAndLoad(this.convKey);
       }
 
-      if (this.props.chatType === "visitor") {
-        this.setState({
-          showVisitorModal: true
-        });
-      }
     }
   };
 
@@ -177,8 +178,8 @@ export default class Chat extends Component {
   //update users' profile in conversation data
   updateAndLoad = _convKey => {
     const me = this.uid;
-    const theOther = this.otherUid;
-
+    const theOther = this.other.uid;
+    let chatType = null;
     //load conversation data
     this.props.fire
       .database()
@@ -186,13 +187,14 @@ export default class Chat extends Component {
       .once("value")
       .then(snap => {
         const users = snap.val();
+        console.warn(this.other.uid);
         //If user has changed name and avatar since last time, update.
-        users[theOther].name = this.props.name;
-        users[theOther].avatarUrl = this.props.avatarUrl;
+        users[theOther].name = this.other.name;
+        users[theOther].avatarUrl = this.other.avatarUrl;
         users[me].name = this.props.store.user.displayName;
         users[me].avatarUrl = this.props.store.user.photoURL;
         this.loadAfterMsgId = users[me].deleted;
-
+        chatType = users[me].chatType;
         this.props.fire
           .database()
           .ref("conversations/" + _convKey + "/users")
@@ -201,16 +203,21 @@ export default class Chat extends Component {
       .then(() => {
         this.loadAndListenMessages(this.convKey, this.loadAfterMsgId, me);
         this.updateVisitorMsgLimit(this.convKey, this.uid);
+        if (chatType === "visitor") {
+          this.setState({
+            showVisitorModal: true
+          });
+        }
       });
   };
 
   createNewConv = () => {
     this.convKey = this.props.fire.database().ref("conversations").push().key;
     const users = {};
-    users[this.OtherUid] = {
-      name: this.props.name,
-      birthday: this.props.birthday,
-      avatarUrl: this.props.avatarUrl,
+    users[this.other.uid] = {
+      name: this.other.name,
+      birthday: this.other.birthday,
+      avatarUrl: this.other.avatarUrl,
       unread: 0,
       deleted: false,
       lastRead: 0,
@@ -227,7 +234,7 @@ export default class Chat extends Component {
       lastRead: 0,
       chatType: "normal",
       priority: false,
-      visitorMsgLimit: 2
+      visitorMsgLimit: 3
     };
 
     const convData = {
@@ -235,14 +242,14 @@ export default class Chat extends Component {
       createTime: Moment().unix()
     };
 
-    this.setState({ visitorMsgLimit: 2 });
+    this.setState({ visitorMsgLimit: 3 });
 
     //Add new conv to user profile
     this.props.fire
       .database()
       .ref("conversations/" + this.convKey)
       .update(convData)
-      .then(this.props.store.addNewConv(this.otherUid, this.convKey))
+      .then(this.props.store.addNewConv(this.other.uid, this.convKey))
       .then(
         //update and load conversation and messages
         this.updateAndLoad(this.convKey)
@@ -378,7 +385,7 @@ export default class Chat extends Component {
     msgRef.update(updates);
 
     //adds 1 to the other user"s conversation bucket"s unread field
-    this.unreadAddOne(this.convKey, this.otherUid);
+    this.unreadAddOne(this.convKey, this.other.uid);
     console.log("visitorMsgLimit: ", this.state.visitorMsgLimit);
     if (this.state.visitorMsgLimit > 0) {
       this.visitorMsgLimitDeductOne(this.convKey, this.uid);
@@ -550,7 +557,7 @@ export default class Chat extends Component {
             };
           });
           //adds 1 to conversation
-          this.unreadAddOne(this.convKey, this.otherUid);
+          this.unreadAddOne(this.convKey, this.other.uid);
           //有發言回應後就取消 priority
           this.removeConversationPriority(this.convKey, this.uid);
         }
@@ -625,7 +632,7 @@ export default class Chat extends Component {
             };
           });
           //adds 1 to conversation
-          this.unreadAddOne(this.convKey, this.otherUid);
+          this.unreadAddOne(this.convKey, this.other.uid);
           //有發言回應後就取消 priority
           this.removeConversationPriority(this.convKey, this.uid);
         }
@@ -761,7 +768,7 @@ export default class Chat extends Component {
         });
         break;
       case "priority":
-        this.makeConversationPriority(this.otherUid);
+        this.makeConversationPriority(this.other.uid);
         this.setState({
           showPriorityModal: false
         });

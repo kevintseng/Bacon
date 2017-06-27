@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux'
 
 //useStrict(true)
 const MeetChanceAction = {
-  
+
   initMeetChanceAll: action(function initMeetChanceAll(){
     this.loading = true
     this.setUser()
@@ -42,19 +42,19 @@ const MeetChanceAction = {
   },
 
   handleLike: function handleLike(){
-    Actions.chat({ uid: this.user.uid, name: this.user.displayName, avatarUrl: this.user.photoURL, birthday: this.user.birthday,  chatType: "visitor" })
+    Actions.chat({ uid: this.prey.uid, name: this.prey.displayName, avatarUrl: this.prey.photoURL, birthday: this.prey.birthday, chatStatus: this.prey.chatStatus })
   },
 
   getNext: function getNext(){
     const query = this.firebase.database().ref("collection")
     let conut = 0
-    query.orderByChild("prey").equalTo(this.prey.uid).once("value",snap => { 
+    query.orderByChild("prey").equalTo(this.prey.uid).once("value",snap => {
       //console.warn(snap.asArray().length)
       snap.forEach(() => { conut++ })
       if (conut > 0) {
         alert("已在您的收藏清單中")
       } else {
-        this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})  
+        this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})
       }
     })
     //this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})
