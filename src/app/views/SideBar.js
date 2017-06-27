@@ -71,7 +71,7 @@ const SideBar = observer(({ store }) => {
             roundAvatar
             containerStyle = { listItemContainerStyle }
             avatar = { store.user.photoURL ? store.user.photoURL : loading}
-            title = { <Text>{store.user.displayName}</Text> }
+            title = { <Text>  {store.user.displayName}</Text> }
             onPress = { store.handleOnPress('aboutme') }
         />
         
