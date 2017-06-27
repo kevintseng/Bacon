@@ -15,21 +15,24 @@ const AdvancedInfo = inject("SubjectStore")(observer(({ SubjectStore }) => {
     <View>
       <Item 
         title = "自我介紹" 
-        displayTitle styleTitle = { { color: "#000000" } } 
+        displayTitle 
+        styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
         onpress = { SubjectStore.onpressIntroduce.bind(SubjectStore) } >
         <Text numberOfLines={1}>{ SubjectStore.bio }</Text>
       </Item>
       <Item 
         title = "語言能力" 
-        displayTitle styleTitle = { { color: "#000000" } } 
+        displayTitle 
+        styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
         onpress = { SubjectStore.onpressLanguage.bind(SubjectStore) } >
         <Text numberOfLines={1}>{ SubjectStore.lang }</Text>
       </Item>
       <Item 
         title = "興趣愛好" 
-        displayTitle styleTitle = { { color: "#000000" } } 
+        displayTitle 
+        styleTitle = { { color: "#000000" } } 
         tag = "編輯" 
         onpress = { SubjectStore.onpressInterests.bind(SubjectStore) } >
           <View style={{alignItems: 'flex-start',flexDirection: 'row', marginTop: 5, flexWrap: 'wrap'}}>

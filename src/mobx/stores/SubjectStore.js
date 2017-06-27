@@ -179,9 +179,10 @@ class SubjectStore {
   }
 
   @action setDisplayName(val){
-    if (val.length > 0 ) {
+    //if (val.length > -1 ) {
       this.user.displayName = val
-    }
+      //console.warn(val)
+    //}
   }
 
   @action setBirthday(val){
@@ -197,9 +198,9 @@ class SubjectStore {
   } 
 
   @action setBio(val){
-    if (val) {
+    //if (val) {
       this.user.bio = val
-    }  
+    //}  
   } 
 
   @action setLang(val) {
