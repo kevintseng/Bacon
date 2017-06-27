@@ -8,7 +8,7 @@ const styles = {
     flex: 1
   }
 }
-const Introduce = inject("SubjectStore")(observer(({ SubjectStore }) => {
+const Introduce = inject("UIStore")(observer(({ UIStore }) => {
   return(
     <View style = { styles.Introduce }> 
       <View>
@@ -18,14 +18,14 @@ const Introduce = inject("SubjectStore")(observer(({ SubjectStore }) => {
         <TextInput
           //underlineColorAndroid = 'transparent'
           textAlignVertical = 'top'
-          placeholder = { SubjectStore.bio }
+          //placeholder = { UIStore.bio }
           multiline
           autoCorrect
           numberOfLines = { 100 }
           //editable = { true }
           maxLength = { 500 }        
-          onChangeText = { (text) => SubjectStore.setBio(text) }
-          value = { SubjectStore.bio }
+          onChangeText = { (text) => UIStore.setBio(text) }
+          value = { UIStore.bio }
         /> 
       </View> 
     </View>

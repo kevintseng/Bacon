@@ -19,20 +19,11 @@ const styles = {
   }
 }
 
-@inject("SubjectStore") @observer
+@inject("UIStore") @observer
 class Language extends Component {
 
-  //onPress = (langauge) => {
-    //this.setState({ checked: !this.state.checked })
-  //  this.setState({ [langauge]: !this.state[langauge] })
-  //}
-
-  //componentWillMount(){
-  //  this.state = this.props.SubjectStore.langRaw
-  //}
-
   renderlanguages = () => {
-    return Object.keys(this.props.SubjectStore.langRaw).map((langauge) => { 
+    return Object.keys(this.props.UIStore.langRaw).map((langauge) => { 
       return(
         <View key = { langauge } style = { styles.CheckBox }> 
          <CheckBox
@@ -44,8 +35,8 @@ class Language extends Component {
             checkedColor = 'blue'
             //checked = { this.state.checked }
             //onPress = { this.onPress }
-            checked = { this.props.SubjectStore.langRaw[langauge] }
-            onPress = { () => this.props.SubjectStore.setLang(langauge) }            
+            checked = { this.props.UIStore.langRaw[langauge] }
+            onPress = { () => this.props.UIStore.setLang(langauge) }            
           />
         </View>
       ) 

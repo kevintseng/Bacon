@@ -30,7 +30,7 @@ const maxDay = () => {
   return maxDate;
 }
 
-const NickBirthday = inject("SubjectStore")(observer(({ SubjectStore }) => {
+const NickBirthday = inject("UIStore")(observer(({ UIStore }) => {
   
   return(
     <View style = { styles.NickBirthday }>
@@ -40,11 +40,11 @@ const NickBirthday = inject("SubjectStore")(observer(({ SubjectStore }) => {
         </View>
         <View>
           <TextInput
-            placeholder = { SubjectStore.displayName }
+            //placeholder = { UIStore.displayName }
             maxLength = { 10 }
             numberOfLines = { 1 }
-            onChangeText = { (text) => SubjectStore.setDisplayName(text) }
-            value = { SubjectStore.displayName }
+            onChangeText = { (text) => UIStore.setDisplayName(text) }
+            value = { UIStore.displayName }
           />
         </View>
       </View>
@@ -56,7 +56,7 @@ const NickBirthday = inject("SubjectStore")(observer(({ SubjectStore }) => {
         <View style = {styles.DataPicker}>
           <DatePicker
             style = { styles.dataPicker }
-            date = { SubjectStore.birthday }
+            date = { UIStore.birthday }
             mode = "date"
             placeholder = "您的生日"
             format = "YYYY-MM-DD"
@@ -65,7 +65,7 @@ const NickBirthday = inject("SubjectStore")(observer(({ SubjectStore }) => {
             confirmBtnText = "完成"
             cancelBtnText = "取消"
             showIcon = { false }
-            onDateChange = { date => SubjectStore.setBirthday(date) }
+            onDateChange = { date => UIStore.setBirthday(date) }
           /> 
         </View>
       </View> 
