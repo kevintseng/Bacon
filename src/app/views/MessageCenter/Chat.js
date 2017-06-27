@@ -69,7 +69,7 @@ const ImagePickerOptions = {
 export default class Chat extends Component {
   constructor(props) {
     super(props);
-    
+
     this.uid = this.props.store.user.uid;
     this.otherUid = this.props.uid;
     this.convKey = this.props.convKey ? this.props.convKey : null;
@@ -361,7 +361,7 @@ export default class Chat extends Component {
   onSend = (messages = []) => {
     if (this.state.visitorMsgLimit <= 0) {
       this.setState({ showMsgLimitModal: true });
-      return;
+      return false;
     }
     const msgRef = this.props.fire
       .database()
@@ -394,6 +394,7 @@ export default class Chat extends Component {
     }
 
     Keyboard.dismiss();
+    return true;
   };
 
   renderFooter = () => {
@@ -483,7 +484,11 @@ export default class Chat extends Component {
   };
 
   handleCameraPicker = () => {
-    const msgRef = this.props.fire
+    if (this.state.visitorMsgLimit <= 0) {
+      this.setState({ showMsgLimitModal: true });
+      return false;
+    }
+    const msgRef = this.firebase
       .database()
       .ref("conversations/" + this.convKey + "/messages");
     console.log("handleCameraPicker called");
@@ -499,14 +504,7 @@ export default class Chat extends Component {
       } else {
         this.setState({ actions: "uploading" });
         console.log("Image data", response);
-        const firebaseRefObj = this.props.fire
-          .storage()
-          .ref(
-            "chatPhotos/" +
-              this.uid +
-              "/" +
-              response.fileName.replace("JPG", "jpg")
-          );
+
         const resizedUri = await resizeImage(
           response.uri,
           600,
@@ -515,6 +513,16 @@ export default class Chat extends Component {
           80
         );
         console.log("resizedUri", resizedUri);
+
+        const firebaseRefObj = this.props.fire
+          .storage()
+          .ref(
+            "chatPhotos/" +
+              this.uid +
+              "/" +
+              response.fileName.replace("JPG", "jpg")
+          );
+
         const downloadUrl = await uploadImage(
           resizedUri,
           firebaseRefObj,
@@ -534,22 +542,27 @@ export default class Chat extends Component {
           image: downloadUrl
         };
 
-        this.setState(previousState => {
-          return {
-            messages: GiftedChat.append(previousState.messages, msgObj),
-            actions: false
-          };
-        });
-
-        //adds 1 to conversation
-        this.unreadAddOne(this.convKey, this.otherUid);
-        //有發言回應後就取消 priority
-        this.removeConversationPriority(this.convKey, this.uid);
+        if(this.onSend()) {
+          this.setState(previousState => {
+            return {
+              messages: GiftedChat.append(previousState.messages, msgObj),
+              actions: false
+            };
+          });
+          //adds 1 to conversation
+          this.unreadAddOne(this.convKey, this.otherUid);
+          //有發言回應後就取消 priority
+          this.removeConversationPriority(this.convKey, this.uid);
+        }
       }
     });
   };
 
   handlePhotoPicker = () => {
+    if (this.state.visitorMsgLimit <= 0) {
+      this.setState({ showMsgLimitModal: true });
+      return false;
+    }
     const msgRef = this.props.fire
       .database()
       .ref("conversations/" + this.convKey + "/messages");
@@ -566,14 +579,7 @@ export default class Chat extends Component {
       } else {
         this.setState({ actions: "uploading" });
         console.log("Image data", response);
-        const firebaseRefObj = this.props.fire
-          .storage()
-          .ref(
-            "chatPhotos/" +
-              this.uid +
-              "/" +
-              response.fileName.replace("JPG", "jpg")
-          );
+
         const resizedUri = await resizeImage(
           response.uri,
           600,
@@ -582,6 +588,16 @@ export default class Chat extends Component {
           80
         );
         console.log("resizedUri", resizedUri);
+
+        const firebaseRefObj = this.props.fire
+          .storage()
+          .ref(
+            "chatPhotos/" +
+              this.uid +
+              "/" +
+              response.fileName.replace("JPG", "jpg")
+          );
+
         const downloadUrl = await uploadImage(
           resizedUri,
           firebaseRefObj,
@@ -601,17 +617,18 @@ export default class Chat extends Component {
           image: downloadUrl
         };
 
-        this.setState(previousState => {
-          return {
-            messages: GiftedChat.append(previousState.messages, msgObj),
-            actions: false
-          };
-        });
-
-        //adds 1 to conversation
-        this.unreadAddOne(this.convKey, this.otherUid);
-        //有發言回應後就取消 priority
-        this.removeConversationPriority(this.convKey, this.uid);
+        if(this.onSend()) {
+          this.setState(previousState => {
+            return {
+              messages: GiftedChat.append(previousState.messages, msgObj),
+              actions: false
+            };
+          });
+          //adds 1 to conversation
+          this.unreadAddOne(this.convKey, this.otherUid);
+          //有發言回應後就取消 priority
+          this.removeConversationPriority(this.convKey, this.uid);
+        }
       }
     });
   };
