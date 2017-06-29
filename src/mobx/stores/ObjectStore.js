@@ -13,8 +13,9 @@ class ObjectStore {
   @observable loading
   @observable age_max
   @observable age_min
+  @observable is_coll
 
-  constructor(firebase,store) {
+  constructor(firebase,store,meetChance) {
     this.preyList = []
     this.user = {}
     this.prey = null
@@ -23,6 +24,8 @@ class ObjectStore {
     this.firebase = firebase
     this.age_min = 25
     this.age_max = 60
+    this.is_coll = false
+    this.meetChance = meetChance
   }
 
   @computed get displayName(){
@@ -65,6 +68,10 @@ class ObjectStore {
   @computed get photoVerified(){
     return this.prey.photoVerified
     //return typeof(this.prey.photoVerified) === 'boolean' ? this.prey.photoVerified : false
+  }
+
+  @computed get photoURL(){
+    return this.prey.photoURL
   }
 
   @computed get photos(){

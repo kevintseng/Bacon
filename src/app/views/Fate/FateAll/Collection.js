@@ -5,7 +5,7 @@ import { observer, inject } from "mobx-react/native"
 
 const Collection = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
-  const renderGoodImpression = ObjectStore.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName } photoURL={prey.photoURL} onPressButton={ function onPressButton(){ ObjectStore.goToFateSingle(prey) }}><Text style={{color: '#000000'}}>你們距離大約 7.9 公里</Text></Cookie>))
+  const renderGoodImpression = ObjectStore.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName } photoURL={prey.photoURL} onPressButton={ function onPressButton(){ ObjectStore.goToMeetChanceSingle(prey) }}><Text style={{color: '#000000'}}>你們距離大約 7.9 公里</Text></Cookie>))
 
   const indicator = (
     <ActivityIndicator

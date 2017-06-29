@@ -21,7 +21,7 @@ const SettingButton = () => (
     onPress={() => Actions.meetChanceEdit()}
   />  
 )
-
+/*
 const MeetChanceScene = (
   <Scene key = "meetchance">
     <Scene key = "meetChanceAll" hideTabBar component = { MeetChanceAllProvider } title = "巧遇" renderLeftButton = { menuButton } renderRightButton={ SettingButton }/>
@@ -29,17 +29,17 @@ const MeetChanceScene = (
     <Scene key = "meetChanceEdit" hideTabBar component = { MeetChanceEditProvider } title = "巧遇設定" renderLeftButton = { menuButton } rightTitle = { rightTitle() } onRight = { handleOnRight }/>
   </Scene>
 )
-/*
+*/
 const MeetChanceAllScene = (
-    <Scene key = "nearbyAll" hideTabBar component = { MeetChanceAllProvider } title = "巧遇" renderLeftButton = { menuButton } renderRightButton={ SettingButton }/>
+    <Scene key = "meetChanceAll" hideTabBar component = { MeetChanceAllProvider } title = "巧遇" renderLeftButton = { menuButton } renderRightButton={ SettingButton }/>
 )
 
 const MeetChanceSingleScene = (
-    <Scene key = "nearbySingle" hideTabBar component = { MeetChanceSingleProvider } title = "巧遇" renderLeftButton = { menuButton } renderRightButton={ SettingButton }/>
+    <Scene key = "meetChanceSingle" hideTabBar component = { MeetChanceSingleProvider } title = "巧遇" renderLeftButton = { menuButton } renderRightButton={ SettingButton }/>
 )
 
 const MeetChanceEdit = (
-  <Scene key = "MeetChanceEdit" hideTabBar component = { MeetChanceEditProvider } title = "巧遇設定" renderLeftButton = { menuButton } rightTitle = { rightTitle() } onRight = { handleOnRight }/>
+  <Scene key = "meetChanceEdit" hideTabBar component = { MeetChanceEditProvider } title = "巧遇設定" renderLeftButton = { menuButton } rightTitle = { rightTitle() } onRight = { handleOnRight }/>
 )
-*/
-export default MeetChanceScene
+
+export { MeetChanceAllScene, MeetChanceSingleScene, MeetChanceEdit }

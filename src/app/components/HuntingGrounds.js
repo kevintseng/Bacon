@@ -12,12 +12,12 @@ import { Interaction } from "./HuntingGrounds/Interaction"
 
 const { width, height } = Dimensions.get('window')
 
-const HuntingGrounds = ({leftIcon,rightIcon,showbutton}) => {
+const HuntingGrounds = ({leftIcon,rightIcon,showbutton,rightIconColor}) => {
   return(
     <View style={{flex: 1}}>
       <ScrollView style={{width, height}}>
           <View style={{width, height: width}}>
-            <Collapse leftIcon={leftIcon} rightIcon={rightIcon} showbutton={showbutton}/>
+            <Collapse leftIcon={leftIcon} rightIcon={rightIcon} rightIconColor={rightIconColor} showbutton={showbutton}/>
           </View>
           <View>   
             <BasicInfo/>
