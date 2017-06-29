@@ -27,6 +27,15 @@ const MeetChanceAction = {
     this.loading = false
   }),
 
+  saveVistors: function saveVistors(){
+    const query = this.firebase.database().ref("visitors")
+    query.orderByChild("prey").equalTo(this.prey.uid).once("value",snap => {
+      if (snap.val() == null) {
+        this.firebase.database().ref("visitors").push({wooer: this.user.uid , prey: this.prey.uid})
+      }
+    })
+  },
+
   fetchPreyListsByMeetChance: action(function fetchPreyListsByMeetChance(latitude, longitude){
     this.preyList = []
     const query = this.firebase.database().ref("/user_locations/")
@@ -64,21 +73,14 @@ const MeetChanceAction = {
     Actions.chat({ uid: this.prey.uid, name: this.prey.displayName, avatarUrl: this.prey.photoURL, birthday: this.prey.birthday, chatStatus: this.prey.chatStatus })
   },
 
-  getNext: function getNext(){
+  getNext: function saveCollection(){
     const query = this.firebase.database().ref("collection")
-    let conut = 0
     query.orderByChild("prey").equalTo(this.prey.uid).once("value",snap => {
-      //console.warn(snap.asArray().length)
-      snap.forEach(() => { conut++ })
-      if (conut > 0) {
-        alert("已在您的收藏清單中")
-      } else {
+      if (snap.val() == null) {
         this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})
       }
     })
     this.is_coll = true
-    //this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})
-    //alert("已收藏")
   },
 
   setprey: action(function setprey(prey){

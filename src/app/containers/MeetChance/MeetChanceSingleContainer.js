@@ -25,6 +25,10 @@ export default class MeetChanceSingleContainer extends Component {
     // this.getLocation();
   }
 
+  componentDidMount(){
+    this.ObjectStore.saveVistors()
+  }
+
   render() {
 
     const { ObjectStore } = this.props
