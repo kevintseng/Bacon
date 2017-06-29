@@ -67,6 +67,10 @@ class ObjectStore {
     //return typeof(this.prey.photoVerified) === 'boolean' ? this.prey.photoVerified : false
   }
 
+  @computed get photoURL(){
+    return this.prey.photoURL
+  }
+
   @computed get photos(){
    return this.checkObject(this.prey.photos) ? this.prey.photos : []
   }
