@@ -10,6 +10,23 @@ const MeetChanceAction = {
     this.setUser()
   }),
 
+  initMeetChanceSingle: action(function initMeetChanceSingle(){
+    this.loading = true
+    const query = this.firebase.database().ref("collection")
+    query.orderByChild("prey").equalTo(this.prey.uid).once("value",snap => {
+      if (snap.val() !== null) {
+        this.is_coll = true
+      } else {
+        this.is_coll = false
+      }
+    })
+    .then(() => {
+    }).catch(() => {
+     console.warn("Promise Rejected");
+    })
+    this.loading = false
+  }),
+
   fetchPreyListsByMeetChance: action(function fetchPreyListsByMeetChance(latitude, longitude){
     this.preyList = []
     const query = this.firebase.database().ref("/user_locations/")
@@ -29,7 +46,9 @@ const MeetChanceAction = {
   }),
 
   setPreyListByKey: action(function setPreyListByKey(key){
-    this.firebase.database().ref('users/' + key).once('value').then(snap => { this.preyList.push(snap.val()) })
+    this.firebase.database().ref('users/' + key).once('value').then(snap => { this.preyList.push(snap.val()) }).catch(() =>{
+     console.warn("Promise Rejected");
+})
   }),
 
   onPressButton: action(function onPressButton(prey){
@@ -57,6 +76,7 @@ const MeetChanceAction = {
         this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})
       }
     })
+    this.is_coll = true
     //this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})
     //alert("已收藏")
   },

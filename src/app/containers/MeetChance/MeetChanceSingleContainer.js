@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { View } from "react-native"
+import { View, ActivityIndicator } from "react-native"
 import { observer, inject } from "mobx-react/native"
 import { Actions } from "react-native-router-flux"
 
@@ -21,14 +21,30 @@ export default class MeetChanceSingleContainer extends Component {
   componentWillMount() {
     //console.log('Rendering Nearby');
     Actions.refresh({ key: 'drawer', open: false })
-    //this.ObjectStore.initPreyList()
+    this.ObjectStore.initMeetChanceSingle()
     // this.getLocation();
   }
 
   render() {
+
+    const { ObjectStore } = this.props
+    
+    const indicator = (
+      <ActivityIndicator
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 8,
+          marginTop: 150
+        }}
+        size="large"
+      />
+    )
+
     return(
       <View style={{flex: 1}}>
-        <MeetChanceSingle/>
+        { ObjectStore.loading && indicator }
+        { !ObjectStore.loading  && <MeetChanceSingle/> }
       </View>
     )
   }

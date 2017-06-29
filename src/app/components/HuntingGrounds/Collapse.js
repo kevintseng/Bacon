@@ -4,14 +4,14 @@ import Carousel from "react-native-looped-carousel"
 import { Button } from "react-native-elements"
 import { observer, inject } from "mobx-react/native"
 
-const Collapse = inject("ObjectStore")(observer(({ ObjectStore, leftIcon, rightIcon, showbutton }) => {
+const Collapse = inject("ObjectStore")(observer(({ ObjectStore, leftIcon, rightIcon, showbutton, rightIconColor }) => {
 
   //const photoURL = 'https://firebasestorage.googleapis.com/v0/b/kjyl-150415.appspot.com/o/collapse.jpg?alt=media&token=020621ab-6347-46ef-9b65-97beb6ce80f4'
 
   const renderButton = (
     <View style={{ flex: 1, marginLeft: 20, flexDirection: "row", alignItems: "flex-end", justifyContent: "center"}}>
       <Button icon={{ name: leftIcon, type: "evilicon", color: "#ffffff", size: 90}} backgroundColor="transparent" onPress={ObjectStore.handleLike.bind(ObjectStore)} />
-      <Button icon={{ name: rightIcon, type: "evilicon", color: "#ffffff", size: 90 }} backgroundColor="transparent" onPress={ObjectStore.getNext.bind(ObjectStore)} />
+      <Button icon={{ name: rightIcon, type: "evilicon", color: rightIconColor, size: 90 }} backgroundColor="transparent" onPress={ObjectStore.getNext.bind(ObjectStore)} />
     </View>
   )
 
