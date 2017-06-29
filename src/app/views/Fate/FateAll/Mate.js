@@ -6,7 +6,7 @@ import { Cookie } from './components/Cookie'
 const Mate = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
   const renderMate = ObjectStore.preyList.map(prey => (
-    <Cookie key={prey.uid} name={ prey.displayName } photoURL={prey.photoURL} onPressButton={ function onPressButton(){ ObjectStore.goToFateSingle(prey) }}><Text style={{color: '#000000'}}>你們在<Text style={{color: '#4169e1'}}>2017年5月</Text>互有好感</Text></Cookie>)
+    <Cookie key={prey.uid} name={ prey.displayName } photoURL={prey.photoURL} onPressButton={ function onPressButton(){ ObjectStore.goToMeetChanceSingle(prey) }}><Text style={{color: '#000000'}}>你們在<Text style={{color: '#4169e1'}}>2017年5月</Text>互有好感</Text></Cookie>)
   )
 
   const indicator = (

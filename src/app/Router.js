@@ -23,7 +23,7 @@ import FeedBack from "./views/Settings/FeedBack"
 // scenes
 import AboutMeScene from "./scenes/AboutMeScene"
 import MeetCuteScene from "./scenes/MeetCuteScene"
-import MeetChanceScene from "./scenes/MeetChanceScene"
+import { MeetChanceAllScene, MeetChanceSingleScene, MeetChanceEdit } from "./scenes/MeetChanceScene"
 import FateScene from "./scenes/FateScene"
 //import { MeetChanceAllScene, MeetChanceSingleScene, MeetChanceEdit } from "./scenes/MeetChanceScene"
 // providers
@@ -241,7 +241,9 @@ export default class RouterComponent extends Component {
             <Scene key="main" hideTabBar hideNavBar={false}>
               { AboutMeScene }
               { MeetCuteScene }
-              { MeetChanceScene }
+              { MeetChanceAllScene }
+              { MeetChanceSingleScene }
+              { MeetChanceEdit }
               { FateScene }
               <Scene //訊息
                 key="messages"

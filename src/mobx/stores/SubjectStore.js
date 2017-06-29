@@ -414,7 +414,7 @@ class SubjectStore {
       case 'meetcute':
         return () => Actions.meetcute({type: 'reset'})
       case 'meetchance':
-        return () => Actions.meetchance({type: 'reset'})
+        return () => Actions.meetChanceAll({type: 'reset'})
       case 'messages':
         return () => Actions.messages({type: 'reset'})
       case 'fate':

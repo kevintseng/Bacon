@@ -15,7 +15,7 @@ class ObjectStore {
   @observable age_min
   @observable is_coll
 
-  constructor(firebase,store) {
+  constructor(firebase,store,meetChance) {
     this.preyList = []
     this.user = {}
     this.prey = null
@@ -25,6 +25,7 @@ class ObjectStore {
     this.age_min = 25
     this.age_max = 60
     this.is_coll = false
+    this.meetChance = meetChance
   }
 
   @computed get displayName(){
