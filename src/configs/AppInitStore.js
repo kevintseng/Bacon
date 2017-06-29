@@ -17,7 +17,7 @@ const AppInitStore = {
     this.wooer = new SubjectStore(this.firebase,this.ui)
     this.meetCute = Object.assign(new ObjectStore(this.firebase,this.wooer),MeetCuteAction)
     this.meetChance = Object.assign(new ObjectStore(this.firebase,this.wooer),MeetChanceAction)
-    this.fate = Object.assign(new ObjectStore(this.firebase,this.wooer),FateAction)
+    this.fate = Object.assign(new ObjectStore(this.firebase,this.wooer,this.meetChance),FateAction)
     return this
   }
 }.init()

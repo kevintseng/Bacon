@@ -80,12 +80,9 @@ const FateAction = {
     Actions.fateSingle()
   }),
 
-  //goToNearbySingle: action(function goToNearbySingle(prey){
-    //const _index = this.preyList.indexOf(this.prey)
-  //  this.loading = false
-    //this.setprey(prey)
-  //  Actions.nearbySingle()
-  //}),
+  goToMeetChanceSingle: action(function goToMeetChanceSingle(prey){
+    this.meetChance.onPressButton(prey)
+  }),
 
   //goToMeetCute: action(function goToMeetCute(prey){
     //const _index = this.preyList.indexOf(this.prey)
