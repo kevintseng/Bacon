@@ -43,6 +43,7 @@
     "react-native-scrollable-tab-view": "^0.7.3",
     "react-native-simple-modal": "^5.0.0",
     "react-native-smooth-swipe-list": "^1.1.15",
+    "react-native-statusbar-alert": "^0.2.0",
     "react-native-storage": "^0.2.1",
     "react-native-swipe-carousel": "^0.1.7",
     "react-native-user-avatar": "^1.0.2",

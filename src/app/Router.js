@@ -265,7 +265,7 @@ export default class RouterComponent extends Component {
                   title="Settings"
                   renderLeftButton={menuButton}
                 />
-                <Scene key="aboutmeeq" component={AboutMeeQ} title="關於MeeQ" />
+                <Scene key="aboutmeeq" component={AboutMeeQ} title="關於 Bacon" />
                 <Scene key="account" component={Account} title="Account" />
                 <Scene
                   key="pushnotification"
