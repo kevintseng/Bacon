@@ -5,8 +5,19 @@ import { Cookie } from './components/Cookie'
 
 const Mate = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
+  const calculateAge = (birthday) => {
+    const ageDifMs = Date.now() - new Date(birthday).getTime()
+    const ageDate = new Date(ageDifMs)
+    return Math.abs(ageDate.getUTCFullYear() - 1970)
+  }
+
   const renderMate = ObjectStore.preyList.map(prey => (
-    <Cookie key={prey.uid} name={ prey.displayName } photoURL={prey.photoURL} onPressButton={ function onPressButton(){ ObjectStore.goToMeetChanceSingle(prey) }}><Text style={{color: '#000000'}}>你們在<Text style={{color: '#4169e1'}}>2017年5月</Text>互有好感</Text></Cookie>)
+    <Cookie key={prey.uid} name={ prey.displayName } ages={ calculateAge(prey.birthday) } photoURL={prey.photoURL} onPressButton={ function onPressButton(){ ObjectStore.goToMeetChanceSingle(prey) }}>
+      <View style={{flexDirection: 'row'}}>
+        <Text style={{color: '#000000', paddingTop: 17}}>你們在<Text style={{color: '#4169e1'}}>2017年5月</Text>互有好感</Text>
+      </View>
+    </Cookie>
+    )
   )
 
   const indicator = (
