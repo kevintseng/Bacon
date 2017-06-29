@@ -11,6 +11,10 @@ const MeetChanceEdit = inject("SubjectStore","ObjectStore")(observer(({ SubjectS
     ObjectStore.setAgeMax(values[1])
   }
 
+  const pleaseUpdate = () => {
+    alert('請升級會員')
+  }
+
   const renderPaidMemberOptions = (
     <View>
       <View>
@@ -20,14 +24,14 @@ const MeetChanceEdit = inject("SubjectStore","ObjectStore")(observer(({ SubjectS
         <CheckBox
           center
           title='不顯示離線的會員'
-          checked = {SubjectStore.showOnline}
-          onPress = {SubjectStore.setShowOnline.bind(SubjectStore)}
+          checked = {SubjectStore.vip ? SubjectStore.showOnline : false }
+          onPress = {SubjectStore.vip ? SubjectStore.setShowOnline.bind(SubjectStore) : pleaseUpdate}
         />
         <CheckBox
           center
           title='對方互動狀態分析可見'
-          checked = {SubjectStore.interaction}
-          onPress = {SubjectStore.setInteraction.bind(SubjectStore)}
+          checked = {SubjectStore.vip ? SubjectStore.interaction : false }
+          onPress = {SubjectStore.vip ? SubjectStore.setInteraction.bind(SubjectStore) : pleaseUpdate}
         />
       </View>
     </View>
@@ -46,7 +50,7 @@ const MeetChanceEdit = inject("SubjectStore","ObjectStore")(observer(({ SubjectS
         </View>
       </View>
       <MultiSlider step={1} min={18} max={99} values={[ObjectStore.age_min,ObjectStore.age_max]} sliderLength={280} onValuesChange={sliderOneValuesChange}/>
-      { SubjectStore.vip && renderPaidMemberOptions }
+      { renderPaidMemberOptions }
     </View>
   )
 }))
