@@ -7,7 +7,19 @@ const GoodImpression = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
   //const onPressButton = function onPressButton(){ ObjectStore.goToFateSingle(prey) }
 
-  const renderGoodImpression = ObjectStore.preyList.map(prey => (<Cookie key={prey.uid} name={ prey.displayName } photoURL={prey.photoURL} onPressButton={ function onPressButton(){ ObjectStore.goToFateSingle(prey) } }><Text style={{color: '#000000'}}>你們距離大約 7.9 公里</Text></Cookie>))
+  const calculateAge = (birthday) => {
+    const ageDifMs = Date.now() - new Date(birthday).getTime()
+    const ageDate = new Date(ageDifMs)
+    return Math.abs(ageDate.getUTCFullYear() - 1970)
+  }
+
+  const renderGoodImpression = ObjectStore.preyList.map(prey => (
+    <Cookie key={prey.uid} name={ prey.displayName } ages={ calculateAge(prey.birthday) } photoURL={prey.photoURL} onPressButton={ function onPressButton(){ ObjectStore.goToFateSingle(prey) } }>
+      <View style={{flexDirection: 'row'}}>
+        <Text style={{color: '#000000', paddingTop: 17}}>你們距離大約 7.9 公里</Text>
+      </View>
+    </Cookie>
+  ))
 
   const indicator = (
     <ActivityIndicator
