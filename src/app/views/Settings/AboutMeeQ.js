@@ -102,10 +102,10 @@ export default class AboutMeeQ extends Component {
             <Text style={styles.conFont}>"我很重視隱私，我不要交友軟體跟FB或手機通訊錄有任何關聯"</Text>
             <Text style={styles.conFont}>"我對於要付錢才能打個招呼或是才能看對方資料非常反感"</Text>
             <Text style={styles.conFont}>"我討厭主動跟我打招呼或示好的是假帳號或是機器人帳號"</Text>
-            <Text style={styles.conFontBorder}>如果你跟我們一樣，歡迎加入MeeQ !</Text>
+            <Text style={styles.conFontBorder}>如果你跟我們一樣，歡迎加入  Bacon!</Text>
           </View>
           <View style={{justifyContent:'flex-end',alignItems:'flex-end',margin:10}}>
-            <Text>MeeQ團隊</Text>
+            <Text>Bacon 團隊</Text>
           </View>
         </View>
         <View>

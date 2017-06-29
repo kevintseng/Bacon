@@ -62,7 +62,7 @@ export default class Settings extends Component {
         <View style={styles.viewWrapper}>
           <ListItem
             roundAvatar
-            title='關於MeeQ'
+            title='關於 Bacon'
             onPress={this.handleOnPress('aboutmeeq')}/>
           <ListItem
             roundAvatar

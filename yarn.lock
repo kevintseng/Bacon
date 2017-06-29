@@ -5896,6 +5896,10 @@ react-native-smooth-swipe-list@^1.1.15:
     lodash "^4.17.2"
     react-addons-shallow-compare "^15.4.1"
 
+react-native-statusbar-alert@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-statusbar-alert/-/react-native-statusbar-alert-0.2.0.tgz#49fe56727775751ab3b58f6c949e7c82e9b177c9"
+
 react-native-storage@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/react-native-storage/-/react-native-storage-0.2.1.tgz#6b1cbd5da79ecdb7422d330b798d31b4e240df64"

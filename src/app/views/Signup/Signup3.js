@@ -436,7 +436,7 @@ class Signup3 extends Component {
           onPress={this.updateTermAgreement}
         />
           <View style={{paddingTop:20,flexDirection:'row'}}>
-            <Text>我同意MeeQ</Text>
+            <Text>我同意 Bacon </Text>
             {this._renderButton('隱私權政策', () => this.setState({ visibleModal: 1 }))}
             <Text>及</Text>
             {this._renderButton('服務條款', () => this.setState({ visibleModal: 2 }))}
