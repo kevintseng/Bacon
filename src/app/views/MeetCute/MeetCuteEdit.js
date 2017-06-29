@@ -18,6 +18,10 @@ const MeetCuteEdit = inject("SubjectStore","ObjectStore")(observer(({ SubjectSto
     //console.warn(values[1])
   }
 
+  const pleaseUpdate = () => {
+    alert('請升級會員')
+  }
+
   const renderPaidMemberOptions = (
       <View>
         <View>
@@ -27,14 +31,14 @@ const MeetCuteEdit = inject("SubjectStore","ObjectStore")(observer(({ SubjectSto
           <CheckBox
             center
             title='只顯示三張照片以上的會員'
-            checked = {SubjectStore.onlyShowTherePhotos}
-            onPress={SubjectStore.setOnlyShowTherePhotos.bind(SubjectStore)}
+            checked = { SubjectStore.vip ? SubjectStore.onlyShowTherePhotos : false}
+            onPress={ SubjectStore.vip ? SubjectStore.setOnlyShowTherePhotos.bind(SubjectStore) : pleaseUpdate }
           />
           <CheckBox
             center
             title='對方互動狀態分析可見'
-            checked = {SubjectStore.interaction}
-            onPress={SubjectStore.setInteraction.bind(SubjectStore)}
+            checked = { SubjectStore.vip ? SubjectStore.interaction : false }
+            onPress={ SubjectStore.vip ? SubjectStore.setInteraction.bind(SubjectStore) : pleaseUpdate }
           />
         </View>
       </View>
@@ -53,7 +57,7 @@ const MeetCuteEdit = inject("SubjectStore","ObjectStore")(observer(({ SubjectSto
         </View>
       </View>
       <MultiSlider step={1} min={18} max={99} values={[ObjectStore.age_min,ObjectStore.age_max]} sliderLength={280} onValuesChange={sliderOneValuesChange}/>
-      { SubjectStore.vip && renderPaidMemberOptions }
+      { renderPaidMemberOptions }
     </View>
 
   )
