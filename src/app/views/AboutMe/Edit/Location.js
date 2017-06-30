@@ -28,7 +28,7 @@ const Location = inject("UIStore")(observer(({ UIStore }) => {
     <View style = { styles.Location } >
       <GooglePlacesAutocomplete
         styles = { styles.googlePlacesAutocomplete }
-        placeholder = {UIStore.city}
+        placeholder = {UIStore.city.description}
         minLength = { 1 }
         autoFocus
         listViewDisplayed
