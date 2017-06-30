@@ -73,7 +73,7 @@ class SubjectStore {
   }
 
   @computed get city(){
-    return this.user.city.length > 15 ? this.user.city.substring(0,15) + "..." : this.user.city
+    return this.user.city.description.length > 15 ? this.user.city.description.substring(0,15) + "..." : this.user.city.description
   }
 
   @computed get vip(){

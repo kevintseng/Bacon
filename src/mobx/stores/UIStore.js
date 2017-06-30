@@ -40,7 +40,7 @@ class UIStore {
 
   @action setCity(data){
     if (data.description) {
-      this.city = data.description
+      this.city = data//.description
     }
   } 
 
