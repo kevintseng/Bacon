@@ -140,6 +140,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fbsdk')
     compile project(':react-native-billing')
     compile project(':react-native-device-info')
     compile project(':react-native-svg')
@@ -156,6 +157,7 @@ dependencies {
     compile 'com.firebase:geofire-android:2.1.1'
     compile project(':react-native-vector-icons')
     compile 'com.android.support:appcompat-v7:23.0.1'
+    compile('com.facebook.android:facebook-android-sdk:4.22.1')
 }
 
 // Run this once to be able to run the application with BUCK
