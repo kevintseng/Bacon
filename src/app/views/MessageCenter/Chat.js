@@ -234,7 +234,7 @@ export default class Chat extends Component {
       lastRead: 0,
       chatType: "normal",
       priority: false,
-      visitorMsgLimit: 3
+      visitorMsgLimit: 2
     };
 
     const convData = {
@@ -242,7 +242,7 @@ export default class Chat extends Component {
       createTime: Moment().unix()
     };
 
-    this.setState({ visitorMsgLimit: 3 });
+    this.setState({ visitorMsgLimit: 2 });
 
     //Add new conv to user profile
     this.props.fire
@@ -367,6 +367,7 @@ export default class Chat extends Component {
 
   onSend = (messages = []) => {
     if (this.state.visitorMsgLimit <= 0) {
+      console.warn("visitorMsgLimit: ", this.state.visitorMsgLimit);
       this.setState({ showMsgLimitModal: true });
       return false;
     }
