@@ -90,14 +90,12 @@ const MeetCuteAction = {
   }),
 
   handleLike: action(function handleLike(){
-    //console.warn(this)
-    //const r = this.firebase.database().ref("preys/" + this.prey.uid + "/likes").child(this.prey.uid);
-    //if (this.firebase.database().ref("goodImpression")) {
-      //this.firebase.database().ref("goodImpression").push({wooer: this.store.user.uid , prey: this.prey.uid})
-    //} else {
-      this.firebase.database().ref("goodImpression").push({wooer: this.user.uid , prey: this.prey.uid})
-    //}
-    //r.set({time: Moment().unix()});
+    const query = this.firebase.database().ref("goodImpression")
+    query.orderByChild("prey").equalTo(this.prey.uid).once("value", snap => {
+      if (snap.val() == null){
+        this.firebase.database().ref("goodImpression").push({wooer: this.user.uid , prey: this.prey.uid})
+      }
+    })
     this.getNext()
   }),
 
