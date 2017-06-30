@@ -1,5 +1,5 @@
 import { action } from 'mobx'
-import GeoFire from 'geofire'
+//import GeoFire from 'geofire'
 //import Moment from 'moment'
 
 //useStrict(true)
@@ -15,9 +15,9 @@ const MeetCuteAction = {
     this.loading = true
   }),
 
-  fetchPreyListsByMeetCute: action(function fetchPreyListsByMeetCute(sexOrientation){
+  fetchPreyListsByMeetCute: action(function fetchPreyListsByMeetCute(){
     this.preyList = []
-    this.seekMeetQs(sexOrientation)
+    this.seekMeetQs(this.user.sexOrientation)
   }),
 
   seekMeetQs: action(function seekMeetQs(sexOrientation) {
@@ -36,7 +36,7 @@ const MeetCuteAction = {
         break;
     }
   }),
-
+/*
   seekNearBy: action(function seekNearBy(latitude, longitude){
     const query = this.firebase.database().ref("/user_locations/")
     const geoFire = new GeoFire(query)
@@ -51,7 +51,7 @@ const MeetCuteAction = {
       this.loading = false
     })
   }),
-
+*/
   mq: action(function mq(sexOrientation) {
     //sexOrientation = 'fsm'
     const query = this.firebase.database().ref("users")
@@ -68,11 +68,13 @@ const MeetCuteAction = {
           }
         })
       })
-      .then(() => {
+      .then(async () => {
         if (this.preyList.length > 0){
           this.setprey(this.preyList[0])
-          //this.user.meetCuteHistory.push(this.preyList[0].uid)
-          //this.updateToFirebase("meetCuteHistory",this.user.meetCuteHistory.slice())
+        } else {
+          this.user.meetCuteHistory = [this.user.uid]
+          await this.updateToFirebase("meetCuteHistory",this.user.meetCuteHistory.slice())
+          this.fetchPreyListsByMeetCute(this.user.sexOrientation)          
         }
       this.loading = false
     })
@@ -107,7 +109,11 @@ const MeetCuteAction = {
     if (this.preyList.length > _index) {
       this.setprey(this.preyList[_index])
     } else {
-      this.setprey(null)
+      this.user.meetCuteHistory = [this.user.uid]
+      await this.updateToFirebase("meetCuteHistory",this.user.meetCuteHistory.slice())
+      this.fetchPreyListsByMeetCute(this.user.sexOrientation)
+      //alert("沒了")
+      //this.setprey(null)
     }
     await this.sleep(700)
     this.loading = false
