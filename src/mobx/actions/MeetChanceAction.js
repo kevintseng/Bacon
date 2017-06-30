@@ -38,6 +38,7 @@ const MeetChanceAction = {
 
   fetchPreyListsByMeetChance: action(function fetchPreyListsByMeetChance(latitude, longitude){
     this.preyList = []
+    const keys = []
     const query = this.firebase.database().ref("/user_locations/")
     const geoFire = new GeoFire(query)
     const geoQuery = geoFire.query({
@@ -46,18 +47,28 @@ const MeetChanceAction = {
     })
     geoQuery.on("key_entered", (key) => {
       if (!(key === this.user.uid)){
-        this.setPreyListByKey(key)
+        //console.warn(key)
+        keys.push(key)
       }
     })
     geoQuery.on("ready", () => {
-      this.loading = false
+      //console.warn(keys.length)
+      keys.forEach((key) => {this.setPreyListByKey(key)})
+        //this.loading = false
     })
+    this.loading = false
   }),
 
   setPreyListByKey: action(function setPreyListByKey(key){
-    this.firebase.database().ref('users/' + key).once('value').then(snap => { this.preyList.push(snap.val()) }).catch(() =>{
-     console.warn("Promise Rejected");
-})
+    this.firebase.database().ref('users/' + key).once('value').then(
+      (snap) => { 
+        if (!(snap.val() == null)){
+          this.preyList.push(snap.val()) 
+        } 
+      }
+    ).catch((error) => {
+      console.warn(error)
+    })
   }),
 
   onPressButton: action(function onPressButton(prey){
