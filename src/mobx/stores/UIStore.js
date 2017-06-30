@@ -55,9 +55,17 @@ class UIStore {
   @action setHobby(val) {
     this.hobby = this.hobby || []
     if (val) {
-      this.hobby.push(val)
+      const index = this.hobby.indexOf(val)
+      if (!(index > -1)) {
+        // if ele not exist
+        this.hobby.push(val)
+      } 
     } else {
-      this.hobby.push(this.hobbyInput)
+      const index = this.hobby.indexOf(this.hobbyInput)
+      if (!(index > -1)) {
+        // if ele not exist
+        this.hobby.push(this.hobbyInput)
+      } 
     }
   }
 
@@ -67,7 +75,12 @@ class UIStore {
 
   @action setDeleteHobby(val){
     if (val) {
-      this.deleteHobby.push(val)
+      const index = this.deleteHobby.indexOf(val)
+      if (index > -1) {
+        this.deleteHobby.splice(index, 1)
+      } else {
+        this.deleteHobby.push(val)
+      }
     }  
   }
 }
