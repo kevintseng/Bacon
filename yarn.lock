@@ -5761,6 +5761,10 @@ react-native-experimental-navigation@0.26.x:
     fbjs "^0.8.1"
     react-addons-pure-render-mixin "^15.0.2"
 
+"react-native-fbsdk@https://github.com/tugorez/react-native-fbsdk":
+  version "0.5.0"
+  resolved "https://github.com/tugorez/react-native-fbsdk#481574d1ced2f1cda4b05c2e3a840f1101fa49cc"
+
 react-native-fetch-blob@^0.10.2:
   version "0.10.5"
   resolved "https://registry.yarnpkg.com/react-native-fetch-blob/-/react-native-fetch-blob-0.10.5.tgz#498e5437ad604db126b46e4a06cd9cbf33d1ea42"

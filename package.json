@@ -26,6 +26,7 @@
     "react-native-dropdown-menu": "^1.1.0",
     "react-native-easy-grid": "^0.1.8",
     "react-native-elements": "^0.12.0",
+    "react-native-fbsdk": "https://github.com/tugorez/react-native-fbsdk",
     "react-native-fetch-blob": "^0.10.2",
     "react-native-gifted-chat": "^0.1.4",
     "react-native-google-places-autocomplete": "^1.2.7",
