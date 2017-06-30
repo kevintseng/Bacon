@@ -342,6 +342,12 @@ class SubjectStore {
     Actions.AboutMeShow({type: 'reset'})
   }
 
+  @action deductCredit(amount) {
+    const balance = this.user.credit - amount;
+    this.user.credit = balance;
+    this.updateToFirebase("credit", balance);
+  }
+
   // actions
   @action setUser(user) {
     this.user = user;
