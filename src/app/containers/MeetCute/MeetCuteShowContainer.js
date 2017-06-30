@@ -24,7 +24,7 @@ export default class MeetCuteShowContainer extends Component {
   }
 
   componentDidMount() {
-    this.ObjectStore.fetchPreyListsByMeetCute(this.SubjectStore.user.sexOrientation)
+    this.ObjectStore.fetchPreyListsByMeetCute()
   }
 
   componentWillUnmount(){
