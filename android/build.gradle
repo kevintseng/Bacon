@@ -25,7 +25,6 @@ allprojects {
 
     configurations.all {
         resolutionStrategy {
-            force 'com.facebook.android:facebook-android-sdk:4.22.1'
             eachDependency { DependencyResolveDetails details ->
                 if (details.requested.group == 'com.facebook.react' && details.requested.name == 'react-native') {
                     def file = new File("$rootDir/../node_modules/react-native/package.json")
