@@ -49,9 +49,9 @@ export const MeetChanceEditProvider = () => (
   </Provider>
 )
 
-export const FateAllProvider = () => (
+export const FateAllProvider = (props) => (
   <Provider SubjectStore = { AppInitStore.wooer } ObjectStore = { AppInitStore.fate } >
-    <FateAllContainer/>
+    <FateAllContainer {...props}/>
   </Provider>
 )
 

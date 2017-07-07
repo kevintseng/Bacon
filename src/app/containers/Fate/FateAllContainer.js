@@ -25,7 +25,7 @@ export default class FateAllContainer extends Component {
 
   render() {
     return(
-      <Fate/>
+      <Fate initialPage={this.props.initialPage}/>
     );
   }
 }

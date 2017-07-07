@@ -11,7 +11,7 @@ const menuButton = () => (
 const FateScene = (
 <Scene key = "fate">
   <Scene key = "fateAll" hideTabBar component = { FateAllProvider } title = "緣分" renderLeftButton = { menuButton } />
-  <Scene key = "fateSingle" hideTabBar component = { FateSingleProvider } title = "詳細資料" renderLeftButton = { menuButton } />
+  <Scene key = "fateSingle" hideTabBar component = { FateSingleProvider } title = "好感" renderLeftButton = { menuButton } />
 </Scene>
 )
 
