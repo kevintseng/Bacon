@@ -95,6 +95,7 @@ export default class RouterComponent extends Component {
     let user;
     fire.auth().onAuthStateChanged(data => {
       if (data) {
+        // User is signed in.
         console.log("Router: Got user data from firebase auth api:");
         console.log(data);
         const dbRef = fire.database().ref("/users/" + data.uid);

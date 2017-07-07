@@ -85,13 +85,27 @@ const MeetChanceAction = {
   },
 
   getNext: function saveCollection(){
+    let is_coll = null
     const query = this.firebase.database().ref("collection")
     query.orderByChild("prey").equalTo(this.prey.uid).once("value",snap => {
       if (snap.val() == null) {
         this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})
+      } else {
+        snap.forEach((childsnap) => 
+          {
+            if (childsnap.val().wooer === this.user.uid) {
+              is_coll = childsnap.key
+            }
+          }
+        )
+        if (is_coll == null) {
+          this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})
+        } else {
+          query.child(is_coll).remove()
+        }
       }
     })
-    this.is_coll = true
+    this.is_coll = !this.is_coll
   },
 
   setprey: action(function setprey(prey){
