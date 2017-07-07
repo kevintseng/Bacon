@@ -45,7 +45,7 @@ const Location = inject("UIStore")(observer(({ UIStore }) => {
         currentLocation
         currentLocationLabel = "現在所在位置城市"
         nearbyPlacesAPI = 'GoogleReverseGeocoding'
-        filterReverseGeocodingByTypes = { ['administrative_area_level_2','administrative_area_level_3'] }
+        filterReverseGeocodingByTypes = {['locality', 'administrative_area_level_3']}
         predefinedPlacesAlwaysVisible
       />
     </View>

@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, ActivityIndicator } from 'react-native'
 import { Cookie } from './components/Cookie'
 import { observer, inject } from "mobx-react/native"
-import { CheckBox } from 'react-native-elements'
+//import { CheckBox } from 'react-native-elements'
 
 const Collection = inject("ObjectStore")(observer(({ ObjectStore }) => {
 
@@ -16,11 +16,6 @@ const Collection = inject("ObjectStore")(observer(({ ObjectStore }) => {
     <Cookie key={prey.uid} name={ prey.displayName } ages={ calculateAge(prey.birthday) } photoURL={prey.photoURL} onPressButton={ function onPressButton(){ ObjectStore.goToMeetChanceSingle(prey) }}>
       <View style={{flexDirection: 'row'}}>
         <Text style={{color: '#000000', paddingTop: 17}}>你們距離大約 7.9 公里</Text>
-        <CheckBox
-          iconRight
-          containerStyle={{backgroundColor: "#ffffff", borderWidth: 0}}
-          checked={false}
-        />
       </View>
     </Cookie>
     )
