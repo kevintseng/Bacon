@@ -16,10 +16,11 @@ const styles = {
   }
 };
 
-const FateAll = inject("ObjectStore")(observer(({ ObjectStore }) => {
+const FateAll = inject("ObjectStore")(observer(({ ObjectStore, initialPage }) => {
 
   return(
     <ScrollableTabView
+      initialPage = {initialPage || 0}
       style={styles.wrapperStyle}
       tabBarPosition='overlayTop'
       renderTabBar={() => <DefaultTabBar />}
@@ -28,7 +29,7 @@ const FateAll = inject("ObjectStore")(observer(({ ObjectStore }) => {
       tabBarActiveTextColor='#2962FF'
       tabBarInactiveTextColor='grey'
       onChangeTab={ ({ ref })=> { ObjectStore["fetchPreyListsBy" + ref.props.label]() } }
-      ref={ (tabView) => { this.tabView = tabView} }
+      ref={ (tabView) => { this.tabView = tabView } }
       >
       <Visitors label='Visitors' tabLabel='來訪' />
       <GoodImpression label='GoodImpression' tabLabel='好感' />

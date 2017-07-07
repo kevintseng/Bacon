@@ -8,6 +8,7 @@ useStrict(false)
 
 //@autobind
 class ObjectStore {
+  @observable initialPage
   @observable prey
   @observable preyList
   @observable loading
@@ -16,6 +17,7 @@ class ObjectStore {
   @observable is_coll
 
   constructor(firebase,store,meetChance) {
+    this.initialPage = 0
     this.preyList = []
     this.user = {}
     this.prey = null

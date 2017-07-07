@@ -4,7 +4,7 @@ import HuntingGrounds from "../../components/HuntingGrounds"
 
 const FateSingle = () => {
   return(
-    <HuntingGrounds showbutton={false}/>
+    <HuntingGrounds leftIcon={"check"} rightIcon={"close-o"} rightIconColor={"#ffffff"} showbutton />
   )
 }
 

@@ -98,11 +98,15 @@ const FateAction = {
   }),
 
   handleLike: action(function handleLike(){
-    //console.warn(this)
+    //this.initialPage = 2
+    Actions.fateAll({type: 'reset', initialPage: 2})
+    //console.warn("跳轉到配對")
   }),
 
-  getNext: action(function handleLike(){
-    //console.warn(this)
+  getNext: action(function getNext(){
+    //this.initialPage = 1
+    Actions.fateAll({type: 'reset', initialPage: 0})
+    //console.warn("跳轉好感")
   }),
 
   setUser: action(function setUser(){
