@@ -16,9 +16,7 @@ const HuntingGrounds = ({leftIcon,rightIcon,showbutton,rightIconColor}) => {
   return(
     <View style={{flex: 1}}>
       <ScrollView style={{width, height}}>
-          <View style={{width, height: width}}>
-            <Collapse leftIcon={leftIcon} rightIcon={rightIcon} rightIconColor={rightIconColor} showbutton={showbutton}/>
-          </View>
+          <Collapse leftIcon={leftIcon} rightIcon={rightIcon} rightIconColor={rightIconColor} showbutton={showbutton}/>
           <View>   
             <BasicInfo/>
             <Introduce/>
