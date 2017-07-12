@@ -5653,15 +5653,6 @@ react-dom-factories@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-dom-factories/-/react-dom-factories-1.0.0.tgz#f43c05e5051b304f33251618d5bc859b29e46b6d"
 
-react-dom@^15.5.4:
-  version "15.6.1"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
-
 react-inspector@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-inspector/-/react-inspector-2.0.0.tgz#c945932f2c2bf2fab7873c6e07d83881404b9313"
@@ -5715,10 +5706,6 @@ react-native-billing@^2.3.0:
 react-native-communications@2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.1.1.tgz#ff6f917c305e6d3fa935a89908aea5dc39b247d4"
-
-react-native-customized-image-picker@^0.0.28:
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/react-native-customized-image-picker/-/react-native-customized-image-picker-0.0.28.tgz#a32eeee1e1d624439714cb66c10ed8fcd963fb29"
 
 react-native-datepicker@^1.4.4:
   version "1.5.1"
@@ -5815,6 +5802,16 @@ react-native-google-places-autocomplete@^1.2.7:
     lodash.debounce "^4.0.8"
     qs "^5.2.0"
 
+react-native-image-carousel@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-carousel/-/react-native-image-carousel-0.4.1.tgz#0e20cf104bddc658975dd5ec55027888a3955bfb"
+  dependencies:
+    react-swipeable-views-native "^0.12.2"
+
+"react-native-image-crop-picker@https://github.com/ivpusic/react-native-image-crop-picker.git":
+  version "0.14.1"
+  resolved "https://github.com/ivpusic/react-native-image-crop-picker.git#ae0abe8bcd4d360c06255fedd9e47e0231272fb7"
+
 react-native-image-picker@^0.25.7:
   version "0.25.7"
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.25.7.tgz#1475fd72111a74f434598f2c99453998ac21b599"
@@ -5881,6 +5878,10 @@ react-native-pathjs-charts@^0.0.26:
 react-native-photo-grid@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/react-native-photo-grid/-/react-native-photo-grid-0.0.2.tgz#ceb523c72a52aa792906809f1473d1a1a91a1438"
+
+"react-native-photo-view@github:alwx/react-native-photo-view#383b8be6ef2444d74f9eae45359189e6d081de6e":
+  version "1.2.0"
+  resolved "https://codeload.github.com/alwx/react-native-photo-view/tar.gz/383b8be6ef2444d74f9eae45359189e6d081de6e"
 
 react-native-progress@^3.2.0:
   version "3.2.1"
@@ -6101,6 +6102,21 @@ react-style-proptype@^3.0.0:
   resolved "https://registry.yarnpkg.com/react-style-proptype/-/react-style-proptype-3.0.0.tgz#89e0b646f266c656abb0f0dd8202dbd5036c31e6"
   dependencies:
     prop-types "^15.5.4"
+
+react-swipeable-views-core@^0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/react-swipeable-views-core/-/react-swipeable-views-core-0.11.1.tgz#61d046799f90725bbf91a0eb3abcab805c774cac"
+  dependencies:
+    babel-runtime "^6.23.0"
+    warning "^3.0.0"
+
+react-swipeable-views-native@^0.12.2:
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/react-swipeable-views-native/-/react-swipeable-views-native-0.12.2.tgz#b4b7ae858f585024daeb70103455f81750f1e4a1"
+  dependencies:
+    babel-runtime "^6.11.6"
+    react-swipeable-views-core "^0.11.1"
+    warning "^3.0.0"
 
 react-test-renderer@~15.4.0-rc.4:
   version "15.4.2"
@@ -7139,6 +7155,12 @@ walker@~1.0.5:
   resolved "https://registry.yarnpkg.com/walker/-/walker-1.0.7.tgz#2f7f9b8fd10d677262b18a884e28d19618e028fb"
   dependencies:
     makeerror "1.0.x"
+
+warning@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
+  dependencies:
+    loose-envify "^1.0.0"
 
 watch@~0.10.0:
   version "0.10.0"

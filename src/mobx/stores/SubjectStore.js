@@ -25,6 +25,7 @@ class SubjectStore {
   @observable loading
   @observable deleteHobby
   @observable creditButton
+  @observable showModal
   //@observable sampleArray
 
   constructor(firebase,ui) {
@@ -39,6 +40,7 @@ class SubjectStore {
     this.firebase = firebase
     this.deleteHobby = []
     this.creditButton = false
+    this.showModal = false
   }
   //AboutMe
 
@@ -130,6 +132,10 @@ class SubjectStore {
     return this.user.analysis.activity ? this.user.analysis.activity : 0
   }
   // actions AboutMe
+
+  @action setShowModal(val){
+    this.showModal = val
+  }
 
   @action updateHobbyInput(val){
     this.hobbyInput = val

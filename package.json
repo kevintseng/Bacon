@@ -19,7 +19,6 @@
     "react-native": "0.42.3",
     "react-native-actionsheet": "^2.0.6",
     "react-native-billing": "^2.3.0",
-    "react-native-customized-image-picker": "^0.0.28",
     "react-native-datepicker": "^1.4.4",
     "react-native-device-info": "^0.10.2",
     "react-native-drawer": "^2.3.0",
@@ -30,6 +29,8 @@
     "react-native-fetch-blob": "^0.10.2",
     "react-native-gifted-chat": "^0.1.4",
     "react-native-google-places-autocomplete": "^1.2.7",
+    "react-native-image-carousel": "^0.4.1",
+    "react-native-image-crop-picker": "https://github.com/ivpusic/react-native-image-crop-picker.git",
     "react-native-image-picker": "^0.25.7",
     "react-native-image-resizer": "^0.1.1",
     "react-native-lightbox": "^0.6.0",
@@ -40,6 +41,7 @@
     "react-native-pathjs-charts": "^0.0.26",
     "react-native-photo-browser": "https://github.com/tsaohucn/react-native-photo-browser.git#0272797",
     "react-native-photo-grid": "^0.0.2",
+    "react-native-photo-view": "github:alwx/react-native-photo-view#383b8be6ef2444d74f9eae45359189e6d081de6e",
     "react-native-router-flux": "3.38.0",
     "react-native-scrollable-tab-view": "^0.7.3",
     "react-native-simple-modal": "^5.0.0",
@@ -52,7 +54,6 @@
     "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {
-    "@storybook/react-native": "^3.1.5",
     "babel-eslint": "^7.1.1",
     "babel-jest": "18.0.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
@@ -61,7 +62,6 @@
     "eslint-config-react-native": "^1.6.0",
     "eslint-plugin-react": "^6.10.0",
     "jest": "18.1.0",
-    "react-dom": "^15.5.4",
     "react-test-renderer": "~15.4.0-rc.4"
   },
   "jest": {

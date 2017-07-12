@@ -1,45 +1,49 @@
 import React from 'react';
-//import { View } from 'react-native';
-//import { Actions } from 'react-native-router-flux'
+import { TouchableWithoutFeedback, View, Button, Dimensions } from 'react-native';
 import { observer, inject } from 'mobx-react/native';
 import PhotoBrowser from 'react-native-photo-browser';
-/*
-const media = [{
-      photo: 'http://farm3.static.flickr.com/2667/4072710001_f36316ddc7_b.jpg',
-      selected: true,
-      caption: 'Grotto of the Madonna',
-    }, {
-      photo: 'http://farm3.static.flickr.com/2449/4052876281_6e068ac860_b.jpg',
-      caption: 'Broadchurch Scene',
-    }, {
-      photo: 'http://farm3.static.flickr.com/2449/4052876281_6e068ac860_b.jpg',
-      thumb: 'http://farm3.static.flickr.com/2449/4052876281_6e068ac860_q.jpg',
-      selected: false,
-      caption: 'Beautiful Eyes',
-    },
-    {
-      photo: 'http://farm3.static.flickr.com/2667/4072710001_f36316ddc7_b.jpg',
-      selected: true,
-      caption: 'Grotto of the Madonna',
-    }]
-*/
+import Modal from 'react-native-modal'
+import ImagePicker from 'react-native-image-crop-picker'
+
+const {width} = Dimensions.get('window')
+
+const styles = {
+  modalContent: {
+    //backgroundColor: 'white',
+    //padding: 22,
+    //borderRadius: 4,
+    //borderColor: 'rgba(0, 0, 0, 0.1)',
+    width: width/2
+  }
+}
+
 const Album = inject("SubjectStore")(observer(({ SubjectStore }) => {
 
-  const media_self = [{photo: SubjectStore.photoURL, selected: false, caption: 'Grotto of the Madonna'}]
+  const media_self = [{photo: SubjectStore.photoURL, selected: false }]
 
-  const media = SubjectStore.photos.map((ele) => { return { photo: ele.src.uri, selected: false, caption: 'Grotto of the Madonna' } })
+  const media = SubjectStore.photos.map((ele) => { return { photo: ele.src.uri, selected: false } })
 
   const medias = media_self.concat(media)
 
+  const handlePressed = () => {
+    ImagePicker.openPicker({
+      cropping: true,
+      multiple: true,
+      isCamera: true
+    }).then(images => {
+      console.log(images);
+    });
+  }
+
   return(
+    <View style={{flex: 1}}>
         <PhotoBrowser
-          style={{flex: 1}}
           displayTopBar = {false}
           //onBack={()=>{ Actions.AboutMeShow() }}
           mediaList={medias}
           //initialIndex={initialIndex}
           displayNavArrows
-          displaySelectionButtons
+          //displaySelectionButtons
           displayActionButton
           startOnGrid
           enableGrid
@@ -47,9 +51,53 @@ const Album = inject("SubjectStore")(observer(({ SubjectStore }) => {
           //controlsDisplayed
           alwaysShowControls
           //onSelectionChanged={this._onSelectionChanged}
-          //onActionButton
+          onActionButton={() => {SubjectStore.setShowModal(true)}}
         />
-
+        <Button
+          title='+' 
+          color="#ff6347"
+          onPress={handlePressed}
+        />
+          <TouchableWithoutFeedback onPress={() => {SubjectStore.setShowModal(false)}}>
+          <Modal
+            isVisible={SubjectStore.showModal}
+            //backdropOpacity={1}
+            //backdropColor={'white'}
+            //offset={0}
+            //overlayBackground={'rgba(0, 0, 0, 0.75)'}
+            //animationDuration={200}
+            //animationTension={40}
+            //modalDidOpen={() => {console.log('modal open')}}
+            hideOnBack
+            //onModalHide={() => {alert("hide")}}
+            //onBackButtonPress={() => {SubjectStore.setShowModal(false)}}
+            closeOnTouchOutside
+            //containerStyle={{
+            //  justifyContent: 'center'
+            //}}
+            style={{
+              //backgroundColor: '#000000',
+              margin: 0,
+              alignItems: 'center'
+              //width,
+              //height
+            }}
+            >
+              <View style={styles.modalContent}>
+                <Button
+                  title='將此照片設為頭像'
+                  color={'#2e8b57'}
+                  onPress={() => {alert("設為頭像")}}
+                  />
+                <Button
+                  title='刪除此照片'
+                  color={'#ff0000'}
+                  onPress={() => {alert("刪除照片")}}
+                />
+              </View>
+          </Modal>
+          </TouchableWithoutFeedback>
+    </View>
   )
 }))
 
