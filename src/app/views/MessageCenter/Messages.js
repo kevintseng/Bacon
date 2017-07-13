@@ -600,8 +600,8 @@ export default class Messages extends Component {
         <ScrollView style={{ marginTop: 5 }}>
           <DropdownMenu
             style={{ backgroundColor: "white" }}
-            arrowImg={require("hookup/src/images/arrow_down.png")}
-            checkImage={require("hookup/src/images/menu_check.png")}
+            arrowImg={require("Bacon/src/images/arrow_down.png")}
+            checkImage={require("Bacon/src/images/menu_check.png")}
             bgColor={"white"}
             tintColor={"black"}
             selectItemColor={"red"}

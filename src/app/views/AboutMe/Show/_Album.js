@@ -11,8 +11,8 @@ import { uploadImage, resizeImage } from '../../../Utils';
 
 
 const {width, height} = Dimensions.get('window'); //eslint-disable-line
-const ADD_IMAGE = require('hookup/src/images/addImage.png'); //eslint-disable-line
-const PLACEHOLDER = require('hookup/src/images/cameraPlaceholder.jpg'); //eslint-disable-line
+const ADD_IMAGE = require('Bacon/src/images/addImage.png'); //eslint-disable-line
+const PLACEHOLDER = require('Bacon/src/images/cameraPlaceholder.jpg'); //eslint-disable-line
 const styles = {
   viewWrapper: {
     width,

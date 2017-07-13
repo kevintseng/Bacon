@@ -65,7 +65,7 @@ const styles = {
     }
 }
 
-const ADD_IMAGE = require('hookup/src/images/addImage.png')
+const ADD_IMAGE = require('Bacon/src/images/addImage.png')
 
 //const onPressButton = () => { console.warn("點擊頭像")}
 

@@ -82,7 +82,7 @@ export default class Forgot extends Component {
             backgroundColor: 'transparent',
             marginRight: 10,
           }}
-          source={require('hookup/src/images/email_sent.png')}
+          source={require('Bacon/src/images/email_sent.png')}
         />
         <Text>重設密碼信已寄出</Text>
         <Button
