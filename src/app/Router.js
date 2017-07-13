@@ -240,12 +240,12 @@ export default class RouterComponent extends Component {
 
           <Scene key="drawer" component={DrawerPanel} open={false}>
             <Scene key="main" hideTabBar hideNavBar={false}>
+              { AboutMeScene }
               { FateScene }
               { MeetCuteScene }
               { MeetChanceAllScene }
               { MeetChanceSingleScene }
               { MeetChanceEdit }
-              { AboutMeScene }
               <Scene //訊息
                 key="messages"
                 component={Messages}
