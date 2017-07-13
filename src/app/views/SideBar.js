@@ -6,7 +6,7 @@ import { List, ListItem, Icon } from 'react-native-elements'
 import { observer } from 'mobx-react/native'
 import SIDEBAR_LINKS from '../../configs/SidebarLinks'
 
-const loading = require('hookup/src/images/loading.gif')
+const loading = require('Bacon/src/images/loading.gif')
 const { height, width } = Dimensions.get('window') //eslint-disable-line
 const list = SIDEBAR_LINKS
 const styles = {

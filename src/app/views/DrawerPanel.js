@@ -29,6 +29,10 @@ export default class DrawerPanel extends Component {
   }
 
   render() {
+    //this.props.navigation.routes
+    //const state = this.props.navigation;
+    //const children = state.routes;
+
     const state = this.props.navigationState;
     const children = state.children;
 

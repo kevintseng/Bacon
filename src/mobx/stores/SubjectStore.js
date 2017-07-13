@@ -54,12 +54,12 @@ class SubjectStore {
 
   @computed get photoURL(){
     return this.user.photoURL
-    //return this.user.photoURL ? this.user.photoURL : 'hookup/src/images/addImage.png'
+    //return this.user.photoURL ? this.user.photoURL : 'Bacon/src/images/addImage.png'
   }
 
   @computed get photos(){
     return this.user.photos || []
-    //return this.user.photoURL ? this.user.photoURL : 'hookup/src/images/addImage.png'
+    //return this.user.photoURL ? this.user.photoURL : 'Bacon/src/images/addImage.png'
   }
 
   @computed get displayName(){

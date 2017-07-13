@@ -43,9 +43,9 @@ export default class Account extends Component {
 
     user.delete().then(function() {
       try{
-      AsyncStorage.getItem('@HookupStore:user').then( user => {
+      AsyncStorage.getItem('@BaconStore:user').then( user => {
         if(user != null) {
-          AsyncStorage.removeItem('@HookupStore:user').then(() => {
+          AsyncStorage.removeItem('@BaconStore:user').then(() => {
             console.log('in fun');
             this.store.signOut();
             Actions.sessioncheck({type: 'reset'});

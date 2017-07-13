@@ -1,9 +1,7 @@
 import React from "react"
 import { View, Image, Dimensions, Text } from "react-native"
-//import Carousel from "react-native-looped-carousel"
 import { Button } from "react-native-elements"
 import { observer, inject } from "mobx-react/native"
-//import PhotoView from 'react-native-photo-view';
 import ImageCarousel from 'react-native-image-carousel'
 
 
