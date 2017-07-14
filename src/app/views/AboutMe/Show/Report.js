@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react/native'
-import { Radar } from 'react-native-pathjs-charts'
-import { View, Dimensions } from 'react-native'
+//import { Radar } from 'react-native-pathjs-charts'
+import { Text, View, Dimensions } from 'react-native'
 
 const { width, height } = Dimensions.get('window');
 
@@ -17,7 +17,7 @@ const styles = {
 };
 
 const Report = inject("SubjectStore")(observer(({ SubjectStore }) => {
-
+/*
     const defaultData = { charm:50, popularity:50, likeness:50, friendliness:50, activity:50 };
     const { charm, popularity, likeness, friendliness, activity } = SubjectStore.user.analysis ? SubjectStore.analysis : defaultData;
     const data = [{
@@ -46,10 +46,10 @@ const Report = inject("SubjectStore")(observer(({ SubjectStore }) => {
         fill: '#34495E'
       }
     };
-
+*/
   return(
     <View style={styles.container}>
-       <Radar data={data} options={options} />
+       <Text>Crash</Text>
     </View>
   );
 }))

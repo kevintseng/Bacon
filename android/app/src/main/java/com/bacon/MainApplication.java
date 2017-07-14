@@ -3,11 +3,10 @@ package com.bacon;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.horcrux.svg.SvgPackage;
+import com.mg.app.PickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.idehub.Billing.InAppBillingBridgePackage;
@@ -31,11 +30,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new SvgPackage(),
+            new PickerPackage(),
             new VectorIconsPackage(),
             new ImageResizerPackage(),
             new ImagePickerPackage(),
-            new PickerPackage(),
             new RNFetchBlobPackage(),
             new RNDeviceInfo(),
             new InAppBillingBridgePackage()
