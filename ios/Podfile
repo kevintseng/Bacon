@@ -7,6 +7,28 @@ target 'Bacon' do
 
   # Pods for Bacon
 
+  project 'Bacon.xcodeproj'
+
+  platform :ios, '8.0'
+  pod 'Yoga', path: '../node_modules/react-native/ReactCommon/yoga'
+  pod 'React', path: '../node_modules/react-native', subspecs: [
+    'ART',
+  ]
+  pod 'RSKImageCropper'
+  pod 'QBImagePickerController'
+
+  [
+    'Firebase',
+    'Firebase/Core',
+    'Firebase/Auth',
+    'Firebase/Storage',
+    'Firebase/Database',
+    'Firebase/RemoteConfig',
+    'Firebase/Messaging'
+  ].each do |lib|
+    pod lib
+  end
+  
   target 'Bacon-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
@@ -17,22 +39,4 @@ target 'Bacon' do
     # Pods for testing
   end
 
-end
-
-source 'https://github.com/CocoaPods/Specs.git'
-use_frameworks!
-platform :ios, '8.0'
-pod 'RSKImageCropper'
-pod 'QBImagePickerController'
-
-[
-  'Firebase',
-  'Firebase/Core',
-  'Firebase/Auth',
-  'Firebase/Storage',
-  'Firebase/Database',
-  'Firebase/RemoteConfig',
-  'Firebase/Messaging'
-].each do |lib|
-  pod lib
 end

@@ -3,7 +3,7 @@ import { TouchableWithoutFeedback, View, Button, Dimensions } from 'react-native
 import { observer, inject } from 'mobx-react/native';
 import PhotoBrowser from 'react-native-photo-browser';
 import Modal from 'react-native-modal'
-import ImagePicker from 'react-native-image-crop-picker'
+import ImagePicker from 'react-native-customized-image-picker'
 
 const {width} = Dimensions.get('window')
 
