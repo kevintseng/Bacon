@@ -24,11 +24,11 @@ const styles = {
 }
 
 const onPressSingUp = () => {
-  Actions.SignUp({ type: 'reset' })
+  Actions.SignUp()
 }
 
 const onPressSingIn = () => {
-  Actions.SignIn({ type: 'reset' })
+  Actions.SignIn()
 }
 
 const SignUpIn = () => {

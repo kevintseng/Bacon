@@ -1,8 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { FormInput, CheckBox } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
+//import { inject } from "mobx-react"
 
 
 //import { observer } from 'mobx-react/native';
@@ -10,26 +11,12 @@ import DatePicker from 'react-native-datepicker';
  // eslint-disable-line
 //import { Header, FormErrorMsg } from '../../components';
 //import SignupStore from '../../../mobx/stores/SignupStore'
+const onPressNextButton = () => {
+  Actions.Step4()
+}
 
+const Step3 = ({email,password,nickname,birthday,onChangeEmail,onChangePassword,onChangeNickname,onChangeBirthday}) => {
 
-export default class Step3 extends Component {
-
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      email: '',
-      password: '',
-      nickname: ''
-    }
-  }
-
-  onPressNextButton = () => {
-    Actions.Step4()
-  }
-
-
-  render(){
     return(
      <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-between',marginTop: 20}}>
 
@@ -49,9 +36,9 @@ export default class Step3 extends Component {
             placeholder='sample@email.com'
             returnKeyType={'next'}
             keyboardType={'email-address'}
-            value={this.state.email}
+            value={email}
             maxLength={60}
-            onChangeText={()=>{}}
+            onChangeText={ onChangeEmail }
           />
         </View>
         <View>
@@ -59,12 +46,12 @@ export default class Step3 extends Component {
         </View>
         <View>
           <FormInput
-            ref='passw'
+            //ref='passw'
             placeholder='請輸入密碼'
             secureTextEntry
             maxLength={12}
-            value={this.state.password}
-            onChangeText={()=>{}}
+            value={password}
+            onChangeText={onChangePassword}
             />
         </View>
         <View>
@@ -72,13 +59,13 @@ export default class Step3 extends Component {
         </View>
         <View>
           <FormInput
-            ref='nickname'
+            //ref='nickname'
             placeholder='請輸2個字以上的暱稱)'
-            onBlur={this.nicknameCheck}
+            //onBlur={this.nicknameCheck}
             returnKeyType={'next'}
             maxLength={20}
-            value={this.state.nickname}
-            onChangeText={()=>{}}
+            value={nickname}
+            onChangeText={onChangeNickname}
             />
         </View>
         <View>
@@ -87,7 +74,7 @@ export default class Step3 extends Component {
         <View>
           <DatePicker
             //style={{alignSelf: 'center', marginTop: 5, width: size.width*0.9}}
-            date={this.state.birthday}
+            date={birthday}
             mode="date"
             placeholder="您的生日"
             format="YYYY-MM-DD"
@@ -96,7 +83,7 @@ export default class Step3 extends Component {
             confirmBtnText="完成"
             cancelBtnText="取消"
             showIcon={false}
-            onDateChange={()=>{}}
+            onDateChange={onChangeBirthday}
           />
         </View>
       </View>
@@ -122,7 +109,7 @@ export default class Step3 extends Component {
 
 
         <View style={{marginTop: 20}}>
-          <TouchableOpacity onPress={this.onPressNextButton}> 
+          <TouchableOpacity onPress={onPressNextButton}> 
             <Image style={{justifyContent: 'center'}} source={require('../../../images/btn_gredient.png')}>
               <Text style={{fontSize: 20, color: 'white', textAlign: 'center', fontWeight: 'bold'}}>下一步</Text>
             </Image>
@@ -134,6 +121,7 @@ export default class Step3 extends Component {
         </View>
       </View>
     )
-  }
 }
+
+export default Step3
  

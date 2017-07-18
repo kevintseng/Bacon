@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { FormInput } from 'react-native-elements';
+import React, { Component } from 'react'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { FormInput } from 'react-native-elements'
+import { inject } from "mobx-react"
 
 const styles = {
   title: {
@@ -23,11 +24,12 @@ const styles = {
   }
 }
 
+@inject("firebase")
 export default class SignIn extends Component {
 
   constructor(props) {
     super(props)
-    this.firebase = this.props.fire
+    this.firebase = this.props.firebase
     this.state = {
       email: '',
       password: '',
