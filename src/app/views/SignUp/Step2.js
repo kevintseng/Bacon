@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+//import { inject } from "mobx-react"
 
 export default class Step2 extends Component {
 

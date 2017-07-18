@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native'
-//import UserAvatar from 'react-native-user-avatar';
+import { Actions } from 'react-native-router-flux'
+//import { inject } from "mobx-react"
 
-//import { Actions } from 'react-native-router-flux';
+//import UserAvatar from 'react-native-user-avatar';
 //import { observer } from 'mobx-react/native';
 // import { autorun } from 'mobx';
  // eslint-disable-line
@@ -14,6 +15,11 @@ const { width } = Dimensions.get('window'); //eslint-disable-line
 const picWidth = width/2
 
 export default class Step4 extends Component {
+
+  onPressNextButton = () => {
+    Actions.Auth({type: 'reset'})
+  }
+
   render(){
     return(
      <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-between',marginTop: 20}}>
@@ -23,7 +29,7 @@ export default class Step4 extends Component {
         </View>
 
         <View style={{marginTop: 20}}>
-          <TouchableOpacity onPress={this.onPressNextButton}> 
+          <TouchableOpacity > 
             <Image style={{justifyContent: 'center'}} source={require('../../../images/btn_index_join.png')}>
               <Text style={{fontSize: 20, color: '#606060', textAlign: 'center', fontWeight: 'bold'}}>+新增個人照片一張</Text>
             </Image>

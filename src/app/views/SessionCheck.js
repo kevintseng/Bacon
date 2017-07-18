@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { View, Image, AppState } from 'react-native'
 import { Actions } from 'react-native-router-flux'
+import { inject } from "mobx-react"
 import LinearGradient from 'react-native-linear-gradient'
 
 
@@ -17,11 +18,12 @@ const styles = {
 
 const colors = ['#f4a764', '#d63768']
 
+@inject("firebase")
 export default class SessionCheck extends Component {
 
   constructor(props) {
     super(props)
-    this.firebase = this.props.fire
+    this.firebase = this.props.firebase
     this.user_id = null
     this.state = {
       lastAppState: AppState.currentState
