@@ -23,7 +23,7 @@ const styles = {
   }
 }
 
-export default class Signin extends Component {
+export default class SignIn extends Component {
 
   constructor(props) {
     super(props)
