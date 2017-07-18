@@ -30,6 +30,12 @@ import FateScene from "./scenes/FateScene"
 //import { FateProvider } from "./providers/Provider"
 import AboutMeeQ from "./views/Settings/AboutMeeQ"
 // define this based on the styles/dimensions you use
+
+import SessionCheck_B from "./views/SessionCheck_B"
+import Welcome_B from "./views/Welcome_B"
+import Signin_B from "./views/Signin_B"
+import Settings_B from "./views/Settings_B"
+
 const getSceneStyle = (props, computedProps) => {
   const style = {
     flex: 1,
@@ -87,9 +93,9 @@ export default class RouterComponent extends Component {
       appState: AppState.currentState,
     };
 
-    this.authListener(this.props.firebase)
+    //this.authListener(this.props.firebase)
   }
-
+/*
   authListener = (fire) => {
     console.log("Initialize authListener .");
     let user;
@@ -153,8 +159,9 @@ export default class RouterComponent extends Component {
             console.error(err);
           });
       } else {
+        console.warn(data)
         this.signOut();
-        console.log("Router: No valid user session.");
+        console.warn("Router: No valid user session.");
       }
     });
   }
@@ -170,7 +177,7 @@ export default class RouterComponent extends Component {
 
   handleAppStateChange = nextAppState => {
     console.log('AppState listner is on');
-    if(this.state.appState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
+    if(AppState.currentState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
       console.log('App is becoming inactive.');
       this.setOffline(this.props.wooer.user.uid);
     }
@@ -191,6 +198,7 @@ export default class RouterComponent extends Component {
   signOut = () => {
     // Clear out appstore's user data
     if (this.props.wooer.user) {
+      console.warn("go here")
       this.setOffline(this.props.wooer.user.uid);
     }
 
@@ -206,7 +214,7 @@ export default class RouterComponent extends Component {
     // Render SessionCheck and redirect to signin view
     Actions.welcome({ type: "reset" });
   };
-
+*/
   render() {
 
     //const MeetCuteScene = ContainerWithProvider(MeetCuteContainer,{ HunterStore: this.props.wooer, PreyStore: this.props.meetCute })
@@ -221,26 +229,39 @@ export default class RouterComponent extends Component {
         getSceneStyle={getSceneStyle}
       >
 
-        <Scene key="root" hideNavBar>
-          <Scene key="sessioncheck" component={SessionCheck} />
-          <Scene key="welcome" component={Welcome} hideTabBar/>
-          <Scene key="signin" component={Signin} hideNavBar hideTabBar/>
-          <Scene
-            key="forgot"
-            component={Forgot}
-            title="申請密碼重設"
-            hideNavBar={false}
-          />
-          <Scene key="signup" hideNavBar hideTabBar>
-            <Scene key="signup1" component={Signup1} />
-            <Scene key="signup2" component={Signup2} />
-            <Scene key="signup3" component={Signup3} />
-            <Scene key="signup4" component={Signup4} />
-          </Scene>
+        <Scene key="root" hideTabBar hideNavBar>
 
-          <Scene key="drawer" component={DrawerPanel} open={false}>
+          <Scene key="sessioncheck_B" component={SessionCheck_B} />
+          <Scene key="welcome_B" component={Welcome_B} />
+          <Scene key="signin_B" component={Signin_B}/>
+
+
+
+ 
+
             <Scene key="main" hideTabBar hideNavBar={false}>
-              { AboutMeScene }
+             <Scene
+                key="settings_B"
+                component={Settings_B}
+                title="Settings"
+                renderLeftButton={menuButton}
+              />
+              
+            </Scene>
+
+
+
+
+          <Scene key="errorview" component={ErrorView} />
+
+        </Scene>
+      </Router>
+    );
+  }
+}
+/*
+         <Scene key="drawer" component={DrawerPanel} open={false}>
+{ AboutMeScene }
               { FateScene }
               { MeetCuteScene }
               { MeetChanceAllScene }
@@ -253,12 +274,6 @@ export default class RouterComponent extends Component {
                 renderLeftButton={menuButton}
                 hideTabBar
                 hideNavBar
-              />
-              <Scene
-                key="settings"
-                component={Settings}
-                title="Settings"
-                renderLeftButton={menuButton}
               />
               <Scene key="account" component={Account} title="Account" />
               <Scene key="settings_wrapper">
@@ -290,12 +305,15 @@ export default class RouterComponent extends Component {
                 hideNavBar={false}
                 hideTabBar
               />
-            </Scene>
+*/
+/*
+          <Scene key="welcome" component={Welcome} hideTabBar/>
+          <Scene key="signin" component={Signin} hideNavBar hideTabBar/>
+          <Scene key="forgot" component={Forgot} title="申請密碼重設" hideNavBar={false} />
+          <Scene key="signup" hideNavBar hideTabBar>
+            <Scene key="signup1" component={Signup1} />
+            <Scene key="signup2" component={Signup2} />
+            <Scene key="signup3" component={Signup3} />
+            <Scene key="signup4" component={Signup4} />
           </Scene>
-          <Scene key="errorview" component={ErrorView} />
-
-        </Scene>
-      </Router>
-    );
-  }
-}
+*/

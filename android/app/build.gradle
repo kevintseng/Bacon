@@ -141,6 +141,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-linear-gradient')
     compile project(':react-native-customized-image-picker')
     compile project(':react-native-vector-icons')
     compile project(':react-native-image-resizer')
