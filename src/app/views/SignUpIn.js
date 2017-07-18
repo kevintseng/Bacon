@@ -24,11 +24,11 @@ const styles = {
 }
 
 const onPressSingUp = () => {
-  alert("免費加入")
+  Actions.SignUp({ type: 'reset' })
 }
 
 const onPressSingIn = () => {
-  Actions.Signin({ type: 'reset' })
+  Actions.SignIn({ type: 'reset' })
 }
 
 const SignUpIn = () => {

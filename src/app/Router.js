@@ -5,33 +5,38 @@ import { Router, Scene, Actions } from "react-native-router-flux"
 import { observer } from "mobx-react/native"
 import { Icon } from "react-native-elements"
 // views
-import Welcome from "./views/Welcome"
-import Messages from "./views/MessageCenter/Messages"
-import Settings from "./views/Settings"
-import Chat from "./views/MessageCenter/Chat"
-import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup"
-import DrawerPanel from "./views/DrawerPanel"
-import ErrorView from "./views/ErrorView"
-import Forgot from "./views/Forgot"
-import Account from "./views/Settings/Account"
-import PushNotification from "./views/Settings/PushNotification"
-import Question from "./views/Settings/Question"
-import ChangePassword from "./views/Settings/ChangePassword"
-import FeedBack from "./views/Settings/FeedBack"
+//import Welcome from "./views/Welcome"
+//import Messages from "./views/MessageCenter/Messages"
+//import Settings from "./views/Settings"
+//import Chat from "./views/MessageCenter/Chat"
+//import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup"
+//import DrawerPanel from "./views/DrawerPanel"
+//import ErrorView from "./views/ErrorView"
+//import Forgot from "./views/Forgot"
+//import Account from "./views/Settings/Account"
+//import PushNotification from "./views/Settings/PushNotification"
+//import Question from "./views/Settings/Question"
+//import ChangePassword from "./views/Settings/ChangePassword"
+//import FeedBack from "./views/Settings/FeedBack"
 // scenes
-import AboutMeScene from "./scenes/AboutMeScene"
-import MeetCuteScene from "./scenes/MeetCuteScene"
-import { MeetChanceAllScene, MeetChanceSingleScene, MeetChanceEdit } from "./scenes/MeetChanceScene"
-import FateScene from "./scenes/FateScene"
+//import AboutMeScene from "./scenes/AboutMeScene"
+//import MeetCuteScene from "./scenes/MeetCuteScene"
+//import { MeetChanceAllScene, MeetChanceSingleScene, MeetChanceEdit } from "./scenes/MeetChanceScene"
+//import FateScene from "./scenes/FateScene"
 //import { MeetChanceAllScene, MeetChanceSingleScene, MeetChanceEdit } from "./scenes/MeetChanceScene"
 // providers
 //import { FateProvider } from "./providers/Provider"
-import AboutMeeQ from "./views/Settings/AboutMeeQ"
+//import AboutMeeQ from "./views/Settings/AboutMeeQ"
 // define this based on the styles/dimensions you use
 
 import SessionCheck from "./views/SessionCheck"
 import SignUpIn from "./views/SignUpIn"
-import Signin from "./views/Signin"
+import SignIn from "./views/SignIn"
+import Step1 from "./views/SignUp/Step1"
+import Step2 from "./views/SignUp/Step2"
+import Step3 from "./views/SignUp/Step3"
+import Step4 from "./views/SignUp/Step4"
+//import SignUp from "./views/SignUp"
 
 import Settings_B from "./views/Settings_B"
 
@@ -232,9 +237,13 @@ export default class RouterComponent extends Component {
 
           <Scene key="SessionCheck" component={ SessionCheck } />
           <Scene key="SignUpIn" component={ SignUpIn } />
-          <Scene key="Signin" component={ Signin }/>
-
-
+          <Scene key="SignIn" component={ SignIn }/>
+          <Scene key="SignUp" hideTabBar hideNavBar>
+            <Scene key="Step1" component={ Step1 } />
+            <Scene key="Step2" component={ Step2 } />
+            <Scene key="Step3" component={ Step3 } />
+            <Scene key="Step4" component={ Step4 } />
+          </Scene>
 
  
 
@@ -251,7 +260,7 @@ export default class RouterComponent extends Component {
 
 
 
-          <Scene key="errorview" component={ErrorView} />
+          
 
         </Scene>
       </Router>
