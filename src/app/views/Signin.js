@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    Dimensions,
-} from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { Header } from '../components/Header';
