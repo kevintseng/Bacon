@@ -8,8 +8,6 @@ import { Icon } from "react-native-elements"
 import Welcome from "./views/Welcome"
 import Messages from "./views/MessageCenter/Messages"
 import Settings from "./views/Settings"
-import Signin from "./views/Signin"
-import SessionCheck from "./views/SessionCheck"
 import Chat from "./views/MessageCenter/Chat"
 import { Signup1, Signup2, Signup3, Signup4 } from "./views/Signup"
 import DrawerPanel from "./views/DrawerPanel"
@@ -31,9 +29,10 @@ import FateScene from "./scenes/FateScene"
 import AboutMeeQ from "./views/Settings/AboutMeeQ"
 // define this based on the styles/dimensions you use
 
-import SessionCheck_B from "./views/SessionCheck_B"
-import Welcome_B from "./views/Welcome_B"
-import Signin_B from "./views/Signin_B"
+import SessionCheck from "./views/SessionCheck"
+import SignUpIn from "./views/SignUpIn"
+import Signin from "./views/Signin"
+
 import Settings_B from "./views/Settings_B"
 
 const getSceneStyle = (props, computedProps) => {
@@ -231,9 +230,9 @@ export default class RouterComponent extends Component {
 
         <Scene key="root" hideTabBar hideNavBar>
 
-          <Scene key="sessioncheck_B" component={SessionCheck_B} />
-          <Scene key="welcome_B" component={Welcome_B} />
-          <Scene key="signin_B" component={Signin_B}/>
+          <Scene key="SessionCheck" component={ SessionCheck } />
+          <Scene key="SignUpIn" component={ SignUpIn } />
+          <Scene key="Signin" component={ Signin }/>
 
 
 

@@ -1,124 +1,93 @@
 import React, { Component } from 'react';
-import { View, Dimensions } from 'react-native';
-import { FormLabel, FormInput, Button } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
-import { Header } from '../components/Header';
-import { observer } from 'mobx-react/native';
-import { FormErrorMsg } from '../components/FormErrorMsg';
-import { checkEmail } from '../Utils';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { FormInput } from 'react-native-elements';
 
-const { width, height } = Dimensions.get('window');
+const styles = {
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#606060',
+    textAlign: 'center'
+  },
+  buttonTextSingUp: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#606060',
+    textAlign: 'center'
+  },
+  buttonTextSingIn: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center'
+  }
+}
 
-@observer
-export default class Welcome extends Component {
+export default class Signin extends Component {
+
   constructor(props) {
-    super(props);
-    this.store = this.props.store;
-    this.firebase = this.props.fire;
+    super(props)
+    this.firebase = this.props.fire
     this.state = {
-      size: {
-        width,
-        height
-      },
       email: '',
       password: '',
-      emailErr: false,
-      loginErr: false,
-      loading: false,
+      loginStatus: null
     };
   }
 
-  // TODO: Add security measures to saved auth data.
-  signin = async () => {
-    if(this.emailCheck() && this.passwordCheck()) {
-      this.setState({
-        loading: true
-      });
-      
-      try {
-        await this.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      } catch (error) {
-        console.warn(error.toString())
-        this.setState({
-          loginErr: error.message,
-          loading: false,
-        })
-      }
-      /*
-      await this.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      .catch(err => {
-        console.warn(err);
-        this.setState({
-          loginErr: err.message,
-          loading: false,
-        });
-      }); // end firebase.auth().signInWithEmailAndPassword
-      */
-      //console.warn("登入中")
-      const user = await this.firebase.auth().currentUser;
-      if(user) {
-        console.log('User has signed in successfully.');
-        await this.firebase.database().ref("users/" + user.uid).once("value",(snap) => this.store.setUser(snap.val()))
-        //console.warn(this.store.user.bio)
-        this.setState({
-          loading: false
-        });
-        Actions.drawer();
-      } else {
-        console.log('Signing in.....user.');
-      }
-    }
-  }
-
-  onEmailChange = email => {
+  onEmailChange(email) {
     this.setState({
-      email: email.trim(),
-      emailErr: false,
-      loginErr: false,
+      email: email.trim()
     })
   }
 
-  onPasswordChange = password => {
+  onPasswordChange(password) {
     this.setState({
-      password: password.trim(),
-      loginErr: false,
+      password: password.trim()
     });
   }
 
-  emailCheck = () => {
-    if(checkEmail(this.state.email)){
-      return true;
-    }
+  onPressSingIn = () => {
     this.setState({
-      emailErr: '這不是有效的email, 請再確認',
-    });
-    return false;
+      loginStatus: '登入中'
+    })
+    this.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch((error) => {
+      const errorCode = error.code
+      const errorMessage = error.message
+      switch(errorCode) {
+        case 'auth/wrong-password':
+          this.setState({
+            loginStatus: '密碼錯誤',
+          })
+          break
+        case 'auth/user-not-found':
+          this.setState({
+            loginStatus: '無此使用者',
+          })
+          break
+        default:
+          this.setState({
+            loginStatus: errorMessage,
+          })
+          break
+      } 
+      console.log(error)
+    })
   }
 
-  passwordCheck = () => {
-    if(this.state.password.length < 1) {
-      this.setState({
-        loginErr: '請輸入密碼',
-      });
-      return false;
-    }
-    return true;
-  }
+  render(){
+  return(
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-between',marginTop: 20}}>
 
-  render() {
-    return (
-      <View style={[this.state.size, { marginTop: 0 }]}>
-      <Header
-        headerImage
-        //onRight={this.handleSubmit}
-        rightColor='#007AFF'
-        disableRight={this.state.loading}
-        disableLeft={this.state.loading}
-        //onLeft={() => Actions.pop()}
-        leftColor='#007AFF'
-      />
+      <View style={{marginBottom: 100}}>
+       <Image source={require('../../images/ico_titlebar_logo.png')}/>
+      </View>
+
+      <View style={{alignItems: 'center', paddingBottom: 15}}>
         <View>
-          <FormLabel>登入 Email</FormLabel>
+          <Image source={require('../../images/ico_reg_mail.png')}/>
+        </View>
+        <View style={{paddingBottom: 15}}>
           <FormInput
             autoFocus
             autoCorrect={false}
@@ -129,12 +98,11 @@ export default class Welcome extends Component {
             maxLength={60}
             onChangeText={email => this.onEmailChange(email)}
           />
-
-          {
-            this.state.emailErr && <FormErrorMsg>{this.state.emailErr}</FormErrorMsg>
-          }
-
-          <FormLabel>密碼</FormLabel>
+        </View>
+        <View>
+          <Image source={require('../../images/ico_logo_pass.png')}/>
+        </View>
+        <View>
           <FormInput
             ref='passw'
             placeholder='請輸入密碼'
@@ -144,34 +112,33 @@ export default class Welcome extends Component {
             onChangeText={password =>
               this.onPasswordChange(password)}
             />
-          {
-            this.state.loginErr &&   <FormErrorMsg>{this.state.loginErr}</FormErrorMsg>
-          }
-          <View style={{ height: 10 }} />
-          <Button
-            //raised
-            color='#007AFF'
-            //icon={ this.state.loading ? {name: 'sync'} : {name: 'chevron-right'}}
-            backgroundColor='transparent'
-            title={this.state.loading ? '登入中...' : '登入'}
-            onPress={this.signin}
-          />
-          <View stye={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between'}}
-          >
-
-            <Button
-              title='忘記密碼? 申請密碼重設'
-              color='grey'
-              backgroundColor='transparent'
-              onPress={Actions.forgot}
-            />
-          </View>
         </View>
+        { this.state.loginStatus && <View><Text style={{color: 'blue'}}>{this.state.loginStatus}</Text></View> }
       </View>
-    );
-  }
+
+      <View style={{marginBottom: 20}}>
+        <TouchableOpacity onPress={this.onPressSingIn}> 
+          <Image style={{justifyContent: 'center'}} source={require('../../images/btn_gredient.png')}>
+            <Text style={styles.buttonTextSingIn}>登入</Text>
+          </Image>
+        </TouchableOpacity>
+      </View>
+
+      <View>
+        <Text onPress={()=>{alert('忘記密碼？申請密碼重設')}}>忘記密碼？申請密碼重設</Text>
+      </View>
+
+      <View style={{marginTop: 20}}>
+        <Image source={require('../../images/pic_index_wave.png')} />
+      </View>
+
+    </View>
+  )}
 }
+/*
+ { this.state.emailErr && <View><Text>{this.state.emailErr}</Text></View> }
+          {
+            this.state.loginErr &&   <View><Text>{this.state.loginErr}</Text></View>
+          }
+*/
+//export default Signin_B

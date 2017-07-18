@@ -28,10 +28,10 @@ const onPressSingUp = () => {
 }
 
 const onPressSingIn = () => {
-  Actions.signin_B({ type: 'reset' })
+  Actions.Signin({ type: 'reset' })
 }
 
-const Welcome_B = () => {
+const SignUpIn = () => {
 
   return(
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-between',marginTop: 100}}>
@@ -41,7 +41,7 @@ const Welcome_B = () => {
       <View>
         <Text style={styles.title}>遇見更多的她/他</Text>
       </View>
-      <View style={{marginBottom: 20}}>
+      <View style={{marginBottom: 20, alignItems: 'center'}}>
         <TouchableOpacity style={{paddingBottom: 15}} onPress={onPressSingUp}> 
           <Image style={{justifyContent: 'center'}} source={require('../../images/btn_index_join.png')}>
             <Text style={styles.buttonTextSingUp}>+ 免費加入</Text>
@@ -60,4 +60,4 @@ const Welcome_B = () => {
   )
 }
 
-export default Welcome_B
+export default SignUpIn
