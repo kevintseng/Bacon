@@ -38,7 +38,7 @@ const styles = {
   }
 }
 
-const LogoButton = ({title,topButtonPic,bottomButtonPic,topButtonText,bottomButtonText,topButtonOnPress,bottomButtonOnPress,topLogo,bottomLog,}) => {
+const LogoButton = ({ title,topButtonPic,bottomButtonPic,topButtonText,bottomButtonText,topButtonOnPress,bottomButtonOnPress,topLogo,bottomLog }) => {
 
   return(
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-between',marginTop: 100}}>

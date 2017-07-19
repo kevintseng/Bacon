@@ -34,12 +34,22 @@ export default class Step1 extends Component {
     Actions.Step2()
   }
 
+  onPressReturnButton = () => {
+    Actions.pop()
+  }
+
   render(){
     return(
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-between',marginTop: 20}}>
-
-        <View>
-          <Image source={require('../../../images/ico_titlebar_logo.png')} />
+        <View style={{flexDirection: 'row'}}>
+          <View style={{justifyContent:'center', marginLeft: 20}}>
+            <TouchableOpacity activeOpacity={0.2} onPress={this.onPressReturnButton}>
+              <Image source={require('../../../images/btn_back.png')} />
+            </TouchableOpacity>
+          </View>
+          <View style={{flex: 1, alignItems: 'center', justifyContent:'center', marginRight: 20}}>
+            <Image source={require('../../../images/ico_titlebar_logo.png')} />
+          </View>
         </View>
 
         <View style={{marginTop: 70}}>
