@@ -12,7 +12,7 @@ export default class Settings_B extends Component {
 
   onPressSignOut = () => {
     this.firebase.auth().signOut()
-    this.setOffline('EPZxOG4AjrQdfih5vHuWUKeVj2j1')
+    //this.setOffline('EPZxOG4AjrQdfih5vHuWUKeVj2j1')
   }
 
   setOffline(user_id){

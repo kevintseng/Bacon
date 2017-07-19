@@ -18,19 +18,17 @@ export default class RouterComponent extends Component {
     return (
       <Router>
         <Scene key="root" hideTabBar hideNavBar>
-
-          <Scene key="authenticate" hideTabBar hideNavBar>
-            <Scene key="SessionCheck" component={ SessionCheckScene } />
-            <Scene key="Welcome" component={ WelcomeScene } /> 
-            <Scene key="SignIn" component={ SignInScene }/>
-            <Scene key="SignUp" hideTabBar hideNavBar>
-              <Scene key="SignUpOne" component={ SignUpOneScene } />
-              <Scene key="SignUpTwo" component={ SignUpTwoScene } />
-              <Scene key="SignUpThree" component={ SignUpThreeScene } />
-              <Scene key="SignUpFour" component={ SignUpFourScene } />
-            </Scene>
-            <Scene key="Auth" component={ AuthScene }/>
+          
+          <Scene key="SessionCheck" component={ SessionCheckScene } />
+          <Scene key="Welcome" component={ WelcomeScene } /> 
+          <Scene key="SignIn" component={ SignInScene }/>
+          <Scene key="SignUp" hideTabBar hideNavBar>
+            <Scene key="SignUpOne" component={ SignUpOneScene } />
+            <Scene key="SignUpTwo" component={ SignUpTwoScene } />
+            <Scene key="SignUpThree" component={ SignUpThreeScene } />
+            <Scene key="SignUpFour" component={ SignUpFourScene } />
           </Scene>
+          <Scene key="Auth" component={ AuthScene }/>
           
           <Scene key="main" hideTabBar hideNavBar >
             <Scene key="settings_B" component={Settings_B} title="Settings"/>
