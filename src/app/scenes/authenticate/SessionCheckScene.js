@@ -19,7 +19,7 @@ const styles = {
 const colors = ['#f4a764', '#d63768']
 
 @inject("firebase")
-export default class SessionCheck extends Component {
+export default class SessionCheckScene extends Component {
 
   constructor(props) {
     super(props)
@@ -41,7 +41,7 @@ export default class SessionCheck extends Component {
       } else {
         //console.warn("沒有使用者登入") // 沒有使用者登入
         AppState.removeEventListener('change', this._handleAppStateChange ) // 移除 app 狀態監聽
-        Actions.SignUpIn({type: 'reset'}) // 轉到註冊登入頁面
+        Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
       }
     })
   }
@@ -72,7 +72,7 @@ export default class SessionCheck extends Component {
     return(
       <LinearGradient colors={colors} style={styles.linearGradient}>
         <View style={styles.linearGradientView}>
-          <Image source={require('../../images/ico_intro_logo.png')} />
+          <Image source={require('../../../images/ico_intro_logo.png')} />
         </View>
       </LinearGradient>
   )}
