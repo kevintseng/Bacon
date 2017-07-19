@@ -241,7 +241,7 @@ export default class RouterComponent extends Component {
           
           <Scene key="SignUpIn" component={ SignUpIn } /> 
           <Scene key="SignIn" component={ SignIn }/>
-          <Scene key="SignUp" hideTabBar hideNavBar>
+          <Scene key="SignUp">
             <Scene key="Step1" component={ Step1 } />
             <Scene key="Step2" component={ Step2 } />
             <Scene key="Step3" component={ Step3 } />

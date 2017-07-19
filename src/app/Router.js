@@ -3,13 +3,18 @@ import { Router, Scene } from "react-native-router-flux"
 // authenticate scenes
 import SessionCheckScene from "./scenes/authenticate/SessionCheckScene"
 import WelcomeScene from "./scenes/authenticate/WelcomeScene"
+import SignInScene from "./scenes/authenticate/SignInScene"
+import SignUpOneScene from "./scenes/authenticate/SignUpOneScene"
+import SignUpTwoScene from "./scenes/authenticate/SignUpTwoScene"
+import SignUpThreeScene from "./scenes/authenticate/SignUpThreeScene"
+import SignUpFourScene from "./scenes/authenticate/SignUpFourScene"
 
-import SignIn from "./views/SignIn"
-import Step1 from "./views/SignUp/Step1"
-import Step2 from "./views/SignUp/Step2"
-import Step3Container from "./containers/SignUp/Step3Container"
-import Step4 from "./views/SignUp/Step4"
+//import Step1 from "./views/SignUp/Step1"
+//import Step2 from "./views/SignUp/Step2"
+//import Step3Container from "./containers/SignUp/Step3Container"
+//import Step4 from "./views/SignUp/Step4"
 import Auth from "./views/Auth"
+//import Theme from "./components/Theme"
 //import SignUp from "./views/SignUp"
 
 import Settings_B from "./views/Settings_B"
@@ -24,13 +29,12 @@ export default class RouterComponent extends Component {
           <Scene key="authenticate" hideTabBar hideNavBar>
             <Scene key="SessionCheck" component={ SessionCheckScene } />
             <Scene key="Welcome" component={ WelcomeScene } /> 
-            <Scene key="SignIn" component={ SignIn }/>
-
+            <Scene key="SignIn" component={ SignInScene }/>
             <Scene key="SignUp" hideTabBar hideNavBar>
-              <Scene key="Step1" component={ Step1 } />
-              <Scene key="Step2" component={ Step2 } />
-              <Scene key="Step3" component={ Step3Container } />
-              <Scene key="Step4" component={ Step4 } />
+              <Scene key="SignUpOne" component={ SignUpOneScene } />
+              <Scene key="SignUpTwo" component={ SignUpTwoScene } />
+              <Scene key="SignUpThree" component={ SignUpThreeScene } />
+              <Scene key="SignUpFour" component={ SignUpFourScene } />
             </Scene>
 
             <Scene key="Auth" component={ Auth }/>
