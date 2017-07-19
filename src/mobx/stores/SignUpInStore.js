@@ -2,7 +2,7 @@ import { observable, action, useStrict } from 'mobx'
 
 useStrict(true)
 
-export default class SignupStore {
+export default class SignUpInStore {
 
   @observable email
   @observable password

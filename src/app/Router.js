@@ -8,14 +8,7 @@ import SignUpOneScene from "./scenes/authenticate/SignUpOneScene"
 import SignUpTwoScene from "./scenes/authenticate/SignUpTwoScene"
 import SignUpThreeScene from "./scenes/authenticate/SignUpThreeScene"
 import SignUpFourScene from "./scenes/authenticate/SignUpFourScene"
-
-//import Step1 from "./views/SignUp/Step1"
-//import Step2 from "./views/SignUp/Step2"
-//import Step3Container from "./containers/SignUp/Step3Container"
-//import Step4 from "./views/SignUp/Step4"
-import Auth from "./views/Auth"
-//import Theme from "./components/Theme"
-//import SignUp from "./views/SignUp"
+import AuthScene from "./scenes/authenticate/AuthScene"
 
 import Settings_B from "./views/Settings_B"
 
@@ -36,9 +29,7 @@ export default class RouterComponent extends Component {
               <Scene key="SignUpThree" component={ SignUpThreeScene } />
               <Scene key="SignUpFour" component={ SignUpFourScene } />
             </Scene>
-
-            <Scene key="Auth" component={ Auth }/>
-
+            <Scene key="Auth" component={ AuthScene }/>
           </Scene>
           
           <Scene key="main" hideTabBar hideNavBar >

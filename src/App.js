@@ -5,7 +5,7 @@ import AppInitStore from './configs/AppInitStore'
 
 const App = () => {
   return (
-    <Provider firebase={AppInitStore.firebase} signUp={AppInitStore.signUp}>
+    <Provider firebase={AppInitStore.firebase} SignUpInStore={AppInitStore.SignUpInStore}>
       <Router/>
     </Provider>
   )
