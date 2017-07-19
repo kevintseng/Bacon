@@ -37,7 +37,7 @@ export default class SessionCheckScene extends Component {
         this.user_id = user.uid
         this.setOnline(this.user_id) // 設置使用者上線
         AppState.addEventListener('change', this._handleAppStateChange ) // 註冊 app 狀態監聽
-        Actions.main({type: 'reset'})
+        Actions.Drawer({type: 'reset'})
       } else {
         //console.warn("沒有使用者登入") // 沒有使用者登入
         AppState.removeEventListener('change', this._handleAppStateChange ) // 移除 app 狀態監聽
