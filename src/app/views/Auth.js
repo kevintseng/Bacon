@@ -1,20 +1,6 @@
 import React, { Component } from 'react'
 import { View, Image, Text } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
 import { inject } from "mobx-react"
-
-const styles = {
-  linearGradientView: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  linearGradient: {
-    flex: 1
-  }
-}
-
-const colors = ['#f4a764', '#d63768']
 
 @inject("firebase","signUp")
 export default class Auth extends Component {
@@ -57,12 +43,7 @@ export default class Auth extends Component {
 
   render(){
     return(
-      <LinearGradient colors={colors} style={styles.linearGradient}>
-        <View style={styles.linearGradientView}>
-          <Image source={require('../../images/ico_intro_logo.png')} />
-          <Text style={{textAlign: 'center', marginTop: 20, color: "blue"}}>{ this.state.loginStatus }</Text>
-        </View>
-      </LinearGradient>
+
     )}
 }
 

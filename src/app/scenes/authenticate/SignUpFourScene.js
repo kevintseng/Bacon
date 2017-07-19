@@ -5,7 +5,7 @@ import { Actions } from "react-native-router-flux"
 export default class SignUpFourScene extends Component {
 
   buttonOnPress = () => {
-    Actions.Auth({type: 'reset'})
+    Actions.Auth({ type: 'reset', UpInStatus: '註冊' })
   }
 
   returnOnPress = () => {
