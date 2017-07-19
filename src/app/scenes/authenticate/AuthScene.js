@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import { inject } from "mobx-react"
+import { inject, observer } from "mobx-react"
 import Intro from '../../components/Intro'
 
-@inject("firebase","SignUpInStore")
+@inject("firebase","SignUpInStore") @observer
 export default class AuthScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.UpInStatus = this.props.UpInStatus
     this.SignUpInStore = this.props.SignUpInStore
     this.state = {
       error: null
@@ -16,7 +15,7 @@ export default class AuthScene extends Component {
   }
 
   componentWillMount() {
-    switch(this.UpInStatus) {
+    switch(this.SignUpInStore.UpInStatus) {
       case '註冊':
         this.signUp()
         break
@@ -29,29 +28,35 @@ export default class AuthScene extends Component {
   }
 
   signUp = () => {
-    this.firebase.auth().createUserWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password).catch((error) => {
-      const errorMessage = error.message
-      this.setState({
-          error: errorMessage,
+    this.firebase.auth().createUserWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password)
+      .then((user) => {
+        this.SignUpInStore.setUid(user.uid)
+        //console.warn('成功註冊' + this.SignUpInStore.uid)
       })
-      console.log(error)
-    })    
+      .catch((error) => {
+        const errorMessage = error.message
+        this.setState({
+          error: errorMessage
+        })
+        console.log(error)
+      })    
   }
 
   signIn = () => {
-    this.firebase.auth().signInWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password).catch((error) => {
-      const errorMessage = error.message
-      this.setState({
+    this.firebase.auth().signInWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password)
+      .catch((error) => {
+        const errorMessage = error.message
+        this.setState({
           error: errorMessage,
-      })
-      console.log(error)
-    })    
+        })
+        console.log(error)
+      })    
   }
 
   render(){
     return(
       <Intro
-        UpInStatus={this.UpInStatus}
+        UpInStatus={this.SignUpInStore.UpInStatus}
         error={this.state.error}
       />
     )}

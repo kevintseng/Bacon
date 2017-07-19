@@ -6,7 +6,7 @@ import Theme from './Theme'
 
 const { width } = Dimensions.get('window'); //eslint-disable-line
 
-const LayoutThree = ({ bottonText,buttonOnPress,returnOnPress,email,onChangeEmail,password,onChangePassword,nickname,onChangeNickname,birthday,onChangeBirthday }) => {
+const LayoutThree = ({ bottonText,buttonOnPress,returnOnPress,email,onChangeEmail,password,onChangePassword,displayName,onChangeDisplayName,birthday,onChangeBirthday }) => {
   return(
     <Theme bottonText={ bottonText } buttonOnPress={ buttonOnPress } returnOnPress={ returnOnPress }>
       <View style={{alignItems: 'center', marginBottom: 20}}>
@@ -21,7 +21,7 @@ const LayoutThree = ({ bottonText,buttonOnPress,returnOnPress,email,onChangeEmai
             placeholder='sample@email.com'
             returnKeyType={'next'}
             keyboardType={'email-address'}
-            value={email}
+            value={ email }
             maxLength={60}
             onChangeText={ onChangeEmail }
           />
@@ -36,7 +36,7 @@ const LayoutThree = ({ bottonText,buttonOnPress,returnOnPress,email,onChangeEmai
             placeholder='請輸入密碼'
             secureTextEntry
             maxLength={12}
-            value={password}
+            value={ password }
             onChangeText={onChangePassword}
             />
         </View>
@@ -46,13 +46,13 @@ const LayoutThree = ({ bottonText,buttonOnPress,returnOnPress,email,onChangeEmai
         <View>
           <FormInput
             //ref='nickname'
-            placeholder='請輸2個字以上的暱稱)'
+            placeholder='請輸2個字以上的暱稱'
             //onBlur={this.nicknameCheck}
             underlineColorAndroid="#606060"
             returnKeyType={'next'}
             maxLength={20}
-            value={nickname}
-            onChangeText={onChangeNickname}
+            value={ displayName }
+            onChangeText={ onChangeDisplayName }
             />
         </View>
         <View>

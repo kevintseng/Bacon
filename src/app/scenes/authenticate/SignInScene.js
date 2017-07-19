@@ -12,7 +12,8 @@ export default class SignInScene extends Component {
   }
 
   buttonOnPress = () => {
-    Actions.Auth({ type: 'reset', UpInStatus: '登入' })
+    this.SignUpInStore.setUpInStatus('登入')
+    Actions.Auth({ type: 'reset' })
   }
 
   returnOnPress = () => {

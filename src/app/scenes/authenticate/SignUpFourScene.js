@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
-import LayoutFour from '../../components/LayoutFour'
+import { inject } from "mobx-react"
 import { Actions } from "react-native-router-flux"
+import LayoutFour from '../../components/LayoutFour'
 
+@inject("SignUpInStore")
 export default class SignUpFourScene extends Component {
 
+  constructor(props) {
+    super(props)
+    this.SignUpInStore = this.props.SignUpInStore
+  }
+
   buttonOnPress = () => {
-    Actions.Auth({ type: 'reset', UpInStatus: '註冊' })
+    this.SignUpInStore.setUpInStatus('註冊')
+    Actions.Auth({ type: 'reset' })
   }
 
   returnOnPress = () => {

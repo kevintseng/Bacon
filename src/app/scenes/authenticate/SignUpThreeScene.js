@@ -23,12 +23,14 @@ export default class SignUpThreeScene extends Component {
     return(
       <LayoutThree
         bottonText='最後一步'
-        buttonOnPress={this.buttonOnPress}
-        returnOnPress={this.returnOnPress}
-        email={this.SignUpInStore.email}
-        onChangeEmail={this.SignUpInStore.onChangeEmail}
-        password={this.SignUpInStore.password}
-        onChangePassword={this.SignUpInStore.onChangePassword}
+        buttonOnPress={ this.buttonOnPress }
+        returnOnPress={ this.returnOnPress }
+        email={ this.SignUpInStore.email }
+        onChangeEmail={ this.SignUpInStore.onChangeEmail }
+        password={ this.SignUpInStore.password }
+        onChangePassword={ this.SignUpInStore.onChangePassword }
+        displayName={ this.SignUpInStore.displayName }
+        onChangeDisplayName={ this.SignUpInStore.onChangeDisplayName }
       />
     )
   }
