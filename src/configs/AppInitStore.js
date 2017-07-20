@@ -4,22 +4,23 @@ import { FirebaseConfig } from "./Firebase"
 // Stores Classes
 import SignUpInStore from "../mobx/stores/SignUpInStore"
 import SubjectStore from "../mobx/stores/SubjectStore"
-import ObjectStore from "../mobx/stores/ObjectStore"
-import UIStore from "../mobx/stores/UIStore"
+//import ObjectStore from "../mobx/stores/ObjectStore"
+//import UIStore from "../mobx/stores/UIStore"
 // Actions
-import MeetCuteAction from "../mobx/actions/MeetCuteAction"
-import MeetChanceAction from "../mobx/actions/MeetChanceAction"
-import FateAction from "../mobx/actions/FateAction"
+//import MeetCuteAction from "../mobx/actions/MeetCuteAction"
+//import MeetChanceAction from "../mobx/actions/MeetChanceAction"
+//import FateAction from "../mobx/actions/FateAction"
 
 const AppInitStore = {
   init: () => {
     this.firebase = Firebase.initializeApp(FirebaseConfig)
-    this.ui = new UIStore()
+    //this.ui = new UIStore()
     this.SignUpInStore = new SignUpInStore()
-    this.wooer = new SubjectStore(this.firebase,this.ui)
-    this.meetCute = Object.assign(new ObjectStore(this.firebase,this.wooer),MeetCuteAction)
-    this.meetChance = Object.assign(new ObjectStore(this.firebase,this.wooer),MeetChanceAction)
-    this.fate = Object.assign(new ObjectStore(this.firebase,this.wooer,this.meetChance),FateAction)
+    this.SubjectStore = new SubjectStore()
+    //this.wooer = new SubjectStore(this.firebase,this.ui)
+    //this.meetCute = Object.assign(new ObjectStore(this.firebase,this.wooer),MeetCuteAction)
+    //this.meetChance = Object.assign(new ObjectStore(this.firebase,this.wooer),MeetChanceAction)
+    //this.fate = Object.assign(new ObjectStore(this.firebase,this.wooer,this.meetChance),FateAction)
     return this
   }
 }.init()

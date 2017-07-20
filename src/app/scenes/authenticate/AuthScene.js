@@ -44,6 +44,10 @@ export default class AuthScene extends Component {
 
   signIn = () => {
     this.firebase.auth().signInWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password)
+      .then((user) => {
+        this.SignUpInStore.setUid(user.uid)
+        //console.warn('成功註冊' + this.SignUpInStore.uid)
+      })
       .catch((error) => {
         const errorMessage = error.message
         this.setState({
