@@ -7,6 +7,9 @@
     "test": "jest",
     "storybook": "storybook start -p 7007"
   },
+  "rnpm": {
+   "assets": ["./src/fonts"]
+  },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "0.0.8",
     "firebase": "^4.1.3",

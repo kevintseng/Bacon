@@ -1,12 +1,12 @@
 import React from 'react'
 import { View } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
-import Theme from './Theme'
+import Theme from './Theme/Theme'
 
 const LayoutTwo = ({ bottonText,buttonOnPress,returnOnPress,googleOnPress, getDefaultValue,placeholder }) => {
   return(
     <Theme bottonText={ bottonText } buttonOnPress={ buttonOnPress } returnOnPress={ returnOnPress }>
-      <View style={{height: 200, marginLeft: 20, marginRight: 20}}>
+      <View style={{height: 200, marginLeft: 20, marginRight: 20 }}>
         <GooglePlacesAutocomplete
           placeholder={ placeholder }
           minLength={2}

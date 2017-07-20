@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Image, Text, Dimensions } from 'react-native'
 import { FormInput, CheckBox } from 'react-native-elements'
 import DatePicker from 'react-native-datepicker'
-import Theme from './Theme'
+import Theme from './Theme/Theme'
 
 const { width } = Dimensions.get('window'); //eslint-disable-line
 

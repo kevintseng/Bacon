@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Image, Text, TouchableOpacity, Dimensions } from 'react-native'
-import Theme from './Theme'
+import Theme from './Theme/Theme'
 
 const { width } = Dimensions.get('window')
 
@@ -13,7 +13,7 @@ const LayoutFour = ({ bottonText,buttonOnPress,returnOnPress,topBottonText }) =>
       <View>
         <TouchableOpacity > 
           <Image style={{justifyContent: 'center'}} source={require('../../images/btn_index_join.png')}>
-            <Text style={{fontSize: 20, color: '#606060', textAlign: 'center', fontWeight: 'bold'}}> { topBottonText}</Text>
+            <Text style={{backgroundColor: 'transparent',fontFamily: 'NotoSans',fontSize: 20, color: '#606060', textAlign: 'center', fontWeight: 'bold'}}> { topBottonText }</Text>
           </Image>
         </TouchableOpacity>
       </View>
