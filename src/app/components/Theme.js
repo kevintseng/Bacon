@@ -27,7 +27,7 @@ const Theme = ({children,bottonText,buttonOnPress,returnOnPress}) => {
 
       { children }
 
-      <View style={{position: 'absolute', bottom: 120 }}>
+      <View style={{position: 'relative', marginBottom: 120 }}>
         <TouchableOpacity onPress={buttonOnPress}> 
           <Image style={{justifyContent: 'center'}} source={require('../../images/btn_gredient.png')}>
             <Text style={ styles.botton }>{ bottonText }</Text>

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import Drawer from 'react-native-drawer';
-import { Actions, DefaultRenderer } from 'react-native-router-flux';
+import React, { Component } from 'react'
+import Drawer from 'react-native-drawer'
+import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
 import { Dimensions } from 'react-native'
 import Sider from '../../components/Sider'
@@ -9,33 +9,51 @@ const { width } = Dimensions.get('window')
 
 const drawerStyles = {
   drawer: { 
-    borderRightWidth: 1.8, 
-    borderRightColor: '#dcdcdc', 
+    borderRightWidth: 0, 
+    //borderRightColor: '#dcdcdc', 
     width
   }
 }
 
-@inject("firebase","SignUpInStore") @observer
+@inject("firebase","SignUpInStore","SubjectStore") @observer
 export default class DrawerScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectStore = this.props.SubjectStore
     this.state = {
       uploadState: null
     }
   }
+  
   componentWillMount() {
     if (this.SignUpInStore.UpInStatus === '註冊') {
       this.setState({
         uploadState: '上傳中'
       })
       this.uploadSignUpData()
+      this.initSubjectStoreFromSignUpInStore()
+    } else if (this.SignUpInStore.UpInStatus === '登入') {
+      this.initSubjectStoreFromFirebase() //或許會有非同步問題
     }
   }
 
-  componentDidMount() {
+  componentDidMount() { 
+  }
+
+  initSubjectStoreFromSignUpInStore(){
+    this.SubjectStore.setUid(this.SignUpInStore.uid)
+    this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
+  }
+
+  initSubjectStoreFromFirebase(){
+    this.firebase.database().ref("users/" + this.SignUpInStore.uid).once("value",
+      (snap) => {
+        this.SubjectStore.setUid(snap.val().uid)
+        this.SubjectStore.setDisplayName(snap.val().displayName)
+      })
   }
 
   uploadSignUpData() {
@@ -57,6 +75,14 @@ export default class DrawerScene extends Component {
       })
   }
 
+  goToAboutMe() {
+    Actions.AboutMe({type: 'reset'})
+  }
+
+  goToSetting(){
+    Actions.Setting({type: 'reset'})
+  }
+
   render() {
 
     const state = this.props.navigationState
@@ -70,7 +96,14 @@ export default class DrawerScene extends Component {
         onOpen={() => Actions.refresh({ key: state.key, open: true })}
         onClose={() => Actions.refresh({ key: state.key, open: false })}
         open={ state.open }
-        content={<Sider displayTitle={ this.state.uploadState }/>}
+        content={
+          <Sider 
+            displayBottom={ this.state.uploadState }
+            displayName={ this.SubjectStore.displayName }
+            displayNameOnPress={ this.goToAboutMe }
+            settingOnPress={ this.goToSetting }
+          />
+        }
         tapToClose
         openDrawerOffset={0.2}
         panCloseMask={0.2}

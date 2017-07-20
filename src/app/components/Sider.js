@@ -1,96 +1,90 @@
 import React from 'react'
-import { View, ScrollView, Dimensions } from 'react-native'
+import { View, Text, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
+import { Badge } from 'react-native-elements'
+import Menu from './Menu'
+import ListItem from './ListItem'
 
-import { List, ListItem, Icon } from 'react-native-elements'
-import SIDEBAR_LINKS from '../../configs/SidebarLinks'
+const { width, height } = Dimensions.get('window')
 
-//const loading = require('Bacon/src/images/loading.gif')
-
-const { height } = Dimensions.get('window')
-const list = SIDEBAR_LINKS
+const picWidth = (width * 0.8)/3
 
 const styles = {
   scrollView: {
-    height,
-    backgroundColor: '#ffffff',
-    flex: 1
-  },
-  listContainerStyle:{
-    marginTop: 0,
-    borderBottomWidth: 0,
-    backgroundColor: '#ffffff',
-    flex: 1
-  },
-  listItemContainerStyle: {
-    borderBottomWidth: 0
-    //backgroundColor: '#f0f0f0'
-  },
-  titleContainerStyle: {
-    //marginLeft: 50,
-    //paddingLeft: 30,
-    width: 50,
-    justifyContent:'center',
-    alignItems: 'center',
-    backgroundColor: "#2e8b57"
-  },
-  subListContainerStyle: {
-    //paddingLeft: 100,
-    backgroundColor: "#f0e68c",
-    //width: 300,
-    //marginLeft: 30,
-    justifyContent:'center',
-    alignItems: 'center',
-  },
-  wrapperStyle: {
-    //flex: 1,
-    //flexDirection: 'row',
-    backgroundColor: "#4169e1",
-    //justifyContent: 'flex-end',
-    //margin: 10
-    justifyContent:'center',
-    alignItems: 'center',
-    marginLeft: 15,
-    //marginRight: 15
-    //paddingLeft: 47
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    height
   }
 }
 
-const Sider = ({ displayTitle, displayName, photoURL, rightIconOnPress, avatarOnPress, itemOnPress }) => {
+const Sider = ({ displayBottom, displayName, displayNameOnPress, settingOnPress }) => {
 
   return(
     <ScrollView style = { styles.scrollView } >
-      <List containerStyle = { styles.listContainerStyle } >
-        <ListItem
-          title={ displayTitle }
-          containerStyle = { [styles.listItemContainerStyle,{height: 53, borderBottomWidth: 0.5, borderBottomColor: '#808080'}] }
-          rightIcon = {{name: 'menu', color: 'black'}}
-          onPress = { rightIconOnPress }
-        />
-        <ListItem
-          roundAvatar
-          containerStyle = { styles.listItemContainerStyle }
-          avatar = { photoURL }
-          title = { displayName }
-          onPress = { avatarOnPress }
-        />
-        
-        {
-          list.map((item, i) => (
-            <View style={{flexDirection: 'row'}} key = { i }>
-              <Icon style={{flex: 1, justifyContent:"center", alignItems: "flex-end"}} name={item.icon}></Icon>
-                <ListItem
-                  key = { i }
-                  titleContainerStyle = {{justifyContent:"center", alignItems: "flex-start" }}
-                  containerStyle = {{flex: 2, marginRight: 5 }}
-                  underlayColor = { '#f8f8f8' }
-                  title = { item.title }
-                  badge = { false }
-                  onPress = { itemOnPress }
-                />
-            </View>
-          ))
-        }
-        </List>
+      <View style={{marginTop: 20, marginRight: 20, marginLeft: 20}}>
+
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{opacity: 0}} pointerEvents="none">
+            <Menu/>
+          </View>
+          <View>
+            <Image source={require('../../images/ico_titlebar_logo.png')} />
+          </View>
+          <View>
+            <Menu/>
+          </View>
+        </View>
+
+        <View style={{alignItems: 'center',marginTop: 20}}>
+          <Image 
+            style={{ alignSelf: 'center', width: picWidth, height: picWidth, borderRadius: picWidth }}
+            source={require('../../images/avatar.jpg')}       
+          />
+        </View>
+
+        <View style={{marginTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{width: 50, opacity: 0}}>
+            <Badge value={3} containerStyle={{ backgroundColor: 'red'}}/>
+          </View>         
+          <View style={{alignSelf: 'center'}}>
+            <TouchableOpacity onPress={ displayNameOnPress }>
+              <Text style={{textAlign: 'center',color: '#606060',fontWeight: 'normal'}}>{ displayName }</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{width: 50 }}>
+            <Badge value={3} containerStyle={{ backgroundColor: 'red'}}/>
+          </View>
+        </View>
+
+        <View style={{marginTop: 40}}>
+          <ListItem listPicSource={require('../../images/ico_menu_qy.png')} listTitle='巧遇' showBadge badgeCount={120}/>
+        </View>
+      
+        <View style={{marginTop: 20}}>
+          <ListItem listPicSource={require('../../images/ico_menu_meet.png')} listTitle='邂逅'/>
+        </View>
+
+        <View style={{marginTop: 20}}>
+          <ListItem listPicSource={require('../../images/ico_menu_chat.png')} listTitle='訊息' showBadge badgeCount={6}/>
+        </View>
+
+        <View style={{marginTop: 20}}>
+          <ListItem listPicSource={require('../../images/ico_menu_yf.png')} listTitle='緣分' showBadge badgeCount={9}/>
+        </View>
+
+        <View style={{marginTop: 20}}>
+          <ListItem listPicSource={require('../../images/ico_menu_column.png')} listTitle='專欄'/>
+        </View>
+
+        <View style={{marginTop: 20}}>
+          <ListItem listPicSource={require('../../images/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
+        </View>
+
+        <View style={{marginTop: 20}}>
+          <Text style={{color: 'red'}}>{ displayBottom }</Text>
+        </View>
+
+      </View>
+
     </ScrollView>
   )
  }

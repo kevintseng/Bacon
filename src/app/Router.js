@@ -12,30 +12,36 @@ import AuthScene from './scenes/authenticate/AuthScene'
 
 // drawer scenes
 import DrawerScene from './scenes/drawer/DrawerScene'
-import Settings_B from './views/Settings_B'
 
-// menu
+import SettingScene from './scenes/SettingScene'
+import AboutMeScene from './scenes/AboutMeScene'
+
+// menu style
 import Menu from './components/Menu'
+
+const styles = {
+  navigationBar: {
+    backgroundColor: '#fff',
+    borderWidth: 0
+  }
+}
 
 export default class RouterComponent extends Component {
 
   getSceneStyle(props, computedProps){
     const style = {
       flex: 1,
-      backgroundColor: "#fff",
-      shadowColor: null,
-      shadowOffset: null,
-      shadowOpacity: null,
-      shadowRadius: null
-    };
+      backgroundColor: '#fff',
+      borderWidth: 0
+    }
     if (computedProps.isActive) {
-      style.marginTop = computedProps.hideNavBar ? 0 : 54;
-      style.marginBottom = computedProps.hideTabBar ? 0 : 50;
+      style.marginTop = computedProps.hideNavBar ? 0 : 54
+      style.marginBottom = computedProps.hideTabBar ? 0 : 50
     }
     return style
   }
 
-  leftButton(){
+  renderLeftButton(){
     return(
       <Menu/>
     )
@@ -58,9 +64,11 @@ export default class RouterComponent extends Component {
           </Scene>
           <Scene key='Auth' component={ AuthScene }/>
           
-          <Scene key='Drawer' component={DrawerScene} open={false}>
+          <Scene key='Drawer' component={ DrawerScene } open={false}>
             <Scene key='main' hideTabBar >
-              <Scene key='settings_B' component={Settings_B} title='Settings' renderLeftButton={ this.leftButton }/>
+              <Scene key='AboutMe' component={ AboutMeScene } title='關於我' navigationBarStyle={ styles.navigationBar } renderLeftButton={ this.renderLeftButton }/>
+              <Scene key='Setting' component={ SettingScene } title='設定' navigationBarStyle={ styles.navigationBar } renderLeftButton={ this.renderLeftButton }/>
+
             </Scene>
           </Scene>
 
