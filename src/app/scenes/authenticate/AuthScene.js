@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from "mobx-react"
 import Intro from '../../components/Intro'
 
@@ -15,6 +16,7 @@ export default class AuthScene extends Component {
   }
 
   componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid)
     switch(this.SignUpInStore.UpInStatus) {
       case '註冊':
         this.signUp()
@@ -25,6 +27,20 @@ export default class AuthScene extends Component {
       default:
         break
     } 
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this._onBackAndroid)
+  }
+
+  _onBackAndroid = () => {
+    if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+        //return false
+        BackHandler.exitApp() //最近2秒内按過返回键，可以退出程式
+    }
+    this.lastBackPressed = Date.now()
+    ToastAndroid.show('再按一次離開程式', ToastAndroid.SHORT)
+    return true
   }
 
   signUp = () => {
