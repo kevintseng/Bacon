@@ -24,6 +24,7 @@ export default class SignUpFourScene extends Component {
     return(
       <LayoutFour
         bottonText='開始使用'
+        topBottonText='新增個人照片一張'
         buttonOnPress={this.buttonOnPress}
         returnOnPress={this.returnOnPress}
       />

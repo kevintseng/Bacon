@@ -7,9 +7,8 @@ const styles = {
     fontSize: 20, 
     color: 'white', 
     textAlign: 'center', 
-    fontWeight: 'bold'    
+    fontWeight: 'bold'   
   }
-
 }
 
 const LayoutFive = ({ bottonText,buttonOnPress,returnOnPress,email,onChangeEmail,password,onChangePassword,subTitle,subTitleOnPress }) => {

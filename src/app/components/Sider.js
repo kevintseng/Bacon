@@ -79,7 +79,7 @@ const Sider = ({ displayBottom, displayName, displayNameOnPress, settingOnPress 
           <ListItem listPicSource={require('../../images/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
         </View>
 
-        <View style={{marginTop: 20}}>
+        <View style={{marginTop: 20,alignSelf: 'center'}}>
           <Text style={{color: 'red'}}>{ displayBottom }</Text>
         </View>
 
