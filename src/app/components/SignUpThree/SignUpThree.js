@@ -17,7 +17,7 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
           <Image source={require('./img/ico_reg_mail.png')}/>
         </View>
 
-        <View>
+        <View style={{width}}>
           <FormInput
             underlineColorAndroid="#606060"
             autoFocus
@@ -31,11 +31,11 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
           />
         </View>
 
-        <View>
+        <View style={{marginTop: 10}}>
           <Image source={require('./img/ico_logo_pass.png')}/>
         </View>
 
-        <View>
+        <View style={{width}}>
           <FormInput
             //ref='passw'
             underlineColorAndroid="#606060"
@@ -47,11 +47,11 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
             />
         </View>
 
-        <View>
+        <View style={{marginTop: 10}}>
           <Image source={require('./img/ico_logo_nn.png')}/>
         </View>
 
-        <View>
+        <View style={{width}}>
             <FormInput
               //ref='nickname'
               placeholder='請輸2個字以上的暱稱'
@@ -64,7 +64,7 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
             />
         </View>
 
-        <View>
+        <View style={{marginTop: 10}}>
           <Image source={require('./img/ico_logo_bd.png')}/>
         </View>
 
