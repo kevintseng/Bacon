@@ -75,7 +75,7 @@ const styles = {
   }
 }
 
-const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bottomButtonOnPress, warningText }) => {
+const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bottomButtonOnPress, warningText, warningOnPress }) => {
 
   return(
     <View style={ styles.welcomeView }>
@@ -102,7 +102,7 @@ const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bot
       </View>
 
       <View style={ styles.warningView }>
-        <TouchableOpacity onPress={ bottomButtonOnPress }> 
+        <TouchableOpacity onPress={ warningOnPress }> 
           <Text style={ styles.warningText }>{ warningText }</Text>
         </TouchableOpacity>
       </View>

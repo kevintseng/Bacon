@@ -1,8 +1,10 @@
 import React from 'react'
-import { View, Image } from 'react-native'
+import { View, Image, Dimensions } from 'react-native'
 import { FormInput } from 'react-native-elements'
 
 import BaconTheme from '../BaconTheme/BaconTheme'
+
+const { width } = Dimensions.get('window')
 
 const SignIn = ({ bottonText, buttonOnPress, returnOnPress, email, onChangeEmail, password, onChangePassword, warningText, warningOnPress }) => {
   return(
@@ -14,7 +16,7 @@ const SignIn = ({ bottonText, buttonOnPress, returnOnPress, email, onChangeEmail
           <Image source={require('./img/ico_reg_mail.png')}/>
         </View>
 
-        <View>
+        <View style={{width}}>
           <FormInput
             underlineColorAndroid="#606060"
             autoFocus
@@ -28,11 +30,11 @@ const SignIn = ({ bottonText, buttonOnPress, returnOnPress, email, onChangeEmail
           />
         </View>
 
-        <View>
+        <View style={{marginTop: 10}}>
           <Image source={require('./img/ico_logo_pass.png')}/>
         </View>
 
-        <View>
+        <View style={{width}}>
           <FormInput
             //ref='passw'
             underlineColorAndroid="#606060"
