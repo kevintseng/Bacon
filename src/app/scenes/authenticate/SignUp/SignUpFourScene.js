@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { inject } from "mobx-react"
 import { Actions } from "react-native-router-flux"
-import LayoutFour from '../../components/LayoutFour'
+import SignUpFour from '../../../components/SignUpFour/SignUpFour'
 
 @inject("SignUpInStore")
 export default class SignUpFourScene extends Component {
@@ -22,7 +22,7 @@ export default class SignUpFourScene extends Component {
 
   render(){
     return(
-      <LayoutFour
+      <SignUpFour
         bottonText='開始使用'
         topBottonText='新增個人照片一張'
         buttonOnPress={this.buttonOnPress}

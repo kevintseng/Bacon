@@ -4,10 +4,11 @@ import { Router, Scene } from 'react-native-router-flux'
 import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
 import WelcomeScene from './scenes/authenticate/WelcomeScene'
 import SignInScene from './scenes/authenticate/SignInScene'
-import SignUpOneScene from './scenes/authenticate/SignUpOneScene'
-import SignUpTwoScene from './scenes/authenticate/SignUpTwoScene'
-import SignUpThreeScene from './scenes/authenticate/SignUpThreeScene'
-import SignUpFourScene from './scenes/authenticate/SignUpFourScene'
+
+import SignUpOneScene from './scenes/authenticate/SignUp/SignUpOneScene'
+import SignUpTwoScene from './scenes/authenticate/SignUp/SignUpTwoScene'
+import SignUpThreeScene from './scenes/authenticate/SignUp/SignUpThreeScene'
+import SignUpFourScene from './scenes/authenticate/SignUp/SignUpFourScene'
 import AuthScene from './scenes/authenticate/AuthScene'
 
 // drawer scenes
@@ -15,7 +16,7 @@ import DrawerScene from './scenes/drawer/DrawerScene'
 
 import SettingScene from './scenes/SettingScene'
 import AboutMeScene from './scenes/AboutMeScene'
-
+//import TestScene from './scenes/TestScene'
 // menu style
 import Menu from './components/Menu'
 

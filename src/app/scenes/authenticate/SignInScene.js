@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Actions } from "react-native-router-flux"
 import { inject, observer } from "mobx-react"
-import LayoutFive from '../../components/LayoutFive'
+import SignIn from '../../components/SignIn/SignIn'
 
 @inject("SignUpInStore") @observer
 export default class SignInScene extends Component {
@@ -22,15 +22,15 @@ export default class SignInScene extends Component {
 
   render(){
     return(
-      <LayoutFive
-        bottonText='登入'
-        subTitle='忘記密碼？申請密碼重設'
-        buttonOnPress={this.buttonOnPress}
+      <SignIn
         returnOnPress={this.returnOnPress}
+        bottonText='登入'
+        buttonOnPress={this.buttonOnPress}
         email={this.SignUpInStore.email}
         onChangeEmail={this.SignUpInStore.onChangeEmail}
         password={this.SignUpInStore.password}
         onChangePassword={this.SignUpInStore.onChangePassword}
+        warningText='忘記密碼？申請密碼重設'
       />
     )
   }
