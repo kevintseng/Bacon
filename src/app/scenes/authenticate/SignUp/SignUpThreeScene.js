@@ -1,7 +1,9 @@
+// node modules
 import React, { Component } from 'react'
 import { Actions } from "react-native-router-flux"
 import { inject, observer } from "mobx-react"
-import LayoutThree from '../../components/LayoutThree'
+// custom components
+import SignUpThree from '../../../components/SignUpThree/SignUpThree'
 
 @inject("SignUpInStore") @observer
 export default class SignUpThreeScene extends Component {
@@ -21,7 +23,7 @@ export default class SignUpThreeScene extends Component {
 
   render(){
     return(
-      <LayoutThree
+      <SignUpThree
         bottonText='最後一步'
         buttonOnPress={ this.buttonOnPress }
         returnOnPress={ this.returnOnPress }

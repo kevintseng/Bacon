@@ -1,12 +1,21 @@
 import React from 'react'
 import { View } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
-import Theme from './Theme/Theme'
+import BaconTheme from '../BaconTheme/BaconTheme'
 
-const LayoutTwo = ({ bottonText,buttonOnPress,returnOnPress,googleOnPress, getDefaultValue,placeholder }) => {
+const styles = {
+  googleView:{
+    marginLeft: 20, 
+    marginRight: 20, 
+    marginTop: 200, 
+    justifyContent: 'center' 
+  }
+}
+
+const SignUpTwo = ({ bottonText, buttonOnPress, returnOnPress, googleOnPress, getDefaultValue, placeholder }) => {
   return(
-    <Theme bottonText={ bottonText } buttonOnPress={ buttonOnPress } returnOnPress={ returnOnPress }>
-      <View style={{height: 200, marginLeft: 20, marginRight: 20 }}>
+    <BaconTheme bottonText={ bottonText } buttonOnPress={ buttonOnPress } returnOnPress={ returnOnPress }>
+      <View style={ styles.googleView }>
         <GooglePlacesAutocomplete
           placeholder={ placeholder }
           minLength={2}
@@ -41,8 +50,8 @@ const LayoutTwo = ({ bottonText,buttonOnPress,returnOnPress,googleOnPress, getDe
           predefinedPlacesAlwaysVisible
         />
       </View>
-    </Theme>
+    </BaconTheme>
   )
 }
 
-export default LayoutTwo
+export default SignUpTwo

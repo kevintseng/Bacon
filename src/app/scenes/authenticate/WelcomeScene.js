@@ -11,6 +11,7 @@ export default class WelcomeScene extends Component {
         title='遇見更多的她/他'
         topButtonText='免費加入'
         bottomButtonText='登入'
+        warningText='忘記密碼？申請密碼重設'
         topButtonOnPress={() => {Actions.SignUp()}}
         bottomButtonOnPress={() => {Actions.SignIn()}}
       />

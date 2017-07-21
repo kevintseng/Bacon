@@ -5,41 +5,47 @@ const styles = {
   welcomeView: {
     flex: 1, 
     alignItems: 'center', 
-    justifyContent: 'space-between',
-    marginTop: 100
+    //justifyContent: 'space-between'
   },
-  title: {
+  logView: {
+    position: 'absolute',
+    top: 90
+  },
+  titleView: {
+    position: 'absolute',
+    top: 240
+  },
+  titleText: {
+    ackgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '500',
     color: '#606060',
     textAlign: 'center'
   },
   buttonView: {
-    marginBottom: 20, 
+    position: 'absolute', 
+    bottom: 190,
     alignItems: 'center',
   },
   topButtonText: {
+    backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: '#606060',
     textAlign: 'center',
-    backgroundColor: 'transparent'
   },
   bottomButtonText: {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: 'white',
     textAlign: 'center',
     backgroundColor: 'transparent'
-  },
-  bottomLog: {
-    marginTop: 20
   },
   topButtonTouchable : {
     paddingBottom: 15
@@ -49,19 +55,39 @@ const styles = {
   },
   bottomButtonPic: {
     justifyContent: 'center'
+  },
+  warningView:{
+    position: 'absolute', 
+    bottom: 160
+  },
+  warningText: {
+    backgroundColor: 'transparent',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',  
+    textAlign: 'center', 
+    fontWeight: '500',
+    color: '#606060',
+    fontSize: 10
+  },
+  bottomView: {
+    position: 'absolute', 
+    bottom: 0
   }
 }
 
-const Welcome = ({ title,topButtonText,bottomButtonText,topButtonOnPress,bottomButtonOnPress }) => {
+const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bottomButtonOnPress, warningText }) => {
 
   return(
     <View style={ styles.welcomeView }>
-      <View>
+
+      <View style={ styles.logView }>
         <Image source={require('./img/ic_index_logo.png')} />
       </View>
-      <View>
-        <Text style={ styles.title }>{ title }</Text>
+
+      <View style={ styles.titleView }>
+        <Text style={ styles.titleText }>{ title }</Text>
       </View>
+
       <View style={ styles.buttonView }>
         <TouchableOpacity style={ styles.topButtonTouchable } onPress={ topButtonOnPress }> 
           <Image style={ styles.topButtonPic } source={require('./img/btn_reg_blank.png')} >
@@ -74,9 +100,17 @@ const Welcome = ({ title,topButtonText,bottomButtonText,topButtonOnPress,bottomB
           </Image>
         </TouchableOpacity>
       </View>
-      <View style={ styles.bottomLog }>
+
+      <View style={ styles.warningView }>
+        <TouchableOpacity onPress={ bottomButtonOnPress }> 
+          <Text style={ styles.warningText }>{ warningText }</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={ styles.bottomView }>
         <Image source={require('./img/pic_index_wave.png')} />
       </View>
+
     </View>
   )
 }

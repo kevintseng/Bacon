@@ -3999,7 +3999,7 @@ react-native-customized-image-picker@^0.0.28:
   version "0.0.28"
   resolved "https://registry.yarnpkg.com/react-native-customized-image-picker/-/react-native-customized-image-picker-0.0.28.tgz#a32eeee1e1d624439714cb66c10ed8fcd963fb29"
 
-react-native-datepicker@^1.4.4:
+react-native-datepicker@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/react-native-datepicker/-/react-native-datepicker-1.6.0.tgz#3a40dc9b112023c49d60ba2a0789d440b7e3d97c"
   dependencies:
@@ -4100,7 +4100,7 @@ react-native-invertible-scroll-view@1.0.0:
     react-clone-referenced-element "^1.0.1"
     react-native-scrollable-mixin "^1.0.1"
 
-react-native-lightbox@oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875:
+"react-native-lightbox@github:oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875":
   version "0.6.0"
   resolved "https://codeload.github.com/oblador/react-native-lightbox/tar.gz/c84a8543d4511fe6a44c3d7820747c9c1bddd875"
   dependencies:
@@ -5057,8 +5057,8 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
 ua-parser-js@^0.7.9:
-  version "0.7.13"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.13.tgz#cd9dd2f86493b3f44dbeeef3780fda74c5ee14be"
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.14.tgz#110d53fa4c3f326c121292bbeac904d2e03387ca"
 
 uglify-js@2.7.5:
   version "2.7.5"
