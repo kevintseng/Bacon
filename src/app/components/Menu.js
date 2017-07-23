@@ -6,7 +6,8 @@ const menuOnPress = () => Actions.refresh({ key: "Drawer", open: value => !value
 
 const styles = {
   menu: {
-    marginTop: 3
+    marginTop: 3,
+    marginLeft: 5
   }
 }
 
