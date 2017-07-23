@@ -22,6 +22,7 @@ import AboutMeScene from './scenes/AboutMeScene'
 // menu style
 import Menu from './components/Menu'
 import Return from './components/Return/Return'
+import Title from './components/Title/Title'
 
 const styles = {
   navBar: {
@@ -51,6 +52,12 @@ export default class RouterComponent extends Component {
       style.marginBottom = computedProps.hideTabBar ? 0 : 50
     }
     return style
+  }
+
+  renderTitle() {
+    return(
+      <Title/>
+    )
   }
 
   renderLeftButton() {
@@ -86,7 +93,7 @@ export default class RouterComponent extends Component {
             <Scene key='main' hideTabBar >
               <Scene key='AboutMe' component={ AboutMeScene } title='關於我' navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle} renderLeftButton={ this.renderLeftButton }/>
               <Scene key='setting'>
-                <Scene key='SettingIndex' component={ SettingIndexScene } title='設定' navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle} renderLeftButton={ this.renderLeftButton } />
+                <Scene key='SettingIndex' component={ SettingIndexScene } title='設定' renderTitle={ this.renderTitle } navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle} renderLeftButton={ this.renderLeftButton } />
                 <Scene key='SettingAccount' component={ SettingAccountScene } title='設定' renderBackButton={ this.renderBackButton } navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle} renderLeftButton={ this.renderLeftButton } />
 
               </Scene>
