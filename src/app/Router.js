@@ -13,17 +13,27 @@ import AuthScene from './scenes/authenticate/AuthScene'
 
 // drawer scenes
 import DrawerScene from './scenes/drawer/DrawerScene'
+// setting scenes
+import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
+import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
 
-import SettingScene from './scenes/SettingScene'
 import AboutMeScene from './scenes/AboutMeScene'
 //import TestScene from './scenes/TestScene'
 // menu style
 import Menu from './components/Menu'
 
 const styles = {
-  navigationBar: {
+  navBar: {
     backgroundColor: '#fff',
-    borderWidth: 0
+    borderBottomColor: 'transparent'
+  },
+  navBarTitle: {
+    backgroundColor: 'transparent',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    color: '#606060',
+    textAlign: 'center',
+    fontWeight: '500'
   }
 }
 
@@ -67,8 +77,12 @@ export default class RouterComponent extends Component {
           
           <Scene key='Drawer' component={ DrawerScene } open={false}>
             <Scene key='main' hideTabBar >
-              <Scene key='AboutMe' component={ AboutMeScene } title='關於我' navigationBarStyle={ styles.navigationBar } renderLeftButton={ this.renderLeftButton }/>
-              <Scene key='Setting' component={ SettingScene } title='設定' navigationBarStyle={ styles.navigationBar } renderLeftButton={ this.renderLeftButton }/>
+              <Scene key='AboutMe' component={ AboutMeScene } title='關於我' navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle} renderLeftButton={ this.renderLeftButton }/>
+              <Scene key='setting'>
+                <Scene key='SettingIndex' component={ SettingIndexScene } title='設定' navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle} renderLeftButton={ this.renderLeftButton } />
+                <Scene key='SettingAccount' component={ SettingAccountScene } title='設定' navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle} renderLeftButton={ this.renderLeftButton } />
+
+              </Scene>
 
             </Scene>
           </Scene>
