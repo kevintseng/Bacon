@@ -95,7 +95,7 @@ export default class DrawerScene extends Component {
   }
 
   goToSetting() {
-    Actions.Setting({type: 'reset'})
+    Actions.setting({type: 'reset'})
   }
 
   render() {
