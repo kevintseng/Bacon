@@ -23,13 +23,13 @@ export default class SignInScene extends Component {
   render(){
     return(
       <SignIn
-        returnOnPress={this.returnOnPress}
+        returnOnPress={ this.returnOnPress }
         bottonText='登入'
-        buttonOnPress={this.buttonOnPress}
-        email={this.SignUpInStore.email}
-        onChangeEmail={this.SignUpInStore.onChangeEmail}
-        password={this.SignUpInStore.password}
-        onChangePassword={this.SignUpInStore.onChangePassword}
+        buttonOnPress={ this.buttonOnPress }
+        email={ this.SignUpInStore.email }
+        onChangeEmail={ this.SignUpInStore.setEmail }
+        password={ this.SignUpInStore.password }
+        onChangePassword={ this.SignUpInStore.setPassword }
         warningText='忘記密碼？申請密碼重設'
       />
     )
