@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from "mobx-react"
-import Intro from '../../components/Intro'
+import Loading from '../../components/Loading/Loading'
 
 @inject("firebase","SignUpInStore") @observer
 export default class AuthScene extends Component {
@@ -45,10 +45,6 @@ export default class AuthScene extends Component {
 
   signUp = () => {
     this.firebase.auth().createUserWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password)
-      .then((user) => {
-        this.SignUpInStore.setUid(user.uid)
-        //console.warn('成功註冊' + this.SignUpInStore.uid)
-      })
       .catch((error) => {
         const errorMessage = error.message
         this.setState({
@@ -60,10 +56,6 @@ export default class AuthScene extends Component {
 
   signIn = () => {
     this.firebase.auth().signInWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password)
-      .then((user) => {
-        this.SignUpInStore.setUid(user.uid)
-        //console.warn('成功註冊' + this.SignUpInStore.uid)
-      })
       .catch((error) => {
         const errorMessage = error.message
         this.setState({
@@ -75,9 +67,10 @@ export default class AuthScene extends Component {
 
   render(){
     return(
-      <Intro
-        UpInStatus={this.SignUpInStore.UpInStatus}
-        error={this.state.error}
+      <Loading
+        showWarning
+        UpInStatus={ this.SignUpInStore.UpInStatus } // 登入 註冊
+        error={ this.state.error }
       />
     )}
 }

@@ -16,7 +16,7 @@ const styles = {
     top: 240
   },
   titleText: {
-    ackgroundColor: 'transparent',
+    backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     fontSize: 20,

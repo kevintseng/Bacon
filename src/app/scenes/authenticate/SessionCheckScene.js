@@ -1,29 +1,17 @@
 import React, { Component } from "react"
-import { View, Image, AppState } from 'react-native'
+import { AppState } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject } from "mobx-react"
-import LinearGradient from 'react-native-linear-gradient'
 
+import Loading from '../../components/Loading/Loading'
 
-const styles = {
-  linearGradientView: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  linearGradient: {
-    flex: 1
-  }
-}
-
-const colors = ['#f4a764', '#d63768']
-
-@inject("firebase")
+@inject("firebase","SignUpInStore")
 export default class SessionCheckScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
+    this.SignUpInStore = this.props.SignUpInStore
     this.user_id = null
     this.state = {
       lastAppState: AppState.currentState
@@ -36,6 +24,7 @@ export default class SessionCheckScene extends Component {
         //console.warn(user.uid + "已登入") // 使用者登入
         this.user_id = user.uid
         this.setOnline(this.user_id) // 設置使用者上線
+        this.SignUpInStore.setUid(this.user_id)
         AppState.addEventListener('change', this._handleAppStateChange ) // 註冊 app 狀態監聽
         Actions.Drawer({type: 'reset'})
       } else {
@@ -70,10 +59,6 @@ export default class SessionCheckScene extends Component {
   
   render() {
     return(
-      <LinearGradient colors={colors} style={styles.linearGradient}>
-        <View style={styles.linearGradientView}>
-          <Image source={require('../../../images/ico_intro_logo.png')} />
-        </View>
-      </LinearGradient>
+      <Loading/>
   )}
 }

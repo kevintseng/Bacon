@@ -3,6 +3,7 @@ import Drawer from 'react-native-drawer'
 import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
 import { Dimensions } from 'react-native'
+
 import Sider from '../../components/Sider'
 
 const { width } = Dimensions.get('window')
@@ -35,34 +36,42 @@ export default class DrawerScene extends Component {
       })
       this.uploadSignUpData()
       this.initSubjectStoreFromSignUpInStore()
-    } else if (this.SignUpInStore.UpInStatus === '登入') {
-      this.initSubjectStoreFromFirebase() //或許會有非同步問題
+    } else {
+      this.initSubjectStoreFromFirebase() // 或許會有非同步問題
     }
   }
 
   componentDidMount() { 
+    //
   }
 
-  initSubjectStoreFromSignUpInStore(){
+  initSubjectStoreFromSignUpInStore() {
     this.SubjectStore.setUid(this.SignUpInStore.uid)
     this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
   }
 
-  initSubjectStoreFromFirebase(){
+  initSubjectStoreFromFirebase() {
     this.firebase.database().ref("users/" + this.SignUpInStore.uid).once("value",
       (snap) => {
-        this.SubjectStore.setUid(snap.val().uid)
-        this.SubjectStore.setDisplayName(snap.val().displayName)
+        if (snap.val()) {
+          this.SubjectStore.setUid(snap.val().uid)
+          this.SubjectStore.setDisplayName(snap.val().displayName)
+        }
       })
   }
 
   uploadSignUpData() {
-    const SignUpData = {
+    this.firebase.database().ref("users/" + this.SignUpInStore.uid).set({
+      // SignUpData
       uid: this.SignUpInStore.uid,
+      email: this.SignUpInStore.email,
       displayName: this.SignUpInStore.displayName,
+      gender: this.gender(),
+      sexOrientation: this.SignUpInStore.sexOrientation ? (this.gender() + 's' + this.gender()) : (this.gender() + 's' + (this.SignUpInStore.gender ? 'f' : 'm')),
+      city: this.SignUpInStore.city,
+      birthday: this.SignUpInStore.birthday,
       vip: false
-    }
-    this.firebase.database().ref("users/" + this.SignUpInStore.uid).set(SignUpData)
+    })
       .then(() => {
         this.setState({
           uploadState: '上傳完成'
@@ -75,11 +84,17 @@ export default class DrawerScene extends Component {
       })
   }
 
+  gender() {
+    return(
+      this.SignUpInStore.gender ? 'm' : 'f'
+    )
+  }
+
   goToAboutMe() {
     Actions.AboutMe({type: 'reset'})
   }
 
-  goToSetting(){
+  goToSetting() {
     Actions.Setting({type: 'reset'})
   }
 
