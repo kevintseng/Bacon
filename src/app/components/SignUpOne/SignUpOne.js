@@ -3,6 +3,15 @@ import { View, Image, Text, TouchableOpacity } from 'react-native'
 import BaconTheme from '../BaconTheme/BaconTheme'
 
 const styles = {
+  SignUpOneView: {
+    marginTop: 120
+  },
+  sexOrientationView: {
+    marginTop: 40
+  },
+  warningView: {
+    marginTop: 20
+  },
   warningText: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
@@ -14,35 +23,35 @@ const styles = {
   }
 }
 
-const SignUpOne = ({ bottonText, buttonOnPress, returnOnPress, sexButtonLeftText, sexButtonRightText, sexButtonOnPress, intentionButtonLeftText, intentionButtonRightText, intentionButtonOnPress, sexChoose, intentionChoose, warning }) => {
+const SignUpOne = ({ bottonText, buttonOnPress, returnOnPress, genderButtonLeftText, genderButtonRightText, genderButtonOnPress, sexOrientationButtonLeftText, sexOrientationButtonRightText, sexOrientationButtonOnPress, gender, sexOrientation, warning }) => {
   return(
     <BaconTheme bottonText={ bottonText } buttonOnPress={ buttonOnPress } returnOnPress={ returnOnPress }>
 
-      <View style={{marginTop: 120}}>
+      <View style={ styles.SignUpOneView }>
 
         <View>
-          <TouchableOpacity activeOpacity={0.2} onPress={ sexButtonOnPress }>
-              <Image style={{justifyContent: 'center'}} source={sexChoose ? require('./img/switcher_reg_sex_1.png') : require('./img/switcher_reg_sex_2.png')}>
+          <TouchableOpacity activeOpacity={0.2} onPress={ genderButtonOnPress }>
+              <Image style={{justifyContent: 'center'}} source={gender ? require('./img/switcher_reg_sex_1.png') : require('./img/switcher_reg_sex_2.png')}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                  <Text style={{alignSelf:'center',backgroundColor: 'transparent',fontFamily: 'NotoSans', color: sexChoose ? 'white': '#606060'}}>{ sexButtonLeftText }</Text>
-                  <Text style={{alignSelf:'center',backgroundColor: 'transparent',fontFamily: 'NotoSans', color: sexChoose ? '#606060' : 'white'}}>{ sexButtonRightText }</Text>
+                  <Text style={{alignSelf:'center',backgroundColor: 'transparent',fontFamily: 'NotoSans', color: gender ? 'white': '#606060'}}>{ genderButtonLeftText }</Text>
+                  <Text style={{alignSelf:'center',backgroundColor: 'transparent',fontFamily: 'NotoSans', color: gender ? '#606060' : 'white'}}>{ genderButtonRightText }</Text>
                 </View>
               </Image>
             </TouchableOpacity>
         </View>
 
-        <View style={{marginTop: 40}}>
-          <TouchableOpacity activeOpacity={0.2} onPress={ intentionButtonOnPress }>
-            <Image style={{justifyContent: 'center'}} source={intentionChoose ? require('./img/switcher_reg_homo_1.png') : require('./img/switcher_reg_homo_2.png')}>
+        <View style={ styles.sexOrientationView }>
+          <TouchableOpacity activeOpacity={0.2} onPress={ sexOrientationButtonOnPress }>
+            <Image style={{justifyContent: 'center'}} source={sexOrientation ? require('./img/switcher_reg_homo_1.png') : require('./img/switcher_reg_homo_2.png')}>
              <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                <Text style={{alignSelf:'center',backgroundColor: 'transparent',fontFamily: 'NotoSans', color: intentionChoose ? 'white': '#606060'}}>{ intentionButtonLeftText }</Text>
-                <Text style={{alignSelf:'center',backgroundColor: 'transparent',fontFamily: 'NotoSans', color: intentionChoose ? '#606060' : 'white'}}>{ intentionButtonRightText }</Text>
+                <Text style={{alignSelf:'center',backgroundColor: 'transparent',fontFamily: 'NotoSans', color: sexOrientation ? 'white': '#606060'}}>{ sexOrientationButtonLeftText }</Text>
+                <Text style={{alignSelf:'center',backgroundColor: 'transparent',fontFamily: 'NotoSans', color: sexOrientation ? '#606060' : 'white'}}>{ sexOrientationButtonRightText }</Text>
               </View>
             </Image>
           </TouchableOpacity>
         </View>
 
-        <View style={{marginTop: 20}}>
+        <View style={ styles.warningView }>
           <Text style={ styles.warningText }>{ warning }</Text>
         </View>
 

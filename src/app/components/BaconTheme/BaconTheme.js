@@ -52,7 +52,7 @@ const styles = {
   },
   bottonView: {
     position: 'absolute', 
-    bottom: 135,
+    bottom: 120,
   },
   buttonImage: {
     justifyContent: 'center'
@@ -68,7 +68,7 @@ const styles = {
   },
   warningView:{
     position: 'absolute', 
-    bottom: 105
+    bottom: 100
   },
   warningText: {
     backgroundColor: 'transparent',

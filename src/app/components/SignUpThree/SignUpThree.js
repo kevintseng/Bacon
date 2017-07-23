@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Text, Dimensions } from 'react-native'
+import { View, Image, Text, Dimensions, Platform } from 'react-native'
 import { FormInput, CheckBox } from 'react-native-elements'
 import DatePicker from 'react-native-datepicker'
 
@@ -7,7 +7,60 @@ import BaconTheme from '../BaconTheme/BaconTheme'
 
 const { width } = Dimensions.get('window')
 
-const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChangeEmail, password, onChangePassword, displayName, onChangeDisplayName, birthday, onChangeBirthday }) => {
+const styles = {
+  form: {
+    ...Platform.select({ 
+      ios: { 
+        marginTop: 10
+      }, 
+      android: { 
+        marginTop: 5
+      } 
+    })
+  },
+  emailError: {
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    marginLeft: 20,
+    top: 20,
+    color: 'blue',
+    fontSize: 12
+  },
+  passwordError: {
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    marginLeft: 20,
+    top: 95,
+    color: 'blue',
+    fontSize: 12
+  },
+  displayNameError: {
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    marginLeft: 20,
+    top: 170,
+    color: 'blue',
+    fontSize: 12
+  },
+  birthdayError: {
+    position: 'absolute',
+    //alignSelf: 'flex-start',
+    //marginLeft: 20,
+    top: 245,
+    color: 'blue',
+    fontSize: 12    
+  },
+  policyError: {
+    position: 'absolute',
+    //alignSelf: 'flex-start',
+    //marginLeft: 20,
+    bottom: 38,
+    color: 'blue',
+    fontSize: 12     
+  }
+}
+
+const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChangeEmail, onBlurEmail, password, onChangePassword, onBlurPassword, displayName, onChangeDisplayName, onBlurDisplayName, birthday, onChangeBirthday, emailError, passwordError, displayNameError, birthdayError,policyError, minDate, maxDate, policy, onPressPolicy}) => {
   return(
     <BaconTheme bottonText={ bottonText } buttonOnPress={ buttonOnPress } returnOnPress={ returnOnPress }>
       
@@ -16,6 +69,13 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
         <View>
           <Image source={require('./img/ico_reg_mail.png')}/>
         </View>
+
+        {
+          emailError &&
+          <Text style={styles.emailError}>
+            { emailError }
+          </Text>
+        }
 
         <View style={{width}}>
           <FormInput
@@ -27,46 +87,67 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
             keyboardType={'email-address'}
             value={ email }
             maxLength={60}
+            onBlur={ onBlurEmail }
             onChangeText={ onChangeEmail }
           />
         </View>
 
-        <View style={{marginTop: 10}}>
+        <View style={ styles.form }>
           <Image source={require('./img/ico_logo_pass.png')}/>
         </View>
 
+        {
+          passwordError &&
+          <Text style={styles.passwordError}>
+            { passwordError }
+          </Text>
+        }
+
         <View style={{width}}>
           <FormInput
-            //ref='passw'
             underlineColorAndroid="#606060"
             placeholder='請輸入6-10字英數密碼組合'
             secureTextEntry
             maxLength={12}
             value={ password }
-            onChangeText={onChangePassword}
+            onBlur={ onBlurPassword }
+            onChangeText={ onChangePassword }
             />
         </View>
 
-        <View style={{marginTop: 10}}>
+        <View style={ styles.form }>
           <Image source={require('./img/ico_logo_nn.png')}/>
         </View>
 
+        {
+          displayNameError &&
+          <Text style={styles.displayNameError}>
+            { displayNameError }
+          </Text>
+        }
+
         <View style={{width}}>
             <FormInput
-              //ref='nickname'
               placeholder='請輸2個字以上的暱稱'
-              //onBlur={this.nicknameCheck}
               underlineColorAndroid="#606060"
               returnKeyType={'next'}
               maxLength={20}
               value={ displayName }
+              onBlur={ onBlurDisplayName }
               onChangeText={ onChangeDisplayName }
             />
         </View>
 
-        <View style={{marginTop: 10}}>
+        <View style={ styles.form }>
           <Image source={require('./img/ico_logo_bd.png')}/>
         </View>
+
+        {
+          birthdayError &&
+          <Text style={styles.birthdayError}>
+          { birthdayError }
+          </Text>
+        }
 
         <View style={{marginTop: 20}}>
           <Image source={require('./img/btn_reg_blank.png')}>
@@ -77,16 +158,16 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
                 borderWidth: 0
               }
             }}
-            date={birthday}
+            date={ birthday }
             mode="date"
-            placeholder="您的生日"
+            placeholder={ birthday || '您的生日' }
             format="YYYY-MM-DD"
-            minDate="1950-01-01"
-            maxDate="2015-01-01"
+            minDate={ minDate }
+            maxDate={ maxDate }
             confirmBtnText="完成"
             cancelBtnText="取消"
             showIcon={false}
-            onDateChange={onChangeBirthday}
+            onDateChange={ onChangeBirthday }
           />
           </Image>
         </View>
@@ -98,17 +179,24 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
               title=''
               center
               containerStyle={{ backgroundColor: "white", borderWidth: 0 }}
-              checked={false}
-              onPress={()=>{}}
+              checked={ policy }
+              onPress={ onPressPolicy }
             />
           </View>
           <View style={{flexDirection:'row'}}>
-            <Text style={{color: '#b3b3b3'}}>我同意</Text>
-            <Text>Bacon隱私權政策</Text>
-            <Text style={{color: '#b3b3b3'}}>及</Text>
-            <Text>服務條款</Text>
+            <Text style={{color: '#b3b3b3',fontSize: 12}}>我同意</Text>
+            <Text style={{fontSize: 12}}>Bacon隱私權政策</Text>
+            <Text style={{color: '#b3b3b3',fontSize: 12}}>及</Text>
+            <Text style={{fontSize: 12}}>服務條款</Text>
           </View>
         </View>
+
+        {
+          policyError &&
+          <Text style={styles.policyError}>
+          { policyError }
+          </Text>
+        }
 
       </View>
 
