@@ -1,5 +1,6 @@
 // Firebase
-import Firebase from "firebase"
+//import Firebase from "firebase"
+import RNFirebase from 'react-native-firebase'
 import { FirebaseConfig } from "./Firebase"
 // Stores Classes
 import SignUpInStore from "../mobx/stores/SignUpInStore"
@@ -13,7 +14,7 @@ import SubjectStore from "../mobx/stores/SubjectStore"
 
 const AppInitStore = {
   init: () => {
-    this.firebase = Firebase.initializeApp(FirebaseConfig)
+    this.firebase = RNFirebase.initializeApp(FirebaseConfig)
     //this.ui = new UIStore()
     this.SignUpInStore = new SignUpInStore()
     this.SubjectStore = new SubjectStore()
