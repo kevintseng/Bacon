@@ -18,7 +18,7 @@ const styles = {
   }
 }
 
-const Sider = ({ displayBottom, displayName, displayNameOnPress, meetchanceOnPress, settingOnPress }) => {
+const Sider = ({ displayBottom, displayName, displayNameOnPress, meetchanceOnPress, fateOnPress, settingOnPress }) => {
 
   return(
     <ScrollView style = { styles.scrollView } >
@@ -58,11 +58,11 @@ const Sider = ({ displayBottom, displayName, displayNameOnPress, meetchanceOnPre
         </View>
 
         <View style={{marginTop: 40}}>
-          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='巧遇' showBadge badgeCount={120}/>
+          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='巧遇' showBadge badgeCount={120} listOnPress={ meetchanceOnPress }/>
         </View>
       
         <View style={{marginTop: 20}}>
-          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='邂逅'listOnPress={ meetchanceOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='邂逅'/>
         </View>
 
         <View style={{marginTop: 20}}>
@@ -70,7 +70,7 @@ const Sider = ({ displayBottom, displayName, displayNameOnPress, meetchanceOnPre
         </View>
 
         <View style={{marginTop: 20}}>
-          <ListItem listPicSource={require('./img/ico_menu_yf.png')} listTitle='緣分' showBadge badgeCount={9}/>
+          <ListItem listPicSource={require('./img/ico_menu_yf.png')} listTitle='緣分' showBadge badgeCount={9} listOnPress={ fateOnPress }/>
         </View>
 
         <View style={{marginTop: 20}}>

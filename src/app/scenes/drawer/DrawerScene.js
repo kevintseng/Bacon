@@ -94,6 +94,10 @@ export default class DrawerScene extends Component {
     Actions.AboutMe({type: 'reset'})
   }
 
+  goToFate() {
+    Actions.FateTab({type: 'reset'})
+  }
+
   goToMeetChance() {
     Actions.meetchance({type: 'reset'})
   }
@@ -121,6 +125,7 @@ export default class DrawerScene extends Component {
             displayName={ this.SubjectStore.displayName }
             displayNameOnPress={ this.goToAboutMe }
             meetchanceOnPress={ this.goToMeetChance }
+            fateOnPress={ this.goToFate }
             settingOnPress={ this.goToSetting }
           />
         }
