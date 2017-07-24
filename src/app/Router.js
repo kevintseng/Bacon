@@ -19,6 +19,8 @@ import AboutMeScene from './scenes/AboutMeScene'
 // meetchance scenes
 import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
 import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
+// fate scenes
+import FateTabScene from './scenes/drawer/Fate/FateTabScene'
 // setting scenes
 import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
 import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
@@ -112,9 +114,11 @@ export default class RouterComponent extends Component {
               </Scene>
 
               <Scene key='meetchance' hideTabBar hideNavBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='MeetChanceWaterFall' title='設定' hideNavBar={false} renderLeftButton={ this.renderLeftButton } component={ MeetChanceWaterFallScene } />
-                <Scene key='MeetChanceCourt' title='設定' hideNavBar={false} renderBackButton={ this.renderBackButton } component={ MeetChanceCourtScene } />
+                <Scene key='MeetChanceWaterFall' title='巧遇' hideNavBar={false} renderLeftButton={ this.renderLeftButton } component={ MeetChanceWaterFallScene } />
+                <Scene key='MeetChanceCourt' title='巧遇' hideNavBar={false} renderBackButton={ this.renderBackButton } component={ MeetChanceCourtScene } />
               </Scene>
+
+              <Scene key='FateTab' title='緣分' navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle} hideNavBar={false} renderBackButton={ this.renderBackButton } component={ FateTabScene } />
 
 
             </Scene>
