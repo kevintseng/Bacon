@@ -13,6 +13,10 @@ export default class SettingIndexScene extends Component {
     Actions.SettingAccount()
   }
 
+  goToSettingHode(){
+    Actions.SettingHide()
+  }
+
   render() {
     return(
       <SettingIndex
@@ -21,6 +25,7 @@ export default class SettingIndexScene extends Component {
         leftBottomText='提示設定'
         rightBottomText='隱身設定'
         rightTopOnPress={ this.goToSettingAccount }
+        rightBottomOnPress={ this.goToSettingHode }
       />
     )
   }

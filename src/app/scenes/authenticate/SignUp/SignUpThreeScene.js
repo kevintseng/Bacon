@@ -36,10 +36,6 @@ export default class SignUpThreeScene extends Component {
     }
   }
 
-  returnOnPress = () => {
-    Actions.pop()
-  }
-
   allChecker = () => {
     if (this.state.emailChecker && this.state.passwordChecker && this.state.displayNameChecker && this.state.policyChecker) {
       return true
@@ -142,9 +138,8 @@ export default class SignUpThreeScene extends Component {
   render(){
     return(
       <SignUpThree
-        bottonText='最後一步'
+        buttonText='最後一步'
         buttonOnPress={ this.buttonOnPress }
-        returnOnPress={ this.returnOnPress }
         email={ this.SignUpInStore.email }
         onChangeEmail={ this.SignUpInStore.setEmail }
         password={ this.SignUpInStore.password }

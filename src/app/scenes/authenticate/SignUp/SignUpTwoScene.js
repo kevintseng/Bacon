@@ -9,7 +9,7 @@ import SignUpTwo from '../../../components/SignUpTwo/SignUpTwo'
 export default class SignUpOneScene extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.SignUpInStore = this.props.SignUpInStore
   }
 
@@ -17,17 +17,12 @@ export default class SignUpOneScene extends Component {
     Actions.SignUpThree()
   }
 
-  returnOnPress = () => {
-    Actions.pop()
-  }
-
   render(){
     return(
       <SignUpTwo
+        buttonText='下一步'
         placeholder={ this.SignUpInStore.city }
-        bottonText='下一步'
         buttonOnPress={ this.buttonOnPress }
-        returnOnPress={ this.returnOnPress }
         googleOnPress={ this.SignUpInStore.setCity }
       />
     )

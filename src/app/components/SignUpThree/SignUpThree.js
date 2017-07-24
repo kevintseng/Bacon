@@ -3,11 +3,16 @@ import { View, Image, Text, Dimensions, Platform } from 'react-native'
 import { FormInput, CheckBox } from 'react-native-elements'
 import DatePicker from 'react-native-datepicker'
 
-import BaconTheme from '../BaconTheme/BaconTheme'
+import ButtonTheme from '../ButtonTheme/ButtonTheme'
 
 const { width } = Dimensions.get('window')
 
 const styles = {
+  SignUpThree:{
+    alignItems: 'center', 
+    position: 'absolute', 
+    top: 10
+  },
   form: {
     ...Platform.select({ 
       ios: { 
@@ -44,27 +49,23 @@ const styles = {
   },
   birthdayError: {
     position: 'absolute',
-    //alignSelf: 'flex-start',
-    //marginLeft: 20,
     top: 245,
     color: 'blue',
     fontSize: 12    
   },
   policyError: {
     position: 'absolute',
-    //alignSelf: 'flex-start',
-    //marginLeft: 20,
     bottom: 38,
     color: 'blue',
     fontSize: 12     
   }
 }
 
-const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChangeEmail, onBlurEmail, password, onChangePassword, onBlurPassword, displayName, onChangeDisplayName, onBlurDisplayName, birthday, onChangeBirthday, emailError, passwordError, displayNameError, birthdayError,policyError, minDate, maxDate, policy, onPressPolicy}) => {
+const SignUpThree = ({ buttonText, buttonOnPress, email, onChangeEmail, onBlurEmail, password, onChangePassword, onBlurPassword, displayName, onChangeDisplayName, onBlurDisplayName, birthday, onChangeBirthday, emailError, passwordError, displayNameError, birthdayError,policyError, minDate, maxDate, policy, onPressPolicy}) => {
   return(
-    <BaconTheme bottonText={ bottonText } buttonOnPress={ buttonOnPress } returnOnPress={ returnOnPress }>
+    <ButtonTheme buttonText={ buttonText } buttonOnPress={ buttonOnPress } >
       
-      <View style={{alignItems: 'center', marginTop: 65}}>
+      <View style={ styles.SignUpThree }>
 
         <View>
           <Image source={require('./img/ico_reg_mail.png')}/>
@@ -121,7 +122,7 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
 
         {
           displayNameError &&
-          <Text style={styles.displayNameError}>
+          <Text style={ styles.displayNameError }>
             { displayNameError }
           </Text>
         }
@@ -144,7 +145,7 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
 
         {
           birthdayError &&
-          <Text style={styles.birthdayError}>
+          <Text style={ styles.birthdayError }>
           { birthdayError }
           </Text>
         }
@@ -193,14 +194,14 @@ const SignUpThree = ({ bottonText, buttonOnPress, returnOnPress, email, onChange
 
         {
           policyError &&
-          <Text style={styles.policyError}>
+          <Text style={ styles.policyError }>
           { policyError }
           </Text>
         }
 
       </View>
 
-    </BaconTheme>
+    </ButtonTheme>
   )
 }
 

@@ -1,16 +1,22 @@
 import React from 'react'
 import { View, Image, Text, TouchableOpacity, Dimensions } from 'react-native'
-import BaconTheme from '../BaconTheme/BaconTheme'
+
+import ButtonTheme from '../ButtonTheme/ButtonTheme'
 
 const { width } = Dimensions.get('window')
 
 const picWidth = width/2
 
 const styles = {
-  View: {
-    marginTop: 100
+  SignUpFour: {
+    alignSelf: 'center', 
+    position: 'absolute', 
+    top: 50
   },
-  topBottonText: {
+  topButtonImage: {
+    justifyContent: 'center'
+  },
+  topButtonText: {
     backgroundColor: 'transparent',
     fontFamily: 'NotoSans',
     letterSpacing: 3,
@@ -22,7 +28,7 @@ const styles = {
   avatarView: {
     marginTop: 30
   },
-  avatar: {
+  avatarImage: {
     alignSelf: 'center', 
     width: picWidth, 
     height: picWidth, 
@@ -30,30 +36,30 @@ const styles = {
   }
 }
 
-const SignUpFour = ({ bottonText, buttonOnPress, returnOnPress, topBottonText }) => {
+const SignUpFour = ({ buttonText, buttonOnPress, topButtonText }) => {
   return(
-    <BaconTheme bottonText={ bottonText } buttonOnPress={ buttonOnPress } returnOnPress={ returnOnPress }>
+    <ButtonTheme buttonText={ buttonText } buttonOnPress={ buttonOnPress }>
       
-      <View style={ styles.View }>
+      <View style={ styles.SignUpFour }>
 
         <View>
           <TouchableOpacity > 
-            <Image style={{justifyContent: 'center'}} source={require('./img/btn_reg_blank.png')}>
-              <Text style={ styles.topBottonText }> { topBottonText }</Text>
+            <Image style={ styles.topButtonImage } source={require('./img/btn_reg_blank.png')}>
+              <Text style={ styles.topButtonText }> { topButtonText }</Text>
             </Image>
           </TouchableOpacity>
         </View>
 
         <View style={ styles.avatarView }>
           <Image 
-            style={ styles.avatar }
+            style={ styles.avatarImage }
             source={require('./img/addImage.png')}       
           />
         </View> 
 
       </View>
 
-    </BaconTheme>
+    </ButtonTheme>
   )
 }
 

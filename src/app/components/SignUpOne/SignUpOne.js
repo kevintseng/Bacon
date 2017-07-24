@@ -1,10 +1,13 @@
 import React from 'react'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
-import BaconTheme from '../BaconTheme/BaconTheme'
+
+import ButtonTheme from '../ButtonTheme/ButtonTheme'
 
 const styles = {
   SignUpOneView: {
-    marginTop: 120
+    alignSelf: 'center',
+    position: 'absolute', 
+    top: 120
   },
   sexOrientationView: {
     marginTop: 40
@@ -23,14 +26,14 @@ const styles = {
   }
 }
 
-const SignUpOne = ({ bottonText, buttonOnPress, returnOnPress, genderButtonLeftText, genderButtonRightText, genderButtonOnPress, sexOrientationButtonLeftText, sexOrientationButtonRightText, sexOrientationButtonOnPress, gender, sexOrientation, warning }) => {
+const SignUpOne = ({ buttonText, buttonOnPress, genderButtonLeftText, genderButtonRightText, genderButtonOnPress, sexOrientationButtonLeftText, sexOrientationButtonRightText, sexOrientationButtonOnPress, gender, sexOrientation, warningText }) => {
   return(
-    <BaconTheme bottonText={ bottonText } buttonOnPress={ buttonOnPress } returnOnPress={ returnOnPress }>
+    <ButtonTheme buttonText={ buttonText } buttonOnPress={ buttonOnPress } >
 
       <View style={ styles.SignUpOneView }>
 
         <View>
-          <TouchableOpacity activeOpacity={0.2} onPress={ genderButtonOnPress }>
+          <TouchableOpacity activeOpacity={1} onPress={ genderButtonOnPress }>
               <Image style={{justifyContent: 'center'}} source={gender ? require('./img/switcher_reg_sex_1.png') : require('./img/switcher_reg_sex_2.png')}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
                   <Text style={{alignSelf:'center',backgroundColor: 'transparent',fontFamily: 'NotoSans', color: gender ? 'white': '#606060'}}>{ genderButtonLeftText }</Text>
@@ -41,7 +44,7 @@ const SignUpOne = ({ bottonText, buttonOnPress, returnOnPress, genderButtonLeftT
         </View>
 
         <View style={ styles.sexOrientationView }>
-          <TouchableOpacity activeOpacity={0.2} onPress={ sexOrientationButtonOnPress }>
+          <TouchableOpacity activeOpacity={1} onPress={ sexOrientationButtonOnPress }>
             <Image style={{justifyContent: 'center'}} source={sexOrientation ? require('./img/switcher_reg_homo_1.png') : require('./img/switcher_reg_homo_2.png')}>
              <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
                 <Text style={{alignSelf:'center',backgroundColor: 'transparent',fontFamily: 'NotoSans', color: sexOrientation ? 'white': '#606060'}}>{ sexOrientationButtonLeftText }</Text>
@@ -52,12 +55,12 @@ const SignUpOne = ({ bottonText, buttonOnPress, returnOnPress, genderButtonLeftT
         </View>
 
         <View style={ styles.warningView }>
-          <Text style={ styles.warningText }>{ warning }</Text>
+          <Text style={ styles.warningText }>{ warningText }</Text>
         </View>
 
       </View>
 
-    </BaconTheme>
+    </ButtonTheme>
   )
 }
 
