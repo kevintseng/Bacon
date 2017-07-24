@@ -18,7 +18,7 @@ const styles = {
   }
 }
 
-const Sider = ({ displayBottom, displayName, displayNameOnPress, meetchanceOnPress, fateOnPress, settingOnPress }) => {
+const Sider = ({ warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, fateOnPress, settingOnPress }) => {
 
   return(
     <ScrollView style = { styles.scrollView } >
@@ -82,7 +82,11 @@ const Sider = ({ displayBottom, displayName, displayNameOnPress, meetchanceOnPre
         </View>
 
         <View style={{marginTop: 20,alignSelf: 'center'}}>
-          <Text style={{color: 'red'}}>{ displayBottom }</Text>
+          <Text style={{color: 'red'}}>{ warningTop }</Text>
+        </View>
+
+        <View style={{marginTop: 20,alignSelf: 'center'}}>
+          <Text style={{color: 'red'}}>{ warningBottom }</Text>
         </View>
 
       </View>

@@ -6,6 +6,7 @@ export default class SignUpInStore {
 
   @observable UpInStatus
   @observable UpInError
+  @observable photoURL
   @observable email
   @observable password
   @observable displayName
@@ -17,6 +18,7 @@ export default class SignUpInStore {
   constructor() {
     this.UpInStatus = null // 註冊 登入
     this.UpInError = null // 註冊/登入錯誤訊息
+    this.photoURL = null
     this.uid = null
     this.email = ''
     this.password = ''
@@ -33,6 +35,10 @@ export default class SignUpInStore {
 
   @action setUpInError = error => {
     this.UpInError = error
+  }
+
+  @action setPhotoURL = url => {
+    this.photoURL = url
   }
 
   @action setUid = user_id => {
