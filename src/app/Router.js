@@ -16,7 +16,9 @@ import AuthScene from './scenes/authenticate/AuthScene'
 import DrawerScene from './scenes/drawer/DrawerScene'
 // setting scenes
 import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
+import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
 import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
+import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
 import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
 
 import AboutMeScene from './scenes/AboutMeScene'
@@ -99,7 +101,9 @@ export default class RouterComponent extends Component {
               
               <Scene key='setting' hideTabBar hideNavBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='SettingIndex' title='設定' hideNavBar={false} renderLeftButton={ this.renderLeftButton } component={ SettingIndexScene } />
+                <Scene key='SettingAbout' title='設定' hideNavBar={false} renderBackButton={ this.renderBackButton } component={ SettingAboutScene } />
                 <Scene key='SettingAccount' title='設定' hideNavBar={false} renderBackButton={ this.renderBackButton } component={ SettingAccountScene } />
+                <Scene key='SettingRemind' title='設定' hideNavBar={false} renderBackButton={ this.renderBackButton } component={ SettingRemindScene } />
                 <Scene key='SettingHide' title='設定' hideNavBar={false} renderBackButton={ this.renderBackButton } component={ SettingHideScene } />
               </Scene>
 
