@@ -17,7 +17,6 @@ const { width } = Dimensions.get('window')
 const drawerStyles = {
   drawer: { 
     borderRightWidth: 0, 
-    //borderRightColor: '#dcdcdc', 
     width
   }
 }
@@ -42,9 +41,8 @@ export default class DrawerScene extends Component {
         uploadSignUpDataState: '使用者資料上傳中',
         uploadAvatarState: '使用者大頭照上傳中'
       })
-      console.warn(this.SignUpInStore.photoURL)
-      this.uploadSignUpData() // 上傳資料
       this.uploadAvatar(this.SignUpInStore.photoURL) // 上傳相簿
+      this.uploadSignUpData() // 上傳資料
       this.initSubjectStoreFromSignUpInStore() //
     } else {
       this.initSubjectStoreFromFirebase() // 或許會有非同步問題
@@ -55,22 +53,24 @@ export default class DrawerScene extends Component {
     //
   }
 
-  initSubjectStoreFromSignUpInStore() {
+  initSubjectStoreFromSignUpInStore = () => {
     this.SubjectStore.setUid(this.SignUpInStore.uid)
     this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
   }
 
-  initSubjectStoreFromFirebase() {
+  initSubjectStoreFromFirebase = () => {
     this.firebase.database().ref("users/" + this.SignUpInStore.uid).once("value",
       (snap) => {
         if (snap.val()) {
           this.SubjectStore.setUid(snap.val().uid)
           this.SubjectStore.setDisplayName(snap.val().displayName)
         }
+      }, error => {
+        console.warn(error)
       })
   }
 
-  uploadSignUpData() {
+  uploadSignUpData = () => {
     this.firebase.database().ref("users/" + this.SignUpInStore.uid).set({
       // SignUpData
       uid: this.SignUpInStore.uid,
@@ -81,8 +81,7 @@ export default class DrawerScene extends Component {
       city: this.SignUpInStore.city,
       birthday: this.SignUpInStore.birthday,
       vip: false
-    })
-      .then(() => {
+    }).then(() => {
         this.setState({
           uploadSignUpDataState: '使用者資料上傳成功'
         })
@@ -109,6 +108,9 @@ export default class DrawerScene extends Component {
       .then(() => {
         uploadBlob.close()
         return imageRef.getDownloadURL()
+      })
+      .then((url) => {
+        this.SignUpInStore.setPhotoURL(url)
       })
       .then(() => {
         this.setState({

@@ -4,6 +4,7 @@ useStrict(true)
 
 export default class SubjectStore {
 
+  @observable photoURL
   @observable uid
   @observable displayName
 
@@ -14,6 +15,7 @@ export default class SubjectStore {
   @observable hideMessage
 
   constructor() {
+    this.photoURL = null
     this.uid = null
     this.displayName = '同步中...'
     // SettingHide
@@ -23,6 +25,10 @@ export default class SubjectStore {
     this.hideMessage = false
   }
 
+  @action setPhotoURL = url => {
+    this.photoURL = url
+  }
+  
   @action setUid = uid => {
     this.uid = uid
   }
