@@ -14,6 +14,10 @@ import SignUpFourScene from './scenes/authenticate/SignUp/SignUpFourScene'
 import AuthScene from './scenes/authenticate/AuthScene'
 // drawer scenes
 import DrawerScene from './scenes/drawer/DrawerScene'
+// aboutMe
+import AboutMeScene from './scenes/AboutMeScene'
+// meetchance scenes
+import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
 // setting scenes
 import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
 import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
@@ -21,7 +25,6 @@ import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
 import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
 import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
 
-import AboutMeScene from './scenes/AboutMeScene'
 
 // header components
 import Menu from './components/Menu/Menu'
@@ -106,6 +109,11 @@ export default class RouterComponent extends Component {
                 <Scene key='SettingRemind' title='設定' hideNavBar={false} renderBackButton={ this.renderBackButton } component={ SettingRemindScene } />
                 <Scene key='SettingHide' title='設定' hideNavBar={false} renderBackButton={ this.renderBackButton } component={ SettingHideScene } />
               </Scene>
+
+              <Scene key='meetchance' hideTabBar hideNavBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='MeetChanceWaterFall' title='設定' hideNavBar={false} renderLeftButton={ this.renderLeftButton } component={ MeetChanceWaterFallScene } />
+              </Scene>
+
 
             </Scene>
           </Scene>
