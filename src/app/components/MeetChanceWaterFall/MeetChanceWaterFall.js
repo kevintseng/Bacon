@@ -1,12 +1,41 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, ScrollView, FlatList } from 'react-native'
 
-const MeetChanceWaterFall = () => {
+import Wave from '../Wave/Wave'
+import Cookie from '../Cookie/Cookie'
+
+const styles = {
+  self: {
+    alignSelf:'center'  
+  }
+}
+
+const MeetChanceWaterFall = ({ flatListData }) => {
 
   return(
-    <View>
-      <Text>....</Text>
-    </View>
+    <Wave>
+
+      <ScrollView>
+
+        <View>
+
+          <View style={ styles.self }>
+            <Cookie name={'自己的名字'}/>
+          </View>
+
+          <View>
+            <FlatList
+              data={ flatListData } 
+              numColumns={3}
+              renderItem={({item}) => <Cookie name={item.displayName} photoURL={ item.photoURL } onPressButton={ item.onPressButton } /> } 
+            />
+          </View>
+
+        </View>
+
+      </ScrollView>
+
+    </Wave>
   )
 }
 

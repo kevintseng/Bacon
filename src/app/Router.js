@@ -18,6 +18,7 @@ import DrawerScene from './scenes/drawer/DrawerScene'
 import AboutMeScene from './scenes/AboutMeScene'
 // meetchance scenes
 import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
+import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
 // setting scenes
 import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
 import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
@@ -112,6 +113,7 @@ export default class RouterComponent extends Component {
 
               <Scene key='meetchance' hideTabBar hideNavBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='MeetChanceWaterFall' title='設定' hideNavBar={false} renderLeftButton={ this.renderLeftButton } component={ MeetChanceWaterFallScene } />
+                <Scene key='MeetChanceCourt' title='設定' hideNavBar={false} renderBackButton={ this.renderBackButton } component={ MeetChanceCourtScene } />
               </Scene>
 
 
