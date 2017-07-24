@@ -4,7 +4,10 @@ import { View, Text, Switch } from 'react-native'
 
 const styles = {
   BaconSwitch: {
-    padding: 15, 
+    paddingTop: 7, 
+    paddingBottom: 7,
+    paddingRight: 15,
+    paddingLeft: 15,
     flexDirection: 'row', 
     borderBottomWidth: 1, 
     borderBottomColor: '#b3b3b3', 

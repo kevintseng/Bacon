@@ -24,10 +24,10 @@ export default class SettingHideScene extends Component {
       <SettingHide
         flatListData={
           [
-            { switchText: '在邂逅中看不到我', switchValue: this.SubjectStore.hideMeetCute, switchonValueChange: this.SubjectStore.setHideMeetCute },
-            { switchText:'在巧遇中看不到我', switchValue: this.SubjectStore.hideMeetChance, switchonValueChange: this.SubjectStore.setHideMeetChance },
-            { switchText:'對方看不到我的來訪', switchValue: this.SubjectStore.hideVister, switchonValueChange: this.SubjectStore.setHideVister },
-            { switchText:'隱藏我的訊息已讀狀態', switchValue: this.SubjectStore.hideMessage, switchonValueChange: this.SubjectStore.setHideMessage }
+            { key: '在邂逅中看不到我', switchText: '在邂逅中看不到我', switchValue: this.SubjectStore.hideMeetCute, switchonValueChange: this.SubjectStore.setHideMeetCute },
+            { key: '在巧遇中看不到我', switchText:'在巧遇中看不到我', switchValue: this.SubjectStore.hideMeetChance, switchonValueChange: this.SubjectStore.setHideMeetChance },
+            { key: '對方看不到我的來訪', switchText:'對方看不到我的來訪', switchValue: this.SubjectStore.hideVister, switchonValueChange: this.SubjectStore.setHideVister },
+            { key: '隱藏我的訊息已讀狀態', switchText:'隱藏我的訊息已讀狀態', switchValue: this.SubjectStore.hideMessage, switchonValueChange: this.SubjectStore.setHideMessage }
           ]
         }
       />
