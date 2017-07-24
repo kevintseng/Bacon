@@ -4,7 +4,7 @@ import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
 import { Dimensions } from 'react-native'
 
-import Sider from '../../components/Sider'
+import Sider from '../../components/Sider/Sider'
 
 const { width } = Dimensions.get('window')
 
@@ -94,6 +94,10 @@ export default class DrawerScene extends Component {
     Actions.AboutMe({type: 'reset'})
   }
 
+  goToMeetChance() {
+    Actions.meetchance({type: 'reset'})
+  }
+
   goToSetting() {
     Actions.setting({type: 'reset'})
   }
@@ -116,6 +120,7 @@ export default class DrawerScene extends Component {
             displayBottom={ this.state.uploadState }
             displayName={ this.SubjectStore.displayName }
             displayNameOnPress={ this.goToAboutMe }
+            meetchanceOnPress={ this.goToMeetChance }
             settingOnPress={ this.goToSetting }
           />
         }
