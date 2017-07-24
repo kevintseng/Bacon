@@ -36,14 +36,14 @@ const styles = {
   }
 }
 
-const SignUpFour = ({ buttonText, buttonOnPress, topButtonText }) => {
+const SignUpFour = ({ imgSource, buttonText, buttonOnPress, topButtonText, topButtonOnPress }) => {
   return(
     <ButtonTheme buttonText={ buttonText } buttonOnPress={ buttonOnPress }>
       
       <View style={ styles.SignUpFour }>
 
         <View>
-          <TouchableOpacity > 
+          <TouchableOpacity onPress={ topButtonOnPress }> 
             <Image style={ styles.topButtonImage } source={require('./img/btn_reg_blank.png')}>
               <Text style={ styles.topButtonText }> { topButtonText }</Text>
             </Image>
@@ -53,7 +53,7 @@ const SignUpFour = ({ buttonText, buttonOnPress, topButtonText }) => {
         <View style={ styles.avatarView }>
           <Image 
             style={ styles.avatarImage }
-            source={require('./img/addImage.png')}       
+            source={ imgSource ? { uri: imgSource } : require('./img/addImage.png')}       
           />
         </View> 
 

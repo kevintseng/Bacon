@@ -2,9 +2,15 @@ import React, { Component } from 'react'
 import Drawer from 'react-native-drawer'
 import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
-import { Dimensions } from 'react-native'
+import { Dimensions, Platform } from 'react-native'
+import RNFetchBlob from 'react-native-fetch-blob'
 
 import Sider from '../../components/Sider/Sider'
+
+const Blob = RNFetchBlob.polyfill.Blob
+const fs = RNFetchBlob.fs
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob = Blob
 
 const { width } = Dimensions.get('window')
 
@@ -25,17 +31,21 @@ export default class DrawerScene extends Component {
     this.SignUpInStore = this.props.SignUpInStore
     this.SubjectStore = this.props.SubjectStore
     this.state = {
-      uploadState: null
+      uploadSignUpDataState: null,
+      uploadAvatarState: null
     }
   }
   
   componentWillMount() {
     if (this.SignUpInStore.UpInStatus === '註冊') {
       this.setState({
-        uploadState: '上傳中'
+        uploadSignUpDataState: '使用者資料上傳中',
+        uploadAvatarState: '使用者大頭照上傳中'
       })
-      this.uploadSignUpData()
-      this.initSubjectStoreFromSignUpInStore()
+      console.warn(this.SignUpInStore.photoURL)
+      this.uploadSignUpData() // 上傳資料
+      this.uploadAvatar(this.SignUpInStore.photoURL) // 上傳相簿
+      this.initSubjectStoreFromSignUpInStore() //
     } else {
       this.initSubjectStoreFromFirebase() // 或許會有非同步問題
     }
@@ -74,13 +84,42 @@ export default class DrawerScene extends Component {
     })
       .then(() => {
         this.setState({
-          uploadState: '上傳完成'
+          uploadSignUpDataState: '使用者資料上傳成功'
         })
       }).catch((error) => {
         this.setState({
-          uploadState: '上傳失敗'
+          uploadSignUpDataState: '使用者資料上傳失敗'
         })
         console.log(error)
+      })
+  }
+
+  uploadAvatar = (uri, ref, mime = 'image/PNG') => {
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+    let uploadBlob = null
+    const imageRef = this.firebase.storage().ref('images/avatars/' + this.SignUpInStore.uid)
+    fs.readFile(uploadUri, 'base64')
+      .then((data) => {
+        return Blob.build(data, { type: `${mime};BASE64` })
+      })
+      .then((blob) => {
+        uploadBlob = blob
+        return imageRef.put(blob, { contentType: mime })
+      })
+      .then(() => {
+        uploadBlob.close()
+        return imageRef.getDownloadURL()
+      })
+      .then(() => {
+        this.setState({
+          uploadAvatarState: '使用者大頭照上傳成功'
+        })
+      })
+      .catch(err => {
+        this.setState({
+          uploadAvatarState: '使用者大頭照上傳失敗'
+        })
+        console.warn(err)
       })
   }
 
@@ -121,7 +160,8 @@ export default class DrawerScene extends Component {
         open={ state.open }
         content={
           <Sider 
-            displayBottom={ this.state.uploadState }
+            warningTop={ this.state.uploadSignUpDataState }
+            warningBottom={ this.state.uploadAvatarState }
             displayName={ this.SubjectStore.displayName }
             displayNameOnPress={ this.goToAboutMe }
             meetchanceOnPress={ this.goToMeetChance }

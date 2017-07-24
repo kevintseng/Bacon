@@ -37,7 +37,7 @@ export default class SignUpThreeScene extends Component {
   }
 
   allChecker = () => {
-    if (this.state.emailChecker && this.state.passwordChecker && this.state.displayNameChecker && this.state.policyChecker) {
+    if (this.state.emailChecker && this.state.passwordChecker && this.state.displayNameChecker && this.state.policyChecker && this.state.policyChecker) {
       return true
     }
     return false
