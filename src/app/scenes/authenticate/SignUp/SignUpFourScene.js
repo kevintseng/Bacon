@@ -16,17 +16,12 @@ export default class SignUpFourScene extends Component {
     Actions.Auth({ type: 'reset' })
   }
 
-  returnOnPress = () => {
-    Actions.pop()
-  }
-
   render(){
     return(
       <SignUpFour
-        bottonText='開始使用'
-        topBottonText='新增個人照片一張'
+        buttonText='開始使用'
+        topButtonText='新增個人照片一張'
         buttonOnPress={this.buttonOnPress}
-        returnOnPress={this.returnOnPress}
       />
     )
   }

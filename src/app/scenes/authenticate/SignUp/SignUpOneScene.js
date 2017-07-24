@@ -9,16 +9,12 @@ import SignUpOne from '../../../components/SignUpOne/SignUpOne'
 export default class SignUpOneScene extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.SignUpInStore = this.props.SignUpInStore
   }
 
   buttonOnPress = () => {
     Actions.SignUpTwo()
-  }
-
-  returnOnPress = () => {
-    Actions.pop()
   }
 
   render(){
@@ -32,10 +28,9 @@ export default class SignUpOneScene extends Component {
         genderButtonOnPress={ this.SignUpInStore.setGender }
         sexOrientation={ this.SignUpInStore.sexOrientation }
         sexOrientationButtonOnPress={ this.SignUpInStore.setSexOrientation }
-        warning='提醒：請注意性別與性向是不能更改的'
-        bottonText='下一步'
-        buttonOnPress={this.buttonOnPress}
-        returnOnPress={this.returnOnPress}
+        warningText='提醒：請注意性別與性向是不能更改的'
+        buttonText='下一步'
+        buttonOnPress={ this.buttonOnPress }
       />
     )
   }

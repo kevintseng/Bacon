@@ -1,27 +1,29 @@
 import React from 'react'
 import { View } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
-import BaconTheme from '../BaconTheme/BaconTheme'
+
+import ButtonTheme from '../ButtonTheme/ButtonTheme'
 
 const styles = {
   googleView:{
+    position: 'absolute', 
+    top: 120,
     marginLeft: 20, 
     marginRight: 20, 
-    marginTop: 200, 
-    justifyContent: 'center' 
   }
 }
 
-const SignUpTwo = ({ bottonText, buttonOnPress, returnOnPress, googleOnPress, getDefaultValue, placeholder }) => {
+const SignUpTwo = ({ buttonText, buttonOnPress, googleOnPress, getDefaultValue, placeholder }) => {
   return(
-    <BaconTheme bottonText={ bottonText } buttonOnPress={ buttonOnPress } returnOnPress={ returnOnPress }>
+    <ButtonTheme buttonText={ buttonText } buttonOnPress={ buttonOnPress } >
+
       <View style={ styles.googleView }>
         <GooglePlacesAutocomplete
           placeholder={ placeholder || '請輸入所在位置' }
           minLength={1}
           autoFocus
           listViewDisplayed
-          //fetchDetails
+          fetchDetails
           onPress={ googleOnPress }
           getDefaultValue={ getDefaultValue }
           query={{
@@ -53,7 +55,8 @@ const SignUpTwo = ({ bottonText, buttonOnPress, returnOnPress, googleOnPress, ge
           predefinedPlacesAlwaysVisible
         />
       </View>
-    </BaconTheme>
+
+    </ButtonTheme>
   )
 }
 
