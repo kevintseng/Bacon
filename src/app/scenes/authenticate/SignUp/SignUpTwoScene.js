@@ -14,7 +14,11 @@ export default class SignUpOneScene extends Component {
   }
 
   buttonOnPress = () => {
-    Actions.SignUpThree()
+    if (this.SignUpInStore.city) {
+      Actions.SignUpThree()
+    } else {
+      alert('請填入位置')
+    }
   }
 
   render(){

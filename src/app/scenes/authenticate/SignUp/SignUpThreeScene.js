@@ -1,12 +1,12 @@
 // node modules
 import React, { Component } from 'react'
-import { Actions } from "react-native-router-flux"
-import { inject, observer } from "mobx-react"
+import { Actions } from 'react-native-router-flux'
+import { inject, observer } from 'mobx-react'
 // custom components
 import SignUpThree from '../../../components/SignUpThree/SignUpThree'
 import { checkEmail } from '../../../Utils'
 
-@inject("firebase","SignUpInStore") @observer
+@inject('firebase','SignUpInStore') @observer
 export default class SignUpThreeScene extends Component {
 
   constructor(props) {
@@ -14,30 +14,36 @@ export default class SignUpThreeScene extends Component {
     this.firebase = this.props.firebase
     this.SignUpInStore = this.props.SignUpInStore
     this.state = {
+      // checker
       emailChecker: false,
       passwordChecker: false,
       displayNameChecker: false,
       policyChecker: false,
-      //birthdayChecker: false,
+      // error
       emailError: null,
       passwordError: null,
       displayNameError: null,
-      policyError: null
-      //birthdayError: null
     }
   }
 
   buttonOnPress = () => {
     if (this.allChecker()) {
-      Actions.SignUpFour()
+      if (this.birthdayChecker()) {
+        if (this.state.policyChecker) {
+          Actions.SignUpFour()
+        } else {
+          alert('請確認同意隱私權政策及服務條款')
+        }
+      } else {
+        alert('請填入生日資料')
+      }
     } else {
-      //console.warn(this.allChecker())
-      alert("請再檢查一次輸入資料")
+      alert('請再檢查一次輸入資料')
     }
   }
 
   allChecker = () => {
-    if (this.state.emailChecker && this.state.passwordChecker && this.state.displayNameChecker && this.state.policyChecker && this.state.policyChecker) {
+    if (this.state.emailChecker && this.state.passwordChecker && this.state.displayNameChecker) {
       return true
     }
     return false
@@ -45,7 +51,7 @@ export default class SignUpThreeScene extends Component {
 
   emailChecker = () => {
     if (checkEmail(this.SignUpInStore.email)) {
-      this.firebase.database().ref('users/').orderByChild('email').equalTo(this.SignUpInStore.email.toString().toLowerCase().trim()).once("value", (data) => {
+      this.firebase.database().ref('users/').orderByChild('email').equalTo(this.SignUpInStore.email.toString().toLowerCase().trim()).once('value', (data) => {
         if (data.val()) {
           this.setState({
             emailChecker: false,
@@ -101,27 +107,14 @@ export default class SignUpThreeScene extends Component {
     }
     return false   
   }
-/*
-  birthdayChecker() {
-    //check birthday must not be ''
-    if(this.SignUpInStore.birthday == '') {
-      this.setState({
-        birthdayChecker: false,
-        birthdayError: '請提供您的生日'
-      })
-      return false
+
+  birthdayChecker = () => {
+    if (this.SignUpInStore.birthday) {
+      return true 
     }
-    // Check age must be 18 and above
-    if(getAge(this.SignUpInStore.birthday) < 18) {
-      this.setState({
-        birthdayChecker: false,
-        birthdayError: '本App僅提供滿18歲以上用戶使用'
-      })
-      return false
-    }
-    return true
+    return false
   }
-*/
+
   onPressPolicy = () => {
     this.setState({
       policyChecker: !this.state.policyChecker
@@ -153,7 +146,7 @@ export default class SignUpThreeScene extends Component {
         emailError={ this.state.emailError}
         passwordError={ this.state.passwordError}
         displayNameError={ this.state.displayNameError}
-        policyError={ this.state.policyError }
+        //policyError={ this.state.policyError }
         onBlurEmail={ this.emailChecker }
         onBlurPassword={ this.passwordChecker }
         onBlurDisplayName={ this.displayNameChecker }
