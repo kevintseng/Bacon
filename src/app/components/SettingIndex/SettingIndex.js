@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Text, TouchableOpacity, TouchableHighlight } from 'react-native'
+import { View, Image, Text, TouchableHighlight } from 'react-native'
 
 import Knife from '../Knife/Knife'
 
