@@ -118,7 +118,7 @@ export default class RouterComponent extends Component {
                 <Scene key='MeetChanceCourt' title='巧遇' hideNavBar={false} renderBackButton={ this.renderBackButton } component={ MeetChanceCourtScene } />
               </Scene>
 
-              <Scene key='FateTab' title='緣分' navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle} hideNavBar={false} renderBackButton={ this.renderBackButton } component={ FateTabScene } />
+              <Scene key='FateTab' title='緣分' navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle} hideNavBar={false} renderLeftButton={ this.renderLeftButton } component={ FateTabScene } />
 
 
             </Scene>
