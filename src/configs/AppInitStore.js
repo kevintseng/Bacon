@@ -1,21 +1,15 @@
-// Firebase
-//import Firebase from "firebase"
 import RNFirebase from 'react-native-firebase'
-import { FirebaseConfig } from "./Firebase"
 // Stores Classes
 import SignUpInStore from "../mobx/stores/SignUpInStore"
 import SubjectStore from "../mobx/stores/SubjectStore"
-//import ObjectStore from "../mobx/stores/ObjectStore"
-//import UIStore from "../mobx/stores/UIStore"
-// Actions
-//import MeetCuteAction from "../mobx/actions/MeetCuteAction"
-//import MeetChanceAction from "../mobx/actions/MeetChanceAction"
-//import FateAction from "../mobx/actions/FateAction"
+
+const FirebaseConfig = {
+  debug: true
+}
 
 const AppInitStore = {
   init: () => {
     this.firebase = RNFirebase.initializeApp(FirebaseConfig)
-    //this.ui = new UIStore()
     this.SignUpInStore = new SignUpInStore()
     this.SubjectStore = new SubjectStore()
     //this.wooer = new SubjectStore(this.firebase,this.ui)

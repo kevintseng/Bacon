@@ -57,19 +57,21 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Protobuf (3.3.0)
-  - React (0.44.0):
-    - React/Core (= 0.44.0)
-  - React/ART (0.44.0):
+  - React (0.46.4):
+    - React/Core (= 0.46.4)
+  - React/ART (0.46.4):
     - React/Core
-  - React/Core (0.44.0):
-    - React/cxxreact
-    - Yoga (= 0.44.0.React)
-  - React/cxxreact (0.44.0):
-    - React/jschelpers
-  - React/jschelpers (0.44.0)
+  - React/BatchedBridge (0.46.4):
+    - React/Core
+    - React/cxxreact_legacy
+  - React/Core (0.46.4):
+    - Yoga (= 0.46.4.React)
+  - React/cxxreact_legacy (0.46.4):
+    - React/jschelpers_legacy
+  - React/jschelpers_legacy (0.46.4)
   - RNFirebase (2.0.4):
     - React
-  - Yoga (0.44.0.React)
+  - Yoga (0.46.4.React)
 
 DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
@@ -79,6 +81,8 @@ DEPENDENCIES:
   - Firebase/RemoteConfig
   - Firebase/Storage
   - React/ART (from `../node_modules/react-native`)
+  - React/BatchedBridge (from `../node_modules/react-native`)
+  - React/Core (from `../node_modules/react-native`)
   - RNFirebase (from `../node_modules/react-native-firebase`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -106,10 +110,10 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
   nanopb: 22bc080fa3955e2116b6ff3ee6c2cb3c15ab97cb
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
-  React: d2077cc20245ccdc8bfe1fdc002f2003318ae8d8
+  React: 596d8774642d10fea20b1f24cc591fcf633f73ad
   RNFirebase: 3e5a3ff431c5c8a997152f5f19d354e1ca66f65d
-  Yoga: a92a5d8e128905bf9f29c82f870192a6e873dd98
+  Yoga: 98e24da91afe33bb43fedaf27dafede269c04fe8
 
-PODFILE CHECKSUM: a1907932c128ef3a895ed1ab9c197c3b410666e7
+PODFILE CHECKSUM: 7fa8246233d6cba84f592e3f4fb7c1f04232213b
 
 COCOAPODS: 1.2.1
