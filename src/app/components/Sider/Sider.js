@@ -18,7 +18,7 @@ const styles = {
   }
 }
 
-const Sider = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, fateOnPress, settingOnPress }) => {
+const Sider = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, settingOnPress }) => {
 
   return(
     <ScrollView style = { styles.scrollView } >
@@ -60,11 +60,11 @@ const Sider = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPr
         </View>
       
         <View style={{marginTop: 20}}>
-          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='邂逅'/>
+          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='邂逅' listOnPress={ meetcueOnPress }/>
         </View>
 
         <View style={{marginTop: 20}}>
-          <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='訊息' showBadge badgeCount={6}/>
+          <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='訊息' showBadge badgeCount={6} listOnPress={ messageOnPress }/>
         </View>
 
         <View style={{marginTop: 20}}>

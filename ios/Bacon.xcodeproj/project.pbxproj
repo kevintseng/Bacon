@@ -49,7 +49,6 @@
 		B1A9BE2AFD1C4D899FDEE7E3 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DB26A714297411AB6FBFD70 /* FontAwesome.ttf */; };
 		C0C7E37C9F29417484BB8910 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F3E7A581A04C78A8C91A75 /* libimageCropPicker.a */; };
 		C16F1867F41F4288B365F56B /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC9DB705F4084B3A9D0D36C6 /* libRNVectorIcons.a */; };
-		C834642AA0E0466AB0BF45BE /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C018E1B8BE024088AB4FB4A6 /* libRNFetchBlob.a */; };
 		D74CABDEE6E94F22A328D6B7 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 690017802CA841DD8BEB37BE /* libRCTImageResizer.a */; };
 		F90FE9E7378340768DF3C31A /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7226040BE91F41D0BE6AA609 /* Foundation.ttf */; };
 		F9F22370CF35288520970007 /* libPods-Bacon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F49041DD0D3D3AB3F0227D61 /* libPods-Bacon.a */; };
@@ -192,13 +191,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 3D383D621EBD27B9005632C8;
 			remoteInfo = "double-conversion-tvOS";
-		};
-		34DB698A1F18861000E570A3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0C6D0CB9772842BA9DCA6781 /* RNFetchBlob.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A15C300E1CD25C330074CB35;
-			remoteInfo = RNFetchBlob;
 		};
 		34DB698D1F18861000E570A3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -347,7 +339,6 @@
 		00E356F21AD99517003FC87E /* BaconTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaconTests.m; sourceTree = "<group>"; };
 		016013603C4F45ACA1B6B7D9 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		094A740779084C6D9BB1DC20 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		0C6D0CB9772842BA9DCA6781 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Bacon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bacon.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -384,7 +375,6 @@
 		B9488C1C53AA4CB08BEAB97F /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		BC9DB705F4084B3A9D0D36C6 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		BD655FFCBFCCE9AF0EC57951 /* libPods-BaconTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaconTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C018E1B8BE024088AB4FB4A6 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		C4254D305DEEC369FF24D287 /* Pods-Bacon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bacon.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bacon/Pods-Bacon.release.xcconfig"; sourceTree = "<group>"; };
 		C66D61797751FBD62A056FA0 /* Pods-Bacon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bacon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bacon/Pods-Bacon.debug.xcconfig"; sourceTree = "<group>"; };
 		C8937117F25B48ACA61201DC /* Pods-Bacon-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bacon-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bacon-tvOSTests/Pods-Bacon-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -431,7 +421,6 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				C0C7E37C9F29417484BB8910 /* libimageCropPicker.a in Frameworks */,
-				C834642AA0E0466AB0BF45BE /* libRNFetchBlob.a in Frameworks */,
 				092CED8F972240199ED86547 /* libRNImagePicker.a in Frameworks */,
 				D74CABDEE6E94F22A328D6B7 /* libRCTImageResizer.a in Frameworks */,
 				C16F1867F41F4288B365F56B /* libRNVectorIcons.a in Frameworks */,
@@ -604,14 +593,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		34DB69531F18860F00E570A3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				34DB698B1F18861000E570A3 /* libRNFetchBlob.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		34DB69551F18860F00E570A3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,7 +664,6 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				52526859D08D4373986A0285 /* imageCropPicker.xcodeproj */,
-				0C6D0CB9772842BA9DCA6781 /* RNFetchBlob.xcodeproj */,
 				016013603C4F45ACA1B6B7D9 /* RNImagePicker.xcodeproj */,
 				ED4957BEFD1E4929B8EB3BFE /* RCTImageResizer.xcodeproj */,
 				892F28B6CFDF43D2AD76236C /* RNVectorIcons.xcodeproj */,
@@ -930,10 +910,6 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 34DB69531F18860F00E570A3 /* Products */;
-					ProjectRef = 0C6D0CB9772842BA9DCA6781 /* RNFetchBlob.xcodeproj */;
-				},
-				{
 					ProductGroup = 34DB69571F18860F00E570A3 /* Products */;
 					ProjectRef = 016013603C4F45ACA1B6B7D9 /* RNImagePicker.xcodeproj */;
 				},
@@ -1063,13 +1039,6 @@
 			fileType = archive.ar;
 			path = "libdouble-conversion.a";
 			remoteRef = 34DB69841F18861000E570A3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		34DB698B1F18861000E570A3 /* libRNFetchBlob.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNFetchBlob.a;
-			remoteRef = 34DB698A1F18861000E570A3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		34DB698E1F18861000E570A3 /* libRNImagePicker.a */ = {
@@ -1500,7 +1469,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-customized-image-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1531,7 +1499,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-customized-image-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1563,7 +1530,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-customized-image-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1591,7 +1557,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-customized-image-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1625,7 +1590,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-customized-image-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1664,7 +1628,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-customized-image-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",

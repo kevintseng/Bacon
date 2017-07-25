@@ -59,7 +59,7 @@ const SettingAccount = ({ topButtonText, topButtonOnPress, midButtonText, midBut
 
         <View>
           <TouchableOpacity onPress={ topButtonOnPress }>
-            <Image style={ styles.buttonImage } source={require('./img/btn_reg_blank.png')}>
+            <Image style={ styles.buttonImage } source={require('./img/btn_index_join.png')}>
               <Text style={ styles.topButtonText }>{ topButtonText }</Text>
             </Image>
           </TouchableOpacity>
