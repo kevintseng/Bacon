@@ -25,9 +25,11 @@ export default class SignUpOneScene extends Component {
     return(
       <SignUpTwo
         buttonText='下一步'
-        placeholder={ this.SignUpInStore.city }
         buttonOnPress={ this.buttonOnPress }
-        googleOnPress={ this.SignUpInStore.setCity }
+        placeholder='請輸入所在位置'
+        googleOnPress={ this.SignUpInStore.setGoogleCity }
+        value={ this.SignUpInStore.city }
+        onChangeText={ this.SignUpInStore.setTextInputCity }
       />
     )
   }
