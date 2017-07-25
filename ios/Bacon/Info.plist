@@ -45,7 +45,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -67,6 +67,7 @@
 		<string>NotoSansUI-BoldItalic.ttf</string>
 		<string>NotoSansUI-Italic.ttf</string>
 		<string>NotoSansUI-Regular.ttf</string>
+		<string>FontAwesome.ttf</string>
 	</array>
 </dict>
 </plist>

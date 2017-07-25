@@ -71,6 +71,8 @@ PODS:
   - React/jschelpers_legacy (0.46.4)
   - RNFirebase (2.0.4):
     - React
+  - RNVectorIcons (4.2.0):
+    - React
   - Yoga (0.46.4.React)
 
 DEPENDENCIES:
@@ -84,6 +86,7 @@ DEPENDENCIES:
   - React/BatchedBridge (from `../node_modules/react-native`)
   - React/Core (from `../node_modules/react-native`)
   - RNFirebase (from `../node_modules/react-native-firebase`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
@@ -93,6 +96,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native"
   RNFirebase:
     :path: "../node_modules/react-native-firebase"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -112,8 +117,9 @@ SPEC CHECKSUMS:
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   React: 596d8774642d10fea20b1f24cc591fcf633f73ad
   RNFirebase: 3e5a3ff431c5c8a997152f5f19d354e1ca66f65d
+  RNVectorIcons: 6d98d83e944d15014d8071dd9819beb094c61133
   Yoga: 98e24da91afe33bb43fedaf27dafede269c04fe8
 
-PODFILE CHECKSUM: 7fa8246233d6cba84f592e3f4fb7c1f04232213b
+PODFILE CHECKSUM: c8c75e1b688f6a9cd516fc1d64baadd99d1159ca
 
 COCOAPODS: 1.2.1
