@@ -78,7 +78,7 @@ export default class DrawerScene extends Component {
       displayName: this.SignUpInStore.displayName,
       gender: this.genderString(),
       sexOrientation: this.sexOrientationString(),
-      city: this.SignUpInStore.city,
+      city: this.SignUpInStore.city.substring(0,8), // 只上傳前八個字
       birthday: this.SignUpInStore.birthday,
       vip: false
     }).then(() => {
@@ -98,7 +98,7 @@ export default class DrawerScene extends Component {
     this.SubjectStore.setUid(this.SignUpInStore.uid)
     this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
     this.SubjectStore.setSexOrientation(this.sexOrientationString().slice(-1))
-    this.SubjectStore.setCity(this.SignUpInStore.city)
+    this.SubjectStore.setCity(this.SignUpInStore.city.substring(0,8)) // 只轉移前八個字
     this.SubjectStore.setBirthday(this.SignUpInStore.birthday)
   }
 
@@ -113,7 +113,7 @@ export default class DrawerScene extends Component {
           this.SubjectStore.setUid(snap.val().uid)
           this.SubjectStore.setDisplayName(snap.val().displayName)
           this.SubjectStore.setSexOrientation(snap.val().sexOrientation.slice(-1))
-          this.SubjectStore.setCity(snap.val().city)
+          this.SubjectStore.setCity(snap.val().city.substring(0,8)) // 只取前八個字
           this.SubjectStore.setBirthday(snap.val().birthday)
         }
         this.setState({
@@ -147,6 +147,10 @@ export default class DrawerScene extends Component {
     Actions.meetchance({type: 'reset'})
   }
 
+  goToMessage() {
+    //Actions.message({type: 'reset'})
+  }
+
   goToSetting() {
     Actions.setting({type: 'reset'})
   }
@@ -175,6 +179,7 @@ export default class DrawerScene extends Component {
             meetchanceOnPress={ this.goToMeetChance }
             fateOnPress={ this.goToFate }
             settingOnPress={ this.goToSetting }
+            messageOnPress={ this.goToMessage }
           />
         }
         tapToClose

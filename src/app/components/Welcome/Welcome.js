@@ -90,7 +90,7 @@ const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bot
 
       <View style={ styles.buttonView }>
         <TouchableOpacity style={ styles.topButtonTouchable } onPress={ topButtonOnPress }> 
-          <Image style={ styles.topButtonPic } source={require('./img/btn_reg_blank.png')} >
+          <Image style={ styles.topButtonPic } source={require('./img/btn_index_join.png')} >
             <Text style={ styles.topButtonText }>{ topButtonText }</Text>
           </Image>
         </TouchableOpacity>

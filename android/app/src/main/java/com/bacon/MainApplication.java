@@ -12,7 +12,6 @@ import io.invertase.firebase.auth.RNFirebaseAuthPackage; // Firebase Auth
 import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage; // Firebase Remote Config
 import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Realtime Database
 import io.invertase.firebase.storage.RNFirebaseStoragePackage; // Firebase Storage
-import com.RNFetchBlob.RNFetchBlobPackage;
 import com.mg.app.PickerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -43,7 +42,6 @@ public class MainApplication extends Application implements ReactApplication {
             new LinearGradientPackage(),
             new ImageResizerPackage(),
             new ImagePickerPackage(),
-            new RNFetchBlobPackage(),
             new PickerPackage()
       );
     }
