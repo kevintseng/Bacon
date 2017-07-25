@@ -18,7 +18,7 @@ const styles = {
   }
 }
 
-const Sider = ({ warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, fateOnPress, settingOnPress }) => {
+const Sider = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, fateOnPress, settingOnPress }) => {
 
   return(
     <ScrollView style = { styles.scrollView } >
@@ -39,7 +39,7 @@ const Sider = ({ warningTop, warningBottom, displayName, displayNameOnPress, mee
         <View style={{alignItems: 'center',marginTop: 20}}>
           <Image 
             style={{ alignSelf: 'center', width: picWidth, height: picWidth, borderRadius: picWidth }}
-            source={require('./img/avatar.jpg')}       
+            source={ avatar ? { uri: avatar } : require('./img/avatar.jpg')}       
           />
         </View>
 

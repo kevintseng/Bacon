@@ -3,9 +3,7 @@ import { observable, action, useStrict } from 'mobx'
 useStrict(true)
 
 export default class SignUpInStore {
-
-  @observable UpInStatus
-  @observable UpInError
+  // user data
   @observable photoURL
   @observable email
   @observable password
@@ -14,10 +12,12 @@ export default class SignUpInStore {
   @observable sexOrientation
   @observable city
   @observable birthday
-
+  // error state
+  @observable UpInStatus
+  @observable UpInError
+  
   constructor() {
-    this.UpInStatus = null // 註冊 登入
-    this.UpInError = null // 註冊/登入錯誤訊息
+    // user data
     this.photoURL = null
     this.uid = null
     this.email = ''
@@ -27,15 +27,12 @@ export default class SignUpInStore {
     this.sexOrientation = true // { true : 同性, false: 異性 }
     this.city = null
     this.birthday = null
+    // error state
+    this.UpInStatus = null // 註冊 登入
+    this.UpInError = null // 註冊/登入錯誤訊息
   }
 
-  @action setUpInStatus = statu => {
-    this.UpInStatus = statu
-  }
-
-  @action setUpInError = error => {
-    this.UpInError = error
-  }
+  // user data
 
   @action setPhotoURL = url => {
     this.photoURL = url
@@ -73,5 +70,15 @@ export default class SignUpInStore {
 
   @action setBirthday = birthday => {
     this.birthday = birthday    
+  }
+
+  // error state
+
+  @action setUpInStatus = statu => {
+    this.UpInStatus = statu
+  }
+
+  @action setUpInError = error => {
+    this.UpInError = error
   }
 }

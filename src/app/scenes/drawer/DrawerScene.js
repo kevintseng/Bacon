@@ -2,15 +2,13 @@ import React, { Component } from 'react'
 import Drawer from 'react-native-drawer'
 import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
-import { Dimensions, Platform } from 'react-native'
-import RNFetchBlob from 'react-native-fetch-blob'
+import { Dimensions } from 'react-native'
 
 import Sider from '../../components/Sider/Sider'
 
-const Blob = RNFetchBlob.polyfill.Blob
-const fs = RNFetchBlob.fs
-window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-window.Blob = Blob
+const metadata = {
+    contentType: 'image/jpeg'
+}
 
 const { width } = Dimensions.get('window')
 
@@ -21,7 +19,7 @@ const drawerStyles = {
   }
 }
 
-@inject("firebase","SignUpInStore","SubjectStore") @observer
+@inject('firebase','SignUpInStore','SubjectStore') @observer
 export default class DrawerScene extends Component {
 
   constructor(props) {
@@ -43,41 +41,43 @@ export default class DrawerScene extends Component {
       })
       this.uploadAvatar(this.SignUpInStore.photoURL) // 上傳相簿
       this.uploadSignUpData() // 上傳資料
-      this.initSubjectStoreFromSignUpInStore() //
+      this.initSubjectStoreFromSignUpInStore() // 本地資料搬移
     } else {
-      this.initSubjectStoreFromFirebase() // 或許會有非同步問題
+      this.initSubjectStoreFromFirebase() // 同步網路資料到本地資料
     }
   }
 
-  componentDidMount() { 
-    //
-  }
-
-  initSubjectStoreFromSignUpInStore = () => {
-    this.SubjectStore.setUid(this.SignUpInStore.uid)
-    this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
-  }
-
-  initSubjectStoreFromFirebase = () => {
-    this.firebase.database().ref("users/" + this.SignUpInStore.uid).once("value",
-      (snap) => {
-        if (snap.val()) {
-          this.SubjectStore.setUid(snap.val().uid)
-          this.SubjectStore.setDisplayName(snap.val().displayName)
-        }
-      }, error => {
-        console.warn(error)
+  uploadAvatar = () => {
+    this.firebase.storage().ref('images/avatars/' + this.SignUpInStore.uid)  
+    .putFile(this.SignUpInStore.photoURL.replace('file:/',''), metadata)
+    .then(uploadedFile => {
+      this.firebase.database().ref('users/' + this.SignUpInStore.uid + '/photoURL').set(uploadedFile.downloadUrl)
+      .then(() => {
+        this.setState({
+          uploadAvatarState: '使用者大頭照上傳成功'
+        })
       })
+      .catch(() => {
+        this.setState({
+          uploadAvatarState: '使用者大頭照上傳失敗'
+        })
+      })      
+    })
+    .catch(() => {
+      this.setState({
+        uploadAvatarState: '使用者大頭照上傳失敗'
+      })
+    })
   }
 
   uploadSignUpData = () => {
-    this.firebase.database().ref("users/" + this.SignUpInStore.uid).set({
+    this.firebase.database().ref('users/' + this.SignUpInStore.uid).set({
       // SignUpData
       uid: this.SignUpInStore.uid,
       email: this.SignUpInStore.email,
       displayName: this.SignUpInStore.displayName,
-      gender: this.gender(),
-      sexOrientation: this.SignUpInStore.sexOrientation ? (this.gender() + 's' + this.gender()) : (this.gender() + 's' + (this.SignUpInStore.gender ? 'f' : 'm')),
+      gender: this.genderString(),
+      sexOrientation: this.sexOrientationString(),
       city: this.SignUpInStore.city,
       birthday: this.SignUpInStore.birthday,
       vip: false
@@ -93,43 +93,47 @@ export default class DrawerScene extends Component {
       })
   }
 
-  uploadAvatar = (uri, ref, mime = 'image/PNG') => {
-    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
-    let uploadBlob = null
-    const imageRef = this.firebase.storage().ref('images/avatars/' + this.SignUpInStore.uid)
-    fs.readFile(uploadUri, 'base64')
-      .then((data) => {
-        return Blob.build(data, { type: `${mime};BASE64` })
-      })
-      .then((blob) => {
-        uploadBlob = blob
-        return imageRef.put(blob, { contentType: mime })
-      })
-      .then(() => {
-        uploadBlob.close()
-        return imageRef.getDownloadURL()
-      })
-      .then((url) => {
-        this.SignUpInStore.setPhotoURL(url)
-      })
-      .then(() => {
+  initSubjectStoreFromSignUpInStore = () => {
+    this.SubjectStore.setPhotoURL(this.SignUpInStore.photoURL)
+    this.SubjectStore.setUid(this.SignUpInStore.uid)
+    this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
+    this.SubjectStore.setSexOrientation(this.sexOrientationString().slice(-1))
+    this.SubjectStore.setCity(this.SignUpInStore.city)
+    this.SubjectStore.setBirthday(this.SignUpInStore.birthday)
+  }
+
+  initSubjectStoreFromFirebase = () => {
+    this.setState({
+      uploadSignUpDataState: '資料同步中'
+    })
+    this.firebase.database().ref('users/' + this.SignUpInStore.uid).once('value',
+      (snap) => {
+        if (snap.val()) {
+          this.SubjectStore.setPhotoURL(snap.val().photoURL)
+          this.SubjectStore.setUid(snap.val().uid)
+          this.SubjectStore.setDisplayName(snap.val().displayName)
+          this.SubjectStore.setSexOrientation(snap.val().sexOrientation.slice(-1))
+          this.SubjectStore.setCity(snap.val().city)
+          this.SubjectStore.setBirthday(snap.val().birthday)
+        }
         this.setState({
-          uploadAvatarState: '使用者大頭照上傳成功'
+          uploadSignUpDataState: '資料同步成功'
         })
-      })
-      .catch(err => {
+      }, error => {
         this.setState({
-          uploadAvatarState: '使用者大頭照上傳失敗'
+          uploadSignUpDataState: '資料同步失敗'
         })
-        console.warn(err)
+        console.log(error)
       })
   }
 
-  gender() {
-    return(
-      this.SignUpInStore.gender ? 'm' : 'f'
-    )
-  }
+  sexOrientationString = () => (
+    this.SignUpInStore.sexOrientation ? (this.genderString() + 's' + this.genderString()) : (this.genderString() + 's' + (this.SignUpInStore.gender ? 'f' : 'm'))    
+  )
+
+  genderString = () => (
+    this.SignUpInStore.gender ? 'm' : 'f'
+  )
 
   goToAboutMe() {
     Actions.AboutMe({type: 'reset'})
@@ -164,7 +168,9 @@ export default class DrawerScene extends Component {
           <Sider 
             warningTop={ this.state.uploadSignUpDataState }
             warningBottom={ this.state.uploadAvatarState }
+            avatar={ this.SubjectStore.photoURL }
             displayName={ this.SubjectStore.displayName }
+
             displayNameOnPress={ this.goToAboutMe }
             meetchanceOnPress={ this.goToMeetChance }
             fateOnPress={ this.goToFate }

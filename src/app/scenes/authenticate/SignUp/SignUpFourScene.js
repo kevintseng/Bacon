@@ -39,6 +39,7 @@ export default class SignUpFourScene extends Component {
         ImageResizer.createResizedImage(res.uri, 200, 200, 'JPEG', 80)
         .then((resizedImageUri) => {
           this.SignUpInStore.setPhotoURL(resizedImageUri)
+          //console.warn(this.SignUpInStore.photoURL.replace('file:',''))
         }).catch((err) => {
            console.log(err)
         })
