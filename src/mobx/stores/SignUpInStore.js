@@ -62,10 +62,14 @@ export default class SignUpInStore {
     this.sexOrientation = !this.sexOrientation
   }
 
-  @action setCity = data => {
+  @action setGoogleCity = data => {
     if (data.description) {
       this.city = data.description
     }
+  }
+
+  @action setTextInputCity = city => {
+    this.city = city
   }
 
   @action setBirthday = birthday => {

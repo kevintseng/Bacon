@@ -13,24 +13,31 @@ const styles = {
   }
 }
 
-const SignUpTwo = ({ buttonText, buttonOnPress, googleOnPress, getDefaultValue, placeholder }) => {
+const SignUpTwo = ({ buttonText, buttonOnPress, googleOnPress, getDefaultValue, placeholder, value, onChangeText }) => {
   return(
     <ButtonTheme buttonText={ buttonText } buttonOnPress={ buttonOnPress } >
 
       <View style={ styles.googleView }>
         <GooglePlacesAutocomplete
-          placeholder={ placeholder || '請輸入所在位置' }
+          placeholder={ placeholder}
           minLength={1}
-          autoFocus
+          autoFocus={false}
           listViewDisplayed
-          fetchDetails
           onPress={ googleOnPress }
           getDefaultValue={ getDefaultValue }
+          textInputProps={{ userProps: {autoCorrect : false},
+            //onFocus: () => {
+            //  this._animateGeoIcon()
+            //},
+            onChangeText
+          }}
           query={{
             key: 'AIzaSyBYTZDmeWcR9MEdiUTdgZGb80nDWYLnCSk',
             language: 'en', // language of the results
             types: 'geocode', // default: 'geocode'
           }}
+          value={ value }
+          //onChangeText={ onChangeText }
           styles={{
             textInputContainer: {
             backgroundColor: 'white',
@@ -52,7 +59,6 @@ const SignUpTwo = ({ buttonText, buttonOnPress, googleOnPress, getDefaultValue, 
           currentLocationLabel="現在所在位置城市"
           nearbyPlacesAPI='GoogleReverseGeocoding'
           filterReverseGeocodingByTypes = {['locality', 'administrative_area_level_3']}
-          predefinedPlacesAlwaysVisible
         />
       </View>
 
