@@ -7,6 +7,9 @@ export default class SubjectStore {
   @observable photoURL
   @observable uid
   @observable displayName
+  @observable sexOrientation
+  @observable city
+  @observable birthday
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -18,9 +21,9 @@ export default class SubjectStore {
     this.photoURL = null
     this.uid = null
     this.displayName = '同步中...'
-    this.sexOrientation = null // f m
-    this.city = null
-    this.birthday = null
+    this.sexOrientation = '同步中...' // f m
+    this.city = '同步中...'
+    this.birthday = '同步中...'
     // hide function
     this.hideMeetCute = false
     this.hideMeetChance = false

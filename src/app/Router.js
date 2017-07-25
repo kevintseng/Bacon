@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { View } from 'react-native'
 import { Router, Scene } from 'react-native-router-flux'
 // authenticate scenes
 import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
@@ -36,16 +37,16 @@ import Title from './components/Title/Title'
 
 const styles = {
   navBar: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     borderBottomColor: 'transparent'
   },
   navBarTitle: {
-    backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     color: '#606060',
     textAlign: 'center',
-    fontWeight: '500'
+    fontWeight: '500',
+    alignSelf: 'center'
   }
 }
 
@@ -70,11 +71,11 @@ export default class RouterComponent extends Component {
     )
   }
 
-  renderLeftButton() {
-    return(
+  renderLeftButton = () => (
+    <View>
       <Menu/>
-    )
-  }
+    </View>
+  )
 
   renderBackButton() {
     return(
@@ -86,7 +87,7 @@ export default class RouterComponent extends Component {
     return (
       <Router getSceneStyle={ this.getSceneStyle }>
 
-        <Scene key='root' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
+        <Scene key='root' hideTabBar hideNavBar navigationBarStyle={ styles.navBar } >
           
           <Scene key='SessionCheck' component={ SessionCheckScene } />
           <Scene key='Welcome' component={ WelcomeScene } /> 
