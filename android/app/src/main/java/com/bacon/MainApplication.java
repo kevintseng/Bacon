@@ -3,7 +3,6 @@ package com.bacon;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -12,7 +11,6 @@ import io.invertase.firebase.auth.RNFirebaseAuthPackage; // Firebase Auth
 import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage; // Firebase Remote Config
 import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Realtime Database
 import io.invertase.firebase.storage.RNFirebaseStoragePackage; // Firebase Storage
-import com.mg.app.PickerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -33,16 +31,14 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new LinearGradientPackage(),
+            new ImageResizerPackage(),
+            new ImagePickerPackage(),
             new RNFirebasePackage(),
             new RNFirebaseAuthPackage(),
             new RNFirebaseRemoteConfigPackage(),
             new RNFirebaseDatabasePackage(),
-            new RNFirebaseStoragePackage(),
-            new VectorIconsPackage(),
-            new LinearGradientPackage(),
-            new ImageResizerPackage(),
-            new ImagePickerPackage(),
-            new PickerPackage()
+            new RNFirebaseStoragePackage()
       );
     }
   };
