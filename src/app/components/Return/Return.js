@@ -6,8 +6,10 @@ const menuOnPress = () => Actions.pop()
 
 const styles = {
   return: {
-    marginTop: 3,
-    marginLeft: 5
+    //marginTop: 3,
+    //marginLeft: 5
+    padding: 10,
+    //backgroundColor: 'red'
   }
 }
 

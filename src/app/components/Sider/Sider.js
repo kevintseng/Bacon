@@ -25,13 +25,13 @@ const Sider = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPr
       <View style={{marginRight: 20, marginLeft: 20}}>
 
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-          <View style={{opacity: 0}} pointerEvents="none">
+          <View style={{opacity: 0, marginTop: 7}} pointerEvents="none">
             <Menu/>
           </View>
           <View>
             <Title/>
           </View>
-          <View>
+          <View style={{marginTop: 7}}>
             <Menu/>
           </View>
         </View>
@@ -47,17 +47,15 @@ const Sider = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPr
           <View style={{width: 50, opacity: 0}}>
             <Badge value={3} containerStyle={{ backgroundColor: 'red'}}/>
           </View>         
-          <View style={{alignSelf: 'center'}}>
-            <TouchableOpacity onPress={ displayNameOnPress }>
-              <Text style={{textAlign: 'center',color: '#606060',fontWeight: 'normal'}}>{ displayName }</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={ displayNameOnPress }>
+            <Text style={{textAlign: 'center',color: '#606060',fontWeight: 'normal'}}>{ displayName }</Text>
+          </TouchableOpacity>
           <View style={{width: 50 }}>
             <Badge value={3} containerStyle={{ backgroundColor: 'red'}}/>
           </View>
         </View>
 
-        <View style={{marginTop: 40}}>
+        <View style={{marginTop: 30}}>
           <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='巧遇' showBadge badgeCount={120} listOnPress={ meetchanceOnPress }/>
         </View>
       

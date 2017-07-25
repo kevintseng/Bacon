@@ -19,6 +19,9 @@ export default class AboutMeScene extends Component {
     return(
       <View>
         <Text>{ this.SubjectStore.displayName }</Text>
+        <Text>{ this.SubjectStore.sexOrientation }</Text>
+        <Text>{ this.SubjectStore.city }</Text>
+        <Text>{ this.SubjectStore.birthday }</Text>
       </View>
     )
   }

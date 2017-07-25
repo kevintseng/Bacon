@@ -8,10 +8,10 @@ const ListItem = ({listPicSource, listTitle, showBadge, badgeCount, listOnPress}
 
   return(
     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-      <View style={{width: 50, opacity: 0}} >
+      <View style={{width: 50, opacity: 0, justifyContent: 'center'}} >
         <Badge value={0} containerStyle={{ backgroundColor: 'red'}}/>
       </View>   
-      <TouchableOpacity onPress={ listOnPress }>      
+      <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', paddingLeft: 15, paddingRight: 15}} onPress={ listOnPress }>      
         <View style={{flexDirection: 'row'}}>
           <View style={{alignSelf: 'center', marginRight: 5}}>
             <Image source={ listPicSource } />
@@ -21,7 +21,7 @@ const ListItem = ({listPicSource, listTitle, showBadge, badgeCount, listOnPress}
           </View>
         </View>
       </TouchableOpacity>
-      <View style={ showBadge ? { width: 50 } : { width: 50, opacity: 0} } >
+      <View style={ showBadge ? { width: 50,justifyContent: 'center' } : { width: 50, opacity: 0,justifyContent: 'center'} } >
         <Badge value={ _badgeCount } containerStyle={{ backgroundColor: 'red'}}/>
       </View>
     </View>
