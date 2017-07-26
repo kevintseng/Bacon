@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, Image, Dimensions, TouchableOpacity, Platform } from 'react-native'
 import { Badge } from 'react-native-elements'
 
 import ListItem from '../ListItem/ListItem'
@@ -38,7 +38,7 @@ const Sider = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPr
 
         <View style={{alignItems: 'center',marginTop: 20}}>
           <Image 
-            style={{ alignSelf: 'center', width: picWidth, height: picWidth, borderRadius: picWidth }}
+            style={{ alignSelf: 'center', width: picWidth, height: picWidth, borderRadius: (Platform.OS === 'ios') ? picWidth/2 : picWidth }}
             source={ avatar ? { uri: avatar } : require('./img/avatar.jpg')}       
           />
         </View>

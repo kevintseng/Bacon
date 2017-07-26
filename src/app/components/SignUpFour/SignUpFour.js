@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Text, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Image, Text, TouchableOpacity, Dimensions, Platform } from 'react-native'
 
 import ButtonTheme from '../ButtonTheme/ButtonTheme'
 
@@ -32,7 +32,14 @@ const styles = {
     alignSelf: 'center', 
     width: picWidth, 
     height: picWidth, 
-    borderRadius: picWidth
+    ...Platform.select({ 
+      ios: { 
+        borderRadius: picWidth/2
+      }, 
+      android: { 
+        borderRadius: picWidth
+      }
+    })
   }
 }
 
