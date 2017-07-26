@@ -1,20 +1,34 @@
 import React from 'react'
-import { Dimensions, Image } from 'react-native'
+import { Dimensions } from 'react-native'
 import { SwipeDeck } from 'react-native-elements'
- 
+import PhotoView from 'react-native-photo-view'
 
  const { width } = Dimensions.get('window')
 
 
 const renderCard = (card) => {
   return (
-    <Image style={{width, height: width}} key={card.id} source={{uri: card.uri}}/>
+<PhotoView
+  source={{uri: card.uri}}
+  minimumZoomScale={0.5}
+  maximumZoomScale={3}
+  androidScaleType="center"
+  onLoad={() => console.log("Image loaded!")}
+  style={{width, height: width}} />
+
   )
 }
 
 const renderNoMoreCards = () => {
   return (
-    <Image style={{width, height: width}} source={{uri: 'https://i.imgflip.com/1j2oed.jpg'}}/>
+<PhotoView
+  source={{uri: 'https://i.imgflip.com/1j2oed.jpg'}}
+  minimumZoomScale={0.5}
+  maximumZoomScale={3}
+  androidScaleType="center"
+  onLoad={() => console.log("Image loaded!")}
+  style={{width, height: width}} />
+
   )
 }
 
