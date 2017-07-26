@@ -143,6 +143,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-photo-view')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-image-resizer')
     compile project(':react-native-image-picker')

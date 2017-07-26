@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
-import Court from '../../../components/Court/Court'
+import PicCarousel from '../../../components/PicCarousel/PicCarousel'
 
 @inject("firebase","SubjectStore") @observer
-export default class MeetChanceCourtScene extends Component {
+export default class MeetChancePhotoScene extends Component {
 
   constructor(props) {
     super(props)
@@ -20,9 +20,7 @@ export default class MeetChanceCourtScene extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-
   changeVisible = () => {
-    //alert('sxsaxax')
     this.setState({
       visible: !this.state.visible
     })
@@ -31,7 +29,7 @@ export default class MeetChanceCourtScene extends Component {
 
   render() {
     return(
-      <Court
+      <PicCarousel
       visible={this.state.visible}
       open={this.changeVisible}
       close={this.changeVisible}
