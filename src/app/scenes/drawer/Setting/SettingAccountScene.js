@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { View, Image, Button } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject } from "mobx-react"
 
-import SettingAccount from '../../../components/SettingAccount/SettingAccount'
+import SettingAccount from '../../../components/scenes/SettingAccount/SettingAccount'
 
 
 @inject("firebase","SubjectStore")

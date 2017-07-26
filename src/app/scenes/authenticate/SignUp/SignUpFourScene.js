@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
 
-import SignUpFour from '../../../components/SignUpFour/SignUpFour'
+import SignUpFour from '../../../components/scenes/SignUpFour/SignUpFour'
 
 const options = {
   mediaType: 'photo',

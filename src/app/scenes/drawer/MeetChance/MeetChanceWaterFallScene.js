@@ -3,7 +3,7 @@ import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import GeoFire from 'geofire'
 
-import MeetChanceWaterFall from '../../../components/MeetChanceWaterFall/MeetChanceWaterFall'
+import MeetChanceWaterFall from '../../../components/scenes/MeetChanceWaterFall/MeetChanceWaterFall'
 
 @inject("firebase","SubjectStore") @observer
 export default class MeetChanceWaterFallScene extends Component {

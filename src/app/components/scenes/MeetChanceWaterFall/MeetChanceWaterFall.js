@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, ScrollView, FlatList } from 'react-native'
 
-import Wave from '../Wave/Wave'
-import Cookie from '../Cookie/Cookie'
+import Wave from '../../common/layout/Wave/Wave'
+import Cookie from '../../common/Cookie/Cookie'
 
 const styles = {
   self: {

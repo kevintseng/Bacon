@@ -30,10 +30,10 @@ import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
 import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
 
 
-// header components
-import Menu from './components/Menu/Menu'
-import Return from './components/Return/Return'
-import Title from './components/Title/Title'
+// header views
+import Menu from './components/common/header/Menu/Menu'
+import Return from './components/common/header/Return/Return'
+import Title from './components/common/header/Title/Title'
 
 const styles = {
   navBar: {

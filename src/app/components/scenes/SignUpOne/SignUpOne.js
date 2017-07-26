@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
 
-import ButtonTheme from '../ButtonTheme/ButtonTheme'
+import ButtonTheme from '../../common/ButtonTheme/ButtonTheme'
 
 const styles = {
   SignUpOneView: {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 
-import SettingIndex from '../../../components/SettingIndex/SettingIndex'
+import SettingIndex from '../../../components/scenes/SettingIndex/SettingIndex'
 
 export default class SettingIndexScene extends Component {
 

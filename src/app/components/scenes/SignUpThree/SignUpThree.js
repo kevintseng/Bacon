@@ -3,7 +3,7 @@ import { View, Image, Text, Dimensions, Platform } from 'react-native'
 import { FormInput, CheckBox } from 'react-native-elements'
 import DatePicker from 'react-native-datepicker'
 
-import ButtonTheme from '../ButtonTheme/ButtonTheme'
+import ButtonTheme from '../../common/ButtonTheme/ButtonTheme'
 
 const { width } = Dimensions.get('window')
 

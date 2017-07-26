@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from "mobx-react"
-import Loading from '../../components/Loading/Loading'
+// custom components
+import Loading from '../../components/scenes/Loading/Loading'
 
 @inject("firebase","SignUpInStore") @observer
 export default class AuthScene extends Component {

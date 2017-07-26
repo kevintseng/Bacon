@@ -2,9 +2,9 @@ import React from 'react'
 import { View, Text, ScrollView, Image, Dimensions, TouchableOpacity, Platform } from 'react-native'
 import { Badge } from 'react-native-elements'
 
-import ListItem from '../ListItem/ListItem'
-import Menu from '../Menu/Menu'
-import Title from '../Title/Title'
+import ListItem from '../../common/ListItem/ListItem'
+import Menu from '../../common/header/Menu/Menu'
+import Title from '../../common/header/Title/Title'
 
 const { width, height } = Dimensions.get('window')
 

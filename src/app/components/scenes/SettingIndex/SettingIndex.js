@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Image, Text, TouchableHighlight } from 'react-native'
 
-import Knife from '../Knife/Knife'
+import Knife from '../../common/layout/Knife/Knife'
 
 const SettingIndex = ({ leftTopText, rightTopText, leftBottomText, rightBottomText, leftTopOnPress, rightTopOnPress, leftBottomOnPress, rightBottomOnPress, leftTopOnHideUnderlay, leftTopOnShowUnderlay, rightTopOnHideUnderlay, rightTopOnShowUnderlay, leftBottomOnHideUnderlay, leftBottomOnShowUnderlay, rightBottomOnHideUnderlay, rightBottomOnShowUnderlay, leftTopPress,rightTopPress,leftBottomPress,rightBottomPress }) => {
   return(

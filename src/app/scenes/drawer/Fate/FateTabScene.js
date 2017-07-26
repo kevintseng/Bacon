@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
-import FateTab from '../../../components/FateTab/FateTab'
+import FateTab from '../../../components/scenes/FateTab/FateTab'
 
 @inject("firebase","SubjectStore") @observer
 export default class FateTabScene extends Component {

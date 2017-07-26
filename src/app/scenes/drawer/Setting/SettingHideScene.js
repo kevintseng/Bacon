@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from "mobx-react"
 
-import SettingHide from '../../../components/SettingHide/SettingHide'
+import SettingHide from '../../../components/scenes/SettingHide/SettingHide'
 
 
 @inject("firebase","SubjectStore") @observer

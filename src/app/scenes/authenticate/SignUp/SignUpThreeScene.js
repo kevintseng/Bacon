@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react'
 // custom components
-import SignUpThree from '../../../components/SignUpThree/SignUpThree'
+import SignUpThree from '../../../components/scenes/SignUpThree/SignUpThree'
 import { checkEmail } from '../../../Utils'
 
 @inject('firebase','SignUpInStore') @observer

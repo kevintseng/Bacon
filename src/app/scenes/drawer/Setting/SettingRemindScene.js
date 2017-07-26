@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { inject } from "mobx-react"
 
-import SettingRemind from '../../../components/SettingRemind/SettingRemind'
+import SettingRemind from '../../../components/scenes/SettingRemind/SettingRemind'
 
 
 @inject("firebase","SubjectStore")
