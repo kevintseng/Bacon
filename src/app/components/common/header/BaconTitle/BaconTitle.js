@@ -9,7 +9,7 @@ const styles = {
   }
 }
 
-const Title = () => {
+const BaconTitle = () => {
   return(
     <View style={ styles.title }>
       <Image source={require('./img/ico_titlebar_logo.png')} />
@@ -17,4 +17,4 @@ const Title = () => {
   )
 }
 
-export default Title
+export default BaconTitle
