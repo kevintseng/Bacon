@@ -6,16 +6,15 @@ import com.facebook.react.ReactApplication;
 import com.BV.LinearGradient.LinearGradientPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.imagepicker.ImagePickerPackage;
-import io.invertase.firebase.RNFirebasePackage; // <-- Add this line
-import io.invertase.firebase.auth.RNFirebaseAuthPackage; // Firebase Auth
-import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage; // Firebase Remote Config
-import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Realtime Database
-import io.invertase.firebase.storage.RNFirebaseStoragePackage; // Firebase Storage
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.auth.RNFirebaseAuthPackage;
+import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage;
+import io.invertase.firebase.database.RNFirebaseDatabasePackage;
+import io.invertase.firebase.storage.RNFirebaseStoragePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-
 import java.util.Arrays;
 import java.util.List;
 
