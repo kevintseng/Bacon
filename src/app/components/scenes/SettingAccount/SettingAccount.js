@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
 
-import Knife from '../Knife/Knife'
+import Knife from '../../common/layout/Knife/Knife'
 
 const styles = {
   SettingAccount: {

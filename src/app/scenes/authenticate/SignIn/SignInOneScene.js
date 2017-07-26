@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Actions } from "react-native-router-flux"
 import { inject, observer } from "mobx-react"
 
-import SignInOne from '../../../components/SignInOne/SignInOne'
+import SignInOne from '../../../components/scenes/SignInOne/SignInOne'
 
 @inject("SignUpInStore") @observer
 export default class SignInOneScene extends Component {

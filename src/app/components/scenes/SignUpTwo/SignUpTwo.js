@@ -2,7 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 
-import ButtonTheme from '../ButtonTheme/ButtonTheme'
+import ButtonTheme from '../../common/ButtonTheme/ButtonTheme'
 
 const styles = {
   googleView:{

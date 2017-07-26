@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { inject } from "mobx-react"
 
-import SettingAbout from '../../../components/SettingAbout/SettingAbout'
+import SettingAbout from '../../../components/scenes/SettingAbout/SettingAbout'
 
 
 @inject("firebase","SubjectStore")

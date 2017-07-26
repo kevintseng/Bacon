@@ -1,10 +1,10 @@
 import React from 'react'
 import { Dimensions } from 'react-native'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
-import Visitors from '../Visitors/Visitors'
-import GoodImpression from '../GoodImpression/GoodImpression'
-import Mate from '../Mate/Mate'
-import Collection from '../Collection/Collection'
+import Visitors from '../../common/fate/Visitors/Visitors'
+import GoodImpression from '../../common/fate/GoodImpression/GoodImpression'
+import Mate from '../../common/fate/Mate/Mate'
+import Collection from '../../common/fate/Collection/Collection'
 
 const { width } = Dimensions.get('window')
 const styles = {

@@ -4,7 +4,7 @@ import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
 import { Dimensions } from 'react-native'
 
-import Sider from '../../components/Sider/Sider'
+import Sider from '../../components/scenes/Sider/Sider'
 
 const metadata = {
     contentType: 'image/jpeg'

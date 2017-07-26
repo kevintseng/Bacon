@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, FlatList } from 'react-native'
 
-import Knife from '../Knife/Knife'
-import BaconSwitch from '../BaconSwitch/BaconSwitch'
+import Knife from '../../common/layout/Knife/Knife'
+import BaconSwitch from '../../common/BaconSwitch/BaconSwitch'
 
 const styles = {
   SettingHide : {

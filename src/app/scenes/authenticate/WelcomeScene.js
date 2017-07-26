@@ -1,8 +1,7 @@
-// node modules
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 // custom components
-import LogoButton from '../../components/Welcome/Welcome'
+import LogoButton from '../../components/scenes/Welcome/Welcome'
 
 export default class WelcomeScene extends Component {
   render(){

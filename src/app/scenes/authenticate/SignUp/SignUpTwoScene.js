@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react'
 // custom components
-import SignUpTwo from '../../../components/SignUpTwo/SignUpTwo'
+import SignUpTwo from '../../../components/scenes/SignUpTwo/SignUpTwo'
 
 @inject("SignUpInStore") @observer
 export default class SignUpOneScene extends Component {

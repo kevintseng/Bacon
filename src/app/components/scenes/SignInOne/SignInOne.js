@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Image, Dimensions, Platform } from 'react-native'
 import { FormInput } from 'react-native-elements'
 
-import ButtonTheme from '../ButtonTheme/ButtonTheme'
+import ButtonTheme from '../../common/ButtonTheme/ButtonTheme'
 
 const { width } = Dimensions.get('window')
 
