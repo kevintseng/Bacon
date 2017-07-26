@@ -1,4 +1,4 @@
-package com.bacon;
+package com.kayming.android.bacon;
 
 import com.facebook.react.ReactActivity;
 
