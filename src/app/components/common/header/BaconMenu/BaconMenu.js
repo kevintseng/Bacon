@@ -13,7 +13,7 @@ const styles = {
   }
 }
 
-const Menu = () => {
+const BaconMenu = () => {
   return(
     <TouchableOpacity style={ styles.menu } onPress={ menuOnPress } >
       <Image source={require('./img/btn_menu.png')} />
@@ -21,4 +21,4 @@ const Menu = () => {
   )
 }
 
-export default Menu
+export default BaconMenu

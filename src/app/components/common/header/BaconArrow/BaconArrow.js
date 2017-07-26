@@ -13,7 +13,7 @@ const styles = {
   }
 }
 
-const Return = () => {
+const BaconArrow = () => {
   return(
     <TouchableOpacity style={ styles.return } onPress={ menuOnPress } >
       <Image source={require('./img/btn_back.png')} />
@@ -21,4 +21,4 @@ const Return = () => {
   )
 }
 
-export default Return
+export default BaconArrow

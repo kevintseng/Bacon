@@ -1,15 +1,16 @@
 import React from 'react'
-import Router from './app/Router'
 import { Provider } from 'mobx-react/native'
-import AppInitStore from './configs/AppInitStore'
+// initial config
+import AppInitial from './configs/AppInitial'
+import Routes from './app/Routes'
 
 const App = () => {
   return (
     <Provider 
-      firebase={ AppInitStore.firebase } 
-      SignUpInStore={ AppInitStore.SignUpInStore } 
-      SubjectStore={ AppInitStore.SubjectStore }>
-      <Router/>
+      firebase={ AppInitial.firebase } 
+      SignUpInStore={ AppInitial.SignUpInStore } 
+      SubjectStore={ AppInitial.SubjectStore }>
+      <Routes/>
     </Provider>
   )
 }

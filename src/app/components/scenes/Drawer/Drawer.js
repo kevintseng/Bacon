@@ -3,8 +3,9 @@ import { View, Text, ScrollView, Image, Dimensions, TouchableOpacity, Platform }
 import { Badge } from 'react-native-elements'
 
 import ListItem from '../../common/ListItem/ListItem'
-import Menu from '../../common/header/Menu/Menu'
-import Title from '../../common/header/Title/Title'
+import BaconTitle from '../../common/header/BaconTitle/BaconTitle'
+import BaconMenu from '../../common/header/BaconMenu/BaconMenu'
+
 
 const { width, height } = Dimensions.get('window')
 
@@ -18,7 +19,7 @@ const styles = {
   }
 }
 
-const Sider = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, settingOnPress }) => {
+const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, settingOnPress }) => {
 
   return(
     <ScrollView style = { styles.scrollView } >
@@ -26,13 +27,13 @@ const Sider = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPr
 
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
           <View style={{opacity: 0, marginTop: 7}} pointerEvents="none">
-            <Menu/>
+            <BaconMenu/>
           </View>
           <View>
-            <Title/>
+            <BaconTitle/>
           </View>
           <View style={{marginTop: 7}}>
-            <Menu/>
+            <BaconMenu/>
           </View>
         </View>
 
@@ -93,4 +94,4 @@ const Sider = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPr
   )
  }
 
-export default Sider
+export default Drawer

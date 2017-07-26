@@ -3,8 +3,8 @@ import Drawer from 'react-native-drawer'
 import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
 import { Dimensions } from 'react-native'
-
-import Sider from '../../components/scenes/Sider/Sider'
+// import Drawer for Sider
+import Sider from '../../components/scenes/Drawer/Drawer'
 
 const metadata = {
     contentType: 'image/jpeg'
