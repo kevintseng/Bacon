@@ -1981,9 +1981,21 @@ fbjs-scripts@^0.7.0:
     semver "^5.1.0"
     through2 "^2.0.0"
 
-fbjs@0.8.12, fbjs@^0.8.1, fbjs@^0.8.9:
+fbjs@0.8.12:
   version "0.8.12"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
+  dependencies:
+    core-js "^1.0.0"
+    isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.9"
+
+fbjs@^0.8.1, fbjs@^0.8.9:
+  version "0.8.14"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.14.tgz#d1dbe2be254c35a91e09f31f9cd50a40b2a0ed1c"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -3885,16 +3897,6 @@ react-native-elements@^0.15.0:
     react-native-side-menu "^0.20.1"
     react-native-tab-navigator "^0.3.3"
 
-react-native-experimental-navigation@0.27.x:
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/react-native-experimental-navigation/-/react-native-experimental-navigation-0.27.0.tgz#1b20ad95b9f7187d4f1735708a5c1080693a94f1"
-  dependencies:
-    babel-plugin-syntax-flow "^6.8.0"
-    babel-plugin-transform-flow-strip-types "^6.8.0"
-    babel-preset-react-native "^1.9.0"
-    clamp "^1.0.1"
-    fbjs "^0.8.1"
-
 react-native-experimental-navigation@^0.28.0:
   version "0.28.0"
   resolved "https://registry.yarnpkg.com/react-native-experimental-navigation/-/react-native-experimental-navigation-0.28.0.tgz#561298190320cd336dc5b00c2e8bc2435cfb4909"
@@ -3942,7 +3944,7 @@ react-native-mobx@^0.3.1:
     mobx-react "^3.3.0"
     react-native-router-flux "^3.31.2"
 
-react-native-router-flux@^3.31.2:
+react-native-router-flux@^3.31.2, react-native-router-flux@~3.41.0:
   version "3.41.0"
   resolved "https://registry.yarnpkg.com/react-native-router-flux/-/react-native-router-flux-3.41.0.tgz#481367031ed413931e9b60605ddb8857267c1c85"
   dependencies:
@@ -3950,15 +3952,6 @@ react-native-router-flux@^3.31.2:
     react-native-experimental-navigation "^0.28.0"
     react-native-tabs "^1.0.9"
     react-static-container "^1.0.1"
-
-react-native-router-flux@~3.39.1:
-  version "3.39.2"
-  resolved "https://registry.yarnpkg.com/react-native-router-flux/-/react-native-router-flux-3.39.2.tgz#f5373136440e627dfc39edc61cb4bf54581245e0"
-  dependencies:
-    lodash.isequal "^4.5.0"
-    react-native-experimental-navigation "0.27.x"
-    react-native-tabs "^1.0.9"
-    react-static-container "1.0.1"
 
 react-native-scrollable-tab-view@^0.6.7:
   version "0.6.7"
@@ -4084,7 +4077,7 @@ react-proxy@^1.1.7:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
 
-react-static-container@1.0.1, react-static-container@^1.0.1:
+react-static-container@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-static-container/-/react-static-container-1.0.1.tgz#694c0dd68a896b879519afb548399cc1989c9ab0"
 
