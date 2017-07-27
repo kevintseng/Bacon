@@ -17,10 +17,20 @@ export default class EditContainer extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
+  onPressDisplayName = () => {
+    Actions.AboutMeEdit()
+  }
+
+  onPressCity = () => {
+    Actions.AboutMeEdit()
+  }
 
   render() {
     return(
-      <Edit/>
+      <Edit
+        onPressDisplayName={ this.onPressDisplayName }
+        onPressCity={ this.onPressCity }
+      />
     )
   }
 }
