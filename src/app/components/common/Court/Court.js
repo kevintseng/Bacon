@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import { Dimensions, Image, Modal, View, Text, Button } from 'react-native'
-import Carousel from 'react-native-looped-carousel';
-import SwipeCards from 'react-native-swipe-cards';
-import ImageZoom from 'react-native-image-pan-zoom';
- const { width, height } = Dimensions.get('window')
+import { Dimensions, Image, Modal, View, Text, Button, TouchableOpacity } from 'react-native'
+import Carousel from 'react-native-looped-carousel'
+import SwipeCards from 'react-native-swipe-cards'
+import ImageZoom from 'react-native-image-pan-zoom'
+
+const { width, height } = Dimensions.get('window')
 
 
 const data = [
@@ -74,15 +75,15 @@ renderCard = (card) => {
                       <ImageZoom key={2}
             cropWidth={width}
             cropHeight={height}
-                            imageWidth={width}
-                       imageHeight={height}
+            imageWidth={width}
+            imageHeight={height}
             >
                   <Image style={{height, width}} resizeMode={'contain'} source={{uri: 'https://i.imgur.com/FHxVpN4.jpg'}}/>
             </ImageZoom>
       </Carousel>
-      <View style={{width, position: 'absolute',top: 20, backgroundColor: 'red', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-          <View ><Text onPress={this.props.close} style={{color:'white'}}>Return</Text></View>
-          <View ><Text onPress={() => {this.carousel._animateNextPage()}} style={{color:'white'}}>下一張</Text></View>
+      <View style={{width, position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
+          <View ><Text onPress={this.props.close} style={{color:'white',fontFamily: 'NotoSans'}}>返回</Text></View>
+          <View ><Text onPress={() => {this.carousel._animateNextPage()}} style={{color:'white',fontFamily: 'NotoSans'}}>下一張</Text></View>
       </View>
 
 
@@ -101,9 +102,34 @@ renderCard = (card) => {
         showMaybe={false}
 
       />
+      <TouchableOpacity style={{position: 'absolute',top: 320, left: 60}} onPress={() => this.nope()}>
+        <Image source={require('./img/btn_meet_dislike.png')}/>
+      </TouchableOpacity>
 
-      <Button title='Reject' onPress={() => this.nope()}/>
-     <Button title='Like' onPress={() => this.yup()}/>
+      <TouchableOpacity style={{position: 'absolute',top: 320, right: 60}} onPress={() => this.yup()}>
+        <Image source={require('./img/btn_meet_like.png')}/>
+      </TouchableOpacity>
+
+      <View style={{position: 'absolute',top: 400, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
+        <Image style={{marginRight: 5}}source={require('./img/ico_meet_email_1.png')}/>
+        <Image style={{marginRight: 5}}source={require('./img/ico_meet_picture_1.png')}/>
+        <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>Pauline</Text>
+        <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>, </Text>
+        <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>38</Text>
+      </View>
+
+      <View style={{position: 'absolute',top: 440, alignSelf: 'center', alignItems: 'center'}}><Text style={{fontSize: 10,color: '#606060'}}>好看的千篇一律，有趣的靈魂卻是萬里挑一</Text></View>
+    
+      <View style={{position: 'absolute',top: 460, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
+        <Image style={{marginRight: 5}}source={require('./img/ico_meet_globe.png')}/>
+        <Text style={{fontSize: 10,color: '#606060',fontFamily: 'NotoSans'}}>中文(流利), 英文(普通)</Text>
+      </View>
+
+      <View style={{position: 'absolute',top: 480, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
+        <Image style={{marginRight: 5}}source={require('./img/ico_meet_locate.png')}/>
+        <Text style={{fontSize: 10,color: '#606060',fontFamily: 'NotoSans'}}>你們距離大約7.9公里</Text>
+      </View>
+
     </View>
   )}
 }

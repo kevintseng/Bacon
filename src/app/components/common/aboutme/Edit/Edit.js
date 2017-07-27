@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { View, TouchableOpacity, Dimensions } from 'react-native'
 import { Avatar, ListItem } from 'react-native-elements'
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -12,12 +12,10 @@ const { width } = Dimensions.get('window')
 
 const styles = {
   subtitleStyle: {
-    backgroundColor: 'transparent',
     position: 'relative',
     right: 10
   },
   subtitleTextStyle: {
-    backgroundColor: 'transparent',
     position: 'relative',
     right: 10,
     color: '#606060',
@@ -26,7 +24,6 @@ const styles = {
     fontWeight: 'normal'   
   },
   titleStyle: {
-    backgroundColor: 'transparent',
     position: 'relative', 
     right: 20, 
     marginBottom: 10,
@@ -73,7 +70,7 @@ const Edit = ({onPressDisplayName, onPressCity, onPressBio}) => {
         </View>     
 
       </View>
-      <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}}colors={colors} style={styles.linearGradient}>
+      <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>
         <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
             <MemberUpgrade
               MemberUpgradeText='一般會員'
