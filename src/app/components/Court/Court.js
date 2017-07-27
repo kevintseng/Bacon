@@ -8,7 +8,7 @@ import PhotoView from 'react-native-photo-view';
 
 
 const data = [
-  { id: 2, text: 'Amanda', age: 28, uri: 'http://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg' },
+  { id: 2, text: 'Amanda', age: 28, uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg' },
   { id: 3, text: 'Emma', age: 29, uri: 'https://i.imgur.com/FHxVpN4.jpg' },
 
 ];
@@ -33,13 +33,14 @@ this.refs['swiper']._goToNextCard() }
 
 renderCard = (card) => {
   return (
-    <View style={{flex: 1}}>
+ 
       <Image
+      key={card.id}
         source={{uri: card.uri}}
          style={{width, height: width}}
 
        />
-    </View>
+  
 
      
   )
@@ -59,8 +60,8 @@ renderCard = (card) => {
           pageInfoTextStyle={{color: 'red'}}
           onAnimateNextPage={(p) => console.log(p)}
             >
-                  <PhotoView  androidScaleType={'fitCenter'} scale={this.state.scale} style={{height, width}} resizeMode={'contain'} source={{uri: 'http://f9view.com/wp-content/uploads/2013/10/American-Beautiful-Girls-Wallpapers-Hollywood-Celebs-1920x1200px.jpg'}}/>
-                  <PhotoView  androidScaleType={'fitCenter'} scale={this.state.scale} style={{height, width}} resizeMode={'contain'} source={{uri: 'https://i.imgur.com/FHxVpN4.jpg'}}/>
+                  <Image  key={1} androidScaleType={'fitCenter'} scale={this.state.scale} style={{height, width}} resizeMode={'contain'} source={{uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg'}}/>
+                  <Image  key={2} androidScaleType={'fitCenter'} scale={this.state.scale} style={{height, width}} resizeMode={'contain'} source={{uri: 'https://i.imgur.com/FHxVpN4.jpg'}}/>
       </Carousel>
                         <View style={{position: 'absolute'}}><Text onPress={()=>{this.setState({scale: 2.0})}} style={{color:'white'}}>2x</Text></View>
 
