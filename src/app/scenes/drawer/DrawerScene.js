@@ -140,16 +140,20 @@ export default class DrawerScene extends Component {
     Actions.AboutMe({type: 'reset'})
   }
 
-  goToFate() {
-    Actions.FateTab({type: 'reset'})
-  }
-
   goToMeetChance() {
     Actions.meetchance({type: 'reset'})
   }
 
   goToMessage() {
     //Actions.message({type: 'reset'})
+  }
+
+  goToMeetCute() {
+    Actions.meetcute({type: 'reset'})
+  }
+
+  goToFate() {
+    Actions.FateTab({type: 'reset'})
   }
 
   goToSetting() {
@@ -178,9 +182,10 @@ export default class DrawerScene extends Component {
 
             displayNameOnPress={ this.goToAboutMe }
             meetchanceOnPress={ this.goToMeetChance }
+            meetcueOnPress={ this.goToMeetCute }
+            messageOnPress={ this.goToMessage }
             fateOnPress={ this.goToFate }
             settingOnPress={ this.goToSetting }
-            messageOnPress={ this.goToMessage }
           />
         }
         tapToClose

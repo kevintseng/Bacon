@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react'
 import Court from '../../../components/common/Court/Court'
 
 @inject("firebase","SubjectStore") @observer
-export default class MeetChanceCourtScene extends Component {
+export default class MeetCuteCourtScene extends Component {
 
   constructor(props) {
     super(props)
@@ -31,10 +31,10 @@ export default class MeetChanceCourtScene extends Component {
 
   render() {
     return(
-      <Court
-      visible={this.state.visible}
-      open={this.changeVisible}
-      close={this.changeVisible}
+      <Court 
+        visible={this.state.visible}
+        open={this.changeVisible}
+        close={this.changeVisible}
       />
     )
   }
