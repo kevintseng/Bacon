@@ -1,23 +1,32 @@
 import React, { Component } from 'react'
+import { Platform, View } from 'react-native'
 import { Router, Scene } from 'react-native-router-flux'
 
 // ###############authenticate################ //
+// Auth
 import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
 import WelcomeScene from './scenes/authenticate/WelcomeScene'
+import AuthScene from './scenes/authenticate/AuthScene'
+// SignIn
 import SignInOneScene from './scenes/authenticate/SignIn/SignInOneScene'
+// SignUp
 import SignUpOneScene from './scenes/authenticate/SignUp/SignUpOneScene'
 import SignUpTwoScene from './scenes/authenticate/SignUp/SignUpTwoScene'
 import SignUpThreeScene from './scenes/authenticate/SignUp/SignUpThreeScene'
 import SignUpFourScene from './scenes/authenticate/SignUp/SignUpFourScene'
-import AuthScene from './scenes/authenticate/AuthScene'
 // ###############authenticate################ //
 
 // ###############drawer################ //
+// Drawer
 import DrawerScene from './scenes/drawer/DrawerScene'
-import AboutMeScene from './scenes/drawer/AboutMeScene'
+// AboutMe
+import AboutMeScene from './scenes/drawer/AboutMe/AboutMeScene'
+// MeetChance
 import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
 import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
+// Fate
 import FateTabScene from './scenes/drawer/Fate/FateTabScene'
+// Setting
 import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
 import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
 import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
@@ -33,16 +42,16 @@ import BaconArrow from './components/common/header/BaconArrow/BaconArrow'
 
 const styles = {
   navBar: {
-    backgroundColor: '#ffffff',
-    borderBottomColor: 'transparent'
+    backgroundColor: 'white',
+    borderBottomColor: 'transparent',
+    //backgroundColor:'blue'
   },
   navBarTitle: {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     color: '#606060',
-    textAlign: 'center',
     fontWeight: '500',
-    alignSelf: 'center'
+    //backgroundColor:'green',
   }
 }
 
@@ -51,21 +60,21 @@ export default class Routes extends Component {
   getSceneStyle(props, computedProps){
     const style = {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: 'white',
       borderWidth: 0
     }
     if (computedProps.isActive) {
-      style.marginTop = computedProps.hideNavBar ? 0 : 54
-      style.marginBottom = computedProps.hideTabBar ? 0 : 50
+      style.marginTop = computedProps.hideNavBar ? 0 : Platform.OS === 'ios' ? 64 : 54
+      style.marginBottom = computedProps.hideTabBar ? 0 : Platform.OS === 'ios' ? 60 : 50
     }
     return style
   }
 
-  baconTitle = () => <BaconTitle/>
+  baconMenu = () => (<View style={{position: 'absolute',top: Platform.OS === 'ios' ? 4 : 1, left: 5}}><BaconMenu/></View>)
 
-  baconMenu = () => <BaconMenu/>
+  baconTitle = () => (<View style={{marginTop: Platform.OS === 'ios' ? 35 : 19}}><BaconTitle/></View>)
 
-  baconArrow = () => <BaconArrow/>
+  baconArrow = () => (<View style={{position: 'absolute',top: Platform.OS === 'ios' ? 4 : 0, left: 5}}><BaconArrow/></View>)
 
   render() {
     return (

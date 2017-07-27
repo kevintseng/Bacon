@@ -3,7 +3,6 @@ import { View, Image } from 'react-native'
 
 const styles = {
   title: {
-    height: 54, 
     justifyContent: 'center', 
     alignItems: 'center'
   }

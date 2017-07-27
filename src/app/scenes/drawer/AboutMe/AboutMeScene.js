@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
 import { inject, observer } from "mobx-react"
 import { Actions } from 'react-native-router-flux'
+
+import AboutMeTab from '../../../components/scenes/AboutMeTab/AboutMeTab'
 
 @inject("SubjectStore") @observer
 export default class AboutMeScene extends Component {
@@ -17,12 +18,17 @@ export default class AboutMeScene extends Component {
 
   render(){
     return(
+      <AboutMeTab>
+      </AboutMeTab>
+    )
+  }
+}
+
+/*
       <View>
         <Text>{ this.SubjectStore.displayName }</Text>
         <Text>{ this.SubjectStore.sexOrientation }</Text>
         <Text>{ this.SubjectStore.city }</Text>
         <Text>{ this.SubjectStore.birthday }</Text>
       </View>
-    )
-  }
-}
+*/
