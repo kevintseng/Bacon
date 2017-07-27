@@ -1,12 +1,11 @@
 import React from 'react'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
 
-import Visitors from '../../common/fate/Visitors/Visitors'
-import GoodImpression from '../../common/fate/GoodImpression/GoodImpression'
-import Mate from '../../common/fate/Mate/Mate'
-import Collection from '../../common/fate/Collection/Collection'
+import Edit from '../../common/aboutme/Edit/Edit'
+import Album from '../../common/aboutme/Album/Album'
+import Preview from '../../common/aboutme/Preview/Preview'
 
-const FateTab = () => {
+const AboutMeTab = () => {
 
   return(
     <ScrollableTabView
@@ -20,12 +19,11 @@ const FateTab = () => {
       //onChangeTab={}
       ref={ (tabView) => { this.tabView = tabView } }
       >
-      <Visitors label='Visitors' tabLabel='來訪' />
-      <GoodImpression label='GoodImpression' tabLabel='好感' />
-      <Mate label='Mate' tabLabel='配對' />
-      <Collection label='Collection' tabLabel='收藏' />
+      <Edit label='Edit' tabLabel='編輯' />
+      <Album label='Album' tabLabel='相簿' />
+      <Preview label='Preview' tabLabel='預覽' />
     </ScrollableTabView>
   )
 }
 
-export default FateTab
+export default AboutMeTab

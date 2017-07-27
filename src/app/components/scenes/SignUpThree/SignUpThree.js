@@ -16,7 +16,7 @@ const styles = {
   form: {
     ...Platform.select({ 
       ios: { 
-        marginTop: 10
+        marginTop: 15
       }, 
       android: { 
         marginTop: 5
@@ -27,7 +27,7 @@ const styles = {
     position: 'absolute',
     alignSelf: 'flex-start',
     marginLeft: 20,
-    top: 20,
+    top: 5,
     color: 'blue',
     fontSize: 12
   },
@@ -35,7 +35,7 @@ const styles = {
     position: 'absolute',
     alignSelf: 'flex-start',
     marginLeft: 20,
-    top: 95,
+    top: 75,
     color: 'blue',
     fontSize: 12
   },
@@ -43,7 +43,7 @@ const styles = {
     position: 'absolute',
     alignSelf: 'flex-start',
     marginLeft: 20,
-    top: 170,
+    top: 147,
     color: 'blue',
     fontSize: 12
   },
@@ -151,9 +151,9 @@ const SignUpThree = ({ buttonText, buttonOnPress, email, onChangeEmail, onBlurEm
         }
 
         <View style={{marginTop: 20}}>
-          <Image source={require('./img/btn_reg_blank.png')}>
+          <Image source={require('./img/btn_index_join.png')}>
           <DatePicker
-            style={{flex:1, width: width - 55,justifyContent: 'center' }}
+            style={{flex:1, width: width - 62, justifyContent: 'center', alignSelf: 'center' }}
             customStyles={{
               dateInput: {
                 borderWidth: 0
@@ -173,13 +173,13 @@ const SignUpThree = ({ buttonText, buttonOnPress, email, onChangeEmail, onBlurEm
           </Image>
         </View>
 
-        <View style={{flexDirection:'row',alignItems: 'center', marginRight: 60 }}>
+        <View style={{flexDirection:'row',alignItems: 'center', position: 'relative', bottom: Platform.OS === 'ios' ? -8 : 7, right: 30}}>
           <View style={{position: 'relative', left: 35}}>
             <CheckBox
               //onBlur={this.termsCheck}
               title=''
               center
-              containerStyle={{ backgroundColor: "white", borderWidth: 0 }}
+              containerStyle={{ backgroundColor: "transparent", borderWidth: 0 }}
               checked={ policy }
               onPress={ onPressPolicy }
             />

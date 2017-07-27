@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ScrollView, Image, Dimensions, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, Image, Dimensions, TouchableOpacity, Platform } from 'react-native'
 import { Badge } from 'react-native-elements'
 
 import ListItem from '../../common/ListItem/ListItem'
@@ -14,32 +14,31 @@ const picWidth = (width * 0.8)/3
 const styles = {
   scrollView: {
     flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    height
+    backgroundColor: 'rgba(255, 255, 255, 0.8)'
   }
 }
 
 const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, settingOnPress }) => {
 
   return(
-    <ScrollView style = { styles.scrollView } >
-      <View style={{marginRight: 20, marginLeft: 20}}>
+    <View style = { styles.scrollView } >
+      <View style={{marginRight: 20, marginLeft: 20, marginTop: Platform.OS === 'ios' ? 25 : 10}}>
 
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-          <View style={{opacity: 0, marginTop: 7}} pointerEvents="none">
+          <View style={{opacity: 0}} pointerEvents="none">
             <BaconMenu/>
           </View>
           <View>
             <BaconTitle/>
           </View>
-          <View style={{marginTop: 7}}>
+          <View >
             <BaconMenu/>
           </View>
         </View>
 
         <View style={{alignItems: 'center',marginTop: 20}}>
           <Image 
-            style={{ alignSelf: 'center', width: picWidth, height: picWidth, borderRadius: (Platform.OS === 'ios') ? picWidth/2 : picWidth }}
+            style={{ alignSelf: 'center', width: picWidth, height: picWidth, borderRadius: picWidth/2 }}
             source={ avatar ? { uri: avatar } : require('./img/avatar.jpg')}       
           />
         </View>
@@ -90,7 +89,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
 
       </View>
 
-    </ScrollView>
+    </View>
   )
  }
 
