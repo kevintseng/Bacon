@@ -1,22 +1,29 @@
 import React from 'react'
-import { Image, FlatList, Dimensions, TouchableOpacity, Button, View } from 'react-native'
+import { Image, FlatList, Dimensions, TouchableOpacity, Button, View, Modal, Text } from 'react-native'
+import ImageZoom from 'react-native-image-pan-zoom'
 
- const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
- const picWidth = width/3
+const picWidth = width/3
 
-const photos = [
-{key: 1, uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg'},
-{key: 2, uri: 'https://i.imgur.com/FHxVpN4.jpg'},
-{key: 3, uri: 'https://i.imgur.com/FHxVpN4.jpg'},
-{key: 4, uri: 'https://i.imgur.com/FHxVpN4.jpg'},
-{key: 5, uri: 'https://i.imgur.com/FHxVpN4.jpg'}
-]
-
-
-const Album = ({photoOnPress, photoOnLongPress, footerOnPress}) => {
+const Album = ({photos, photoOnPress, photoOnLongPress, footerOnPress, photoOnPressModal, onRequestPhotoOnPressModal}) => {
   return(
     <View style={{flex: 1}}>
+      <Modal animationType={"fade"} onRequestClose={ onRequestPhotoOnPressModal } visible={ photoOnPressModal } transparent={false}>
+        <View style={{flex:1, backgroundColor: 'black'}}>
+          <ImageZoom
+            cropWidth={width}
+            cropHeight={height}
+            imageWidth={width}
+            imageHeight={height}
+          >
+            <Image style={{height, width}} resizeMode={'contain'} source={{uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg'}}/>
+          </ImageZoom>
+          <View style={{width, position: 'absolute'}}>
+              <View ><Text onPress={ onRequestPhotoOnPressModal } style={{color:'white'}}>Return</Text></View>
+          </View>
+        </View>
+      </Modal>
       <FlatList
         data={ photos } 
         numColumns={3}

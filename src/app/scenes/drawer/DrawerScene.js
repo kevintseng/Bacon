@@ -137,7 +137,7 @@ export default class DrawerScene extends Component {
   )
 
   goToAboutMe() {
-    Actions.AboutMe({type: 'reset'})
+    Actions.aboutme({type: 'reset'})
   }
 
   goToMeetChance() {
@@ -153,7 +153,7 @@ export default class DrawerScene extends Component {
   }
 
   goToFate() {
-    Actions.FateTab({type: 'reset'})
+    Actions.fate({type: 'reset'})
   }
 
   goToSetting() {
