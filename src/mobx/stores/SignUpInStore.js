@@ -19,7 +19,7 @@ export default class SignUpInStore {
   constructor() {
     // user data
     this.photoURL = null
-    this.uid = null
+    //this.uid = null
     this.email = ''
     this.password = ''
     this.displayName = ''
@@ -38,9 +38,9 @@ export default class SignUpInStore {
     this.photoURL = url
   }
 
-  @action setUid = user_id => {
-    this.uid = user_id
-  }
+ // @action setUid = user_id => {
+ //   this.uid = user_id
+ // }
 
   @action setEmail = email => {
     this.email = email.trim()

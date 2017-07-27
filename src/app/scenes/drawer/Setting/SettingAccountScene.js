@@ -22,14 +22,10 @@ export default class SettingAccountScene extends Component {
     this.firebase.database().ref("users/" + this.SubjectStore.uid + "/delete").set(true)
   }
 
-  SignOut = () => {
-    this.setOffline(this.SubjectStore.uid)
+  signOut = () => {
     this.firebase.auth().signOut()
   }
 
-  setOffline(user_id){
-    this.firebase.database().ref("/online/" + user_id).remove()
-  }
 
   render() {
     return(
@@ -37,7 +33,7 @@ export default class SettingAccountScene extends Component {
         topButtonText='申請密碼重設'
         //topButtonOnPress={}
         midButtonText='登出'
-        midButtonOnPress={ this.SignOut }
+        midButtonOnPress={ this.signOut }
         bottomButtonText='刪除帳號'
         bottomButtonOnPress={ this.deleteAccount }
       />

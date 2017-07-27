@@ -49,36 +49,42 @@ renderCard = (card) => {
     <View style={{flex:1}}>
           <Modal animationType={"fade"} onRequestClose={()=>{}} visible={this.props.visible} transparent={false}>
             <Carousel
+            ref={(carousel) => { this.carousel = carousel }}
+            swipe={false}
             style={{flex:1,backgroundColor: 'black'}}
             //arrows
           //delay={2000}
           bullets
+          //bulletsContainerStyle={{justifyContent:'flex-end', backgroundColor:'white'}}
+          //bulletStyle={{backgroundColor: 'red'}}
           autoplay={false}
           //pageInfo
-          bulletsContainerStyle={{position: 'absolute'}}
+          //bulletsContainerStyle={{position: 'absolute'}}
           pageInfoTextStyle={{color: 'red'}}
           onAnimateNextPage={(p) => console.log(p)}
             >
-            <ImageZoom
+            <ImageZoom key={1}
             cropWidth={width}
             cropHeight={height}
                             imageWidth={width}
                        imageHeight={height}
             >
-              <Image  key={1} androidScaleType={'fitCenter'} scale={this.state.scale} style={{height, width}} resizeMode={'contain'} source={{uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg'}}/>
+              <Image style={{height, width}} resizeMode={'contain'} source={{uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg'}}/>
             </ImageZoom>
-                      <ImageZoom
+                      <ImageZoom key={2}
             cropWidth={width}
             cropHeight={height}
                             imageWidth={width}
                        imageHeight={height}
             >
-                  <Image  key={2} androidScaleType={'fitCenter'} scale={this.state.scale} style={{height, width}} resizeMode={'contain'} source={{uri: 'https://i.imgur.com/FHxVpN4.jpg'}}/>
+                  <Image style={{height, width}} resizeMode={'contain'} source={{uri: 'https://i.imgur.com/FHxVpN4.jpg'}}/>
             </ImageZoom>
       </Carousel>
-                        <View style={{position: 'absolute'}}><Text onPress={()=>{this.setState({scale: 2.0})}} style={{color:'white'}}>2x</Text></View>
+      <View style={{width, position: 'absolute',top: 20, backgroundColor: 'red', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+          <View ><Text onPress={this.props.close} style={{color:'white'}}>Return</Text></View>
+          <View ><Text onPress={() => {this.carousel._animateNextPage()}} style={{color:'white'}}>下一張</Text></View>
+      </View>
 
-                  <View style={{position: 'absolute', right: 50}}><Text onPress={this.props.close} style={{color:'white'}}>Return</Text></View>
 
       </Modal>
       <SwipeCards

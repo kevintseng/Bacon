@@ -39,19 +39,23 @@ export default class DrawerScene extends Component {
         uploadSignUpDataState: '使用者資料上傳中',
         uploadAvatarState: '使用者大頭照上傳中'
       })
-      this.uploadAvatar(this.SignUpInStore.photoURL) // 上傳相簿
-      this.uploadSignUpData() // 上傳資料
-      this.initSubjectStoreFromSignUpInStore() // 本地資料搬移
+      // TODO : 把SignUpInStore 和 SubjectStore 合在一起 好像更快
+      this.uploadAvatar(this.SignUpInStore.photoURL) // 非同步上傳相簿
+      this.uploadSignUpData() // 非同步上傳資料
+      this.initSubjectStoreFromSignUpInStore() // 同步搬移資料從 SignUpInStore 到 SubjectStore TODO : 改成非同步
     } else {
-      this.initSubjectStoreFromFirebase() // 同步網路資料到本地資料
+      this.setState({
+        uploadSignUpDataState: '資料同步中'
+      })
+      this.initSubjectStoreFromFirebase() // 非同步抓取網路資料到 SubjectStore
     }
   }
 
   uploadAvatar = () => {
-    this.firebase.storage().ref('images/avatars/' + this.SignUpInStore.uid)  
+    this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid)  
     .putFile(this.SignUpInStore.photoURL.replace('file:/',''), metadata)
     .then(uploadedFile => {
-      this.firebase.database().ref('users/' + this.SignUpInStore.uid + '/photoURL').set(uploadedFile.downloadUrl)
+      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photoURL').set(uploadedFile.downloadUrl)
       .then(() => {
         this.setState({
           uploadAvatarState: '使用者大頭照上傳成功'
@@ -71,9 +75,11 @@ export default class DrawerScene extends Component {
   }
 
   uploadSignUpData = () => {
-    this.firebase.database().ref('users/' + this.SignUpInStore.uid).set({
-      // SignUpData
-      uid: this.SignUpInStore.uid,
+    this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
+      // 上傳註冊資料
+      // 只有 uid 從 SubjectStore 直接上傳
+      uid: this.SubjectStore.uid, // TODO : 資欄位好像不需要
+      // 其他資料從 SignUpInStore 上傳
       email: this.SignUpInStore.email,
       displayName: this.SignUpInStore.displayName,
       gender: this.genderString(),
@@ -95,7 +101,6 @@ export default class DrawerScene extends Component {
 
   initSubjectStoreFromSignUpInStore = () => {
     this.SubjectStore.setPhotoURL(this.SignUpInStore.photoURL)
-    this.SubjectStore.setUid(this.SignUpInStore.uid)
     this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
     this.SubjectStore.setSexOrientation(this.sexOrientationString().slice(-1))
     this.SubjectStore.setCity(this.SignUpInStore.city.substring(0,8)) // 只轉移前八個字
@@ -103,14 +108,10 @@ export default class DrawerScene extends Component {
   }
 
   initSubjectStoreFromFirebase = () => {
-    this.setState({
-      uploadSignUpDataState: '資料同步中'
-    })
-    this.firebase.database().ref('users/' + this.SignUpInStore.uid).once('value',
+    this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
           this.SubjectStore.setPhotoURL(snap.val().photoURL)
-          this.SubjectStore.setUid(snap.val().uid)
           this.SubjectStore.setDisplayName(snap.val().displayName)
           this.SubjectStore.setSexOrientation(snap.val().sexOrientation.slice(-1))
           this.SubjectStore.setCity(snap.val().city.substring(0,8)) // 只取前八個字
