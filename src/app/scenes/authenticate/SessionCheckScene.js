@@ -5,14 +5,15 @@ import { inject } from "mobx-react"
 // custom components
 import Loading from '../../components/scenes/Loading/Loading'
 
-@inject("firebase","SignUpInStore")
+@inject("firebase","SignUpInStore","SubjectStore")
 export default class SessionCheckScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SignUpInStore = this.props.SignUpInStore
-    this.user_id = null
+    this.SubjectStore = this.props.SubjectStore
+    this.uid = null
     this.state = {
       lastAppState: AppState.currentState
     }
@@ -21,15 +22,16 @@ export default class SessionCheckScene extends Component {
   componentWillMount() {
     this.firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        //console.warn(user.uid + "已登入") // 使用者登入
-        this.user_id = user.uid
-        this.setOnline(this.user_id) // 設置使用者上線
-        this.SignUpInStore.setUid(this.user_id)
-        AppState.addEventListener('change', this._handleAppStateChange ) // 註冊 app 狀態監聽
-        Actions.Drawer({type: 'reset'})
+        // 使用者登入
+        this.uid = user.uid // 只要登入成功一定有 uid
+        this.setOnline(this.uid) // 非同步設置使用者上線
+        AppState.addEventListener('change', this._handleAppStateChange ) // 非同步註冊 app 狀態監聽
+        this.SubjectStore.setUid(this.uid) // 同步優先設定 uid
+        Actions.Drawer({type: 'reset'}) // 切換場景
       } else {
-        //console.warn("沒有使用者登入") // 沒有使用者登入
-        AppState.removeEventListener('change', this._handleAppStateChange ) // 移除 app 狀態監聽
+        // 沒有使用者登入 user = null
+        this.setOffline(this.SubjectStore.uid) // 非同步設置使用者下線
+        AppState.removeEventListener('change', this._handleAppStateChange ) // 非同步移除 app 狀態監聽
         Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
       }
     })
@@ -37,24 +39,24 @@ export default class SessionCheckScene extends Component {
 
   _handleAppStateChange = nextAppState => {
     if (AppState.currentState === 'active') {
-      this.setOnline(this.user_id) 
+      this.setOnline(this.uid) 
       // 設置使用者上線
     } else if (this.state.lastAppState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
-      this.setOffline(this.user_id) 
+      this.setOffline(this.uid) 
       // 設置使用者下線
     }
     this.setState({lastAppState: nextAppState})
   }
 
-  setOnline(user_id) {
-    this.firebase.database().ref("/online/" + user_id).set({
+  setOnline(uid) {
+    this.firebase.database().ref("/online/" + uid).set({
       lastOnline: Math.floor(Date.now() / 1000),
       location: "Taipei, Taiwan"
     });
   }
 
-  setOffline(user_id) {
-    this.firebase.database().ref("/online/" + user_id).remove()
+  setOffline(uid) {
+    this.firebase.database().ref("/online/" + uid).remove()
   }
   
   render() {
