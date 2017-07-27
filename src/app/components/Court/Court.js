@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
-import { Dimensions, TouchableOpacity, Image, Modal, View, Text, Button } from 'react-native'
+import { Dimensions, Image, Modal, View, Text, Button } from 'react-native'
 import Carousel from 'react-native-looped-carousel';
 import SwipeCards from 'react-native-swipe-cards';
-import PhotoView from 'react-native-photo-view';
-//import { DeckSwiper } from 'native-base';
+import ImageZoom from 'react-native-image-pan-zoom';
  const { width, height } = Dimensions.get('window')
 
 
@@ -60,8 +59,22 @@ renderCard = (card) => {
           pageInfoTextStyle={{color: 'red'}}
           onAnimateNextPage={(p) => console.log(p)}
             >
-                  <Image  key={1} androidScaleType={'fitCenter'} scale={this.state.scale} style={{height, width}} resizeMode={'contain'} source={{uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg'}}/>
+            <ImageZoom
+            cropWidth={width}
+            cropHeight={height}
+                            imageWidth={width}
+                       imageHeight={height}
+            >
+              <Image  key={1} androidScaleType={'fitCenter'} scale={this.state.scale} style={{height, width}} resizeMode={'contain'} source={{uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg'}}/>
+            </ImageZoom>
+                      <ImageZoom
+            cropWidth={width}
+            cropHeight={height}
+                            imageWidth={width}
+                       imageHeight={height}
+            >
                   <Image  key={2} androidScaleType={'fitCenter'} scale={this.state.scale} style={{height, width}} resizeMode={'contain'} source={{uri: 'https://i.imgur.com/FHxVpN4.jpg'}}/>
+            </ImageZoom>
       </Carousel>
                         <View style={{position: 'absolute'}}><Text onPress={()=>{this.setState({scale: 2.0})}} style={{color:'white'}}>2x</Text></View>
 
@@ -90,11 +103,16 @@ renderCard = (card) => {
 }
 
 /*
+
+            cropWidth={width}
+            cropHeight={height}
+                            imageWidth={width}
+                       imageHeight={height}
         scale={1.5}
     minimumZoomScale={0.5}
   maximumZoomScale={3}
   androidScaleType="center"
   androidZoomTransitionDuration={1}
   onLoad={() => console.log("Image loaded!")}
-
+native-base
   */
