@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+//import PropTypes from 'prop-types'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
 
 import Wave from '../layout/Wave/Wave'
@@ -61,12 +61,12 @@ const ButtonTheme = ({ children, buttonText, buttonOnPress, warningText, warning
     </Wave>
   )
 }
-
+/*
 ButtonTheme.propTypes = {
   buttonText: PropTypes.string,
   buttonOnPress: PropTypes.func,
   warningText: PropTypes.string,
   warningOnPress: PropTypes.func
 }
-
+*/
 export default ButtonTheme

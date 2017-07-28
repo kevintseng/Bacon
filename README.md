@@ -4,9 +4,11 @@
 
 * react-native-vector-icons is for react-native-elements
 * `npm list {套件名稱}`
+* `npm list | grep {套件名稱}`
 * `react-native link`
 * `react-native upgrade`
 * `npm info {套件名稱@x.x.x} version`
+* `react-native run-android --variant=release`
 
 # Icon
 * `npm install -g yo generator-rn-toolbox`
@@ -20,3 +22,8 @@
 ## For Ios
 
 * `rm -rf ios/build/ModuleCache/* && rm -rf ~/.rncache/*`
+
+#### !!
+
+- react@^15.6.1
+- 16.0.0-alpha.12

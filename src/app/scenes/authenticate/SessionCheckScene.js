@@ -24,7 +24,7 @@ export default class SessionCheckScene extends Component {
       if (user) {
         // 使用者登入
         this.uid = user.uid // 只要登入成功一定有 uid
-        //console.warn(Object.keys(user))
+        console.log('使用者登入')
         this.setOnline(this.uid) // 非同步設置使用者上線
         AppState.addEventListener('change', this._handleAppStateChange ) // 非同步註冊 app 狀態監聽
         this.SubjectStore.setUid(this.uid) // 同步優先設定 uid

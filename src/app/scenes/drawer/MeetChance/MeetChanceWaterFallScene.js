@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
-import GeoFire from 'geofire'
+//import GeoFire from 'geofire'
 
 import MeetChanceWaterFall from '../../../components/scenes/MeetChanceWaterFall/MeetChanceWaterFall'
 
@@ -21,7 +21,7 @@ export default class MeetChanceWaterFallScene extends Component {
     this.fetchPreyListsByMeetChance()
     Actions.refresh({ key: 'Drawer', open: false })
   }
-
+/*
   fetchPreyListsByMeetChance = () => {
     const longitude = 120.7120023
     const latitude = 22.6158015
@@ -52,7 +52,7 @@ export default class MeetChanceWaterFallScene extends Component {
       )
     })
   }
-
+*/
   onPressButton = () => {
     Actions.MeetChanceCourt()
   }

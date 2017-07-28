@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { inject, observer } from "mobx-react"
 import { Actions } from 'react-native-router-flux'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
+//import Perf from 'react-addons-perf'
 
 import EditContainer from "../../../containers/AboutMeScene/EditContainer" 
 import AlbumContainer from "../../../containers/AboutMeScene/AlbumContainer" 
@@ -17,7 +18,12 @@ export default class AboutMeScene extends Component {
   }
 
   componentWillMount() {
+    //Perf.start()
     Actions.refresh({ key: 'Drawer', open: false })
+  }
+
+  componentDidMount() {
+    //Perf.stop()
   }
 
   render(){
