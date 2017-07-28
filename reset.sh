@@ -2,8 +2,8 @@ killall -9 node
 watchman watch-del-all  
 rm -rf $TMPDIR/react-*
 rm -rf node_modules/ 
-rm -rf yarn.lock
+rm -rf package-lock.json
 npm cache clean --force 
 yarn cache clean
-yarn install
+npm install
 npm start -- --reset-cache

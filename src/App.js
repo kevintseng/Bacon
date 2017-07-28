@@ -4,6 +4,7 @@ import { Provider } from 'mobx-react/native'
 import AppInitial from './configs/AppInitial'
 import Routes from './app/Routes'
 
+
 const App = () => {
   return (
     <Provider 
@@ -14,5 +15,6 @@ const App = () => {
     </Provider>
   )
 }
+
 
 export default App

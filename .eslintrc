@@ -1,10 +1,11 @@
 {
     "parser": "babel-eslint",
     "env": {
-        "browser": true
+      "browser": true
     },
-    "extends": [
-        "react-native",
+    "plugins": [
+      "react",
+      "react-native"
     ],
     "rules": {
       "no-console": "off",
@@ -29,6 +30,6 @@
       "react/prefer-stateless-function": "off",
     },
     "globals": {
-        "require": true
+      "require": true
     }
 }
