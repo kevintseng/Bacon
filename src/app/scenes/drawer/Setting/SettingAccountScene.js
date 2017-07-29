@@ -24,6 +24,9 @@ export default class SettingAccountScene extends Component {
 
   signOut = () => {
     this.firebase.auth().signOut()
+    .then(() => { 
+      //console.warn('signOut')
+    })
   }
 
 

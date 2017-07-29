@@ -48,28 +48,29 @@ export default class SignUpThreeScene extends Component {
     }
     return false
   }
-/*
-  emailChecker = () => {
-    this.firebase.database().fetchProvidersForEmail().the
-  }
-  */
 
   emailChecker = () => {
     if (checkEmail(this.SignUpInStore.email)) {
-      this.firebase.database().ref('users/').orderByChild('email').equalTo(this.SignUpInStore.email.toString().toLowerCase().trim()).once('value', (data) => {
-        if (data.val()) {
-          this.setState({
-            emailChecker: false,
-            emailError: '此帳號已註冊'
-          })
-        } else {
+      this.firebase.auth().fetchProvidersForEmail(this.SignUpInStore.email).then( providers => {
+        if (providers.length === 0) {
           this.setState({
             emailChecker: true,
             emailError: '此帳號可以使用'
           })
           return true
+        } else {
+          this.setState({
+            emailChecker: false,
+            emailError: '此帳號已註冊'
+          })
+          return false
         }
-        return false 
+      }).catch((err) => {
+        this.setState({
+          emailChecker: false,
+          emailError: '無法檢查帳號'
+        })
+        return false
       })
     } else {
       this.setState({
@@ -160,3 +161,31 @@ export default class SignUpThreeScene extends Component {
     )
   }
 }
+
+/*
+  emailChecker = () => {
+    if (checkEmail(this.SignUpInStore.email)) {
+      this.firebase.database().ref('users/').orderByChild('email').equalTo(this.SignUpInStore.email.toString().toLowerCase().trim()).once('value', (data) => {
+        if (data.val()) {
+          this.setState({
+            emailChecker: false,
+            emailError: '此帳號已註冊'
+          })
+        } else {
+          this.setState({
+            emailChecker: true,
+            emailError: '此帳號可以使用'
+          })
+          return true
+        }
+        return false 
+      })
+    } else {
+      this.setState({
+        emailChecker: false,
+        emailError: '帳號格式錯誤'
+      })
+      return false 
+    }
+  }
+*/
