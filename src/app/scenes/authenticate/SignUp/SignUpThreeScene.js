@@ -48,6 +48,11 @@ export default class SignUpThreeScene extends Component {
     }
     return false
   }
+/*
+  emailChecker = () => {
+    this.firebase.database().fetchProvidersForEmail().the
+  }
+  */
 
   emailChecker = () => {
     if (checkEmail(this.SignUpInStore.email)) {
@@ -74,7 +79,7 @@ export default class SignUpThreeScene extends Component {
       return false 
     }
   }
-  
+
   passwordChecker = () => {
     const passw =  /^[A-Za-z0-9]{6,10}$/;
     if (this.SignUpInStore.password.match(passw)) {
