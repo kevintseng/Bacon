@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
 import { Router, Scene } from 'react-native-router-flux'
 
+import SplashScene from './scenes/SplashScene'
 // ###############authenticate################ //
 // Auth
-import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
 import WelcomeScene from './scenes/authenticate/WelcomeScene'
 import AuthScene from './scenes/authenticate/AuthScene'
 // SignIn
@@ -36,6 +36,8 @@ import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
 import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
 import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
 import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
+
+import TestScene from './scenes/TestScene'
 // ###############drawer################ //
 
 // ###############header components################ //
@@ -84,7 +86,9 @@ export default class Routes extends Component {
     return (
       <Router getSceneStyle={ this.getSceneStyle }>
         <Scene key='root' hideTabBar hideNavBar navigationBarStyle={ styles.navBar } >
-          <Scene key='SessionCheck' component={ SessionCheckScene } />
+
+          <Scene key='Splash' component={ SplashScene } />
+
           <Scene key='Welcome' component={ WelcomeScene } /> 
           <Scene key='SignIn' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
             <Scene key='SignInOne' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignInOneScene }/>

@@ -1,0 +1,17 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
+  <item>
+    <shape android:shape="rectangle">
+      <gradient 
+        android:startColor="#F4A764"
+        android:endColor="#D63768"
+        android:angle="-90"
+        />
+    </shape>
+  </item>
+  <item>
+    <bitmap
+      android:src="@mipmap/ico_intro_logo"
+      android:gravity="center"/>
+  </item>
+    
+</layer-list>
