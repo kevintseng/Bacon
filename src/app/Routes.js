@@ -2,18 +2,20 @@ import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
 import { Router, Scene } from 'react-native-router-flux'
 
-import SplashScene from './scenes/SplashScene'
 // ###############authenticate################ //
-// Auth
-import WelcomeScene from './scenes/authenticate/WelcomeScene'
-import AuthScene from './scenes/authenticate/AuthScene'
-// SignIn
-import SignInOneScene from './scenes/authenticate/SignIn/SignInOneScene'
+//
+import SplashScene from './scenes/SplashScene'
+//
+import WelcomeScene from './scenes/WelcomeScene'
+// signin
+import SignInScene from './scenes/signin/SignInScene'
 // SignUp
-import SignUpOneScene from './scenes/authenticate/SignUp/SignUpOneScene'
-import SignUpTwoScene from './scenes/authenticate/SignUp/SignUpTwoScene'
-import SignUpThreeScene from './scenes/authenticate/SignUp/SignUpThreeScene'
-import SignUpFourScene from './scenes/authenticate/SignUp/SignUpFourScene'
+import SignUpOneScene from './scenes/signup/SignUpOneScene'
+import SignUpTwoScene from './scenes/signup/SignUpTwoScene'
+import SignUpThreeScene from './scenes/signup/SignUpThreeScene'
+import SignUpFourScene from './scenes/signup/SignUpFourScene'
+//
+import AuthScene from './scenes/authenticate/AuthScene'
 // ###############authenticate################ //
 
 // ###############drawer################ //
@@ -90,15 +92,18 @@ export default class Routes extends Component {
           <Scene key='Splash' component={ SplashScene } />
 
           <Scene key='Welcome' component={ WelcomeScene } /> 
-          <Scene key='SignIn' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
-            <Scene key='SignInOne' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignInOneScene }/>
-          </Scene>
-          <Scene key='SignUp' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
+
+          <Scene key='signup' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
             <Scene key='SignUpOne'  hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignUpOneScene } />
             <Scene key='SignUpTwo' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignUpTwoScene } />
             <Scene key='SignUpThree' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignUpThreeScene } />
             <Scene key='SignUpFour' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignUpFourScene } />
           </Scene>
+
+          <Scene key='signin' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
+            <Scene key='SignIn' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignInScene }/>
+          </Scene>
+
           <Scene key='Auth' component={ AuthScene }/>
 
           <Scene key='Drawer' component={ DrawerScene } open={false}>

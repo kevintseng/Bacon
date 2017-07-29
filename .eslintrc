@@ -7,6 +7,12 @@
       "react",
       "react-native"
     ],
+    "extends": 
+    [ 
+      "eslint:recommended",
+      "plugin:react/recommended"
+      "plugin:react-native/recommended"
+    ],
     "rules": {
       "no-console": "off",
       "prop-types": "off",
