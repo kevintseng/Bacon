@@ -14,9 +14,10 @@ export default class SessionCheckScene extends Component {
     this.SignUpInStore = this.props.SignUpInStore
     this.SubjectStore = this.props.SubjectStore
     this.uid = null
-    this.state = {
-      lastAppState: AppState.currentState
-    }
+    this.lastAppState = AppState.currentState
+    //this.state = {
+    //  lastAppState: AppState.currentState
+    //}
   }
 
   componentWillMount() {
@@ -42,11 +43,12 @@ export default class SessionCheckScene extends Component {
     if (AppState.currentState === 'active') {
       this.setOnline(this.uid) 
       // 設置使用者上線
-    } else if (this.state.lastAppState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
+    } else if (this.lastAppState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
       this.setOffline(this.uid) 
       // 設置使用者下線
     }
-    this.setState({lastAppState: nextAppState})
+    this.lastAppState = nextAppState
+    //this.setState({lastAppState: nextAppState})
   }
 
   setOnline(uid) {
