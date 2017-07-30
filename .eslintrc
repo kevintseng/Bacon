@@ -14,7 +14,27 @@
     "babel"
   ],
   "rules": {
-    "no-console": 0,
-    "semi": 0
-  }
+    "no-console": "off",
+    "prop-types": "off",
+    "import/no-commonjs": "off",
+    "react/prop-types": "off",
+    "no-alert": "off",
+    "react/jsx-handler-names": "off",
+    "react/no-did-mount-set-state": "off",
+    "arrow-body-style": "off",
+    "no-invalid-this": "off",
+    "prefer-spread": "off",
+    "react/jsx-no-bind": "off",
+    "react-native/no-inline-styles": "off",
+    "eqeqeq": "off",
+    "class-methods-use-this": "off",
+    "react-native/no-color-literals": "off",
+    "no-empty-function": "off",
+    "react/no-string-refs": "off",
+    "no-unused-expressions": "off",
+    "import/prefer-default-export": "off",
+    "react/prefer-stateless-function": "off",
+    "semi": "off",
+    "linebreak-style": "off"
+  },
 }
