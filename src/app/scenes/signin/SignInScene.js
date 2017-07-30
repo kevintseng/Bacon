@@ -5,6 +5,8 @@ import BaconRoutesContainer from '../../containers/SignInOne/BaconRoutesContaine
 import EmailContainer from '../../containers/SignInOne/EmailContainer/'
 import PasswordContainer from '../../containers/SignInOne/PasswordContainer'
 
+import FailureConatiner from '../../containers/SignInOne/FailureConatiner'
+
 const styles = {
   view: {
     flex: 1
@@ -46,6 +48,9 @@ export default class SignInScene extends Component {
             <PasswordContainer/>
           </View>
 
+          <View>
+            <FailureConatiner/>
+          </View>
         </View>
 
         <View style={ styles.bottom }>

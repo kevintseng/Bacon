@@ -13,8 +13,11 @@ export default class BaconRoutesContainer extends Component {
   }
 
   _buttonOnPress = () => {
-    this.SignUpInStore.setUpInStatus('登入')
-    Actions.Auth({ type: 'reset' })
+    if (this.SignUpInStore.email && this.SignUpInStore.password) {
+      Actions.Auth({ type: 'reset' })
+    } else {
+      alert('請填入資料')
+    }
   }
 
   _warningOnPress = () => {

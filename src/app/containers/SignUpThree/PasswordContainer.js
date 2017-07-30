@@ -12,19 +12,6 @@ export default class PasswordContainer extends Component {
     this.SignUpInStore = this.props.SignUpInStore
   }
 
-  passwordChecker = () => {
-    const passw =  /^[A-Za-z0-9]{6,10}$/;
-    if (this.SignUpInStore.password.match(passw)) {
-      this.SignUpInStore.setPasswordChecker(true)
-      this.SignUpInStore.setPasswordStatus('此密碼可以使用')
-    } else {
-      this.SignUpInStore.setPasswordChecker(false)
-      this.SignUpInStore.setPasswordStatus('請輸入數字或英文字母組合的6~10字密碼')
-      return false    
-    }
-    return true
-  }
-
   render() {
     return(
       <BaconForm
@@ -33,7 +20,8 @@ export default class PasswordContainer extends Component {
         value={ this.SignUpInStore.password }
         maxLength={ 12 } 
         onChangeText={ this.SignUpInStore.setPassword }
-        onBlur={ this.passwordChecker }
+        onBlur={ this.SignUpInStore.passwordChecker }
+        secureTextEntry
       />
     )
   }

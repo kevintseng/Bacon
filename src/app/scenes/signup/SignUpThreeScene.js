@@ -11,6 +11,7 @@ import PolicyContainer from '../../containers/SignUpThree/PolicyContainer'
 import EmailStatesConatiner from '../../containers/SignUpThree/EmailStatesConatiner'
 import PasswordStatesConatiner from '../../containers/SignUpThree/PasswordStatesConatiner'
 import DisplayNameStatesConatiner from '../../containers/SignUpThree/DisplayNameStatesConatiner'
+import FailureConatiner from '../../containers/SignUpThree/FailureConatiner'
 
 const styles = {
   view: {
@@ -40,7 +41,7 @@ export default class SignUpThreeScene extends Component {
           <View style={{marginTop: 40}}>
             <PolicyContainer/>
           </View>
-          <View style={{position: 'absolute', top: 0, left: 20}}>
+          <View style={{position: 'absolute', top: 2, left: 20}}>
             <EmailStatesConatiner/>
           </View>
 
@@ -51,6 +52,11 @@ export default class SignUpThreeScene extends Component {
           <View style={{position: 'absolute', top: 140, left: 20}}>
             <DisplayNameStatesConatiner/>
           </View>
+
+          <View style={{position: 'absolute', bottom: 90, alignSelf: 'center',alignItems: 'center'}}>
+            <FailureConatiner/>
+          </View>
+
         </View>
 
         <View style={ styles.bottom }>

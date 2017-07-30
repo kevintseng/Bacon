@@ -10,7 +10,7 @@ const styles = {
   }
 }
 
-const BaconForm = ({ iconSource, placeholder, value, maxLength, onChangeText, onBlur }) => {
+const BaconForm = ({ iconSource, placeholder, value, maxLength, onChangeText, onBlur, secureTextEntry, keyboardType }) => {
   return(
     <View style={ styles.view }>
       <View>
@@ -20,11 +20,12 @@ const BaconForm = ({ iconSource, placeholder, value, maxLength, onChangeText, on
       <View style={{width}}>
         <FormInput
           underlineColorAndroid="#606060"
-          autoFocus
+          autoFocus={ false }
+          secureTextEntry={ secureTextEntry }
           autoCorrect={ false }
           placeholder={ placeholder }
           returnKeyType={'next'}
-          keyboardType={'email-address'}
+          keyboardType={ keyboardType }
           value={ value }
           maxLength={ maxLength }
           onBlur={ onBlur }

@@ -20,6 +20,7 @@ export default class EmailContainer extends Component {
         value={ this.SignUpInStore.email }
         maxLength={ 60 } 
         onChangeText={ this.SignUpInStore.setEmail }
+        keyboardType='email-address'
       />
     )
   }

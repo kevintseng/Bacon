@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
 
-import BaconRoutesContainer from '../../containers/SignUpTwo/BaconRoutesContainer'
+import BaconRoutesContainer from '../../containers/SignUpFour/BaconRoutesContainer'
 import BigAvatarContainer from '../../containers/SignUpFour/BigAvatarContainer'
 
 const styles = {
