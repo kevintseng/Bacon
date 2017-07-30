@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from "mobx-react"
+import { Actions } from 'react-native-router-flux'
+
 // custom components
-import Loading from '../../components/scenes/Loading/Loading'
+import Loading from '../views/Loading/Loading'
 
 @inject("firebase","SignUpInStore") @observer
 export default class AuthScene extends Component {
@@ -11,9 +13,6 @@ export default class AuthScene extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.SignUpInStore = this.props.SignUpInStore
-    this.state = {
-      error: null
-    }
   }
 
   componentWillMount() {
@@ -47,22 +46,17 @@ export default class AuthScene extends Component {
   signUp = () => {
     this.firebase.auth().createUserWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password)
       .catch((error) => {
-        const errorMessage = error.message
-        this.setState({
-          error: errorMessage
-        })
-        console.log(error)
+        this.SignUpInStore.setFailureStatus(error.message)
+        console.warn('failar')
+        Actions.SignUpThree({type: 'reset'})
       })    
   }
 
   signIn = () => {
     this.firebase.auth().signInWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password)
       .catch((error) => {
-        const errorMessage = error.message
-        this.setState({
-          error: errorMessage,
-        })
-        console.log(error)
+        this.SignUpInStore.setFailureStatus(error.message)
+        Actions.signin({type: 'reset'})
       })    
   }
 
@@ -71,7 +65,7 @@ export default class AuthScene extends Component {
       <Loading
         showWarning
         UpInStatus={ this.SignUpInStore.UpInStatus } // 登入 註冊
-        error={ this.state.error }
+        //error={ this.state.error }
       />
     )}
 }

@@ -2,6 +2,9 @@ import React from 'react'
 import { View, Text } from 'react-native'
 
 const styles = {
+  view: {
+    width: 150
+  },
   success: {
     color: 'blue',
     fontSize: 12
@@ -14,7 +17,7 @@ const styles = {
 
 const StatesMessage = ({state, message}) => {
   return(
-    <View>
+    <View style={ styles.view }>
     {
       message &&
         <Text style={state ? styles.success : styles.failure }>

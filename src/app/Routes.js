@@ -15,31 +15,30 @@ import SignUpTwoScene from './scenes/signup/SignUpTwoScene'
 import SignUpThreeScene from './scenes/signup/SignUpThreeScene'
 import SignUpFourScene from './scenes/signup/SignUpFourScene'
 // 
-//import AuthScene from './scenes/authenticate/AuthScene'
+import AuthScene from './scenes/AuthScene'
 // ###############authenticate################ //
 
 // ###############drawer################ //
 // Drawer
-//import DrawerScene from './scenes/drawer/DrawerScene'
+import DrawerScene from './scenes/drawer/DrawerScene'
 // MeetCute
 //import MeetCuteCourtScene from './scenes/drawer/MeetCute/MeetCuteCourtScene'
 // AboutMe
-//import AboutMeTabScene from './scenes/drawer/AboutMe/AboutMeTabScene'
-//import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
-
+import AboutMeTabScene from './scenes/drawer/AboutMe/AboutMeTabScene'
+import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
 // MeetChance
 //import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
 //import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
 // Fate
 //import FateTabScene from './scenes/drawer/Fate/FateTabScene'
 // Setting
-//import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
-//import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
-//import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
-//import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
-//import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
 
-// import TestScene from './scenes/TestScene'
+import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
+import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
+import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
+import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
+import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
+
 // ###############drawer################ //
 
 // ###############header components################ //
@@ -102,7 +101,26 @@ export default class Routes extends Component {
             <Scene key='SignIn' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignInScene }/>
           </Scene>
 
-          
+          <Scene key='Auth' component={ AuthScene }/>
+
+          <Scene key='Drawer' component={ DrawerScene } open={false}>
+            <Scene key='main' hideTabBar >
+              <Scene key='aboutme' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } component={ AboutMeTabScene }/>
+                <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } component={ AboutMeEditScene }/>
+              </Scene>
+
+              <Scene key='setting' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='SettingIndex' title='設定' renderLeftButton={ this.baconMenu } component={ SettingIndexScene } />
+                <Scene key='SettingAbout' title='設定' renderBackButton={ this.baconArrow } component={ SettingAboutScene } />
+                <Scene key='SettingAccount' title='設定' renderBackButton={ this.baconArrow } component={ SettingAccountScene } />
+                <Scene key='SettingRemind' title='設定' renderBackButton={ this.baconArrow } component={ SettingRemindScene } />
+                <Scene key='SettingHide' title='設定' renderBackButton={ this.baconArrow } component={ SettingHideScene } />
+              </Scene>
+              
+            </Scene>
+          </Scene>
+
 
         </Scene>
       </Router>
@@ -111,10 +129,6 @@ export default class Routes extends Component {
 }
 
 /*
-<Scene key='Auth' component={ AuthScene }/>
-          <Scene key='Drawer' component={ DrawerScene } open={false}>
-            <Scene key='main' hideTabBar >
-
               <Scene key='aboutme' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } component={ AboutMeTabScene }/>
                 <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } component={ AboutMeEditScene }/>
@@ -140,7 +154,6 @@ export default class Routes extends Component {
                 <Scene key='SettingRemind' title='設定' renderBackButton={ this.baconArrow } component={ SettingRemindScene } />
                 <Scene key='SettingHide' title='設定' renderBackButton={ this.baconArrow } component={ SettingHideScene } />
               </Scene>
-              
-            </Scene>
-          </Scene>
-*/
+
+  
+        */

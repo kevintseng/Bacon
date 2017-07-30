@@ -20,6 +20,7 @@ export default class PasswordContainer extends Component {
         value={ this.SignUpInStore.password }
         maxLength={ 12 } 
         onChangeText={ this.SignUpInStore.setPassword }
+        secureTextEntry
       />
     )
   }

@@ -1,15 +1,24 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
+import { inject, observer } from 'mobx-react'
 
 import Welcome from '../views/Welcome/Welcome'
 
+@inject('SignUpInStore') @observer
 export default class WelcomeScene extends Component {
 
-  goToSignUp() {
+  constructor(props) {
+    super(props)
+    this.SignUpInStore = this.props.SignUpInStore
+  }
+
+  _goToSignUp = () => {
+    this.SignUpInStore.setUpInStatus('註冊')
     Actions.signup()
   }
 
-  goToSignIn() {
+  _goToSignIn = () => {
+    this.SignUpInStore.setUpInStatus('登入')
     Actions.signin()
   }
 
@@ -20,8 +29,8 @@ export default class WelcomeScene extends Component {
         topButtonText='免費加入'
         bottomButtonText='登入'
         warningText='忘記密碼？申請密碼重設'
-        topButtonOnPress={ this.goToSignUp }
-        bottomButtonOnPress={ this.goToSignIn }
+        topButtonOnPress={ this._goToSignUp }
+        bottomButtonOnPress={ this._goToSignIn }
       />
     )
   }
