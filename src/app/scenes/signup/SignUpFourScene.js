@@ -5,8 +5,23 @@ import { Actions } from 'react-native-router-flux'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
 
-import ButtonThemeContainer from '../../containers/SignUpFour/ButtonThemeContainer/ButtonThemeContainer'
-import BigAvatarContainer from '../../containers/SignUpFour/BigAvatarContainer/BigAvatarContainer'
+import BaconRoutesContainer from '../../containers/SignUpTwo/BaconRoutesContainer'
+import BigAvatarContainer from '../../containers/SignUpFour/BigAvatarContainer'
+
+const styles = {
+  view: {
+    flex: 1
+  },
+  middle: {
+    position: 'absolute', 
+    top: 40,
+    alignSelf: 'center'
+  },
+  bottom: {
+    position: 'absolute', 
+    bottom: 0
+  }
+}
 
 @inject("SignUpInStore") @observer
 export default class SignUpFourScene extends Component {
@@ -18,9 +33,15 @@ export default class SignUpFourScene extends Component {
 
   render(){
     return(
-      <View style={{flex: 1}}>
-        <BigAvatarContainer/>
-        <ButtonThemeContainer/>
+      <View style={ styles.view }>
+
+        <View style={ styles.middle }>
+          <BigAvatarContainer/>
+        </View>
+
+        <View style={ styles.bottom }>
+          <BaconRoutesContainer/>
+        </View>
       </View>
     )
   }

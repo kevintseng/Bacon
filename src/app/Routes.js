@@ -14,53 +14,53 @@ import SignUpOneScene from './scenes/signup/SignUpOneScene'
 import SignUpTwoScene from './scenes/signup/SignUpTwoScene'
 import SignUpThreeScene from './scenes/signup/SignUpThreeScene'
 import SignUpFourScene from './scenes/signup/SignUpFourScene'
+
+//import Test from './views/BaconRoutes'
 //
-import AuthScene from './scenes/authenticate/AuthScene'
+//import AuthScene from './scenes/authenticate/AuthScene'
 // ###############authenticate################ //
 
 // ###############drawer################ //
 // Drawer
-import DrawerScene from './scenes/drawer/DrawerScene'
+//import DrawerScene from './scenes/drawer/DrawerScene'
 // MeetCute
-import MeetCuteCourtScene from './scenes/drawer/MeetCute/MeetCuteCourtScene'
+//import MeetCuteCourtScene from './scenes/drawer/MeetCute/MeetCuteCourtScene'
 // AboutMe
-import AboutMeTabScene from './scenes/drawer/AboutMe/AboutMeTabScene'
-import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
+//import AboutMeTabScene from './scenes/drawer/AboutMe/AboutMeTabScene'
+//import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
 
 // MeetChance
-import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
-import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
+//import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
+//import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
 // Fate
-import FateTabScene from './scenes/drawer/Fate/FateTabScene'
+//import FateTabScene from './scenes/drawer/Fate/FateTabScene'
 // Setting
-import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
-import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
-import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
-import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
-import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
+//import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
+//import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
+//import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
+//import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
+//import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
 
-import TestScene from './scenes/TestScene'
+// import TestScene from './scenes/TestScene'
 // ###############drawer################ //
 
 // ###############header components################ //
-import BaconTitle from './components/common/header/BaconTitle/BaconTitle'
-import BaconMenu from './components/common/header/BaconMenu/BaconMenu'
-import BaconArrow from './components/common/header/BaconArrow/BaconArrow'
+import BaconTitle from './views/BaconTitle/BaconTitle'
+import BaconMenu from './views/BaconMenu/BaconMenu'
+import BaconArrow from './views/BaconArrow/BaconArrow'
 // ###############header components################ //
 
 const styles = {
   navBar: {
     backgroundColor: 'white',
     borderBottomColor: 'transparent',
-    //backgroundColor:'blue'
   },
   navBarTitle: {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     color: '#606060',
     fontWeight: '500',
-    //backgroundColor:'green',
-  }
+  },
 }
 
 export default class Routes extends Component {
@@ -69,7 +69,7 @@ export default class Routes extends Component {
     const style = {
       flex: 1,
       backgroundColor: 'white',
-      borderWidth: 0
+      borderWidth: 0,
     }
     if (computedProps.isActive) {
       style.marginTop = computedProps.hideNavBar ? 0 : Platform.OS === 'ios' ? 64 : 54
@@ -104,8 +104,16 @@ export default class Routes extends Component {
             <Scene key='SignIn' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignInScene }/>
           </Scene>
 
-          <Scene key='Auth' component={ AuthScene }/>
+          
 
+        </Scene>
+      </Router>
+    )
+  }
+}
+
+/*
+<Scene key='Auth' component={ AuthScene }/>
           <Scene key='Drawer' component={ DrawerScene } open={false}>
             <Scene key='main' hideTabBar >
 
@@ -137,8 +145,4 @@ export default class Routes extends Component {
               
             </Scene>
           </Scene>
-        </Scene>
-      </Router>
-    )
-  }
-}
+*/

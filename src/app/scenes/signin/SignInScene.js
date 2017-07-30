@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { View, Platform } from 'react-native'
 
-import ButtonThemeContainer from '../../containers/SignInOne/ButtonThemeContainer/ButtonThemeContainer'
-import EmailInputContainer from '../../containers/SignInOne/EmailInputContainer/EmailInputContainer'
-import PasswordInputContainer from '../../containers/SignInOne/PasswordInputContainer/PasswordInputContainer'
+import BaconRoutesContainer from '../../containers/SignInOne/BaconRoutesContainer'
+import EmailContainer from '../../containers/SignInOne/EmailContainer/'
+import PasswordContainer from '../../containers/SignInOne/PasswordContainer'
 
 const styles = {
   view: {
@@ -23,6 +23,10 @@ const styles = {
         marginTop: 5
       } 
     })
+  },
+  bottom: {
+    position: 'absolute', 
+    bottom: 0
   }
 }
 
@@ -31,15 +35,23 @@ export default class SignInScene extends Component {
   render() {
     return(
       <View style={ styles.view }>
+
         <View style={ styles.middle }>
+
           <View style={ styles.form }>
-            <EmailInputContainer/>
+            <EmailContainer/>
           </View>
+
           <View style={ styles.form }>
-            <PasswordInputContainer/>
+            <PasswordContainer/>
           </View>
+
         </View>
-        <ButtonThemeContainer/>
+
+        <View style={ styles.bottom }>
+          <BaconRoutesContainer/>
+        </View>
+
       </View>
     )
   }

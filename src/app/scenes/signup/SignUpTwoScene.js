@@ -1,11 +1,10 @@
-// node modules
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react'
-// custom components
-import ButtonThemeContainer from '../../containers/SignUpTwo/ButtonThemeContainer/ButtonThemeContainer'
-import CityChooseContainer from '../../containers/SignUpTwo/CityChooseContainer/CityChooseContainer'
+
+import BaconRoutesContainer from '../../containers/SignUpTwo/BaconRoutesContainer'
+import CityChooseContainer from '../../containers/SignUpTwo/CityChooseContainer'
 
 const styles = {
   view: {
@@ -14,6 +13,10 @@ const styles = {
   middle: {
     position: 'absolute', 
     top: 150
+  },
+  bottom: {
+    position: 'absolute', 
+    bottom: 0
   }
 }
 
@@ -22,10 +25,15 @@ export default class SignUpOneScene extends Component {
   render(){
     return(
       <View style={ styles.view }>
+
         <View style={ styles.middle }>
           <CityChooseContainer/>
         </View>
-        <ButtonThemeContainer/>
+
+        <View style={ styles.bottom }>
+          <BaconRoutesContainer/>
+        </View>
+
       </View>
     )
   }

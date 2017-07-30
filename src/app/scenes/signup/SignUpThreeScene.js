@@ -1,16 +1,16 @@
-// node modules
 import React, { Component } from 'react'
 import { View } from 'react-native'
-// custom components
-import ButtonThemeContainer from '../../containers/SignUpThree/ButtonThemeContainer/ButtonThemeContainer'
-import EmailInputContainer from '../../containers/SignUpThree/EmailInputContainer/EmailInputContainer'
-import PasswordInputContainer from '../../containers/SignUpThree/PasswordInputContainer/PasswordInputContainer'
-import DisplayNameInputContainer from '../../containers/SignUpThree/DisplayNameInputContainer/DisplayNameInputContainer'
-import BirthdayChooseContainer from '../../containers/SignUpThree/BirthdayChooseContainer/BirthdayChooseContainer'
-import PolicyContainer from '../../containers/SignUpThree/PolicyContainer/PolicyContainer'
-import MailStatesConatiner from '../../containers/SignUpThree/MailStatesConatiner/MailStatesConatiner'
-import PasswordStatesConatiner from '../../containers/SignUpThree/PasswordStatesConatiner/PasswordStatesConatiner'
-import DisplayNameStatesConatiner from '../../containers/SignUpThree/DisplayNameStatesConatiner/DisplayNameStatesConatiner'
+
+import BaconRoutesContainer from '../../containers/SignUpThree/BaconRoutesContainer'
+import EmailContainer from '../../containers/SignUpThree/EmailContainer'
+import PasswordContainer from '../../containers/SignUpThree/PasswordContainer'
+import DisplayNameContainer from '../../containers/SignUpThree/DisplayNameContainer'
+import BirthdayContainer from '../../containers/SignUpThree/BirthdayContainer'
+import PolicyContainer from '../../containers/SignUpThree/PolicyContainer'
+
+import EmailStatesConatiner from '../../containers/SignUpThree/EmailStatesConatiner'
+import PasswordStatesConatiner from '../../containers/SignUpThree/PasswordStatesConatiner'
+import DisplayNameStatesConatiner from '../../containers/SignUpThree/DisplayNameStatesConatiner'
 
 const styles = {
   view: {
@@ -19,6 +19,10 @@ const styles = {
   middle: {
     position: 'absolute', 
     top: 150
+  },
+  bottom: {
+    position: 'absolute', 
+    bottom: 0
   }
 }
 
@@ -27,17 +31,23 @@ export default class SignUpThreeScene extends Component {
   render() {
     return(
        <View style={ styles.view }>
+
         <View>
-          <EmailInputContainer/>
-          <PasswordInputContainer/>
-          <DisplayNameInputContainer/>
-          <BirthdayChooseContainer/>
+          <EmailContainer/>
+          <PasswordContainer/>
+          <DisplayNameContainer/>
+          <BirthdayContainer/>
           <PolicyContainer/>
-          <MailStatesConatiner/>
+          
+          <EmailStatesConatiner/>
           <PasswordStatesConatiner/>
           <DisplayNameStatesConatiner/>
         </View>
-        <ButtonThemeContainer/>
+
+        <View style={ styles.bottom }>
+          <BaconRoutesContainer/>
+        </View>
+
       </View>
     )
   }
