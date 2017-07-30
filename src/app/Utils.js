@@ -8,7 +8,7 @@ export function getAge(birthday) {
   return age;
 }
 
-export function checkEmail(email) {
+export function emailFormatChecker(email) {
   if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
     return true;
   }

@@ -12,6 +12,18 @@ export default class DisplayNameContainer extends Component {
     this.SignUpInStore = this.props.SignUpInStore
   }
 
+  displayNameChecker = () => {
+    if (this.SignUpInStore.displayName.length < 2) {
+      this.SignUpInStore.setDisplayNameChecker(false)
+      this.SignUpInStore.setDisplayNameStatus('請輸入2個字以上的暱稱')
+    } else {
+      this.SignUpInStore.setDisplayNameChecker(true)
+      this.SignUpInStore.setDisplayNameStatus('此暱稱可以使用')
+      return true     
+    }
+    return false   
+  }
+
   render() {
     return(
       <BaconForm
@@ -20,6 +32,7 @@ export default class DisplayNameContainer extends Component {
         value={ this.SignUpInStore.displayName }
         maxLength={ 10 } 
         onChangeText={ this.SignUpInStore.setDisplayName }
+        onBlur={ this.displayNameChecker }
       />
     )
   }

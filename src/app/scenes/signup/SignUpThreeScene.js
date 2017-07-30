@@ -32,16 +32,25 @@ export default class SignUpThreeScene extends Component {
     return(
        <View style={ styles.view }>
 
-        <View>
+        <View style={{flex: 1, marginTop: 20}}>
           <EmailContainer/>
           <PasswordContainer/>
           <DisplayNameContainer/>
           <BirthdayContainer/>
-          <PolicyContainer/>
-          
-          <EmailStatesConatiner/>
-          <PasswordStatesConatiner/>
-          <DisplayNameStatesConatiner/>
+          <View style={{marginTop: 40}}>
+            <PolicyContainer/>
+          </View>
+          <View style={{position: 'absolute', top: 0, left: 20}}>
+            <EmailStatesConatiner/>
+          </View>
+
+          <View style={{position: 'absolute', top: 70, left: 20}}>
+            <PasswordStatesConatiner/>
+          </View>
+
+          <View style={{position: 'absolute', top: 140, left: 20}}>
+            <DisplayNameStatesConatiner/>
+          </View>
         </View>
 
         <View style={ styles.bottom }>

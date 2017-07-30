@@ -8,8 +8,8 @@ const styles = {
   view: {
     alignItems: 'center'
   },
-  birdhday: {
-    marginTop: 10
+  birthday: {
+    marginTop: 20
   }
 }
 

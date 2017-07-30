@@ -14,8 +14,8 @@ export default class PasswordStatesConatiner extends Component {
   render() {
     return(
       <StatesMessage
-        state={ true }
-        message={ 'this.setCheck' }
+        state={ this.SignUpInStore.passwordChecker }
+        message={ this.SignUpInStore.passwordStatus }
       />
     )
   }

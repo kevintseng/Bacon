@@ -4,7 +4,7 @@ import { Router, Scene } from 'react-native-router-flux'
 
 // ###############authenticate################ //
 //
-import SplashScene from './scenes/SplashScene'
+import SessionCheckScene from './scenes/SessionCheckScene'
 //
 import WelcomeScene from './scenes/WelcomeScene'
 // signin
@@ -14,9 +14,7 @@ import SignUpOneScene from './scenes/signup/SignUpOneScene'
 import SignUpTwoScene from './scenes/signup/SignUpTwoScene'
 import SignUpThreeScene from './scenes/signup/SignUpThreeScene'
 import SignUpFourScene from './scenes/signup/SignUpFourScene'
-
-//import Test from './views/BaconRoutes'
-//
+// 
 //import AuthScene from './scenes/authenticate/AuthScene'
 // ###############authenticate################ //
 
@@ -89,7 +87,7 @@ export default class Routes extends Component {
       <Router getSceneStyle={ this.getSceneStyle }>
         <Scene key='root' hideTabBar hideNavBar navigationBarStyle={ styles.navBar } >
 
-          <Scene key='Splash' component={ SplashScene } />
+          <Scene key='SessionCheck' component={ SessionCheckScene } />
 
           <Scene key='Welcome' component={ WelcomeScene } /> 
 
