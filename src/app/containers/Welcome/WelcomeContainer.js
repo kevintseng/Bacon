@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
-// custom components
-import LogoButton from '../../components/scenes/Welcome/Welcome'
+
+import Welcome from '../../views/Welcome/Welcome'
 
 export default class WelcomeContainer extends Component {
 
@@ -15,7 +15,7 @@ export default class WelcomeContainer extends Component {
 
   render() {
     return(
-      <LogoButton
+      <Welcome
         title='遇見更多的她/他'
         topButtonText='免費加入'
         bottomButtonText='登入'

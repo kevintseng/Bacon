@@ -1,9 +1,8 @@
-// node modules
 import React, { Component } from 'react'
 import { View } from 'react-native'
-// custom components
-import ButtonThemeContainer from '../../containers/SignUpOne/ButtonThemeContainer/ButtonThemeContainer'
-import SexChooseContainer from '../../containers/SignUpOne/SexChooseContainer/SexChooseContainer'
+
+import BaconRoutesContainer from '../../containers/SignUpOne/BaconRoutesContainer'
+import SexChooseContainer from '../../containers/SignUpOne/SexChooseContainer'
 
 const styles = {
   view: {
@@ -13,6 +12,10 @@ const styles = {
    position: 'absolute', 
    top: 125, 
    alignSelf: 'center' 
+  },
+  bottom: {
+    position: 'absolute', 
+    bottom: 0
   }
 }
 
@@ -21,10 +24,15 @@ export default class SignUpOneScene extends Component {
   render(){
     return(
       <View style={ styles.view }>
+
         <View style={ styles.middle }>
           <SexChooseContainer/>
         </View>
-        <ButtonThemeContainer/>
+
+        <View style={ styles.bottom }>
+          <BaconRoutesContainer/>
+        </View>
+        
       </View>
     )
   }
