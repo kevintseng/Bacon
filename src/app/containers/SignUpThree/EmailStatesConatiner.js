@@ -14,8 +14,8 @@ export default class EmailStatesConatiner extends Component {
   render() {
     return(
       <StatesMessage
-        state={ true }
-        message={ 'this.setCheck' }
+        state={ this.SignUpInStore.emailChecker }
+        message={ this.SignUpInStore.emailStatus }
       />
     )
   }

@@ -15,11 +15,20 @@ export default class SignUpInStore {
   // error state
   @observable UpInStatus
   @observable UpInError
-  
+
+  @observable emailStatus
+  @observable passwordStatus
+  @observable displayNameStatus
+
+  @observable emailChecker
+  @observable passwordChecker
+  @observable displayNameChecker
+  @observable birthdayChecker
+  @observable policyChecker
+
   constructor() {
     // user data
     this.photoURL = null
-    //this.uid = null
     this.email = ''
     this.password = ''
     this.displayName = ''
@@ -28,8 +37,14 @@ export default class SignUpInStore {
     this.city = null
     this.birthday = null
     // error state
-    this.UpInStatus = null // 註冊 登入
-    this.UpInError = null // 註冊/登入錯誤訊息
+    this.emailStatus = null // 註冊 登入
+    this.passwordStatus = null // 註冊/登入錯誤訊息
+    this.displayNameStatus = null
+    this.emailChecker = false
+    this.passwordChecker = false
+    this.displayNameChecker = false
+    this.birthdayChecker = false
+    this.policyChecker = false
   }
 
   // user data
@@ -78,11 +93,35 @@ export default class SignUpInStore {
 
   // error state
 
-  @action setUpInStatus = statu => {
-    this.UpInStatus = statu
+  @action setEmailChecker = state => {
+    this.emailChecker = state 
   }
 
-  @action setUpInError = error => {
-    this.UpInError = error
+  @action setEmailStatus = state => {
+    this.emailStatus = state 
+  }
+
+  @action setPasswordChecker = state => {
+    this.passwordChecker = state 
+  }
+
+  @action setPasswordStatus = state => {
+    this.passwordStatus = state 
+  }
+
+  @action setDisplayNameChecker = state => {
+    this.displayNameChecker = state 
+  }
+
+  @action setDisplayNameStatus = state => {
+    this.displayNameStatus = state 
+  }
+
+  @action setBirthdayChecker = state => {
+    this.birthdayChecker = state 
+  }
+
+  @action setPolicyNameChecker = () => {
+    this.policyChecker = !this.policyChecker 
   }
 }

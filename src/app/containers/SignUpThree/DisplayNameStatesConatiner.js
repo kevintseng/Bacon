@@ -14,8 +14,8 @@ export default class DisplayNameStatesConatiner extends Component {
   render() {
     return(
       <StatesMessage
-        state={ true }
-        message={ 'this.setCheck' }
+        state={ this.SignUpInStore.displayNameChecker }
+        message={ this.SignUpInStore.displayNameStatus }
       />
     )
   }

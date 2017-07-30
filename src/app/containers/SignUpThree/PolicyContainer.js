@@ -10,15 +10,6 @@ export default class PolicyContainer extends Component {
   constructor(props) {
     super(props)
     this.SignUpInStore = this.props.SignUpInStore
-    this.state = {
-      check: false
-    }
-  }
-
-  setCheck = () => {
-    this.setState({
-      check: !this.state.check
-    })
   }
 
   showPolicy = () => {
@@ -32,8 +23,8 @@ export default class PolicyContainer extends Component {
   render() {
     return(
       <Policy
-        check={ this.state.check }
-        onPressCheckBox={ this.setCheck }
+        check={ this.SignUpInStore.policyChecker }
+        onPressCheckBox={ this.SignUpInStore.setPolicyNameChecker }
         onPressPolicy={ this.showPolicy }
         onPressRule={ this.showRule }
       />
