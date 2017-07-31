@@ -30,7 +30,7 @@ import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
 //import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
 //import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
 // Fate
-//import FateTabScene from './scenes/drawer/Fate/FateTabScene'
+import FateTabScene from './scenes/drawer/Fate/FateTabScene'
 // Setting
 
 import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
@@ -116,6 +116,10 @@ export default class Routes extends Component {
                 <Scene key='SettingAccount' title='設定' renderBackButton={ this.baconArrow } component={ SettingAccountScene } />
                 <Scene key='SettingRemind' title='設定' renderBackButton={ this.baconArrow } component={ SettingRemindScene } />
                 <Scene key='SettingHide' title='設定' renderBackButton={ this.baconArrow } component={ SettingHideScene } />
+              </Scene>
+
+              <Scene key='fate' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='FateTab' title='緣分' renderLeftButton={ this.baconMenu } component={ FateTabScene } />
               </Scene>
               
             </Scene>

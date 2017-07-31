@@ -1,26 +1,37 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
-import { observer, inject } from 'mobx-react'
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
 
-import FateTab from '../../../components/scenes/FateTab/FateTab'
+import VisitorsContainer from '../../../containers/FateTab/VisitorsContainer'
+import GoodImpressionContainer from '../../../containers/FateTab/GoodImpressionContainer'
+import MateContainer from '../../../containers/FateTab/MateContainer'
+import CollectionContainer from '../../../containers/FateTab/CollectionContainer'
 
-@inject("firebase","SubjectStore") @observer
 export default class FateTabScene extends Component {
 
-  constructor(props) {
-    super(props)
-    this.firebase = this.props.firebase
-    this.SubjectStore = this.props.SubjectStore
-  }
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-
   render() {
     return(
-      <FateTab/>
+      <ScrollableTabView
+        initialPage = {0}
+        tabBarPosition='top'
+        renderTabBar={() => <ScrollableTabBar />}
+        tabBarUnderlineStyle={{ backgroundColor: '#d63768' }}
+        tabBarBackgroundColor='white'
+        tabBarActiveTextColor='#d63768'
+        tabBarInactiveTextColor='#606060'
+        //onChangeTab={}
+        ref={ (tabView) => { this.tabView = tabView } }
+        >
+        <VisitorsContainer label='Visitors' tabLabel='來訪' />
+        <GoodImpressionContainer label='GoodImpression' tabLabel='好感' />
+        <MateContainer label='Mate' tabLabel='配對' />
+        <CollectionContainer label='Collection' tabLabel='收藏' />
+      </ScrollableTabView>
     )
   }
 }
