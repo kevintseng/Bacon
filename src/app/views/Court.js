@@ -3,6 +3,7 @@ import { Dimensions, Image, Modal, View, Text, TouchableOpacity } from 'react-na
 import Carousel from 'react-native-looped-carousel'
 import SwipeCards from 'react-native-swipe-cards'
 import ImageZoom from 'react-native-image-pan-zoom'
+import Infos from './Infos/Infos'
 
 const { width, height } = Dimensions.get('window')
 
@@ -14,14 +15,13 @@ export default class Court extends Component {
     this.yup = this.props.yup
   }
 
-  renderCard(card) {
-    return(       
-      <Image
-        key={card.id}
-        source={{uri: card.uri}}
-        style={{width, height: width}}
-      /> 
-  )}
+  renderCard = card => (
+    <Image
+      key={card.id}
+      source={{uri: card.uri}}
+      style={{width, height: width, borderRadius: 10}}
+    /> 
+  )
 
   onPressRightIcon = () => {
     this.refs['swiper']._goToNextCard() 
@@ -67,7 +67,7 @@ export default class Court extends Component {
     const { cards, rightIcon, leftIcon, album, photos, closeAlbum, openAlbum } = this.props
 
     return (
-      <View style={{flex:1}}>
+      <View style={{flex: 1}}>
 
         <Modal animationType={"fade"} onRequestClose={()=>{}} visible={ album || false } transparent={false}>
           <Carousel
@@ -87,27 +87,29 @@ export default class Court extends Component {
           </View>
         </Modal>
 
-      <SwipeCards
-        ref = {'swiper'}
-        cards={ cards }
-        renderCard={ this.renderCard }
-        dragY={false}
-        onClickHandler={ openAlbum }
-        cardKey='id'
-        stack
-        stackOffsetX={0}
-        stackOffsetY={0}
-        smoothTransition
-        showMaybe={false}
-      />
+        <View style={{width, height: width}}>
+          <SwipeCards
+            ref = {'swiper'}
+            cards={ cards }
+            renderCard={ this.renderCard }
+            dragY={false}
+            onClickHandler={ openAlbum }
+            cardKey='id'
+            stack
+            stackOffsetX={0}
+            stackOffsetY={0}
+            smoothTransition
+            showMaybe={false}
+          />
+        </View>
 
-      <TouchableOpacity style={{position: 'absolute',top: 320, right: 60}} onPress={ this.onPressRightIcon }>
-        <Image source={ rightIcon }/>
-      </TouchableOpacity>
+        <TouchableOpacity style={{position: 'absolute',top: 320, right: 60}} onPress={ this.onPressRightIcon }>
+          <Image source={ rightIcon }/>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={{position: 'absolute',top: 320, left: 60}} onPress={ this.onPressLeftIcon }>
-        <Image source={ leftIcon } />
-      </TouchableOpacity>
+        <TouchableOpacity style={{position: 'absolute',top: 320, left: 60}} onPress={ this.onPressLeftIcon }>
+          <Image source={ leftIcon } />
+        </TouchableOpacity>
 
     </View>
   )}
