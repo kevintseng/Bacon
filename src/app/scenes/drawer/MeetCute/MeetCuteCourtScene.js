@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import { View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
-import Court from '../../../components/common/Court/Court'
+import CourtContainer from '../../../containers/MeetCuteCourt/CourtContainer'
+import InfosContainer from '../../../containers/MeetCuteCourt/InfosContainer'
 
 @inject("firebase","SubjectStore") @observer
 export default class MeetCuteCourtScene extends Component {
@@ -11,31 +13,18 @@ export default class MeetCuteCourtScene extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
-    this.state = {
-      visible: false
-    }
   }
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-
-  changeVisible = () => {
-    //alert('sxsaxax')
-    this.setState({
-      visible: !this.state.visible
-    })
-  }
-
-
   render() {
     return(
-      <Court 
-        visible={this.state.visible}
-        open={this.changeVisible}
-        close={this.changeVisible}
-      />
+      <View style={{flex: 1}}>
+        <CourtContainer/>
+        <InfosContainer/>
+      </View>
     )
   }
 }

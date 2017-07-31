@@ -16,11 +16,6 @@ export default class PreviewContainer extends Component {
     }
   }
 
-  componentWillMount() {
-    Actions.refresh({ key: 'Drawer', open: false })
-  }
-
-
   changeVisible = () => {
     //alert('sxsaxax')
     this.setState({
