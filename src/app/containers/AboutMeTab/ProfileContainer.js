@@ -22,6 +22,26 @@ export default class ProfileContainer extends Component {
     this.firebase.auth().currentUser.emailVerified
   )
 
+  goToEditDisplayName = () => {
+    Actions.AboutMeEdit({title: '暱稱年齡'})
+  }
+
+  goToEditCity = () => {
+    Actions.AboutMeEdit({title: '常在城市'})
+  }
+
+  goToEditBio = () => {
+    Actions.AboutMeEdit({title: '自我介紹'})
+  }
+
+  goToEditLangs = () => {
+    Actions.AboutMeEdit({title: '語言能力'})
+  }
+
+  goToEditInterests = () => {
+    Actions.AboutMeEdit({title: '興趣愛好'})
+  }
+
   render() {
     return(
       <Profile
@@ -33,6 +53,11 @@ export default class ProfileContainer extends Component {
         city={ this.SubjectStore.city }
         bio={ this.SubjectStore.bio }
         //lang='語言能力'
+        onPressDisplayName={ this.goToEditDisplayName } 
+        onPressCity={ this.goToEditCity }
+        onPressBio={ this.goToEditBio }
+        onPressLangs={ this.goToEditLangs }
+        onPressInterests={ this.goToEditInterests }
         />
     )
   }
