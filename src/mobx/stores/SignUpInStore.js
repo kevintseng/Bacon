@@ -15,6 +15,7 @@ export default class SignUpInStore {
   @observable city
   @observable birthday
   @observable bio
+  @observable langs
   // error state
   @observable emailStatus
   @observable passwordStatus
@@ -40,6 +41,11 @@ export default class SignUpInStore {
     this.city = null
     this.birthday = null
     this.bio = null
+    this.langs = [
+      { key: '中文', check: false },
+      { key: '英文', check: false }
+    ] 
+
     // error state
     this.emailStatus = null // 註冊 登入
     this.passwordStatus = null // 註冊/登入錯誤訊息
@@ -102,6 +108,10 @@ export default class SignUpInStore {
     this.bio = bio
   }
 
+  @action setLang = key => {
+    this.langs.find(ele => ele.key === key).check = !this.langs.find(ele => ele.key === key).check
+    this.langs = this.langs.slice()
+  }
   // error state
 
   @action setEmailChecker = statu => {
