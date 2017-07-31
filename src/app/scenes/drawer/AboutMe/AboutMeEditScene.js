@@ -5,8 +5,7 @@ import { Actions } from 'react-native-router-flux'
 
 const styles = {
   edit: {
-    flex: 1,
-    padding: 10
+    flex: 1
   }
 }
 

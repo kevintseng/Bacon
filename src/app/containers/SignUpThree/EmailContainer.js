@@ -21,7 +21,7 @@ export default class EmailContainer extends Component {
         value={ this.SignUpInStore.email }
         maxLength={ 60 } 
         onChangeText={ this.SignUpInStore.setEmail }
-        onBlur={ this.SignUpInStore.emailChecker }
+        onBlur={ this.SignUpInStore.checkEmail }
         keyboardType='email-address'
       />
     )

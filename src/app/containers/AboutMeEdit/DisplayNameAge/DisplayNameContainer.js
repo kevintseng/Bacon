@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
 
-import BaconForm from '../../views/BaconForm'
+import BaconForm from '../../../views/BaconForm'
 
 @inject('SignUpInStore') @observer
 export default class DisplayNameContainer extends Component {
@@ -15,7 +15,7 @@ export default class DisplayNameContainer extends Component {
   render() {
     return(
       <BaconForm
-        iconSource={ require('../../../images/ico_logo_nn.png') } 
+        iconSource={ require('../../../../images/ico_logo_nn.png') } 
         placeholder='請輸入2個字以上的暱稱'
         value={ this.SignUpInStore.displayName }
         maxLength={ 10 } 
