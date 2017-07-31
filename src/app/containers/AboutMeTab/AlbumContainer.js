@@ -18,15 +18,7 @@ const options = {
   },
 }
 
-const photos = [
-{key: 1, uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg'},
-{key: 2, uri: 'https://i.imgur.com/FHxVpN4.jpg'},
-{key: 3, uri: 'https://i.imgur.com/FHxVpN4.jpg'},
-{key: 4, uri: 'https://i.imgur.com/FHxVpN4.jpg'},
-{key: 5, uri: 'https://i.imgur.com/FHxVpN4.jpg'}
-]
-
-@inject("firebase","SubjectStore") @observer
+@inject('firebase','SubjectStore') @observer
 export default class AlbumContainer extends Component {
 
   constructor(props) {
@@ -34,6 +26,7 @@ export default class AlbumContainer extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.state = {
+      uri: null,
       photoOnPressModal: false
     }
   }
@@ -42,8 +35,9 @@ export default class AlbumContainer extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  openPicZoom = () => {
-    this.setState({photoOnPressModal: true})
+  openPicZoom = key => {
+    this.setState({ photoOnPressModal: true })
+    this.setState({ uri: this.SubjectStore.photos.find(item => item.key === key).uri })
   }
 
   closePicZoom = () => {
@@ -67,7 +61,7 @@ export default class AlbumContainer extends Component {
       } else {
         ImageResizer.createResizedImage(res.uri, 200, 200, 'JPEG', 80) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
         .then((resizedImageUri) => {
-          //this.SignUpInStore.setPhotoURL(resizedImageUri)
+          this.SubjectStore.setPhotos(resizedImageUri)
         }).catch((err) => {
            console.log(err)
         })
@@ -80,7 +74,8 @@ export default class AlbumContainer extends Component {
   render() {
     return(
       <Album
-        photos={ photos }
+        source={ this.state.uri }
+        photos={ this.SubjectStore.photos }
         photoOnPress={ this.openPicZoom }
         photoOnLongPress={ this.openPicOptions }
         footerOnPress={ this.openPicChoose }

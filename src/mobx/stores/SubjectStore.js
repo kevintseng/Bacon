@@ -11,6 +11,7 @@ export default class SubjectStore {
   @observable sexOrientation
   @observable city
   @observable birthday
+  @observable photos
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -25,6 +26,9 @@ export default class SubjectStore {
     this.sexOrientation = '同步中...' // f m
     this.city = '同步中...'
     this.birthday = '同步中...'
+    this.photos = [
+      { key: 1, uri: 'https://i.imgur.com/FHxVpN4.jpg' }
+    ]
     // hide function
     this.hideMeetCute = false
     this.hideMeetChance = false
@@ -60,6 +64,11 @@ export default class SubjectStore {
 
   @action setBirthday = birthday => {
     this.birthday = birthday    
+  }
+
+  @action setPhotos = url => {
+     this.photos.push({key: this.photos.length + 1, uri: url})
+     this.photos = this.photos.slice()
   }
 
   // hide function
