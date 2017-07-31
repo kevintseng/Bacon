@@ -21,9 +21,11 @@ export default class MeetCuteCourtScene extends Component {
 
   render() {
     return(
-      <View style={{flex: 1}}>
+      <View style={{flex: 1}}>  
         <CourtContainer/>
-        <InfosContainer/>
+        <View style={{position: 'absolute',bottom: 50,alignSelf: 'center'}}>
+          <InfosContainer/>  
+        </View>
       </View>
     )
   }
