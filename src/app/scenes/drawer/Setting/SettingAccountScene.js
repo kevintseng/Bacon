@@ -1,45 +1,40 @@
 import React, { Component } from 'react'
+import { View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import { inject } from "mobx-react"
 
-import SettingAccount from '../../../components/scenes/SettingAccount/SettingAccount'
+import ResetPasswordContainer from '../../../containers/SettingAccount/ResetPasswordContainer'
+import LoginOutContainer from '../../../containers/SettingAccount/LoginOutContainer'
+import DeleteAccountContainer from '../../../containers/SettingAccount/DeleteAccountContainer'
 
+import Knife from '../../../views/Knife/Knife'
 
-@inject("firebase","SubjectStore")
 export default class SettingAccountScene extends Component {
-
-  constructor(props) {
-    super(props)
-    this.firebase = this.props.firebase
-    this.SubjectStore = this.props.SubjectStore
-  }
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  deleteAccount = () => {
-    this.firebase.database().ref("users/" + this.SubjectStore.uid + "/delete").set(true)
-  }
-
-  signOut = () => {
-    this.firebase.auth().signOut()
-    .then(() => { 
-      //console.warn('signOut')
-    })
-  }
-
-
   render() {
     return(
-      <SettingAccount
-        topButtonText='申請密碼重設'
-        //topButtonOnPress={}
-        midButtonText='登出'
-        midButtonOnPress={ this.signOut }
-        bottomButtonText='刪除帳號'
-        bottomButtonOnPress={ this.deleteAccount }
-      />
+      <View style={{flex: 1,alignItems: 'center'}}>
+
+        <View style={{position: 'absolute',top: 30}}>
+          <ResetPasswordContainer/>
+        </View>
+
+        <View style={{position: 'absolute',top: 120}}>
+          <LoginOutContainer/>
+        </View>
+
+        <View style={{position: 'absolute',bottom: 120}}>
+          <DeleteAccountContainer/>
+        </View>
+
+        <View style={{position: 'absolute',bottom: 0}}>
+          <Knife/>
+        </View>
+
+      </View>
     )
   }
 }

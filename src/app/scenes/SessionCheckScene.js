@@ -17,7 +17,7 @@ export default class SessionCheckScene extends Component {
   }
 
   componentWillMount() {
-    this.firebase.auth().onAuthStateChanged(async (user) => {
+    this.firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // 使用者登入 只要登入成功一定有 uid
         this.uid = user.uid
@@ -28,7 +28,7 @@ export default class SessionCheckScene extends Component {
       } else {
         // 沒有使用者登入 user = null
         AppState.removeEventListener('change', this._handleAppStateChange ) // 非同步移除 app 狀態監聽
-        await this.delay(1000) // 延遲一下
+        //await this.delay(1000) // 延遲一下
         Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
       }
     })    
