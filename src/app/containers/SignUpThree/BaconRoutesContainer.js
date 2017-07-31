@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
 
@@ -14,18 +15,27 @@ export default class BaconRoutesContainer extends Component {
 
 
   _buttonOnPress = () => {
+    this.SignUpInStore.checkEmail()
+    this.SignUpInStore.checkPassword()
+    this.SignUpInStore.checkDisplayName()
     if (this.allChecker()) {
       if (this.birthdayChecker()) {
         if (this.SignUpInStore.policyChecker) {
           Actions.SignUpFour()
         } else {
-          alert('請確認同意隱私權政策及服務條款')
+          Alert.alert( 
+            '輸入錯誤', '請確認同意隱私權政策及服務條款', [ 
+            {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+          )
         }
       } else {
-        alert('請填入生日資料')
+        Alert.alert( 
+          '輸入錯誤', '請填入生日資料', [ 
+          {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+        )
       }
     } else {
-      alert('請再檢查一次輸入資料')
+      //alert('請再檢查一次輸入資料')
     }
   }
 

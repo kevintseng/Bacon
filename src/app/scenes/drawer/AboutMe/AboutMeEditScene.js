@@ -22,7 +22,7 @@ export default class AboutMeEditScene extends Component {
   }
 
   componentWillUnmount() {
-    console.warn('儲存狀態並非同步上傳資料')
+    //console.warn('儲存狀態並非同步上傳資料')
   }
 
   render() {

@@ -37,7 +37,7 @@ export default class AlbumContainer extends Component {
 
   openPicZoom = key => {
     this.setState({ photoOnPressModal: true })
-    this.setState({ uri: this.SubjectStore.photos.find(item => item.key === key).uri })
+    this.setState({ uri: this.SubjectStore.photos[key] })
   }
 
   closePicZoom = () => {
@@ -61,7 +61,7 @@ export default class AlbumContainer extends Component {
       } else {
         ImageResizer.createResizedImage(res.uri, 200, 200, 'JPEG', 80) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
         .then((resizedImageUri) => {
-          this.SubjectStore.setPhotos(resizedImageUri)
+          this.SubjectStore.addPhoto(resizedImageUri)
         }).catch((err) => {
            console.log(err)
         })
@@ -75,7 +75,7 @@ export default class AlbumContainer extends Component {
     return(
       <Album
         source={ this.state.uri }
-        photos={ this.SubjectStore.photos }
+        photos={ this.SubjectStore.simplePhotos }
         photoOnPress={ this.openPicZoom }
         photoOnLongPress={ this.openPicOptions }
         footerOnPress={ this.openPicChoose }

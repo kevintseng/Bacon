@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
 
@@ -13,10 +14,13 @@ export default class BaconRoutesContainer extends Component {
   }
 
   _buttonOnPress = () => {
-    if (this.SignUpInStore.birthday) {
+    if (this.SignUpInStore.photoURL) {
       Actions.Auth()
     } else {
-      alert('請上傳一張大頭照')
+      Alert.alert( 
+        '輸入錯誤', '請上傳一張大頭照', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
     }
   }
 

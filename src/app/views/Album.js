@@ -9,6 +9,14 @@ const picWidth = width/3
 
 const colors = ['#f4a764', '#d63768']
 
+const styles = {
+  text: {
+    color: '#606060',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans', 
+    //fontWeight: '500',
+  }
+}
 
 const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, photoOnPressModal, onRequestPhotoOnPressModal}) => {
   return(
@@ -40,7 +48,7 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, p
       <TouchableOpacity onPress={ footerOnPress } >
         <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>
           <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
-            <Text>新增相片</Text>
+            <Text style={ styles.text }>新增相片</Text>
           </View>
         </LinearGradient> 
        </TouchableOpacity>

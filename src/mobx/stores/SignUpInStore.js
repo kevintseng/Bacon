@@ -30,7 +30,8 @@ export default class SignUpInStore {
   @observable UpInStatus
   @observable failureStatus
 
-  constructor() {
+  constructor(firebase) {
+    this.firebase = firebase
     // user data
     this.photoURL = null
     this.email = ''
