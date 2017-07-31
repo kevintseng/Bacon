@@ -138,50 +138,50 @@ export default class SignUpInStore {
     this.failureStatus = statu
   }
 
-  @action emailChecker = () => {
-    if (emailFormatChecker(this.SignUpInStore.email)) {
-      this.firebase.auth().fetchProvidersForEmail(this.SignUpInStore.email).then( providers => {
+  @action checkEmail = () => {
+    if (emailFormatChecker(this.email)) {
+      this.firebase.auth().fetchProvidersForEmail(this.email).then( providers => {
         if (providers.length === 0) {
-          this.SignUpInStore.setEmailChecker(true)
-          this.SignUpInStore.setEmailStatus('此帳號可以使用')
+          this.setEmailChecker(true)
+          this.setEmailStatus('此帳號可以使用')
           return true
         } else {
-          this.SignUpInStore.setEmailChecker(false)
-          this.SignUpInStore.setEmailStatus('此帳號已註冊')
+          this.setEmailChecker(false)
+          this.setEmailStatus('此帳號已註冊')
           return false
         }
       }).catch((err) => {
-        this.SignUpInStore.setEmailChecker(false)
-        this.SignUpInStore.setEmailStatus('無法檢查帳號')
+        this.setEmailChecker(false)
+        this.setEmailStatus('無法檢查帳號')
         return false
       })
     } else {
-      this.SignUpInStore.setEmailChecker(false)
-      this.SignUpInStore.setEmailStatus('帳號格式錯誤')
+      this.setEmailChecker(false)
+      this.setEmailStatus('帳號格式錯誤')
       return false 
     }
   }
 
-  @action displayNameChecker = () => {
-    if (this.SignUpInStore.displayName.length < 2) {
-      this.SignUpInStore.setDisplayNameChecker(false)
-      this.SignUpInStore.setDisplayNameStatus('請輸入2個字以上的暱稱')
+  @action checkDisplayName = () => {
+    if (this.displayName.length < 2) {
+      this.setDisplayNameChecker(false)
+      this.setDisplayNameStatus('請輸入2個字以上的暱稱')
     } else {
-      this.SignUpInStore.setDisplayNameChecker(true)
-      this.SignUpInStore.setDisplayNameStatus('此暱稱可以使用')
+      this.setDisplayNameChecker(true)
+      this.setDisplayNameStatus('此暱稱可以使用')
       return true     
     }
     return false   
   }
 
-  @action passwordChecker = () => {
+  @action checkPassword = () => {
     const passw =  /^[A-Za-z0-9]{6,10}$/;
-    if (this.SignUpInStore.password.match(passw)) {
-      this.SignUpInStore.setPasswordChecker(true)
-      this.SignUpInStore.setPasswordStatus('此密碼可以使用')
+    if (this.password.match(passw)) {
+      this.setPasswordChecker(true)
+      this.setPasswordStatus('此密碼可以使用')
     } else {
-      this.SignUpInStore.setPasswordChecker(false)
-      this.SignUpInStore.setPasswordStatus('請輸入數字或英文字母組合的6~10字密碼')
+      this.setPasswordChecker(false)
+      this.setPasswordStatus('請輸入數字或英文字母組合的6~10字密碼')
       return false    
     }
     return true

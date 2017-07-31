@@ -4,6 +4,8 @@ import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
 import Profile from '../../views/Profile'
+import DisplayNameAgeContainer from '../../containers/AboutMeEdit/DisplayNameAge/DisplayNameAgeContainer'
+import CityContainer from '../../containers/AboutMeEdit/City/CityContainer'
 
 @inject("firebase","SubjectStore") @observer
 export default class ProfileContainer extends Component {
@@ -23,11 +25,11 @@ export default class ProfileContainer extends Component {
   )
 
   goToEditDisplayName = () => {
-    Actions.AboutMeEdit({title: '暱稱年齡'})
+    Actions.AboutMeEdit({title: '暱稱年齡',content: <DisplayNameAgeContainer/>})
   }
 
   goToEditCity = () => {
-    Actions.AboutMeEdit({title: '常在城市'})
+    Actions.AboutMeEdit({title: '常在城市',content: <CityContainer/>})
   }
 
   goToEditBio = () => {
