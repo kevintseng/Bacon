@@ -22,7 +22,7 @@ import AuthScene from './scenes/AuthScene'
 // Drawer
 import DrawerScene from './scenes/drawer/DrawerScene'
 // MeetCute
-//import MeetCuteCourtScene from './scenes/drawer/MeetCute/MeetCuteCourtScene'
+import MeetCuteCourtScene from './scenes/drawer/MeetCute/MeetCuteCourtScene'
 // AboutMe
 import AboutMeTabScene from './scenes/drawer/AboutMe/AboutMeTabScene'
 import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
@@ -116,6 +116,10 @@ export default class Routes extends Component {
                 <Scene key='SettingAccount' title='設定' renderBackButton={ this.baconArrow } component={ SettingAccountScene } />
                 <Scene key='SettingRemind' title='設定' renderBackButton={ this.baconArrow } component={ SettingRemindScene } />
                 <Scene key='SettingHide' title='設定' renderBackButton={ this.baconArrow } component={ SettingHideScene } />
+              </Scene>
+              
+              <Scene key='meetcute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } component={ MeetCuteCourtScene } />
               </Scene>
 
               <Scene key='fate' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
