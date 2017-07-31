@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import { View, Text } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
-import Edit from '../../components/common/aboutme/Edit/Edit'
+import Profile from '../../views/Profile'
 
 @inject("firebase","SubjectStore") @observer
-export default class EditContainer extends Component {
+export default class ProfileContainer extends Component {
 
   constructor(props) {
     super(props)
@@ -17,20 +18,9 @@ export default class EditContainer extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  onPressDisplayName = () => {
-    Actions.AboutMeEdit()
-  }
-
-  onPressCity = () => {
-    Actions.AboutMeEdit()
-  }
-
   render() {
     return(
-      <Edit
-        onPressDisplayName={ this.onPressDisplayName }
-        onPressCity={ this.onPressCity }
-      />
+      <Profile/>
     )
   }
 }
