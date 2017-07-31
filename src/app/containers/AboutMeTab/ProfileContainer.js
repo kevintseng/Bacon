@@ -54,7 +54,7 @@ export default class ProfileContainer extends Component {
         verityPhoto={ this.SubjectStore.verityPhoto }
         displayName={ this.SubjectStore.displayName }
         age={ this.SubjectStore.age }
-        city={ this.SubjectStore.city }
+        city={ this.SubjectStore.simpleCity }
         bio={ this.SubjectStore.bio }
         //lang='語言能力'
         onPressDisplayName={ this.goToEditDisplayName } 

@@ -10,7 +10,7 @@ const FirebaseConfig = {
 const AppInitial = {
   init: () => {
     this.firebase = RNFirebase.initializeApp(FirebaseConfig)
-    this.SignUpInStore = new SignUpInStore()
+    this.SignUpInStore = new SignUpInStore(this.firebase)
     this.SubjectStore = new SubjectStore()
     return this
   }

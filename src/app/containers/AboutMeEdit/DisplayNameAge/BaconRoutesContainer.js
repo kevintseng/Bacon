@@ -4,17 +4,24 @@ import { inject, observer } from "mobx-react"
 
 import BaconRoutes from '../../../views/BaconRoutes/BaconRoutes'
 
-@inject('SignUpInStore') @observer
+@inject('firebase','SignUpInStore','SubjectStore') @observer
 export default class BaconRoutesContainer extends Component {
 
   constructor(props) {
     super(props)
+    this.firebase = this.props.firebase
     this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectStore = this.props.SubjectStore
   }
 
   _buttonOnPress = () => {
+    this.SignUpInStore.checkDisplayName()
     if (this.allChecker()) {
       if (this.birthdayChecker()) {
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/displayName').set(this.SignUpInStore.displayName)
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/birthday').set(this.SignUpInStore.birthday)
+        this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
+        this.SubjectStore.setBirthday(this.SignUpInStore.birthday)
         Actions.AboutMeTab({type: 'reset'})
       } else {
         alert('請填入生日資料')

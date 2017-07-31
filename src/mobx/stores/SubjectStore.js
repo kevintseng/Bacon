@@ -11,6 +11,7 @@ export default class SubjectStore {
   @observable sexOrientation
   @observable city
   @observable birthday
+  @observable bio
   @observable photos
   // hide function
   @observable hideMeetCute
@@ -25,10 +26,9 @@ export default class SubjectStore {
     this.displayName = '同步中...'
     this.sexOrientation = '同步中...' // f m
     this.city = '同步中...'
-    this.birthday = '同步中...'
-    this.photos = [
-      { key: 1, uri: 'https://i.imgur.com/FHxVpN4.jpg' }
-    ]
+    this.birthday = null
+    this.bio = '同步中...'
+    this.photos = [] // { key: 1, uri: 'https://i.imgur.com/FHxVpN4.jpg' }
     // hide function
     this.hideMeetCute = false
     this.hideMeetChance = false
@@ -38,8 +38,16 @@ export default class SubjectStore {
 
   // user data
 
-  @computed get age(){
-    return this.birthday ? calculateAge(this.birthday) : '18'
+  @computed get age() {
+    return this.birthday ? calculateAge(this.birthday) : '同步中...'
+  }
+
+  @computed get simpleCity() {
+    return this.city.substring(0,8)
+  }
+
+  @computed get simplePhotos() {
+    return this.photos.map((ele,index) => ({ key: index, uri: ele }) )
   }
 
   @action setPhotoURL = url => {
@@ -66,10 +74,19 @@ export default class SubjectStore {
     this.birthday = birthday    
   }
 
-  @action setPhotos = url => {
-     this.photos.push({key: this.photos.length + 1, uri: url})
-     this.photos = this.photos.slice()
+  @action setBio = bio => {
+    this.bio = bio    
   }
+
+  @action setPhotos = photos => {
+    this.photos = photos
+  }
+
+  @action addPhoto = url => {
+    this.photos.push(url)
+    this.photos = this.photos.slice()
+  }
+
 
   // hide function
 

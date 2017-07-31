@@ -20,7 +20,7 @@ export default class DisplayNameContainer extends Component {
         value={ this.SignUpInStore.displayName }
         maxLength={ 10 } 
         onChangeText={ this.SignUpInStore.setDisplayName }
-        onBlur={ this.SignUpInStore.checkDisplayName }
+        //onBlur={ this.SignUpInStore.checkDisplayName }
       />
     )
   }
