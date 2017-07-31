@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
 
-import Album from '../../components/common/aboutme/Album/Album'
+import Album from '../../views/Album'
 
 const options = {
   mediaType: 'photo',

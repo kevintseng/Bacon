@@ -3,10 +3,10 @@ import { View, TouchableOpacity, Dimensions } from 'react-native'
 import { Avatar, ListItem } from 'react-native-elements'
 import LinearGradient from 'react-native-linear-gradient'
 
-import VerityEmail from '../VerityEmail/VerityEmail'
-import VerityPhoto from '../VerityPhoto/VerityPhoto'
-import MemberUpgrade from '../MemberUpgrade/MemberUpgrade'
-import QUpgrade from '../QUpgrade/QUpgrade'
+import VerityEmail from './VerityEmail/VerityEmail'
+import VerityPhoto from './VerityPhoto/VerityPhoto'
+import MemberUpgrade from './MemberUpgrade/MemberUpgrade'
+import QUpgrade from './QUpgrade/QUpgrade'
 
 const { width } = Dimensions.get('window')
 
@@ -37,7 +37,7 @@ const styles = {
 const colors = ['#f4a764', '#d63768']
 
 
-const Edit = ({onPressDisplayName, onPressCity, onPressBio}) => {
+const Profile = ({onPressDisplayName, onPressCity, onPressBio}) => {
   return(
     <View>
       <View style={{flexDirection: 'row',padding: 5}}>
@@ -97,4 +97,4 @@ const Edit = ({onPressDisplayName, onPressCity, onPressBio}) => {
   )
 }
 
-export default Edit
+export default Profile
