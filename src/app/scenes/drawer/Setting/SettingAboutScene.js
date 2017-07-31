@@ -1,18 +1,8 @@
 import React, { Component } from 'react'
+import { View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import { inject } from "mobx-react"
 
-import SettingAbout from '../../../components/scenes/SettingAbout/SettingAbout'
-
-
-@inject("firebase","SubjectStore")
 export default class SettingAboutScene extends Component {
-
-  constructor(props) {
-    super(props)
-    this.firebase = this.props.firebase
-    this.SubjectStore = this.props.SubjectStore
-  }
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
@@ -20,7 +10,7 @@ export default class SettingAboutScene extends Component {
 
   render() {
     return(
-      <SettingAbout/>
+      <View/>
     )
   }
 }

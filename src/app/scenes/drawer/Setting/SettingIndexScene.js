@@ -1,117 +1,39 @@
 import React, { Component } from 'react'
+import { View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
-import SettingIndex from '../../../components/scenes/SettingIndex/SettingIndex'
+import AboutContainer from '../../../containers/SettingIndex/AboutContainer'
+import AccountContainer from '../../../containers/SettingIndex/AccountContainer'
+import RemindContainer from '../../../containers/SettingIndex/RemindContainer'
+import HideContainer from '../../../containers/SettingIndex/HideContainer'
+
+import Knife from '../../../views/Knife/Knife'
 
 export default class SettingIndexScene extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      leftTopPress: false,
-      rightTopPress: false,
-      leftBottomPress: false,
-      rightBottomPress: false
-    }
-  }
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  goToSettingAccount() {
-    Actions.SettingAccount()
-  }
-
-  goToSettingHide() {
-    Actions.SettingHide()
-  }
-
-  goToSettingRemind() {
-    Actions.SettingRemind()
-  }
-
-  goToSettingAbout() {
-    Actions.SettingAbout()
-  }
-
-  leftTopOnShowUnderlay = () => {
-    this.setState({
-      leftTopPress: true
-    })
-  }
-
-  leftTopOnHideUnderlay = () => {
-    this.setState({
-      leftTopPress: false
-    })
-  }
-
-  rightTopOnShowUnderlay = () => {
-    this.setState({
-      rightTopPress: true
-    })
-  }
-
-  rightTopOnHideUnderlay = () => {
-    this.setState({
-      rightTopPress: false
-    })
-  }
-
-  leftBottomOnShowUnderlay = () => {
-    this.setState({
-      leftBottomPress: true
-    })    
-  }
-
-  leftBottomOnHideUnderlay = () => {
-    this.setState({
-      leftBottomPress: false
-    }) 
-  }
-
-  rightBottomOnShowUnderlay = () => {
-    this.setState({
-      rightBottomPress: true
-    }) 
-  }
-
-  rightBottomOnHideUnderlay = () => {
-    this.setState({
-      rightBottomPress: false
-    })     
-  }
-
   render() {
     return(
-      <SettingIndex
-        leftTopText='關於BACON'
-        rightTopText='帳號設定'
-        leftBottomText='提示設定'
-        rightBottomText='隱身設定'
-        
-        rightTopOnPress={ this.goToSettingAccount }
-        rightBottomOnPress={ this.goToSettingHide }
-        leftBottomOnPress={ this.goToSettingRemind }
-        leftTopOnPress={ this.goToSettingAbout }
+      <View style={{flex: 1}}>
 
-        leftTopPress={ this.state.leftTopPress }
-        leftTopOnShowUnderlay={ this.leftTopOnShowUnderlay }
-        leftTopOnHideUnderlay={ this.leftTopOnHideUnderlay }
+        <View style={{flexDirection: 'row',justifyContent: 'space-around',marginTop: 50}}>
+          <AboutContainer/>
+          <AccountContainer/>
+        </View>
 
-        rightTopPress={ this.state.rightTopPress }
-        rightTopOnShowUnderlay={ this.rightTopOnShowUnderlay }
-        rightTopOnHideUnderlay={ this.rightTopOnHideUnderlay }
+        <View style={{flexDirection: 'row',justifyContent: 'space-around', marginTop: 30}}>
+          <RemindContainer/>
+          <HideContainer/>
+        </View>
 
-        leftBottomPress={ this.state.leftBottomPress }
-        leftBottomOnShowUnderlay={ this.leftBottomOnShowUnderlay }
-        leftBottomOnHideUnderlay={ this.leftBottomOnHideUnderlay }
+        <View style={{position: 'absolute',bottom: 0}}>
+          <Knife/>
+        </View>
 
-        rightBottomPress={ this.state.rightBottomPress }
-        rightBottomOnShowUnderlay={ this.rightBottomOnShowUnderlay }
-        rightBottomOnHideUnderlay={ this.rightBottomOnHideUnderlay }
-      />
+      </View>
     )
   }
 }

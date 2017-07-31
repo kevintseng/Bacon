@@ -4,7 +4,7 @@ import { View, Image } from 'react-native'
 const Knife = () => {
   return(
     <View>
-      <Image source={require('../../image/bg_setting.png')} />
+      <Image source={require('./img/bg_setting.png')} />
     </View>
   )
 }
