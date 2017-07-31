@@ -17,7 +17,7 @@ const styles = {
   },
   subtitleTextStyle: {
     position: 'relative',
-    right: 10,
+    right: 9,
     color: '#606060',
     letterSpacing: 3,
     fontFamily: 'NotoSans',
@@ -30,14 +30,14 @@ const styles = {
     color: '#606060',
     letterSpacing: 3,
     fontFamily: 'NotoSans', 
-    fontWeight: '500'   
+    fontWeight: '500',
+    fontSize: 15
   }
 }
 
 const colors = ['#f4a764', '#d63768']
 
-
-const Profile = ({onPressDisplayName, onPressCity, onPressBio}) => {
+const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio, lang, onPressDisplayName, onPressCity, onPressBio}) => {
   return(
     <View>
       <View style={{flexDirection: 'row',padding: 5}}>
@@ -46,8 +46,8 @@ const Profile = ({onPressDisplayName, onPressCity, onPressBio}) => {
             width={width*0.3}
             heigh={width*0.3}
             rounded
-            source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
-            onPress={() => console.log("Works!")}
+            source={{uri: source}}
+            //onPress={() => console.log("Works!")}
             activeOpacity={0.7}
           />
         </View>
@@ -55,17 +55,19 @@ const Profile = ({onPressDisplayName, onPressCity, onPressBio}) => {
         <View style={{flex:1,paddingTop: 10, paddingLeft: 10, paddingRight: 10}}>
           <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
             <VerityEmail
-              VerityEmailText='尚未認證'
+              verity={ verityEmail }
+              verityText={ verityEmail ? '已認證' : '尚未認證'}
             />
             <VerityPhoto
-              VerityPhotoText='尚未認證'
+              verity={ verityPhoto }
+              verityText={ verityPhoto ? '已認證' : '尚未認證'}
             />
           </View>
           <TouchableOpacity onPress={ onPressDisplayName }>
-            <ListItem subtitle='Vice President, 38' subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
+            <ListItem subtitle={ displayName + ', ' + age } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
           </TouchableOpacity>
           <TouchableOpacity onPress={ onPressCity }>
-            <ListItem subtitle='新北市板橋區自強里' subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
+            <ListItem subtitle={ city } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
           </TouchableOpacity>
         </View>     
 
@@ -83,13 +85,13 @@ const Profile = ({onPressDisplayName, onPressCity, onPressBio}) => {
       </LinearGradient> 
       <View style={{paddingRight: 10, paddingLeft: 10}}>
         <TouchableOpacity onPress={ onPressBio }>
-          <ListItem title='自我介紹' titleStyle={styles.titleStyle} subtitle='我叫王大明...' subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
+          <ListItem title='自我介紹' titleStyle={styles.titleStyle} subtitle={ bio || '您尚未輸入自我介紹，點此輸入自我介紹！'} subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
         </TouchableOpacity>
         <TouchableOpacity onPress={ onPressBio }>
-          <ListItem title='語言能力' titleStyle={styles.titleStyle} subtitle='中文(流利),英文(普通)' subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
+          <ListItem title='語言能力' titleStyle={styles.titleStyle} subtitle={ lang || '您尚未選擇語言能力，點此選擇語言能力！'} subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
         </TouchableOpacity>
         <TouchableOpacity onPress={ onPressBio }>
-          <ListItem title='興趣愛好' titleStyle={styles.titleStyle} subtitle='你尚未編輯興趣愛好..' subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
+          <ListItem title='興趣愛好' titleStyle={styles.titleStyle} subtitle='您尚未編輯興趣愛好，請點此編輯興趣愛好！' subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
         </TouchableOpacity>
       </View>
 

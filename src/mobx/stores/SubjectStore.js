@@ -1,4 +1,5 @@
-import { observable, action, useStrict } from 'mobx'
+import { observable, action, computed, useStrict } from 'mobx'
+import { calculateAge } from '../../app/Utils'
 
 useStrict(true)
 
@@ -32,6 +33,10 @@ export default class SubjectStore {
   }
 
   // user data
+
+  @computed get age(){
+    return this.birthday ? calculateAge(this.birthday) : '18'
+  }
 
   @action setPhotoURL = url => {
     this.photoURL = url
@@ -74,4 +79,5 @@ export default class SubjectStore {
   @action setHideMessage = () => {
     this.hideMessage = !this.hideMessage
   }
+
 }

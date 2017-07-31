@@ -8,6 +8,12 @@ export function getAge(birthday) {
   return age;
 }
 
+export function calculateAge(birthday) {
+  const ageDifMs = Date.now() - new Date(birthday).getTime()
+  const ageDate = new Date(ageDifMs)
+  return Math.abs(ageDate.getUTCFullYear() - 1970)
+}
+
 export function emailFormatChecker(email) {
   if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
     return true;

@@ -6,9 +6,9 @@ const MemberUpgrade = ({ MemberUpgradeText }) => {
     <TouchableOpacity>
       <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
         <Image style={{marginRight: 10, alignItems: 'center',justifyContent: 'center'}} source={require('./img/btn_aboutme_upgrade.png')}>
-          <Text style={{color: '#d63768',fontSize: 7,paddingTop: 5, backgroundColor: 'transparent',}}>升級</Text>
+          <Text style={{color: '#d63768',fontSize: 7,paddingTop: 5, backgroundColor: 'transparent',fontFamily: 'NotoSans'}}>升級</Text>
         </Image>
-        <Text style={{color: 'white', backgroundColor: 'transparent',}}>{ MemberUpgradeText }</Text>
+        <Text style={{color: 'white', backgroundColor: 'transparent',fontFamily: 'NotoSans'}}>{ MemberUpgradeText }</Text>
       </View>
     </TouchableOpacity>
   )
