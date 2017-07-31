@@ -37,7 +37,7 @@ const styles = {
 
 const colors = ['#f4a764', '#d63768']
 
-const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio, lang, onPressDisplayName, onPressCity, onPressBio}) => {
+const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio, lang, onPressDisplayName, onPressCity, onPressBio, onPressLangs, onPressInterests}) => {
   return(
     <View>
       <View style={{flexDirection: 'row',padding: 5}}>
@@ -87,10 +87,10 @@ const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio,
         <TouchableOpacity onPress={ onPressBio }>
           <ListItem title='自我介紹' titleStyle={styles.titleStyle} subtitle={ bio || '您尚未輸入自我介紹，點此輸入自我介紹！'} subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
         </TouchableOpacity>
-        <TouchableOpacity onPress={ onPressBio }>
+        <TouchableOpacity onPress={ onPressLangs }>
           <ListItem title='語言能力' titleStyle={styles.titleStyle} subtitle={ lang || '您尚未選擇語言能力，點此選擇語言能力！'} subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
         </TouchableOpacity>
-        <TouchableOpacity onPress={ onPressBio }>
+        <TouchableOpacity onPress={ onPressInterests }>
           <ListItem title='興趣愛好' titleStyle={styles.titleStyle} subtitle='您尚未編輯興趣愛好，請點此編輯興趣愛好！' subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
         </TouchableOpacity>
       </View>
