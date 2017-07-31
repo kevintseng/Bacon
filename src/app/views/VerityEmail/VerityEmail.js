@@ -1,12 +1,29 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 
-const VerityEmail = ({ VerityEmailText }) => {
+const styles = {
+  view: {
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+  image: {
+    marginRight: 10
+  },
+  text: {
+    color: '#606060',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    fontSize: 12
+  }
+}
+
+const VerityEmail = ({ verity, verityText }) => {
   return(
     <TouchableOpacity>
-      <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-        <Image style={{marginRight: 10}} source={require('./img/ico_aboutme_mail_0.png')}/>
-        <Text>{ VerityEmailText }</Text>
+      <View style={ styles.view }>
+        <Image style={ styles.image } source={ verity ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
+        <Text style={ styles.text }>{ verityText }</Text>
       </View>
     </TouchableOpacity>
   )

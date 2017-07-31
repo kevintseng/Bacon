@@ -18,9 +18,22 @@ export default class ProfileContainer extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
+  verityEmail = () => (
+    this.firebase.auth().currentUser.emailVerified
+  )
+
   render() {
     return(
-      <Profile/>
+      <Profile
+        source={ this.SubjectStore.photoURL }
+        verityEmail={ this.verityEmail }
+        verityPhoto={ this.SubjectStore.verityPhoto }
+        displayName={ this.SubjectStore.displayName }
+        age={ this.SubjectStore.age }
+        city={ this.SubjectStore.city }
+        bio={ this.SubjectStore.bio }
+        //lang='語言能力'
+        />
     )
   }
 }
