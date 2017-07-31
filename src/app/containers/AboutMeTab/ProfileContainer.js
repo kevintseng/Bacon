@@ -6,6 +6,7 @@ import { observer, inject } from 'mobx-react'
 import Profile from '../../views/Profile'
 import DisplayNameAgeContainer from '../../containers/AboutMeEdit/DisplayNameAge/DisplayNameAgeContainer'
 import CityContainer from '../../containers/AboutMeEdit/City/CityContainer'
+import BioContainer from '../../containers/AboutMeEdit/Bio/BioContainer'
 
 @inject("firebase","SubjectStore") @observer
 export default class ProfileContainer extends Component {
@@ -33,7 +34,7 @@ export default class ProfileContainer extends Component {
   }
 
   goToEditBio = () => {
-    Actions.AboutMeEdit({title: '自我介紹'})
+    Actions.AboutMeEdit({title: '自我介紹',content: <BioContainer/>})
   }
 
   goToEditLangs = () => {

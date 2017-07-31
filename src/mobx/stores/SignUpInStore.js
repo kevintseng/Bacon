@@ -14,6 +14,7 @@ export default class SignUpInStore {
   @observable sexOrientation
   @observable city
   @observable birthday
+  @observable bio
   // error state
   @observable emailStatus
   @observable passwordStatus
@@ -38,6 +39,7 @@ export default class SignUpInStore {
     this.sexOrientation = true // { true : 同性, false: 異性 }
     this.city = null
     this.birthday = null
+    this.bio = null
     // error state
     this.emailStatus = null // 註冊 登入
     this.passwordStatus = null // 註冊/登入錯誤訊息
@@ -94,6 +96,10 @@ export default class SignUpInStore {
 
   @action setBirthday = birthday => {
     this.birthday = birthday    
+  }
+
+  @action setBio = bio => {
+    this.bio = bio
   }
 
   // error state
