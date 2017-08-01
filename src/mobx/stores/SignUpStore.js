@@ -41,8 +41,8 @@ export default class SignUpInStore {
     this.gender = true // { true : m, false: f }
     this.sexOrientation = true // { true : 同性, false: 異性 }
     // 可編輯
-    this.password = ''
-    this.displayName = ''
+    this.password = null
+    this.displayName = null
     this.city = null
     this.birthday = null
     this.bio = null
