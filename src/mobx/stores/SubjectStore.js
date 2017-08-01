@@ -15,6 +15,7 @@ export default class SubjectStore {
   @observable photos
   @observable vip
   @observable langs
+  @observable interests
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -38,6 +39,7 @@ export default class SubjectStore {
       英文: false, 
       韓文: false
     }
+    this.interests = ['Bacon']
     ///////// 難處理 /////////
     this.sexOrientation = null // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
     // hide function
@@ -113,6 +115,10 @@ export default class SubjectStore {
     }
   }
 
+  @computed get interestsFlatList() {
+    return this.interests.map(ele => ({key: ele}))
+  }
+
   @action setEmail = email => {
     this.email = email
   }
@@ -160,6 +166,10 @@ export default class SubjectStore {
 
   @action setLangs = langs => {
     this.langs = langs
+  }
+
+  @action setInterests = interests => {
+    this.interests = interests
   }
   // hide function
 

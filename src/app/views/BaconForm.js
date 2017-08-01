@@ -19,7 +19,7 @@ const BaconForm = ({ iconSource, placeholder, value, maxLength, onChangeText, on
 
       <View style={{width}}>
         <FormInput
-          underlineColorAndroid="#606060"
+          underlineColorAndroid="#d63768"
           autoFocus={ false }
           secureTextEntry={ secureTextEntry }
           autoCorrect={ false }

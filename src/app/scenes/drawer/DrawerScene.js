@@ -25,6 +25,8 @@ const langs =  {
   韓文: false
 }
 
+const interests = ['Bacon']
+
 @inject('firebase','SignUpInStore','SubjectStore') @observer
 export default class DrawerScene extends Component {
 
@@ -129,6 +131,7 @@ export default class DrawerScene extends Component {
           this.SubjectStore.setPhotoURL(snap.val().photoURL) // 有可能 null -> 灰色大頭照
           this.SubjectStore.setPhotos(snap.val().photos || new Array) // 有可能 null -> 必須ㄧ定要是 Array
           this.SubjectStore.setLangs(snap.val().langs || langs) // 有可能 null -> 初始選單
+          this.SubjectStore.setInterests(snap.val().interests || interests) // 有可能 null -> 初始選單
           ///////// 難處理 /////////
           this.SubjectStore.setVip(snap.val().vip || false) // 有可能 null -> fasle
           this.SubjectStore.setSexOrientation(snap.val().sexOrientation) // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理

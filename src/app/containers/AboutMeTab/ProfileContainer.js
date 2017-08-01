@@ -8,6 +8,8 @@ import DisplayNameAgeContainer from '../../containers/AboutMeEdit/DisplayNameAge
 import CityContainer from '../../containers/AboutMeEdit/City/CityContainer'
 import BioContainer from '../../containers/AboutMeEdit/Bio/BioContainer'
 import LangsContainer from '../../containers/AboutMeEdit/Langs/LangsContainer'
+import InterestsContainer from '../../containers/AboutMeEdit/Interests/InterestsContainer'
+
 
 @inject("firebase","SubjectStore") @observer
 export default class ProfileContainer extends Component {
@@ -43,7 +45,7 @@ export default class ProfileContainer extends Component {
   }
 
   goToEditInterests = () => {
-    Actions.AboutMeEdit({title: '興趣愛好'})
+    Actions.AboutMeEdit({title: '興趣愛好', content: <InterestsContainer/>})
   }
 
   render() {
