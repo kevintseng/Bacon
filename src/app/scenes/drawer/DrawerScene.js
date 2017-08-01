@@ -56,7 +56,7 @@ export default class DrawerScene extends Component {
     .then(uploadedFile => {
       this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photoURL').set(uploadedFile.downloadUrl)
       .then(() => {
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').set({ 1: uploadedFile.downloadUrl })
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').set({ 0: uploadedFile.downloadUrl })
         .then(() => {
           this.setState({
             uploadAvatarState: '使用者大頭照上傳成功'
@@ -82,15 +82,11 @@ export default class DrawerScene extends Component {
   uploadSignUpData = () => {
     this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
       // 上傳註冊資料
-      // 只有 uid 從 SubjectStore 直接上傳
-      //uid: this.SubjectStore.uid
-      // 其他資料從 SignUpInStore 上傳
-      //email: this.SignUpInStore.email, // TODO : 一定要有 改成從認證拿
       displayName: this.SignUpInStore.displayName,
-      sexOrientation: this.sexOrientationString(),
       city: this.SignUpInStore.city,
       birthday: this.SignUpInStore.birthday,
-      vip: false
+      vip: false,
+      sexOrientation: this.sexOrientationString(),
     }).then(() => {
         this.setState({
           uploadSignUpDataState: '使用者資料上傳成功'
@@ -108,24 +104,26 @@ export default class DrawerScene extends Component {
     this.SubjectStore.setCity(this.SignUpInStore.city)
     this.SubjectStore.setBirthday(this.SignUpInStore.birthday)
     this.SubjectStore.setBio(null)
-    ///////// 難處理 /////////
-    this.SubjectStore.setSexOrientation(this.sexOrientationString())
     this.SubjectStore.setPhotoURL(this.SignUpInStore.photoURL)
     this.SubjectStore.setPhotos([this.SignUpInStore.photoURL])       
+    ///////// 難處理 /////////
+    this.SubjectStore.setSexOrientation(this.sexOrientationString())
   }
 
   initSubjectStoreFromFirebase = () => {
     this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
+          console.log(snap.val().photos.length)
           this.SubjectStore.setDisplayName(snap.val().displayName) // 有可能 null -> '請輸入暱稱...' 
           this.SubjectStore.setCity(snap.val().city) // 有可能 null -> '請輸入地址...'
           this.SubjectStore.setBirthday(snap.val().birthday) // 有可能 null -> '請輸入生日...'
           this.SubjectStore.setBio(snap.val().bio) // 有可能 null -> '您尚未輸入自我介紹，點此輸入自我介紹！'
+          this.SubjectStore.setPhotoURL(snap.val().photoURL) // 有可能 null -> 灰色大頭照
+          this.SubjectStore.setPhotos(snap.val().photos || new Array) // 有可能 null -> 必須ㄧ定要是 Array
           ///////// 難處理 /////////
-          this.SubjectStore.setSexOrientation(snap.val().sexOrientation)
-          this.SubjectStore.setPhotoURL(snap.val().photoURL)
-          this.SubjectStore.setPhotos(snap.val().photos || [])
+          this.SubjectStore.setVip(snap.val().vip || false) // 有可能 null -> fasle
+          this.SubjectStore.setSexOrientation(snap.val().sexOrientation) // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
           // AboutMeEdit
           this.SignUpInStore.setDisplayName(snap.val().displayName)
           this.SignUpInStore.setTextInputCity(snap.val().city)

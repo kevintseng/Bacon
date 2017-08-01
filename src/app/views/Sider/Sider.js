@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Image, Dimensions, TouchableOpacity, Platform } from 'react-native'
-import { Badge } from 'react-native-elements'
+import { Avatar, Badge } from 'react-native-elements'
 
 import ListItem from '../ListItem'
 import BaconTitle from '../BaconTitle/BaconTitle'
@@ -37,9 +37,12 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </View>
 
         <View style={{alignItems: 'center',marginTop: 20}}>
-          <Image 
-            style={{ alignSelf: 'center', width: picWidth, height: picWidth, borderRadius: picWidth/2 }}
-            source={ avatar ? { uri: avatar } : require('./img/avatar.jpg')}       
+          <Avatar
+            width={picWidth}
+            heigh={picWidth}
+            rounded
+            source={{uri: avatar}}
+            activeOpacity={0.7}
           />
         </View>
 

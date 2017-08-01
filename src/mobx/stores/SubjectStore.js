@@ -13,6 +13,7 @@ export default class SubjectStore {
   @observable birthday
   @observable bio
   @observable photos
+  @observable vip
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -21,15 +22,18 @@ export default class SubjectStore {
 
   constructor() {
     // user data
-    this.email = null
-    this.photoURL = null
-    this.uid = null
+    this.uid = null // ㄧ登入一定有
+    this.email = null // ㄧ登入一定有
+
     this.displayName = '同步中...'
-    this.sexOrientation = '同步中...' // f m
     this.city = '同步中...'
     this.birthday = '同步中...'
     this.bio = '同步中...'
-    this.photos = [{uri: 'https://i.imgur.com/FHxVpN4.jpg' }] // { key: 1, uri: 'https://i.imgur.com/FHxVpN4.jpg' }
+    this.photoURL = null
+    this.photos = new Array
+    this.vip = false
+    ///////// 難處理 /////////
+    this.sexOrientation = null // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
     // hide function
     this.hideMeetCute = false
     this.hideMeetChance = false
@@ -90,6 +94,7 @@ export default class SubjectStore {
   }
 
   @computed get simplePhotos() {
+    console.log(this.photos)
     return this.photos.map((ele,index) => ({ key: index, uri: ele }) )
   }
 
@@ -134,6 +139,9 @@ export default class SubjectStore {
     this.photos = this.photos.slice()
   }
 
+  @action setVip = vip => {
+    this.vip = vip
+  }
 
   // hide function
 

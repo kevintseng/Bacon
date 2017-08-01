@@ -47,7 +47,6 @@ const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio,
             heigh={width*0.3}
             rounded
             source={{uri: source}}
-            //onPress={() => console.log("Works!")}
             activeOpacity={0.7}
           />
         </View>
