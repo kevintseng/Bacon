@@ -18,6 +18,8 @@ export default class SignUpInStore {
   //
   @observable photoURL
   @observable langs
+  @observable interests
+  @observable deleteInterests
   // error state
   @observable emailStatus
   @observable passwordStatus
@@ -44,6 +46,8 @@ export default class SignUpInStore {
     this.city = null
     this.birthday = null
     this.bio = null
+    this.interests = null
+    this.deleteInterests = new Array
     //
     this.photoURL = null
     this.langs = null
@@ -65,6 +69,9 @@ export default class SignUpInStore {
     return Object.keys(this.langs).map(lang => ({key: lang, check: this.langs[lang]}))
   }
 
+  @computed get interestsFlatList() {
+    return this.interests.map(ele => ({key: ele}))
+  }
   // user data
 
   @action setPhotoURL = url => {
@@ -122,8 +129,33 @@ export default class SignUpInStore {
     this.langs[key] = !this.langs[key]
     //this.langs = this.langs.slice()
   }
-  // error state
 
+  @action setInterests = interests => {
+    this.interests = interests
+  }
+
+  @action cleanDeleteInterests = () => {
+    this.deleteInterests = new Array
+  }
+
+  @action addBadge = key => {
+    if (!(this.interests.indexOf(key) > -1)) {
+      this.interests.push(key)
+    }
+  }
+
+  @action moveToDeleteDeleteInterests = key => {
+    this.deleteInterests.push(key)
+    this.interests = this.interests.slice()
+
+  }
+
+  @action moveOutDeleteDeleteInterests = key => {
+    this.deleteInterests.splice(this.deleteInterests.indexOf(key), 1)
+    this.interests = this.interests.slice()
+  }
+
+  // error state
   @action setEmailChecker = statu => {
     this.emailChecker = statu 
   }
