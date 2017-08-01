@@ -4,24 +4,24 @@ import { Actions } from 'react-native-router-flux'
 
 import Infos from '../../views/Infos/Infos'
  
-@inject("SignUpInStore") @observer
+@inject("SubjectStore") @observer
 export default class InfosContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectStore = this.props.SubjectStore
   }
 
   render() {
     return(
       <Infos
-        verityEmail={false} 
-        verityPhoto={false}
-        displayName='王大頭'
-        bio='qwdqwdqdqd'
-        age='20'
-        langs='中文'
-        distance='35'
+        verityEmail={this.SubjectStore.emailVerified} 
+        verityPhoto={this.SubjectStore.photoVerified}
+        displayName={this.SubjectStore.profileDisplayName}
+        bio={this.SubjectStore.profileBio}
+        age={this.SubjectStore.profileBirthday}
+        langs={this.SubjectStore.profileLangs}
+        distance={'79'}
       />
     )
   }
