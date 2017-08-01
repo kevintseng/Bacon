@@ -28,7 +28,7 @@ export default class SubjectStore {
     this.city = '同步中...'
     this.birthday = null
     this.bio = '同步中...'
-    this.photos = [] // { key: 1, uri: 'https://i.imgur.com/FHxVpN4.jpg' }
+    this.photos = [{uri: 'https://i.imgur.com/FHxVpN4.jpg' }] // { key: 1, uri: 'https://i.imgur.com/FHxVpN4.jpg' }
     // hide function
     this.hideMeetCute = false
     this.hideMeetChance = false
