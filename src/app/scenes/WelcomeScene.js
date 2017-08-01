@@ -12,6 +12,12 @@ export default class WelcomeScene extends Component {
     this.SignUpInStore = this.props.SignUpInStore
   }
 
+  componentWillMount() {
+    this.SignUpInStore.setEmailStatus(null)
+    this.SignUpInStore.setPasswordStatus(null)
+    this.SignUpInStore.setDisplayNameStatus(null)
+  }
+
   _goToSignUp = () => {
     this.SignUpInStore.setUpInStatus('註冊')
     Actions.signup()
