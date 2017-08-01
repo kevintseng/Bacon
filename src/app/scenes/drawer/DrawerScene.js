@@ -95,7 +95,7 @@ export default class DrawerScene extends Component {
       birthday: this.SignUpInStore.birthday,
       vip: false,
       sexOrientation: this.sexOrientationString(),
-      langs: langs
+      langs: DefaultLangs
     }).then(() => {
         this.setState({
           uploadSignUpDataState: '使用者資料上傳成功'
