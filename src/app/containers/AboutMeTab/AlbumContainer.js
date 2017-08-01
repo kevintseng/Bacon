@@ -3,6 +3,7 @@ import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
+import UUIDGenerator from 'react-native-uuid-generator'
 
 import Album from '../../views/Album'
 
@@ -71,16 +72,16 @@ export default class AlbumContainer extends Component {
         ImageResizer.createResizedImage(res.uri, 200, 200, 'JPEG', 80) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
         .then(async (resizedUri) => {
           this.SubjectStore.addPhoto(resizedUri)
-          const filename = await this.generateFilename()
-          this.firebase.storage().ref('userPhotos/' + this.SubjectStore.uid + '/' + filename + '.jpg').putFile(resizedUri.replace('file:/',''), metadata)
-          .then(uploadedFile => {
-            //success
-            this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos/' + this.SubjectStore.photos.length - 1).set(uploadedFile.downloadUrl)
-            console.log(uploadedFile.downloadUrl)
+          UUIDGenerator.getRandomUUID((uuid) => {
+            this.firebase.storage().ref('userPhotos/' + this.SubjectStore.uid + '/' + uuid + '.jpg').putFile(resizedUri.replace('file:/',''), metadata)
+            .then(uploadedFile => {
+              this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos/' + this.SubjectStore.photos.length + 1).set(uploadedFile.downloadUrl)
+              console.log(uploadedFile.downloadUrl)
+            })
+            .catch(err => {
+              console.log(err)
+            });
           })
-          .catch(err => {
-            console.log(err)
-          });
         }).catch((err) => {
           console.log(err)
         })

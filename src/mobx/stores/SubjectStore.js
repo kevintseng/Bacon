@@ -27,7 +27,7 @@ export default class SubjectStore {
     this.displayName = '同步中...'
     this.sexOrientation = '同步中...' // f m
     this.city = '同步中...'
-    this.birthday = null
+    this.birthday = '同步中...'
     this.bio = '同步中...'
     this.photos = [{uri: 'https://i.imgur.com/FHxVpN4.jpg' }] // { key: 1, uri: 'https://i.imgur.com/FHxVpN4.jpg' }
     // hide function
@@ -39,12 +39,54 @@ export default class SubjectStore {
 
   // user data
 
+  @computed get simpleDisplayName() {
+    if (this.displayName === '同步中...') {
+      return '同步中...'
+    } else if (this.displayName === '同步失敗...'){
+      return '同步失敗...'
+    } else if (this.displayName) {
+      return this.displayName
+    } else {
+      return '請輸入暱稱...'
+    }
+    //return this.birthday ? calculateAge(this.birthday) : '同步中...'
+  }
+
   @computed get age() {
-    return this.birthday ? calculateAge(this.birthday) : '同步中...'
+    if (this.birthday === '同步中...') {
+      return '同步中...'
+    } else if (this.birthday === '同步失敗...'){
+      return '同步失敗...'
+    } else if (this.birthday) {
+      return calculateAge(this.birthday)
+    } else {
+      return '請輸入生日...'
+    }
+    //return this.birthday ? calculateAge(this.birthday) : '同步中...'
   }
 
   @computed get simpleCity() {
-    return this.city.substring(0,8)
+    if (this.city === '同步中...') {
+      return '同步中...'
+    } else if (this.city === '同步失敗...'){
+      return '同步失敗...'
+    } else if (this.city) {
+      return this.city.substring(0,8)
+    } else {
+      return '請輸入地址...'
+    }
+  }
+
+  @computed get simpleBio() {
+    if (this.bio === '同步中...') {
+      return '同步中...'
+    } else if (this.bio === '同步失敗...'){
+      return '同步失敗...'
+    } else if (this.bio) {
+      return this.bio
+    } else {
+      return '您尚未輸入自我介紹，點此輸入自我介紹！'
+    }
   }
 
   @computed get simplePhotos() {

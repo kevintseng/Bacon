@@ -13,6 +13,7 @@ export default class SessionCheckScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.uid = null
+    this.email = null
     this.lastAppState = AppState.currentState
   }
 
@@ -21,9 +22,11 @@ export default class SessionCheckScene extends Component {
       if (user) {
         // 使用者登入 只要登入成功一定有 uid
         this.uid = user.uid
+        this.email = user.email
         this.setOnline(this.uid) // 非同步設置使用者上線
         AppState.addEventListener('change', this._handleAppStateChange ) // 非同步註冊 app 狀態監聽
         this.SubjectStore.setUid(this.uid) // 同步優先設定 uid
+        this.SubjectStore.setEmail(this.email)
         Actions.Drawer({type: 'reset'}) // 切換場景
       } else {
         // 沒有使用者登入 user = null

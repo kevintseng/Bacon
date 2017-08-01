@@ -5,16 +5,18 @@ import { emailFormatChecker } from '../../app/Utils'
 useStrict(true)
 
 export default class SignUpInStore {
-  // user data
-  @observable photoURL
+  // 不能動
   @observable email
-  @observable password
-  @observable displayName
   @observable gender
   @observable sexOrientation
+  // 可編輯
+  @observable password
+  @observable displayName
   @observable city
   @observable birthday
   @observable bio
+  //
+  @observable photoURL
   @observable langs
   // error state
   @observable emailStatus
@@ -32,16 +34,18 @@ export default class SignUpInStore {
 
   constructor(firebase) {
     this.firebase = firebase
-    // user data
-    this.photoURL = null
+    // 不能動
     this.email = ''
-    this.password = ''
-    this.displayName = ''
     this.gender = true // { true : m, false: f }
     this.sexOrientation = true // { true : 同性, false: 異性 }
+    // 可編輯
+    this.password = null
+    this.displayName = null
     this.city = null
     this.birthday = null
     this.bio = null
+    //
+    this.photoURL = null
     this.langs = [
       { key: '中文', check: false },
       { key: '英文', check: false }

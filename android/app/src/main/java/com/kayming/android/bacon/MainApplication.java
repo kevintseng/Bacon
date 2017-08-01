@@ -3,8 +3,7 @@ package com.kayming.android.bacon;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.github.xfumihiro.react_native_image_to_base64.ImageToBase64Package;
-import com.RNFetchBlob.RNFetchBlobPackage;
+import com.reactlibrary.RNUUIDGeneratorPackage;
 import com.idehub.Billing.InAppBillingBridgePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
@@ -33,8 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new ImageToBase64Package(),
-            new RNFetchBlobPackage(),
+            new RNUUIDGeneratorPackage(),
             new InAppBillingBridgePackage(),
             new LinearGradientPackage(),
             new ImageResizerPackage(),
