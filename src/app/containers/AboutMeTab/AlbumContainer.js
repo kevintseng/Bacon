@@ -70,12 +70,12 @@ export default class AlbumContainer extends Component {
         console.log(res.error)
       } else {
         ImageResizer.createResizedImage(res.uri, 200, 200, 'JPEG', 80) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
-        .then(async (resizedUri) => {
+        .then((resizedUri) => {
           this.SubjectStore.addPhoto(resizedUri)
           UUIDGenerator.getRandomUUID((uuid) => {
             this.firebase.storage().ref('userPhotos/' + this.SubjectStore.uid + '/' + uuid + '.jpg').putFile(resizedUri.replace('file:/',''), metadata)
             .then(uploadedFile => {
-              this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos/' + this.SubjectStore.photos.length + 1).set(uploadedFile.downloadUrl)
+              this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos/' + this.SubjectStore.photos.length).set(uploadedFile.downloadUrl)
               console.log(uploadedFile.downloadUrl)
             })
             .catch(err => {
