@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { observer } from 'mobx-react'
 
-const Lang = ({ langName, check, onPressCheckBox}) => {
+const Lang = observer(({ langName, check, onPressCheckBox}) => {
   return(
     <View style={{flexDirection:'row', alignItems: 'center', justifyContent: 'space-between',borderBottomWidth: 1, borderBottomColor: '#b3b3b3', padding: 5, margin: 5}}>
       <Text style={{color: '#606060',fontSize: 16}}>{ langName }</Text>
@@ -11,6 +12,6 @@ const Lang = ({ langName, check, onPressCheckBox}) => {
     </View>
   
   )
-}
+})
 
 export default Lang

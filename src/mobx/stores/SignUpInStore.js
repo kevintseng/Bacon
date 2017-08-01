@@ -1,4 +1,4 @@
-import { observable, action, useStrict } from 'mobx'
+import { observable, action, computed, useStrict } from 'mobx'
 
 import { emailFormatChecker } from '../../app/Utils'
 
@@ -46,11 +46,7 @@ export default class SignUpInStore {
     this.bio = null
     //
     this.photoURL = null
-    this.langs = [
-      { key: '中文', check: false },
-      { key: '英文', check: false }
-    ] 
-
+    this.langs = null
     // error state
     this.emailStatus = null // 註冊 登入
     this.passwordStatus = null // 註冊/登入錯誤訊息
@@ -63,6 +59,10 @@ export default class SignUpInStore {
     // 
     this.UpInStatus = null
     this.failureStatus = null
+  }
+
+  @computed get simpleLangs() {
+    return Object.keys(this.langs).map(lang => ({key: lang, check: this.langs[lang]}))
   }
 
   // user data
@@ -113,9 +113,14 @@ export default class SignUpInStore {
     this.bio = bio
   }
 
+  @action setLangs = object => {
+    this.langs = object
+  }
+
   @action setLang = key => {
-    this.langs.find(ele => ele.key === key).check = !this.langs.find(ele => ele.key === key).check
-    this.langs = this.langs.slice()
+    //console.log(this.langs[key])
+    this.langs[key] = !this.langs[key]
+    //this.langs = this.langs.slice()
   }
   // error state
 
