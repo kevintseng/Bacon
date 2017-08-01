@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import { ImageStore } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
+import { resizeImage, uploadImage } from '../../../app/Utils'
 
 import Album from '../../views/Album'
 
@@ -27,7 +29,8 @@ export default class AlbumContainer extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.state = {
       uri: null,
-      photoOnPressModal: false
+      photoOnPressModal: false,
+      photo: null
     }
   }
 
@@ -52,6 +55,10 @@ export default class AlbumContainer extends Component {
     alert('openPicOptions')
   }
 
+  generateFilename = () => {
+    return this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').push().key
+  }
+
   openPicChoose = () => {
     ImagePicker.showImagePicker(options, (res) => {
       if (res.didCancel) {
@@ -59,17 +66,19 @@ export default class AlbumContainer extends Component {
       } else if (res.error) {
         console.log(res.error)
       } else {
-        ImageResizer.createResizedImage(res.uri, 200, 200, 'JPEG', 80) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
-        .then((resizedImageUri) => {
-          this.SubjectStore.addPhoto(resizedImageUri)
-        }).catch((err) => {
-           console.log(err)
-        })
+        this.async
+
+
       }
     })
   }
 
-
+  xx = async () => {
+         const resizedUri = await resizeImage(res.uri, 200, 200, 'JPEG', 80)
+        const filename =  await this.generateFilename()
+        const firebaseRefObj =  await this.firebase.storage().ref('userPhotos/' + this.SubjectStore.uid + '/' + filename + '.jpg');
+         const downloadUrl =  await uploadImage(resizedUri, firebaseRefObj);    
+  }
 
   render() {
     return(

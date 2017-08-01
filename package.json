@@ -13,6 +13,7 @@
     ]
   },
   "dependencies": {
+    "firebase": "^4.2.0",
     "mobx": "^3.2.1",
     "mobx-react": "^4.2.2",
     "prop-types": "^15.5.10",
@@ -22,11 +23,13 @@
     "react-native-datepicker": "^1.6.0",
     "react-native-drawer": "^2.3.0",
     "react-native-elements": "^0.15.0",
+    "react-native-fetch-blob": "^0.10.6",
     "react-native-firebase": "^2.0.4",
     "react-native-google-places-autocomplete": "^1.2.7",
     "react-native-image-pan-zoom": "^2.0.5",
     "react-native-image-picker": "^0.26.3",
     "react-native-image-resizer": "^0.1.1",
+    "react-native-image-to-base64": "^0.1.0",
     "react-native-in-app-utils": "^5.5.0",
     "react-native-linear-gradient": "^2.1.0",
     "react-native-looped-carousel": "appintheair/react-native-looped-carousel#e30b041",
