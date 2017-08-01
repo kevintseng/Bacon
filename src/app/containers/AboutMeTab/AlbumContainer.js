@@ -66,18 +66,18 @@ export default class AlbumContainer extends Component {
       } else if (res.error) {
         console.log(res.error)
       } else {
-        this.async
-
-
+        this.syncUploadImage()
+        this.SubjectStore.addPhoto(res.uri)
       }
     })
   }
 
-  xx = async () => {
-         const resizedUri = await resizeImage(res.uri, 200, 200, 'JPEG', 80)
-        const filename =  await this.generateFilename()
-        const firebaseRefObj =  await this.firebase.storage().ref('userPhotos/' + this.SubjectStore.uid + '/' + filename + '.jpg');
-         const downloadUrl =  await uploadImage(resizedUri, firebaseRefObj);    
+  syncUploadImage = async () => {
+    const resizedUri = resizeImage(res.uri, 200, 200, 'JPEG', 80)
+    //const filename =  await this.generateFilename()
+    //const firebaseRefObj =  await this.firebase.storage().ref('userPhotos/' + this.SubjectStore.uid + '/' + filename + '.jpg');
+    //const downloadUrl =  await uploadImage(resizedUri, firebaseRefObj) 
+    //console.warn(downloadUrl) 
   }
 
   render() {

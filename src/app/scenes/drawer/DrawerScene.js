@@ -123,7 +123,7 @@ export default class DrawerScene extends Component {
           this.SubjectStore.setCity(snap.val().city)
           this.SubjectStore.setBirthday(snap.val().birthday)
           this.SubjectStore.setBio(snap.val().bio)
-          this.SubjectStore.setPhotos(snap.val().photos)
+          this.SubjectStore.setPhotos(snap.val().photos || [])
           // AboutMeEdit
           this.SignUpInStore.setDisplayName(snap.val().displayName)
           this.SignUpInStore.setTextInputCity(snap.val().city)
