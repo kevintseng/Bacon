@@ -56,7 +56,7 @@ export default class ProfileContainer extends Component {
         age={ this.SubjectStore.age }
         city={ this.SubjectStore.simpleCity }
         bio={ this.SubjectStore.simpleBio }
-        //lang='語言能力'
+        langs={ this.SubjectStore.simpleLangs }
         onPressDisplayName={ this.goToEditDisplayName } 
         onPressCity={ this.goToEditCity }
         onPressBio={ this.goToEditBio }

@@ -14,6 +14,7 @@ export default class SubjectStore {
   @observable bio
   @observable photos
   @observable vip
+  @observable langs
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -32,6 +33,11 @@ export default class SubjectStore {
     this.photoURL = null
     this.photos = new Array
     this.vip = false
+    this.langs = { 
+      中文: false, 
+      英文: false, 
+      韓文: false
+    }
     ///////// 難處理 /////////
     this.sexOrientation = null // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
     // hide function
@@ -94,8 +100,17 @@ export default class SubjectStore {
   }
 
   @computed get simplePhotos() {
-    console.log(this.photos)
     return this.photos.map((ele,index) => ({ key: index, uri: ele }) )
+  }
+
+  @computed get simpleLangs() {
+    const string = Object.keys(this.langs).filter(lang => this.langs[lang] === true).join()
+    //const string = this.langs.filter(ele => ele.check === true).map(ele => ele.key).join()
+    if (string == '') {
+      return '您尚未選擇語言能力，點此選擇語言能力！'
+    } else {
+      return string
+    }
   }
 
   @action setEmail = email => {
@@ -143,6 +158,9 @@ export default class SubjectStore {
     this.vip = vip
   }
 
+  @action setLangs = langs => {
+    this.langs = langs
+  }
   // hide function
 
   @action setHideMeetCute = () => {
