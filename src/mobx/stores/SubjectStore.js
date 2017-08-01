@@ -47,7 +47,7 @@ export default class SubjectStore {
   }
 
   @computed get simplePhotos() {
-    return this.photos.map((ele,index) => ({ key: index, uri: ele }) )
+    return this.photos ? this.photos.map((ele,index) => ({ key: index, uri: ele }) ) : []
   }
 
   @action setPhotoURL = url => {

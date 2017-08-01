@@ -39,9 +39,9 @@ export default class DrawerScene extends Component {
         uploadSignUpDataState: '使用者資料上傳中',
         uploadAvatarState: '使用者大頭照上傳中'
       })
-      this.uploadAvatar(this.SignUpInStore.photoURL) // 非同步上傳相簿
+      this.uploadAvatar() // 非同步上傳相簿
       this.uploadSignUpData() // 非同步上傳資料
-      this.initSubjectStoreFromSignUpInStore() // 同步搬移資料從 SignUpInStore 到 SubjectStore TODO : 改成非同步
+      this.initSubjectStoreFromSignUpInStore()
     } else {
       this.setState({
         uploadSignUpDataState: '資料同步中'
@@ -126,7 +126,7 @@ export default class DrawerScene extends Component {
           this.SubjectStore.setPhotos(snap.val().photos)
           // AboutMeEdit
           this.SignUpInStore.setDisplayName(snap.val().displayName)
-          this.SignUpInStore.setCity(snap.val().city)
+          this.SignUpInStore.setTextInputCity(snap.val().city)
           this.SignUpInStore.setBirthday(snap.val().birthday)
           this.SignUpInStore.setBio(snap.val().bio)
         }
