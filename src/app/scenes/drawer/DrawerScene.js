@@ -56,7 +56,7 @@ export default class DrawerScene extends Component {
     .then(uploadedFile => {
       this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photoURL').set(uploadedFile.downloadUrl)
       .then(() => {
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').set({ 0: uploadedFile.downloadUrl })
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').set({ 1: uploadedFile.downloadUrl })
         .then(() => {
           this.setState({
             uploadAvatarState: '使用者大頭照上傳成功'
@@ -105,6 +105,7 @@ export default class DrawerScene extends Component {
   }
 
   initSubjectStoreFromSignUpInStore = () => {
+    this.SubjectStore.setEmail(this.SignUpInStore.email)
     this.SubjectStore.setPhotoURL(this.SignUpInStore.photoURL)
     this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
     this.SubjectStore.setSexOrientation(this.sexOrientationString())
@@ -117,6 +118,7 @@ export default class DrawerScene extends Component {
     this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
+          this.SubjectStore.setEmail(snap.val().email)
           this.SubjectStore.setPhotoURL(snap.val().photoURL)
           this.SubjectStore.setDisplayName(snap.val().displayName)
           this.SubjectStore.setSexOrientation(snap.val().sexOrientation.slice(-1))
