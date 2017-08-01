@@ -60,22 +60,23 @@ export function resizeImage(uri, width, height, mime, quality) {
     return resizedImageUri;
   })
   .catch(err => {
-    console.error(err.code);
+    console.log(err.code);
   });
 }
 
 export function uploadImage(uri, firebaseRefObj, mime = 'image/jpeg') {
   console.debug('Uploading image: ' + uri);
-  const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-  let uploadBlob = null;
-  const imageRef = firebaseRefObj;
+  const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+  let uploadBlob = null
+  const imageRef = firebaseRefObj
+  console.log(imageRef)
   return fs.readFile(uploadUri, 'base64')
     .then((data) => {
       return Blob.build(data, { type: `${mime};BASE64` });
     })
     .then((blob) => {
       uploadBlob = blob
-      return imageRef.put(blob, { contentType: mime })
+      return imageRef.putFile(blob, { contentType: mime })
     })
     .then(() => {
       uploadBlob.close()
@@ -83,6 +84,6 @@ export function uploadImage(uri, firebaseRefObj, mime = 'image/jpeg') {
     })
     .catch(err => {
       console.error('Error in uploadImage ReadFile ');
-      console.error(err);
+      console.warn(err);
     });
 }

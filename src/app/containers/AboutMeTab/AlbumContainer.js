@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import { ImageStore } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
-import { resizeImage, uploadImage } from '../../../app/Utils'
 
 import Album from '../../views/Album'
 
@@ -18,6 +16,10 @@ const options = {
     skipBackup: true,
     path: 'Bacon'
   },
+}
+
+const metadata = {
+    contentType: 'image/jpeg'
 }
 
 @inject('firebase','SubjectStore') @observer
@@ -66,18 +68,24 @@ export default class AlbumContainer extends Component {
       } else if (res.error) {
         console.log(res.error)
       } else {
-        this.syncUploadImage()
-        this.SubjectStore.addPhoto(res.uri)
+        ImageResizer.createResizedImage(res.uri, 200, 200, 'JPEG', 80) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
+        .then(async (resizedUri) => {
+          this.SubjectStore.addPhoto(resizedUri)
+          const filename = await this.generateFilename()
+          this.firebase.storage().ref('userPhotos/' + this.SubjectStore.uid + '/' + filename + '.jpg').putFile(resizedUri.replace('file:/',''), metadata)
+          .then(uploadedFile => {
+            //success
+            this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos/' + this.SubjectStore.photos.length - 1).set(uploadedFile.downloadUrl)
+            console.log(uploadedFile.downloadUrl)
+          })
+          .catch(err => {
+            console.log(err)
+          });
+        }).catch((err) => {
+          console.log(err)
+        })
       }
     })
-  }
-
-  syncUploadImage = async () => {
-    const resizedUri = resizeImage(res.uri, 200, 200, 'JPEG', 80)
-    //const filename =  await this.generateFilename()
-    //const firebaseRefObj =  await this.firebase.storage().ref('userPhotos/' + this.SubjectStore.uid + '/' + filename + '.jpg');
-    //const downloadUrl =  await uploadImage(resizedUri, firebaseRefObj) 
-    //console.warn(downloadUrl) 
   }
 
   render() {

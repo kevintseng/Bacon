@@ -21,6 +21,7 @@ export default class SubjectStore {
 
   constructor() {
     // user data
+    this.email = null
     this.photoURL = null
     this.uid = null
     this.displayName = '同步中...'
@@ -47,7 +48,11 @@ export default class SubjectStore {
   }
 
   @computed get simplePhotos() {
-    return this.photos ? this.photos.map((ele,index) => ({ key: index, uri: ele }) ) : []
+    return this.photos.map((ele,index) => ({ key: index, uri: ele }) )
+  }
+
+  @action setEmail = email => {
+    this.email = email
   }
 
   @action setPhotoURL = url => {
