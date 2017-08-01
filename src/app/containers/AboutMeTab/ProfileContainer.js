@@ -52,10 +52,10 @@ export default class ProfileContainer extends Component {
         source={ this.SubjectStore.photoURL }
         verityEmail={ this.verityEmail }
         verityPhoto={ this.SubjectStore.verityPhoto }
-        displayName={ this.SubjectStore.displayName }
+        displayName={ this.SubjectStore.simpleDisplayName }
         age={ this.SubjectStore.age }
         city={ this.SubjectStore.simpleCity }
-        bio={ this.SubjectStore.bio }
+        bio={ this.SubjectStore.simpleBio }
         //lang='語言能力'
         onPressDisplayName={ this.goToEditDisplayName } 
         onPressCity={ this.goToEditCity }

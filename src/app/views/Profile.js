@@ -85,7 +85,7 @@ const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio,
       </LinearGradient> 
       <View style={{paddingRight: 10, paddingLeft: 10}}>
         <TouchableOpacity onPress={ onPressBio }>
-          <ListItem title='自我介紹' titleStyle={styles.titleStyle} subtitle={ bio || '您尚未輸入自我介紹，點此輸入自我介紹！'} subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
+          <ListItem title='自我介紹' titleStyle={styles.titleStyle} subtitle={ bio } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
         </TouchableOpacity>
         <TouchableOpacity onPress={ onPressLangs }>
           <ListItem title='語言能力' titleStyle={styles.titleStyle} subtitle={ lang || '您尚未選擇語言能力，點此選擇語言能力！'} subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />

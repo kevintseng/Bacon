@@ -83,11 +83,10 @@ export default class DrawerScene extends Component {
     this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
       // 上傳註冊資料
       // 只有 uid 從 SubjectStore 直接上傳
-      uid: this.SubjectStore.uid, // TODO : 資欄位好像不需要
+      //uid: this.SubjectStore.uid
       // 其他資料從 SignUpInStore 上傳
-      email: this.SignUpInStore.email,
+      //email: this.SignUpInStore.email, // TODO : 一定要有 改成從認證拿
       displayName: this.SignUpInStore.displayName,
-      gender: this.genderString(),
       sexOrientation: this.sexOrientationString(),
       city: this.SignUpInStore.city,
       birthday: this.SignUpInStore.birthday,
@@ -105,32 +104,38 @@ export default class DrawerScene extends Component {
   }
 
   initSubjectStoreFromSignUpInStore = () => {
-    this.SubjectStore.setEmail(this.SignUpInStore.email)
-    this.SubjectStore.setPhotoURL(this.SignUpInStore.photoURL)
     this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
-    this.SubjectStore.setSexOrientation(this.sexOrientationString())
     this.SubjectStore.setCity(this.SignUpInStore.city)
     this.SubjectStore.setBirthday(this.SignUpInStore.birthday)
     this.SubjectStore.setBio(null)
+    ///////// 難處理 /////////
+    this.SubjectStore.setSexOrientation(this.sexOrientationString())
+    this.SubjectStore.setPhotoURL(this.SignUpInStore.photoURL)
+    this.SubjectStore.setPhotos([this.SignUpInStore.photoURL])       
   }
 
   initSubjectStoreFromFirebase = () => {
     this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
-          this.SubjectStore.setEmail(snap.val().email)
+          this.SubjectStore.setDisplayName(snap.val().displayName) // 有可能 null -> '請輸入暱稱...' 
+          this.SubjectStore.setCity(snap.val().city) // 有可能 null -> '請輸入地址...'
+          this.SubjectStore.setBirthday(snap.val().birthday) // 有可能 null -> '請輸入生日...'
+          this.SubjectStore.setBio(snap.val().bio) // 有可能 null -> '您尚未輸入自我介紹，點此輸入自我介紹！'
+          ///////// 難處理 /////////
+          this.SubjectStore.setSexOrientation(snap.val().sexOrientation)
           this.SubjectStore.setPhotoURL(snap.val().photoURL)
-          this.SubjectStore.setDisplayName(snap.val().displayName)
-          this.SubjectStore.setSexOrientation(snap.val().sexOrientation.slice(-1))
-          this.SubjectStore.setCity(snap.val().city)
-          this.SubjectStore.setBirthday(snap.val().birthday)
-          this.SubjectStore.setBio(snap.val().bio)
           this.SubjectStore.setPhotos(snap.val().photos || [])
           // AboutMeEdit
           this.SignUpInStore.setDisplayName(snap.val().displayName)
           this.SignUpInStore.setTextInputCity(snap.val().city)
           this.SignUpInStore.setBirthday(snap.val().birthday)
           this.SignUpInStore.setBio(snap.val().bio)
+        } else {
+          this.SubjectStore.setDisplayName(null) //  null -> '請輸入暱稱...' 
+          this.SubjectStore.setCity(null) // 有可能 null -> '請輸入地址...'
+          this.SubjectStore.setBirthday(null) // 有可能 null -> '請輸入生日...'
+          this.SubjectStore.setBio(null) // 有可能 null -> '您尚未輸入自我介紹，點此輸入自我介紹！'
         }
         this.setState({
           uploadSignUpDataState: '資料同步成功'
@@ -139,7 +144,7 @@ export default class DrawerScene extends Component {
         this.setState({
           uploadSignUpDataState: '資料同步失敗'
         })
-        console.log(error)
+        console.warn(error)
       })
   }
 
