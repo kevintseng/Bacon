@@ -16,6 +16,7 @@ export default class WelcomeScene extends Component {
     this.SignUpInStore.setEmailStatus(null)
     this.SignUpInStore.setPasswordStatus(null)
     this.SignUpInStore.setDisplayNameStatus(null)
+    this.SignUpInStore.setFailureStatus(null)
   }
 
   _goToSignUp = () => {
