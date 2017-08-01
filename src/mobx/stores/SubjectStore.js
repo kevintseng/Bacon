@@ -31,16 +31,12 @@ export default class SubjectStore {
     this.city = '同步中...'
     this.birthday = '同步中...'
     this.bio = '同步中...'
-    this.photoURL = null
-    this.photos = new Array
-    this.vip = false
-    this.langs = { 
-      中文: false, 
-      英文: false, 
-      韓文: false
-    }
-    this.interests = ['Bacon']
+    this.langs = '同步中...'
+    this.interests = '同步中...'
+    this.photoURL = 'https://firebasestorage.googleapis.com/v0/b/bacon-dev-tsao.appspot.com/o/loadingIcon.gif?alt=media&token=ec53a3bb-0c32-4590-8621-ba9466e85d02'
     ///////// 難處理 /////////
+    this.vip = false
+    this.photos = new Array
     this.sexOrientation = null // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
     // hide function
     this.hideMeetCute = false
@@ -51,7 +47,7 @@ export default class SubjectStore {
 
   // user data
 
-  @computed get simpleDisplayName() {
+  @computed get profileDisplayName() {
     if (this.displayName === '同步中...') {
       return '同步中...'
     } else if (this.displayName === '同步失敗...'){
@@ -64,7 +60,7 @@ export default class SubjectStore {
     //return this.birthday ? calculateAge(this.birthday) : '同步中...'
   }
 
-  @computed get age() {
+  @computed get profileBirthday() {
     if (this.birthday === '同步中...') {
       return '同步中...'
     } else if (this.birthday === '同步失敗...'){
@@ -77,7 +73,7 @@ export default class SubjectStore {
     //return this.birthday ? calculateAge(this.birthday) : '同步中...'
   }
 
-  @computed get simpleCity() {
+  @computed get profileCity() {
     if (this.city === '同步中...') {
       return '同步中...'
     } else if (this.city === '同步失敗...'){
@@ -89,7 +85,7 @@ export default class SubjectStore {
     }
   }
 
-  @computed get simpleBio() {
+  @computed get profileBio() {
     if (this.bio === '同步中...') {
       return '同步中...'
     } else if (this.bio === '同步失敗...'){
@@ -101,23 +97,40 @@ export default class SubjectStore {
     }
   }
 
-  @computed get simplePhotos() {
-    return this.photos.map((ele,index) => ({ key: index, uri: ele }) )
+  @computed get profileLangs() {
+    if (this.langs === '同步中...') {
+      return '同步中...'
+    } else if (typeof(this.langs) === 'object'){
+      const string = Object.keys(this.langs).filter(lang => this.langs[lang] === true).join()
+      if (string == '') {
+        return '您尚未選擇語言能力，點此選擇語言能力！'
+      } else {
+        return string
+      }
+    }
   }
 
-  @computed get simpleLangs() {
-    const string = Object.keys(this.langs).filter(lang => this.langs[lang] === true).join()
-    //const string = this.langs.filter(ele => ele.check === true).map(ele => ele.key).join()
-    if (string == '') {
-      return '您尚未選擇語言能力，點此選擇語言能力！'
-    } else {
-      return string
+  @computed get profileInterests() {
+    if (this.interests === '同步中...') {
+      return '同步中...'
+    } else if (typeof(this.interests) === 'object'){
+      if (this.interests.length === 0) {
+        return '您尚未編輯興趣愛好，請點此編輯興趣愛好！'
+      } else {
+        return true
+      }
     }
+  }
+  // FlatList
+  @computed get simplePhotos() {
+    return this.photos.map((ele,index) => ({ key: index, uri: ele }) )
   }
 
   @computed get interestsFlatList() {
     return this.interests.map(ele => ({key: ele}))
   }
+
+  // action
 
   @action setEmail = email => {
     this.email = email
