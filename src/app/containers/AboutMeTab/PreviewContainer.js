@@ -19,7 +19,7 @@ export default class PreviewContainer extends Component {
     return(
       <View style={{flex: 1}}>  
         <CourtContainer/>
-        <View style={{position: 'absolute',bottom: 50,alignSelf: 'center'}}>
+        <View style={{position: 'absolute',bottom: 30, alignSelf: 'center'}}>
           <InfosContainer/>  
         </View>
       </View>

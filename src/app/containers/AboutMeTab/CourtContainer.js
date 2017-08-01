@@ -1,58 +1,23 @@
 import React, { Component } from 'react'
+import { Dimensions, Image, View, Text, TouchableOpacity } from 'react-native'
 import { inject, observer } from 'mobx-react'
-import { Actions } from 'react-native-router-flux'
+import ImageZoom from 'react-native-image-pan-zoom'
 
-import Court from '../../views/Court'
- 
-const cards = [
-  { id: 2, uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg' },
-  { id: 3, age: 29, uri: 'https://i.imgur.com/FHxVpN4.jpg' },
-]
+const { width, height } = Dimensions.get('window')
 
-@inject("SignUpInStore") @observer
+@inject('SubjectStore') @observer
 export default class CourtContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
-    this.state = {
-      album: false
-    }
-  }
-
-  nope = () => {
-    //
-  }
-
-  yup = () => {
-    //
-  }
-
-  openAlbum = () => {
-    this.setState({
-      album: true
-    })
-  }
-
-  closeAlbum = () => {
-    this.setState({
-      album: false
-    })
+    this.SubjectStore = this.props.SubjectStore
   }
 
   render() {
     return(
-      <Court
-        cards={ cards }
-        //rightIcon={require('../../../images/btn_meet_like.png')}
-        //leftIcon={require('../../../images/btn_meet_dislike.png')}
-        album={ this.state.album }
-        //photos={} 
-        closeAlbum={ this.closeAlbum }
-        openAlbum={ this.openAlbum }
-        nope={ this.nope }
-        yup={ this.yup }
-      />
+    <View>
+      <Image style={{width, height: width, borderRadius: 10}} source={{uri: this.SubjectStore.photoURL}}/>
+    </View>
     )
   }
 }

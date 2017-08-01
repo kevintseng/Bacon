@@ -16,6 +16,8 @@ export default class SubjectStore {
   @observable vip
   @observable langs
   @observable interests
+  @observable emailVerified
+  @observable photoVerified
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -34,6 +36,8 @@ export default class SubjectStore {
     this.langs = '同步中...'
     this.interests = '同步中...'
     this.photoURL = 'https://firebasestorage.googleapis.com/v0/b/bacon-dev-tsao.appspot.com/o/loadingIcon.gif?alt=media&token=ec53a3bb-0c32-4590-8621-ba9466e85d02'
+    this.emailVerified = true
+    this.photoVerified = false
     ///////// 難處理 /////////
     this.vip = false
     this.photos = new Array
