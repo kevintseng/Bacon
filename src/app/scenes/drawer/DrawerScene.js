@@ -19,13 +19,13 @@ const drawerStyles = {
   }
 }
 
-const langs =  { 
+const DefaultLangs =  { 
   中文: false, 
   英文: false, 
   韓文: false
 }
 
-const interests = ['Bacon']
+const DefaultInterests = []
 
 @inject('firebase','SignUpInStore','SubjectStore') @observer
 export default class DrawerScene extends Component {
@@ -114,9 +114,11 @@ export default class DrawerScene extends Component {
     this.SubjectStore.setBirthday(this.SignUpInStore.birthday)
     this.SubjectStore.setBio(null)
     this.SubjectStore.setPhotoURL(this.SignUpInStore.photoURL)
-    this.SubjectStore.setPhotos([this.SignUpInStore.photoURL])       
-    ///////// 難處理 /////////
-    this.SubjectStore.setSexOrientation(this.sexOrientationString())
+    this.SubjectStore.setPhotos([this.SignUpInStore.photoURL]) 
+    this.SubjectStore.setLangs(DefaultLangs)  
+    this.SubjectStore.setInterests(DefaultInterests)    
+    this.SubjectStore.setVip(false) ///////// 難處理 /////////
+    this.SubjectStore.setSexOrientation(this.sexOrientationString()) ///////// 難處理 /////////
   }
 
   initSubjectStoreFromFirebase = () => {
@@ -128,23 +130,25 @@ export default class DrawerScene extends Component {
           this.SubjectStore.setCity(snap.val().city) // 有可能 null -> '請輸入地址...'
           this.SubjectStore.setBirthday(snap.val().birthday) // 有可能 null -> '請輸入生日...'
           this.SubjectStore.setBio(snap.val().bio) // 有可能 null -> '您尚未輸入自我介紹，點此輸入自我介紹！'
+          this.SubjectStore.setLangs(snap.val().langs || DefaultLangs) // 有可能 null -> 初始選單
+          this.SubjectStore.setInterests(snap.val().interests || DefaultInterests) // 有可能 null -> 初始選單
           this.SubjectStore.setPhotoURL(snap.val().photoURL) // 有可能 null -> 灰色大頭照
-          this.SubjectStore.setPhotos(snap.val().photos || new Array) // 有可能 null -> 必須ㄧ定要是 Array
-          this.SubjectStore.setLangs(snap.val().langs || langs) // 有可能 null -> 初始選單
-          this.SubjectStore.setInterests(snap.val().interests || interests) // 有可能 null -> 初始選單
           ///////// 難處理 /////////
-          this.SubjectStore.setVip(snap.val().vip || false) // 有可能 null -> fasle
-          this.SubjectStore.setSexOrientation(snap.val().sexOrientation) // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
-          // AboutMeEdit
-          this.SignUpInStore.setDisplayName(snap.val().displayName)
-          this.SignUpInStore.setTextInputCity(snap.val().city)
-          this.SignUpInStore.setBirthday(snap.val().birthday)
-          this.SignUpInStore.setBio(snap.val().bio)
+          this.SubjectStore.setPhotos(snap.val().photos || new Array) // 有可能 null -> 必須ㄧ定要是 Array
+          this.SubjectStore.setVip(snap.val().vip || false) ///////// 難處理 /////////
+          this.SubjectStore.setSexOrientation(snap.val().sexOrientation || null) // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
         } else {
           this.SubjectStore.setDisplayName(null) //  null -> '請輸入暱稱...' 
           this.SubjectStore.setCity(null) // 有可能 null -> '請輸入地址...'
           this.SubjectStore.setBirthday(null) // 有可能 null -> '請輸入生日...'
           this.SubjectStore.setBio(null) // 有可能 null -> '您尚未輸入自我介紹，點此輸入自我介紹！'
+          this.SubjectStore.setLangs(DefaultLangs) // 有可能 null -> 初始選單
+          this.SubjectStore.setInterests(DefaultInterests) // 有可能 null -> 初始選單
+          this.SubjectStore.setPhotoURL(null) // 有可能 null -> 灰色大頭照
+          ///////// 難處理 /////////
+          this.SubjectStore.setPhotos(new Array) // 有可能 null -> 必須ㄧ定要是 Array
+          this.SubjectStore.setVip(false) ///////// 難處理 /////////
+          this.SubjectStore.setSexOrientation(null) // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
         }
         this.setState({
           uploadSignUpDataState: '資料同步成功'

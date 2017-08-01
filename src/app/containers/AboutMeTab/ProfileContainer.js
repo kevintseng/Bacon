@@ -54,11 +54,12 @@ export default class ProfileContainer extends Component {
         source={ this.SubjectStore.photoURL }
         verityEmail={ this.verityEmail }
         verityPhoto={ this.SubjectStore.verityPhoto }
-        displayName={ this.SubjectStore.simpleDisplayName }
-        age={ this.SubjectStore.age }
-        city={ this.SubjectStore.simpleCity }
-        bio={ this.SubjectStore.simpleBio }
-        langs={ this.SubjectStore.simpleLangs }
+        displayName={ this.SubjectStore.profileDisplayName }
+        age={ this.SubjectStore.profileBirthday }
+        city={ this.SubjectStore.profileCity }
+        bio={ this.SubjectStore.profileBio }
+        langs={ this.SubjectStore.profileLangs }
+        interests={ this.SubjectStore.profileInterests }
         onPressDisplayName={ this.goToEditDisplayName } 
         onPressCity={ this.goToEditCity }
         onPressBio={ this.goToEditBio }
