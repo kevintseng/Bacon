@@ -49,14 +49,14 @@ export default class DrawerScene extends Component {
         uploadAvatarState: '使用者大頭照上傳中'
       })
       this.uploadAvatar() // 非同步上傳相簿
-      //this.uploadLocation() // 非同步上傳地理位置
+      this.uploadLocation() // 非同步上傳地理位置
       this.uploadSignUpData() // 非同步上傳資料
       this.initSubjectStoreFromSignUpInStore()
     } else {
       this.setState({
         uploadSignUpDataState: '資料同步中'
       })
-      //this.uploadLocation() // 非同步上傳地理位置
+      this.uploadLocation() // 非同步上傳地理位置
       this.initSubjectStoreFromFirebase() // 非同步抓取網路資料到 SubjectStore
     }
   }
@@ -138,7 +138,6 @@ export default class DrawerScene extends Component {
     this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
-          console.log(snap.val().photos.length)
           this.SubjectStore.setDisplayName(snap.val().displayName) // 有可能 null -> '請輸入暱稱...' 
           this.SubjectStore.setCity(snap.val().city) // 有可能 null -> '請輸入地址...'
           this.SubjectStore.setBirthday(snap.val().birthday) // 有可能 null -> '請輸入生日...'
