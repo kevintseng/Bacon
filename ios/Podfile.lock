@@ -69,9 +69,9 @@ PODS:
   - React/cxxreact_legacy (0.46.4):
     - React/jschelpers_legacy
   - React/jschelpers_legacy (0.46.4)
-  - RNFirebase (2.0.4):
+  - RNFirebase (2.0.5):
     - React
-  - RNVectorIcons (4.2.0):
+  - RNVectorIcons (4.3.0):
     - React
   - Yoga (0.46.4.React)
 
@@ -116,8 +116,8 @@ SPEC CHECKSUMS:
   nanopb: 22bc080fa3955e2116b6ff3ee6c2cb3c15ab97cb
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   React: 596d8774642d10fea20b1f24cc591fcf633f73ad
-  RNFirebase: 3e5a3ff431c5c8a997152f5f19d354e1ca66f65d
-  RNVectorIcons: 6d98d83e944d15014d8071dd9819beb094c61133
+  RNFirebase: 82e7f17ad1423dde310c9b6c8906353858e5e962
+  RNVectorIcons: a58392f365a38ffd3a070bf7449c0145bd0814e1
   Yoga: 98e24da91afe33bb43fedaf27dafede269c04fe8
 
 PODFILE CHECKSUM: c8c75e1b688f6a9cd516fc1d64baadd99d1159ca
