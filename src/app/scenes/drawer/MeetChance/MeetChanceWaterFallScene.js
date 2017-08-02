@@ -46,7 +46,7 @@ export default class MeetChanceWaterFallScene extends Component {
     const geoFire = new GeoFire(this.firebase.database().ref("/user_locations/"))
     const geoQuery = geoFire.query({
       center: [this.SubjectStore.latitude, this.SubjectStore.longitude],
-      radius: 300
+      radius: 3000
     })
 
     geoQuery.on("key_entered", (key, location, distance) => {
@@ -56,7 +56,8 @@ export default class MeetChanceWaterFallScene extends Component {
             const joined = this.state.preyLists.concat({
               key: key,
               displayName: snap.val().displayName,
-              photoURL: snap.val().photoURL
+              photoURL: snap.val().photoURL,
+              distance: distance
             })
             this.setState({ preyLists: joined })
           }
@@ -89,7 +90,7 @@ export default class MeetChanceWaterFallScene extends Component {
         numColumns={3}
         renderItem={({item}) => 
         <Cookie  
-          name={item.displayName} 
+          name={ item.distance } 
           photoURL={ item.photoURL }
           onPress={ item.onPressButton } 
         /> } 
