@@ -186,7 +186,7 @@ export default class SubjectStore {
 
   @action addPhoto = url => {
     this.photos.push(url)
-    this.photos = this.photos.slice()
+    //this.photos = this.photos.slice()
   }
 
   @action setVip = vip => {
