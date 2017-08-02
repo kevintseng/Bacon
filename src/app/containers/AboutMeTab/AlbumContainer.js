@@ -69,7 +69,7 @@ export default class AlbumContainer extends Component {
       } else if (res.error) {
         console.log(res.error)
       } else {
-        ImageResizer.createResizedImage(res.uri, 600, 600, 'JPEG', 80) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
+        ImageResizer.createResizedImage(res.uri, 1200, 1200, 'JPEG', 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
         .then((resizedUri) => {
           this.SubjectStore.addPhoto(resizedUri)
           UUIDGenerator.getRandomUUID((uuid) => {

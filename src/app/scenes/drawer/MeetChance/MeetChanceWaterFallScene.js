@@ -25,7 +25,7 @@ const styles = {
   }
 }
 
-@inject("firebase","SubjectStore") @observer
+@inject('firebase','SubjectStore') @observer
 export default class MeetChanceWaterFallScene extends Component {
 
   constructor(props) {
@@ -33,7 +33,7 @@ export default class MeetChanceWaterFallScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.state = {
-      preyLists: new Array
+      preyLists: []
     }
   }
 
@@ -46,50 +46,25 @@ export default class MeetChanceWaterFallScene extends Component {
     const geoFire = new GeoFire(this.firebase.database().ref("/user_locations/"))
     const geoQuery = geoFire.query({
       center: [this.SubjectStore.latitude, this.SubjectStore.longitude],
-      radius: 30
+      radius: 300
     })
-    geoQuery.on('ready', () => {
-      // 先執行一次
-      // 之後每次有其他hook執行完後，再跟著執行
-      console.log('ready')
-      }
-    )
 
-    geoQuery.on("key_entered", function(key, location, distance) {
-      console.log(key + " entered query at " + location + " (" + distance + " km from center)")
-    })
-    //console.log(this.SubjectStore.latitude)
-    //console.log(this.SubjectStore.longitude)
-    //const query = new GeoFire(this.firebase.database().ref("/user_locations/")).query({
-    //  center: [latitude, longitude],
-    //  radius: 1000
-    //})
-/*
-
-
-    query.on("key_entered", (uid) => {
-      if (!(uid === this.SubjectStore.uid)){
-        this.state.preyLists.push({key: uid})
-      }
-    })
-    query.on("ready", () => {
-      this.state.preyLists.forEach((item) => 
-        {
-          this.firebase.database().ref('users/' + item.key).once('value').then(
-            (snap) => { 
-              if (!(snap.val() == null)){
-                item.displayName = snap.val().displayName
-                item.photoURL = snap.val().photoURL
-                item.onPressButton = this.onPressButton
-              } 
-            }
-          ).catch((error) => {
-            console.warn(error)
-          }) 
+    geoQuery.on("key_entered", (key, location, distance) => {
+      this.firebase.database().ref('users/' + key).once('value').then(
+        snap => { 
+          if (snap.val()){
+            const joined = this.state.preyLists.concat({
+              key: key,
+              displayName: snap.val().displayName,
+              photoURL: snap.val().photoURL
+            })
+            this.setState({ preyLists: joined })
+          }
         }
-      )
+      ).catch( err => {
+        console.log(err)
+      })
     })
-*/
   }
 
   goToAboutMeTab = () => {
@@ -110,7 +85,7 @@ export default class MeetChanceWaterFallScene extends Component {
     return(
     <View style={{flex:1}}>
       <FlatList
-        data={ data } 
+        data={ this.state.preyLists } 
         numColumns={3}
         renderItem={({item}) => 
         <Cookie  
