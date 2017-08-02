@@ -5,6 +5,8 @@ useStrict(true)
 
 export default class SubjectStore {
   // user data
+  @observable latitude
+  @observable longitude
   @observable photoURL
   @observable uid
   @observable displayName
@@ -29,6 +31,8 @@ export default class SubjectStore {
     this.uid = null // ㄧ登入一定有
     this.email = null // ㄧ登入一定有
 
+    this.latitude = 25.057085, // 巷曲家山東餃子館
+    this.longitude = 121.545684 // 巷曲家山東餃子館
     this.displayName = '同步中...'
     this.city = '同步中...'
     this.birthday = '同步中...'
@@ -135,6 +139,14 @@ export default class SubjectStore {
   }
 
   // action
+
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
+  }
 
   @action setEmail = email => {
     this.email = email

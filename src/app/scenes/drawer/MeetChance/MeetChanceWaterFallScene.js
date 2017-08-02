@@ -2,12 +2,10 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import { View, FlatList, Dimensions } from 'react-native'
+import GeoFire from 'geofire'
 
 import Wave from '../../../views/Wave/Wave'
 import Cookie from '../../../views/Cookie/Cookie'
-import { Avatar } from 'react-native-elements'
-
-//import GeoFire from 'geofire'
 
 const data = [
   {key:1 ,displayName: 'DEDED'},
@@ -27,7 +25,6 @@ const styles = {
   }
 }
 
-
 @inject("firebase","SubjectStore") @observer
 export default class MeetChanceWaterFallScene extends Component {
 
@@ -41,17 +38,35 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   componentWillMount() {
-    //this.fetchPreyListsByMeetChance()
+    this.fetchMeetChance()
     Actions.refresh({ key: 'Drawer', open: false })
   }
-/*
-  fetchPreyListsByMeetChance = () => {
-    const longitude = 120.7120023
-    const latitude = 22.6158015
-    const query = new GeoFire(this.firebase.database().ref("/user_locations/")).query({
-      center: [latitude, longitude],
-      radius: 1000
+
+  fetchMeetChance = () => {
+    const geoFire = new GeoFire(this.firebase.database().ref("/user_locations/"))
+    const geoQuery = geoFire.query({
+      center: [this.SubjectStore.latitude, this.SubjectStore.longitude],
+      radius: 30
     })
+    geoQuery.on('ready', () => {
+      // 先執行一次
+      // 之後每次有其他hook執行完後，再跟著執行
+      console.log('ready')
+      }
+    )
+
+    geoQuery.on("key_entered", function(key, location, distance) {
+      console.log(key + " entered query at " + location + " (" + distance + " km from center)")
+    })
+    //console.log(this.SubjectStore.latitude)
+    //console.log(this.SubjectStore.longitude)
+    //const query = new GeoFire(this.firebase.database().ref("/user_locations/")).query({
+    //  center: [latitude, longitude],
+    //  radius: 1000
+    //})
+/*
+
+
     query.on("key_entered", (uid) => {
       if (!(uid === this.SubjectStore.uid)){
         this.state.preyLists.push({key: uid})
@@ -74,8 +89,9 @@ export default class MeetChanceWaterFallScene extends Component {
         }
       )
     })
-  }
 */
+  }
+
   goToAboutMeTab = () => {
     Actions.aboutme({type: 'res'})
   }
