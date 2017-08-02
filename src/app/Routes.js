@@ -27,7 +27,7 @@ import MeetCuteCourtScene from './scenes/drawer/MeetCute/MeetCuteCourtScene'
 import AboutMeTabScene from './scenes/drawer/AboutMe/AboutMeTabScene'
 import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
 // MeetChance
-//import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
+import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
 //import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
 // Fate
 import FateTabScene from './scenes/drawer/Fate/FateTabScene'
@@ -118,6 +118,10 @@ export default class Routes extends Component {
                 <Scene key='SettingHide' title='設定' renderBackButton={ this.baconArrow } component={ SettingHideScene } />
               </Scene>
               
+              <Scene key='meetchance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } component={ MeetChanceWaterFallScene } />
+              </Scene>
+
               <Scene key='meetcute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } component={ MeetCuteCourtScene } />
               </Scene>
