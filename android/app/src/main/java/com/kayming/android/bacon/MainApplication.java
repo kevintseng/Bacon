@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.reactlibrary.RNUUIDGeneratorPackage;
-import com.idehub.Billing.InAppBillingBridgePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -33,7 +32,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNUUIDGeneratorPackage(),
-            new InAppBillingBridgePackage(),
             new LinearGradientPackage(),
             new ImageResizerPackage(),
             new ImagePickerPackage(),
