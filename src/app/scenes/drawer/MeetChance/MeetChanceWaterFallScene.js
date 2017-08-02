@@ -49,23 +49,44 @@ export default class MeetChanceWaterFallScene extends Component {
       radius: 3000
     })
 
-    geoQuery.on("key_entered", (key, location, distance) => {
-      this.firebase.database().ref('users/' + key).once('value').then(
+    geoQuery.on("key_entered", (uid, location, distance) => {
+      this.firebase.database().ref('users/' + uid).on('value',snap => { 
+        if (snap.val()){
+          const joined = this.state.preyLists.concat({
+            key: uid,
+            displayName: snap.val().displayName,
+            photoURL: snap.val().photoURL,
+            distance: distance
+          }).sort((a, b) => {
+            return a.distance > b.distance ? 1 : -1;
+          })
+          this.setState({ preyLists: joined })
+        }
+      },err => { console.log(err)})
+    })
+
+    geoQuery.on("key_moved", (uid, location, distance) => {
+      this.firebase.database().ref('users/' + uid).once('value').then(
         snap => { 
-          if (snap.val()){
-            const joined = this.state.preyLists.concat({
-              key: key,
-              displayName: snap.val().displayName,
-              photoURL: snap.val().photoURL,
-              distance: distance
-            })
-            this.setState({ preyLists: joined })
-          }
+          //this.state.preyLists.find(ele => ele.key == uid).distance = distance
+          //this.setState({ preyLists: joined })
+        }
+      )
+    })
+
+
+    geoQuery.on("key_exited", (uid, location, distance) => {
+      this.firebase.database().ref('users/' + uid).off().then(() => {
+          const removed = this.state.preyLists.filter(ele => !(ele.key == uid)).sort((a, b) => {
+            return a.distance > b.distance ? 1 : -1
+          })
+          this.setState({ preyLists: removed })
         }
       ).catch( err => {
         console.log(err)
       })
     })
+
   }
 
   goToAboutMeTab = () => {
@@ -87,7 +108,7 @@ export default class MeetChanceWaterFallScene extends Component {
     <View style={{flex:1}}>
       <FlatList
         data={ this.state.preyLists } 
-        numColumns={3}
+        numColumns={1}
         renderItem={({item}) => 
         <Cookie  
           name={ item.distance } 

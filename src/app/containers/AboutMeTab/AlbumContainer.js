@@ -58,9 +58,9 @@ export default class AlbumContainer extends Component {
     alert('openPicOptions')
   }
 
-  generateFilename = () => {
-    return this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').push().key
-  }
+  //generateFilename = () => {
+  //  return this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').push().key
+  //}
 
   openPicChoose = () => {
     ImagePicker.showImagePicker(options, (res) => {
