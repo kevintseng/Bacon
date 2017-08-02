@@ -4,6 +4,7 @@ import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
 import { Dimensions } from 'react-native'
 import GeoFire from 'geofire'
+import Geolocation from  'Geolocation'
 
 import Sider from '../../views/Sider/Sider'
 
@@ -91,13 +92,22 @@ export default class DrawerScene extends Component {
   }
 
   uploadLocation = () => {
-    const query = this.firebase.database().ref('/user_locations/')
-    const geoFire = new GeoFire(query)
-    geoFire.set(this.SubjectStore.uid, [25.001542,121.497097 ]).then(() => {
-      console.log("Provided key has been added to GeoFire");
-      }, (error) => {
-      console.log("Error: " + error);
-    })    
+    Geolocation.getCurrentPosition(
+      location => {
+        const query = this.firebase.database().ref('/user_locations/')
+        const geoFire = new GeoFire(query)
+        geoFire.set(this.SubjectStore.uid,[location.coords.longitude,location.coords.latitude ])
+          .then(() => {
+            console.log("獲取位置成功並上傳Geolocation");
+          }, error => {
+            console.log("上傳位置失敗：" + error);
+          }
+        )    
+      },
+      error => {
+        console.log("獲取位置失敗："+ error)
+      }
+    )
   }
 
   uploadSignUpData = () => {
