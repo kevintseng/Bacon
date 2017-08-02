@@ -96,15 +96,15 @@ export default class DrawerScene extends Component {
       location => {
         const query = this.firebase.database().ref('/user_locations/')
         const geoFire = new GeoFire(query)
-        geoFire.set(this.SubjectStore.uid,[location.coords.latitude,location.coords.longitude ])
+        geoFire.set(this.SubjectStore.uid,[location.coords.latitude,location.coords.longitude])
           .then(() => {
-            console.log("獲取位置成功並上傳Geolocation");
+            this.SubjectStore.setLatitude(location.coords.latitude) 
+            this.SubjectStore.setLongitude(location.coords.longitude)
+            console.log("獲取位置成功並上傳"+[location.coords.latitude,location.coords.longitude]);
           }, error => {
             console.log("上傳位置失敗：" + error);
           }
         )  
-        this.SubjectStore.setLatitude(location.coords.latitude) 
-        this.SubjectStore.setLongitude(location.coords.longitude)
       },
       error => {
         console.log("獲取位置失敗："+ error)
