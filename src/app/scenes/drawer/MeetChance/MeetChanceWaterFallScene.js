@@ -34,7 +34,7 @@ export default class MeetChanceWaterFallScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.MeetChanceStore = this.props.MeetChanceStore
     this.state = {
-      preys: []
+      preys: [{key: 1, distance: 0},{key: 2, distance: 0},{key: 3, distance: 0},{key: 4, distance: 0},{key: 5, distance: 0},{key: 6, distance: 0},{key: 7, distance: 0},{key: 8, distance: 0},{key: 9, distance: 0}]
     }
   }
 
@@ -48,19 +48,22 @@ export default class MeetChanceWaterFallScene extends Component {
 
   fetchMeetChance = () => {
     this.MeetChanceStore.sortPreyList.forEach( (ele,index) => {
-      this.firebase.database().ref('users/' + ele.uid).on('value',snap => { 
-        if (snap.val()){
+      this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
+        if (snap.val()) {
           this.state.preys[index] = {
             key: ele.uid,
             displayName: snap.val().displayName,
             photoURL: snap.val().photoURL,
-            distance: ele.distance            
+            distance: ele.distance               
           }
           this.setState({
             preys: this.state.preys
-          })
+          }) 
         }
-      },err => { console.log(err)})      
+      })
+      .catch(
+        err => { console.log(err) }     
+      )    
     })
   }
 /*
