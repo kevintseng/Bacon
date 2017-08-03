@@ -9,10 +9,21 @@ export default class ControlStore {
   }
 
   @action initialize = () => {
-    this.authenticateIndicator = null
+    this.authenticateIndicator = null // 註冊 登入
+    this.avatarUploadIndicator = null
+    this.signUpDataUploadIndicator = null
+    this.syncIndicator = null
   }
 
   @action setAuthenticateIndicator = str => {
     this.authenticateIndicator = str
+  }
+
+  @action setAvatarUploadIndicator = str => {
+    this.avatarUploadIndicator = str
+  }
+
+  @action setSignUpDataUploadIndicator = str => {
+    this.signUpDataUploadIndicator = str
   }
 }
