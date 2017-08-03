@@ -12,6 +12,7 @@ export default class App extends Component {
         firebase={ AppInitial.firebase } 
         SignUpInStore={ AppInitial.SignUpInStore } 
         SubjectStore={ AppInitial.SubjectStore }
+        MeetChanceStore={ AppInitial.MeetChanceStore }
         >
         <Routes/>
       </Provider>

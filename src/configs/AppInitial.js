@@ -1,5 +1,6 @@
 import RNFirebase from 'react-native-firebase'
 // Stores Classes
+import MeetChanceStore from "../mobx/stores/MeetChanceStore"
 import SignUpInStore from "../mobx/stores/SignUpInStore"
 import SubjectStore from "../mobx/stores/SubjectStore"
 
@@ -12,6 +13,7 @@ const AppInitial = {
     this.firebase = RNFirebase.initializeApp(FirebaseConfig)
     this.SignUpInStore = new SignUpInStore(this.firebase)
     this.SubjectStore = new SubjectStore()
+    this.MeetChanceStore = new MeetChanceStore()
     return this
   }
 }.init()

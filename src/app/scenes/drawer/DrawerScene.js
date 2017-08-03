@@ -29,7 +29,7 @@ const DefaultLangs =  {
 
 const DefaultInterests = []
 
-@inject('firebase','SignUpInStore','SubjectStore') @observer
+@inject('firebase','SignUpInStore','SubjectStore','MeetChanceStore') @observer
 export default class DrawerScene extends Component {
 
   constructor(props) {
@@ -37,6 +37,7 @@ export default class DrawerScene extends Component {
     this.firebase = this.props.firebase
     this.SignUpInStore = this.props.SignUpInStore
     this.SubjectStore = this.props.SubjectStore
+    this.MeetChanceStore = this.props.MeetChanceStore
     this.state = {
       uploadSignUpDataState: null,
       uploadAvatarState: null
@@ -94,22 +95,40 @@ export default class DrawerScene extends Component {
   uploadLocation = () => {
     Geolocation.getCurrentPosition(
       location => {
-        const query = this.firebase.database().ref('/user_locations/')
-        const geoFire = new GeoFire(query)
+        const geoFire = new GeoFire(this.firebase.database().ref('/user_locations/'))
+        const geoQuery = geoFire.query({
+          center: [location.coords.latitude,location.coords.longitude],
+          radius: 3000
+        })
+        this.grepMeetChance(geoQuery)
         geoFire.set(this.SubjectStore.uid,[location.coords.latitude,location.coords.longitude])
           .then(() => {
-            this.SubjectStore.setLatitude(location.coords.latitude) 
-            this.SubjectStore.setLongitude(location.coords.longitude)
             console.log("獲取位置成功並上傳"+[location.coords.latitude,location.coords.longitude]);
           }, error => {
             console.log("上傳位置失敗：" + error);
           }
-        )  
+        ) 
+
       },
       error => {
         console.log("獲取位置失敗："+ error)
       }
     )
+  }
+
+  grepMeetChance = (geoQuery) => {
+    geoQuery.on("key_entered", (uid, location, distance) => {
+      //
+      this.MeetChanceStore.addPrey({uid: uid, distance: distance})
+    })
+
+    geoQuery.on("key_moved", (uid, location, distance) => {
+      this.MeetChanceStore.updatePrey(uid,distance)
+    })
+
+    geoQuery.on("key_exited", (uid, location, distance) => {
+      this.MeetChanceStore.removePrey(uid)
+    })
   }
 
   uploadSignUpData = () => {

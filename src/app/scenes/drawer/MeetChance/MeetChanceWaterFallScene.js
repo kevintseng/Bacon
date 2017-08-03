@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import { View, FlatList, Dimensions } from 'react-native'
-import GeoFire from 'geofire'
+//import update from 'react-addons-update'
 
 import Wave from '../../../views/Wave/Wave'
 import Cookie from '../../../views/Cookie/Cookie'
@@ -25,23 +25,45 @@ const styles = {
   }
 }
 
-@inject('firebase','SubjectStore') @observer
+@inject('firebase','SubjectStore','MeetChanceStore') @observer
 export default class MeetChanceWaterFallScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    this.MeetChanceStore = this.props.MeetChanceStore
     this.state = {
-      preyLists: []
+      preys: []
     }
   }
 
   componentWillMount() {
-    this.fetchMeetChance()
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
+  componentDidMount() {
+    //this.fetchMeetChance()
+  }
+
+  fetchMeetChance = () => {
+    this.MeetChanceStore.sortPreyList.forEach( (ele,index) => {
+      this.firebase.database().ref('users/' + ele.uid).on('value',snap => { 
+        if (snap.val()){
+          this.state.preys[index] = {
+            key: ele.uid,
+            displayName: snap.val().displayName,
+            photoURL: snap.val().photoURL,
+            distance: ele.distance            
+          }
+          this.setState({
+            preys: this.state.preys
+          })
+        }
+      },err => { console.log(err)})      
+    })
+  }
+/*
   fetchMeetChance = () => {
     const geoFire = new GeoFire(this.firebase.database().ref("/user_locations/"))
     const geoQuery = geoFire.query({
@@ -89,7 +111,7 @@ export default class MeetChanceWaterFallScene extends Component {
     })
 
   }
-
+*/
   goToAboutMeTab = () => {
     Actions.aboutme({type: 'res'})
   }
@@ -108,7 +130,7 @@ export default class MeetChanceWaterFallScene extends Component {
     return(
     <View style={{flex:1}}>
       <FlatList
-        data={ this.state.preyLists } 
+        data={ this.state.preys } 
         numColumns={3}
         renderItem={({item}) => 
         <Cookie  
