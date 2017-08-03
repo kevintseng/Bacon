@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
 import { Dimensions, Image, Modal, View, Text, TouchableOpacity } from 'react-native'
 import Carousel from 'react-native-looped-carousel'
-import SwipeCards from 'react-native-swipe-cards'
+//import SwipeCards from 'react-native-swipe-cards'
 import ImageZoom from 'react-native-image-pan-zoom'
 import Infos from './Infos/Infos'
 
 const { width, height } = Dimensions.get('window')
+
 
 export default class Court extends Component {
 
@@ -40,15 +41,28 @@ export default class Court extends Component {
   renderAlbum = (photos) => (
     photos.map( photo => (
       <ImageZoom 
-        key={ele.key}
+        key={photo}
         cropWidth={width}
         cropHeight={height}
         imageWidth={width}
         imageHeight={height}
       >
-        <Image style={{height, width}} resizeMode={'contain'} source={{uri: ele.uri}}/>
+        <Image style={{height, width}} resizeMode={'contain'} source={{uri: photo}}/>
       </ImageZoom>
     ))
+  )
+
+  renderAlbumA = (photos) => (
+    photos.map( photo => (
+      <TouchableOpacity activeOpacity={1} key={photo} onPress={this.props.openAlbum}>
+        <Image style={{height: width, width}} resizeMode={'contain'} source={{uri: photo}}/>
+       </TouchableOpacity>
+    ))
+  )
+
+
+  renderOnePhotoA = () => (
+      <Image style={{height: width, width}} resizeMode={'contain'} source={{uri: 'https://i.imgur.com/FHxVpN4.jpg'}}/>
   )
 
   renderOnePhoto = () => (
@@ -64,11 +78,57 @@ export default class Court extends Component {
 
   render() {
 
-    const { cards, rightIcon, leftIcon, album, photos, closeAlbum, openAlbum } = this.props
+    const { cards, rightIcon, leftIcon, album, closeAlbum, openAlbum } = this.props
+
+    const photos = ['https://i.imgur.com/FHxVpN4.jpg','https://i.ytimg.com/vi/hvrUIdgT_mk/maxresdefault.jpg']
 
     return (
       <View style={{flex: 1}}>
 
+        <Modal animationType={"fade"} onRequestClose={()=>{}} visible={ album || false } transparent={false}>
+          <Carousel
+            ref={(carousel) => { this.carousel = carousel }}
+            swipe
+            style={{flex:1,backgroundColor: 'black'}}
+            bullets
+            autoplay={false}
+            pageInfoTextStyle={{color: 'red'}}
+            onAnimateNextPage={(p) => console.log(p)}
+            >
+            { photos ? this.renderAlbum(photos) : this.renderOnePhoto() }
+          </Carousel>
+          <View style={{width, position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
+            <View ><Text onPress={ closeAlbum } style={{color:'white',fontFamily: 'NotoSans'}}>返回</Text></View>
+            <View ><Text onPress={ this.nextphoto } style={{color:'white',fontFamily: 'NotoSans'}}>下一張</Text></View>
+          </View>
+        </Modal>
+
+                
+
+          <Carousel
+            swipe
+            style={{backgroundColor: 'black',width, height: width}}
+            bullets
+            autoplay={false}
+            pageInfoTextStyle={{color: 'red'}}
+            onAnimateNextPage={(p) => console.log(p)}
+            >
+            { photos ? this.renderAlbumA(photos) : this.renderOnePhotoA() }
+          </Carousel>
+
+        <TouchableOpacity style={{position: 'absolute',top: 320, right: 60}} onPress={ this.onPressRightIcon }>
+          <Image source={ rightIcon }/>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={{position: 'absolute',top: 320, left: 60}} onPress={ this.onPressLeftIcon }>
+          <Image source={ leftIcon } />
+        </TouchableOpacity>
+
+    </View>
+  )}
+}
+
+/*
         <Modal animationType={"fade"} onRequestClose={()=>{}} visible={ album || false } transparent={false}>
           <Carousel
             ref={(carousel) => { this.carousel = carousel }}
@@ -86,31 +146,4 @@ export default class Court extends Component {
             <View ><Text onPress={ this.nextphoto } style={{color:'white',fontFamily: 'NotoSans'}}>下一張</Text></View>
           </View>
         </Modal>
-
-        <View style={{width, height: width}}>
-          <SwipeCards
-            ref = {'swiper'}
-            cards={ cards }
-            renderCard={ this.renderCard }
-            dragY={false}
-            onClickHandler={ openAlbum }
-            cardKey='id'
-            stack
-            stackOffsetX={0}
-            stackOffsetY={0}
-            smoothTransition
-            showMaybe={false}
-          />
-        </View>
-
-        <TouchableOpacity style={{position: 'absolute',top: 320, right: 60}} onPress={ this.onPressRightIcon }>
-          <Image source={ rightIcon }/>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={{position: 'absolute',top: 320, left: 60}} onPress={ this.onPressLeftIcon }>
-          <Image source={ leftIcon } />
-        </TouchableOpacity>
-
-    </View>
-  )}
-}
+*/
