@@ -1,31 +1,24 @@
 import React, { Component } from 'react'
-import { Actions } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react'
+import { Actions } from 'react-native-router-flux'
 
 import Welcome from '../../views/Welcome/Welcome'
 
-@inject('SignUpInStore') @observer
+@inject('ControlStore') @observer
 export default class WelcomeScene extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
-  }
-
-  componentWillMount() {
-    this.SignUpInStore.setEmailStatus(null)
-    this.SignUpInStore.setPasswordStatus(null)
-    this.SignUpInStore.setDisplayNameStatus(null)
-    this.SignUpInStore.setFailureStatus(null)
+    this.ControlStore = this.props.ControlStore
   }
 
   _goToSignUp = () => {
-    this.SignUpInStore.setUpInStatus('註冊')
+    this.ControlStore.setAuthenticateIndicator('註冊')
     Actions.signup()
   }
 
   _goToSignIn = () => {
-    this.SignUpInStore.setUpInStatus('登入')
+    this.ControlStore.setAuthenticateIndicator('登入')
     Actions.signin()
   }
 

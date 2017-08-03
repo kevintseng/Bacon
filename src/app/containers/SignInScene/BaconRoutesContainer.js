@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
@@ -16,7 +17,10 @@ export default class BaconRoutesContainer extends Component {
     if (this.SignInStore.email && this.SignInStore.password) {
       Actions.Auth({ type: 'reset' })
     } else {
-      alert('請填入資料')
+      Alert.alert( 
+        '輸入錯誤', '請確認已填入帳號與密碼', [ 
+          {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+        )
     }
   }
 
