@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { View, Platform } from 'react-native'
 
-import BaconRoutesContainer from '../../containers/SignInOne/BaconRoutesContainer'
-import EmailContainer from '../../containers/SignInOne/EmailContainer/'
-import PasswordContainer from '../../containers/SignInOne/PasswordContainer'
+import BaconRoutesContainer from '../../containers/SignInScene/BaconRoutesContainer'
+import EmailContainer from '../../containers/SignInScene/EmailContainer/'
+import PasswordContainer from '../../containers/SignInScene/PasswordContainer'
 
-import FailureConatiner from '../../containers/SignInOne/FailureConatiner'
+import FailureConatiner from '../../containers/SignInScene/FailureConatiner'
 
 const styles = {
   view: {

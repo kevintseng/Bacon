@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Actions } from 'react-native-router-flux'
-import { inject, observer } from "mobx-react"
+import { inject, observer } from 'mobx-react'
 
 import BaconForm from '../../views/BaconForm'
 
@@ -16,9 +15,9 @@ export default class PasswordContainer extends Component {
     return(
       <BaconForm
         iconSource={ require('../../../images/ico_logo_pass.png') } 
-        placeholder='請輸入6-10字英數密碼組合'
+        placeholder='請輸入6-12字英數密碼組合'
         value={ this.SignInStore.password }
-        maxLength={ 10 } 
+        maxLength={ 12 } 
         onChangeText={ this.SignInStore.setPassword }
         secureTextEntry
       />

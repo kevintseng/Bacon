@@ -6,15 +6,17 @@ export default class SignInStore {
 
   @observable email
   @observable password
+  // error handle
+  @observable signInIndicator
 
-  constructor(firebase) {
-    this.email = null
-    this.password = null
+  constructor() {
+    this.initialize()
   }
 
   @action initialize = () => {
     this.email = null
-    this.password = null    
+    this.password = null 
+    this.signInIndicator = null   
   }
 
   @action setEmail = email => {
@@ -23,5 +25,11 @@ export default class SignInStore {
 
   @action setPassword = password => {
     this.password = password.trim()
+  }
+
+  // error handle
+
+  @action setSignInIndicator = str => {
+    this.signInIndicator = str
   }
 }
