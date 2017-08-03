@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { View, Platform } from 'react-native'
+import { Actions } from 'react-native-router-flux'
+
+import BaconArrow from '../../views/BaconArrow/BaconArrow'
 
 import BaconRoutesContainer from '../../containers/SignInScene/BaconRoutesContainer'
 import EmailContainer from '../../containers/SignInScene/EmailContainer/'

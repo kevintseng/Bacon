@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
-import { Router, Scene } from 'react-native-router-flux'
+import { Router, Scene, Actions, ActionConst } from 'react-native-router-flux'
 
 // ###############authenticate################ //
 import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
@@ -57,6 +57,19 @@ const styles = {
     color: '#606060',
     fontWeight: '500',
   },
+  baconArrow: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 4 : 0, 
+    left: 5 
+  },
+  baconTitle: {
+    marginTop: Platform.OS === 'ios' ? 35 : 19
+  },
+  baconMenu: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 4 : 1, 
+    left: 5    
+  }
 }
 
 export default class Routes extends Component {
@@ -74,11 +87,41 @@ export default class Routes extends Component {
     return style
   }
 
-  baconMenu = () => (<View style={{position: 'absolute',top: Platform.OS === 'ios' ? 4 : 1, left: 5}}><BaconMenu/></View>)
+  goback = () => {
+    Actions.pop()
+  }
 
-  baconTitle = () => (<View style={{marginTop: Platform.OS === 'ios' ? 35 : 19}}><BaconTitle/></View>)
+  goToWelcome = () => {
+    Actions.Welcome({type: 'reset', direction: 'leftToRight'})
+  }
 
-  baconArrow = () => (<View style={{position: 'absolute',top: Platform.OS === 'ios' ? 4 : 0, left: 5}}><BaconArrow/></View>)
+  goToSignUpOne = () => {
+    Actions.SignUpOne({type: 'reset', direction: 'leftToRight'})
+  }
+
+  goToSignUpTwo = () => {
+    Actions.SignUpTwo({type: 'reset', direction: 'leftToRight'})
+  }
+
+  goToSignUpThree = () => {
+    Actions.SignUpThree({type: 'reset', direction: 'leftToRight'})
+  }
+
+  baconMenu = () => (<View style={ styles.baconMenu }><BaconMenu/></View>)
+
+  baconTitle = () => (<View style={ styles.baconTitle }><BaconTitle/></View>)
+
+  baconArrow = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goback } /></View>)
+
+  baconArrowSignUpOne = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToWelcome }/></View>)
+
+  baconArrowSignUpTwo = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToSignUpOne }/></View>)
+
+  baconArrowSignUpThree = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToSignUpTwo }/></View>)
+  
+  baconArrowSignUpFour = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToSignUpThree }/></View>)
+
+  baconArrowSignIn = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToWelcome }/></View>)
 
   render() {
     return (
@@ -90,14 +133,14 @@ export default class Routes extends Component {
           <Scene key='Welcome' component={ WelcomeScene } /> 
 
           <Scene key='signup' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
-            <Scene key='SignUpOne'  hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignUpOneScene } />
-            <Scene key='SignUpTwo' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignUpTwoScene } />
-            <Scene key='SignUpThree' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignUpThreeScene } />
-            <Scene key='SignUpFour' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignUpFourScene } />
+            <Scene key='SignUpOne'  hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrowSignUpOne } component={ SignUpOneScene } />
+            <Scene key='SignUpTwo' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrowSignUpTwo } component={ SignUpTwoScene } />
+            <Scene key='SignUpThree' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrowSignUpThree } component={ SignUpThreeScene } />
+            <Scene key='SignUpFour' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrowSignUpFour } component={ SignUpFourScene } />
           </Scene>
 
           <Scene key='signin' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
-            <Scene key='SignIn' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrow } component={ SignInScene }/>
+            <Scene key='SignIn' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrowSignIn } component={ SignInScene }/>
           </Scene>
 
           <Scene key='Auth' component={ AuthScene }/>
