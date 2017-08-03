@@ -103,8 +103,8 @@ export default class SignUpInStore {
   }
 
   @action setGoogleCity = data => {
-    if (data.description) {
-      this.city = data.description
+    if (data.description || data.formatted_address) {
+      this.city = data.description || data.formatted_address
     }
   }
 
