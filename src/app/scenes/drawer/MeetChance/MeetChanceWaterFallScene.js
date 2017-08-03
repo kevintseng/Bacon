@@ -43,7 +43,7 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   componentDidMount() {
-    //this.fetchMeetChance()
+    this.fetchMeetChance()
   }
 
   fetchMeetChance = () => {
