@@ -119,15 +119,21 @@ export default class DrawerScene extends Component {
   grepMeetChance = (geoQuery) => {
     geoQuery.on("key_entered", (uid, location, distance) => {
       //
-      this.MeetChanceStore.addPrey({uid: uid, distance: distance})
+      if (!(uid === this.SubjectStore.uid)) {
+        this.MeetChanceStore.addPrey({uid: uid, distance: distance})
+      }
     })
 
     geoQuery.on("key_moved", (uid, location, distance) => {
-      this.MeetChanceStore.updatePrey(uid,distance)
+      if (!(uid === this.SubjectStore.uid)) {
+        this.MeetChanceStore.updatePrey(uid,distance)
+      }
     })
 
     geoQuery.on("key_exited", (uid, location, distance) => {
-      this.MeetChanceStore.removePrey(uid)
+      if (!(uid === this.SubjectStore.uid)) {
+        this.MeetChanceStore.removePrey(uid)
+      }
     })
   }
 
