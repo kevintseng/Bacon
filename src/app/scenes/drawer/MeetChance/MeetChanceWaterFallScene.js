@@ -68,8 +68,9 @@ export default class MeetChanceWaterFallScene extends Component {
     geoQuery.on("key_moved", (uid, location, distance) => {
       this.firebase.database().ref('users/' + uid).once('value').then(
         snap => { 
-          //this.state.preyLists.find(ele => ele.key == uid).distance = distance
-          //this.setState({ preyLists: joined })
+          const moved = this.state.preyLists.slice()
+          moved.find(ele => ele.key == uid).distance = distance
+          this.setState({ preyLists: moved })
         }
       )
     })
@@ -108,10 +109,10 @@ export default class MeetChanceWaterFallScene extends Component {
     <View style={{flex:1}}>
       <FlatList
         data={ this.state.preyLists } 
-        numColumns={1}
+        numColumns={3}
         renderItem={({item}) => 
         <Cookie  
-          name={ item.distance } 
+          name={ item.distance.toFixed(1) } 
           photoURL={ item.photoURL }
           onPress={ item.onPressButton } 
         /> } 
