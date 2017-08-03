@@ -1,5 +1,8 @@
 import RNFirebase from 'react-native-firebase'
 // Stores Classes
+// control flow
+import ControlStore from '../mobx/stores/ControlStore'
+// data
 import SignUpStore from '../mobx/stores/SignUpStore'
 import SignInStore from '../mobx/stores/SignInStore'
 import SubjectStore from '../mobx/stores/SubjectStore'
@@ -17,6 +20,8 @@ const AppInitial = {
   init: () => {
     this.firebase = RNFirebase.initializeApp(FirebaseConfig)
 
+    this.ControlStore = new ControlStore()
+    
     this.SignUpStore = new SignUpStore(this.firebase)
     this.SignInStore = new SignInStore()
     this.SubjectStore = new SubjectStore()

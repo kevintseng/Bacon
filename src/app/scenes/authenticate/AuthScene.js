@@ -1,23 +1,24 @@
 import React, { Component } from 'react'
 import { BackHandler, ToastAndroid } from 'react-native'
-import { inject, observer } from "mobx-react"
+import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
-// custom components
 import Loading from '../../views/Loading/Loading'
 
-@inject("firebase","SignUpInStore") @observer
+@inject('ControlStore','SignUpStore','SignInStore','firebase') @observer
 export default class AuthScene extends Component {
 
   constructor(props) {
     super(props)
+    this.ControlStore = this.props.ControlStore
+    this.SignUpStore = this.props.SignUpStore
+    this.SignInStore = this.props.SignInStore
     this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
   }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid)
-    switch(this.SignUpInStore.UpInStatus) {
+    switch(this.ControlStore.authenticateIndicator) {
       case '註冊':
         this.signUp()
         break
@@ -44,18 +45,17 @@ export default class AuthScene extends Component {
   }
 
   signUp = () => {
-    this.firebase.auth().createUserWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password)
+    this.firebase.auth().createUserWithEmailAndPassword(this.SignUpStore.email, this.SignUpStore.password)
       .catch((error) => {
-        this.SignUpInStore.setFailureStatus(error.message)
-        console.warn('failar')
+        this.SignUpStore.setSignUpIndicator(error.message)
         Actions.SignUpThree({type: 'reset'})
       })    
   }
 
   signIn = () => {
-    this.firebase.auth().signInWithEmailAndPassword(this.SignUpInStore.email, this.SignUpInStore.password)
+    this.firebase.auth().signInWithEmailAndPassword(this.SignInStore.email, this.SignInStore.password)
       .catch((error) => {
-        this.SignUpInStore.setFailureStatus(error.message)
+        this.SignInStore.setSignInIndicator(error.message)
         Actions.signin({type: 'reset'})
       })    
   }
@@ -64,8 +64,7 @@ export default class AuthScene extends Component {
     return(
       <Loading
         showWarning
-        UpInStatus={ this.SignUpInStore.UpInStatus } // 登入 註冊
-        //error={ this.state.error }
+        UpInStatus={ this.ControlStore.authenticateIndicator } // 登入 註冊
       />
     )}
 }

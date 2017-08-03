@@ -19,12 +19,12 @@ export default class SignInStore {
     this.signInIndicator = null   
   }
 
-  @action setEmail = email => {
-    this.email = email.trim()
+  @action setEmail = str => {
+    this.email = str.trim()
   }
 
-  @action setPassword = password => {
-    this.password = password.trim()
+  @action setPassword = str => {
+    this.password = str.trim()
   }
 
   // error handle

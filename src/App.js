@@ -10,6 +10,8 @@ export default class App extends Component {
     return (
       <Provider 
         firebase={ AppInitial.firebase } 
+        
+        ControlStore={ AppInitial.ControlStore }
 
         SignUpStore={ AppInitial.SignUpStore }
         SignInStore={ AppInitial.SignInStore }

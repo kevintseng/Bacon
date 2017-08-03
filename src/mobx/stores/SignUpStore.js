@@ -17,6 +17,8 @@ export default class SignUpStore {
   @observable emailIndicator
   @observable passwordIndicator
   @observable nicknameIndicator
+  // sign up error
+  @observable signUpIndicator
 
   constructor(firebase) {
     this.firebase = firebase
@@ -42,6 +44,8 @@ export default class SignUpStore {
     this.nicknameIndicator = null
     this.birthdayDetector = false
     this.birthdayIndicator = null
+    // sign up error
+    this.signUpIndicator = null
   }
 
   @action switchGender = () => {
@@ -106,6 +110,10 @@ export default class SignUpStore {
 
   @action setNicknameIndicator = str => {
     this.nicknameIndicator = str
+  }
+
+  @action setSignUpIndicator = str => {
+    this.signUpIndicator = str
   }
 
   @action checkEmail = () => {
