@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, Platform, BackHandler, ToastAndroid } from 'react-native'
+import { Actions } from 'react-native-router-flux'
 
 import BaconRoutesContainer from '../../containers/SignUpOneScene/BaconRoutesContainer'
 import SexChooseContainer from '../../containers/SignUpOneScene/SexChooseContainer'
@@ -20,7 +21,20 @@ const styles = {
 }
 
 export default class SignUpOneScene extends Component {
-  
+
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.Welcome({type: 'reset', direction: 'leftToRight'})
+    return true
+  }
+    
   render(){
     return(
       <View style={ styles.view }>

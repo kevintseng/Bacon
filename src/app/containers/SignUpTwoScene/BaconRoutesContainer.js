@@ -15,7 +15,7 @@ export default class BaconRoutesContainer extends Component {
   
   buttonOnPress = () => {
     if (this.SignUpStore.address) {
-      Actions.SignUpThree()
+      Actions.SignUpThree({type: 'reset'})
     } else {
       Alert.alert( 
         '輸入錯誤', '請輸入所在位置', [ 

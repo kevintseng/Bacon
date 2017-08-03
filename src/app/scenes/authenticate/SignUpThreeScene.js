@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, Platform, BackHandler, ToastAndroid } from 'react-native'
+import { Actions } from 'react-native-router-flux'
 
 import EmailContainer from '../../containers/SignUpThreeScene/EmailContainer'
 import PasswordContainer from '../../containers/SignUpThreeScene/PasswordContainer'
@@ -29,6 +30,19 @@ const styles = {
 }
 
 export default class SignUpThreeScene extends Component {
+
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.SignUpTwo({type: 'reset', direction: 'leftToRight'})
+    return true
+  }
 
   render() {
     return(
