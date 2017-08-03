@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
 
 import BaconForm from '../../views/BaconForm'
 
-@inject("SignInStore") @observer
+@inject('SignInStore') @observer
 export default class EmailContainer extends Component {
 
   constructor(props) {
@@ -18,7 +17,7 @@ export default class EmailContainer extends Component {
         iconSource={ require('../../../images/ico_reg_mail.png') } 
         placeholder='請輸入帳號(email)'
         value={ this.SignInStore.email }
-        maxLength={ 60 } 
+        maxLength={ 30 } 
         onChangeText={ this.SignInStore.setEmail }
         keyboardType='email-address'
       />

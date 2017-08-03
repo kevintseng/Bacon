@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
+import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
-import { inject, observer } from "mobx-react"
 
 import BaconRoutes from '../../views/BaconRoutes/BaconRoutes'
 
-@inject("SignUpInStore") @observer
+@inject('SignInStore') @observer
 export default class BaconRoutesContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SignInStore = this.props.SignInStore
   }
 
   _buttonOnPress = () => {
-    if (this.SignUpInStore.email && this.SignUpInStore.password) {
+    if (this.SignInStore.email && this.SignInStore.password) {
       Actions.Auth({ type: 'reset' })
     } else {
       alert('請填入資料')

@@ -12,7 +12,7 @@ import SignUpTwoScene from './scenes/authenticate/SignUpTwoScene'
 import SignUpThreeScene from './scenes/authenticate/SignUpThreeScene'
 import SignUpFourScene from './scenes/authenticate/SignUpFourScene'
 // signin
-import SignInScene from './scenes/signin/SignInScene'
+import SignInScene from './scenes/authenticate/SignInScene'
 // 
 import AuthScene from './scenes/authenticate/AuthScene'
 // ###############authenticate################ //

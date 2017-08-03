@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
-import { inject, observer } from "mobx-react"
+import { inject, observer } from 'mobx-react'
 
 import StatesMessage from '../../views/StatesMessage'
 
-@inject("SignUpInStore") @observer
+@inject('SignInStore') @observer
 export default class FailureConatiner extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SignInStore = this.props.SignInStore
   }
 
   render() {
     return(
       <StatesMessage
         state={ false }
-        message={ this.SignUpInStore.failureStatus }
+        message={ this.SignInStore.signInIndicator }
       />
     )
   }
