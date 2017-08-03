@@ -70,7 +70,7 @@ export default class DrawerScene extends Component {
         this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').set({ 0: uploadedFile.downloadUrl })
         .then(() => {
           this.setState({
-            uploadAvatarState: '使用者大頭照上傳成功'
+            uploadAvatarState: '使用者大頭照上傳成功' // avatarUploadIndicator
           })})
         .catch(() => {
           this.setState({

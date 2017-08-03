@@ -61,12 +61,10 @@ export default class SignUpStore {
   }
 
   @action setEmail = str => {
-    console.log(typeof(str))
     this.email = str.trim()
   }
 
   @action setPassword = str => {
-    console.log(typeof(str))
     this.password = str.trim()
   }
 
