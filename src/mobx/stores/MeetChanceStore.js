@@ -18,6 +18,10 @@ export default class MeetChanceStore {
     })  
   }
 
+  @action setpreyList = preyList => {
+    this.preyList = preyList
+  }
+
   @action addPrey = prey => {
     this.preyList.push(prey)
   }
