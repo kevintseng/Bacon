@@ -4,12 +4,12 @@ import { inject, observer } from "mobx-react"
 
 import BaconForm from '../../views/BaconForm'
 
-@inject("SignUpInStore") @observer
+@inject("SignInStore") @observer
 export default class EmailContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SignInStore = this.props.SignInStore
   }
 
   render() {
@@ -17,9 +17,9 @@ export default class EmailContainer extends Component {
       <BaconForm
         iconSource={ require('../../../images/ico_reg_mail.png') } 
         placeholder='請輸入帳號(email)'
-        value={ this.SignUpInStore.email }
+        value={ this.SignInStore.email }
         maxLength={ 60 } 
-        onChangeText={ this.SignUpInStore.setEmail }
+        onChangeText={ this.SignInStore.setEmail }
         keyboardType='email-address'
       />
     )

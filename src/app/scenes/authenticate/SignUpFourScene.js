@@ -5,8 +5,8 @@ import { Actions } from 'react-native-router-flux'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
 
-import BaconRoutesContainer from '../../containers/SignUpFour/BaconRoutesContainer'
-import BigAvatarContainer from '../../containers/SignUpFour/BigAvatarContainer'
+import BaconRoutesContainer from '../../containers/SignUpFourScene/BaconRoutesContainer'
+import BigAvatarContainer from '../../containers/SignUpFourScene/BigAvatarContainer'
 
 const styles = {
   view: {
@@ -23,12 +23,12 @@ const styles = {
   }
 }
 
-@inject("SignUpInStore") @observer
+@inject('SignUpStore') @observer
 export default class SignUpFourScene extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SignUpStore = this.props.SignUpStore
   }
 
   render(){

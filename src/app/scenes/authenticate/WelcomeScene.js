@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react'
 
-import Welcome from '../views/Welcome/Welcome'
+import Welcome from '../../views/Welcome/Welcome'
 
 @inject('SignUpInStore') @observer
 export default class WelcomeScene extends Component {

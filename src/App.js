@@ -10,8 +10,13 @@ export default class App extends Component {
     return (
       <Provider 
         firebase={ AppInitial.firebase } 
-        SignUpInStore={ AppInitial.SignUpInStore } 
+
+        SignUpStore={ AppInitial.SignUpStore }
+        SignInStore={ AppInitial.SignInStore }
         SubjectStore={ AppInitial.SubjectStore }
+        SubjectEditStore={AppInitial.SubjectEditStore}
+
+        SignUpInStore={ AppInitial.SignUpInStore } 
         MeetChanceStore={ AppInitial.MeetChanceStore }
         >
         <Routes/>

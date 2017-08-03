@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text,Button } from 'react-native'
 import { inject, observer } from 'mobx-react'
-import RNGooglePlaces from 'react-native-google-places';
+import RNGooglePlaces from 'react-native-google-places'
 
-@inject("SignUpInStore") @observer
+@inject('SignUpStore') @observer
 export default class CityChooseContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SignUpStore = this.props.SignUpStore
   }
 
   openSearchModal = () => {
     RNGooglePlaces.openAutocompleteModal()
     .then((place) => {
     console.log(place);
-    this.SignUpInStore.setGoogleCity(place.address)
+    this.SignUpStore.setAddress(place.address)
     // place represents user's selection from the
     // suggestions and it is a simplified Google Place object.
     })
@@ -25,7 +25,7 @@ export default class CityChooseContainer extends Component {
   current = () => {
     RNGooglePlaces.getCurrentPlace()
     .then((results) => {
-      this.SignUpInStore.setGoogleCity(results[0].address)
+      this.SignUpStore.setAddress(results[0].address)
       console.log(results)
     }
       )
@@ -50,7 +50,7 @@ export default class CityChooseContainer extends Component {
         </View> 
 
         <View style={{marginTop: 20}}>
-          <Text>{this.SignUpInStore.city}</Text>
+          <Text>{this.SignUpStore.address}</Text>
         </View>
       </View>
     )
