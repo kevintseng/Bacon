@@ -103,12 +103,19 @@ export default class SignUpInStore {
   }
 
   @action setGoogleCity = data => {
-    if (data.description || data.formatted_address) {
-      this.city = data.description || data.formatted_address
+    if (data.description) {
+      this.city = data.description
+    } else if (data.formatted_address) {
+      console.log('data')
+      this.city = data.formatted_address
+    } else {
+
+      this.city = ''
     }
   }
 
   @action setTextInputCity = city => {
+    console.log(city)
     this.city = city
   }
 

@@ -19,7 +19,11 @@ target 'Bacon' do
   ]
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-  
+
+  pod 'GooglePlaces'
+  pod 'GoogleMaps'
+  pod 'GooglePlacePicker'
+    
   # Core is always required
   pod 'Firebase/Core'
 
@@ -30,7 +34,7 @@ target 'Bacon' do
   pod 'Firebase/Storage'
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
-
+  
   target 'Bacon-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
