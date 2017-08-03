@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, Platform, BackHandler, ToastAndroid } from 'react-native'
 import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import ImagePicker from 'react-native-image-picker'
@@ -29,6 +29,19 @@ export default class SignUpFourScene extends Component {
   constructor(props) {
     super(props)
     this.SignUpStore = this.props.SignUpStore
+  }
+
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.SignUpThree({type: 'reset', direction: 'leftToRight'})
+    return true
   }
 
   render(){

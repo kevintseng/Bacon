@@ -21,7 +21,7 @@ export default class BaconRoutesContainer extends Component {
     if (this.checkInput()) {
       if (this.checkBirthday()) {
         if (this.SignUpStore.policyDetector) {
-          Actions.SignUpFour()
+          Actions.SignUpFour({type: 'reset'})
         } else {
           Alert.alert( 
             '輸入錯誤', '請確認同意隱私權政策及服務條款', [ 

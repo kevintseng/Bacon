@@ -15,7 +15,7 @@ export default class BaconRoutesContainer extends Component {
 
   _buttonOnPress = () => {
     if (this.SignUpStore.photoUrl) {
-      Actions.Auth()
+      Actions.Auth({type: 'reset'})
     } else {
       Alert.alert( 
         '輸入錯誤', '請上傳一張大頭照', [ 

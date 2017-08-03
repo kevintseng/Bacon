@@ -17,7 +17,7 @@ export default class AuthScene extends Component {
   }
 
   componentWillMount() {
-    BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid)
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     switch(this.ControlStore.authenticateIndicator) {
       case '註冊':
         this.signUp()
@@ -31,10 +31,10 @@ export default class AuthScene extends Component {
   }
 
   componentWillUnmount(){
-    BackHandler.removeEventListener('hardwareBackPress', this._onBackAndroid)
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
-  _onBackAndroid = () => {
+  onBackAndroid() {
     if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
         //return false
         BackHandler.exitApp() //最近2秒内按過返回键，可以退出程式

@@ -6,7 +6,7 @@ import BaconRoutes from '../../views/BaconRoutes/BaconRoutes'
 export default class BaconRoutesContainer extends Component {
 
   buttonOnPress = () => {
-    Actions.SignUpTwo()
+    Actions.SignUpTwo({type: 'reset'})
   }
 
   render() {
