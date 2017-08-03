@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { Actions } from 'react-native-router-flux'
-import { inject, observer } from 'mobx-react'
 
-import BaconRoutesContainer from '../../containers/SignUpTwo/BaconRoutesContainer'
-import CityChooseContainer from '../../containers/SignUpTwo/CityChooseContainer'
+import BaconRoutesContainer from '../../containers/SignUpTwoScene/BaconRoutesContainer'
+import CityChooseContainer from '../../containers/SignUpTwoScene/CityChooseContainer'
 
 const styles = {
   view: {
@@ -22,18 +20,15 @@ const styles = {
 
 export default class SignUpOneScene extends Component {
 
-  render(){
+  render() {
     return(
       <View style={ styles.view }>
-
         <View style={ styles.middle }>
           <CityChooseContainer/>
         </View>
-
         <View style={ styles.bottom }>
           <BaconRoutesContainer/>
         </View>
-
       </View>
     )
   }

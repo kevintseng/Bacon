@@ -4,12 +4,12 @@ import { inject, observer } from "mobx-react"
 
 import BaconForm from '../../views/BaconForm'
 
-@inject("SignUpInStore") @observer
+@inject('SignInStore') @observer
 export default class PasswordContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SignInStore = this.props.SignInStore
   }
 
   render() {
@@ -17,9 +17,9 @@ export default class PasswordContainer extends Component {
       <BaconForm
         iconSource={ require('../../../images/ico_logo_pass.png') } 
         placeholder='請輸入6-10字英數密碼組合'
-        value={ this.SignUpInStore.password }
-        maxLength={ 12 } 
-        onChangeText={ this.SignUpInStore.setPassword }
+        value={ this.SignInStore.password }
+        maxLength={ 10 } 
+        onChangeText={ this.SignInStore.setPassword }
         secureTextEntry
       />
     )

@@ -5,16 +5,16 @@ import { inject, observer } from "mobx-react"
 
 import BaconRoutes from '../../views/BaconRoutes/BaconRoutes'
 
-@inject('SignUpInStore') @observer
+@inject('SignUpStore') @observer
 export default class BaconRoutesContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SignUpStore = this.props.SignUpStore
   }
 
   _buttonOnPress = () => {
-    if (this.SignUpInStore.photoURL) {
+    if (this.SignUpStore.photoUrl) {
       Actions.Auth()
     } else {
       Alert.alert( 

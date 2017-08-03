@@ -3,19 +3,18 @@ import { Platform, View } from 'react-native'
 import { Router, Scene } from 'react-native-router-flux'
 
 // ###############authenticate################ //
+import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
 //
-import SessionCheckScene from './scenes/SessionCheckScene'
-//
-import WelcomeScene from './scenes/WelcomeScene'
+import WelcomeScene from './scenes/authenticate/WelcomeScene'
+// SignUp
+import SignUpOneScene from './scenes/authenticate/SignUpOneScene'
+import SignUpTwoScene from './scenes/authenticate/SignUpTwoScene'
+import SignUpThreeScene from './scenes/authenticate/SignUpThreeScene'
+import SignUpFourScene from './scenes/authenticate/SignUpFourScene'
 // signin
 import SignInScene from './scenes/signin/SignInScene'
-// SignUp
-import SignUpOneScene from './scenes/signup/SignUpOneScene'
-import SignUpTwoScene from './scenes/signup/SignUpTwoScene'
-import SignUpThreeScene from './scenes/signup/SignUpThreeScene'
-import SignUpFourScene from './scenes/signup/SignUpFourScene'
 // 
-import AuthScene from './scenes/AuthScene'
+import AuthScene from './scenes/authenticate/AuthScene'
 // ###############authenticate################ //
 
 // ###############drawer################ //

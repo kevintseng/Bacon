@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 
-import BaconRoutesContainer from '../../containers/SignUpThree/BaconRoutesContainer'
-import EmailContainer from '../../containers/SignUpThree/EmailContainer'
-import PasswordContainer from '../../containers/SignUpThree/PasswordContainer'
-import DisplayNameContainer from '../../containers/SignUpThree/DisplayNameContainer'
-import BirthdayContainer from '../../containers/SignUpThree/BirthdayContainer'
-import PolicyContainer from '../../containers/SignUpThree/PolicyContainer'
+import EmailContainer from '../../containers/SignUpThreeScene/EmailContainer'
+import PasswordContainer from '../../containers/SignUpThreeScene/PasswordContainer'
+import NickNameContainer from '../../containers/SignUpThreeScene/NickNameContainer'
+import BirthdayContainer from '../../containers/SignUpThreeScene/BirthdayContainer'
+import PolicyContainer from '../../containers/SignUpThreeScene/PolicyContainer'
 
-import EmailStatesConatiner from '../../containers/SignUpThree/EmailStatesConatiner'
-import PasswordStatesConatiner from '../../containers/SignUpThree/PasswordStatesConatiner'
-import DisplayNameStatesConatiner from '../../containers/SignUpThree/DisplayNameStatesConatiner'
-import FailureConatiner from '../../containers/SignUpThree/FailureConatiner'
+import EmailStatesConatiner from '../../containers/SignUpThreeScene/EmailStatesConatiner'
+import PasswordStatesConatiner from '../../containers/SignUpThreeScene/PasswordStatesConatiner'
+import NickNameStatesConatiner from '../../containers/SignUpThreeScene/NickNameStatesConatiner'
+import FailureConatiner from '../../containers/SignUpThreeScene/FailureConatiner'
+
+import BaconRoutesContainer from '../../containers/SignUpThreeScene/BaconRoutesContainer'
 
 const styles = {
   view: {
@@ -36,7 +37,7 @@ export default class SignUpThreeScene extends Component {
         <View style={{flex: 1, marginTop: 20}}>
           <EmailContainer/>
           <PasswordContainer/>
-          <DisplayNameContainer/>
+          <NickNameContainer/>
           <BirthdayContainer/>
           <View style={{marginTop: 40}}>
             <PolicyContainer/>
@@ -50,7 +51,7 @@ export default class SignUpThreeScene extends Component {
           </View>
 
           <View style={{position: 'absolute', top: 140, left: 20}}>
-            <DisplayNameStatesConatiner/>
+            <NickNameStatesConatiner/>
           </View>
 
           <View style={{position: 'absolute', bottom: 90, alignSelf: 'center',alignItems: 'center'}}>

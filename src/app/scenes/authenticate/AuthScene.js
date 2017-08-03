@@ -4,7 +4,7 @@ import { inject, observer } from "mobx-react"
 import { Actions } from 'react-native-router-flux'
 
 // custom components
-import Loading from '../views/Loading/Loading'
+import Loading from '../../views/Loading/Loading'
 
 @inject("firebase","SignUpInStore") @observer
 export default class AuthScene extends Component {

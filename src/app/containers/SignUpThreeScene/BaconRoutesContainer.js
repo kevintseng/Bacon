@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
 import { Alert } from 'react-native'
+import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
-import { inject, observer } from "mobx-react"
 
 import BaconRoutes from '../../views/BaconRoutes/BaconRoutes'
 
-@inject('SignUpInStore') @observer
+@inject('SignUpStore') @observer
 export default class BaconRoutesContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SignUpStore = this.props.SignUpStore
   }
 
 
   _buttonOnPress = () => {
-    this.SignUpInStore.checkEmail()
-    this.SignUpInStore.checkPassword()
-    this.SignUpInStore.checkDisplayName()
-    if (this.allChecker()) {
-      if (this.birthdayChecker()) {
-        if (this.SignUpInStore.policyChecker) {
+    this.SignUpStore.checkEmail()
+    this.SignUpStore.checkPassword()
+    this.SignUpStore.checkNickname()
+    if (this.checkInput()) {
+      if (this.checkBirthday()) {
+        if (this.SignUpStore.policyDetector) {
           Actions.SignUpFour()
         } else {
           Alert.alert( 
@@ -39,15 +39,15 @@ export default class BaconRoutesContainer extends Component {
     }
   }
 
-  allChecker = () => {
-    if (this.SignUpInStore.emailChecker && this.SignUpInStore.passwordChecker && this.SignUpInStore.displayNameChecker) {
+  checkInput = () => {
+    if (this.SignUpStore.emailDetector && this.SignUpStore.passwordDetector && this.SignUpStore.nicknameDetector) {
       return true
     }
     return false
   }
 
-  birthdayChecker = () => {
-    if (this.SignUpInStore.birthday) {
+  checkBirthday = () => {
+    if (this.SignUpStore.birthday) {
       return true 
     }
     return false

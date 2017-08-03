@@ -5,20 +5,20 @@ import { Actions } from 'react-native-router-flux'
 
 import BaconRoutes from '../../views/BaconRoutes/BaconRoutes'
 
-@inject("SignUpInStore") @observer
+@inject('SignUpStore') @observer
 export default class BaconRoutesContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SignUpStore = this.props.SignUpStore
   }
   
   buttonOnPress = () => {
-    if (this.SignUpInStore.city) {
+    if (this.SignUpStore.address) {
       Actions.SignUpThree()
     } else {
       Alert.alert( 
-        '輸入錯誤', '請填入位置', [ 
+        '輸入錯誤', '請輸入所在位置', [ 
         {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
       )
     }

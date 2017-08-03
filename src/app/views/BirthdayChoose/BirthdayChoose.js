@@ -13,7 +13,16 @@ const styles = {
   }
 }
 
-const BirthdayChoose = ({birthday, minDate, maxDate, onChangeBirthday}) => {
+const maxDate = (minAge) => {
+  const maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - minAge))
+  return(
+    maxDate.toISOString().substring(0, 10)
+  )
+}
+
+const BirthdayChoose = ({birthday, minDate, minAge, onChangeBirthday}) => {
+
+
   return(
     <View style={ styles.view }>
 
@@ -34,7 +43,7 @@ const BirthdayChoose = ({birthday, minDate, maxDate, onChangeBirthday}) => {
           placeholder={ birthday || '您的生日' }
           format="YYYY-MM-DD"
           minDate={ minDate }
-          maxDate={ maxDate }
+          maxDate={ maxDate(minAge) }
           confirmBtnText="完成"
           cancelBtnText="取消"
           showIcon={false}

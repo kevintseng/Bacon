@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
 
 import Policy from '../../views/Policy/Policy'
 
-@inject("SignUpInStore") @observer
+@inject('SignUpStore') @observer
 export default class PolicyContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SignUpStore = this.props.SignUpStore
   }
 
   showPolicy = () => {
@@ -23,8 +22,8 @@ export default class PolicyContainer extends Component {
   render() {
     return(
       <Policy
-        check={ this.SignUpInStore.policyChecker }
-        onPressCheckBox={ this.SignUpInStore.setPolicyNameChecker }
+        check={ this.SignUpStore.policyDetector }
+        onPressCheckBox={ this.SignUpStore.switchPolicyDetector }
         onPressPolicy={ this.showPolicy }
         onPressRule={ this.showRule }
       />

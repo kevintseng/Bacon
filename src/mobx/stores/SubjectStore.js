@@ -140,6 +140,10 @@ export default class SubjectStore {
 
   // action
 
+  @action initialize = () => {
+   
+  }
+
   @action setLatitude = latitude => {
     this.latitude = latitude
   }

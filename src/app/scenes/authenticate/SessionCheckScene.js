@@ -5,15 +5,19 @@ import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
 
-import Loading from '../views/Loading/Loading'
+import Loading from '../../views/Loading/Loading'
 
-@inject('firebase','SubjectStore','MeetChanceStore') @observer
+@inject('SignInStore','SignUpStore','SubjectStore','SubjectEditStore','MeetChanceStore','firebase',) @observer
 export default class SessionCheckScene extends Component {
 
   constructor(props) {
     super(props)
-    this.firebase = this.props.firebase
+    this.SignInStore = this.props.SignInStore
+    this.SignUpStore = this.props.SignUpStore
     this.SubjectStore = this.props.SubjectStore
+    this.SubjectEditStore = this.props.SubjectEditStore
+    this.firebase = this.props.firebase
+
     this.MeetChanceStore = this.props.MeetChanceStore
     this.uid = null
     this.email = null
@@ -29,16 +33,22 @@ export default class SessionCheckScene extends Component {
         this.uid = user.uid
         this.email = user.email
         this.setOnline(this.uid) // 非同步設置使用者上線
-        this.uploadLocation() // 非同步上傳地理位置
+        //this.uploadLocation() // 非同步上傳地理位置
         AppState.addEventListener('change', this._handleAppStateChange ) // 非同步註冊 app 狀態監聽
         this.SubjectStore.setUid(this.uid) // 同步優先設定 uid
         this.SubjectStore.setEmail(this.email)
         Actions.Drawer({type: 'reset'}) // 切換場景
       } else {
-        // 沒有使用者登入 user = null
+        // 入口點 -> 沒有使用者登入 user = null
+        // 移除所有監聽函數 初始化狀態
         AppState.removeEventListener('change', this._handleAppStateChange ) // 非同步移除 app 狀態監聽
-        this.removeLocation() // 非同步移除地理監聽
-        this.MeetChanceStore.setpreyList(new Array)
+        //this.removeMeetChanceListener() // 非同步移除地理監聽
+        this.SignUpStore.initialize() // 初始註冊入狀態
+        this.SignInStore.initialize() // 初始化登入狀態
+        this.SubjectStore.initialize() // 初始主體入狀態
+        this.SubjectEditStore.initialize() // 初始編輯入狀態
+
+        //this.MeetChanceStore.setpreyList(new Array)
         Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
       }
     })    
@@ -115,7 +125,7 @@ export default class SessionCheckScene extends Component {
     })
   }
 
-  removeLocation = () => {
+  removeMeetChanceListener = () => {
     if (this.geoQuery) {
       this.geoQuery.cancel()
     }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 
-import BaconRoutesContainer from '../../containers/SignUpOne/BaconRoutesContainer'
-import SexChooseContainer from '../../containers/SignUpOne/SexChooseContainer'
+import BaconRoutesContainer from '../../containers/SignUpOneScene/BaconRoutesContainer'
+import SexChooseContainer from '../../containers/SignUpOneScene/SexChooseContainer'
 
 const styles = {
   view: {
