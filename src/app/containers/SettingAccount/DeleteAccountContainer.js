@@ -5,13 +5,12 @@ import { inject, observer } from "mobx-react"
 import PasswordContainer from './PasswordContainer'
 import RedLineButton from '../../views/RedLineButton/RedLineButton'
 
-@inject('firebase','SubjectStore','SignUpInStore') @observer
+@inject('firebase','SubjectStore') @observer
 export default class DeleteAccountContainer extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
     this.SubjectStore = this.props.SubjectStore
     this.state = {
       modalVisible: false,
@@ -33,7 +32,7 @@ export default class DeleteAccountContainer extends Component {
     const user = this.firebase.auth().currentUser
     const credential = this.firebase.auth.EmailAuthProvider.credential(
       this.SubjectStore.email, 
-      this.SignUpInStore.password
+      this.SubjectStore.password
     )    
     user.reauthenticateWithCredential(credential).then(function() {
       console.log('重認證成功')

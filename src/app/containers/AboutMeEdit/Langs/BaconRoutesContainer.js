@@ -4,18 +4,18 @@ import { inject, observer } from 'mobx-react'
 
 import BaconRoutes from '../../../views/BaconRoutes/BaconRoutes'
 
-@inject('firebase','SignUpInStore','SubjectStore') @observer
+@inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class BaconRoutesContainer extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectEditStore = this.props.SubjectEditStore
     this.SubjectStore = this.props.SubjectStore
   }
 
   buttonOnPress = () => {
-    this.SubjectStore.setLangs(Object.assign({}, this.SignUpInStore.langs))
+    this.SubjectStore.setLanguages(Object.assign({}, this.SubjectEditStore.languages))
     Actions.AboutMeTab({type: 'reset'})
   }
 

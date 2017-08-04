@@ -13,12 +13,12 @@ const styles = {
   }
 }
 
-@inject('SignUpInStore') @observer
+@inject('SubjectEditStore') @observer
 export default class InputBadgeContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectEditStore = this.props.SubjectEditStore
     this.state= {
       badge: ''
     }
@@ -30,8 +30,8 @@ export default class InputBadgeContainer extends Component {
     })
   }
 
-  setBadge = () => {
-    this.SignUpInStore.addBadge(this.state.badge)
+  addHobby = () => {
+    this.SubjectEditStore.addHobby(this.state.badge)
   }
 
   render() {
@@ -42,7 +42,7 @@ export default class InputBadgeContainer extends Component {
         numberOfLines = { 1 }
         style={styles.textInput}
         placeholder = '請輸入自訂興趣'
-        onSubmitEditing = { this.setBadge }     
+        onSubmitEditing = { this.addHobby }     
         onChangeText = { this.onChangeText }
         value = { this.state.badge }
       /> 

@@ -1,27 +1,44 @@
 import React, { Component } from 'react'
+import { View, TextInput, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
 
 import BaconForm from '../../../views/BaconForm'
 
-@inject('SignUpInStore') @observer
+const { width, height } = Dimensions.get('window')
+
+const styles = {
+  textInput: {
+    width: width - 60,
+    alignItems: 'center'
+  }
+}
+
+@inject('SubjectEditStore') @observer
 export default class BioInputContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectEditStore = this.props.SubjectEditStore
   }
 
   render() {
     return(
-      <BaconForm
-        //iconSource={ require('../../../../images/ico_logo_nn.png') } 
-        placeholder='請輸入自我介紹'
-        value={ this.SignUpInStore.bio }
-        maxLength={ 500 } 
-        onChangeText={ this.SignUpInStore.setBio }
-        //onBlur={ this.SignUpInStore.checkDisplayName }
-      />
+      <View style={{alignSelf: 'center'}}>
+        <TextInput
+          style={styles.textInput}
+          underlineColorAndroid="#d63768"
+          textAlignVertical = 'top'
+          placeholder = '請輸入自我介紹'
+          multiline
+          autoCorrect
+          numberOfLines = { 100 }
+          //editable = { true }
+          maxLength = { 500 }        
+          onChangeText = { this.SubjectEditStore.setBio }
+          value = {this.SubjectEditStore.bio }
+        />
+      </View>
     )
   }
 }

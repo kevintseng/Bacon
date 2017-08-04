@@ -5,18 +5,18 @@ import { inject, observer } from 'mobx-react'
 import BaconRoutesContainer from './BaconRoutesContainer'
 import CityChooseContainer from './CityChooseContainer'
 
-@inject('firebase','SignUpInStore','SubjectStore') @observer
+@inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class CityContainer extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectEditStore = this.props.SubjectEditStore
     this.SubjectStore = this.props.SubjectStore  
   }
 
   componentWillMount() {
-    this.SignUpInStore.setTextInputCity(this.SubjectStore.city)      
+    this.SubjectEditStore.setAddress(this.SubjectStore.address)      
   }
 
   render() {

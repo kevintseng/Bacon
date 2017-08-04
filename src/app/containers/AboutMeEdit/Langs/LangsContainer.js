@@ -5,18 +5,18 @@ import { inject, observer } from 'mobx-react'
 import BaconRoutesContainer from './BaconRoutesContainer'
 import LangListContainer from './LangListContainer'
 
-@inject('firebase','SignUpInStore','SubjectStore') @observer
+@inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class LangsContainer extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectEditStore = this.props.SubjectEditStore
     this.SubjectStore = this.props.SubjectStore  
   }
 
   componentWillMount() {
-    this.SignUpInStore.setLangs(Object.assign({}, this.SubjectStore.langs))
+    this.SubjectEditStore.setLanguages(Object.assign({}, this.SubjectStore.languages))
   }
 
   render() {

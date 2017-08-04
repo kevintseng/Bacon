@@ -18,7 +18,7 @@ export default class App extends Component {
         SubjectStore={ AppInitial.SubjectStore }
         SubjectEditStore={AppInitial.SubjectEditStore}
 
-        SignUpInStore={ AppInitial.SignUpInStore } 
+        //SignUpInStore={ AppInitial.SignUpInStore } 
         MeetChanceStore={ AppInitial.MeetChanceStore }
         >
         <Routes/>

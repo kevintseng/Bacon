@@ -11,7 +11,7 @@ import LangsContainer from '../../containers/AboutMeEdit/Langs/LangsContainer'
 import InterestsContainer from '../../containers/AboutMeEdit/Interests/InterestsContainer'
 
 
-@inject("firebase","SubjectStore") @observer
+@inject('SubjectStore','firebase') @observer
 export default class ProfileContainer extends Component {
 
   constructor(props) {
@@ -51,15 +51,16 @@ export default class ProfileContainer extends Component {
   render() {
     return(
       <Profile
-        source={ this.SubjectStore.photoURL }
+        source={ this.SubjectStore.avatar }
         verityEmail={ this.verityEmail }
-        verityPhoto={ this.SubjectStore.verityPhoto }
-        displayName={ this.SubjectStore.profileDisplayName }
-        age={ this.SubjectStore.profileBirthday }
-        city={ this.SubjectStore.profileCity }
-        bio={ this.SubjectStore.profileBio }
-        langs={ this.SubjectStore.profileLangs }
-        interests={ this.SubjectStore.profileInterests }
+        verityPhoto={ this.SubjectStore.photoVerified }
+        displayName={ this.SubjectStore.nickname }
+        age={ this.SubjectStore.age }
+        city={ this.SubjectStore.address }
+        bio={ this.SubjectStore.bio }
+        langs={ this.SubjectStore.languagesToString }
+        //interests={ this.SubjectStore.hobbies }
+
         onPressDisplayName={ this.goToEditDisplayName } 
         onPressCity={ this.goToEditCity }
         onPressBio={ this.goToEditBio }

@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux'
 
 import Infos from '../../views/Infos/Infos'
  
-@inject("SubjectStore") @observer
+@inject('SubjectStore') @observer
 export default class InfosContainer extends Component {
 
   constructor(props) {
@@ -17,11 +17,11 @@ export default class InfosContainer extends Component {
       <Infos
         verityEmail={this.SubjectStore.emailVerified} 
         verityPhoto={this.SubjectStore.photoVerified}
-        displayName={this.SubjectStore.profileDisplayName}
-        bio={this.SubjectStore.profileBio}
-        age={this.SubjectStore.profileBirthday}
-        langs={this.SubjectStore.profileLangs}
-        distance={'79'}
+        displayName={this.SubjectStore.nickname}
+        bio={this.SubjectStore.bio}
+        age={this.SubjectStore.age}
+        langs={this.SubjectStore.languagesToString}
+        //distance={'79'}
       />
     )
   }

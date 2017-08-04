@@ -9,7 +9,7 @@ const styles = {
   }
 }
 
-@inject("SubjectStore") @observer
+@inject('SubjectStore') @observer
 export default class AboutMeEditScene extends Component {
 
   constructor(props) {

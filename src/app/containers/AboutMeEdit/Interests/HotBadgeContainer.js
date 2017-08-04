@@ -23,13 +23,13 @@ const hots = [
   },
 ]
 
-@inject('firebase','SignUpInStore','SubjectStore') @observer
+@inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class HotBadgeContainer extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectEditStore = this.props.SubjectEditStore
     this.SubjectStore = this.props.SubjectStore
   }
 
@@ -41,7 +41,7 @@ export default class HotBadgeContainer extends Component {
           <FlatList
               data={ hots }
               numColumns={4}
-              renderItem={({item}) => (<BaconBadgeYes text={item.key} onPress={ () => { this.SignUpInStore.addBadge(item.key) }}/>)} 
+              renderItem={({item}) => (<BaconBadgeYes text={item.key} onPress={ () => { this.SubjectEditStore.addHobby(item.key) }}/>)} 
             />
         </View>
       </View>

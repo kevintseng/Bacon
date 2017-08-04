@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import { inject, observer } from "mobx-react"
+import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
 //import Perf from 'react-addons-perf'
 
-import ProfileContainer from "../../../containers/AboutMeTab/ProfileContainer" 
-import AlbumContainer from "../../../containers/AboutMeTab/AlbumContainer" 
-import PreviewContainer from "../../../containers/AboutMeTab/PreviewContainer" 
+import ProfileContainer from '../../../containers/AboutMeTab/ProfileContainer' 
+import AlbumContainer from '../../../containers/AboutMeTab/AlbumContainer' 
+import PreviewContainer from '../../../containers/AboutMeTab/PreviewContainer' 
 
 
-@inject("SubjectStore") @observer
+@inject('SubjectStore') @observer
 export default class AboutMeTabScene extends Component {
 
   constructor(props) {

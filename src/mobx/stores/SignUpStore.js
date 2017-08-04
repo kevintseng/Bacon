@@ -12,7 +12,8 @@ export default class SignUpStore {
   @observable nickname
   @observable birthday
   @observable policyDetector
-  @observable photoUrl
+  @observable avatar
+  @observable album
   // error handle
   @observable emailIndicator
   @observable passwordIndicator
@@ -30,11 +31,12 @@ export default class SignUpStore {
     this.sexualOrientation = true // { true : 同性, false: 異性 }
     this.address = null
     this.email = null
-    this.password = ''
-    this.nickname = ''
+    this.password = null
+    this.nickname = null
     this.birthday = null
     this.policyDetector = false
-    this.photoUrl = null
+    this.avatar = null
+    this.album = new Object
     // error handle
     this.emailDetector = false
     this.emailIndicator = null
@@ -80,8 +82,12 @@ export default class SignUpStore {
     this.policyDetector = !this.policyDetector
   }
 
-  @action setPhotoUrl = url => {
-    this.photoUrl = url
+  @action setAvatar = url => {
+    this.avatar = url
+  }
+
+  @action setAlbum = url => {
+    this.album[url] = true
   }
 
   // Blur
@@ -139,7 +145,7 @@ export default class SignUpStore {
   }
 
   @action checkPassword = () => {
-    if (this.password.match(/^[A-Za-z0-9]{6,12}$/)) {
+    if (/^[A-Za-z0-9]{6,12}$/.test(this.password)) {
       this.setPasswordDetector(true)
       this.setPasswordIndicator('此密碼可以使用')
     } else {
@@ -151,15 +157,15 @@ export default class SignUpStore {
   }
 
   @action checkNickname = () => {
-    if (this.nickname.length < 1) {
-      this.setNicknameDetector(false)
-      this.setNicknameIndicator('請輸入2個字以上的暱稱')
-    } else {
+    if (/^[^null]{2,6}$/.test(this.nickname)) {
       this.setNicknameDetector(true)
       this.setNicknameIndicator('此暱稱可以使用')
-      return true     
+    } else {
+      this.setNicknameDetector(false)
+      this.setNicknameIndicator('請輸入2~6字的暱稱')
+      return false     
     }
-    return false    
+    return true    
   }
 
   checkEmailFormat(email) {

@@ -5,13 +5,13 @@ import { inject, observer } from 'mobx-react'
 
 import { BaconBadgeYes, BaconBadgeNo } from '../../../views/BaconBadge/BaconBadge'
 
-@inject('firebase','SignUpInStore','SubjectStore') @observer
+@inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class BadgeWallContainer extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectEditStore = this.props.SubjectEditStore
     this.SubjectStore = this.props.SubjectStore
   }
 
@@ -19,13 +19,13 @@ export default class BadgeWallContainer extends Component {
     return(
       <View style={{flex: 1,alignItems: 'center'}}>
         <FlatList
-          data={ this.SignUpInStore.interestsFlatList }
+          data={ this.SubjectEditStore.hobbiesToFlatList }
           numColumns={4}
           renderItem={({item}) => {
-            if(this.SignUpInStore.deleteInterests.indexOf(item.key) > -1) {
-              return <BaconBadgeNo text={item.key} onPress={ () => { this.SignUpInStore.moveOutDeleteDeleteInterests(item.key)} } />
+            if(item.check) {
+              return <BaconBadgeYes text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
             } else {
-              return <BaconBadgeYes text={item.key} onPress={ () => { this.SignUpInStore.moveToDeleteDeleteInterests(item.key)} } />
+              return <BaconBadgeNo text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
             }
           }} 
         />

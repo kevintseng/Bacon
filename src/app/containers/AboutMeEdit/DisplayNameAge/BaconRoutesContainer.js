@@ -4,42 +4,41 @@ import { inject, observer } from "mobx-react"
 
 import BaconRoutes from '../../../views/BaconRoutes/BaconRoutes'
 
-@inject('firebase','SignUpInStore','SubjectStore') @observer
+@inject('firebase','SubjectStore','SubjectEditStore') @observer
 export default class BaconRoutesContainer extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
     this.SubjectStore = this.props.SubjectStore
+    this.SubjectEditStore = this.props.SubjectEditStore
   }
 
   _buttonOnPress = () => {
-    this.SignUpInStore.checkDisplayName()
-    if (this.allChecker()) {
+    if (this.nicknameChecker()) {
       if (this.birthdayChecker()) {
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/displayName').set(this.SignUpInStore.displayName)
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/birthday').set(this.SignUpInStore.birthday)
-        this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
-        this.SubjectStore.setBirthday(this.SignUpInStore.birthday)
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/nickname').set(this.SubjectEditStore.nickname)
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/birthday').set(this.SubjectEditStore.birthday)
+        this.SubjectStore.setNickname(this.SubjectEditStore.nickname)
+        this.SubjectStore.setBirthday(this.SubjectEditStore.birthday)
         Actions.AboutMeTab({type: 'reset'})
       } else {
-        alert('請填入生日資料')
+        alert('請輸入生日資料')
       }
     } else {
-      alert('請再檢查一次輸入資料')
+      alert('請輸入2~6字暱稱')
     }
   }
 
-  allChecker = () => {
-    if (this.SignUpInStore.displayNameChecker) {
+  nicknameChecker = () => {
+    if (/^[^null]{2,6}$/.test(this.SubjectEditStore.nickname)) {
       return true
     }
     return false
   }
 
   birthdayChecker = () => {
-    if (this.SignUpInStore.birthday) {
+    if (this.SubjectEditStore.birthday) {
       return true 
     }
     return false
