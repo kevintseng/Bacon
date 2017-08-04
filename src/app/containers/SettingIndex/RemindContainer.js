@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
-import { inject, observer } from "mobx-react"
 
 import Square from '../../views/Square/Square'
 
-@inject("SignUpInStore") @observer
 export default class RemindContainer extends Component {
 
   constructor(props) {

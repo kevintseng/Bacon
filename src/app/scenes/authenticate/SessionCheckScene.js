@@ -7,6 +7,21 @@ import Geolocation from  'Geolocation'
 
 import Loading from '../../views/Loading/Loading'
 
+const metadata = {
+  contentType: 'image/jpeg'
+}
+
+const DefaultLanguages =  { 
+  中文: false, 
+  英文: false, 
+  韓文: false
+}
+
+const DefaultHobbies = {
+  打球: true,
+  唱歌: true
+}
+
 @inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','firebase',) @observer
 export default class SessionCheckScene extends Component {
 
@@ -35,14 +50,15 @@ export default class SessionCheckScene extends Component {
         this.email = user.email
         if (this.ControlStore.authenticateIndicator == '註冊') {
           this.uploadAvatar() // 非同步上傳相簿
-          this.uploadSignUpData() // 非同步上傳資料  
-          // 邂逅 巧遇 緣分
+          this.uploadSignUpData() // 非同步上傳註冊資料  
+          // 非同步 邂逅 巧遇 緣分 pool listener
           this.setOnline(this.uid) // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
         } else {
-          this.initSubjectStoreFromFirebase()
-          // 邂逅 巧遇 緣分
+          // 全部都是非同步
+          this.initSubjectStoreFromFirebase() // 非同步抓使用者資料
+          // 非同步 邂逅 巧遇 緣分 pool listener
           this.setOnline(this.uid) // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
         }
@@ -55,7 +71,6 @@ export default class SessionCheckScene extends Component {
         this.SignUpStore.initialize() // 初始註冊入狀態
         this.SignInStore.initialize() // 初始化登入狀態
         this.SubjectStore.initialize() // 初始主體入狀態
-        this.SubjectEditStore.initialize() // 初始編輯入狀態
 
         //this.MeetChanceStore.setpreyList(new Array)
         Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
@@ -64,69 +79,94 @@ export default class SessionCheckScene extends Component {
   }
 
   uploadAvatar = () => {
+    // 非同步上傳大頭照
     this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid)  
     .putFile(this.SignUpStore.photoUrl.replace('file:/',''), metadata)
     .then(uploadedFile => {
-      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photoUrl').set(uploadedFile.downloadUrl)
+      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/avatar').set(uploadedFile.downloadUrl)
       .then(() => {
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').set({ uploadedFile.downloadUrl: true })
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album' + uploadedFile.downloadUrl).set(true)
         .then(() => {
-          this.setState({
-            uploadAvatarState: '使用者大頭照上傳成功'
-          })})
+            this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳成功')
+          })
         .catch(() => {
-          this.setState({
-            uploadAvatarState: '使用者大頭照上傳失敗'
-          })})
+          this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳失敗')
+          })
       })
       .catch(() => {
-        this.setState({
-          uploadAvatarState: '使用者大頭照上傳失敗'
-        })
+        this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳成功')
       })      
     })
     .catch(() => {
-      this.setState({
-        uploadAvatarState: '使用者大頭照上傳失敗'
-      })
+      this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳失敗')
     })
   }
 
   uploadSignUpData = () => {
     this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
-      // 上傳註冊資料
-      nickname: this.SignUpStore.nickname,
-      address: this.SignUpStore.address,
-      birthday: this.SignUpStore.birthday,
-      vip: false,
+      // 非同步上傳註冊資料
       sexualOrientation: this.sexualOrientationToString(),
-      languages: DefaultLanguages
+      address: this.SignUpStore.address,
+      nickname: this.SignUpStore.nickname,
+      birthday: this.SignUpStore.birthday,
     }).then(() => {
-        this.setState({
-          uploadSignUpDataState: '使用者資料上傳成功' // signUpDataUploadIndicator
-        })
+        this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳成功')
       }).catch((error) => {
-        this.setState({
-          uploadSignUpDataState: '使用者資料上傳失敗'
-        })
+        this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳失敗')
         console.log(error)
       })
   }
 
   initSubjectStoreFromSignUpStore = () => {
     this.SubjectStore.setUid(this.uid)
-    this.SubjectStore.setEmail(this.email)
-    this.SubjectStore.setNickName(this.SignUpStore.nickname)
-    this.SubjectStore.setAddress(this.SignUpStore.address)
-    this.SubjectStore.setBirthday(this.SignUpStore.birthday)
-    this.SubjectStore.setBio(null)
-    this.SubjectStore.setPhotoUrl(this.SignUpStore.photoUrl)
-    this.SubjectStore.setPhotos({ this.SignUpInStore.photourl: true }) 
-    this.SubjectStore.setLanguages(DefaultLanguages)  
-    this.SubjectStore.setHobbies(DefaultHobbies)    
-    this.SubjectStore.setVip(false) ///////// 難處理 /////////
-    this.SubjectStore.sexualOrientation(this.sexualOrientationToString()) ///////// 難處理 /////////
+    this.SubjectStore.setEmail(this.email) // String
+    this.SubjectStore.setNickname(this.SignUpStore.nickname) // String
+    this.SubjectStore.setAddress(this.SignUpStore.address) // String
+    this.SubjectStore.setBirthday(this.SignUpStore.birthday) // String
+    this.SubjectStore.setBio(null) // null(placeholder)
+    this.SubjectStore.setAvatar(this.SignUpStore.avatar) // String
+    this.SubjectStore.setAlbum(this.SignUpStore.album) // Object 
+    this.SubjectStore.setLanguages(DefaultLanguages) // Object 
+    this.SubjectStore.setHobbies(DefaultHobbies) // Object 
+    this.SubjectStore.setVip(false) // boolean
+    this.SubjectStore.setSexualOrientation(this.sexualOrientationToString()) // String 
+    this.ControlStore.setSyncDetector(true) // 同步完成
   }
+
+  initSubjectStoreFromFirebase = () => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
+      (snap) => {
+        if (snap.val()) {
+          this.SubjectStore.setUid(this.uid)
+          this.SubjectStore.setEmail(this.email) // String
+          this.SubjectStore.setNickname(snap.val().nickname) // null(placeholder) String
+          this.SubjectStore.setAddress(snap.val().address) // null(placeholder) String
+          this.SubjectStore.setBirthday(snap.val().birthday) // null -> undefinded
+          this.SubjectStore.setBio(snap.val().bio) // null(placeholder) String
+          this.SubjectStore.setAvatar(snap.val().avatar) // null(placeholder) String Url
+          this.SubjectStore.setAlbum(new Object(snap.val().album)) // Object 
+          this.SubjectStore.setLanguages(snap.val().languages || DefaultLanguages) // Object 
+          this.SubjectStore.setHobbies(snap.val().hobbies || DefaultHobbies) // Object 
+          this.SubjectStore.setVip(Boolean(snap.val().vip))
+          this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation) //null(placeholder->邂逅) String
+        } else {
+          //this.SubjectStore.initialize()
+        }
+        this.ControlStore.setSyncDetector(true) // 同步完成
+      }, error => {
+        //this.SubjectStore.initialize()
+        this.ControlStore.setSyncDetector(true) // 同步完成
+        console.log(error)
+      })
+  }
+
+  genderToString = () => (
+    this.SignUpStore.gender ? 'm' : 'f'
+  )
+
+  sexualOrientationToString = () => (
+    this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : (this.genderToString() + 's' + (this.SignUpStore.gender ? 'f' : 'm'))    
+  )
 
   handleAppStateChange = nextAppState => {
     if (AppState.currentState === 'active') {
@@ -154,6 +194,14 @@ export default class SessionCheckScene extends Component {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+
+  render() {
+    return(
+      <Loading/>
+  )}
+}
+
+/*
   uploadLocation = () => {
     Geolocation.getCurrentPosition(
       location => {
@@ -204,9 +252,4 @@ export default class SessionCheckScene extends Component {
       this.geoQuery.cancel()
     }
   }
-
-  render() {
-    return(
-      <Loading/>
-  )}
-}
+*/

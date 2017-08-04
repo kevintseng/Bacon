@@ -20,16 +20,16 @@ const options = {
 }
 
 const metadata = {
-    contentType: 'image/jpeg'
+  contentType: 'image/jpeg'
 }
 
-@inject('firebase','SubjectStore') @observer
+@inject('SubjectStore','firebase') @observer
 export default class AlbumContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    this.firebase = this.props.firebase
     this.state = {
       uri: null,
       photoOnPressModal: false,
@@ -41,9 +41,9 @@ export default class AlbumContainer extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  openPicZoom = key => {
+  openPicZoom = url => {
     this.setState({ photoOnPressModal: true })
-    this.setState({ uri: this.SubjectStore.photos[key] })
+    this.setState({ uri: url })
   }
 
   closePicZoom = () => {
@@ -73,10 +73,10 @@ export default class AlbumContainer extends Component {
         .then((resizedUri) => {
           this.SubjectStore.addPhoto(resizedUri)
           UUIDGenerator.getRandomUUID((uuid) => {
-            this.firebase.storage().ref('userPhotos/' + this.SubjectStore.uid + '/' + uuid + '.jpg').putFile(resizedUri.replace('file:/',''), metadata)
+            this.firebase.storage().ref('userAlbum/' + this.SubjectStore.uid + '/' + uuid + '.jpg').putFile(resizedUri.replace('file:/',''), metadata)
             .then(uploadedFile => {
-              this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos/' + this.SubjectStore.photos.length).set(uploadedFile.downloadUrl)
-              console.log(uploadedFile.downloadUrl)
+              this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album/' + uploadedFile).set(true)
+              //console.log(uploadedFile.downloadUrl)
             })
             .catch(err => {
               console.log(err)
@@ -93,7 +93,7 @@ export default class AlbumContainer extends Component {
     return(
       <Album
         source={ this.state.uri }
-        photos={ this.SubjectStore.simplePhotos }
+        photos={ this.SubjectStore.albumShow }
         photoOnPress={ this.openPicZoom }
         photoOnLongPress={ this.openPicOptions }
         footerOnPress={ this.openPicChoose }

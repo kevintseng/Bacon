@@ -10,7 +10,7 @@ import SubjectEditStore from '../mobx/stores/SubjectEditStore'
 
 
 import MeetChanceStore from '../mobx/stores/MeetChanceStore'
-import SignUpInStore from '../mobx/stores/SignUpInStore'
+//import SignUpInStore from '../mobx/stores/SignUpInStore'
 
 const FirebaseConfig = {
   debug: true
@@ -27,7 +27,7 @@ const AppInitial = {
     this.SubjectStore = new SubjectStore()
     this.SubjectEditStore = new SubjectEditStore()
     
-    this.SignUpInStore = new SignUpInStore(this.firebase)
+    //this.SignUpInStore = new SignUpInStore(this.firebase)
     this.MeetChanceStore = new MeetChanceStore()
     return this
   }

@@ -6,19 +6,19 @@ import BaconRoutesContainer from './BaconRoutesContainer'
 import DisplayNameContainer from './DisplayNameContainer'
 import BirthdayContainer from './BirthdayContainer'
 
-@inject('firebase','SignUpInStore','SubjectStore') @observer
+@inject('SubjectStore','SubjectEditStore','firebase') @observer
 export default class DisplayNameAgeContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
     this.SubjectStore = this.props.SubjectStore  
+    this.SubjectEditStore = this.props.SubjectEditStore
+    this.firebase = this.props.firebase
   }
 
   componentWillMount() {
-    this.SignUpInStore.setDisplayName(this.SubjectStore.displayName)
-    this.SignUpInStore.setBirthday(this.SubjectStore.birthday)
+    this.SubjectEditStore.setNickname(this.SubjectStore.nockname)
+    this.SubjectEditStore.setBirthday(this.SubjectStore.birthday)
   }
 
   render() {

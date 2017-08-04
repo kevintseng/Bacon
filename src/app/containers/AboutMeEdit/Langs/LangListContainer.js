@@ -5,19 +5,19 @@ import { inject, observer } from 'mobx-react'
 
 import Lang from '../../../views/Lang/Lang'
 
-@inject('SignUpInStore') @observer
+@inject('SubjectEditStore') @observer
 export default class LangListContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectEditStore = this.props.SubjectEditStore
   }
 
   render() {
     return(
       <FlatList
-        data={ this.SignUpInStore.simpleLangs } 
-        renderItem={ ({item}) => <Lang langName={item.key} check={item.check} onPressCheckBox={ () => { this.SignUpInStore.setLang(item.key) }} />}
+        data={ this.SubjectEditStore.languagesToFlatList } 
+        renderItem={ ({item}) => <Lang langName={item.key} check={item.check} onPressCheckBox={ () => { this.SubjectEditStore.switchLanguages(item.key) }} />}
       />
     )
   }

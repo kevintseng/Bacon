@@ -14,7 +14,7 @@ export default class BaconRoutesContainer extends Component {
   }
 
   _buttonOnPress = () => {
-    if (this.SignUpStore.photoUrl) {
+    if (this.SignUpStore.avatar) {
       Actions.Auth({type: 'reset'})
     } else {
       Alert.alert( 

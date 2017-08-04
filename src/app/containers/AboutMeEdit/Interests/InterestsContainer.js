@@ -7,23 +7,23 @@ import HotBadgeContainer from './HotBadgeContainer'
 import InputBadgeContainer from './InputBadgeContainer'
 import BadgeWallContainer from './BadgeWallContainer'
 
-@inject('firebase','SignUpInStore','SubjectStore') @observer
+@inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class Interests extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
+    this.SubjectEditStore = this.props.SubjectEditStore
     this.SubjectStore = this.props.SubjectStore  
   }
 
   componentWillMount() {
-    this.SignUpInStore.setInterests(this.SubjectStore.interests.slice())
+    this.SubjectEditStore.setHobbies(Object.assign({},this.SubjectStore.hobbies))
   }
 
-  componentWillUnmoun() {
-    this.SignUpInStore.cleanDeleteInterests()
-  }
+  //componentWillUnmoun() {
+  //  this.SubjectEditStore.cleanDeleteInterests()
+  //}
 
   render() {
     return(

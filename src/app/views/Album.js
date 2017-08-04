@@ -40,7 +40,7 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, p
         data={ photos } 
         numColumns={3}
         renderItem={({item}) => (
-        <TouchableOpacity onPress={ () => { photoOnPress(item.key) } } onLongPress={ photoOnLongPress } >
+        <TouchableOpacity onPress={ () => { photoOnPress(item.uri) } } onLongPress={ photoOnLongPress } >
           <Image style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
         </TouchableOpacity>
         )} 

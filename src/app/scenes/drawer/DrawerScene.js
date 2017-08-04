@@ -8,10 +8,6 @@ import Geolocation from  'Geolocation'
 
 import Sider from '../../views/Sider/Sider'
 
-const metadata = {
-    contentType: 'image/jpeg'
-}
-
 const { width } = Dimensions.get('window')
 
 const drawerStyles = {
@@ -21,201 +17,15 @@ const drawerStyles = {
   }
 }
 
-const DefaultLangs =  { 
-  中文: false, 
-  英文: false, 
-  韓文: false
-}
-
-const DefaultInterests = []
-
-@inject('firebase','SignUpInStore','SubjectStore','MeetChanceStore') @observer
+@inject('ControlStore','SubjectStore') @observer
 export default class DrawerScene extends Component {
 
   constructor(props) {
     super(props)
-    this.firebase = this.props.firebase
-    this.SignUpInStore = this.props.SignUpInStore
+    this.ControlStore = this.props.ControlStore
     this.SubjectStore = this.props.SubjectStore
-    this.MeetChanceStore = this.props.MeetChanceStore
-    this.state = {
-      uploadSignUpDataState: null,
-      uploadAvatarState: null
-    }
   }
   
-  componentWillMount() {
-    if (this.SignUpInStore.UpInStatus === '註冊') {
-      this.setState({
-        uploadSignUpDataState: '使用者資料上傳中',
-        uploadAvatarState: '使用者大頭照上傳中'
-      })
-      this.uploadAvatar() // 非同步上傳相簿
-      this.uploadSignUpData() // 非同步上傳資料
-      this.initSubjectStoreFromSignUpInStore()
-    } else {
-      this.setState({
-        uploadSignUpDataState: '資料同步中'
-      })
-      this.initSubjectStoreFromFirebase() // 非同步抓取網路資料到 SubjectStore
-    }
-  }
-
-  uploadAvatar = () => {
-    this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid)  
-    .putFile(this.SignUpInStore.photoURL.replace('file:/',''), metadata)
-    .then(uploadedFile => {
-      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photoURL').set(uploadedFile.downloadUrl)
-      .then(() => {
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').set({ 0: uploadedFile.downloadUrl })
-        .then(() => {
-          this.setState({
-            uploadAvatarState: '使用者大頭照上傳成功' // avatarUploadIndicator
-          })})
-        .catch(() => {
-          this.setState({
-            uploadAvatarState: '使用者大頭照上傳失敗'
-          })})
-      })
-      .catch(() => {
-        this.setState({
-          uploadAvatarState: '使用者大頭照上傳失敗'
-        })
-      })      
-    })
-    .catch(() => {
-      this.setState({
-        uploadAvatarState: '使用者大頭照上傳失敗'
-      })
-    })
-  }
-
-  uploadLocation = () => {
-    Geolocation.getCurrentPosition(
-      location => {
-        const geoFire = new GeoFire(this.firebase.database().ref('/user_locations/'))
-        const geoQuery = geoFire.query({
-          center: [location.coords.latitude,location.coords.longitude],
-          radius: 3000
-        })
-        this.grepMeetChance(geoQuery)
-        geoFire.set(this.SubjectStore.uid,[location.coords.latitude,location.coords.longitude])
-          .then(() => {
-            console.log("獲取位置成功並上傳"+[location.coords.latitude,location.coords.longitude]);
-          }, error => {
-            console.log("上傳位置失敗：" + error);
-          }
-        ) 
-
-      },
-      error => {
-        console.log("獲取位置失敗："+ error)
-      }
-    )
-  }
-
-  grepMeetChance = (geoQuery) => {
-    geoQuery.on("key_entered", (uid, location, distance) => {
-      //
-      if (!(uid === this.SubjectStore.uid)) {
-        this.MeetChanceStore.addPrey({uid: uid, distance: distance})
-      }
-    })
-
-    geoQuery.on("key_moved", (uid, location, distance) => {
-      if (!(uid === this.SubjectStore.uid)) {
-        this.MeetChanceStore.updatePrey(uid,distance)
-      }
-    })
-
-    geoQuery.on("key_exited", (uid, location, distance) => {
-      if (!(uid === this.SubjectStore.uid)) {
-        this.MeetChanceStore.removePrey(uid)
-      }
-    })
-  }
-
-  uploadSignUpData = () => {
-    this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
-      // 上傳註冊資料
-      displayName: this.SignUpInStore.displayName,
-      city: this.SignUpInStore.city,
-      birthday: this.SignUpInStore.birthday,
-      vip: false,
-      sexOrientation: this.sexOrientationString(),
-      langs: DefaultLangs
-    }).then(() => {
-        this.setState({
-          uploadSignUpDataState: '使用者資料上傳成功'
-        })
-      }).catch((error) => {
-        this.setState({
-          uploadSignUpDataState: '使用者資料上傳失敗'
-        })
-        console.log(error)
-      })
-  }
-
-  initSubjectStoreFromSignUpInStore = () => {
-    this.SubjectStore.setDisplayName(this.SignUpInStore.displayName)
-    this.SubjectStore.setCity(this.SignUpInStore.city)
-    this.SubjectStore.setBirthday(this.SignUpInStore.birthday)
-    this.SubjectStore.setBio(null)
-    this.SubjectStore.setPhotoURL(this.SignUpInStore.photoURL)
-    this.SubjectStore.setPhotos([this.SignUpInStore.photoURL]) 
-    this.SubjectStore.setLangs(DefaultLangs)  
-    this.SubjectStore.setInterests(DefaultInterests)    
-    this.SubjectStore.setVip(false) ///////// 難處理 /////////
-    this.SubjectStore.setSexOrientation(this.sexOrientationString()) ///////// 難處理 /////////
-  }
-
-  initSubjectStoreFromFirebase = () => {
-    this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
-      (snap) => {
-        if (snap.val()) {
-          this.SubjectStore.setDisplayName(snap.val().displayName) // 有可能 null -> '請輸入暱稱...' 
-          this.SubjectStore.setCity(snap.val().city) // 有可能 null -> '請輸入地址...'
-          this.SubjectStore.setBirthday(snap.val().birthday) // 有可能 null -> '請輸入生日...'
-          this.SubjectStore.setBio(snap.val().bio) // 有可能 null -> '您尚未輸入自我介紹，點此輸入自我介紹！'
-          this.SubjectStore.setLangs(snap.val().langs || DefaultLangs) // 有可能 null -> 初始選單
-          this.SubjectStore.setInterests(snap.val().interests || DefaultInterests) // 有可能 null -> 初始選單
-          this.SubjectStore.setPhotoURL(snap.val().photoURL) // 有可能 null -> 灰色大頭照
-          ///////// 難處理 /////////
-          this.SubjectStore.setPhotos(snap.val().photos || new Array) // 有可能 null -> 必須ㄧ定要是 Array
-          this.SubjectStore.setVip(snap.val().vip || false) ///////// 難處理 /////////
-          this.SubjectStore.setSexOrientation(snap.val().sexOrientation || null) // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
-        } else {
-          this.SubjectStore.setDisplayName(null) //  null -> '請輸入暱稱...' 
-          this.SubjectStore.setCity(null) // 有可能 null -> '請輸入地址...'
-          this.SubjectStore.setBirthday(null) // 有可能 null -> '請輸入生日...'
-          this.SubjectStore.setBio(null) // 有可能 null -> '您尚未輸入自我介紹，點此輸入自我介紹！'
-          this.SubjectStore.setLangs(DefaultLangs) // 有可能 null -> 初始選單
-          this.SubjectStore.setInterests(DefaultInterests) // 有可能 null -> 初始選單
-          this.SubjectStore.setPhotoURL(null) // 有可能 null -> 灰色大頭照
-          ///////// 難處理 /////////
-          this.SubjectStore.setPhotos(new Array) // 有可能 null -> 必須ㄧ定要是 Array
-          this.SubjectStore.setVip(false) ///////// 難處理 /////////
-          this.SubjectStore.setSexOrientation(null) // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
-        }
-        this.setState({
-          uploadSignUpDataState: '資料同步成功'
-        })
-      }, error => {
-        this.setState({
-          uploadSignUpDataState: '資料同步失敗'
-        })
-        console.warn(error)
-      })
-  }
-
-  sexOrientationString = () => (
-    this.SignUpInStore.sexOrientation ? (this.genderString() + 's' + this.genderString()) : (this.genderString() + 's' + (this.SignUpInStore.gender ? 'f' : 'm'))    
-  )
-
-  genderString = () => (
-    this.SignUpInStore.gender ? 'm' : 'f'
-  )
-
   goToAboutMe() {
     Actions.aboutme({type: 'reset'})
   }
@@ -255,11 +65,10 @@ export default class DrawerScene extends Component {
         open={ state.open }
         content={
           <Sider 
-            warningTop={ this.state.uploadSignUpDataState }
-            warningBottom={ this.state.uploadAvatarState }
-            avatar={ this.SubjectStore.photoURL }
-            displayName={ this.SubjectStore.displayName }
-
+            warningTop={ this.ControlStore.signUpDataUploadIndicator }
+            warningBottom={ this.ControlStore.avatarUploadIndicator }
+            avatar={ this.SubjectStore.avatar }
+            displayName={ this.SubjectStore.nickname }
             displayNameOnPress={ this.goToAboutMe }
             meetchanceOnPress={ this.goToMeetChance }
             meetcueOnPress={ this.goToMeetCute }
