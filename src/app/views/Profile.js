@@ -37,7 +37,7 @@ const styles = {
 
 const colors = ['#f4a764', '#d63768']
 
-const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio, langs, interests, onPressDisplayName, onPressCity, onPressBio, onPressLangs, onPressInterests}) => {
+const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio, langs, interests, onPressDisplayName, onPressCity, onPressBio, onPressLangs, onPressInterests, onPressMemberUpgrade}) => {
   return(
     <View>
       <View style={{flexDirection: 'row',padding: 5}}>
@@ -75,6 +75,7 @@ const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio,
         <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
             <MemberUpgrade
               MemberUpgradeText='一般會員'
+              onPress={ onPressMemberUpgrade }
             />
             <QUpgrade
               QUpgradeText='Q點'
