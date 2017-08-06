@@ -38,6 +38,7 @@ export default class AlbumContainer extends Component {
   }
 
   componentWillMount() {
+    console.log(this.SubjectStore.album)
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
@@ -71,11 +72,11 @@ export default class AlbumContainer extends Component {
       } else {
         ImageResizer.createResizedImage(res.uri, 1200, 1200, 'JPEG', 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
         .then((resizedUri) => {
-          this.SubjectStore.addPhoto(resizedUri)
           UUIDGenerator.getRandomUUID((uuid) => {
+            this.SubjectStore.addPhoto(uuid,resizedUri)
             this.firebase.storage().ref('userAlbum/' + this.SubjectStore.uid + '/' + uuid + '.jpg').putFile(resizedUri.replace('file:/',''), metadata)
             .then(uploadedFile => {
-              this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album/' + uploadedFile).set(true)
+              this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album/' + uuid).set(uploadedFile.downloadUrl)
               //console.log(uploadedFile.downloadUrl)
             })
             .catch(err => {
@@ -93,7 +94,7 @@ export default class AlbumContainer extends Component {
     return(
       <Album
         source={ this.state.uri }
-        photos={ this.SubjectStore.albumShow }
+        photos={ this.SubjectStore.albumToFlatList }
         photoOnPress={ this.openPicZoom }
         photoOnLongPress={ this.openPicOptions }
         footerOnPress={ this.openPicChoose }

@@ -86,8 +86,9 @@ export default class SignUpStore {
     this.avatar = url
   }
 
-  @action setAlbum = url => {
-    this.album[url] = true
+  @action setAlbum = (key,url) => {
+    this.album[key] = url
+    //this.album = Object.assign({},this.album)
   }
 
   // Blur
