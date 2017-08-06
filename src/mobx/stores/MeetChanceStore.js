@@ -45,27 +45,21 @@ export default class MeetChanceStore {
   }
 
   @action setRealPreys = () => {
-    
       this.preyList.forEach((ele,index) => {
         this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
           if (snap.val()) {
             runInAction(() => {
-              this.preys[index].nickname = snap.val().displayName
               this.preys[index] = {
                 key: ele.uid,
                 nickname: snap.val().displayName,
                 avatar: snap.val().photoURL              
               } 
+              this.extraData = true
               this.preys = this.preys.peek()
             })
           }
         })
-      })
-
-  
-
-    //this.preys = observableArray(this.preys)
-    
+      })    
   }
 
 }

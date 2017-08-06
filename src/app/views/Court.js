@@ -12,34 +12,14 @@ export default class Court extends Component {
 
   constructor(props) {
     super(props)
-    this.nope = this.props.nope
-    this.yup = this.props.yup
-  }
-
-  renderCard = card => (
-    <Image
-      key={card.id}
-      source={{uri: card.uri}}
-      style={{width, height: width, borderRadius: 10}}
-    /> 
-  )
-
-  onPressRightIcon = () => {
-    this.refs['swiper']._goToNextCard() 
-    this.nope && this.nope()
-  }
-
-  onPressLeftIcon = () => {
-    this.refs['swiper']._goToNextCard() 
-    this.yup && this.yup()
   }
 
   nextphoto = () => {
     this.carousel._animateNextPage()
   }
 
-  renderAlbum = (photos) => (
-    photos.map( photo => (
+  renderAlbumZoom = (album) => (
+    album.map( photo => (
       <ImageZoom 
         key={photo}
         cropWidth={width}
@@ -52,40 +32,38 @@ export default class Court extends Component {
     ))
   )
 
-  renderAlbumA = (photos) => (
-    photos.map( photo => (
-      <TouchableOpacity activeOpacity={1} key={photo} onPress={this.props.openAlbum}>
-        <Image style={{height: width, width}} resizeMode={'contain'} source={{uri: photo}}/>
-       </TouchableOpacity>
-    ))
-  )
-
-
-  renderOnePhotoA = () => (
-      <Image style={{height: width, width}} resizeMode={'contain'} source={{uri: 'https://i.imgur.com/FHxVpN4.jpg'}}/>
-  )
-
-  renderOnePhoto = () => (
+  renderOnePhotoZoom = () => (
     <ImageZoom
       cropWidth={width}
       cropHeight={height}
       imageWidth={width}
       imageHeight={height}
     >
-      <Image style={{height, width}} resizeMode={'contain'} source={{uri: 'https://i.imgur.com/FHxVpN4.jpg'}}/>
+      <Image style={{height, width}} resizeMode={'contain'} source={{uri: 'https://cdn.shopify.com/s/files/1/1285/0147/products/sign2-032a.png?v=1477683540'}}/>
     </ImageZoom>
+  )
+
+  renderAlbum = (album) => (
+    album.map( photo => (
+      <TouchableOpacity activeOpacity={1} key={photo} onPress={this.props.openAlbum}>
+        <Image style={{height: width, width}} resizeMode={'contain'} source={{uri: photo}}/>
+      </TouchableOpacity>
+    ))
+  )
+
+
+  renderOnePhoto = () => (
+    <Image style={{height: width, width}} resizeMode={'contain'} source={{uri: 'https://cdn.shopify.com/s/files/1/1285/0147/products/sign2-032a.png?v=1477683540'}}/>
   )
 
   render() {
 
-    const { cards, rightIcon, leftIcon, album, closeAlbum, openAlbum } = this.props
-
-    const photos = ['https://i.imgur.com/FHxVpN4.jpg','https://i.ytimg.com/vi/hvrUIdgT_mk/maxresdefault.jpg']
+    const { album, rightIcon, leftIcon, visible, closeAlbum, openAlbum, onPressRightIcon, onPressLeftIcon } = this.props
 
     return (
       <View style={{flex: 1}}>
 
-        <Modal animationType={"fade"} onRequestClose={()=>{}} visible={ album || false } transparent={false}>
+        <Modal animationType={"fade"} onRequestClose={()=>{}} visible={ visible || false } transparent={false}>
           <Carousel
             ref={(carousel) => { this.carousel = carousel }}
             swipe
@@ -95,7 +73,7 @@ export default class Court extends Component {
             pageInfoTextStyle={{color: 'red'}}
             onAnimateNextPage={(p) => console.log(p)}
             >
-            { photos ? this.renderAlbum(photos) : this.renderOnePhoto() }
+            { album.length > 0 ? this.renderAlbumZoom(album) : this.renderOnePhotoZoom() }
           </Carousel>
           <View style={{width, position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
             <View ><Text onPress={ closeAlbum } style={{color:'white',fontFamily: 'NotoSans'}}>返回</Text></View>
@@ -113,37 +91,17 @@ export default class Court extends Component {
             pageInfoTextStyle={{color: 'red'}}
             onAnimateNextPage={(p) => console.log(p)}
             >
-            { photos ? this.renderAlbumA(photos) : this.renderOnePhotoA() }
+            { album.length > 0 ? this.renderAlbum(album) : this.renderOnePhoto() }
           </Carousel>
 
-        <TouchableOpacity style={{position: 'absolute',top: 320, right: 60}} onPress={ this.onPressRightIcon }>
+        <TouchableOpacity style={{position: 'absolute',top: 320, right: 60}} onPress={ onPressRightIcon }>
           <Image source={ rightIcon }/>
         </TouchableOpacity>
 
-        <TouchableOpacity style={{position: 'absolute',top: 320, left: 60}} onPress={ this.onPressLeftIcon }>
+        <TouchableOpacity style={{position: 'absolute',top: 320, left: 60}} onPress={ onPressLeftIcon }>
           <Image source={ leftIcon } />
         </TouchableOpacity>
 
     </View>
   )}
 }
-
-/*
-        <Modal animationType={"fade"} onRequestClose={()=>{}} visible={ album || false } transparent={false}>
-          <Carousel
-            ref={(carousel) => { this.carousel = carousel }}
-            swipe={false}
-            style={{flex:1,backgroundColor: 'black'}}
-            bullets
-            autoplay={false}
-            pageInfoTextStyle={{color: 'red'}}
-            onAnimateNextPage={(p) => console.log(p)}
-            >
-            { photos ? this.renderAlbum(photos) : this.renderOnePhoto() }
-          </Carousel>
-          <View style={{width, position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
-            <View ><Text onPress={ closeAlbum } style={{color:'white',fontFamily: 'NotoSans'}}>返回</Text></View>
-            <View ><Text onPress={ this.nextphoto } style={{color:'white',fontFamily: 'NotoSans'}}>下一張</Text></View>
-          </View>
-        </Modal>
-*/

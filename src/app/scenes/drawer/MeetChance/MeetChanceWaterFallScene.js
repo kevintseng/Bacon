@@ -78,7 +78,6 @@ export default class MeetChanceWaterFallScene extends Component {
       <FlatList
         data={this.MeetChanceStore.preys} 
         numColumns={3}
-        extraData={this.state}
         renderItem={({item}) => 
         <Cookie  
           name={ item.nickname } 
