@@ -60,9 +60,10 @@ export default class SubjectStore {
     // { 中文: true } -> [{key: 中文, check: true}]
   }
 
-  //@computed get hobbiesShow() {
-  //  return Object.keys(this.hobbies).map(ele => ({key: ele}))
-  //}
+  @computed get hobbiesToFlatList() {
+    return Object.keys(this.hobbies).map((key,index) => ({ key: key, check: this.hobbies[key] }))
+    // { 打球: true } -> [{key: 打球, check: true}]
+  }
 
   // action
 
@@ -122,7 +123,7 @@ export default class SubjectStore {
   }
 
   @action setAlbum = object => {
-    this.album = object
+    this.album = Object.assign({},object)
   }
 
   @action addPhoto = url => {

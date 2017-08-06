@@ -14,8 +14,16 @@ export default class BaconRoutesContainer extends Component {
     this.SubjectStore = this.props.SubjectStore
   }
 
+  filter = () => (
+    Object.keys(this.SubjectEditStore.hobbies).reduce((r, e) => {
+      if (this.SubjectEditStore.hobbies[e] === true ) r[e] = true
+      return r;
+    }, {})
+  )
+
+
   buttonOnPress = () => {
-    this.SubjectStore.setHobbies(Object.assign({},this.SubjectEditStore.hobbies))
+    this.SubjectStore.setHobbies(this.filter())
     Actions.AboutMeTab({type: 'reset'})
   }
 

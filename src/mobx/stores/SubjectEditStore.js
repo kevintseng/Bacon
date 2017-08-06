@@ -1,4 +1,4 @@
-import { useStrict, observable, action, computed } from 'mobx'
+import { useStrict, observable, extendObservable, action, computed } from 'mobx'
 
 useStrict(true)
 
@@ -59,5 +59,6 @@ export default class SubjectEditStore {
 
   @action addHobby = key => {
     this.hobbies[key] = true
+    this.hobbies = Object.assign({},this.hobbies)
   }
 }

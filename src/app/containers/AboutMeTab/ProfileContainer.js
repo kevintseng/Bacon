@@ -4,6 +4,9 @@ import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
 import Profile from '../../views/Profile'
+
+import BadgeWallContainer from './BadgeWallContainer'
+
 import DisplayNameAgeContainer from '../../containers/AboutMeEdit/DisplayNameAge/DisplayNameAgeContainer'
 import CityContainer from '../../containers/AboutMeEdit/City/CityContainer'
 import BioContainer from '../../containers/AboutMeEdit/Bio/BioContainer'
@@ -21,6 +24,7 @@ export default class ProfileContainer extends Component {
   }
 
   componentWillMount() {
+    console.log(this.SubjectStore.hobbiesToFlatList)
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
@@ -50,23 +54,27 @@ export default class ProfileContainer extends Component {
 
   render() {
     return(
-      <Profile
-        source={ this.SubjectStore.avatar }
-        verityEmail={ this.verityEmail }
-        verityPhoto={ this.SubjectStore.photoVerified }
-        displayName={ this.SubjectStore.nickname }
-        age={ this.SubjectStore.age }
-        city={ this.SubjectStore.address }
-        bio={ this.SubjectStore.bio }
-        langs={ this.SubjectStore.languagesToString }
-        //interests={ this.SubjectStore.hobbies }
+      <View style={{flex: 1}}>
+        <Profile
+          source={ this.SubjectStore.avatar }
+          verityEmail={ this.verityEmail }
+          verityPhoto={ this.SubjectStore.photoVerified }
+          displayName={ this.SubjectStore.nickname }
+          age={ this.SubjectStore.age }
+          city={ this.SubjectStore.address }
+          bio={ this.SubjectStore.bio }
+          langs={ this.SubjectStore.languagesToString }
+          //interests={ this.SubjectStore.hobbies }
 
-        onPressDisplayName={ this.goToEditDisplayName } 
-        onPressCity={ this.goToEditCity }
-        onPressBio={ this.goToEditBio }
-        onPressLangs={ this.goToEditLangs }
-        onPressInterests={ this.goToEditInterests }
+          onPressDisplayName={ this.goToEditDisplayName } 
+          onPressCity={ this.goToEditCity }
+          onPressBio={ this.goToEditBio }
+          onPressLangs={ this.goToEditLangs }
+          />
+        <BadgeWallContainer
+          onPressInterests={ this.goToEditInterests }
         />
+      </View>
     )
   }
 }
