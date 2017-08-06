@@ -12,8 +12,8 @@ export default class PasswordContainer extends Component {
   }
 
   realTimeCheckPassword = str => {
-    this.SignUpStore.checkPassword()
     this.SignUpStore.setPassword(str)
+    this.SignUpStore.checkPassword()
   }
 
   render() {

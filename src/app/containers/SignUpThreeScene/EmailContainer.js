@@ -13,8 +13,8 @@ export default class EmailContainer extends Component {
   }
 
   realTimeCheckEmail = str => {
-    this.SignUpStore.checkEmail()
     this.SignUpStore.setEmail(str)
+    this.SignUpStore.checkEmail()
   }
 
   render() {

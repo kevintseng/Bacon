@@ -13,8 +13,8 @@ export default class NickNameContainer extends Component {
   }
 
   realTimeCheckNickname = str => {
-    this.SignUpStore.checkNickname() 
     this.SignUpStore.setNickname(str)
+    this.SignUpStore.checkNickname() 
   }
 
   render() {
