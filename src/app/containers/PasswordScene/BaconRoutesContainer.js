@@ -5,23 +5,22 @@ import { Actions } from 'react-native-router-flux'
 
 import BaconRoutes from '../../views/BaconRoutes/BaconRoutes'
 
-@inject('SignInStore') @observer
+@inject('firebase','PasswordStore') @observer
 export default class BaconRoutesContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignInStore = this.props.SignInStore
+    this.PasswordStore = this.props.PasswordStore
+    this.firebase = this.props.firebase
   }
 
   _buttonOnPress = () => {
-    if (this.SignInStore.email && this.SignInStore.password) {
-      Actions.Auth({ type: 'reset' })
-    } else {
-      Alert.alert( 
-        '輸入錯誤', '請確認已填入帳號與密碼', [ 
-          {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
-        )
-    }
+    this.firebase.auth().sendPasswordResetEmail(this.PasswordStore.email).then(() => {
+      alert('密碼重置信件已寄出')
+    }).catch(error => {
+      alert(error)
+    });
+
   }
 
   _warningOnPress = () => {
@@ -31,10 +30,8 @@ export default class BaconRoutesContainer extends Component {
   render() {
     return(
       <BaconRoutes
-        routesText='登入'
+        routesText='送出'
         routesOnPress={ this._buttonOnPress } 
-        //warningText='忘記密碼？申請密碼重設'
-        warningOnPress={ this._warningOnPress }
       />
     )
   }

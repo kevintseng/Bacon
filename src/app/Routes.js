@@ -13,6 +13,8 @@ import SignUpThreeScene from './scenes/authenticate/SignUpThreeScene'
 import SignUpFourScene from './scenes/authenticate/SignUpFourScene'
 // signin
 import SignInScene from './scenes/authenticate/SignInScene'
+// password
+import PasswordScene from './scenes/authenticate/PasswordScene'
 // 
 import AuthScene from './scenes/authenticate/AuthScene'
 // ###############authenticate################ //
@@ -141,6 +143,10 @@ export default class Routes extends Component {
 
           <Scene key='signin' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
             <Scene key='SignIn' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrowSignIn } component={ SignInScene }/>
+          </Scene>
+
+          <Scene key='password' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
+            <Scene key='Password' hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrowSignIn } component={ PasswordScene }/>
           </Scene>
 
           <Scene key='Auth' component={ AuthScene }/>

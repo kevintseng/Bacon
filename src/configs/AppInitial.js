@@ -5,6 +5,7 @@ import ControlStore from '../mobx/stores/ControlStore'
 // data
 import SignUpStore from '../mobx/stores/SignUpStore'
 import SignInStore from '../mobx/stores/SignInStore'
+import PasswordStore from '../mobx/stores/PasswordStore'
 import SubjectStore from '../mobx/stores/SubjectStore'
 import SubjectEditStore from '../mobx/stores/SubjectEditStore'
 
@@ -24,6 +25,7 @@ const AppInitial = {
     
     this.SignUpStore = new SignUpStore(this.firebase)
     this.SignInStore = new SignInStore()
+    this.PasswordStore = new PasswordStore()
     this.SubjectStore = new SubjectStore()
     this.SubjectEditStore = new SubjectEditStore()
     

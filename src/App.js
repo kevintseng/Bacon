@@ -15,6 +15,7 @@ export default class App extends Component {
 
         SignUpStore={ AppInitial.SignUpStore }
         SignInStore={ AppInitial.SignInStore }
+        PasswordStore={ AppInitial.PasswordStore }
         SubjectStore={ AppInitial.SubjectStore }
         SubjectEditStore={AppInitial.SubjectEditStore}
 

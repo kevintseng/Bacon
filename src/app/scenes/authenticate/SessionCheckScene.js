@@ -237,7 +237,7 @@ export default class SessionCheckScene extends Component {
 
   removeMeetCuteListener = () => {
     if (this.mqQuery) {
-      this.mqQuery.remove()
+      this.mqQuery.off()
     }
   }
 
