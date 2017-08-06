@@ -18,11 +18,6 @@ const DefaultLanguages =  {
   韓文: false
 }
 
-const DefaultHobbies = {
-  打球: true,
-  唱歌: true
-}
-
 @inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','firebase',) @observer
 export default class SessionCheckScene extends Component {
 
@@ -33,48 +28,43 @@ export default class SessionCheckScene extends Component {
     this.SignInStore = this.props.SignInStore
     this.SubjectStore = this.props.SubjectStore
     this.SubjectEditStore = this.props.SubjectEditStore
+    this.MeetChanceStore = this.props.MeetChanceStore
     this.firebase = this.props.firebase
     this.lastAppState = AppState.currentState
-    //this.MeetChanceStore = this.props.MeetChanceStore
- 
-    //this.geoQuery = null
-    //this.geoFire = null
-    
+    this.geoQuery = null
+    this.geoFire = null
   }
 
   componentWillMount() {
     this.firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // 使用者登入 只要登入成功一定有 uid
-        //this.uid = user.uid // 先有 uid
-        //this.email = user.email
         this.SubjectStore.setUid(user.uid)
         this.SubjectStore.setEmail(user.email) // String
         if (this.ControlStore.authenticateIndicator == '註冊') {
           this.uploadAvatar() // 非同步上傳相簿
           this.uploadSignUpData() // 非同步上傳註冊資料  
-          // 非同步 邂逅 巧遇 緣分 pool listener
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
+          this.uploadLocation() // 上傳GPS資料
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
         } else {
           // 全部都是非同步
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料
-          // 非同步 邂逅 巧遇 緣分 pool listener
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
+          this.uploadLocation() // 上傳GPS資料
         }
         Actions.Drawer({type: 'reset'}) // 切換場景
       } else {
         // 入口點 -> 沒有使用者登入 user = null
         // 移除所有監聽函數 初始化狀態
         AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
-        //this.removeMeetChanceListener() // 非同步移除地理監聽
+        this.removeMeetChanceListener() // 非同步移除地理監聽
         this.SignUpStore.initialize() // 初始註冊入狀態
         this.SignInStore.initialize() // 初始化登入狀態
         this.SubjectStore.initialize() // 初始主體入狀態
-
-        //this.MeetChanceStore.setpreyList(new Array)
+        this.MeetChanceStore.initialize()
         Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
       }
     })    
@@ -127,7 +117,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setAvatar(this.SignUpStore.avatar) // String
     this.SubjectStore.setAlbum(this.SignUpStore.album) // Object 
     this.SubjectStore.setLanguages(DefaultLanguages) // Object 
-    this.SubjectStore.setHobbies(DefaultHobbies) // Object 
+    this.SubjectStore.setHobbies(new Object) // Object 
     this.SubjectStore.setVip(false) // boolean
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString()) // String 
     this.ControlStore.setSyncDetector(true) // 同步完成
@@ -187,19 +177,7 @@ export default class SessionCheckScene extends Component {
   setOffline() {
     this.firebase.database().ref("/online/" + this.SubjectStore.uid).remove()
   }
-/*
-  delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-*/
 
-  render() {
-    return(
-      <Loading/>
-  )}
-}
-
-/*
   uploadLocation = () => {
     Geolocation.getCurrentPosition(
       location => {
@@ -223,6 +201,42 @@ export default class SessionCheckScene extends Component {
       }
     )
   }
+
+  grepMeetChance = (geoQuery) => {
+    geoQuery.on("key_entered", (uid, location, distance) => {
+      //
+      if (!(uid === this.SubjectStore.uid)) {
+        this.MeetChanceStore.addPreyToPool({uid: uid, distance: distance})
+      }
+    })
+
+    geoQuery.on("key_moved", (uid, location, distance) => {
+      if (!(uid === this.SubjectStore.uid)) {
+        this.MeetChanceStore.updatePreyToPool(uid,distance)
+      }
+    })
+
+    geoQuery.on("key_exited", (uid, location, distance) => {
+      if (!(uid === this.SubjectStore.uid)) {
+        this.MeetChanceStore.removePreyToPool(uid)
+      }
+    })
+  }
+
+  removeMeetChanceListener = () => {
+    if (this.geoQuery) {
+      this.geoQuery.cancel()
+    }
+  }
+
+  render() {
+    return(
+      <Loading/>
+  )}
+}
+
+/*
+
 
   grepMeetChance = (geoQuery) => {
     geoQuery.on("key_entered", (uid, location, distance) => {

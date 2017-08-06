@@ -28,7 +28,7 @@ const AppInitial = {
     this.SubjectEditStore = new SubjectEditStore()
     
     //this.SignUpInStore = new SignUpInStore(this.firebase)
-    this.MeetChanceStore = new MeetChanceStore()
+    this.MeetChanceStore = new MeetChanceStore(this.firebase)
     return this
   }
 }.init()
