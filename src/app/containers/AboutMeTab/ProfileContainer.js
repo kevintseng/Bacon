@@ -56,6 +56,10 @@ export default class ProfileContainer extends Component {
     Actions.upgrade()
   }
 
+  goToQUpgrade = () => {
+    Actions.bonus()
+  }
+
   render() {
     return(
       <View style={{flex: 1}}>
@@ -75,6 +79,7 @@ export default class ProfileContainer extends Component {
           onPressBio={ this.goToEditBio }
           onPressLangs={ this.goToEditLangs }
           onPressMemberUpgrade={ this.goToMemberUpgrade }
+          onPressQUpgrade={ this.goToQUpgrade }
           />
         <BadgeWallContainer
           onPressInterests={ this.goToEditInterests }

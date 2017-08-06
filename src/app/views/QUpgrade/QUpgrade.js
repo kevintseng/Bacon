@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 
-const QUpgrade = ({ QUpgradeText, QUpgradeValue }) => {
+const QUpgrade = ({ QUpgradeText, QUpgradeValue, onPress }) => {
   return(
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
         <View style={{marginRight: 10, alignItems: 'center',justifyContent: 'center'}}>
           <Text style={{color: 'white',backgroundColor: 'transparent',fontFamily: 'NotoSans'}}>{ QUpgradeText }</Text>
