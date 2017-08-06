@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
 
@@ -23,10 +24,16 @@ export default class BaconRoutesContainer extends Component {
         this.SubjectStore.setBirthday(this.SubjectEditStore.birthday)
         Actions.AboutMeTab({type: 'reset'})
       } else {
-        alert('請輸入生日資料')
+        Alert.alert( 
+          '輸入錯誤', '請輸入您的生日', [ 
+          {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+        )
       }
     } else {
-      alert('請輸入2~6字暱稱')
+      Alert.alert( 
+        '輸入錯誤', '請輸入2~6字的暱稱', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
     }
   }
 

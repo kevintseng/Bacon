@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
@@ -20,7 +21,10 @@ export default class BaconRoutesContainer extends Component {
       this.SubjectStore.setBio(this.SubjectEditStore.bio)
       Actions.AboutMeTab({type: 'reset'})
     } else {
-      alert('請填入自我介紹')
+      Alert.alert( 
+        '輸入錯誤', '請輸入自我介紹', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
     }
   }
 
