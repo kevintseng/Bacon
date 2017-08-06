@@ -15,6 +15,7 @@ export default class BaconRoutesContainer extends Component {
   }
 
   buttonOnPress = () => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/languages').set(this.SubjectEditStore.languages)
     this.SubjectStore.setLanguages(Object.assign({}, this.SubjectEditStore.languages))
     Actions.AboutMeTab({type: 'reset'})
   }

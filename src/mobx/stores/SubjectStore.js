@@ -39,9 +39,13 @@ export default class SubjectStore {
     this.initialize()
   }
 
+  // String to Value
+
   @computed get age() {
     return calculateAge(this.birthday)
   }
+
+  // Object to String
 
   @computed get languagesToString() {
     return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
@@ -51,7 +55,7 @@ export default class SubjectStore {
   // Object to Array FlatList
 
   @computed get albumToFlatList() {
-    return Object.keys(this.album).map((key,index) => ({ key: index, uri: key }))
+    return Object.keys(this.album).map((key,index) => ({ key: key, uri: this.album[key] }))
     // { url: true } -> [{key: index, uri: url}]
   }
 
@@ -123,11 +127,12 @@ export default class SubjectStore {
   }
 
   @action setAlbum = object => {
-    this.album = Object.assign({},object)
+    this.album = object
   }
 
-  @action addPhoto = url => {
-    this.album[url] = true
+  @action addPhoto = (key,url) => {
+    this.album[key] = url
+    this.album = Object.assign({},this.album)
   }
 
   @action setVip = boolean => {

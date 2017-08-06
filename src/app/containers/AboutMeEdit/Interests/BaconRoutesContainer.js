@@ -23,7 +23,9 @@ export default class BaconRoutesContainer extends Component {
 
 
   buttonOnPress = () => {
-    this.SubjectStore.setHobbies(this.filter())
+    const filteredHobbies = this.filter()
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/hobbies').set(filteredHobbies)
+    this.SubjectStore.setHobbies(filteredHobbies)
     Actions.AboutMeTab({type: 'reset'})
   }
 

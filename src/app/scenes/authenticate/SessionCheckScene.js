@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
+import UUIDGenerator from 'react-native-uuid-generator'
 
 import Loading from '../../views/Loading/Loading'
 
@@ -33,33 +34,34 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.SubjectEditStore = this.props.SubjectEditStore
     this.firebase = this.props.firebase
-
-    this.MeetChanceStore = this.props.MeetChanceStore
-    this.uid = null
-    this.email = null
-    this.geoQuery = null
-    this.geoFire = null
     this.lastAppState = AppState.currentState
+    //this.MeetChanceStore = this.props.MeetChanceStore
+ 
+    //this.geoQuery = null
+    //this.geoFire = null
+    
   }
 
   componentWillMount() {
     this.firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // 使用者登入 只要登入成功一定有 uid
-        this.uid = user.uid // 先有 uid
-        this.email = user.email
+        //this.uid = user.uid // 先有 uid
+        //this.email = user.email
+        this.SubjectStore.setUid(user.uid)
+        this.SubjectStore.setEmail(user.email) // String
         if (this.ControlStore.authenticateIndicator == '註冊') {
           this.uploadAvatar() // 非同步上傳相簿
           this.uploadSignUpData() // 非同步上傳註冊資料  
           // 非同步 邂逅 巧遇 緣分 pool listener
-          this.setOnline(this.uid) // 非同步設置使用者上線
+          this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
         } else {
           // 全部都是非同步
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料
           // 非同步 邂逅 巧遇 緣分 pool listener
-          this.setOnline(this.uid) // 非同步設置使用者上線
+          this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
         }
         Actions.Drawer({type: 'reset'}) // 切換場景
@@ -80,12 +82,12 @@ export default class SessionCheckScene extends Component {
 
   uploadAvatar = () => {
     // 非同步上傳大頭照
-    this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid)  
+    this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid + '/' + Object.keys(this.SignUpStore.album)[0] + '.jpg')  
     .putFile(this.SignUpStore.photoUrl.replace('file:/',''), metadata)
     .then(uploadedFile => {
       this.firebase.database().ref('users/' + this.SubjectStore.uid + '/avatar').set(uploadedFile.downloadUrl)
       .then(() => {
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album' + uploadedFile.downloadUrl).set(true)
+          this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album' + '/' + Object.keys(this.SignUpStore.album)[0]).set(uploadedFile.downloadUrl)
         .then(() => {
             this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳成功')
           })
@@ -118,8 +120,6 @@ export default class SessionCheckScene extends Component {
   }
 
   initSubjectStoreFromSignUpStore = () => {
-    this.SubjectStore.setUid(this.uid)
-    this.SubjectStore.setEmail(this.email) // String
     this.SubjectStore.setNickname(this.SignUpStore.nickname) // String
     this.SubjectStore.setAddress(this.SignUpStore.address) // String
     this.SubjectStore.setBirthday(this.SignUpStore.birthday) // String
@@ -137,8 +137,6 @@ export default class SessionCheckScene extends Component {
     this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
-          this.SubjectStore.setUid(this.uid)
-          this.SubjectStore.setEmail(this.email) // String
           this.SubjectStore.setNickname(snap.val().nickname) // null(placeholder) String
           this.SubjectStore.setAddress(snap.val().address) // null(placeholder) String
           this.SubjectStore.setBirthday(snap.val().birthday) // null -> undefinded
@@ -170,30 +168,30 @@ export default class SessionCheckScene extends Component {
 
   handleAppStateChange = nextAppState => {
     if (AppState.currentState === 'active') {
-      this.setOnline(this.uid) 
+      this.setOnline() 
       // 設置使用者上線
     } else if (this.lastAppState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
-      this.setOffline(this.uid) 
+      this.setOffline() 
       // 設置使用者下線
     }
     this.lastAppState = nextAppState
   }
 
-  setOnline(uid) {
-    this.firebase.database().ref("/online/" + uid).set({
+  setOnline = () => {
+    this.firebase.database().ref("/online/" + this.SubjectStore.uid).set({
       lastOnline: Math.floor(Date.now() / 1000),
       location: "Taipei, Taiwan"
     })
   }
 
-  setOffline(uid) {
-    this.firebase.database().ref("/online/" + uid).remove()
+  setOffline() {
+    this.firebase.database().ref("/online/" + this.SubjectStore.uid).remove()
   }
-
+/*
   delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-
+*/
 
   render() {
     return(
