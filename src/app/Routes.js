@@ -41,6 +41,7 @@ import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
 import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
 
 import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
+import UpgradeTwoScene from './scenes/drawer/Upgrade/UpgradeTwoScene'
 // ###############drawer################ //
 
 // ###############header components################ //
@@ -182,6 +183,7 @@ export default class Routes extends Component {
 
               <Scene key='upgrade' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='UpgradeOne' title='會員升級' renderBackButton={ this.baconArrow } component={ UpgradeOneScene } />
+                <Scene key='UpgradeTwo' title='會員升級' renderBackButton={ this.baconArrow } component={ UpgradeTwoScene } />
               </Scene>
 
               
