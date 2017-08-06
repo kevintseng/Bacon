@@ -148,17 +148,17 @@ export default class Routes extends Component {
           <Scene key='Drawer' component={ DrawerScene } open={false}>
             <Scene key='main' hideTabBar >
 
+              <Scene key='aboutme' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } component={ AboutMeTabScene }/>
+                <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } component={ AboutMeEditScene }/>
+              </Scene>
+              
               <Scene key='setting' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='SettingIndex' title='設定' renderLeftButton={ this.baconMenu } component={ SettingIndexScene } />
                 <Scene key='SettingAbout' title='設定' renderBackButton={ this.baconArrow } component={ SettingAboutScene } />
                 <Scene key='SettingAccount' title='設定' renderBackButton={ this.baconArrow } component={ SettingAccountScene } />
                 <Scene key='SettingRemind' title='設定' renderBackButton={ this.baconArrow } component={ SettingRemindScene } />
                 <Scene key='SettingHide' title='設定' renderBackButton={ this.baconArrow } component={ SettingHideScene } />
-              </Scene>
-
-              <Scene key='aboutme' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } component={ AboutMeTabScene }/>
-                <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } component={ AboutMeEditScene }/>
               </Scene>
               
               <Scene key='meetchance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>

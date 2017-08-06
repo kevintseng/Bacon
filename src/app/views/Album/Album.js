@@ -18,10 +18,10 @@ const styles = {
   }
 }
 
-const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, photoOnPressModal, onRequestPhotoOnPressModal}) => {
+const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, visible, onPressLeftButton, onPressMiddleButton, onPressRightButton}) => {
   return(
     <View style={{flex: 1}}>
-      <Modal animationType={"fade"} onRequestClose={ onRequestPhotoOnPressModal } visible={ photoOnPressModal } transparent={false}>
+      <Modal animationType={"fade"} onRequestClose={ onPressLeftButton } visible={ visible } transparent={false}>
         <View style={{flex:1, backgroundColor: 'black'}}>
           <ImageZoom
             cropWidth={width}
@@ -31,8 +31,16 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, p
           >
             <Image style={{height, width}} resizeMode={'contain'} source={{uri: source}}/>
           </ImageZoom>
-          <View style={{width, position: 'absolute', padding: 20}}>
-              <View ><Text onPress={ onRequestPhotoOnPressModal } style={{color:'white'}}>返回</Text></View>
+          <View style={{width,position: 'absolute', bottom: 0, flexDirection: 'row', justifyContent: 'space-between'}}>
+            <TouchableOpacity style={{padding: 20}} onPress={ onPressLeftButton }>
+              <Image source={require('./img/btn_album_back.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity style={{padding: 20}} onPress={ onPressMiddleButton }>
+              <Image source={require('./img/ico_aboutme_profilepic.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity style={{padding: 20}} onPress={ onPressRightButton }>
+              <Image source={require('./img/ico_album_delete.png')} />
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
