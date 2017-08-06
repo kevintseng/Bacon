@@ -69,6 +69,7 @@ export default class SessionCheckScene extends Component {
         //this.SignInStore.initialize() // 初始化登入狀態
         this.SubjectStore.initialize() // 初始主體入狀態
         this.MeetChanceStore.initialize()
+        this.MeetCuteStore.initialize()
         Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
       }
     })    
