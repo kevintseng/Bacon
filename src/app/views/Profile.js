@@ -53,14 +53,18 @@ const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio,
 
         <View style={{flex:1,paddingTop: 10, paddingLeft: 10, paddingRight: 10}}>
           <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
-            <VerityEmail
-              verity={ verityEmail }
-              verityText={ verityEmail ? '已認證' : '尚未認證'}
-            />
-            <VerityPhoto
-              verity={ verityPhoto }
-              verityText={ verityPhoto ? '已認證' : '尚未認證'}
-            />
+            <View>
+              <VerityEmail
+                verity={ verityEmail }
+                verityText={ verityEmail ? '已認證' : '尚未認證'}
+              />
+            </View>
+            <View style={{paddingRight: 10}}>
+              <VerityPhoto
+                verity={ verityPhoto }
+                verityText={ verityPhoto ? '已認證' : '尚未認證'}
+              />
+            </View>
           </View>
           <TouchableOpacity onPress={ onPressDisplayName }>
             <ListItem subtitle={ displayName + ', ' + age } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
@@ -84,7 +88,7 @@ const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio,
             />
         </View>
       </LinearGradient> 
-      <View style={{paddingRight: 10, paddingLeft: 10}}>
+      <View style={{paddingRight: 15, paddingLeft: 15}}>
         <TouchableOpacity onPress={ onPressBio }>
           <ListItem title='自我介紹' titleStyle={styles.titleStyle} subtitle={ bio || '您尚未輸入自我介紹，點此輸入自我介紹' } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
         </TouchableOpacity>

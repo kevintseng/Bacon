@@ -40,7 +40,7 @@ export default class CityChooseContainer extends Component {
 
   render() {
     return(
-      <View style={{alignItems: 'center'}}>
+      <View style={{alignItems: 'center',marginTop: 50}}>
         <View>
           <BlankButton text='選個位置' onPress={ this.openSearchModal } /> 
         </View>
