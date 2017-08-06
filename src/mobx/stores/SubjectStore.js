@@ -135,6 +135,11 @@ export default class SubjectStore {
     this.album = Object.assign({},this.album)
   }
 
+  @action deletePhoto = key => {
+    delete this.album[key]
+    this.album = Object.assign({},this.album)
+  }
+
   @action setVip = boolean => {
     this.vip = boolean
   }

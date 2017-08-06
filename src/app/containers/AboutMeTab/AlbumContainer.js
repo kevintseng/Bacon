@@ -31,37 +31,39 @@ export default class AlbumContainer extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.firebase = this.props.firebase
     this.state = {
+      key: null,
       uri: null,
-      visible: false,
-      photo: null
+      visible: false
     }
   }
 
   componentWillMount() {
-    console.log(this.SubjectStore.album)
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  openPicZoom = url => {
-    this.setState({ visible: true })
-    this.setState({ uri: url })
+  openPicZoom = key => {
+    this.setState({ key: key, uri: this.SubjectStore.album[key], visible: true})
   }
 
   closePicZoom = () => {
     this.setState({ visible: false })
   }
 
-  openPicOptions = () => {
-    alert('openPicOptions')
+  setAvatar = () => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album').child(this.state.key).once('value',(snap) => {
+      if (snap.val()) {
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/avatar').set(snap.val())
+      }
+    })
+    this.SubjectStore.setAvatar(this.state.uri)
+    this.setState({ visible: false })
   }
 
-  closePicOptions = () => {
-    alert('openPicOptions')
+  deletePhoto = () => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album').child(this.state.key).remove()
+    this.SubjectStore.deletePhoto(this.state.key)
+    this.setState({ visible: false })
   }
-
-  //generateFilename = () => {
-  //  return this.firebase.database().ref('users/' + this.SubjectStore.uid + '/photos').push().key
-  //}
 
   openPicChoose = () => {
     ImagePicker.showImagePicker(options, (res) => {
@@ -99,7 +101,8 @@ export default class AlbumContainer extends Component {
         footerOnPress={ this.openPicChoose }
         visible={ this.state.visible }
         onPressLeftButton={ this.closePicZoom }
-        //onPressMiddleButton={}
+        onPressMiddleButton={ this.setAvatar }
+        onPressRightButton={ this.deletePhoto }
       />
     )
   }
