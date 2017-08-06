@@ -21,7 +21,7 @@ export default class InfosContainer extends Component {
         bio={this.SubjectStore.bio}
         age={this.SubjectStore.age}
         langs={this.SubjectStore.languagesToString}
-        //distance={'79'}
+        distance={'79'}
       />
     )
   }
