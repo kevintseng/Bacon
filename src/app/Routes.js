@@ -42,6 +42,10 @@ import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
 
 import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
 import UpgradeTwoScene from './scenes/drawer/Upgrade/UpgradeTwoScene'
+
+import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
+import BonusTwoScene from './scenes/drawer/Bonus/BonusTwoScene'
+
 // ###############drawer################ //
 
 // ###############header components################ //
@@ -186,7 +190,11 @@ export default class Routes extends Component {
                 <Scene key='UpgradeTwo' title='會員升級' renderBackButton={ this.baconArrow } component={ UpgradeTwoScene } />
               </Scene>
 
-              
+              <Scene key='bonus' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='BonusOne' title='Q點儲值' renderBackButton={ this.baconArrow } component={ BonusOneScene } />
+                <Scene key='BonusTwo' title='Q點儲值' renderBackButton={ this.baconArrow } component={ BonusTwoScene } />
+              </Scene>
+
             </Scene>
           </Scene>
 

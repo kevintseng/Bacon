@@ -37,7 +37,7 @@ const styles = {
 
 const colors = ['#f4a764', '#d63768']
 
-const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio, langs, interests, onPressDisplayName, onPressCity, onPressBio, onPressLangs, onPressInterests, onPressMemberUpgrade}) => {
+const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio, langs, interests, onPressDisplayName, onPressCity, onPressBio, onPressLangs, onPressInterests, onPressMemberUpgrade, onPressQUpgrade}) => {
   return(
     <View>
       <View style={{flexDirection: 'row',padding: 5}}>
@@ -80,6 +80,7 @@ const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio,
             <QUpgrade
               QUpgradeText='Q點'
               QUpgradeValue='2134'
+              onPress={ onPressQUpgrade }
             />
         </View>
       </LinearGradient> 
