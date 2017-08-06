@@ -51,6 +51,7 @@ export default class SessionCheckScene extends Component {
           this.uploadLocation() // 上傳GPS資料 巧遇
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
           this.grepMeetCute() // 邂逅
+          this.uxSignIn()
         } else {
           // 全部都是非同步
           this.setOnline() // 非同步設置使用者上線
@@ -73,6 +74,11 @@ export default class SessionCheckScene extends Component {
         Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
       }
     })    
+  }
+
+  uxSignIn = () => {
+    this.SignInStore.setEmail(this.SignUpStore.email)
+    this.SignInStore.setPassword(this.SignUpStore.password)
   }
 
   uploadAvatar = () => {
