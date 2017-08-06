@@ -67,7 +67,7 @@ export default class Court extends Component {
           <Carousel
             ref={(carousel) => { this.carousel = carousel }}
             swipe
-            style={{flex:1,backgroundColor: 'black'}}
+            style={{flex:1,backgroundColor: 'transparent'}}
             bullets
             autoplay={false}
             pageInfoTextStyle={{color: 'red'}}
@@ -85,7 +85,7 @@ export default class Court extends Component {
 
           <Carousel
             swipe
-            style={{backgroundColor: 'black',width, height: width}}
+            style={{backgroundColor: 'transparent',width, height: width}}
             bullets
             autoplay={false}
             pageInfoTextStyle={{color: 'red'}}
