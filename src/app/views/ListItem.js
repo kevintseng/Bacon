@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Text, TouchableOpacity } from 'react-native'
+import { View, Image, Text, TouchableOpacity, Dimensions } from 'react-native'
 import { Badge } from 'react-native-elements'
 
 const ListItem = ({listPicSource, listTitle, showBadge, badgeCount, listOnPress}) => {
@@ -8,10 +8,10 @@ const ListItem = ({listPicSource, listTitle, showBadge, badgeCount, listOnPress}
 
   return(
     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-      <View style={{width: 50, opacity: 0, justifyContent: 'center'}} >
+      <View style={{width: 40,opacity: 0, justifyContent: 'center'}} >
         <Badge value={0} containerStyle={{ backgroundColor: 'red'}}/>
       </View>   
-      <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', paddingLeft: 15, paddingRight: 15}} onPress={ listOnPress }>      
+      <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', paddingLeft: 35, paddingRight: 35}} onPress={ listOnPress }>      
         <View style={{flexDirection: 'row'}}>
           <View style={{alignSelf: 'center', marginRight: 5}}>
             <Image source={ listPicSource } />
@@ -21,7 +21,7 @@ const ListItem = ({listPicSource, listTitle, showBadge, badgeCount, listOnPress}
           </View>
         </View>
       </TouchableOpacity>
-      <View style={ showBadge ? { width: 50,justifyContent: 'center' } : { width: 50, opacity: 0,justifyContent: 'center'} } >
+      <View style={ showBadge ? { width: 40,justifyContent: 'center' } : { width: 40, opacity: 0,justifyContent: 'center'} } >
         <Badge value={ _badgeCount } containerStyle={{ backgroundColor: 'red'}}/>
       </View>
     </View>

@@ -78,7 +78,7 @@ export default class DrawerScene extends Component {
           />
         }
         tapToClose
-        openDrawerOffset={0.2}
+        openDrawerOffset={0.4}
         panCloseMask={0.2}
         negotiatePan
         tweenHandler={(ratio) => ({

@@ -22,7 +22,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
 
   return(
     <View style = { styles.scrollView } >
-      <View style={{marginRight: 20, marginLeft: 20, marginTop: Platform.OS === 'ios' ? 25 : 10}}>
+      <View style={{marginLeft:5, marginRight:5, marginTop: Platform.OS === 'ios' ? 25 : 10}}>
 
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
           <View style={{opacity: 0}} pointerEvents="none">
@@ -47,14 +47,14 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </View>
 
         <View style={{marginTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View style={{width: 50, opacity: 0}}>
-            <Badge value={3} containerStyle={{ backgroundColor: 'red'}}/>
+          <View style={{width: 40, opacity: 0}}>
+            <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
           </View>         
           <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={ displayNameOnPress }>
             <Text style={{textAlign: 'center',color: '#606060',fontWeight: 'normal'}}>{ displayName }</Text>
           </TouchableOpacity>
-          <View style={{width: 50 }}>
-            <Badge value={3} containerStyle={{ backgroundColor: 'red'}}/>
+          <View style={{width: 40 }}>
+            <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
           </View>
         </View>
 
@@ -67,11 +67,11 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </View>
 
         <View style={{marginTop: 20}}>
-          <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='訊息' showBadge badgeCount={6} listOnPress={ messageOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='訊息' showBadge={false} badgeCount={6} listOnPress={ messageOnPress }/>
         </View>
 
         <View style={{marginTop: 20}}>
-          <ListItem listPicSource={require('./img/ico_menu_yf.png')} listTitle='緣分' showBadge badgeCount={9} listOnPress={ fateOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_yf.png')} listTitle='緣分' showBadge={false} badgeCount={9} listOnPress={ fateOnPress }/>
         </View>
 
         <View style={{marginTop: 20}}>

@@ -5,7 +5,7 @@ import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
 import UUIDGenerator from 'react-native-uuid-generator'
 
-import Album from '../../views/Album'
+import Album from '../../views/Album/Album'
 
 const options = {
   mediaType: 'photo',
@@ -32,7 +32,7 @@ export default class AlbumContainer extends Component {
     this.firebase = this.props.firebase
     this.state = {
       uri: null,
-      photoOnPressModal: false,
+      visible: false,
       photo: null
     }
   }
@@ -43,12 +43,12 @@ export default class AlbumContainer extends Component {
   }
 
   openPicZoom = url => {
-    this.setState({ photoOnPressModal: true })
+    this.setState({ visible: true })
     this.setState({ uri: url })
   }
 
   closePicZoom = () => {
-    this.setState({photoOnPressModal: false})
+    this.setState({ visible: false })
   }
 
   openPicOptions = () => {
@@ -96,10 +96,10 @@ export default class AlbumContainer extends Component {
         source={ this.state.uri }
         photos={ this.SubjectStore.albumToFlatList }
         photoOnPress={ this.openPicZoom }
-        photoOnLongPress={ this.openPicOptions }
         footerOnPress={ this.openPicChoose }
-        photoOnPressModal={ this.state.photoOnPressModal }
-        onRequestPhotoOnPressModal={ this.closePicZoom }
+        visible={ this.state.visible }
+        onPressLeftButton={ this.closePicZoom }
+        //onPressMiddleButton={}
       />
     )
   }
