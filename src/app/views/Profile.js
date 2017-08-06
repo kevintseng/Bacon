@@ -89,9 +89,6 @@ const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio,
         <TouchableOpacity onPress={ onPressLangs }>
           <ListItem title='語言能力' titleStyle={styles.titleStyle} subtitle={ langs } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
         </TouchableOpacity>
-        <TouchableOpacity onPress={ onPressInterests }>
-          <ListItem title='興趣愛好' titleStyle={styles.titleStyle} subtitle={ interests } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
-        </TouchableOpacity>
       </View>
 
     </View>
