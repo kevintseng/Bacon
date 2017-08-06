@@ -41,6 +41,10 @@ export default class WelcomeScene extends Component {
     Actions.signin({type: 'reset'})
   }
 
+  goToResetPassword = () => {
+    Actions.password({type: 'reset'})
+  }
+
   render() {
     return(
       <Welcome
@@ -50,6 +54,7 @@ export default class WelcomeScene extends Component {
         warningText='忘記密碼？申請密碼重設'
         topButtonOnPress={ this.goToSignUp }
         bottomButtonOnPress={ this.goToSignIn }
+        warningOnPress={ this.goToResetPassword }
       />
     )
   }
