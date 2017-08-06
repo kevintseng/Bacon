@@ -35,26 +35,10 @@ export default class MeetChanceWaterFallScene extends Component {
   componentWillMount() {
     this.MeetChanceStore.setPreyList()
     this.MeetChanceStore.setFakePreys()
-    //this.setState({preys: this.MeetChanceStore.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))})
-
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {
- /*   
-      this.MeetChanceStore.preyList.forEach((ele,index) => {
-        this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
-          if (snap.val()) {
-            this.state.preys[index] = {
-              key: ele.uid,
-              nickname: snap.val().displayName,
-              avatar: snap.val().photoURL              
-            } 
-            this.setState({preys: this.state.preys})
-          }
-        })
-      })
-    */
     this.MeetChanceStore.setRealPreys()
   }
 
