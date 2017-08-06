@@ -3,6 +3,8 @@ import { View, TouchableOpacity, Text,Button } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import RNGooglePlaces from 'react-native-google-places'
 
+import BlankButton from '../../views/BlankButton/BlankButton'
+
 @inject('SignUpStore') @observer
 export default class CityChooseContainer extends Component {
 
@@ -12,7 +14,10 @@ export default class CityChooseContainer extends Component {
   }
 
   openSearchModal = () => {
-    RNGooglePlaces.openAutocompleteModal()
+    RNGooglePlaces.openAutocompleteModal({
+      type: 'cities',
+      country: 'TW'
+    })
     .then((place) => {
     console.log(place);
     this.SignUpStore.setAddress(place.address)
@@ -23,7 +28,10 @@ export default class CityChooseContainer extends Component {
   }
 
   current = () => {
-    RNGooglePlaces.getCurrentPlace()
+    RNGooglePlaces.getCurrentPlace({
+      type: 'cities',
+      country: 'TW'
+    })
     .then((results) => {
       this.SignUpStore.setAddress(results[0].address)
       console.log(results)
@@ -35,22 +43,15 @@ export default class CityChooseContainer extends Component {
   render() {
     return(
       <View>
+
         <View>
-          <Button
-            title='選個位置'
-            onPress={ this.openSearchModal }
-          />  
-        </View>    
-
-        <View style={{marginTop: 20}}>
-          <Button
-            title='現在位置'
-            onPress={ this.current }
-          />
-        </View> 
-
-        <View style={{marginTop: 20}}>
-          <Text>{this.SignUpStore.address}</Text>
+          <BlankButton text='選個位置' onPress={ this.openSearchModal } /> 
+        </View>
+        <View style={{marginTop: 20}}> 
+          <BlankButton text='現在位置' onPress={ this.current } /> 
+        </View>
+        <View style={{marginTop: 20, alignItems: 'center'}}>
+          <Text>{this.SignUpStore.address || '請輸入您的所在位置'}</Text>
         </View>
       </View>
     )

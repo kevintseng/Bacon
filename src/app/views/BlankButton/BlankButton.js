@@ -21,7 +21,7 @@ const BlankButton = ({text, onPress}) => {
     <TouchableOpacity onPress={ onPress }>
       <Image style={ styles.image } source={require('./img/btn_index_join.png')}>
         <Text style={ styles.buttonText }>{ text }</Text>
-          </Image>
+      </Image>
     </TouchableOpacity>
   )
 }
