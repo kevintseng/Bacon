@@ -20,6 +20,7 @@ export default class App extends Component {
 
         //SignUpInStore={ AppInitial.SignUpInStore } 
         MeetChanceStore={ AppInitial.MeetChanceStore }
+        MeetCuteStore={ AppInitial.MeetCuteStore}
         >
         <Routes/>
       </Provider>

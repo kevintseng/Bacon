@@ -3,55 +3,57 @@ import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
 import Court from '../../views/Court'
- 
-const cards = [
-  { id: 2, uri: 'https://pic.pimg.tw/wuntinglin/4b84e20809d8f.jpg' },
-  { id: 3, age: 29, uri: 'https://i.imgur.com/FHxVpN4.jpg' },
-]
 
-@inject("SignUpInStore") @observer
+@inject('MeetCuteStore') @observer
 export default class CourtContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpInStore = this.props.SignUpInStore
+    this.MeetCuteStore = this.props.MeetCuteStore
     this.state = {
-      album: false
+      visible: false
     }
   }
 
-  nope = () => {
-    //
-  }
-
-  yup = () => {
-    //
-  }
 
   openAlbum = () => {
     this.setState({
-      album: true
+      visible: true
     })
   }
 
   closeAlbum = () => {
     this.setState({
-      album: false
+      visible: false
     })
+  }
+
+  goToNext = () => {
+    this.MeetCuteStore.pickOnePrey()
+  }
+
+  like = () => {
+    // 寄到別人好感
+    // 45天紀錄
+    this.goToNext()
+  }
+
+  unlike = () => {
+    // 45天紀錄
+    this.goToNext()
   }
 
   render() {
     return(
       <Court
-        cards={ cards }
         rightIcon={require('../../../images/btn_meet_like.png')}
         leftIcon={require('../../../images/btn_meet_dislike.png')}
-        album={ this.state.album }
-        //photos={} 
+        album={ this.MeetCuteStore.albumToArray }
+        visible={ this.state.visible }
         closeAlbum={ this.closeAlbum }
         openAlbum={ this.openAlbum }
-        nope={ this.nope }
-        yup={ this.yup }
+        onPressRightIcon={ this.like }
+        onPressLeftIcon={ this.unlike }
       />
     )
   }

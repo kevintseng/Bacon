@@ -18,7 +18,7 @@ const DefaultLanguages =  {
   韓文: false
 }
 
-@inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','firebase',) @observer
+@inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','MeetCuteStore','firebase',) @observer
 export default class SessionCheckScene extends Component {
 
   constructor(props) {
@@ -29,10 +29,12 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.SubjectEditStore = this.props.SubjectEditStore
     this.MeetChanceStore = this.props.MeetChanceStore
+    this.MeetCuteStore = this.props.MeetCuteStore
     this.firebase = this.props.firebase
     this.lastAppState = AppState.currentState
     this.geoQuery = null
     this.geoFire = null
+    this.mqQuery = null
   }
 
   componentWillMount() {
@@ -46,14 +48,15 @@ export default class SessionCheckScene extends Component {
           this.uploadSignUpData() // 非同步上傳註冊資料  
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
-          this.uploadLocation() // 上傳GPS資料
+          this.uploadLocation() // 上傳GPS資料 巧遇
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
+          this.grepMeetCute() // 邂逅
         } else {
           // 全部都是非同步
-          this.initSubjectStoreFromFirebase() // 非同步抓使用者資料
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
-          this.uploadLocation() // 上傳GPS資料
+          this.uploadLocation() // 上傳GPS資料 巧遇
+          this.initSubjectStoreFromFirebase() // 非同步抓使用者資料
         }
         Actions.Drawer({type: 'reset'}) // 切換場景
       } else {
@@ -61,6 +64,7 @@ export default class SessionCheckScene extends Component {
         // 移除所有監聽函數 初始化狀態
         AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
         this.removeMeetChanceListener() // 非同步移除地理監聽
+        this.removeMeetCuteListener() // 移除邂逅監聽
         this.SignUpStore.initialize() // 初始註冊入狀態
         this.SignInStore.initialize() // 初始化登入狀態
         this.SubjectStore.initialize() // 初始主體入狀態
@@ -119,14 +123,15 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setLanguages(DefaultLanguages) // Object 
     this.SubjectStore.setHobbies(new Object) // Object 
     this.SubjectStore.setVip(false) // boolean
-    this.SubjectStore.setSexualOrientation(this.sexualOrientationToString()) // String 
+    this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
     this.ControlStore.setSyncDetector(true) // 同步完成
   }
 
-  initSubjectStoreFromFirebase = () => {
-    this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
+  initSubjectStoreFromFirebase = async () => {
+    await this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
+          console.log(snap.val().sexualOrientation)
           this.SubjectStore.setNickname(snap.val().nickname) // null(placeholder) String
           this.SubjectStore.setAddress(snap.val().address) // null(placeholder) String
           this.SubjectStore.setBirthday(snap.val().birthday) // null -> undefinded
@@ -146,6 +151,7 @@ export default class SessionCheckScene extends Component {
         this.ControlStore.setSyncDetector(true) // 同步完成
         console.log(error)
       })
+    this.grepMeetCute() // 邂逅
   }
 
   genderToString = () => (
@@ -229,39 +235,44 @@ export default class SessionCheckScene extends Component {
     }
   }
 
+  removeMeetCuteListener = () => {
+    if (this.mqQuery) {
+      this.mqQuery.remove()
+    }
+  }
+
+  grepMeetCute = () => {
+    this.seekMeetQs(this.SubjectStore.sexualOrientation)
+  }
+
+  seekMeetQs = sexualOrientation => {
+    switch (sexualOrientation) {
+      case "msf":
+        this.mq("fsm");
+        break;
+      case "msm":
+        this.mq("msm");
+        break;
+      case "fsm":
+        this.mq("msf");
+        break;
+      case "fsf":
+        this.mq("fsf");
+        break;
+    }
+  }
+
+  mq = sexualOrientation => {
+    this.mqQuery = this.firebase.database().ref('users').orderByChild('sexOrientation').equalTo(sexualOrientation)
+    this.mqQuery.on('value', snap => {
+      snap.forEach( childsnap => {
+        this.MeetCuteStore.addPreyToPool(childsnap.key)
+      })
+    })
+  }
+
   render() {
     return(
       <Loading/>
   )}
 }
-
-/*
-
-
-  grepMeetChance = (geoQuery) => {
-    geoQuery.on("key_entered", (uid, location, distance) => {
-      //
-      if (!(uid === this.SubjectStore.uid)) {
-        this.MeetChanceStore.addPrey({uid: uid, distance: distance})
-      }
-    })
-
-    geoQuery.on("key_moved", (uid, location, distance) => {
-      if (!(uid === this.SubjectStore.uid)) {
-        this.MeetChanceStore.updatePrey(uid,distance)
-      }
-    })
-
-    geoQuery.on("key_exited", (uid, location, distance) => {
-      if (!(uid === this.SubjectStore.uid)) {
-        this.MeetChanceStore.removePrey(uid)
-      }
-    })
-  }
-
-  removeMeetChanceListener = () => {
-    if (this.geoQuery) {
-      this.geoQuery.cancel()
-    }
-  }
-*/
