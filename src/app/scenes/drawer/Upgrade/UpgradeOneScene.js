@@ -5,10 +5,16 @@ import { Actions } from 'react-native-router-flux'
 
 import BaconRoutesContainer from '../../../containers/UpgradeOneScene/BaconRoutesContainer'
 import UpgradeContainer from '../../../containers/UpgradeOneScene/UpgradeContainer'
+import UpgradeTitleContainer from  '../../../containers/UpgradeOneScene/UpgradeTitleContainer/UpgradeTitleContainer'
 
 const styles = {
   view: {
     flex: 1
+  },
+  top: {
+    position: 'absolute', 
+    top: 30,
+    alignSelf: 'center',
   },
   middle: {
     position: 'absolute', 
@@ -33,6 +39,10 @@ export default class UpgradeOneScene extends Component {
   render() {
     return(
       <View style={ styles.view }>
+
+        <View style={ styles.top }>
+          <UpgradeTitleContainer/>
+        </View>
 
         <View style={ styles.middle }>
           <UpgradeContainer/>
