@@ -34,7 +34,7 @@ const styles = {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     fontSize: 20,
-    fontWeight: '500',
+    //fontWeight: '500',
     color: '#606060',
     textAlign: 'center',
   },
@@ -54,7 +54,9 @@ const styles = {
     justifyContent: 'center'
   },
   bottomButtonPic: {
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   warningView:{
     position: 'absolute', 
@@ -96,6 +98,7 @@ const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bot
         </TouchableOpacity>
         <TouchableOpacity onPress={ bottomButtonOnPress }> 
           <Image style={ styles.bottomButtonPic } source={require('./img/btn_gredient.png')} >
+            <Image style={{marginRight: 10}}source={require('./img/btn_index_login.png')}/>
             <Text style={ styles.bottomButtonText }>{ bottomButtonText }</Text>
           </Image>
         </TouchableOpacity>
@@ -116,3 +119,5 @@ const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bot
 }
 
 export default Welcome
+
+//btn_index_login
