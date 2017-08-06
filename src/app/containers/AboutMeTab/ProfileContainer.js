@@ -52,6 +52,10 @@ export default class ProfileContainer extends Component {
     Actions.AboutMeEdit({title: '興趣愛好', content: <InterestsContainer/>})
   }
 
+  goToMemberUpgrade = () => {
+    Actions.upgrade()
+  }
+
   render() {
     return(
       <View style={{flex: 1}}>
@@ -70,6 +74,7 @@ export default class ProfileContainer extends Component {
           onPressCity={ this.goToEditCity }
           onPressBio={ this.goToEditBio }
           onPressLangs={ this.goToEditLangs }
+          onPressMemberUpgrade={ this.goToMemberUpgrade }
           />
         <BadgeWallContainer
           onPressInterests={ this.goToEditInterests }
