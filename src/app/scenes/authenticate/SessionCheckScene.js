@@ -83,7 +83,7 @@ export default class SessionCheckScene extends Component {
   uploadAvatar = () => {
     // 非同步上傳大頭照
     this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid + '/' + Object.keys(this.SignUpStore.album)[0] + '.jpg')  
-    .putFile(this.SignUpStore.photoUrl.replace('file:/',''), metadata)
+    .putFile(this.SignUpStore.avatar.replace('file:/',''), metadata)
     .then(uploadedFile => {
       this.firebase.database().ref('users/' + this.SubjectStore.uid + '/avatar').set(uploadedFile.downloadUrl)
       .then(() => {
@@ -144,7 +144,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setAvatar(snap.val().avatar) // null(placeholder) String Url
           this.SubjectStore.setAlbum(new Object(snap.val().album)) // Object 
           this.SubjectStore.setLanguages(snap.val().languages || DefaultLanguages) // Object 
-          this.SubjectStore.setHobbies(snap.val().hobbies || DefaultHobbies) // Object 
+          this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object 
           this.SubjectStore.setVip(Boolean(snap.val().vip))
           this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation) //null(placeholder->邂逅) String
         } else {

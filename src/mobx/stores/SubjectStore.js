@@ -80,7 +80,7 @@ export default class SubjectStore {
     this.birthday = null
     this.bio = null
     this.languages = DefaultLanguages
-    this.hobbies = DefaultHobbies
+    this.hobbies = new Object
     this.album = new Object
     this.avatar = null
     this.vip = false

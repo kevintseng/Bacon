@@ -21,9 +21,9 @@ export default class NickNameContainer extends Component {
     return(
       <BaconForm
         iconSource={ require('../../../images/ico_logo_nn.png') } 
-        placeholder='請輸入至少兩個字的暱稱'
+        placeholder='請輸入2~6字的暱稱'
         value={ this.SignUpStore.nickname }
-        maxLength={ 10 } 
+        maxLength={ 6 } 
         onChangeText={ this.realTimeCheckNickname }
         onBlur={ this.SignUpStore.checkNickname }
       />
