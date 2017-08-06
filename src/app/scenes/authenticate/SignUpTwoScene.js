@@ -11,7 +11,8 @@ const styles = {
   },
   middle: {
     position: 'absolute', 
-    top: 150
+    top: 150,
+    alignSelf: 'center'
   },
   bottom: {
     position: 'absolute', 
