@@ -9,6 +9,7 @@ export default class MeetCuteStore {
   @observable uid
   @observable nickname
   @observable bio
+  @observable loading
 
   constructor(firebase) {
     this.firebase = firebase
@@ -30,6 +31,7 @@ export default class MeetCuteStore {
   }
 
   @action initialize = () => {
+    this.loading = false
     this.pool = new Array
     this.history = new Array
     this.uid = null
@@ -60,8 +62,11 @@ export default class MeetCuteStore {
     }  
   }
 
-  @action fetchPrey = () => {
-    this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
+  @action fetchPrey = async () => {
+    runInAction(()=> {
+      this.loading = true
+    })
+    await this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
       if (snap.val()) {
         runInAction(()=>{
           this.nickname = snap.val().nickname
@@ -78,5 +83,13 @@ export default class MeetCuteStore {
 
       }
     })
+    await this.sleep(500)
+    runInAction(()=> {
+      this.loading = false
+    })
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 }
