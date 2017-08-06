@@ -7,7 +7,7 @@ import { BaconBadgeYes, BaconBadgeNo } from '../../views/BaconBadge/BaconBadge'
 const styles = {
   titleStyle: {
     marginTop: 10,
-    marginLeft: 10,
+    marginLeft: 15,
     color: '#606060',
     letterSpacing: 3,
     fontFamily: 'NotoSans', 
@@ -21,7 +21,7 @@ const styles = {
     fontWeight: 'normal',
     fontSize: 12,
     marginTop: 10,
-    marginLeft: 10
+    marginLeft: 15
   }
 }
 
@@ -51,7 +51,7 @@ export default class BadgeWallContainer extends Component {
       )
     } else {
       return (
-        <View pointerEvents="none" style={{flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'center'}}>
+        <View pointerEvents="none" style={{flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'center',alignSelf: 'center'}}>
           { badges }
         </View>
       )

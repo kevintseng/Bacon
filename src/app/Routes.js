@@ -160,6 +160,10 @@ export default class Routes extends Component {
           <Scene key='Drawer' component={ DrawerScene } open={false}>
             <Scene key='main' hideTabBar >
 
+              <Scene key='meetcute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } component={ MeetCuteCourtScene } />
+              </Scene>
+              
               <Scene key='aboutme' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } component={ AboutMeTabScene }/>
                 <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } component={ AboutMeEditScene }/>
@@ -175,10 +179,6 @@ export default class Routes extends Component {
               
               <Scene key='meetchance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } component={ MeetChanceWaterFallScene } />
-              </Scene>
-
-              <Scene key='meetcute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } component={ MeetCuteCourtScene } />
               </Scene>
 
               <Scene key='fate' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
