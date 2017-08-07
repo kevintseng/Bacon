@@ -39,14 +39,15 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   componentDidMount() {
-    this.MeetChanceStore.setRealPreys()
+    this.MeetChanceStore.setRealPreys() 
   }
 
   goToAboutMeTab = () => {
     Actions.aboutme({type: 'resest'})
   }
 
-  onPressButton = () => {
+  onPressButton = key => {
+    this.MeetChanceStore.setCourtInitialize(key)   
     Actions.MeetChanceCourt()
   }
 
@@ -66,7 +67,7 @@ export default class MeetChanceWaterFallScene extends Component {
         <Cookie  
           name={ item.nickname } 
           photoURL={ item.avatar }
-          onPress={ this.onPressButton } 
+          onPress={ () => { this.onPressButton(item.key) } } 
         /> } 
         ListHeaderComponent={ this.header }
         getItemLayout={(data, index) => (
