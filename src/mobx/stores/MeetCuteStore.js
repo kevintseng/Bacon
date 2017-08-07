@@ -6,7 +6,7 @@ useStrict(true)
 export default class MeetCuteStore {
 
   @observable loading
-  // usr data
+  // user data
   @observable nickname
   @observable bio
   @observable birthday
@@ -90,7 +90,7 @@ export default class MeetCuteStore {
           this.photoVerified = Boolean(snap.val().photoVerified)
         })
       } else {
-
+        //this.initializeCourt()
       }
     })
     await this.sleep(300)

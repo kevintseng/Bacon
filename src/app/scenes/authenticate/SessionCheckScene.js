@@ -239,12 +239,15 @@ export default class SessionCheckScene extends Component {
   removeMeetChanceListener = () => {
     if (this.geoQuery) {
       this.geoQuery.cancel()
+      this.geoQuery = null
+      this.geoFire = null
     }
   }
 
   removeMeetCuteListener = () => {
     if (this.mqQuery) {
       this.mqQuery.off()
+      this.mqQuery = null
     }
   }
 
