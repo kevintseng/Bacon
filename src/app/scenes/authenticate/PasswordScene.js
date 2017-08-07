@@ -23,6 +23,19 @@ const styles = {
 
 export default class PasswordScene extends Component {
 
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.Welcome({type: 'reset', direction: 'leftToRight'})
+    return true
+  }
+  
   render() {
     return(
       <View style={ styles.view }>

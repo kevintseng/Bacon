@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import Drawer from 'react-native-drawer'
+import { BackHandler, ToastAndroid, Dimensions } from 'react-native'
 import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
-import { Dimensions } from 'react-native'
 import GeoFire from 'geofire'
-import Geolocation from  'Geolocation'
+import Geolocation from 'Geolocation'
 
 import Sider from '../../views/Sider/Sider'
 
@@ -24,6 +24,24 @@ export default class DrawerScene extends Component {
     super(props)
     this.ControlStore = this.props.ControlStore
     this.SubjectStore = this.props.SubjectStore
+  }
+
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+        //return false
+        BackHandler.exitApp() //最近2秒内按過返回键，可以退出程式
+    }
+    this.lastBackPressed = Date.now()
+    ToastAndroid.show('再按一次離開程式', ToastAndroid.SHORT)
+    return true
   }
   
   goToAboutMe() {

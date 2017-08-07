@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, BackHandler, ToastAndroid } from 'react-native'
+import { Actions } from 'react-native-router-flux'
 
 import BaconRoutesContainer from '../../../containers/BonusTwoScene/BaconRoutesContainer'
 import BonusContainer from '../../../containers/BonusTwoScene/BonusContainer'
@@ -32,6 +33,19 @@ export default class BonusTwoScene extends Component {
     this.SubjectStore = this.props.SubjectStore
   }
 
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+    Actions.refresh({ key: 'Drawer', open: false })
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.pop()
+    return true
+  }
 
   render() {
     return(

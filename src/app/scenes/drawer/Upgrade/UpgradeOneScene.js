@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Button, Platform } from 'react-native'
+import { View, Text, Button, Platform, BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
@@ -35,6 +35,19 @@ export default class UpgradeOneScene extends Component {
     this.SubjectStore = this.props.SubjectStore
   }
 
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+    Actions.refresh({ key: 'Drawer', open: false })
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.pop()
+    return true
+  }
 
   render() {
     return(
