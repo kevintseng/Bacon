@@ -99,6 +99,10 @@ export default class MeetCuteStore {
     })
   }
 
+  @action cleanHistory = () => {
+    this.poolHistory = new Array
+  }
+
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
