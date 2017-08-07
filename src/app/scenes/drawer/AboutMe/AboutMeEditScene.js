@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Button, Platform } from 'react-native'
+import { View, Text, Button, Platform, BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
@@ -18,11 +18,17 @@ export default class AboutMeEditScene extends Component {
   }
 
   componentWillMount() {
-    Actions.refresh({ title: this.props.title })
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+    Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  componentWillUnmount() {
-    //console.warn('儲存狀態並非同步上傳資料')
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.pop()
+    return true
   }
 
   render() {

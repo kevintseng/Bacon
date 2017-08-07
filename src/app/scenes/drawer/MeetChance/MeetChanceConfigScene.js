@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, BackHandler, ToastAndroid } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
 import BaconRoutesContainer from '../../../containers/MeetChanceConfigScene/BaconRoutesContainer'
@@ -42,7 +42,17 @@ export default class MeetChanceConfigScene extends Component {
   }
 
   componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     Actions.refresh({ key: 'Drawer', open: false })
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.pop()
+    return true
   }
 
 

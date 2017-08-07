@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ActivityIndicator, ScrollView, Dimensions } from 'react-native'
+import { View, ActivityIndicator, ScrollView, Dimensions, BackHandler, ToastAndroid } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
@@ -20,7 +20,17 @@ export default class MeetChanceCourtScene extends Component {
   }
 
   componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     Actions.refresh({ key: 'Drawer', open: false })
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.pop()
+    return true
   }
 
   componentDidMount() {
