@@ -74,7 +74,8 @@ export default class AlbumContainer extends Component {
       } else {
         ImageResizer.createResizedImage(res.uri, 1200, 1200, 'JPEG', 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
         .then((resizedUri) => {
-          UUIDGenerator.getRandomUUID((uuid) => {
+          //UUIDGenerator.getRandomUUID((uuid) => {
+            const uuid = Date.now()
             this.SubjectStore.addPhoto(uuid,resizedUri)
             this.firebase.storage().ref('userAlbum/' + this.SubjectStore.uid + '/' + uuid + '.jpg').putFile(resizedUri.replace('file:/',''), metadata)
             .then(uploadedFile => {
@@ -83,8 +84,8 @@ export default class AlbumContainer extends Component {
             })
             .catch(err => {
               console.log(err)
-            });
-          })
+            })
+          //})
         }).catch((err) => {
           console.log(err)
         })
