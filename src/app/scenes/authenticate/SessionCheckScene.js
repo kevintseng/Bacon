@@ -92,7 +92,7 @@ export default class SessionCheckScene extends Component {
     .then(uploadedFile => {
       this.firebase.database().ref('users/' + this.SubjectStore.uid + '/avatar').set(uploadedFile.downloadUrl)
       .then(() => {
-          this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album' + '/' + Object.keys(this.SignUpStore.album)[0]).set(uploadedFile.downloadUrl)
+          this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album').push(uploadedFile.downloadUrl)
         .then(() => {
             this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳成功')
           })
