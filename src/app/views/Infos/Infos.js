@@ -12,7 +12,7 @@ const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance
       <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>{ age }</Text>
     </View>
 
-    <View style={{marginTop: 10, alignSelf: 'center', alignItems: 'center',paddingRight: 10, paddingLeft: 10}}><Text style={{fontSize: 10,color: '#606060'}}>{ bio }</Text></View>
+    <View style={{marginTop: 10, alignSelf: 'center', alignItems: 'center',paddingRight: 20, paddingLeft: 20}}><Text style={{fontSize: 10,color: '#606060'}}>{ bio }</Text></View>
     
     <View style={{marginTop: 10, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
       <Image style={{marginRight: 5}} source={require('./img/ico_meet_globe.png')}/>

@@ -33,7 +33,7 @@ const AppInitial = {
     //this.SignUpInStore = new SignUpInStore(this.firebase)
     this.MeetCuteStore = new MeetCuteStore(this.firebase)
     this.MeetChanceStore = new MeetChanceStore(this.firebase)
-    this.FateStore = new FateStore()
+    this.FateStore = new FateStore(this.firebase)
     return this
   }
 }.init()
