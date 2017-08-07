@@ -34,7 +34,7 @@ export default class BioInputContainer extends Component {
           autoCorrect
           numberOfLines = { 100 }
           //editable = { true }
-          maxLength = { 500 }        
+          maxLength = { 100 }        
           onChangeText = { this.SubjectEditStore.setBio }
           value = {this.SubjectEditStore.bio }
         />

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, Dimensions, ScrollView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
 import CourtContainer from './CourtContainer'
 import InfosContainer from './InfosContainer'
+
+const { width, height } = Dimensions.get('window')
 
 @inject("firebase","SubjectStore") @observer
 export default class PreviewContainer extends Component {
@@ -18,10 +20,12 @@ export default class PreviewContainer extends Component {
   render() {
     return(
       <View style={{flex: 1}}>  
-        <CourtContainer/>
-        <View style={{position: 'absolute',bottom: 20, alignSelf: 'center',marginRight: 10, marginLeft: 10}}>
-          <InfosContainer/>  
-        </View>
+        <ScrollView style={{flex: 1}}>
+          <CourtContainer/>
+            <View style={{alignSelf: 'center',paddingTop: 10}}>
+              <InfosContainer/>  
+            </View>
+          </ScrollView>
       </View>
     )
   }
