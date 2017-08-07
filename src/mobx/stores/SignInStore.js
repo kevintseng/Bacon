@@ -10,12 +10,12 @@ export default class SignInStore {
   @observable signInIndicator
 
   constructor() {
+    this.email = null
+    this.password = null 
     this.initialize()
   }
 
   @action initialize = () => {
-    this.email = null
-    this.password = null 
     this.signInIndicator = null   
   }
 
