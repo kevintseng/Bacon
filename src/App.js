@@ -22,6 +22,7 @@ export default class App extends Component {
         //SignUpInStore={ AppInitial.SignUpInStore } 
         MeetChanceStore={ AppInitial.MeetChanceStore }
         MeetCuteStore={ AppInitial.MeetCuteStore}
+        FateStore={ AppInitial.FateStore}
         >
         <Routes/>
       </Provider>
