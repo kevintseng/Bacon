@@ -1,4 +1,5 @@
 import { observable, action, computed, useStrict, runInAction } from 'mobx'
+import _ from 'lodash'
 
 useStrict(true)
 
@@ -19,28 +20,35 @@ export default class FateStore {
     this.preys = new Array
   }
 
+  // pool 
+
   @action addPreyToVisitorsPool = (uid,time) => {
     this.visitorsPool.push({uid: uid, time: time})
   }
 
-  @action setFakePreys = () => {
-    this.preys = this.visitorsPool.map((ele,index)=>({ key: ele.uid, time: ele.time, nickname: null, avatar: null, age: null }))
+  @action setPreyList = () => {
+    this.preyList = _.cloneDeep(this.visitorsPool)
   }
 
-  @action setRealPreys = () => {
-      this.visitorsPool.forEach((ele,index) => {
-        this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
-          if (snap.val()) {
-            runInAction(() => {
-              this.preys[index] = {
-                key: ele.uid,
-                nickname: snap.val().nickname,
-                avatar: snap.val().avatar              
-              } 
-              //this.preys = this.preys.peek()
-            })
-          }
-        })
-      }) 
+  @action setFakePreys = () => {
+    this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, time: ele.time, nickname: null, avatar: null, birthday: null }))
   }
+
+  @action setRealPreys = async () => {
+    await Promise.all(this.preyList.map(async (ele,index) => {
+      await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
+        if (snap.val()) {
+          this.preys[index].nickname = snap.val().nickname
+          this.preys[index].avatar = snap.val().avatar
+          this.preys[index].birthday = snap.val().birthday         
+        }
+      }).catch(err => console.log(err))
+    }))
+    if (this.preys.length > 0) {
+      runInAction(() => {
+        this.preys = this.preys.peek()
+      })
+    }
+  }
+
 }
