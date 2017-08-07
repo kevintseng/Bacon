@@ -270,7 +270,7 @@ export default class SessionCheckScene extends Component {
   }
 
   mq = sexualOrientation => {
-    this.mqQuery = this.firebase.database().ref('users').orderByChild('sexOrientation').equalTo(sexualOrientation)
+    this.mqQuery = this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation)
     this.mqQuery.on('value', snap => {
       snap.forEach( childsnap => {
         this.MeetCuteStore.addPreyToPool(childsnap.key)

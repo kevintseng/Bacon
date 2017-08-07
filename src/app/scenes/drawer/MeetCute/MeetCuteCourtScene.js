@@ -19,8 +19,11 @@ export default class MeetCuteCourtScene extends Component {
   }
 
   componentWillMount() {
-    this.MeetCuteStore.pickOnePrey()
     Actions.refresh({ key: 'Drawer', open: false })
+  }
+
+  componentDidMount() {
+    this.MeetCuteStore.pickOnePrey()    
   }
 
   indicator = () => (
