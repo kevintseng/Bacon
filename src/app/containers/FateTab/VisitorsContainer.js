@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
+import { observer, inject } from 'mobx-react'
 
 import Cookie from '../../views/Cookie'
 
@@ -13,19 +14,41 @@ const styles = {
   }
 }
 
-
+@inject('firebase','FateStore') @observer
 export default class VisitorsContainer extends Component {
 
+
+  constructor(props) {
+    super(props)
+    this.firebase = this.props.firebase
+    this.FateStore = this.props.FateStore
+  }
+
+  componentWillMount() {
+    this.FateStore.setFakePreys()
+    Actions.refresh({ key: 'Drawer', open: false })
+  }
+
+  componentDidMount() {
+    this.FateStore.setRealPreys()
+  }
   
   render() {
     return(
       <View>
-        <Cookie
-          name='Dora Li'
-          ages='19' 
-        >
-          <Text style={styles.child}>剛剛來訪</Text>
-        </Cookie>
+        <FlatList
+          data={ this.FateStore.preys } 
+          numColumns={1}
+          renderItem={({item}) => 
+          (
+            <Cookie
+              name={ item.nickname }
+              ages={ item.age }
+            >
+              <Text style={styles.child}>剛剛來訪</Text>
+            </Cookie>) 
+          } 
+        />
       </View>
     )
   }

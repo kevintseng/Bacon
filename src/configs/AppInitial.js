@@ -11,6 +11,7 @@ import SubjectEditStore from '../mobx/stores/SubjectEditStore'
 
 import MeetCuteStore from '../mobx/stores/MeetCuteStore'
 import MeetChanceStore from '../mobx/stores/MeetChanceStore'
+import FateStore from '../mobx/stores/FateStore'
 //import SignUpInStore from '../mobx/stores/SignUpInStore'
 
 const FirebaseConfig = {
@@ -32,6 +33,7 @@ const AppInitial = {
     //this.SignUpInStore = new SignUpInStore(this.firebase)
     this.MeetCuteStore = new MeetCuteStore(this.firebase)
     this.MeetChanceStore = new MeetChanceStore(this.firebase)
+    this.FateStore = new FateStore()
     return this
   }
 }.init()

@@ -1,4 +1,5 @@
 import { observable, action, computed, useStrict, runInAction } from 'mobx'
+import _ from 'lodash'
 import { calculateAge } from '../../app/Utils'
 
 useStrict(true)
@@ -18,6 +19,7 @@ export default class MeetChanceStore {
   @observable vip
   @observable emailVerified
   @observable photoVerified
+  //@observable synchronize
 
   constructor(firebase) {
     this.firebase = firebase
@@ -54,51 +56,55 @@ export default class MeetChanceStore {
     this.vip = false
     this.emailVerified = false
     this.photoVerified = false
+    //this.synchronize = null
   }
+
+  // pool
 
   @action addPreyToPool = prey => {
     this.pool.push(prey)
   }
 
   @action updatePreyToPool = (uid,distance) => {
-    this.pool.find(ele => ele.uid == uid).distance = distance
+    this.pool.find(ele => ele.uid === uid).distance = distance
   }
 
   @action removePreyToPool = uid => {
-    this.pool = this.pool.filter(ele => !(ele.uid == uid))
+    this.pool = this.pool.filter(ele => !(ele.uid === uid))
   }
 
-  @action sortPool() {
-    this.preyList = this.pool.sort((a, b) => {
-      return a.distance > b.distance ? 1 : -1
-    })  
-  }
+  // pleylist = _.cloneDeep(pool)
 
   @action setPreyList = () => {
-    this.sortPool()
+    this.preyList = _.cloneDeep(this.pool)
+    this.preyList.sort((a, b) => {
+      return a.distance > b.distance ? 1 : -1
+    }) 
     this.preyList.length = this.preyList.length - this.preyList.length % 3
   }
 
   @action setFakePreys = () => {
-    this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
+    this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: '安安', avatar: null }))
+    //this.preys this.preyList 是完全不同物件 OK
   }
 
-  @action setRealPreys = () => {
-      this.preyList.forEach((ele,index) => {
-        this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
-          if (snap.val()) {
-            runInAction(() => {
-              this.preys[index] = {
-                key: ele.uid,
-                nickname: snap.val().nickname,
-                avatar: snap.val().avatar              
-              } 
-              this.preys = this.preys.peek()
-            })
-          }
-        })
-      })    
+  @action setRealPreys = async () => {
+    await Promise.all(this.preyList.map(async (ele,index) => {
+      await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
+        if (snap.val()) {
+          this.preys[index] = {
+            key: ele.uid,
+            nickname: snap.val().nickname,
+            avatar: snap.val().avatar              
+          }          
+        }
+      }).catch(err => console.log(err))
+    }))
+    runInAction(() => {
+      this.preys = this.preys.peek()
+    })
   }
+
   // court
 
   @action setCourtInitialize = uid => {
@@ -129,6 +135,10 @@ export default class MeetChanceStore {
     runInAction(() => {
       this.loading = false
     })
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
 }
