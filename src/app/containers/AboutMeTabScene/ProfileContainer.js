@@ -28,10 +28,6 @@ export default class ProfileContainer extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  verityEmail = () => (
-    this.firebase.auth().currentUser.emailVerified
-  )
-
   goToEditDisplayName = () => {
     Actions.AboutMeEdit({title: '暱稱年齡',content: <DisplayNameAgeContainer/>})
   }
@@ -60,13 +56,25 @@ export default class ProfileContainer extends Component {
     Actions.bonus()
   }
 
+  verificationEmail = () => {
+    if (this.SubjectStore.emailVerified) {
+      alert('您的信件地址已認證')
+    } else {
+      this.firebase.auth().currentUser.sendEmailVerification().then(() => {
+        alert('認證信已寄出')
+      }).catch(error => {
+        console.log(error)
+      })
+    }
+  }
+
   render() {
     return(
       <View style={{flex: 1}}>
         <Profile
           source={ this.SubjectStore.avatar }
-          verityEmail={ this.verityEmail }
-          verityPhoto={ this.SubjectStore.photoVerified }
+          verityEmail={ this.SubjectStore.emailVerified }
+          //verityPhoto={ this.SubjectStore.photoVerified }
           displayName={ this.SubjectStore.nickname }
           age={ this.SubjectStore.age }
           city={ this.SubjectStore.address }
@@ -80,6 +88,7 @@ export default class ProfileContainer extends Component {
           onPressLangs={ this.goToEditLangs }
           onPressMemberUpgrade={ this.goToMemberUpgrade }
           onPressQUpgrade={ this.goToQUpgrade }
+          onPressEmail={ this.verificationEmail }
           />
         <BadgeWallContainer
           onPressInterests={ this.goToEditInterests }

@@ -152,6 +152,9 @@ export default class SubjectStore {
     this.hobbies = object
   }
   
+  @action setEmailVerified = boolean => {
+    this.emailVerified = boolean
+  }
   // hide function
 
   @action setHideMeetCute = () => {
