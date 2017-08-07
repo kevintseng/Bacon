@@ -18,9 +18,9 @@ const styles = {
   }
 }
 
-const VerityEmail = ({ verity, verityText }) => {
+const VerityEmail = ({ verity, verityText, onPress }) => {
   return(
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View style={ styles.view }>
         <Image style={ styles.image } source={ verity ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
         <Text style={ styles.text }>{ verityText }</Text>

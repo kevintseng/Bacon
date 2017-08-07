@@ -37,7 +37,7 @@ const styles = {
 
 const colors = ['#f4a764', '#d63768']
 
-const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio, langs, interests, onPressDisplayName, onPressCity, onPressBio, onPressLangs, onPressInterests, onPressMemberUpgrade, onPressQUpgrade}) => {
+const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio, langs, interests, onPressDisplayName, onPressCity, onPressBio, onPressLangs, onPressInterests, onPressMemberUpgrade, onPressQUpgrade, onPressEmail}) => {
   return(
     <View>
       <View style={{flexDirection: 'row',padding: 5}}>
@@ -57,6 +57,7 @@ const Profile = ({source, verityEmail, verityPhoto, displayName, age, city, bio,
               <VerityEmail
                 verity={ verityEmail }
                 verityText={ verityEmail ? '已認證' : '尚未認證'}
+                onPress={ onPressEmail }
               />
             </View>
             <View style={{paddingRight: 10}}>

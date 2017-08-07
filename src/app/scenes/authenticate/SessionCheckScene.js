@@ -54,6 +54,7 @@ export default class SessionCheckScene extends Component {
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           // 同步
+          this.uploadEmailVerity()
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
         } else {
           // 非同步
@@ -62,6 +63,8 @@ export default class SessionCheckScene extends Component {
           this.visitorsListener() // 來訪監聽
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
+          // 同步
+          this.uploadEmailVerity()
         }
         Actions.Drawer({type: 'reset'}) // 切換場景
       } else {
@@ -143,6 +146,11 @@ export default class SessionCheckScene extends Component {
         console.log('獲取位置失敗：'+ error)
       }
     )
+  }
+
+  uploadEmailVerity = () => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/emailVerified').set(this.firebase.auth().currentUser.emailVerified)
+    this.SubjectStore.setEmailVerified(this.firebase.auth().currentUser.emailVerified)
   }
 
   initSubjectStoreFromSignUpStore = () => {
