@@ -5,11 +5,17 @@ useStrict(true)
 
 export default class MeetCuteStore {
 
-  @observable pool
-  @observable uid
+  @observable loading
+  // usr data
   @observable nickname
   @observable bio
-  @observable loading
+  @observable birthday
+  @observable languages
+  @observable hobbies
+  @observable album
+  @observable vip
+  @observable emailVerified
+  @observable photoVerified
 
   constructor(firebase) {
     this.firebase = firebase
@@ -22,18 +28,17 @@ export default class MeetCuteStore {
 
   @computed get languagesToString() {
     return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
-    // { 中文: true, 英文: true } -> 中文,英文
   }
 
   @computed get albumToArray() {
-    //console.log()
     return Object.keys(this.album).map((key) => (this.album[key]))
   }
 
   @action initialize = () => {
-    this.loading = false
     this.pool = new Array
-    this.history = new Array
+    this.poolHistory = new Array
+    this.loading = true
+    // user data
     this.uid = null
     this.nickname = null
     this.bio = null
@@ -50,25 +55,30 @@ export default class MeetCuteStore {
     this.pool.push(prey)
   }
 
-  @action pickOnePrey = prey => {
-    if (this.pool.length === this.history.length) {
-      alert('沒人了')
-    } else {
-      while (this.history.includes(this.uid)) {
-        this.uid = this.pool[Math.floor(Math.random() * this.pool.length - 1) + 0]
-      }
-      this.history.push(this.uid)
-      this.fetchPrey()
-    }  
+  @action pickOnePrey = async prey => {
+    runInAction(() => {
+      this.loading = true
+    })
+    let length_a = this.pool.length 
+    let length_b = this.poolHistory.length
+    while (length_a  === length_b) {
+      // 沒新人 等待載入
+      await this.sleep(300)
+      length_a = this.pool.length 
+      length_b = this.poolHistory.length
+    }
+    // 有新人 跳出迴圈
+    while (this.poolHistory.includes(this.uid)) {
+      this.uid = this.pool[Math.floor(Math.random() * this.pool.length - 1) + 0]
+    }
+    this.poolHistory.push(this.uid)
+    this.fetchPrey()
   }
 
   @action fetchPrey = async () => {
-    runInAction(()=> {
-      this.loading = true
-    })
     await this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
       if (snap.val()) {
-        runInAction(()=>{
+        runInAction(() => {
           this.nickname = snap.val().nickname
           this.bio = snap.val().bio
           this.birthday = snap.val().birthday
@@ -83,8 +93,8 @@ export default class MeetCuteStore {
 
       }
     })
-    await this.sleep(500)
-    runInAction(()=> {
+    await this.sleep(300)
+    runInAction(() => {
       this.loading = false
     })
   }

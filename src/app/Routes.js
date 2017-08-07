@@ -164,6 +164,11 @@ export default class Routes extends Component {
                 <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } component={ MeetCuteCourtScene } />
               </Scene>
               
+              <Scene key='meetchance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } component={ MeetChanceWaterFallScene } />
+              </Scene>
+                          
+              
               <Scene key='aboutme' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } component={ AboutMeTabScene }/>
                 <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } component={ AboutMeEditScene }/>
@@ -176,10 +181,7 @@ export default class Routes extends Component {
                 <Scene key='SettingRemind' title='設定' renderBackButton={ this.baconArrow } component={ SettingRemindScene } />
                 <Scene key='SettingHide' title='設定' renderBackButton={ this.baconArrow } component={ SettingHideScene } />
               </Scene>
-              
-              <Scene key='meetchance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } component={ MeetChanceWaterFallScene } />
-              </Scene>
+
 
               <Scene key='fate' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='FateTab' title='緣分' renderLeftButton={ this.baconMenu } component={ FateTabScene } />
