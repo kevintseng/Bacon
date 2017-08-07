@@ -24,12 +24,14 @@ import AuthScene from './scenes/authenticate/AuthScene'
 import DrawerScene from './scenes/drawer/DrawerScene'
 // MeetCute
 import MeetCuteCourtScene from './scenes/drawer/MeetCute/MeetCuteCourtScene'
+import MeetCuteConfigScene from './scenes/drawer/MeetCute/MeetCuteConfigScene'
 // AboutMe
 import AboutMeTabScene from './scenes/drawer/AboutMe/AboutMeTabScene'
 import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
 // MeetChance
 import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
-//import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
+import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
+import MeetChanceConfigScene from './scenes/drawer/MeetChance/MeetChanceConfigScene'
 // Fate
 import FateTabScene from './scenes/drawer/Fate/FateTabScene'
 // Setting
@@ -51,6 +53,7 @@ import BonusTwoScene from './scenes/drawer/Bonus/BonusTwoScene'
 // ###############header components################ //
 import BaconTitle from './views/BaconTitle/BaconTitle'
 import BaconMenu from './views/BaconMenu/BaconMenu'
+import BaconTool from './views/BaconTool/BaconTool'
 import BaconArrow from './views/BaconArrow/BaconArrow'
 // ###############header components################ //
 
@@ -77,6 +80,12 @@ const styles = {
     position: 'absolute',
     top: Platform.OS === 'ios' ? 4 : 1, 
     left: 5    
+  },
+  baconTool: {
+    position: 'absolute',
+    //top: Platform.OS === 'ios' ? 4 : 0, 
+    bottom: -1,
+    right: 5    
   }
 }
 
@@ -115,6 +124,14 @@ export default class Routes extends Component {
     Actions.SignUpThree({type: 'reset', direction: 'leftToRight'})
   }
 
+  goToMeetCuteConfig = () => {
+    Actions.MeetCuteConfig()
+  }
+
+  goToMeetChanceConfig = () => {
+    Actions.MeetChanceConfig()
+  }
+
   baconMenu = () => (<View style={ styles.baconMenu }><BaconMenu/></View>)
 
   baconTitle = () => (<View style={ styles.baconTitle }><BaconTitle/></View>)
@@ -130,6 +147,10 @@ export default class Routes extends Component {
   baconArrowSignUpFour = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToSignUpThree }/></View>)
 
   baconArrowSignIn = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToWelcome }/></View>)
+
+  baconToolMeetCute = () => (<View style={ styles.baconTool }><BaconTool onPress={ this.goToMeetCuteConfig }/></View>)
+
+  baconToolMeetChance = () => (<View style={ styles.baconTool }><BaconTool onPress={ this.goToMeetChanceConfig }/></View>)
 
   render() {
     return (
@@ -161,11 +182,15 @@ export default class Routes extends Component {
             <Scene key='main' hideTabBar >
 
               <Scene key='meetcute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } component={ MeetCuteCourtScene } />
+                <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetCute } component={ MeetCuteCourtScene } />
+                <Scene key='MeetCuteConfig' title='邂逅' renderBackButton={ this.baconArrow } component={ MeetCuteConfigScene } />
+
               </Scene>
               
               <Scene key='meetchance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } component={ MeetChanceWaterFallScene } />
+                <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetChance } component={ MeetChanceWaterFallScene } />
+                <Scene key='MeetChanceCourt' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceCourtScene } />
+                <Scene key='MeetChanceConfig' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceConfigScene } />
               </Scene>
                           
               

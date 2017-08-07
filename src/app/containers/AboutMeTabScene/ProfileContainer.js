@@ -7,11 +7,11 @@ import Profile from '../../views/Profile'
 
 import BadgeWallContainer from './BadgeWallContainer'
 
-import DisplayNameAgeContainer from '../../containers/AboutMeEdit/DisplayNameAge/DisplayNameAgeContainer'
-import CityContainer from '../../containers/AboutMeEdit/City/CityContainer'
-import BioContainer from '../../containers/AboutMeEdit/Bio/BioContainer'
-import LangsContainer from '../../containers/AboutMeEdit/Langs/LangsContainer'
-import InterestsContainer from '../../containers/AboutMeEdit/Interests/InterestsContainer'
+import DisplayNameAgeContainer from '../../containers/AboutMeEditScene/DisplayNameAge/DisplayNameAgeContainer'
+import CityContainer from '../../containers/AboutMeEditScene/City/CityContainer'
+import BioContainer from '../../containers/AboutMeEditScene/Bio/BioContainer'
+import LangsContainer from '../../containers/AboutMeEditScene/Langs/LangsContainer'
+import InterestsContainer from '../../containers/AboutMeEditScene/Interests/InterestsContainer'
 
 
 @inject('SubjectStore','firebase') @observer

@@ -3,8 +3,8 @@ import { View, ActivityIndicator, Button } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
-import CourtContainer from '../../../containers/MeetCuteCourt/CourtContainer'
-import InfosContainer from '../../../containers/MeetCuteCourt/InfosContainer'
+import CourtContainer from '../../../containers/MeetCuteCourtScene/CourtContainer'
+import InfosContainer from '../../../containers/MeetCuteCourtScene/InfosContainer'
 
 @inject('firebase','SubjectStore','MeetCuteStore') @observer
 export default class MeetCuteCourtScene extends Component {
