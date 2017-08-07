@@ -31,6 +31,9 @@ const BaconSwitch = ({ switchText, switchValue, switchonValueChange}) => {
       <Switch
         onValueChange={ switchonValueChange }
         value={ switchValue }
+        thumbTintColor='#d63768'
+        onTintColor='rgba(214, 55, 104, 0.3)'
+        tintColor='#b3b3b3'
       />
     </View>
   )
