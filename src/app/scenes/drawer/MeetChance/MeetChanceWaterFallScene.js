@@ -43,11 +43,11 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   goToAboutMeTab = () => {
-    Actions.aboutme({type: 'res'})
+    Actions.aboutme({type: 'resest'})
   }
 
   onPressButton = () => {
-    //Actions.MeetChanceCourt()
+    Actions.MeetChanceCourt()
   }
 
   header = () => (
@@ -66,7 +66,7 @@ export default class MeetChanceWaterFallScene extends Component {
         <Cookie  
           name={ item.nickname } 
           photoURL={ item.avatar }
-          onPress={ item.onPressButton } 
+          onPress={ this.onPressButton } 
         /> } 
         ListHeaderComponent={ this.header }
         getItemLayout={(data, index) => (

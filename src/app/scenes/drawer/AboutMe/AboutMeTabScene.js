@@ -4,9 +4,9 @@ import { Actions } from 'react-native-router-flux'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
 //import Perf from 'react-addons-perf'
 
-import ProfileContainer from '../../../containers/AboutMeTab/ProfileContainer' 
-import AlbumContainer from '../../../containers/AboutMeTab/AlbumContainer' 
-import PreviewContainer from '../../../containers/AboutMeTab/PreviewContainer' 
+import ProfileContainer from '../../../containers/AboutMeTabScene/ProfileContainer' 
+import AlbumContainer from '../../../containers/AboutMeTabScene/AlbumContainer' 
+import PreviewContainer from '../../../containers/AboutMeTabScene/PreviewContainer' 
 
 
 @inject('SubjectStore') @observer
