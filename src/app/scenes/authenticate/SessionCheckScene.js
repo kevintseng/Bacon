@@ -67,7 +67,7 @@ export default class SessionCheckScene extends Component {
         this.removeMeetChanceListener() // 非同步移除地理監聽
         this.removeMeetCuteListener() // 移除邂逅監聽
         this.SignUpStore.initialize() // 初始註冊入狀態
-        //this.SignInStore.initialize() // 初始化登入狀態
+        this.SignInStore.initialize() // 初始化登入狀態
         this.SubjectStore.initialize() // 初始主體入狀態
         this.MeetChanceStore.initialize()
         this.MeetCuteStore.initialize()
