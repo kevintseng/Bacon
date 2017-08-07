@@ -59,6 +59,7 @@ export default class MeetCuteStore {
     runInAction(() => {
       this.loading = true
     })
+    // 改成先深複製-> 在打亂->然後照順序選->抓資料->排除隱身 刪除帳號 45天記錄
     let length_a = this.pool.length 
     let length_b = this.poolHistory.length
     while (length_a  === length_b) {

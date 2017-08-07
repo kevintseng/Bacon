@@ -37,7 +37,7 @@ export default class Court extends Component {
       imageWidth={width}
       imageHeight={height}
     >
-      <Image style={{height, width}} resizeMode={'contain'} source={{uri: 'https://cdn.shopify.com/s/files/1/1285/0147/products/sign2-032a.png?v=1477683540'}}/>
+      <Image style={{height, width}} resizeMode={'contain'} source={{uri: 'http://4.bp.blogspot.com/-47BymmC5PqE/U2quRGlwXwI/AAAAAAAAANk/M7D1aUFk-Jo/s1600/Question+Mark.jpg'}}/>
     </ImageZoom>
   )
 
@@ -51,7 +51,7 @@ export default class Court extends Component {
 
 
   renderOnePhoto = () => (
-    <Image style={{height: width, width}} resizeMode={'contain'} source={{uri: 'https://cdn.shopify.com/s/files/1/1285/0147/products/sign2-032a.png?v=1477683540'}}/>
+    <Image style={{height: width, width}} resizeMode={'contain'} source={{uri: 'http://4.bp.blogspot.com/-47BymmC5PqE/U2quRGlwXwI/AAAAAAAAANk/M7D1aUFk-Jo/s1600/Question+Mark.jpg'}}/>
   )
 
   render() {
@@ -81,11 +81,13 @@ export default class Court extends Component {
  
         <Carousel
           swipe
-          style={{backgroundColor: 'transparent',width, height: width}}
+          style={{backgroundColor: 'black',width, height: width}}
           bullets
           autoplay={false}
           pageInfoTextStyle={{color: 'red'}}
           onAnimateNextPage={(p) => console.log(p)}
+          bulletsContainerPosition={{ top: 5, left: width/5*4 }}
+          //bulletsContainerStyle={{backgroundColor: 'red'}}
         >
           { album.length > 0 ? this.renderAlbum(album) : this.renderOnePhoto() }
         </Carousel>

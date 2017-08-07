@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
+import { calculateAge } from '../../Utils'
 import Cookie from '../../views/Cookie'
 
 const styles = {
@@ -33,6 +34,10 @@ export default class VisitorsContainer extends Component {
   componentDidMount() {
     this.FateStore.setRealPreys()
   }
+
+  onPress = () => {
+    alert('轉到聊天')
+  }
   
   render() {
     return(
@@ -42,12 +47,16 @@ export default class VisitorsContainer extends Component {
           numColumns={1}
           renderItem={({item}) => 
           (
-            <Cookie
-              name={ item.nickname }
-              ages={ '18' }
-            >
-              <Text style={styles.child}>剛剛來訪</Text>
-            </Cookie>) 
+            <TouchableOpacity onPress={ this.onPress }>
+              <Cookie
+                name={ item.nickname }
+                avatar={ item.avatar }
+                age={ calculateAge(item.birthday) }
+                onPress={ this.onPress }
+              >
+                <Text style={styles.child}>剛剛來訪</Text>
+              </Cookie>
+            </TouchableOpacity>) 
           } 
         />
       </View>

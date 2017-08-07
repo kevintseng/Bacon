@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { View, ActivityIndicator, Button } from 'react-native'
+import { View, ActivityIndicator, Button, ScrollView, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
 import CourtContainer from '../../../containers/MeetCuteCourtScene/CourtContainer'
 import InfosContainer from '../../../containers/MeetCuteCourtScene/InfosContainer'
+
+const { width, height } = Dimensions.get('window')
 
 @inject('firebase','SubjectStore','MeetCuteStore') @observer
 export default class MeetCuteCourtScene extends Component {
@@ -53,10 +55,12 @@ export default class MeetCuteCourtScene extends Component {
         }
         { !this.MeetCuteStore.loading && 
           <View style={{flex: 1}}>
-            <CourtContainer/>
-            <View style={{position: 'absolute',bottom: 50,alignSelf: 'center'}}>
-              <InfosContainer/>  
-            </View>
+            <ScrollView style={{flex: 1}}>
+              <CourtContainer/>
+              <View style={{alignSelf: 'center',paddingTop: 40}}>
+                <InfosContainer/>  
+              </View>
+            </ScrollView>
             <Button color='#f4a764' style={{position: 'absolute', bottom: 0}} title='清除邂逅紀錄' onPress={ this.cleanHistory }/>
           </View>
         }

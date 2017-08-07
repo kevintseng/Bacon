@@ -5,7 +5,10 @@ useStrict(true)
 
 export default class FateStore {
 
-  constructor() {
+  @observable preys
+
+  constructor(firebase) {
+    this.firebase = firebase
     this.initialize()
   }
 
@@ -44,11 +47,9 @@ export default class FateStore {
         }
       }).catch(err => console.log(err))
     }))
-    if (this.preys.length > 0) {
-      runInAction(() => {
-        this.preys = this.preys.peek()
-      })
-    }
+    runInAction(() => {
+      this.preys = this.preys.peek()
+    })
   }
 
 }

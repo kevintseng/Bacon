@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator, ScrollView, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
 import CourtContainer from '../../../containers/MeetChanceCourtScene/CourtContainer'
 import InfosContainer from '../../../containers/MeetChanceCourtScene/InfosContainer'
+
+const { width, height } = Dimensions.get('window')
 
 @inject('firebase','SubjectStore','MeetChanceStore') @observer
 export default class MeetChanceCourtScene extends Component {
@@ -49,10 +51,12 @@ export default class MeetChanceCourtScene extends Component {
         }
         { !this.MeetChanceStore.loading && 
           <View style={{flex: 1}}>
-            <CourtContainer/>
-            <View style={{position: 'absolute',bottom: 50,alignSelf: 'center'}}>
-              <InfosContainer/>  
-            </View>
+            <ScrollView style={{flex: 1}}>
+              <CourtContainer/>
+              <View style={{alignSelf: 'center',paddingTop: 40}}>
+                <InfosContainer/>  
+              </View>
+            </ScrollView>
           </View>
         }
       </View>
