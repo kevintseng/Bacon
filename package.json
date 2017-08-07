@@ -13,6 +13,7 @@
     ]
   },
   "dependencies": {
+    "@ptomasroos/react-native-multi-slider": "0.0.8",
     "geofire": "^4.1.2",
     "mobx": "^3.2.1",
     "mobx-react": "^4.2.2",

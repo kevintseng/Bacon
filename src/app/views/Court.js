@@ -1,12 +1,10 @@
 import React, {Component} from 'react'
 import { Dimensions, Image, Modal, View, Text, TouchableOpacity } from 'react-native'
 import Carousel from 'react-native-looped-carousel'
-//import SwipeCards from 'react-native-swipe-cards'
 import ImageZoom from 'react-native-image-pan-zoom'
 import Infos from './Infos/Infos'
 
 const { width, height } = Dimensions.get('window')
-
 
 export default class Court extends Component {
 
@@ -80,19 +78,17 @@ export default class Court extends Component {
             <View ><Text onPress={ this.nextphoto } style={{color:'white',fontFamily: 'NotoSans'}}>下一張</Text></View>
           </View>
         </Modal>
-
-                
-
-          <Carousel
-            swipe
-            style={{backgroundColor: 'transparent',width, height: width}}
-            bullets
-            autoplay={false}
-            pageInfoTextStyle={{color: 'red'}}
-            onAnimateNextPage={(p) => console.log(p)}
-            >
-            { album.length > 0 ? this.renderAlbum(album) : this.renderOnePhoto() }
-          </Carousel>
+ 
+        <Carousel
+          swipe
+          style={{backgroundColor: 'transparent',width, height: width}}
+          bullets
+          autoplay={false}
+          pageInfoTextStyle={{color: 'red'}}
+          onAnimateNextPage={(p) => console.log(p)}
+        >
+          { album.length > 0 ? this.renderAlbum(album) : this.renderOnePhoto() }
+        </Carousel>
 
         <TouchableOpacity style={{position: 'absolute',top: 320, right: 60}} onPress={ onPressRightIcon }>
           <Image source={ rightIcon }/>
