@@ -70,11 +70,13 @@ export default class SessionCheckScene extends Component {
         AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
         this.removeMeetChanceListener() // 非同步移除地理監聽
         this.removeMeetCuteListener() // 移除邂逅監聽
+        this.removeVisitorsListener() // 移除邂逅監聽
         this.SignUpStore.initialize() // 初始註冊入狀態
         this.SignInStore.initialize() // 初始化登入狀態
         this.SubjectStore.initialize() // 初始主體入狀態
         this.MeetChanceStore.initialize()
         this.MeetCuteStore.initialize()
+        this.FateStore.initialize()
         Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
       }
     })    
@@ -233,6 +235,13 @@ export default class SessionCheckScene extends Component {
       this.geoQuery = null
       this.geoFire = null
     }
+  }
+
+  removeVisitorsListener = () => {
+    if (this.visitorsQuery) {
+      this.visitorsQuery.off()
+      this.visitorsQuery = null
+    }    
   }
 
   //////********************//////

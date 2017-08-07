@@ -84,7 +84,7 @@ export default class MeetChanceStore {
   }
 
   @action setFakePreys = () => {
-    this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: '安安', avatar: null }))
+    this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
     //this.preys this.preyList 是完全不同物件 OK
   }
 
@@ -92,17 +92,16 @@ export default class MeetChanceStore {
     await Promise.all(this.preyList.map(async (ele,index) => {
       await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
         if (snap.val()) {
-          this.preys[index] = {
-            key: ele.uid,
-            nickname: snap.val().nickname,
-            avatar: snap.val().avatar              
-          }          
+          this.preys[index].nickname = snap.val().nickname
+          this.preys[index].avatar = snap.val().avatar        
         }
       }).catch(err => console.log(err))
     }))
-    runInAction(() => {
-      this.preys = this.preys.peek()
-    })
+    if (this.preys.length > 0) {
+      runInAction(() => {
+        this.preys = this.preys.peek()
+      })
+    }
   }
 
   // court
