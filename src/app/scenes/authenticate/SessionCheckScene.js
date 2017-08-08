@@ -264,6 +264,13 @@ export default class SessionCheckScene extends Component {
     }    
   }
 
+  removeGoodImpressionListener = () => {
+    if (this.goodImpressionQuery) {
+      this.goodImpressionQuery.off()
+      this.goodImpressionQuery = null
+    }     
+  }
+
   //////********************//////
 
   seekMeetQs = sexualOrientation => {
