@@ -52,8 +52,8 @@ export default class DrawerScene extends Component {
     Actions.meetchance({type: 'reset'})
   }
 
-  goToMessage() {
-    //Actions.message({type: 'reset'})
+  goToLine() {
+    Actions.line({type: 'reset'})
   }
 
   goToMeetCute() {
@@ -90,7 +90,7 @@ export default class DrawerScene extends Component {
             displayNameOnPress={ this.goToAboutMe }
             meetchanceOnPress={ this.goToMeetChance }
             meetcueOnPress={ this.goToMeetCute }
-            messageOnPress={ this.goToMessage }
+            messageOnPress={ this.goToLine }
             fateOnPress={ this.goToFate }
             settingOnPress={ this.goToSetting }
           />

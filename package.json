@@ -28,6 +28,7 @@
     "react-native-elements": "^0.15.0",
     "react-native-fast-image": "1.0.0",
     "react-native-firebase": "^2.0.4",
+    "react-native-gifted-chat": "^0.2.5",
     "react-native-google-places": "kaymingmobile/react-native-google-places#patch-1",
     "react-native-image-pan-zoom": "^2.0.5",
     "react-native-image-picker": "kaymingmobile/react-native-image-picker#patch-1",
