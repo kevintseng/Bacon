@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { observer, inject } from 'mobx-react'
+import { Actions } from 'react-native-router-flux'
 
+import { calculateAge } from '../../Utils'
 import Cookie from '../../views/Cookie'
 
 const styles = {
@@ -13,19 +16,49 @@ const styles = {
   }
 }
 
-
+@inject('firebase','FateStore') @observer
 export default class GoodImpressionContainer extends Component {
 
+  constructor(props) {
+    super(props)
+    this.firebase = this.props.firebase
+    this.FateStore = this.props.FateStore
+  }
+
+  componentWillMount() {
+    this.FateStore.setGoodImpressionPreylist()
+    this.FateStore.setGoodImpressionFakePreys()
+    Actions.refresh({ key: 'Drawer', open: false })
+  }
+
+  componentDidMount() {
+    this.FateStore.setGoodImpressionRealPreys()
+  }
+
+  onPress = () => {
+    alert('轉到要不要配對')
+  }
   
   render() {
     return(
       <View>
-        <Cookie
-          name='Dora Li'
-          ages='19' 
-        >
-          <Text style={styles.child}>你們距離大約7.9公里</Text>
-        </Cookie>
+        <FlatList
+          data={ this.FateStore.goodImpressionPreys } 
+          numColumns={1}
+          renderItem={({item}) => 
+          (
+            <TouchableOpacity onPress={ this.onPress }>
+              <Cookie
+                name={ item.nickname }
+                avatar={ item.avatar }
+                age={ calculateAge(item.birthday) }
+                onPress={ this.onPress }
+              >
+                <Text style={styles.child}>你們距離大約7.9公里</Text>
+              </Cookie>
+            </TouchableOpacity>) 
+          } 
+        />
       </View>
     )
   }
