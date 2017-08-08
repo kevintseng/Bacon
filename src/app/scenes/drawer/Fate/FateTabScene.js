@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
 
-import VisitorsContainer from '../../../containers/FateTab/VisitorsContainer'
-import GoodImpressionContainer from '../../../containers/FateTab/GoodImpressionContainer'
-import MateContainer from '../../../containers/FateTab/MateContainer'
-import CollectionContainer from '../../../containers/FateTab/CollectionContainer'
+import VisitorsContainer from '../../../containers/FateTabScene/VisitorsContainer'
+import GoodImpressionContainer from '../../../containers/FateTabScene/GoodImpressionContainer'
+import MateContainer from '../../../containers/FateTabScene/MateContainer'
+import CollectionContainer from '../../../containers/FateTabScene/CollectionContainer'
 
 export default class FateTabScene extends Component {
 

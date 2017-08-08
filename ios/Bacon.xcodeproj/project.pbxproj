@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -50,7 +49,6 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		60B84A0BE6444A309DE784A4 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEED7BFC00F2423992655486 /* Entypo.ttf */; };
 		619C05EAF3E940B3B2C2FBB9 /* NotoSansUI-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0F585AC0976460FABACFA7D /* NotoSansUI-Bold.ttf */; };
-		67D88B46597F408C9D1F9DB2 /* libRNUUIDGenerator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EFE362B7F7B42C1AC92EEE9 /* libRNUUIDGenerator.a */; };
 		69989A9423394C63B61D060F /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C344FEA674B49EE930DFA6A /* MaterialIcons.ttf */; };
 		6E04C7E022344183B79597CB /* NotoSansUI-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CADB26B750C34D99A8281901 /* NotoSansUI-Regular.ttf */; };
 		773BCF9F597342C2BFCE888F /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C35C57CC1B194418ADBD90AB /* libRNGooglePlaces.a */; };
@@ -208,13 +206,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNGooglePlaces;
-		};
-		34FAA6071F31BCE200F083B6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9F9DC93EB2D847D9919C84D4 /* RNUUIDGenerator.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNUUIDGenerator;
 		};
 		34FAA60D1F31BCE200F083B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -399,11 +390,9 @@
 		8940794891684D83BC275067 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		8C344FEA674B49EE930DFA6A /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		8E32424F366042A07565F9A1 /* Pods-BaconTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaconTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BaconTests/Pods-BaconTests.debug.xcconfig"; sourceTree = "<group>"; };
-		8EFE362B7F7B42C1AC92EEE9 /* libRNUUIDGenerator.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNUUIDGenerator.a; sourceTree = "<group>"; };
 		9033E29BA03C4C3CBF5D517F /* RNGooglePlaces.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGooglePlaces.xcodeproj; path = "../node_modules/react-native-google-places/ios/RNGooglePlaces.xcodeproj"; sourceTree = "<group>"; };
 		966EEDF3903145CDB82AA19F /* NotoSansUI-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansUI-Italic.ttf"; path = "../src/fonts/NotoSansUI-Italic.ttf"; sourceTree = "<group>"; };
 		9788F630E6E948AF89E34A5C /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		9F9DC93EB2D847D9919C84D4 /* RNUUIDGenerator.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNUUIDGenerator.xcodeproj; path = "../node_modules/react-native-uuid-generator/ios/RNUUIDGenerator.xcodeproj"; sourceTree = "<group>"; };
 		A01B7ACA4B5C9C7F2F8DF6EA /* Pods-Bacon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bacon.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bacon/Pods-Bacon.release.xcconfig"; sourceTree = "<group>"; };
 		A2F57C13FF944DB4A2965488 /* NotoSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSans-BoldItalic.ttf"; path = "../src/fonts/NotoSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		A4166808C9114C89BB5328A3 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
@@ -451,7 +440,6 @@
 				3BB69BC08AA44609A4803F19 /* libRCTImageResizer.a in Frameworks */,
 				1EEE82AC3F8A8E9A2EAE4FF2 /* libPods-Bacon.a in Frameworks */,
 				ACB6A29C9F91484EB1736C24 /* libInAppUtils.a in Frameworks */,
-				67D88B46597F408C9D1F9DB2 /* libRNUUIDGenerator.a in Frameworks */,
 				78AB4C0F20F045C4AC4266A3 /* libRNFirebase.a in Frameworks */,
 				9EC53051B16343B282A5E5BF /* libBVLinearGradient.a in Frameworks */,
 				3ECD7006242D4CC1A52F27FE /* libRNVectorIcons.a in Frameworks */,
@@ -643,14 +631,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		34FAA5E51F31BCE200F083B6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				34FAA6081F31BCE200F083B6 /* libRNUUIDGenerator.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		34FAA6091F31BCE200F083B6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -695,7 +675,6 @@
 				A4166808C9114C89BB5328A3 /* RNImagePicker.xcodeproj */,
 				230034E5355243ADA1A20B77 /* RCTImageResizer.xcodeproj */,
 				6DE2C63CA72B408EAC7C091A /* InAppUtils.xcodeproj */,
-				9F9DC93EB2D847D9919C84D4 /* RNUUIDGenerator.xcodeproj */,
 				482D8E96FC0F4EA8913398BD /* RNFirebase.xcodeproj */,
 				3FA69EF6C1B24EE3BC5707E4 /* BVLinearGradient.xcodeproj */,
 				BB69968C62864AFB9194C0CF /* RNVectorIcons.xcodeproj */,
@@ -977,10 +956,6 @@
 					ProjectRef = A4166808C9114C89BB5328A3 /* RNImagePicker.xcodeproj */;
 				},
 				{
-					ProductGroup = 34FAA5E51F31BCE200F083B6 /* Products */;
-					ProjectRef = 9F9DC93EB2D847D9919C84D4 /* RNUUIDGenerator.xcodeproj */;
-				},
-				{
 					ProductGroup = 34BBD1631F33063500A472F6 /* Products */;
 					ProjectRef = BB69968C62864AFB9194C0CF /* RNVectorIcons.xcodeproj */;
 				},
@@ -1120,13 +1095,6 @@
 			fileType = archive.ar;
 			path = libRNGooglePlaces.a;
 			remoteRef = 34BBD1701F33063500A472F6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		34FAA6081F31BCE200F083B6 /* libRNUUIDGenerator.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNUUIDGenerator.a;
-			remoteRef = 34FAA6071F31BCE200F083B6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		34FAA60E1F31BCE200F083B6 /* libInAppUtils.a */ = {
@@ -1560,7 +1528,6 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
-					"$(SRCROOT)/../node_modules/react-native-uuid-generator/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1571,11 +1538,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1597,7 +1559,6 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
-					"$(SRCROOT)/../node_modules/react-native-uuid-generator/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1608,11 +1569,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1635,7 +1591,6 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
-					"$(SRCROOT)/../node_modules/react-native-uuid-generator/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1664,7 +1619,6 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
-					"$(SRCROOT)/../node_modules/react-native-uuid-generator/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1699,7 +1653,6 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
-					"$(SRCROOT)/../node_modules/react-native-uuid-generator/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1709,11 +1662,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1744,7 +1692,6 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
-					"$(SRCROOT)/../node_modules/react-native-uuid-generator/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1754,11 +1701,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1788,11 +1730,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Bacon-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1818,11 +1755,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Bacon-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

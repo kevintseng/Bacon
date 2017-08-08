@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
-import AboutContainer from '../../../containers/SettingIndex/AboutContainer'
-import AccountContainer from '../../../containers/SettingIndex/AccountContainer'
-import RemindContainer from '../../../containers/SettingIndex/RemindContainer'
-import HideContainer from '../../../containers/SettingIndex/HideContainer'
+import AboutContainer from '../../../containers/SettingIndexScene/AboutContainer'
+import AccountContainer from '../../../containers/SettingIndexScene/AccountContainer'
+import RemindContainer from '../../../containers/SettingIndexScene/RemindContainer'
+import HideContainer from '../../../containers/SettingIndexScene/HideContainer'
 
 import Knife from '../../../views/Knife/Knife'
 

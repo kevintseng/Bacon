@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { View,Text, BackHandler, ToastAndroid } from 'react-native'
 import { Actions } from 'react-native-router-flux'
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
 
-//import BlankButton from '../../../views/BlankButton/BlankButton'
-//import Knife from '../../../views/Knife/Knife'
-
+import TaskContainer from '../../../containers/NotificationScene/TaskContainer'
+import BulletinContainer from '../../../containers/NotificationScene/BulletinContainer'
 
 const styles = {
   text: {
@@ -22,7 +22,7 @@ export default class NotificationScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    Actions.refresh({ key: 'Drawer', open: false })
+    //Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentWillUnmount(){
@@ -36,9 +36,20 @@ export default class NotificationScene extends Component {
 
   render() {
     return(
-      <View style={{flex: 1, alignItems: 'center'}}>
-        <Text>NotificationScene</Text>
-      </View>
+      <ScrollableTabView
+        initialPage = {0}
+        tabBarPosition='top'
+        renderTabBar={() => <ScrollableTabBar />}
+        tabBarUnderlineStyle={{ backgroundColor: '#d63768' }}
+        tabBarBackgroundColor='white'
+        tabBarActiveTextColor='#d63768'
+        tabBarInactiveTextColor='#606060'
+        //onChangeTab={}
+        ref={ (tabView) => { this.tabView = tabView } }
+        >
+        <TaskContainer label='Visitors' tabLabel='任務' />
+        <BulletinContainer label='GoodImpression' tabLabel='公告' />
+      </ScrollableTabView>
     )
   }
 }

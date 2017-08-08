@@ -50,7 +50,7 @@ import UpgradeFourScene from './scenes/drawer/Upgrade/UpgradeFourScene'
 import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
 import BonusTwoScene from './scenes/drawer/Bonus/BonusTwoScene'
 
-import NotificationScene from './scenes/drawer/notification/NotificationScene'
+import NotificationScene from './scenes/drawer/Notification/NotificationScene'
 // ###############drawer################ //
 
 // ###############header components################ //
