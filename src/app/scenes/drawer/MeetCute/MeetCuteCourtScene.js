@@ -1,14 +1,29 @@
 import React, { Component } from 'react'
-import { View, Text, ActivityIndicator, Button, ScrollView, Dimensions } from 'react-native'
+import { View, Text, ActivityIndicator, Button, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import * as Animatable from 'react-native-animatable'
+import LinearGradient from 'react-native-linear-gradient'
 
 import CourtContainer from '../../../containers/MeetCuteCourtScene/CourtContainer'
 import InfosContainer from '../../../containers/MeetCuteCourtScene/InfosContainer'
 
 const { width, height } = Dimensions.get('window')
 
+const colors = ['#f4a764', '#d63768']
+
+const styles = {
+  animation: {
+    textAlign: 'center',
+    backgroundColor: 'transparent',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    fontSize: 20,
+    fontWeight: '500',
+    color: '#606060',
+    textAlign: 'center'    
+  }
+}
 @inject('firebase','SubjectStore','MeetCuteStore') @observer
 export default class MeetCuteCourtScene extends Component {
 
@@ -55,10 +70,16 @@ export default class MeetCuteCourtScene extends Component {
           <View style={{flex: 1,justifyContent: 'space-between'}}>
             <View></View>
             <View>
-              <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={{ textAlign: 'center'}} >搜尋邂逅名單中</Animatable.Text>
+              <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={styles.animation} >搜尋邂逅名單中</Animatable.Text>
               <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>❤️</Animatable.Text>
             </View>
-            <Button color='#f4a764' title='清除邂逅紀錄' onPress={ this.cleanHistory }/>
+            <TouchableOpacity onPress={ this.cleanHistory } >
+              <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>
+                <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
+                  <Text style={ styles.text }>清除邂逅紀錄</Text>
+                </View>
+              </LinearGradient>  
+            </TouchableOpacity>           
           </View>
         }
         { this.MeetCuteStore.haveNewPreys && this.MeetCuteStore.loading && 
