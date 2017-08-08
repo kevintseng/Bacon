@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Dimensions, Image, View, Text, TouchableOpacity } from 'react-native'
 import { inject, observer } from 'mobx-react'
+import FastImage from 'react-native-fast-image'
 import ImageZoom from 'react-native-image-pan-zoom'
 
 const { width, height } = Dimensions.get('window')
@@ -16,7 +17,7 @@ export default class CourtContainer extends Component {
   render() {
     return(
     <View>
-      <Image style={{width, height: width}} source={{uri: this.SubjectStore.avatar}}/>
+      <FastImage style={{width, height: width}} source={{uri: this.SubjectStore.avatar}}/>
     </View>
     )
   }

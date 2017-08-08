@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Dimensions, Image, Modal, View, Text, TouchableOpacity } from 'react-native'
 import Carousel from 'react-native-looped-carousel'
 import ImageZoom from 'react-native-image-pan-zoom'
+import FastImage from 'react-native-fast-image'
 import Infos from './Infos/Infos'
 
 const { width, height } = Dimensions.get('window')
@@ -44,14 +45,14 @@ export default class Court extends Component {
   renderAlbum = (album) => (
     album.map( photo => (
       <TouchableOpacity activeOpacity={1} key={photo} onPress={this.props.openAlbum}>
-        <Image style={{height: width, width}}  source={{uri: photo}}/>
+        <FastImage style={{height: width, width}}  source={{uri: photo}}/>
       </TouchableOpacity>
     ))
   )
 
 
   renderOnePhoto = () => (
-    <Image style={{height: width, width}}  source={{uri: 'http://4.bp.blogspot.com/-47BymmC5PqE/U2quRGlwXwI/AAAAAAAAANk/M7D1aUFk-Jo/s1600/Question+Mark.jpg'}}/>
+    <FastImage style={{height: width, width}}  source={{uri: 'http://4.bp.blogspot.com/-47BymmC5PqE/U2quRGlwXwI/AAAAAAAAANk/M7D1aUFk-Jo/s1600/Question+Mark.jpg'}}/>
   )
 
   render() {
