@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ActivityIndicator, Button, ScrollView, Dimensions } from 'react-native'
+import { View, Text, ActivityIndicator, Button, ScrollView, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
@@ -19,11 +19,12 @@ export default class MeetCuteCourtScene extends Component {
   }
 
   componentWillMount() {
+    this.MeetCuteStore.noHaveNewPreys()
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {
-    this.MeetCuteStore.pickOnePrey()    
+    this.MeetCuteStore.setPreyList()    
   }
 
   cleanHistory = () => {
@@ -43,17 +44,22 @@ export default class MeetCuteCourtScene extends Component {
         size="large"
         color='#d63768'
       />
-      <Button color='#f4a764' style={{position: 'absolute', bottom: 0}} title='清除邂逅紀錄' onPress={ this.cleanHistory }/>
     </View>
   )
 
   render() {
     return(
       <View style={{flex: 1}}>  
-        { this.MeetCuteStore.loading && 
+        { !this.MeetCuteStore.haveNewPreys &&
+          <View style={{flex: 1,justifyContent: 'space-between'}}>
+            <Text>沒人了搜尋邂逅名單中</Text>
+            <Button color='#f4a764' title='清除邂逅紀錄' onPress={ this.cleanHistory }/>
+          </View>
+        }
+        { this.MeetCuteStore.haveNewPreys && this.MeetCuteStore.loading && 
           this.indicator() 
         }
-        { !this.MeetCuteStore.loading && 
+        { this.MeetCuteStore.haveNewPreys && !this.MeetCuteStore.loading &&
           <View style={{flex: 1}}>
             <ScrollView style={{flex: 1}}>
               <CourtContainer/>
@@ -61,7 +67,6 @@ export default class MeetCuteCourtScene extends Component {
                 <InfosContainer/>  
               </View>
             </ScrollView>
-            <Button color='#f4a764' style={{position: 'absolute', bottom: 0}} title='清除邂逅紀錄' onPress={ this.cleanHistory }/>
           </View>
         }
       </View>

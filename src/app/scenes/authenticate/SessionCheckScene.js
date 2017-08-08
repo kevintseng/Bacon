@@ -202,7 +202,6 @@ export default class SessionCheckScene extends Component {
 
   meetChanceListener = (geoQuery) => {
     geoQuery.on('key_entered', (uid, location, distance) => {
-      //
       if (!(uid === this.SubjectStore.uid)) {
         this.MeetChanceStore.addPreyToPool({uid: uid, distance: distance})
       }
@@ -275,7 +274,11 @@ export default class SessionCheckScene extends Component {
     this.meetCuteQuery = this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation)
     this.meetCuteQuery.on('value', snap => {
       snap.forEach( childsnap => {
-        this.MeetCuteStore.addPreyToPool(childsnap.key)
+        if (childsnap.val().hideMeetChance || childsnap.val().deleted) {
+          // 隱身了 或 帳號刪除了
+        } else {
+          this.MeetCuteStore.addPreyToPool(childsnap.key)
+        }
       })
     })
   }
