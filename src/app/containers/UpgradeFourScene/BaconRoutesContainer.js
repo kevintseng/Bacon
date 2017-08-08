@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
+import InAppBilling from 'react-native-billing'
 
 import BaconRoutes from '../../views/BaconRoutes/BaconRoutes'
 
@@ -9,15 +10,32 @@ export default class BaconRoutesContainer extends Component {
     super(props)
   }
   
-  buttonOnPress = () => {
-    //Actions.UpgradeThree()
+  pay = async () => {
+    const productId = 'android.test.purchased'
+    await InAppBilling.close()
+    try {
+      await InAppBilling.open()
+      if (!await InAppBilling.isPurchased(productId)) {
+        const details = await InAppBilling.purchase(productId)
+        //console.log('You purchased: ', details);
+      }
+      const transactionStatus = await InAppBilling.getPurchaseTransactionDetails(productId)
+      //console.log('Transaction Status', transactionStatus);
+      const productDetails = await InAppBilling.getProductDetails(productId)
+      //console.log(productDetails);
+    } catch (err) {
+      console.warn(err)
+    } finally {
+      await InAppBilling.consumePurchase(productId)
+      await InAppBilling.close()
+    }
   }
 
   render() {
     return(
       <BaconRoutes
-        routesText='下一步'
-        routesOnPress={ this.buttonOnPress } 
+        routesText='付款'
+        routesOnPress={ this.pay } 
       />
     )
   }

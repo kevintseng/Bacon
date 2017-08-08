@@ -1,7 +1,7 @@
 package com.kayming.android.bacon;
 
 import android.app.Application;
-
+import com.idehub.Billing.InAppBillingBridgePackage;
 import com.facebook.react.ReactApplication;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
@@ -32,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new InAppBillingBridgePackage(),
             new FastImageViewPackage(),
             new RNGooglePlacesPackage(),
             new LinearGradientPackage(),
