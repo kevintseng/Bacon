@@ -1,6 +1,7 @@
 package com.kayming.android.bacon;
 
 import android.app.Application;
+import com.horcrux.svg.SvgPackage;
 import com.idehub.Billing.InAppBillingBridgePackage;
 import com.facebook.react.ReactApplication;
 import com.dylanvann.fastimage.FastImageViewPackage;
@@ -32,6 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SvgPackage(),
             new InAppBillingBridgePackage(),
             new FastImageViewPackage(),
             new RNGooglePlacesPackage(),
