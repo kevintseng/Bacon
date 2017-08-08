@@ -26,13 +26,13 @@ export default class VisitorsContainer extends Component {
   }
 
   componentWillMount() {
-    this.FateStore.setPreyList()
-    this.FateStore.setFakePreys()
+    this.FateStore.setVisitorsPreylist()
+    this.FateStore.setVisitorsFakePreys()
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {
-    this.FateStore.setRealPreys()
+    this.FateStore.setVisitorsRealPreys()
   }
 
   onPress = () => {
@@ -43,7 +43,7 @@ export default class VisitorsContainer extends Component {
     return(
       <View>
         <FlatList
-          data={ this.FateStore.preys } 
+          data={ this.FateStore.visitorsPreys } 
           numColumns={1}
           renderItem={({item}) => 
           (

@@ -37,6 +37,7 @@ export default class SessionCheckScene extends Component {
     this.geoFire = null
     this.meetCuteQuery = null
     this.visitorsQuery = null
+    this.goodImpressionQuery = null
   }
 
   componentWillMount() {
@@ -51,6 +52,7 @@ export default class SessionCheckScene extends Component {
           this.uploadSignUpData() // 非同步上傳註冊資料  
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
+          this.goodImpressionListener() // 好感監聽
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           // 同步
@@ -61,6 +63,7 @@ export default class SessionCheckScene extends Component {
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
+          this.goodImpressionListener() // 好感監聽
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           // 同步
@@ -74,6 +77,7 @@ export default class SessionCheckScene extends Component {
         this.removeMeetChanceListener() // 非同步移除地理監聽
         this.removeMeetCuteListener() // 移除邂逅監聽
         this.removeVisitorsListener() // 移除邂逅監聽
+        this.removeGoodImpressionListener() // 移除好感監聽
         this.SignUpStore.initialize() // 初始註冊入狀態
         this.SignInStore.initialize() // 初始化登入狀態
         this.SubjectStore.initialize() // 初始主體入狀態
@@ -225,6 +229,15 @@ export default class SessionCheckScene extends Component {
     this.visitorsQuery.on('value', snap => {
       snap.forEach( childsnap => {
         this.FateStore.addPreyToVisitorsPool(childsnap.val().wooer,childsnap.val().time)
+      })
+    })
+  }
+
+  goodImpressionListener = () => {
+    this.goodImpressionQuery = this.firebase.database().ref('goodImpression').orderByChild('prey').equalTo(this.SubjectStore.uid)
+    this.goodImpressionQuery.on('value', snap => {
+      snap.forEach( childsnap => {
+        this.FateStore.addPreyToGoodImpressionPool(childsnap.val().wooer,childsnap.val().time)
       })
     })
   }
