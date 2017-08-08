@@ -48,7 +48,7 @@ export default class CollectionContainer extends Component {
   }
 
   onPress = () => {
-    alert('轉到管理收藏')
+    Actions.MeetChanceCourt()
   }
 
   goToUpgradeMember = () => {
