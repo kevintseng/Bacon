@@ -76,7 +76,7 @@ export default class MeetCuteCourtScene extends Component {
             <TouchableOpacity onPress={ this.cleanHistory } >
               <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>
                 <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
-                  <Text style={ styles.text }>清除邂逅紀錄</Text>
+                  <Text style={ styles.text }>清除邂逅歷史紀錄</Text>
                 </View>
               </LinearGradient>  
             </TouchableOpacity>           
