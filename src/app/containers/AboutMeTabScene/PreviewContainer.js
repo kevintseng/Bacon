@@ -5,10 +5,11 @@ import { observer, inject } from 'mobx-react'
 
 import CourtContainer from './CourtContainer'
 import InfosContainer from './InfosContainer'
+import PreviewBadgeWallContainer from './PreviewBadgeWallContainer'
 
 const { width, height } = Dimensions.get('window')
 
-@inject("firebase","SubjectStore") @observer
+@inject('firebase','SubjectStore') @observer
 export default class PreviewContainer extends Component {
 
   constructor(props) {
@@ -22,9 +23,10 @@ export default class PreviewContainer extends Component {
       <View style={{flex: 1}}>  
         <ScrollView style={{flex: 1}}>
           <CourtContainer/>
-            <View style={{alignSelf: 'center',paddingTop: 10}}>
-              <InfosContainer/>  
-            </View>
+          <View style={{alignSelf: 'center',paddingTop: 10}}>
+            <InfosContainer/>  
+          </View>
+          <PreviewBadgeWallContainer/> 
           </ScrollView>
       </View>
     )

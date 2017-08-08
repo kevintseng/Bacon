@@ -26,7 +26,7 @@ const styles = {
 }
 
 @inject('SubjectStore') @observer
-export default class BadgeWallContainer extends Component {
+export default class ProfileBadgeWallContainer extends Component {
 
   constructor(props) {
     super(props)

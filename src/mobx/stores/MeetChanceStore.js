@@ -39,6 +39,11 @@ export default class MeetChanceStore {
     return Object.keys(this.album).map((key) => (this.album[key]))
   }
 
+  @computed get hobbiesToFlatList() {
+    return Object.keys(this.hobbies).map((key,index) => ({ key: key, check: this.hobbies[key] }))
+    // { 打球: true } -> [{key: 打球, check: true}]
+  }
+
   @action initialize = () => {
     this.pool = new Array
     this.preyList = new Array

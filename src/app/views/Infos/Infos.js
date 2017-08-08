@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 
 
 const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance}) => (
-  <View style={{flex: 1}}>
+  <View>
     <View style={{flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
       <Image style={{marginRight: 5}} source={verityEmail ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
       <Image style={{marginRight: 5}} source={verityPhoto ? require('./img/ico_meet_picture_1.png') : require('./img/ico_aboutme_picture_0.png')}/>
