@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, FlatList, Dimensions, TouchableOpacity, Button, View, Modal, Text } from 'react-native'
 import ImageZoom from 'react-native-image-pan-zoom'
 import LinearGradient from 'react-native-linear-gradient'
+import FastImage from 'react-native-fast-image'
 
 const { width, height } = Dimensions.get('window')
 
@@ -29,7 +30,7 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, v
             imageWidth={width}
             imageHeight={height}
           >
-            <Image style={{height, width}} resizeMode={'contain'} source={{uri: source}}/>
+            <FastImage style={{height, width}} resizeMode={'contain'} source={{uri: source}}/>
           </ImageZoom>
           <View style={{width,position: 'absolute', bottom: 0, flexDirection: 'row', justifyContent: 'space-between'}}>
             <TouchableOpacity style={{padding: 20}} onPress={ onPressLeftButton }>
@@ -49,7 +50,7 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, v
         numColumns={3}
         renderItem={({item}) => (
         <TouchableOpacity onPress={ () => { photoOnPress(item.key) } } onLongPress={ photoOnLongPress } >
-          <Image style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
+          <FastImage style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
         </TouchableOpacity>
         )} 
       />
