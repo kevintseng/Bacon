@@ -36,6 +36,11 @@ export default class MeetCuteStore {
     return Object.keys(this.album).map((key) => (this.album[key]))
   }
 
+  @computed get hobbiesToFlatList() {
+    return Object.keys(this.hobbies).map((key,index) => ({ key: key, check: this.hobbies[key] }))
+    // { 打球: true } -> [{key: 打球, check: true}]
+  }
+
   @action initialize = () => {
     this.pool = new Array
     this.preyList = new Array
@@ -61,11 +66,6 @@ export default class MeetCuteStore {
     this.pool.push(prey)
   }
 
-  @action noHaveNewPreys = () => {
-    //this.preyList = new Array
-    this.haveNewPreys = false
-  }
-
   @action setPreyList = async () => {
     while (this.haveNewPreys === false) {
       if ((this.poolLastLenght !== this.pool.length) || (this.clean === true)) {
@@ -83,8 +83,8 @@ export default class MeetCuteStore {
   }
 
   @action setFirstPrey = async () => {
+    //console.warn(this.preyList.length)
     this.uid = this.preyList[0]
-    this.preyListHistory.push(this.uid)
     await this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
       if (snap.val()) {
         runInAction(() => {
@@ -108,10 +108,10 @@ export default class MeetCuteStore {
   }
 
   @action pickNextPrey = async () => {
+    this.preyListHistory.push(this.uid)
     const index = this.preyList.indexOf(this.uid) + 1
     if (index === this.preyList.length) {
-      // 沒人了
-      this.noHaveNewPreys()
+      this.haveNewPreys = false       // 沒人了
       this.setPreyList()
     } else {
       this.uid = this.preyList[index]

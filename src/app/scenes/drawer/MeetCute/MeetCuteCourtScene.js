@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import CourtContainer from '../../../containers/MeetCuteCourtScene/CourtContainer'
 import InfosContainer from '../../../containers/MeetCuteCourtScene/InfosContainer'
+import BadgeWallContainer from '../../../containers/MeetCuteCourtScene/BadgeWallContainer'
 
 const { width, height } = Dimensions.get('window')
 
@@ -35,7 +36,7 @@ export default class MeetCuteCourtScene extends Component {
   }
 
   componentWillMount() {
-    this.MeetCuteStore.noHaveNewPreys()
+    //this.MeetCuteStore.noHaveNewPreys()
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
@@ -90,7 +91,8 @@ export default class MeetCuteCourtScene extends Component {
             <ScrollView style={{flex: 1}}>
               <CourtContainer/>
               <View style={{alignSelf: 'center',paddingTop: 40}}>
-                <InfosContainer/>  
+                <InfosContainer/> 
+                <BadgeWallContainer/> 
               </View>
             </ScrollView>
           </View>
