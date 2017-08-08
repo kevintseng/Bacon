@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
+import FastImage from 'react-native-fast-image'
 
 const { width } = Dimensions.get('window')
 
