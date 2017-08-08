@@ -59,7 +59,7 @@ export default class SignUpStore {
   }
 
   @action setAddress = str => {
-    this.address = str
+    this.address = str.substring(0,11)
   }
 
   @action setEmail = str => {
