@@ -104,7 +104,7 @@ export default class MeetCuteStore {
 
   @action pickNextPrey = () => {
     const index = this.preyList.indexOf(this.uid) + 1
-    if (index === 0) {
+    if (index === this.preyList.length) {
       // 沒人了
       this.noHaveNewPreys()
       this.setPreyList()

@@ -70,6 +70,7 @@ export default class Court extends Component {
             autoplay={false}
             pageInfoTextStyle={{color: 'red'}}
             onAnimateNextPage={(p) => console.log(p)}
+            bulletsStyle={{position: 'absolute',bottom: 10}}
             >
             { album.length > 0 ? this.renderAlbumZoom(album) : this.renderOnePhotoZoom() }
           </Carousel>
@@ -87,7 +88,7 @@ export default class Court extends Component {
           pageInfoTextStyle={{color: 'red'}}
           onAnimateNextPage={(p) => console.log(p)}
           bulletsContainerPosition={{ top: 5, left: width/5*4 }}
-          //bulletsContainerStyle={{backgroundColor: 'red'}}
+          bulletsStyle={{position: 'absolute',top: 10}}
         >
           { album.length > 0 ? this.renderAlbum(album) : this.renderOnePhoto() }
         </Carousel>
