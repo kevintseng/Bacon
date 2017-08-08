@@ -158,7 +158,6 @@ dependencies {
     compile ('com.google.android.gms:play-services-location:11.0.4') {
       force = true
     }
-    compile project(':react-native-uuid-generator')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-image-resizer')
     compile project(':react-native-image-picker')

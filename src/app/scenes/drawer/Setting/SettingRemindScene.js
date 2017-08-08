@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { View, Text, BackHandler, ToastAndroid } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
-import PromptContainer from '../../../containers/SettingRemind/PromptContainer'
-import ShakeContainer from '../../../containers/SettingRemind/ShakeContainer'
+import PromptContainer from '../../../containers/SettingRemindScene/PromptContainer'
+import ShakeContainer from '../../../containers/SettingRemindScene/ShakeContainer'
 import Knife from '../../../views/Knife/Knife'
 
 const styles = {
@@ -21,7 +21,7 @@ export default class SettingRemindScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    Actions.refresh({ key: 'Drawer', open: false })
+    //Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentWillUnmount(){
