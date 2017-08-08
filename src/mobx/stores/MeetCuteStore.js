@@ -69,6 +69,7 @@ export default class MeetCuteStore {
   @action setPreyList = async () => {
     while (this.haveNewPreys === false) {
       if ((this.poolLastLenght !== this.pool.length) || (this.clean === true)) {
+        this.clean === false
         this.preyList = _.cloneDeep(this.pool)
         this.preyList = this.preyList.filter(ele => !(this.preyListHistory.includes(ele))) // 排除 45 天
         this.shuffle(this.preyList)
@@ -76,7 +77,6 @@ export default class MeetCuteStore {
           this.setFirstPrey()
           break
         }
-        this.clean === false
       }
       await this.sleep(300)
     }
