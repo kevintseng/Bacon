@@ -80,7 +80,9 @@ export default class MeetChanceStore {
     this.preyList.sort((a, b) => {
       return a.distance > b.distance ? 1 : -1
     }) 
-    this.preyList.length = this.preyList.length - this.preyList.length % 3
+    if (this.preyList.length > 9) {
+      this.preyList.length = this.preyList.length - this.preyList.length % 3
+    }
   }
 
   @action setFakePreys = () => {
