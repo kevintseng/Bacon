@@ -17,7 +17,12 @@ export default class CourtContainer extends Component {
   render() {
     return(
     <View>
-      <FastImage style={{width, height: width}} source={{uri: this.SubjectStore.avatar}}/>
+      <FastImage 
+        style={{width, height: width}} 
+        source={{uri: this.SubjectStore.avatar}}
+        onLoadStart={ () => (alert('開始載入'))}
+        onLoadEnd={ () => (alert('完成載入')) }
+        />
     </View>
     )
   }
