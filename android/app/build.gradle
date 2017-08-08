@@ -145,6 +145,7 @@ android {
 
 
 dependencies {
+    compile project(':react-native-fast-image')
     compile project(':react-native-google-places')
     compile ('com.google.android.gms:play-services-base:11.0.4') {
       force = true
