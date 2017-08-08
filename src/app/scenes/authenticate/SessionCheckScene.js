@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
-import UUIDGenerator from 'react-native-uuid-generator'
+//import UUIDGenerator from 'react-native-uuid-generator'
 
 import Loading from '../../views/Loading/Loading'
 
