@@ -16,7 +16,7 @@ export default class CourtContainer extends Component {
   render() {
     return(
     <View>
-      <Image style={{width, height: width, borderRadius: 10}} source={{uri: this.SubjectStore.avatar}}/>
+      <Image style={{width, height: width}} source={{uri: this.SubjectStore.avatar}}/>
     </View>
     )
   }
