@@ -18,6 +18,9 @@ export default class MeetCuteStore {
   @observable vip
   @observable emailVerified
   @observable photoVerified
+  // config
+  //@observable meetCuteMinAge
+  //@observable meetCuteMaxAge  
 
   constructor(firebase) {
     this.firebase = firebase
@@ -49,6 +52,7 @@ export default class MeetCuteStore {
     this.loading = false
     this.poolLastLenght = 0
     this.clean = false
+    this.index = 0
     // user data
     this.uid = null
     this.nickname = null
@@ -60,18 +64,23 @@ export default class MeetCuteStore {
     this.vip = false
     this.emailVerified = false
     this.photoVerified = false
+    // config
+    this.meetCuteMinAge = 18
+    this.meetCuteMaxAge = 99
   }
 
-  @action addPreyToPool = prey => {
-    this.pool.push(prey)
+  @action addPreyToPool = (uid,birthday) => {
+    this.pool.push({uid: uid, birthday: birthday})
   }
 
   @action setPreyList = async () => {
     while (this.haveNewPreys === false) {
       if ((this.poolLastLenght !== this.pool.length) || (this.clean === true)) {
+        this.poolLastLenght = this.pool.length
         this.clean === false
         this.preyList = _.cloneDeep(this.pool)
-        this.preyList = this.preyList.filter(ele => !(this.preyListHistory.includes(ele))) // 排除 45 天
+        this.preyList = this.preyList.filter(ele => !(this.preyListHistory.includes(ele.uid))) // 排除 45 天
+        this.preyList = this.preyList.filter(ele => ( (calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= this.meetCuteMaxAge) ) ) // 過濾年紀
         this.shuffle(this.preyList)
         if (this.preyList.length > 0) {
           this.setFirstPrey()
@@ -83,9 +92,10 @@ export default class MeetCuteStore {
   }
 
   @action setFirstPrey = async () => {
-    //console.warn(this.preyList.length)
-    this.uid = this.preyList[0]
-    await this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
+    await this.sleep(300)
+    this.index = 0
+    this.uid = this.preyList[this.index].uid
+    await this.firebase.database().ref('users/' + this.uid).once('value', snap => {
       if (snap.val()) {
         runInAction(() => {
           this.nickname = snap.val().nickname
@@ -109,12 +119,12 @@ export default class MeetCuteStore {
 
   @action pickNextPrey = async () => {
     this.preyListHistory.push(this.uid)
-    const index = this.preyList.indexOf(this.uid) + 1
-    if (index === this.preyList.length) {
-      this.haveNewPreys = false       // 沒人了
+    this.index = this.index + 1
+    if (this.index === this.preyList.length) {
+      this.haveNewPreys = false // 沒人了
       this.setPreyList()
     } else {
-      this.uid = this.preyList[index]
+      this.uid = this.preyList[this.index].uid
       this.preyListHistory.push(this.uid)
       this.fetchPrey()
     }
@@ -138,7 +148,7 @@ export default class MeetCuteStore {
           this.photoVerified = Boolean(snap.val().photoVerified)
         })
       } else {
-        alert('error')
+        alert('發生錯誤')
         //this.initializeCourt()
       }
     })
@@ -149,8 +159,25 @@ export default class MeetCuteStore {
   }
 
   @action cleanHistory = () => {
-    this.preyListHistory = new Array
+    if (this.preyListHistory.length > 0) {
+      this.preyListHistory = new Array
+      this.clean = true
+    }
+  }
+
+  @action resetAge = () => {
     this.clean = true
+    this.haveNewPreys = false
+    this.setPreyList()
+  }
+
+
+  @action setMeetCuteMinAge = int => {
+    this.meetCuteMinAge = int
+  }
+
+  @action setMeetCuteMaxAge = int => {
+    this.meetCuteMaxAge = int
   }
 
   shuffle = o => {
