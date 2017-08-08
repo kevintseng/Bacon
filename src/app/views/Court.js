@@ -75,8 +75,8 @@ export default class Court extends Component {
             { album.length > 0 ? this.renderAlbumZoom(album) : this.renderOnePhotoZoom() }
           </Carousel>
           <View style={{width, position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
-            <View ><Text onPress={ closeAlbum } style={{color:'white',fontFamily: 'NotoSans'}}>返回</Text></View>
-            <View ><Text onPress={ this.nextphoto } style={{color:'white',fontFamily: 'NotoSans'}}>下一張</Text></View>
+            <View ><Text onPress={ closeAlbum } style={{color:'white',fontFamily: 'NotoSans',backgroundColor: 'transparent'}}>返回</Text></View>
+            <View ><Text onPress={ this.nextphoto } style={{color:'white',fontFamily: 'NotoSans',backgroundColor: 'transparent'}}>下一張</Text></View>
           </View>
         </Modal>
  

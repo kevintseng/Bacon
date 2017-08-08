@@ -53,17 +53,17 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
           <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={ displayNameOnPress }>
             <Text style={{textAlign: 'center',color: '#606060',fontWeight: 'normal'}}>{ displayName }</Text>
           </TouchableOpacity>
-          <View style={{width: 40 }}>
+          <View style={{width: 40, opacity: 0 }}>
             <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
           </View>
         </View>
 
         <View style={{marginTop: 30}}>
-          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='巧遇' showBadge badgeCount={120} listOnPress={ meetchanceOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
         </View>
       
         <View style={{marginTop: 20}}>
-          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='邂逅' listOnPress={ meetcueOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='邂逅' showBadge={false} listOnPress={ meetcueOnPress }/>
         </View>
 
         <View style={{marginTop: 20}}>
