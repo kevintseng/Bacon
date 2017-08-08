@@ -23,6 +23,14 @@ const styles = {
     fontWeight: '500',
     color: '#606060',
     textAlign: 'center'    
+  },
+  text: {
+    backgroundColor: 'transparent',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    fontSize: 14,
+    //fontWeight: '500',
+    color: '#606060',    
   }
 }
 @inject('firebase','SubjectStore','MeetCuteStore') @observer
@@ -77,7 +85,7 @@ export default class MeetCuteCourtScene extends Component {
             <TouchableOpacity onPress={ this.cleanHistory } >
               <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>
                 <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
-                  <Text style={ styles.text }>清除邂逅歷史紀錄</Text>
+                  <Text style={ styles.text }>重新來場美麗的邂逅</Text>
                 </View>
               </LinearGradient>  
             </TouchableOpacity>           
@@ -92,8 +100,8 @@ export default class MeetCuteCourtScene extends Component {
               <CourtContainer/>
               <View style={{alignSelf: 'center',paddingTop: 40}}>
                 <InfosContainer/> 
-                <BadgeWallContainer/> 
               </View>
+              <BadgeWallContainer/> 
             </ScrollView>
           </View>
         }

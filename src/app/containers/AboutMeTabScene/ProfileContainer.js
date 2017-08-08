@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react'
 
 import Profile from '../../views/Profile'
 
-import BadgeWallContainer from './BadgeWallContainer'
+import ProfileBadgeWallContainer from './ProfileBadgeWallContainer'
 
 import DisplayNameAgeContainer from '../../containers/AboutMeEditScene/DisplayNameAge/DisplayNameAgeContainer'
 import CityContainer from '../../containers/AboutMeEditScene/City/CityContainer'
@@ -90,7 +90,7 @@ export default class ProfileContainer extends Component {
           onPressQUpgrade={ this.goToQUpgrade }
           onPressEmail={ this.verificationEmail }
           />
-        <BadgeWallContainer
+        <ProfileBadgeWallContainer
           onPressInterests={ this.goToEditInterests }
         />
       </View>

@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react'
 
 import CourtContainer from '../../../containers/MeetChanceCourtScene/CourtContainer'
 import InfosContainer from '../../../containers/MeetChanceCourtScene/InfosContainer'
+import BadgeWallContainer from '../../../containers/MeetChanceCourtScene/BadgeWallContainer'
 
 const { width, height } = Dimensions.get('window')
 
@@ -66,6 +67,7 @@ export default class MeetChanceCourtScene extends Component {
               <View style={{alignSelf: 'center',paddingTop: 40}}>
                 <InfosContainer/>  
               </View>
+              <BadgeWallContainer/>
             </ScrollView>
           </View>
         }
