@@ -42,6 +42,8 @@ export default class MeetCuteStore {
     this.preyListHistory = new Array
     this.haveNewPreys = false
     this.loading = false
+    this.poolLastLenght = 0
+    this.clean = false
     // user data
     this.uid = null
     this.nickname = null
@@ -60,20 +62,23 @@ export default class MeetCuteStore {
   }
 
   @action noHaveNewPreys = () => {
-    this.preyList = new Array
+    //this.preyList = new Array
     this.haveNewPreys = false
   }
 
   @action setPreyList = async () => {
     while (this.haveNewPreys === false) {
-      this.preyList = _.cloneDeep(this.pool)
-      this.preyList = this.preyList.filter(ele => !(this.preyListHistory.includes(ele))) // 排除 45 天
-      this.shuffle(this.preyList)
-      if (this.preyList.length > 0) {
-        this.setFirstPrey()
-        break
+      if ((this.poolLastLenght !== this.pool.length) || (this.clean === true)) {
+        this.preyList = _.cloneDeep(this.pool)
+        this.preyList = this.preyList.filter(ele => !(this.preyListHistory.includes(ele))) // 排除 45 天
+        this.shuffle(this.preyList)
+        if (this.preyList.length > 0) {
+          this.setFirstPrey()
+          break
+        }
+        this.clean === false
       }
-      await this.sleep(3000)
+      await this.sleep(300)
     }
   }
 
@@ -102,7 +107,7 @@ export default class MeetCuteStore {
     })
   }
 
-  @action pickNextPrey = () => {
+  @action pickNextPrey = async () => {
     const index = this.preyList.indexOf(this.uid) + 1
     if (index === this.preyList.length) {
       // 沒人了
@@ -133,6 +138,7 @@ export default class MeetCuteStore {
           this.photoVerified = Boolean(snap.val().photoVerified)
         })
       } else {
+        alert('error')
         //this.initializeCourt()
       }
     })
@@ -144,6 +150,7 @@ export default class MeetCuteStore {
 
   @action cleanHistory = () => {
     this.preyListHistory = new Array
+    this.clean = true
   }
 
   shuffle = o => {
