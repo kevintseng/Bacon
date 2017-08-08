@@ -10,7 +10,7 @@ export default class BaconRoutesContainer extends Component {
   }
   
   buttonOnPress = () => {
-    Actions.UpgradeThree()
+    Actions.UpgradeFour()
   }
 
   render() {
