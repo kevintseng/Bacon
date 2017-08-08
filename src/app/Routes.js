@@ -51,6 +51,8 @@ import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
 import BonusTwoScene from './scenes/drawer/Bonus/BonusTwoScene'
 
 import NotificationScene from './scenes/drawer/Notification/NotificationScene'
+
+import LineScene from './scenes/drawer/Line/LineScene'
 // ###############drawer################ //
 
 // ###############header components################ //
@@ -207,6 +209,11 @@ export default class Routes extends Component {
               <Scene key='aboutme' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolAboutMe } component={ AboutMeTabScene }/>
                 <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } renderRightButton={ this.baconToolAboutMe } component={ AboutMeEditScene }/>
+              </Scene>
+
+
+              <Scene key='line' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='Line' title='訊息' renderLeftButton={ this.baconMenu } component={ LineScene }/>
               </Scene>
 
               <Scene key='notification' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
