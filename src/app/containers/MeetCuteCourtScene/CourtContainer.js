@@ -29,7 +29,7 @@ export default class CourtContainer extends Component {
   }
 
   goToNext = () => {
-    this.MeetCuteStore.pickOnePrey()
+    this.MeetCuteStore.pickNextPrey()
   }
 
   like = () => {

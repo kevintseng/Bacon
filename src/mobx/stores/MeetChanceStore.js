@@ -92,8 +92,12 @@ export default class MeetChanceStore {
     await Promise.all(this.preyList.map(async (ele,index) => {
       await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
         if (snap.val()) {
-          this.preys[index].nickname = snap.val().nickname
-          this.preys[index].avatar = snap.val().avatar        
+          if (snap.val().hideMeetChance || snap.val().deleted) {
+            this.preys.splice(index, 1) // 隱身了 或 帳號刪除了
+          } else {
+            this.preys[index].nickname = snap.val().nickname
+            this.preys[index].avatar = snap.val().avatar  
+          }      
         }
       }).catch(err => console.log(err))
     }))
