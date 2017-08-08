@@ -4,8 +4,8 @@ import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
-//import UUIDGenerator from 'react-native-uuid-generator'
 
+import { calculateAge } from '../../../app/Utils'
 import Loading from '../../views/Loading/Loading'
 
 const metadata = {
@@ -292,14 +292,12 @@ export default class SessionCheckScene extends Component {
 
   mq = sexualOrientation => {
     this.meetCuteQuery = this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation)
-    this.meetCuteQuery.on('value', snap => {
-      snap.forEach( childsnap => {
-        if (childsnap.val().hideMeetChance || childsnap.val().deleted) {
-          // 隱身了 或 帳號刪除了
-        } else {
-          this.MeetCuteStore.addPreyToPool(childsnap.key)
-        }
-      })
+    this.meetCuteQuery.on('child_added', child => {
+      if (child.val().hideMeetChance || child.val().deleted) {
+        // 隱身了 或 帳號刪除了
+      } else {
+        this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
+      }
     })
   }
 
@@ -336,6 +334,10 @@ export default class SessionCheckScene extends Component {
   uxSignIn = () => {
     this.SignInStore.setEmail(this.SignUpStore.email)
     this.SignInStore.setPassword(this.SignUpStore.password)
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   render() {
