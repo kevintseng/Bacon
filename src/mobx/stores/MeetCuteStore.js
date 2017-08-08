@@ -73,7 +73,7 @@ export default class MeetCuteStore {
         this.setFirstPrey()
         break
       }
-      await this.sleep(300)
+      await this.sleep(3000)
     }
   }
 

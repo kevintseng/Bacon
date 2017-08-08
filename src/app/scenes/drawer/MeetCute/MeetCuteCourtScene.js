@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, ActivityIndicator, Button, ScrollView, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
+import * as Animatable from 'react-native-animatable'
 
 import CourtContainer from '../../../containers/MeetCuteCourtScene/CourtContainer'
 import InfosContainer from '../../../containers/MeetCuteCourtScene/InfosContainer'
@@ -52,7 +53,11 @@ export default class MeetCuteCourtScene extends Component {
       <View style={{flex: 1}}>  
         { !this.MeetCuteStore.haveNewPreys &&
           <View style={{flex: 1,justifyContent: 'space-between'}}>
-            <Text>沒人了搜尋邂逅名單中</Text>
+            <View></View>
+            <View>
+              <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={{ textAlign: 'center'}} >搜尋邂逅名單中</Animatable.Text>
+              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>❤️</Animatable.Text>
+            </View>
             <Button color='#f4a764' title='清除邂逅紀錄' onPress={ this.cleanHistory }/>
           </View>
         }
