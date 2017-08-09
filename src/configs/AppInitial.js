@@ -12,6 +12,7 @@ import SubjectEditStore from '../mobx/stores/SubjectEditStore'
 import MeetCuteStore from '../mobx/stores/MeetCuteStore'
 import MeetChanceStore from '../mobx/stores/MeetChanceStore'
 import FateStore from '../mobx/stores/FateStore'
+import LineStore from '../mobx/stores/LineStore'
 //import SignUpInStore from '../mobx/stores/SignUpInStore'
 
 const FirebaseConfig = {
@@ -23,17 +24,18 @@ const AppInitial = {
     this.firebase = RNFirebase.initializeApp(FirebaseConfig)
 
     this.ControlStore = new ControlStore()
-    
+
     this.SignUpStore = new SignUpStore(this.firebase)
     this.SignInStore = new SignInStore()
     this.PasswordStore = new PasswordStore()
     this.SubjectStore = new SubjectStore()
     this.SubjectEditStore = new SubjectEditStore()
-    
+
     //this.SignUpInStore = new SignUpInStore(this.firebase)
     this.MeetCuteStore = new MeetCuteStore(this.firebase)
     this.MeetChanceStore = new MeetChanceStore(this.firebase)
     this.FateStore = new FateStore(this.firebase)
+    this.LineStore = new LineStore(this.firebase)
     return this
   }
 }.init()

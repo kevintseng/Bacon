@@ -11,124 +11,115 @@ import {
 } from "react-native"
 
 const Stickers = ({width, handleStickerPressed}) => {
-  return(
-    <ScrollView directionalLockEnabled contentContainerStyle={{width: width-10, alignItems: "center"}}>
+  return (
+    <ScrollView directionalLockEnabled contentContainerStyle={{width: width - 10, alignItems: "center"}}>
       <View style={{ flexDirection: "row", flexWrap: "wrap", width, marginBottom: 30}}>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861090")}
-          >
+          onPress={() => handleStickerPressed("boy01")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861090/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy01.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861091")}
-          >
+          onPress={() => handleStickerPressed("boy02")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861091/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy02.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861092")}
-          >
+          onPress={() => handleStickerPressed("boy03")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861092/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy03.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861093")}
-          >
+          onPress={() => handleStickerPressed("boy04")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861093/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy04.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861094")}
-          >
+          onPress={() => handleStickerPressed("boy05")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861094/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy05.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861095")}
-          >
+          onPress={() => handleStickerPressed("boy06")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861095/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy06.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861096")}
-          >
+          onPress={() => handleStickerPressed("boy07")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861096/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy07.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861097")}
-          >
+          onPress={() => handleStickerPressed("boy08")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861097/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy08.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861098")}
-          >
+          onPress={() => handleStickerPressed("boy09")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861098/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy09.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861099")}
-          >
+          onPress={() => handleStickerPressed("boy10")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861099/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy10.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861100")}
-          >
+          onPress={() => handleStickerPressed("boy11")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861100/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy11.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861101")}
-          >
+          onPress={() => handleStickerPressed("boy12")}
+        >
           <Image
             style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861101/android/sticker.pngcompress=true"}}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: 80, height: 66, marginHorizontal: 5, marginVertical: 5 }}
-          onPress={() => handleStickerPressed("16861102")}
-          >
-          <Image
-            style={{ width: 80, height: 66}}
-            source={{uri: "https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861102/android/sticker.pngcompress=true"}}
+            source={require('../../../../../stickers/boy12.png')}
           />
         </TouchableOpacity>
       </View>

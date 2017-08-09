@@ -35,6 +35,7 @@ export default class SubjectStore {
   @observable hideVister
   @observable hideMessage
   @observable conversations
+  @observable chatStatus
 
   constructor() {
     this.initialize()
@@ -94,6 +95,8 @@ export default class SubjectStore {
     this.hideVister = false
     this.hideMessage = false
     this.conversations = null
+    this.chatStatus = null
+    this.credit = 0
   }
 
   @action setUid = uid => {
@@ -175,18 +178,39 @@ export default class SubjectStore {
     this.hideMessage = !this.hideMessage
   }
 
+  @action addCredit = (points) => {
+    this.credit = this.credit + points
+  }
+
+  @action deductCredit = (points) => {
+    const deducted = this.credit - points
+    if(deducted < 0) {
+      this.credit = 0
+    } else {
+      this.credit = deducted
+    }
+  }
+
+  @action setChatStatus = status => {
+    this.chatStatus = status
+  }
+
   @action setConversations = object => {
     this.conversations = object
   }
 
-  @action addConv = (key, data) => {
-    this.conversations[key] = data
+  @action addConv = (uid, data) => {
+    this.conversations[uid] = data
     this.conversations = Object.assign({}, this.conversations)
   }
 
-  @action deleteConv = (key) => {
-    delete this.conversations[key]
+  @action deleteConv = (uid) => {
+    delete this.conversations[uid]
     this.conversations = Object.assign({}, this.conversations)
+  }
+
+  @action setConvVisit = (uid, boolean) => {
+    this.conversations[uid].visit = boolean
   }
 
 }
