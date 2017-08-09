@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
+import { Actions } from 'react-native-router-flux'
 
 import Court from '../../views/Court'
 
@@ -34,7 +35,7 @@ export default class CourtContainer extends Component {
   }
 
   converse = () => {
-    alert('轉到聊天')
+    Actions.line()
   }
 
   render() {
