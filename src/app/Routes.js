@@ -15,7 +15,7 @@ import SignUpFourScene from './scenes/authenticate/SignUpFourScene'
 import SignInScene from './scenes/authenticate/SignInScene'
 // password
 import PasswordScene from './scenes/authenticate/PasswordScene'
-// 
+//
 import AuthScene from './scenes/authenticate/AuthScene'
 // ###############authenticate################ //
 
@@ -77,22 +77,22 @@ const styles = {
   },
   baconArrow: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 4 : 0, 
-    left: 5 
+    top: Platform.OS === 'ios' ? 4 : 0,
+    left: 5
   },
   baconTitle: {
     marginTop: Platform.OS === 'ios' ? 35 : 19
   },
   baconMenu: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 4 : 1, 
-    left: 5    
+    top: Platform.OS === 'ios' ? 4 : 1,
+    left: 5
   },
   baconTool: {
     position: 'absolute',
-    //top: Platform.OS === 'ios' ? 4 : 0, 
+    //top: Platform.OS === 'ios' ? 4 : 0,
     bottom: -1,
-    right: 5    
+    right: 5
   }
 }
 
@@ -154,7 +154,7 @@ export default class Routes extends Component {
   baconArrowSignUpTwo = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToSignUpOne }/></View>)
 
   baconArrowSignUpThree = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToSignUpTwo }/></View>)
-  
+
   baconArrowSignUpFour = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToSignUpThree }/></View>)
 
   baconArrowSignIn = () => (<View style={ styles.baconArrow }><BaconArrow onPress={ this.goToWelcome }/></View>)
@@ -172,7 +172,7 @@ export default class Routes extends Component {
 
           <Scene key='SessionCheck' component={ SessionCheckScene } />
 
-          <Scene key='Welcome' component={ WelcomeScene } /> 
+          <Scene key='Welcome' component={ WelcomeScene } />
 
           <Scene key='signup' hideTabBar hideNavBar navigationBarStyle={ styles.navBar }>
             <Scene key='SignUpOne'  hideNavBar={false} renderTitle={ this.baconTitle } renderBackButton={ this.baconArrowSignUpOne } component={ SignUpOneScene } />
@@ -194,33 +194,30 @@ export default class Routes extends Component {
           <Scene key='Drawer' component={ DrawerScene } open={false}>
             <Scene key='main' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
 
+              <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } component={ LineListScene }/>
+              <Scene key='Line' title='訊息'  component={ LineScene }/>
+
               <Scene key='meetcute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetCute } component={ MeetCuteCourtScene } />
                 <Scene key='MeetCuteConfig' title='邂逅' renderBackButton={ this.baconArrow } component={ MeetCuteConfigScene } />
-
               </Scene>
-              
+
               <Scene key='meetchance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetChance } component={ MeetChanceWaterFallScene } />
                 <Scene key='MeetChanceCourt' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceCourtScene } />
                 <Scene key='MeetChanceConfig' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceConfigScene } />
               </Scene>
-                          
-              
+
+
               <Scene key='aboutme' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolAboutMe } component={ AboutMeTabScene }/>
                 <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } renderRightButton={ this.baconToolAboutMe } component={ AboutMeEditScene }/>
               </Scene>
 
-                <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } component={ LineListScene }/>
-                <Scene key='Line' title='訊息'  component={ LineScene }/>
-
-
-
               <Scene key='notification' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='Notification' title='通知' renderBackButton={ this.baconArrow } component={ NotificationScene }/>
               </Scene>
-              
+
               <Scene key='setting' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='SettingIndex' title='設定' renderLeftButton={ this.baconMenu } component={ SettingIndexScene } />
                 <Scene key='SettingAbout' title='設定' renderBackButton={ this.baconArrow } component={ SettingAboutScene } />
