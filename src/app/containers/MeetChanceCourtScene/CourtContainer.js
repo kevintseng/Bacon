@@ -31,11 +31,11 @@ export default class CourtContainer extends Component {
   match = () => {
     this.setState({
       match: !this.state.match
-    })    
+    })
   }
 
   converse = () => {
-    Actions.Line()
+    Actions.Line({uid: this.MeetChanceStore.uid, name: this.MeetChanceStore.nickname})
   }
 
   render() {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
-import { Router, Scene, Actions, ActionConst } from 'react-native-router-flux'
+import { Router, Scene, Actions } from 'react-native-router-flux'
 
 // ###############authenticate################ //
 import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
@@ -194,8 +194,8 @@ export default class Routes extends Component {
           <Scene key='Drawer' component={ DrawerScene } open={false}>
             <Scene key='main' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
 
-              <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } component={ LineListScene }/>
-              <Scene key='Line' title='訊息'  component={ LineScene }/>
+              <Scene key='LineList' title='訊息' hideNavBar component={ LineListScene }/>
+              <Scene key='Line' title='訊息' hideNavBar={false} component={ LineScene }/>
 
               <Scene key='meetcute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetCute } component={ MeetCuteCourtScene } />

@@ -47,7 +47,7 @@ export default class MeetChanceStore {
   @action initialize = () => {
     this.pool = new Array
     this.preyList = new Array
-    this.preys = new Array 
+    this.preys = new Array
     // court
     this.loading = true
     // user data
@@ -84,7 +84,7 @@ export default class MeetChanceStore {
     this.preyList = _.cloneDeep(this.pool)
     this.preyList.sort((a, b) => {
       return a.distance > b.distance ? 1 : -1
-    }) 
+    })
     if (this.preyList.length > 9) {
       this.preyList.length = this.preyList.length - this.preyList.length % 3
     }
@@ -103,8 +103,8 @@ export default class MeetChanceStore {
             this.preys.splice(index, 1) // 隱身了 或 帳號刪除了
           } else {
             this.preys[index].nickname = snap.val().nickname
-            this.preys[index].avatar = snap.val().avatar  
-          }      
+            this.preys[index].avatar = snap.val().avatar
+          }
         }
       }).catch(err => console.log(err))
     }))
@@ -124,6 +124,7 @@ export default class MeetChanceStore {
     await this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
       if (snap.val()) {
         runInAction(() => {
+          this.uid = this.uid
           this.nickname = snap.val().nickname
           this.bio = snap.val().bio
           this.birthday = snap.val().birthday

@@ -3,9 +3,9 @@ import { calculateAge } from '../../app/Utils'
 
 useStrict(true)
 
-const DefaultLanguages =  { 
-  中文: false, 
-  英文: false, 
+const DefaultLanguages =  {
+  中文: false,
+  英文: false,
   韓文: false
 }
 
@@ -34,6 +34,7 @@ export default class SubjectStore {
   @observable hideMeetChance
   @observable hideVister
   @observable hideMessage
+  @observable conversations
 
   constructor() {
     this.initialize()
@@ -73,7 +74,7 @@ export default class SubjectStore {
 
   @action initialize = () => {
     // user data
-    this.uid = null 
+    this.uid = null
     this.email = null
     this.nickname = null
     this.address = null
@@ -91,7 +92,8 @@ export default class SubjectStore {
     this.hideMeetCute = false
     this.hideMeetChance = false
     this.hideVister = false
-    this.hideMessage = false   
+    this.hideMessage = false
+    this.conversations = null
   }
 
   @action setUid = uid => {
@@ -107,7 +109,7 @@ export default class SubjectStore {
   }
 
   @action setBirthday = str => {
-    this.birthday = str    
+    this.birthday = str
   }
 
   @action setAddress = str => {
@@ -117,13 +119,13 @@ export default class SubjectStore {
   @action setAvatar = url => {
     this.avatar = url
   }
-  
+
   @action setSexualOrientation = str => {
     this.sexualOrientation = str
   }
 
   @action setBio = str => {
-    this.bio = str    
+    this.bio = str
   }
 
   @action setAlbum = object => {
@@ -151,7 +153,7 @@ export default class SubjectStore {
   @action setHobbies = object => {
     this.hobbies = object
   }
-  
+
   @action setEmailVerified = boolean => {
     this.emailVerified = boolean
   }
@@ -171,6 +173,20 @@ export default class SubjectStore {
 
   @action setHideMessage = () => {
     this.hideMessage = !this.hideMessage
+  }
+
+  @action setConversations = object => {
+    this.conversations = object
+  }
+
+  @action addConv = (key, data) => {
+    this.conversations[key] = data
+    this.conversations = Object.assign({}, this.conversations)
+  }
+
+  @action deleteConv = (key) => {
+    delete this.conversations[key]
+    this.conversations = Object.assign({}, this.conversations)
   }
 
 }
