@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
 import { calculateAge } from '../../../Utils'
-import Cookie from '../../../views/Cookie/Cookie'
+import Cookie from '../../../views/Cookie'
 
 const styles = {
   child: {
