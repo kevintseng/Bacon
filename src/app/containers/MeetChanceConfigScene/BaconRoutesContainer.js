@@ -10,7 +10,7 @@ export default class BaconRoutesContainer extends Component {
   }
   
   buttonOnPress = () => {
-    Actions.MeetChanceCourt({type: 'reset'})
+    Actions.MeetChanceWaterFall({type: 'reset'})
   }
 
   render() {
