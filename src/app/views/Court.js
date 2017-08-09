@@ -38,7 +38,7 @@ export default class Court extends Component {
       imageWidth={width}
       imageHeight={height}
     >
-      <FastImage style={{height, width}}  resizeMode='contain' source={{uri: 'http://4.bp.blogspot.com/-47BymmC5PqE/U2quRGlwXwI/AAAAAAAAANk/M7D1aUFk-Jo/s1600/Question+Mark.jpg'}}/>
+      <Image style={{height, width}}  resizeMode='contain' source={require('../../images/ico_qy_head_preload.png')}/>
     </ImageZoom>
   )
 
@@ -52,7 +52,7 @@ export default class Court extends Component {
 
 
   renderOnePhoto = () => (
-    <FastImage style={{height: width, width}}  source={{uri: 'http://4.bp.blogspot.com/-47BymmC5PqE/U2quRGlwXwI/AAAAAAAAANk/M7D1aUFk-Jo/s1600/Question+Mark.jpg'}}/>
+    <Image style={{height: width, width}}  source={require('../../images/ico_qy_head_preload.png')}/>
   )
 
   render() {

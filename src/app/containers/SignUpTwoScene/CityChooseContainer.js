@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Text,Button } from 'react-native'
+import { View, TouchableOpacity, Text,Button, Alert } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import RNGooglePlaces from 'react-native-google-places'
 
@@ -19,12 +19,9 @@ export default class CityChooseContainer extends Component {
       country: 'TW'
     })
     .then((place) => {
-    console.log(place);
+    //console.log(place);
     this.SignUpStore.setAddress(place.address)
-    // place represents user's selection from the
-    // suggestions and it is a simplified Google Place object.
-    })
-    .catch(error => console.log(error.message));  // error is a Javascript Error object
+    }).catch(error => console.log(error.message))
   }
 
   current = () => {
@@ -35,9 +32,11 @@ export default class CityChooseContainer extends Component {
     .then((results) => {
       this.SignUpStore.setAddress(results[0].address)
       console.log(results)
-    }
-      )
-    .catch((error) => console.log(error));    
+    })
+    .catch(error => Alert.alert( 
+    '定位錯誤', error.message, [ 
+      {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+    ))
   }
 
   render() {
@@ -51,7 +50,7 @@ export default class CityChooseContainer extends Component {
         </View>
         <View style={{marginTop: 20, alignItems: 'center'}}>
           <Text>{this.SignUpStore.address || '請輸入您的所在位置'}</Text>
-        </View>
+        </View>       
       </View>
     )
   }
