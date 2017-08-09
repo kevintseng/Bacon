@@ -9,12 +9,6 @@ import {
 const styles = StyleSheet.create({
   container: {
   },
-  mapView: {
-    width: 150,
-    height: 100,
-    borderRadius: 13,
-    margin: 3,
-  },
 })
 
 export default class StickerBubble extends Component {
@@ -23,8 +17,9 @@ export default class StickerBubble extends Component {
       return (
         <View style={[styles.container, this.props.containerStyle]}>
           <Image
+            {...props} 
             style={{ width: 120, height: 99}}
-            source={require(`../../../../stickers/${this.props.currentMessage.sticker}.png`)}
+            source={require(`./stickers/${this.props.currentMessage.sticker}.png`)}
           />
         </View>
       )

@@ -7,10 +7,11 @@ import {
   Dimensions,
   ActivityIndicator,
   Platform,
+  Image,
 } from "react-native"
 import { Actions } from "react-native-router-flux"
 import { observer, inject } from "mobx-react"
-import { GiftedChat, Bubble } from "react-native-gifted-chat"
+import { GiftedChat, Bubble, MessageImage } from "react-native-gifted-chat"
 import ImagePicker from "react-native-image-picker"
 import Moment from "moment"
 import { Icon, Button } from "react-native-elements"
@@ -18,7 +19,7 @@ import Modal from "react-native-modal"
 // import ImageResizer from 'react-native-image-resizer'
 import { translateChatStatus } from "../../../Utils"
 import Stickers from "./components/Stickers"
-import StickerBubble from "./components/StickerBubble"
+// import StickerBubble from "./components/StickerBubble"
 
 const { width, height } = Dimensions.get("window") //eslint-disable-line
 const DEFAULT_VISITOR_MSG_LIMIT = 2
@@ -631,7 +632,6 @@ export default class Chat extends Component {
     }
 
     this.syncMsgToFirebase(msgObj)
-    
     // adds 1 to conversation
     this.unreadAddOne(this.convKey, this.otherUid)
     // 有發言回應後就取消 priority
@@ -650,7 +650,7 @@ export default class Chat extends Component {
               paddingLeft: 12,
               width,
               justifyContent: "center",
-              height: 160,
+              height: 230,
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
               marginRight: 5,
@@ -822,7 +822,7 @@ export default class Chat extends Component {
       case "plus":
         return 60
       case "smily":
-        return 100
+        return 145
       case "uploading":
         return 60
       case false:
@@ -866,8 +866,9 @@ export default class Chat extends Component {
 
   renderStickerView(props) {
     return (
-      <StickerBubble
-        {...props}
+      <Image
+        style={{ width: 180, height: 149}}
+        source={{uri: props.currentMessage.sticker}}
       />
     );
   }
@@ -882,6 +883,7 @@ export default class Chat extends Component {
           marginTop: 11,
         }}
       >
+
         {this.state.action &&
           <GiftedChat
             messages={this.state.messages}
