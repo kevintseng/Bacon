@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text } from 'react-native'
 
-import Cookie from '../../views/Cookie'
+import Cookie from '../../views/Cookie/Cookie'
 
 const styles = {
   view: {
