@@ -53,7 +53,7 @@ export default class DrawerScene extends Component {
   }
 
   goToLine() {
-    Actions.line({type: 'reset'})
+    Actions.LineList({type: 'reset'})
   }
 
   goToMeetCute() {
