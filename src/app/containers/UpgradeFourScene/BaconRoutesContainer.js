@@ -11,20 +11,20 @@ export default class BaconRoutesContainer extends Component {
   }
   
   pay = async () => {
-    const productId = 'android.test.purchased'
+    const productId = 'abcde'//'android.test.purchased'
     await InAppBilling.close()
     try {
       await InAppBilling.open()
       if (!await InAppBilling.isPurchased(productId)) {
         const details = await InAppBilling.purchase(productId)
-        //console.log('You purchased: ', details);
+        console.log('You purchased: ', details);
       }
       const transactionStatus = await InAppBilling.getPurchaseTransactionDetails(productId)
-      //console.log('Transaction Status', transactionStatus);
+      console.log('Transaction Status', transactionStatus);
       const productDetails = await InAppBilling.getProductDetails(productId)
-      //console.log(productDetails);
+      console.log(productDetails);
     } catch (err) {
-      console.warn(err)
+      console.log(err)
     } finally {
       await InAppBilling.consumePurchase(productId)
       await InAppBilling.close()
