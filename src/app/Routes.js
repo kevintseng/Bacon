@@ -52,6 +52,7 @@ import BonusTwoScene from './scenes/drawer/Bonus/BonusTwoScene'
 
 import NotificationScene from './scenes/drawer/Notification/NotificationScene'
 
+import LineListScene from './scenes/drawer/Line/LineListScene'
 import LineScene from './scenes/drawer/Line/LineScene'
 // ###############drawer################ //
 
@@ -191,7 +192,7 @@ export default class Routes extends Component {
           <Scene key='Auth' component={ AuthScene }/>
 
           <Scene key='Drawer' component={ DrawerScene } open={false}>
-            <Scene key='main' hideTabBar >
+            <Scene key='main' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
 
               <Scene key='meetcute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetCute } component={ MeetCuteCourtScene } />
@@ -211,10 +212,10 @@ export default class Routes extends Component {
                 <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } renderRightButton={ this.baconToolAboutMe } component={ AboutMeEditScene }/>
               </Scene>
 
+                <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } component={ LineListScene }/>
+                <Scene key='Line' title='訊息'  component={ LineScene }/>
 
-              <Scene key='line' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='Line' title='訊息' renderBackButton={ this.baconArrow } component={ LineScene }/>
-              </Scene>
+
 
               <Scene key='notification' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='Notification' title='通知' renderBackButton={ this.baconArrow } component={ NotificationScene }/>

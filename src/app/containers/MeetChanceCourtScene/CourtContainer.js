@@ -35,7 +35,7 @@ export default class CourtContainer extends Component {
   }
 
   converse = () => {
-    Actions.line()
+    Actions.Line()
   }
 
   render() {
