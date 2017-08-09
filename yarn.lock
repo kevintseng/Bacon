@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@expo/react-native-action-sheet@github:cribspot/react-native-action-sheet#b422c54f26d30b9e85eb14a882ea9cec38600730":
+"@expo/react-native-action-sheet@cribspot/react-native-action-sheet#b422c54f26d30b9e85eb14a882ea9cec38600730":
   version "1.0.0"
   resolved "https://codeload.github.com/cribspot/react-native-action-sheet/tar.gz/b422c54f26d30b9e85eb14a882ea9cec38600730"
   dependencies:
@@ -3616,8 +3616,8 @@ react-clone-referenced-element@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-clone-referenced-element/-/react-clone-referenced-element-1.0.1.tgz#2bba8c69404c5e4a944398600bcc4c941f860682"
 
 react-deep-force-update@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.1.0.tgz#8d131ae07ae02f08df60744eb2cf2de4fcb325f1"
 
 react-devtools-core@2.3.1:
   version "2.3.1"
@@ -3651,6 +3651,10 @@ react-native-drawer@^2.3.0:
   resolved "https://registry.yarnpkg.com/react-native-drawer/-/react-native-drawer-2.3.0.tgz#a0369ec80ff0b61c9f152dbdea91fe76c843113a"
   dependencies:
     tween-functions "^1.0.1"
+
+"react-native-dropdown-menu@git+https://github.com/kaymingmobile/react-native-dropdown-menu.git":
+  version "1.1.0"
+  resolved "git+https://github.com/kaymingmobile/react-native-dropdown-menu.git#de483cf950a41374a1d89dc62fb0cfa128d1dfa4"
 
 react-native-elements@^0.15.0:
   version "0.15.0"
@@ -3729,7 +3733,7 @@ react-native-invertible-scroll-view@1.0.0:
     react-clone-referenced-element "^1.0.1"
     react-native-scrollable-mixin "^1.0.1"
 
-"react-native-lightbox@github:oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875":
+react-native-lightbox@oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875:
   version "0.6.0"
   resolved "https://codeload.github.com/oblador/react-native-lightbox/tar.gz/c84a8543d4511fe6a44c3d7820747c9c1bddd875"
   dependencies:
@@ -3755,6 +3759,13 @@ react-native-mobx@^0.3.1:
     mobx "^2.2.0"
     mobx-react "^3.3.0"
     react-native-router-flux "^3.31.2"
+
+react-native-modal@^2.4.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-2.5.0.tgz#a24018ac028e84e6eb8294278fa02720d9f7f320"
+  dependencies:
+    prop-types "15.5.10"
+    react-native-animatable "^1.2.3"
 
 react-native-parsed-text@0.0.18:
   version "0.0.18"
