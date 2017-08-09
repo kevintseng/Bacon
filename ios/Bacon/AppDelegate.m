@@ -33,8 +33,8 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  [GMSPlacesClient provideAPIKey:@"AIzaSyC0gHulWvNoeRPB_ra9nC5Hg20dcZuqKf0"];
-  [GMSServices provideAPIKey:@"AIzaSyC0gHulWvNoeRPB_ra9nC5Hg20dcZuqKf0"];
+  [GMSPlacesClient provideAPIKey:@"AIzaSyD2OpffOMMd2Q6R08149stRAA-LZ1Pfp9E"];
+  [GMSServices provideAPIKey:@"AIzaSyD2OpffOMMd2Q6R08149stRAA-LZ1Pfp9E"];
   [FIRApp configure];
   return YES;
 }

@@ -17,7 +17,7 @@ const styles = {
     width: size || picWidth,
     height: size || picWidth,
     marginBottom: 5,
-    borderRadius: size ? size/2 : picWidth,
+    borderRadius: size ? size/2 : picWidth/2,
   }
 }
 
