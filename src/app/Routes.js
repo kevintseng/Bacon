@@ -213,7 +213,7 @@ export default class Routes extends Component {
 
 
               <Scene key='line' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='Line' title='訊息' renderLeftButton={ this.baconMenu } component={ LineScene }/>
+                <Scene key='Line' title='訊息' renderBackButton={ this.baconArrow } component={ LineScene }/>
               </Scene>
 
               <Scene key='notification' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
