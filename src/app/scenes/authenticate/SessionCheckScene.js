@@ -12,9 +12,9 @@ const metadata = {
   contentType: 'image/jpeg'
 }
 
-const DefaultLanguages =  { 
-  中文: false, 
-  英文: false, 
+const DefaultLanguages =  {
+  中文: false,
+  英文: false,
   韓文: false
 }
 
@@ -49,7 +49,7 @@ export default class SessionCheckScene extends Component {
         if (this.ControlStore.authenticateIndicator == '註冊') {
           // 非同步
           this.uploadAvatar() // 非同步上傳相簿
-          this.uploadSignUpData() // 非同步上傳註冊資料  
+          this.uploadSignUpData() // 非同步上傳註冊資料
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
@@ -86,12 +86,12 @@ export default class SessionCheckScene extends Component {
         this.FateStore.initialize()
         Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
       }
-    })    
+    })
   }
 
   uploadAvatar = () => {
     // 非同步上傳大頭照
-    this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid + '/' + Object.keys(this.SignUpStore.album)[0] + '.jpg')  
+    this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid + '/' + Object.keys(this.SignUpStore.album)[0] + '.jpg')
     .putFile(this.SignUpStore.avatar.replace('file:/',''), metadata)
     .then(uploadedFile => {
       this.firebase.database().ref('users/' + this.SubjectStore.uid + '/avatar').set(uploadedFile.downloadUrl)
@@ -106,7 +106,7 @@ export default class SessionCheckScene extends Component {
       })
       .catch(() => {
         this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳成功')
-      })      
+      })
     })
     .catch(() => {
       this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳失敗')
@@ -143,7 +143,7 @@ export default class SessionCheckScene extends Component {
           }, error => {
             console.log('上傳位置失敗：' + error);
           }
-        ) 
+        )
 
       },
       error => {
@@ -163,9 +163,9 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setBirthday(this.SignUpStore.birthday) // String
     this.SubjectStore.setBio(null) // null(placeholder)
     this.SubjectStore.setAvatar(this.SignUpStore.avatar) // String
-    this.SubjectStore.setAlbum(this.SignUpStore.album) // Object 
-    this.SubjectStore.setLanguages(DefaultLanguages) // Object 
-    this.SubjectStore.setHobbies(new Object) // Object 
+    this.SubjectStore.setAlbum(this.SignUpStore.album) // Object
+    this.SubjectStore.setLanguages(DefaultLanguages) // Object
+    this.SubjectStore.setHobbies(new Object) // Object
     this.SubjectStore.setVip(false) // boolean
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
     this.ControlStore.setSyncDetector(true) // 同步完成
@@ -183,9 +183,9 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setBirthday(snap.val().birthday) // null -> undefinded
           this.SubjectStore.setBio(snap.val().bio) // null(placeholder) String
           this.SubjectStore.setAvatar(snap.val().avatar) // null(placeholder) String Url
-          this.SubjectStore.setAlbum(new Object(snap.val().album)) // Object 
-          this.SubjectStore.setLanguages(snap.val().languages || DefaultLanguages) // Object 
-          this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object 
+          this.SubjectStore.setAlbum(new Object(snap.val().album)) // Object
+          this.SubjectStore.setLanguages(snap.val().languages || DefaultLanguages) // Object
+          this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setVip(Boolean(snap.val().vip))
           this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation) //null(placeholder->邂逅) String
         } else {
@@ -261,14 +261,14 @@ export default class SessionCheckScene extends Component {
     if (this.visitorsQuery) {
       this.visitorsQuery.off()
       this.visitorsQuery = null
-    }    
+    }
   }
 
   removeGoodImpressionListener = () => {
     if (this.goodImpressionQuery) {
       this.goodImpressionQuery.off()
       this.goodImpressionQuery = null
-    }     
+    }
   }
 
   //////********************//////
@@ -303,10 +303,10 @@ export default class SessionCheckScene extends Component {
 
   handleAppStateChange = nextAppState => {
     if (AppState.currentState === 'active') {
-      this.setOnline() 
+      this.setOnline()
       // 設置使用者上線
     } else if (this.lastAppState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
-      this.setOffline() 
+      this.setOffline()
       // 設置使用者下線
     }
     this.lastAppState = nextAppState
@@ -328,7 +328,7 @@ export default class SessionCheckScene extends Component {
   )
 
   sexualOrientationToString = () => (
-    this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : (this.genderToString() + 's' + (this.SignUpStore.gender ? 'f' : 'm'))    
+    this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : (this.genderToString() + 's' + (this.SignUpStore.gender ? 'f' : 'm'))
   )
 
   uxSignIn = () => {

@@ -18,6 +18,7 @@ import Modal from "react-native-modal"
 // import ImageResizer from 'react-native-image-resizer'
 import { translateChatStatus } from "../../../Utils"
 import Stickers from "./components/Stickers"
+import StickerBubble from "./components/StickerBubble"
 
 const { width, height } = Dimensions.get("window") //eslint-disable-line
 const DEFAULT_VISITOR_MSG_LIMIT = 2
@@ -109,8 +110,6 @@ export default class Chat extends Component {
       showMsgLimitModal: false,
       showPriorityModal: false,
       showInsufficientCreditModal: false,
-      showTooManyVisitorMsgSentModal: false,
-      showTooManyVisitorMsgReceivedModal: false,
       dontAskPriorityAgain: false,
       minToolBarHeight: 45,
     }
@@ -232,6 +231,7 @@ export default class Chat extends Component {
     users[this.otherUid] = {
       name: this.other.nickname,
       avatar: this.other.avatar,
+      birthday: this.other.birthday,
       unread: 0,
       deleted: false,
       lastRead: 0,
@@ -240,6 +240,7 @@ export default class Chat extends Component {
     users[this.uid] = {
       name: this.SubjectStore.nickname,
       avatar: this.SubjectStore.avatar,
+      birthday: this.SubjectStore.birthday,
       unread: 0,
       deleted: false,
       lastRead: 0,
@@ -406,6 +407,7 @@ export default class Chat extends Component {
     messages[0].user.name = this.SubjectStore.nickname
     messages[0].user.avatar = this.SubjectStore.avatar
     messages[0].createdAt = createdAt
+
     // console.log("onSend: ", messages[0].createdAt)
     const msgObj = messages[0]
     this.syncMsgToFirebase(msgObj)
@@ -615,8 +617,6 @@ export default class Chat extends Component {
       .database()
       .ref(`conversations/${this.convKey}/messages`)
 
-    const stickerUri = `https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/${id}/android/sticker.pngcompress=true`
-
     const _id = msgRef.push().key
     const msgObj = {
       _id,
@@ -627,19 +627,11 @@ export default class Chat extends Component {
         name: this.SubjectStore.nickname,
         avatar: this.SubjectStore.avatar,
       },
-      image: stickerUri,
+      sticker: id,
     }
 
     this.syncMsgToFirebase(msgObj)
-    // if(this.onSend()) {
-    //
-    //   this.setState(previousState => {
-    //     return {
-    //       messages: GiftedChat.append(previousState.messages, msgObj),
-    //       action: false
-    //     }
-    //   })
-    // }
+    
     // adds 1 to conversation
     this.unreadAddOne(this.convKey, this.otherUid)
     // 有發言回應後就取消 priority
@@ -740,15 +732,22 @@ export default class Chat extends Component {
     }
   }
 
+  goToQUpgrade = () => {
+    Actions.bonus()
+  }
+
   notInterested = () => {
     this.setState({ showVisitorModal: false, visit: false })
-    this.props.store.removeConversation(this.otherUid)
+    this.SubjectStore.deleteConv(this.otherUid)
+    this.firebase.database().ref(`users/${this.uid}/conversations/${this.otherUid}`).remove()
     Actions.conversations({type: "reset"})
   }
 
   startChatting = () => {
     this.setState({ showVisitorModal: false, visit: false })
-    this.props.store.noLongerVisit(this.otherUid)
+    this.firebase.database().ref(`users/${this.uid}/conversations/${this.otherUid}/visit`).set(false)
+    this.firebase.database().ref(`users/${this.otherUid}/conversations/${this.uid}/visit`).set(false)
+    this.SubjectStore.setConvVisit(this.otherUid, false)
   }
 
   handleInsufficientCredit = () => {
@@ -764,8 +763,6 @@ export default class Chat extends Component {
         showMsgLimitModal: false,
         showVisitorModal: false,
         showPriorityModal: false,
-        showTooManyVisitorMsgSentModal: false,
-        showTooManyVisitorMsgReceivedModal: false,
       })
       setTimeout(() => {
         this.handleInsufficientCredit()
@@ -773,7 +770,7 @@ export default class Chat extends Component {
       return
     }
 
-    this.props.store.deductCredit(val)
+    this.SubjectStore.deductCredit(val)
 
     switch (reason) {
       case "visitorMsgLimit":
@@ -788,16 +785,6 @@ export default class Chat extends Component {
           showPriorityModal: false,
         })
         break
-      case "visitorSentLimit":
-        this.setState({
-          showTooManyVisitorMsgSentModal: false,
-        })
-        break
-      case "visitorReceivedLimit":
-        this.setState({
-          showTooManyVisitorMsgReceivedModal: false,
-        })
-        break
       default:
     }
   }
@@ -808,10 +795,8 @@ export default class Chat extends Component {
       showVisitorModal: false,
       showPriorityModal: false,
       showInsufficientCreditModal: false,
-      showTooManyVisitorMsgSentModal: false,
-      showTooManyVisitorMsgReceivedModal: false,
     })
-    this.props.store.addCredit(100)
+    this.goToQUpgrade()
   }
 
   cancelSend = () => {
@@ -821,8 +806,6 @@ export default class Chat extends Component {
       showVisitorModal: false,
       showPriorityModal: false,
       showInsufficientCreditModal: false,
-      showTooManyVisitorMsgSentModal: false,
-      showTooManyVisitorMsgReceivedModal: false,
     })
   }
 
@@ -872,20 +855,24 @@ export default class Chat extends Component {
         {...props}
         wrapperStyle={{
           left: {
-            backgroundColor: props.currentMessage.image ? "transparent" : "#E7E7E7",
+            backgroundColor: props.currentMessage.sticker ? "transparent" : "#E7E7E7",
           },
           right: {
-            backgroundColor: props.currentMessage.image ? "transparent" : "#F4A764",
+            backgroundColor: props.currentMessage.sticker ? "transparent" : "#F4A764",
           } }}
       />
     )
   }
 
+  renderStickerView(props) {
+    return (
+      <StickerBubble
+        {...props}
+      />
+    );
+  }
+
   render() {
-    console.log(
-      "this.state.showInsufficientCreditModal: ",
-      this.state.showInsufficientCreditModal,
-    )
     return (
       <View
         style={{
@@ -913,6 +900,7 @@ export default class Chat extends Component {
             renderActions={this.renderActions}
             renderFooter={this.renderFooter}
             renderBubble={this.renderBubble}
+            renderCustomView={this.renderStickerView}
           />}
         {!this.state.action &&
           <GiftedChat
@@ -933,6 +921,7 @@ export default class Chat extends Component {
             renderActions={this.renderActions}
             renderFooter={this.renderFooter}
             renderBubble={this.renderBubble}
+            renderCustomView={this.renderStickerView}
           />}
         <Modal
           isVisible={this.state.showVisitorModal}
@@ -1024,82 +1013,6 @@ export default class Chat extends Component {
               --------------------------------------
             </Text>
             <Text style={{ margin: 10, color: "black" }}>
-              您目前有 {this.SubjectStore.credit} Q點
-            </Text>
-            <Button
-              title="Q點儲值"
-              buttonStyle={styles.modalButton2}
-              onPress={this.buyCredit}
-            />
-          </View>
-        </Modal>
-        <Modal
-          isVisible={this.state.showTooManyVisitorMsgReceivedModal}
-          backdropColor="black"
-          backdropOpacity={0.6}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 10,
-              backgroundColor: "white",
-            }}
-          >
-            <Text style={{ margin: 10 }}>
-              抱歉, 對方的未讀來訪留言過多, 請稍後再試試或是使用Q點特權留言
-            </Text>
-            <Button
-              title="使用Q點(50點)"
-              buttonStyle={styles.modalButton1}
-              onPress={() => this.useCredit("visitorReceivedLimit", 50)}
-            />
-            <Button
-              title="取消"
-              buttonStyle={styles.modalButton2}
-              onPress={this.cancelSend}
-            />
-            <Text>--------------------------------------</Text>
-            <Text style={{ margin: 10 }}>
-              您目前有 {this.SubjectStore.credit} Q點
-            </Text>
-            <Button
-              title="Q點儲值"
-              buttonStyle={styles.modalButton2}
-              onPress={this.buyCredit}
-            />
-          </View>
-        </Modal>
-        <Modal
-          isVisible={this.state.showTooManyVisitorMsgSentModal}
-          backdropColor="black"
-          backdropOpacity={0.6}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 10,
-              backgroundColor: "white",
-            }}
-          >
-            <Text style={{ margin: 10 }}>
-              訪客留言次數已用完：你今天已經留言給10位新對象了, 可以使用Q點增加10個對象
-            </Text>
-            <Button
-              title="使用Q點(100點)"
-              buttonStyle={styles.modalButton1}
-              onPress={() => this.useCredit("visitorSentLimit", 100)}
-            />
-            <Button
-              title="取消"
-              buttonStyle={styles.modalButton2}
-              onPress={this.cancelSend}
-            />
-            <Text style={{ color: "white" }}>
-              --------------------------------------
-            </Text>
-            <Text style={{ margin: 10, color: "white" }}>
               您目前有 {this.SubjectStore.credit} Q點
             </Text>
             <Button

@@ -8,9 +8,9 @@ export default class App extends Component {
 
   render() {
     return (
-      <Provider 
-        firebase={ AppInitial.firebase } 
-        
+      <Provider
+        firebase={ AppInitial.firebase }
+
         ControlStore={ AppInitial.ControlStore }
 
         SignUpStore={ AppInitial.SignUpStore }
@@ -19,10 +19,11 @@ export default class App extends Component {
         SubjectStore={ AppInitial.SubjectStore }
         SubjectEditStore={AppInitial.SubjectEditStore}
 
-        //SignUpInStore={ AppInitial.SignUpInStore } 
+        //SignUpInStore={ AppInitial.SignUpInStore }
         MeetChanceStore={ AppInitial.MeetChanceStore }
-        MeetCuteStore={ AppInitial.MeetCuteStore}
-        FateStore={ AppInitial.FateStore}
+        MeetCuteStore={ AppInitial.MeetCuteStore }
+        FateStore={ AppInitial.FateStore }
+        LineStore={ AppInitial.LineStore }
         >
         <Routes/>
       </Provider>
