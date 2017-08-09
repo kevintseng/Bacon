@@ -45,15 +45,16 @@ const getAvatarStyle = (onlineStatus, chatStatus) => {
 const getAvatarContainerStyle = (status) => {
   if (status == 0) {
     return {
-      marginTop: -5,
-      height: 50,
-      width: 50,
+      marginTop: -10,
+      height: 60,
+      width: 60,
+      borderRadius: 30,
     }
   }
   return {
-    marginTop: 5,
-    height: 50,
-    width: 50,
+    height: 60,
+    width: 60,
+    borderRadius: 30,
   }
 }
 
@@ -167,7 +168,7 @@ const Conversation = props => (
     }}
     roundAvatar
     avatar={{ uri: props.conv.avatar }}
-    avatarContainerStyle={getAvatarContainerStyle(props.conv.chatStatus)}
+    avatarOverlayContainerStyle={getAvatarContainerStyle(props.conv.chatStatus)}
     avatarStyle={getAvatarStyle(props.conv.online, props.conv.chatStatus)}
     key={props.conv.key}
     title={renderTitle(props.conv.name, props.conv.birthday, props.conv.chatStatus)}
