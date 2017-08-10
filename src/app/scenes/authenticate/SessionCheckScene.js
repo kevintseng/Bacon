@@ -187,7 +187,11 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setLanguages(snap.val().languages || DefaultLanguages) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setVip(Boolean(snap.val().vip))
-          this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation) //null(placeholder->邂逅) String
+          this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation)
+          this.SubjectStore.setChatStatus(snap.val().chatStatus)
+          this.SubjectStore.setCredit(snap.val().credit)
+          this.SubjectStore.setConversations(snap.val().conversations)
+           //null(placeholder->邂逅) String
         } else {
           //this.SubjectStore.initialize()
         }

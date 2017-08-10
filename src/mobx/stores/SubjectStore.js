@@ -96,7 +96,7 @@ export default class SubjectStore {
     this.hideMessage = false
     this.conversations = null
     this.chatStatus = null
-    this.credit = 0
+    this.credit = null
   }
 
   @action setUid = uid => {
@@ -155,6 +155,10 @@ export default class SubjectStore {
 
   @action setHobbies = object => {
     this.hobbies = object
+  }
+
+  @action setCredit = (credit) => {
+    this.credit = credit
   }
 
   @action setEmailVerified = boolean => {
