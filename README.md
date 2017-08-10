@@ -21,7 +21,9 @@
 
 ## For Ios
 
-* `rm -rf ios/build/ModuleCache/* && rm -rf ~/.rncache/*`
+* `rm -rf ios/build/* && rm -rf ~/.rncache/*`
+* `https://github.com/react-native-community/boost-for-react-native/releases/download/v1.63.0-0/boost_1_63_0.tar.gz`
+* `npm run reset`
 
 #### !!
 

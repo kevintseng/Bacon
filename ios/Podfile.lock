@@ -67,23 +67,23 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Protobuf (3.3.0)
-  - React (0.47.0):
-    - React/Core (= 0.47.0)
-  - React/ART (0.47.0):
+  - React (0.47.1):
+    - React/Core (= 0.47.1)
+  - React/ART (0.47.1):
     - React/Core
-  - React/BatchedBridge (0.47.0):
+  - React/BatchedBridge (0.47.1):
     - React/Core
     - React/cxxreact_legacy
-  - React/Core (0.47.0):
-    - Yoga (= 0.47.0.React)
-  - React/cxxreact_legacy (0.47.0):
+  - React/Core (0.47.1):
+    - Yoga (= 0.47.1.React)
+  - React/cxxreact_legacy (0.47.1):
     - React/jschelpers_legacy
-  - React/jschelpers_legacy (0.47.0)
+  - React/jschelpers_legacy (0.47.1)
   - RNFirebase (2.1.0):
     - React
   - RNVectorIcons (4.3.0):
     - React
-  - Yoga (0.47.0.React)
+  - Yoga (0.47.1.React)
 
 DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
@@ -131,11 +131,11 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
   nanopb: 22bc080fa3955e2116b6ff3ee6c2cb3c15ab97cb
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
-  React: a6971154990cd5521ad432ec553b0bdcc58d0a26
+  React: f705239a901cb3f95445c34468e5b37b6f80a0d4
   RNFirebase: dcdb1be13628827647bba47592d4d19fba5ba84d
   RNVectorIcons: a58392f365a38ffd3a070bf7449c0145bd0814e1
-  Yoga: 973c1a52c764ae156a59ee4f0513a8dfe67c6b19
+  Yoga: 13a12502dfabb4c75b914071dcb542af800deed4
 
-PODFILE CHECKSUM: 7d91a137073251281fc537d48306207a27f36a80
+PODFILE CHECKSUM: 376ea09b0af949ae68e916a6f830ec49f831f939
 
 COCOAPODS: 1.2.1
