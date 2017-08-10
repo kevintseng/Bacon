@@ -11,8 +11,8 @@ import Sider from '../../views/Sider/Sider'
 const { width } = Dimensions.get('window')
 
 const drawerStyles = {
-  drawer: { 
-    borderRightWidth: 0, 
+  drawer: {
+    borderRightWidth: 0,
     width
   }
 }
@@ -43,7 +43,7 @@ export default class DrawerScene extends Component {
     ToastAndroid.show('再按一次離開程式', ToastAndroid.SHORT)
     return true
   }
-  
+
   goToAboutMe() {
     Actions.aboutme({type: 'reset'})
   }
@@ -82,7 +82,7 @@ export default class DrawerScene extends Component {
         onClose={() => Actions.refresh({ key: state.key, open: false })}
         open={ state.open }
         content={
-          <Sider 
+          <Sider
             warningTop={ this.ControlStore.signUpDataUploadIndicator }
             warningBottom={ this.ControlStore.avatarUploadIndicator }
             avatar={ this.SubjectStore.avatar }

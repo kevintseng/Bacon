@@ -22,7 +22,7 @@ const styles = {
 }
 
   return(
-    <View style={{alignItems: 'center', marginLeft: size ? 0 : x}}>
+    <View style={{alignItems: 'center', marginLeft: size ? 0 : x, marginBottom: 10}}>
       <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
         <Image source={ photoURL ? { uri: photoURL } : require('./img/ico_qy_head_preload.png') } style={styles.itemImageStyle}/>
       </TouchableOpacity>
