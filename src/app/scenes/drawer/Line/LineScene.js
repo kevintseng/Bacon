@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Platform,
   Image,
+  TouchableOpacity,
 } from "react-native"
 import { Actions } from "react-native-router-flux"
 import { observer, inject } from "mobx-react"
@@ -23,6 +24,10 @@ import Stickers from "./components/Stickers"
 
 const { width, height } = Dimensions.get("window") //eslint-disable-line
 const DEFAULT_VISITOR_MSG_LIMIT = 2
+const metadata = {
+  contentType: 'image/jpeg'
+}
+
 const styles = StyleSheet.create({
   footerContainer: {
     marginTop: 5,
@@ -56,8 +61,8 @@ const styles = StyleSheet.create({
 })
 
 const ImagePickerOptions = {
-  title: "Select Avatar",
-  customButtons: [{ name: "fb", title: "Choose Photo from Facebook" }],
+  title: "請選擇照片",
+  // customButtons: [{ name: "fb", title: "Choose Photo from Facebook" }],
   storageOptions: {
     skipBackup: true,
     path: "images",
@@ -65,14 +70,13 @@ const ImagePickerOptions = {
 }
 
 
-@inject("firebase", "FateStore", "SubjectStore")
+@inject("firebase", "SubjectStore")
 @observer
 export default class Chat extends Component {
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
-    this.FateStore = this.props.FateStore
 
     this.uid = this.SubjectStore.uid
     this.otherUid = this.props.uid
@@ -81,15 +85,16 @@ export default class Chat extends Component {
     this.loadAfterMsgId = 0
     this.title = ""
     this.role = "wooer"
+
     if (this.convKey) {
-      if (this.SubjectStore.conversations[this.otherUid].prey == this.uid) {
+      if (this.SubjectStore.conversations[this.props.uid].prey == this.uid) {
         this.role = "prey"
       }
     }
 
     this.visit = true
     if (this.convKey) {
-      if (this.SubjectStore.conversations[this.otherUid].visit == false) {
+      if (this.SubjectStore.conversations[this.props.uid].visit == false) {
         this.visit = false
       }
     }
@@ -128,7 +133,7 @@ export default class Chat extends Component {
     ref.once("value").then(snap => {
       if (snap.exists()) {
         const user = snap.val()
-        console.log("getUserData: ", user.nickname)
+        // console.log("getUserData: ", user.nickname)
         this.other = user
         return user
       }
@@ -173,7 +178,7 @@ export default class Chat extends Component {
       .orderByChild("_id")
       .startAt(startAt)
       .on("child_added", msgSnap => {
-        console.log(`child_added: ${msgSnap.key}`)
+        // console.log(`child_added: ${msgSnap.key}`)
         this.setState(previousState => {
           const msgId = msgSnap.val()._id
           // Update lastRead
@@ -317,7 +322,8 @@ export default class Chat extends Component {
           if (snap.exists()) {
             return snap.val()
           }
-          return console.log("No such conversation in user conv list")
+          console.log("No such conversation in user conv list")
+          return null
         },
         err => {
           console.log(`Chat/getPriority error: ${err}`)
@@ -404,31 +410,34 @@ export default class Chat extends Component {
   }
 
   onSend = (messages = []) => {
-    const createdAt = Moment().format()
-    messages[0].user.name = this.SubjectStore.nickname
-    messages[0].user.avatar = this.SubjectStore.avatar
-    messages[0].createdAt = createdAt
+    if (!this.meetMsgLimit()) {
+      const createdAt = Moment().format()
+      messages[0].user.name = this.SubjectStore.nickname
+      messages[0].user.avatar = this.SubjectStore.avatar
+      messages[0].createdAt = createdAt
 
-    // console.log("onSend: ", messages[0].createdAt)
-    const msgObj = messages[0]
-    this.syncMsgToFirebase(msgObj)
+      // console.log("onSend: ", messages[0].createdAt)
+      const msgObj = messages[0]
+      this.syncMsgToFirebase(msgObj)
 
-    // adds 1 to the other user"s conversation bucket"s unread field
-    this.unreadAddOne(this.convKey, this.otherUid)
-    console.log("visitorMsgLimit: ", this.state.visitorMsgLimit)
-    if (this.state.visitorMsgLimit > 0) {
-      this.visitorMsgLimitDeductOne(this.convKey, this.uid)
+      // adds 1 to the other user"s conversation bucket"s unread field
+      this.unreadAddOne(this.convKey, this.otherUid)
+      // console.log("visitorMsgLimit: ", this.state.visitorMsgLimit)
+      if (this.state.visitorMsgLimit > 0) {
+        this.visitorMsgLimitDeductOne(this.convKey, this.uid)
+      }
+
+      if (
+        !this.getPriority(this.uid, this.otherUid) &&
+        !this.state.dontAskPriorityAgain
+      ) {
+        this.setState({ showPriorityModal: true })
+      }
+
+      Keyboard.dismiss()
+    } else {
+      this.setState({ showMsgLimitModal: true })
     }
-
-    if (
-      !this.getPriority(this.uid, this.otherUid) &&
-      !this.state.dontAskPriorityAgain
-    ) {
-      this.setState({ showPriorityModal: true })
-    }
-
-    Keyboard.dismiss()
-    return true
   }
 
   renderFooter = () => {
@@ -524,83 +533,124 @@ export default class Chat extends Component {
   }
 
   handleCameraPicker = () => {
+    if (this.meetMsgLimit()) {
+      const msgRef = this.firebase
+        .database()
+        .ref(`conversations/${this.convKey}/messages`)
+      console.log("handlePhotoPicker called")
+      ImagePicker.launchCamera(ImagePickerOptions, async response => {
+        console.log("Response = ", response)
 
+        if (response.didCancel) {
+          console.log("User cancelled image picker")
+        } else if (response.error) {
+          console.log("ImagePicker Error: ", response.error)
+        } else if (response.customButton) {
+          console.log("User tapped custom button: ", response.customButton)
+        } else {
+          this.setState({ action: "uploading" })
+
+          const filename = response.fileName.replace("JPG", "jpg")
+          console.log("response", filename)
+
+          const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
+          this.firebase.storage().ref('chat/' + this.convKey + '/' + this.uid + '/' + filename).putFile(uri, metadata)
+          .then(uploadedFile => {
+            console.log("downloadUrl: ", uploadedFile.downloadUrl)
+            const _id = msgRef.push().key
+            const msgObj = {
+              _id,
+              text: "",
+              createdAt: new Date(),
+              user: {
+                _id: this.uid,
+                name: this.SubjectStore.nickname,
+                avatar: this.SubjectStore.avatar,
+              },
+              image: uploadedFile.downloadUrl,
+            }
+
+            this.syncMsgToFirebase(msgObj)
+            // adds 1 to conversation
+            this.unreadAddOne(this.convKey, this.otherUid)
+            // 有發言回應後就取消 priority
+            this.removeConversationPriority(this.uid, this.otherUid)
+          }, err => {
+            console.error('上傳失敗')
+            this.setState({ action: false })
+          })
+          .then(() => {
+            this.setState({ action: false })
+          })
+        }
+      })
+    } else {
+      this.setState({ showMsgLimitModal: true })
+    }
   }
 
   handlePhotoPicker = () => {
-    // if (this.state.visitorMsgLimit <= 0) {
-    //   this.setState({ showMsgLimitModal: true })
-    //   return false
-    // }
-    // const msgRef = this.firebase
-    //   .database()
-    //   .ref(`conversations/${this.convKey}/messages`)
-    // console.log("handlePhotoPicker called")
-    // ImagePicker.launchImageLibrary(ImagePickerOptions, async response => {
-    //   console.log("Response = ", response)
-    //
-    //   if (response.didCancel) {
-    //     console.log("User cancelled image picker")
-    //   } else if (response.error) {
-    //     console.log("ImagePicker Error: ", response.error)
-    //   } else if (response.customButton) {
-    //     console.log("User tapped custom button: ", response.customButton)
-    //   } else {
-    //     this.setState({ action: "uploading" })
-    //     console.log("Image data", response)
-    //
-    //     const resizedUri = await resizeImage(
-    //       response.uri,
-    //       600,
-    //       600,
-    //       "image/jpeg",
-    //       80,
-    //     )
-    //     console.log("resizedUri", resizedUri)
-    //
-    //     const firebaseRefObj = this.firebase
-    //       .storage()
-    //       .ref(
-    //         `chatPhotos/${
-    //           this.uid
-    //           }/${
-    //           response.fileName.replace("JPG", "jpg")}`,
-    //       )
-    //
-    //     const downloadUrl = await uploadImage(
-    //       resizedUri,
-    //       firebaseRefObj,
-    //       "image/jpeg",
-    //     )
-    //     console.log("downloadUrl: ", downloadUrl)
-    //     const _id = msgRef.push().key
-    //     const msgObj = {
-    //       _id,
-    //       text: "",
-    //       createdAt: new Date(),
-    //       user: {
-    //         _id: this.uid,
-    //         name: this.SubjectStore.nickname,
-    //         avatar: this.SubjectStore.avatar,
-    //       },
-    //       image: downloadUrl,
-    //     }
-    //
-    //     this.syncMsgToFirebase(msgObj)
-    //     // adds 1 to conversation
-    //     this.unreadAddOne(this.convKey, this.otherUid)
-    //     // 有發言回應後就取消 priority
-    //     this.removeConversationPriority(this.uid, this.otherUid)
-    //   }
-    // })
+    if (!this.meetMsgLimit()) {
+      const msgRef = this.firebase
+        .database()
+        .ref(`conversations/${this.convKey}/messages`)
+      console.log("handlePhotoPicker called")
+      ImagePicker.launchImageLibrary(ImagePickerOptions, async response => {
+        console.log("Response = ", response)
+
+        if (response.didCancel) {
+          console.log("User cancelled image picker")
+        } else if (response.error) {
+          console.log("ImagePicker Error: ", response.error)
+        } else if (response.customButton) {
+          console.log("User tapped custom button: ", response.customButton)
+        } else {
+          this.setState({ action: "uploading" })
+
+          const filename = response.fileName.replace("JPG", "jpg")
+          console.log("response", filename)
+
+          const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
+          this.firebase.storage().ref('chat/' + this.convKey + '/' + this.uid + '/' + filename).putFile(uri, metadata)
+          .then(uploadedFile => {
+            console.log("downloadUrl: ", uploadedFile.downloadUrl)
+            const _id = msgRef.push().key
+            const msgObj = {
+              _id,
+              text: "",
+              createdAt: new Date(),
+              user: {
+                _id: this.uid,
+                name: this.SubjectStore.nickname,
+                avatar: this.SubjectStore.avatar,
+              },
+              image: uploadedFile.downloadUrl,
+            }
+
+            this.syncMsgToFirebase(msgObj)
+            // adds 1 to conversation
+            this.unreadAddOne(this.convKey, this.otherUid)
+            // 有發言回應後就取消 priority
+            this.removeConversationPriority(this.uid, this.otherUid)
+          }, err => {
+            console.error('上傳失敗')
+            this.setState({ action: false })
+          })
+          .then(() => {
+            this.setState({ action: false })
+          })
+        }
+      })
+    } else {
+      this.setState({ showMsgLimitModal: true })
+    }
   }
 
   syncMsgToFirebase = msgObj => {
-    const msgRef = this.firebase
+    this.firebase
       .database()
-      .ref(`conversations/${this.convKey}/messages/${msgObj._id}`)
+      .ref(`conversations/${this.convKey}/messages/${msgObj._id}`).set(msgObj)
 
-    msgRef.set(msgObj)
     this.setState({
       action: false,
     })
@@ -608,34 +658,34 @@ export default class Chat extends Component {
 
   // TODO: use custom message obj for stickers with sticker id only and place
   // sticker images in storage to be called as static image source.
-  handleStickerPressed = id => {
+  handleStickerPressed = uri => {
     // https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861101/android/sticker.pngcompress=true
-    if (this.state.visitorMsgLimit <= 0) {
+    if (!this.meetMsgLimit()) {
+      const msgRef = this.firebase
+        .database()
+        .ref(`conversations/${this.convKey}/messages`)
+
+      const _id = msgRef.push().key
+      const msgObj = {
+        _id,
+        text: "",
+        createdAt: new Date(),
+        user: {
+          _id: this.uid,
+          name: this.SubjectStore.nickname,
+          avatar: this.SubjectStore.avatar,
+        },
+        sticker: uri,
+      }
+
+      this.syncMsgToFirebase(msgObj)
+      // adds 1 to conversation
+      this.unreadAddOne(this.convKey, this.otherUid)
+      // 有發言回應後就取消 priority
+      this.removeConversationPriority(this.uid, this.otherUid)
+    } else {
       this.setState({ showMsgLimitModal: true })
-      return false
     }
-    const msgRef = this.firebase
-      .database()
-      .ref(`conversations/${this.convKey}/messages`)
-
-    const _id = msgRef.push().key
-    const msgObj = {
-      _id,
-      text: "",
-      createdAt: new Date(),
-      user: {
-        _id: this.uid,
-        name: this.SubjectStore.nickname,
-        avatar: this.SubjectStore.avatar,
-      },
-      sticker: id,
-    }
-
-    this.syncMsgToFirebase(msgObj)
-    // adds 1 to conversation
-    this.unreadAddOne(this.convKey, this.otherUid)
-    // 有發言回應後就取消 priority
-    this.removeConversationPriority(this.uid, this.otherUid)
   }
 
   renderAccessory = () => {
@@ -691,40 +741,38 @@ export default class Chat extends Component {
               marginRight: 4,
             }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }}>
-              <Icon
-                name="collections"
-                size={25}
-                color="orange"
-                containerStyle={{
-                  width: 25,
-                  height: 25,
-                  borderRadius: 5,
-                  borderWidth: 0,
-                  margin: 2,
-                }}
-                onPress={this.handlePhotoPicker}
-                underlayColor="gray"
-              />
-              <Text>相簿</Text>
-            </View>
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }}>
-              <Icon
-                name="camera-alt"
-                size={25}
-                color="orange"
-                containerStyle={{
-                  width: 25,
-                  height: 25,
-                  borderRadius: 5,
-                  borderWidth: 0,
-                  margin: 2,
-                }}
-                onPress={this.handleCameraPicker}
-                underlayColor="gray"
-              />
-              <Text>拍照</Text>
-            </View>
+              <TouchableOpacity  style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }} onPress={this.handlePhotoPicker}>
+                <Icon
+                  name="collections"
+                  size={25}
+                  color="orange"
+                  containerStyle={{
+                    width: 25,
+                    height: 25,
+                    borderRadius: 5,
+                    borderWidth: 0,
+                    margin: 2,
+                  }}
+                  underlayColor="gray"
+                />
+                <Text>相簿</Text>
+              </TouchableOpacity>
+              <TouchableOpacity  style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }} onPress={this.handleCameraPicker}>
+                <Icon
+                  name="camera-alt"
+                  size={25}
+                  color="orange"
+                  containerStyle={{
+                    width: 25,
+                    height: 25,
+                    borderRadius: 5,
+                    borderWidth: 0,
+                    margin: 2,
+                  }}
+                  underlayColor="gray"
+                />
+                <Text>拍照</Text>
+              </TouchableOpacity>
           </View>
         )
       default:
@@ -843,10 +891,11 @@ export default class Chat extends Component {
     Actions.refresh({ title: this.title })
   }
 
-  checkVisitorMsgLimit = () => {
+  meetMsgLimit = () => {
     if (this.state.visit && this.role == "wooer" && this.state.visitorMsgLimit <= 0) {
-      this.setState({ showMsgLimitModal: true })
+      return true
     }
+    return false
   }
 
   renderBubble(props) {
@@ -865,12 +914,14 @@ export default class Chat extends Component {
   }
 
   renderStickerView(props) {
-    return (
-      <Image
-        style={{ width: 180, height: 149}}
-        source={{uri: props.currentMessage.sticker}}
-      />
-    );
+    if (props.currentMessage.sticker) {
+      return (
+        <Image
+          style={{ width: 180, height: 149}}
+          source={{uri: props.currentMessage.sticker}}
+        />
+      );
+    }
   }
 
   render() {
@@ -916,7 +967,7 @@ export default class Chat extends Component {
             user={{
               _id: this.uid,
             }}
-            onInputTextChanged={() => this.checkVisitorMsgLimit()}
+            onInputTextChanged={() => this.meetMsgLimit()}
             minInputToolbarHeight={this.getToolbarHeight()}
             imageProps={this.state.image}
             placeholder="輸入訊息..."

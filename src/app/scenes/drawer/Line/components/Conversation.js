@@ -179,7 +179,7 @@ const Conversation = props => (
     onPress={() => {
       Actions.Line({
         uid: props.conv.uid,
-        convKey: props.conv.key,
+        convKey: props.conv.convKey,
       })
     }}
   />
