@@ -1,11 +1,26 @@
 import Moment from "moment"
 
 export function getAge(birthday) {
-  if(!birthday) {
+  if (!birthday) {
     return -1;
   }
   const age = Moment().diff(birthday, 'years');
   return age;
+}
+
+export function translateChatStatus(status) {
+  switch (status) {
+    case 0:
+      return ""
+    case 1:
+      return "放空中"
+    case 2:
+      return "忙碌中"
+    case 3:
+      return "低潮中"
+    default:
+      return status
+  }
 }
 
 export function calculateAge(birthday) {
@@ -16,7 +31,7 @@ export function calculateAge(birthday) {
     return 99
   } else {
     return age
-  } 
+  }
 }
 
 export function emailFormatChecker(email) {

@@ -35,7 +35,7 @@ export default class MeetChanceCourtScene extends Component {
   }
 
   componentDidMount() {
-    this.MeetChanceStore.setPrey()    
+    this.MeetChanceStore.setPrey()
   }
 
   indicator = () => (
@@ -56,16 +56,16 @@ export default class MeetChanceCourtScene extends Component {
 
   render() {
     return(
-      <View style={{flex: 1}}>  
-        { this.MeetChanceStore.loading && 
-          this.indicator() 
+      <View style={{flex: 1}}>
+        { this.MeetChanceStore.loading &&
+          this.indicator()
         }
-        { !this.MeetChanceStore.loading && 
+        { !this.MeetChanceStore.loading &&
           <View style={{flex: 1}}>
             <ScrollView style={{flex: 1}}>
               <CourtContainer/>
               <View style={{alignSelf: 'center',paddingTop: 40}}>
-                <InfosContainer/>  
+                <InfosContainer/>
               </View>
               <BadgeWallContainer/>
             </ScrollView>
@@ -75,4 +75,3 @@ export default class MeetChanceCourtScene extends Component {
     )
   }
 }
-
