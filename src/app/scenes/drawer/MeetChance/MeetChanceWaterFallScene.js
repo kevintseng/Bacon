@@ -15,7 +15,7 @@ const picWidth = (width - 4 * x)/3
 
 const styles = {
   self: {
-    alignSelf:'center'  
+    alignSelf:'center'
   }
 }
 
@@ -39,7 +39,7 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   componentDidMount() {
-    this.MeetChanceStore.setRealPreys() 
+    this.MeetChanceStore.setRealPreys()
   }
 
   goToAboutMeTab = () => {
@@ -48,8 +48,8 @@ export default class MeetChanceWaterFallScene extends Component {
 
   onPressButton = uid => {
     this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
-    this.MeetChanceStore.setCourtInitialize(uid)   
-    Actions.MeetChanceCourt()
+    this.MeetChanceStore.setCourtInitialize(uid)
+    Actions.MeetChanceCourt({uid})
   }
 
   header = () => (
@@ -62,15 +62,15 @@ export default class MeetChanceWaterFallScene extends Component {
     return(
     <View style={{flex:1}}>
       <FlatList
-        data={this.MeetChanceStore.preys} 
+        data={this.MeetChanceStore.preys}
         numColumns={3}
         //extraData={this.MeetChanceStore.synchronize}
-        renderItem={({item}) => 
-        <Cookie  
-          name={ item.nickname } 
+        renderItem={({item}) =>
+        <Cookie
+          name={ item.nickname }
           photoURL={ item.avatar }
-          onPress={ () => { this.onPressButton(item.key) } } 
-        /> } 
+          onPress={ () => { this.onPressButton(item.key) } }
+        /> }
         ListHeaderComponent={ this.header }
         getItemLayout={(data, index) => (
           {length: picWidth, offset: picWidth * index, index}
@@ -83,4 +83,3 @@ export default class MeetChanceWaterFallScene extends Component {
     )
   }
 }
-

@@ -3,9 +3,9 @@ import { calculateAge } from '../../app/Utils'
 
 useStrict(true)
 
-const DefaultLanguages =  { 
-  中文: false, 
-  英文: false, 
+const DefaultLanguages =  {
+  中文: false,
+  英文: false,
   韓文: false
 }
 
@@ -34,6 +34,8 @@ export default class SubjectStore {
   @observable hideMeetChance
   @observable hideVister
   @observable hideMessage
+  @observable conversations
+  @observable chatStatus
 
   constructor() {
     this.initialize()
@@ -73,7 +75,7 @@ export default class SubjectStore {
 
   @action initialize = () => {
     // user data
-    this.uid = null 
+    this.uid = null
     this.email = null
     this.nickname = null
     this.address = null
@@ -91,7 +93,10 @@ export default class SubjectStore {
     this.hideMeetCute = false
     this.hideMeetChance = false
     this.hideVister = false
-    this.hideMessage = false   
+    this.hideMessage = false
+    this.conversations = null
+    this.chatStatus = null
+    this.credit = null
   }
 
   @action setUid = uid => {
@@ -107,7 +112,7 @@ export default class SubjectStore {
   }
 
   @action setBirthday = str => {
-    this.birthday = str    
+    this.birthday = str
   }
 
   @action setAddress = str => {
@@ -117,13 +122,13 @@ export default class SubjectStore {
   @action setAvatar = url => {
     this.avatar = url
   }
-  
+
   @action setSexualOrientation = str => {
     this.sexualOrientation = str
   }
 
   @action setBio = str => {
-    this.bio = str    
+    this.bio = str
   }
 
   @action setAlbum = object => {
@@ -151,7 +156,11 @@ export default class SubjectStore {
   @action setHobbies = object => {
     this.hobbies = object
   }
-  
+
+  @action setCredit = (credit) => {
+    this.credit = credit
+  }
+
   @action setEmailVerified = boolean => {
     this.emailVerified = boolean
   }
@@ -171,6 +180,41 @@ export default class SubjectStore {
 
   @action setHideMessage = () => {
     this.hideMessage = !this.hideMessage
+  }
+
+  @action addCredit = (points) => {
+    this.credit = this.credit + points
+  }
+
+  @action deductCredit = (points) => {
+    const deducted = this.credit - points
+    if(deducted < 0) {
+      this.credit = 0
+    } else {
+      this.credit = deducted
+    }
+  }
+
+  @action setChatStatus = status => {
+    this.chatStatus = status
+  }
+
+  @action setConversations = object => {
+    this.conversations = object
+  }
+
+  @action addConv = (uid, data) => {
+    this.conversations[uid] = data
+    this.conversations = Object.assign({}, this.conversations)
+  }
+
+  @action deleteConv = (uid) => {
+    delete this.conversations[uid]
+    this.conversations = Object.assign({}, this.conversations)
+  }
+
+  @action setConvVisit = (uid, boolean) => {
+    this.conversations[uid].visit = boolean
   }
 
 }
