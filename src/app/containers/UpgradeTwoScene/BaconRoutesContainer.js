@@ -8,7 +8,7 @@ export default class BaconRoutesContainer extends Component {
   constructor(props) {
     super(props)
   }
-  
+
   buttonOnPress = () => {
     Actions.UpgradeThree()
   }
@@ -17,7 +17,7 @@ export default class BaconRoutesContainer extends Component {
     return(
       <BaconRoutes
         routesText='下一步'
-        routesOnPress={ this.buttonOnPress } 
+        routesOnPress={ this.buttonOnPress }
       />
     )
   }
