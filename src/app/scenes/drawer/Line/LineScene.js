@@ -781,7 +781,7 @@ export default class Chat extends Component {
   }
 
   goToQUpgrade = () => {
-    Actions.bonus()
+    Actions.Bonus()
   }
 
   notInterested = () => {

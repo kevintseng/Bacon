@@ -31,27 +31,25 @@ import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
 import AboutMeBoardScene from './scenes/drawer/AboutMe/AboutMeBoardScene'
 // MeetChance
 import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
-import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
 import MeetChanceConfigScene from './scenes/drawer/MeetChance/MeetChanceConfigScene'
 // Fate
 import FateTabScene from './scenes/drawer/Fate/FateTabScene'
+import FateCourtScene from './scenes/drawer/Fate/FateCourtScene'
 // Setting
-
 import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
 import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
 import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
 import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
 import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
-
-import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
-import UpgradeTwoScene from './scenes/drawer/Upgrade/UpgradeTwoScene'
-import UpgradeThreeScene from './scenes/drawer/Upgrade/UpgradeThreeScene'
-import UpgradeFourScene from './scenes/drawer/Upgrade/UpgradeFourScene'
-
-import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
-import BonusTwoScene from './scenes/drawer/Bonus/BonusTwoScene'
-
+// Line
 import LineListScene from './scenes/drawer/Line/LineListScene'
+// ======共用====== //
+// LineCollect
+import LineCollectCourtScene from './scenes/drawer/LineCollect/LineCollectCourtScene'
+import LineCollectRoutesScene from './scenes/drawer/LineCollect/LineCollectRoutesScene'
+//
+import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
+import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
 import LineScene from './scenes/drawer/Line/LineScene'
 // ###############drawer################ //
 
@@ -193,24 +191,23 @@ export default class Routes extends Component {
           <Scene key='Drawer' component={ DrawerScene } open={false}>
             <Scene key='main' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
 
-              <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolAboutMe } component={ AboutMeTabScene }/>
-              <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } component={ AboutMeEditScene }/>
-              <Scene key='AboutMeBoard' title='通知' renderBackButton={ this.baconArrow } component={ AboutMeBoardScene }/>
+              <Scene key='MeetCute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetCute } component={ MeetCuteCourtScene } />
+                <Scene key='MeetCuteConfig' title='邂逅' renderBackButton={ this.baconArrow } component={ MeetCuteConfigScene } />
+              </Scene>
 
+              <Scene key='MeetChance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetChance } component={ MeetChanceWaterFallScene } />
+                <Scene key='MeetChanceConfig' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceConfigScene } />
+              </Scene>
 
-              <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetChance } component={ MeetChanceWaterFallScene } />
-              <Scene key='MeetChanceConfig' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceConfigScene } />
-              
-              <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetCute } component={ MeetCuteCourtScene } />
-              <Scene key='MeetCuteConfig' title='邂逅' renderBackButton={ this.baconArrow } component={ MeetCuteConfigScene } />
+              <Scene key='AboutMe' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolAboutMe } component={ AboutMeTabScene }/>
+                <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } component={ AboutMeEditScene }/>
+                <Scene key='AboutMeBoard' title='通知' renderBackButton={ this.baconArrow } component={ AboutMeBoardScene }/>
+              </Scene>
 
-              <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } component={ LineListScene }/>
-              <Scene key='Line' title='訊息' renderBackButton={ this.baconArrow } component={ LineScene }/>
-
-              <Scene key='MeetChanceCourt' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceCourtScene } />
-
-
-              <Scene key='setting' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+              <Scene key='Setting' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='SettingIndex' title='設定' renderLeftButton={ this.baconMenu } component={ SettingIndexScene } />
                 <Scene key='SettingAbout' title='設定' renderBackButton={ this.baconArrow } component={ SettingAboutScene } />
                 <Scene key='SettingAccount' title='設定' renderBackButton={ this.baconArrow } component={ SettingAccountScene } />
@@ -218,22 +215,23 @@ export default class Routes extends Component {
                 <Scene key='SettingHide' title='設定' renderBackButton={ this.baconArrow } component={ SettingHideScene } />
               </Scene>
 
-
-              <Scene key='fate' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+              <Scene key='Fate' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='FateTab' title='緣分' renderLeftButton={ this.baconMenu } component={ FateTabScene } />
+                <Scene key='FateCourt' title='緣分' renderBackButton={ this.baconArrow } component={ FateCourtScene } />
+              </Scene>
+  
+              <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } component={ LineListScene }/>
+
+              <Scene key='LineCollect' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
+                <Scene key='LineCollectCourt' title='LineCollect' renderBackButton={ this.baconArrow } component={ LineCollectCourtScene } />
+                <Scene key='LineCollectRoutes' title='LineCollect' renderBackButton={ this.baconArrow } component={ LineCollectRoutesScene } />
               </Scene>
 
-              <Scene key='upgrade' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='UpgradeOne' title='會員升級' renderBackButton={ this.baconArrow } component={ UpgradeOneScene } />
-                <Scene key='UpgradeTwo' title='會員升級' renderBackButton={ this.baconArrow } component={ UpgradeTwoScene } />
-                <Scene key='UpgradeThree' title='會員升級' renderBackButton={ this.baconArrow } component={ UpgradeThreeScene } />
-                <Scene key='UpgradeFour' title='會員升級' renderBackButton={ this.baconArrow } component={ UpgradeFourScene } />
-              </Scene>
+              <Scene key='Upgrade' title='會員升級' renderBackButton={ this.baconArrow } component={ UpgradeOneScene } />
 
-              <Scene key='bonus' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='BonusOne' title='Q點儲值' renderBackButton={ this.baconArrow } component={ BonusOneScene } />
-                <Scene key='BonusTwo' title='Q點儲值' renderBackButton={ this.baconArrow } component={ BonusTwoScene } />
-              </Scene>
+              <Scene key='Bonus' title='Q點儲值' renderBackButton={ this.baconArrow } component={ BonusOneScene } />
+
+              <Scene key='Line' title='訊息' renderBackButton={ this.baconArrow } component={ LineScene }/>
 
             </Scene>
           </Scene>
