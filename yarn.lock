@@ -3691,8 +3691,8 @@ react-native-fast-image@1.0.0:
     prop-types "^15.5.10"
 
 react-native-firebase@^2.0.4:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-2.1.0.tgz#43abf62c0c53ebb918c75f39e2ca99f30b4154ba"
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-2.1.1.tgz#a6732e79351a60df22155375d4f3353b7e5ccf39"
   dependencies:
     bows "^1.6.0"
     prop-types "^15.5.10"
