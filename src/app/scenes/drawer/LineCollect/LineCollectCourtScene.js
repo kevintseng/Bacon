@@ -1,23 +1,21 @@
 import React, { Component } from 'react'
-import { View, ActivityIndicator, ScrollView, Dimensions, BackHandler, ToastAndroid } from 'react-native'
+import { View, ActivityIndicator, ScrollView, Dimensions, BackHandler, ToastAndroid, Button } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
-import CourtContainer from '../../../containers/MeetChanceCourtScene/CourtContainer'
-import InfosContainer from '../../../containers/MeetChanceCourtScene/InfosContainer'
-import BadgeWallContainer from '../../../containers/MeetChanceCourtScene/BadgeWallContainer'
+import CourtContainer from '../../../containers/LineCollectCourtScene/CourtContainer'
+import InfosContainer from '../../../containers/LineCollectCourtScene/InfosContainer'
+import BadgeWallContainer from '../../../containers/LineCollectCourtScene/BadgeWallContainer'
 
 const { width, height } = Dimensions.get('window')
 
-@inject('firebase','SubjectStore','MeetChanceStore') @observer
-export default class MeetChanceCourtScene extends Component {
+@observer
+export default class LineCollectCourtScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.SubjectStore = this.props.SubjectStore
-    this.MeetChanceStore = this.props.MeetChanceStore
-
+    this.Store = this.props.Store // MeetChanceStore FateStore
   }
 
   componentWillMount() {
@@ -35,7 +33,7 @@ export default class MeetChanceCourtScene extends Component {
   }
 
   componentDidMount() {
-    this.MeetChanceStore.setPrey()
+    this.Store.setPrey()
   }
 
   indicator = () => (
@@ -54,21 +52,36 @@ export default class MeetChanceCourtScene extends Component {
     </View>
   )
 
+  goToLine = () => { 
+    Actions.Line({uid: this.Store.uid, name: this.Store.nickname})
+  }
+
+  goToBonusFilter = () => {
+    Actions.LineCollectRoutes()
+  }
+
+  goToFate = () => {
+    Actions.Fate({initialPage: 3})
+  }
+
   render() {
     return(
       <View style={{flex: 1}}>
-        { this.MeetChanceStore.loading &&
+        { this.Store.loading &&
           this.indicator()
         }
-        { !this.MeetChanceStore.loading &&
+        { !this.Store.loading &&
           <View style={{flex: 1}}>
             <ScrollView style={{flex: 1}}>
-              <CourtContainer/>
+              <CourtContainer Store={this.Store}/>
               <View style={{alignSelf: 'center',paddingTop: 40}}>
-                <InfosContainer/>
+                <InfosContainer Store={this.Store}/>
               </View>
-              <BadgeWallContainer/>
+              <BadgeWallContainer Store={this.Store}/>
             </ScrollView>
+            <Button title='收藏滿了' onPress={ this.goToFate }/>
+            <Button title='轉到聊天室' onPress={ this.goToLine }/>
+            <Button title='轉到使用Q點頁' onPress={ this.goToBonusFilter }/>
           </View>
         }
       </View>

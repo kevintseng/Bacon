@@ -52,7 +52,7 @@ export default class CollectionContainer extends Component {
   }
 
   goToUpgradeMember = () => {
-    Actions.upgrade()
+    Actions.Upgrade()
   }
 
   header = () => (

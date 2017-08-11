@@ -13,16 +13,16 @@ const styles = {
   }
 }
 
-@inject('MeetChanceStore') @observer
+@observer
 export default class BadgeWallContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.MeetChanceStore = this.props.MeetChanceStore
+    this.Store = this.props.Store // MeetChanceStore FateStore
   }
 
   showBadge = () => (
-    this.MeetChanceStore.hobbiesToFlatList.map((ele) => (<BaconBadgeYes key={ele.key} text={ele.key}/>))
+    this.Store.hobbiesToFlatList.map((ele) => (<BaconBadgeYes key={ele.key} text={ele.key}/>))
   )
 
   render() {

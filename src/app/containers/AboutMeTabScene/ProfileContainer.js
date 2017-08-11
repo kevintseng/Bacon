@@ -49,11 +49,11 @@ export default class ProfileContainer extends Component {
   }
 
   goToMemberUpgrade = () => {
-    Actions.upgrade()
+    Actions.Upgrade()
   }
 
   goToQUpgrade = () => {
-    Actions.bonus()
+    Actions.Bonus()
   }
 
   verificationEmail = () => {

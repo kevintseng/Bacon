@@ -36,7 +36,7 @@ export default class GoodImpressionContainer extends Component {
   }
 
   onPress = () => {
-    alert('轉到要不要配對')
+    Actions.FateCourt()
   }
   
   render() {

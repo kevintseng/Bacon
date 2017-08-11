@@ -4,12 +4,12 @@ import { Actions } from 'react-native-router-flux'
 
 import Court from '../../views/Court'
 
-@inject('MeetChanceStore') @observer
+@observer
 export default class CourtContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.MeetChanceStore = this.props.MeetChanceStore
+    this.Store = this.props.Store // MeetChanceStore FateStore
     this.state = {
       visible: false,
       match: false
@@ -35,7 +35,8 @@ export default class CourtContainer extends Component {
   }
 
   converse = () => {
-    Actions.Line({uid: this.MeetChanceStore.uid, name: this.MeetChanceStore.nickname})
+    //Actions.Line({uid: this.MeetChanceStore.uid, name: this.MeetChanceStore.nickname})
+    alert('跳出燈箱')
   }
 
   render() {
@@ -43,7 +44,7 @@ export default class CourtContainer extends Component {
       <Court
         rightIcon={ this.state.match ? require('../../../images/btn_qy_fav_1.png') : require('../../../images/btn_qy_fav_0.png') }
         leftIcon={ require('../../../images/btn_qy_chat.png') }
-        album={ this.MeetChanceStore.albumToArray }
+        album={ this.Store.albumToArray }
         visible={ this.state.visible }
         closeAlbum={ this.closeAlbum }
         openAlbum={ this.openAlbum }

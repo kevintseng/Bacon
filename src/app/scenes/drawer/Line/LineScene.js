@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   modalContainer: {
-    
+
   },
   modalText: {
     letterSpacing: 3,
