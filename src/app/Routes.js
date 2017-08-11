@@ -28,6 +28,7 @@ import MeetCuteConfigScene from './scenes/drawer/MeetCute/MeetCuteConfigScene'
 // AboutMe
 import AboutMeTabScene from './scenes/drawer/AboutMe/AboutMeTabScene'
 import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
+import AboutMeBoardScene from './scenes/drawer/AboutMe/AboutMeBoardScene'
 // MeetChance
 import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
 import MeetChanceCourtScene from './scenes/drawer/MeetChance/MeetChanceCourtScene'
@@ -49,8 +50,6 @@ import UpgradeFourScene from './scenes/drawer/Upgrade/UpgradeFourScene'
 
 import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
 import BonusTwoScene from './scenes/drawer/Bonus/BonusTwoScene'
-
-import NotificationScene from './scenes/drawer/Notification/NotificationScene'
 
 import LineListScene from './scenes/drawer/Line/LineListScene'
 import LineScene from './scenes/drawer/Line/LineScene'
@@ -140,7 +139,7 @@ export default class Routes extends Component {
   }
 
   goToNotification = () => {
-    Actions.notification()
+    Actions.AboutMeBoard()
   }
 
   baconMenu = () => (<View style={ styles.baconMenu }><BaconMenu/></View>)
@@ -194,29 +193,22 @@ export default class Routes extends Component {
           <Scene key='Drawer' component={ DrawerScene } open={false}>
             <Scene key='main' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
 
-              <Scene key='meetcute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetCute } component={ MeetCuteCourtScene } />
-                <Scene key='MeetCuteConfig' title='邂逅' renderBackButton={ this.baconArrow } component={ MeetCuteConfigScene } />
-              </Scene>
+              <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolAboutMe } component={ AboutMeTabScene }/>
+              <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } component={ AboutMeEditScene }/>
+              <Scene key='AboutMeBoard' title='通知' renderBackButton={ this.baconArrow } component={ AboutMeBoardScene }/>
+
+
+              <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetChance } component={ MeetChanceWaterFallScene } />
+              <Scene key='MeetChanceConfig' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceConfigScene } />
+              
+              <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetCute } component={ MeetCuteCourtScene } />
+              <Scene key='MeetCuteConfig' title='邂逅' renderBackButton={ this.baconArrow } component={ MeetCuteConfigScene } />
 
               <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } component={ LineListScene }/>
               <Scene key='Line' title='訊息' renderBackButton={ this.baconArrow } component={ LineScene }/>
 
-              <Scene key='meetchance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='MeetChanceWaterFall' title='巧遇' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetChance } component={ MeetChanceWaterFallScene } />
-                <Scene key='MeetChanceCourt' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceCourtScene } />
-                <Scene key='MeetChanceConfig' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceConfigScene } />
-              </Scene>
+              <Scene key='MeetChanceCourt' title='巧遇' renderBackButton={ this.baconArrow } component={ MeetChanceCourtScene } />
 
-
-              <Scene key='aboutme' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='AboutMeTab' title='關於我'  renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolAboutMe } component={ AboutMeTabScene }/>
-                <Scene key='AboutMeEdit' title='關於我' renderBackButton={ this.baconArrow } renderRightButton={ this.baconToolAboutMe } component={ AboutMeEditScene }/>
-              </Scene>
-
-              <Scene key='notification' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
-                <Scene key='Notification' title='通知' renderBackButton={ this.baconArrow } component={ NotificationScene }/>
-              </Scene>
 
               <Scene key='setting' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='SettingIndex' title='設定' renderLeftButton={ this.baconMenu } component={ SettingIndexScene } />

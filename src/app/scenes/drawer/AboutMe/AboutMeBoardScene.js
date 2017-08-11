@@ -18,7 +18,7 @@ const styles = {
   }
 }
 
-export default class NotificationScene extends Component {
+export default class AboutMeBoardScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)

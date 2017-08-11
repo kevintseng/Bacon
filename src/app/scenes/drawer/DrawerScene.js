@@ -45,11 +45,11 @@ export default class DrawerScene extends Component {
   }
 
   goToAboutMe() {
-    Actions.aboutme({type: 'reset'})
+    Actions.AboutMeTab({type: 'reset'})
   }
 
   goToMeetChance() {
-    Actions.meetchance({type: 'reset'})
+    Actions.MeetChanceWaterFall({type: 'reset'})
   }
 
   goToLine() {
@@ -57,7 +57,7 @@ export default class DrawerScene extends Component {
   }
 
   goToMeetCute() {
-    Actions.meetcute({type: 'reset'})
+    Actions.MeetCuteCourt({type: 'reset'})
   }
 
   goToFate() {
