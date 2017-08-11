@@ -34,7 +34,7 @@ export default class BaconRoutesContainer extends Component {
   render() {
     return(
       <BaconRoutes
-        routesText='付款'
+        routesText='升級'
         routesOnPress={ this.pay } 
       />
     )

@@ -36,7 +36,7 @@ export default class VisitorsContainer extends Component {
   }
 
   onPress = () => {
-    alert('轉到聊天')
+    Actions.LineCollect()
   }
   
   render() {
