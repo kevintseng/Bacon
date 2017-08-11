@@ -35,24 +35,26 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 10,
   },
-  modalContainer: {
-
+  modalViewContainer: {
+    backgroundColor: 'white',
+    borderRadius: 26,
+    padding: 50,
   },
   modalText: {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
-    fontWeight: '500',
     color: '#606060',
-    fontSize: 20,
+    fontSize: 18,
   },
   footerText: {
     fontSize: 14,
     color: "#aaa",
   },
   btnUseBonus: {
+    marginTop: 20,
     backgroundColor: "transparent",
-    padding: 12,
-    margin: 10,
+    padding: 5,
+    margin: 5,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -61,21 +63,20 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans',
     fontWeight: '500',
     color: '#606060',
-    fontSize: 20,
+    fontSize: 24,
   },
   btnCancel: {
     backgroundColor: "transparent",
-    padding: 12,
-    margin: 10,
+    padding: 5,
+    margin: 5,
     justifyContent: "center",
     alignItems: "center",
   },
   btnTextCancel: {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
-    fontWeight: '500',
     color: '#606060',
-    fontSize: 20,
+    fontSize: 18,
   },
 })
 
@@ -133,18 +134,18 @@ export default class Chat extends Component {
       visit: this.visit,
       showVisitorModal: false,
       showMsgLimitModal: false,
-      showPriorityModal: false,
-      showInsufficientBonusModal: false,
+      showPriorityModal: true,
       dontAskPriorityAgain: false,
       minToolBarHeight: 45,
     }
   }
 
   componentWillMount() {
+    this.getUserData(this.otherUid)
   }
 
   componentDidMount() {
-    this.getUserData(this.otherUid)
+    // this.getUserData(this.otherUid)
   }
 
   getUserData = uid => {
@@ -349,10 +350,10 @@ export default class Chat extends Component {
   }
 
   makeConversationPriority = (uid, otherUid) => {
-    const convRef = this.firebase
+    this.firebase
       .database()
-      .ref(`users/${otherUid}/conversations/${uid}`)
-    convRef.update({ priority: 0 })
+      .ref(`users/${otherUid}/conversations/${uid}/priority`).set(0)
+    // convRef.update({ priority: 0 })
     this.setState({ dontAskPriorityAgain: true })
   }
 
@@ -797,9 +798,56 @@ export default class Chat extends Component {
     }
   }
 
-  goToUseBonus = () => {
+  callbackFunc = (boolean, useCode) => {
+    console.log("callbackFunc called: ", boolean)
+    if (boolean) {
+      if (useCode == 'visitorMsgLimit') {
+        console.log("Add visitor msg limit by 1")
+        this.visitorMsgLimitAddOne(this.convKey, this.uid)
+      }
+      if (useCode == 'priority') {
+        console.log("Make priority:")
+        this.makeConversationPriority(this.uid, this.otherUid)
+      }
+    }
+  }
+
+  useBonusForPriority = () => {
+    const reason = `讓${this.other.nickname}最先看到你的來訪留言！`
     // balance, cost, avatarUrl, reason
-    Actions.useBonus({balance: this.SubjectStore.bonus, avatarUrl: this.other.avatar, reason: "reason blah blah", cost: 10})
+    Actions.UseBonus({
+      cost: 100,
+      reason,
+      avatarUrl: this.other.avatar,
+      callback: this.callbackFunc,
+      useCode: 'priority',
+    })
+  }
+
+  useBonusForMoreMsg = () => {
+    const reason = `對${this.other.nickname}送出多一則訊息，展現你的真誠與積極！`
+    // balance, cost, avatarUrl, reason
+    Actions.UseBonus({
+      cost: 30,
+      reason,
+      avatarUrl: this.other.avatar,
+      callback: this.callbackFunc,
+      useCode: 'visitorMsgLimit',
+    })
+  }
+
+  useBonus = (reason, val) => {
+    switch (reason) {
+      case "visitorMsgLimit":
+        this.setState({ showMsgLimitModal: false })
+        this.useBonusForMoreMsg()
+        break
+      case "priority":
+        this.setState({ showPriorityModal: false })
+        this.useBonusForPriority()
+        break
+      default:
+    }
   }
 
   notInterested = () => {
@@ -814,45 +862,6 @@ export default class Chat extends Component {
     this.firebase.database().ref(`users/${this.uid}/conversations/${this.otherUid}/visit`).set(false)
     this.firebase.database().ref(`users/${this.otherUid}/conversations/${this.uid}/visit`).set(false)
     this.SubjectStore.setConvVisit(this.otherUid, false)
-  }
-
-  handleInsufficientBonus = () => {
-    this.setState({
-      showInsufficientBonusModal: true,
-    })
-  }
-
-  useBonus = (reason, val) => {
-    const balance = this.SubjectStore.bonus
-    if (balance - val <= 0) {
-      this.setState({
-        showMsgLimitModal: false,
-        showVisitorModal: false,
-        showPriorityModal: false,
-      })
-      setTimeout(() => {
-        this.handleInsufficientBonus()
-      }, 1000)
-      return
-    }
-
-    this.SubjectStore.deductBonus(val)
-
-    switch (reason) {
-      case "visitorMsgLimit":
-        this.visitorMsgLimitAddOne(this.convKey, this.uid)
-        this.setState({
-          showMsgLimitModal: false,
-        })
-        break
-      case "priority":
-        this.makeConversationPriority(this.uid, this.otherUid)
-        this.setState({
-          showPriorityModal: false,
-        })
-        break
-      default:
-    }
   }
 
   cancelSend = () => {
@@ -1039,23 +1048,20 @@ export default class Chat extends Component {
           backdropOpacity={0.7}
         >
           <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 10,
-              backgroundColor: "white",
-            }}
+            style={styles.modalViewContainer}
           >
-            <Text style={{ margin: 10, color: "black" }}>
+            <Text style={styles.modalText}>
               訊息優先被看到：您可以使用Q點讓您的訊息優先顯示在對方的訊息中心！
             </Text>
             <Button
               title="使用Q點"
+              textStyle={styles.btnTextUseBonus}
               buttonStyle={styles.btnUseBonus}
               onPress={() => this.useBonus("priority", 100)}
             />
             <Button
               title="不用"
+              textStyle={styles.btnTextCancel}
               buttonStyle={styles.btnCancel}
               onPress={this.cancelSend}
             />

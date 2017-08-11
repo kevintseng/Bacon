@@ -36,8 +36,12 @@ export default class UseBonusScene extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    this.balance = this.SubjectStore.bonus
     this.reason = this.props.reason
     this.cost = this.props.cost
+    this.avatarUrl = this.props.avatarUrl
+    this.useCode = this.props.useCode
+    this.callback = this.props.callback
   }
 
   componentWillMount() {
@@ -59,6 +63,7 @@ export default class UseBonusScene extends Component {
     const newBalance = this.SubjectStore.deductBonus(this.cost)
     // console.log("newBalance: ", newBalance)
     this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(newBalance)
+    this.callback(true, this.useCodeCode)
     Actions.pop()
     return true
   }
@@ -68,11 +73,20 @@ export default class UseBonusScene extends Component {
       <View style={styles.view}>
 
         <View style={styles.top}>
-          <UseBonusContainer balance={this.SubjectStore.bonus || 0} reason={this.props.reason} cost={this.props.cost || 0} />
+          <UseBonusContainer
+            balance={this.balance}
+            reason={this.reason}
+            cost={this.cost}
+            avatarUrl={this.avatarUrl}
+          />
         </View>
 
         <View style={styles.bottom}>
-          <BaconRoutesContainer balance={this.SubjectStore.bonus || 0} cost={this.props.cost || 0} onUseConfirm={this.handleUseConfirmed} />
+          <BaconRoutesContainer
+            balance={this.balance}
+            cost={this.cost}
+            confirmUse={this.handleUseConfirmed}
+          />
         </View>
 
       </View>

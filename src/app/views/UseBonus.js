@@ -37,7 +37,7 @@ const UseBonus = ({balance, cost, avatarUrl, reason}) => {
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           <Text style={styles.text}>你目前有 </Text>
-          <Text style={styles.colorText}>{balance || "$balance_prop"}</Text>
+          <Text style={styles.colorText}>{balance}</Text>
           <Text style={styles.text}> Q點</Text>
         </View>
       </View>

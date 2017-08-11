@@ -44,9 +44,9 @@ export default class BaconRoutesContainer extends Component {
   }
 
   handleUseConfirmed = () => {
-    console.log("handleUseConfirmed")
+    // console.log("handleUseConfirmed")
     // this.setState({showBalanceModal: false})
-    this.props.onUseConfirm()
+    this.props.confirmUse()
   }
 
   handleMakeDespoit = () => {
@@ -55,7 +55,7 @@ export default class BaconRoutesContainer extends Component {
   }
 
   goToQUpgrade = () => {
-    Actions.bonus()
+    Actions.Bonus()
   }
 
   handleRoutesOnPress = () => {
@@ -108,7 +108,7 @@ export default class BaconRoutesContainer extends Component {
               <Text style={styles.balanceText}> 點</Text>
             </View>
             <View style={styles.view}>
-              <TouchableOpacity onPress={() => this.handleUseConfirmed()}>
+              <TouchableOpacity onPress={this.handleUseConfirmed}>
                 <Image style={styles.routesImage} source={require('./img/btn_qy_confirm.png')}>
                   <Text style={styles.routesText}>確定</Text>
                 </Image>
