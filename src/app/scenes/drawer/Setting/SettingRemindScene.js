@@ -53,7 +53,7 @@ export default class SettingRemindScene extends Component {
           <ShakeContainer/>
         </View>
 
-        <View style={{position: 'absolute',bottom: 0}}>
+        <View style={{position: 'absolute',bottom: 0,alignSelf: 'center'}}>
           <Knife/>
         </View>
 
