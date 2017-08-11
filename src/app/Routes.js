@@ -141,6 +141,12 @@ export default class Routes extends Component {
     Actions.AboutMeBoard()
   }
 
+  // reason 就是text string 點數使用說明文字
+  goToUseBonus = (balance, cost, reason, avatarUrl) => {
+    // balance, cost, avatarUrl, reason
+    Actions.useBonus({balance, cost, reason, avatarUrl})
+  }
+
   baconMenu = () => (<View style={ styles.baconMenu }><BaconMenu/></View>)
 
   baconTitle = () => (<View style={ styles.baconTitle }><BaconTitle/></View>)
@@ -220,7 +226,7 @@ export default class Routes extends Component {
                 <Scene key='FateTab' title='緣分' renderLeftButton={ this.baconMenu } component={ FateTabScene } />
                 <Scene key='FateCourt' title='緣分' renderBackButton={ this.baconArrow } component={ FateCourtScene } />
               </Scene>
-  
+
               <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } component={ LineListScene }/>
 
               <Scene key='LineCollect' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>

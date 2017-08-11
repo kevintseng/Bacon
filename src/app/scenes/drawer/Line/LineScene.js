@@ -35,28 +35,47 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 10,
   },
+  modalContainer: {
+
+  },
+  modalText: {
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    fontWeight: '500',
+    color: '#606060',
+    fontSize: 20,
+  },
   footerText: {
     fontSize: 14,
     color: "#aaa",
   },
-  modalButton1: {
-    backgroundColor: "#7197C8",
-    paddingVertical: 25,
-    paddingHorizontal: 12,
-    margin: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)",
-  },
-  modalButton2: {
-    backgroundColor: "lightblue",
+  btnUseBonus: {
+    backgroundColor: "transparent",
     padding: 12,
     margin: 10,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  btnTextUseBonus: {
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    fontWeight: '500',
+    color: '#606060',
+    fontSize: 20,
+  },
+  btnCancel: {
+    backgroundColor: "transparent",
+    padding: 12,
+    margin: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btnTextCancel: {
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    fontWeight: '500',
+    color: '#606060',
+    fontSize: 20,
   },
 })
 
@@ -115,7 +134,7 @@ export default class Chat extends Component {
       showVisitorModal: false,
       showMsgLimitModal: false,
       showPriorityModal: false,
-      showInsufficientCreditModal: false,
+      showInsufficientBonusModal: false,
       dontAskPriorityAgain: false,
       minToolBarHeight: 45,
     }
@@ -281,13 +300,11 @@ export default class Chat extends Component {
         this.SubjectStore.addConv(this.otherUid, data)
 
         // Add new conversation to my user profile on firebase
-        const addToMyConvList = this.firebase.database().ref(`users/${this.uid}/conversations`).child(this.otherUid)
-        addToMyConvList.set(data)
+        const addToMyConvList = this.firebase.database().ref(`users/${this.uid}/conversations/${this.otherUid}`).set(data)
 
         data.visit = true
         // Add new conversation to the other person"s user profile on firebase
-        const addToOtherConvList = this.firebase.database().ref(`users/${this.otherUid}/conversations`).child(this.uid)
-        addToOtherConvList.set(data)
+        const addToOtherConvList = this.firebase.database().ref(`users/${this.otherUid}/conversations/${this.uid}`).set(data)
       })
       .then(
         // update and load conversation and messages
@@ -554,7 +571,7 @@ export default class Chat extends Component {
           console.log("response", filename)
 
           const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
-          this.firebase.storage().ref('chat/' + this.convKey + '/' + this.uid + '/' + filename).putFile(uri, metadata)
+          this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, metadata)
           .then(uploadedFile => {
             console.log("downloadUrl: ", uploadedFile.downloadUrl)
             const _id = msgRef.push().key
@@ -611,7 +628,7 @@ export default class Chat extends Component {
           console.log("response", filename)
 
           const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
-          this.firebase.storage().ref('chat/' + this.convKey + '/' + this.uid + '/' + filename).putFile(uri, metadata)
+          this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, metadata)
           .then(uploadedFile => {
             console.log("downloadUrl: ", uploadedFile.downloadUrl)
             const _id = msgRef.push().key
@@ -741,38 +758,38 @@ export default class Chat extends Component {
               marginRight: 4,
             }}
           >
-              <TouchableOpacity  style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }} onPress={this.handlePhotoPicker}>
-                <Icon
-                  name="collections"
-                  size={25}
-                  color="orange"
-                  containerStyle={{
-                    width: 25,
-                    height: 25,
-                    borderRadius: 5,
-                    borderWidth: 0,
-                    margin: 2,
-                  }}
-                  underlayColor="gray"
-                />
-                <Text>相簿</Text>
-              </TouchableOpacity>
-              <TouchableOpacity  style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }} onPress={this.handleCameraPicker}>
-                <Icon
-                  name="camera-alt"
-                  size={25}
-                  color="orange"
-                  containerStyle={{
-                    width: 25,
-                    height: 25,
-                    borderRadius: 5,
-                    borderWidth: 0,
-                    margin: 2,
-                  }}
-                  underlayColor="gray"
-                />
-                <Text>拍照</Text>
-              </TouchableOpacity>
+            <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }} onPress={this.handlePhotoPicker}>
+              <Icon
+                name="collections"
+                size={25}
+                color="orange"
+                containerStyle={{
+                  width: 25,
+                  height: 25,
+                  borderRadius: 5,
+                  borderWidth: 0,
+                  margin: 2,
+                }}
+                underlayColor="gray"
+              />
+              <Text>相簿</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }} onPress={this.handleCameraPicker}>
+              <Icon
+                name="camera-alt"
+                size={25}
+                color="orange"
+                containerStyle={{
+                  width: 25,
+                  height: 25,
+                  borderRadius: 5,
+                  borderWidth: 0,
+                  margin: 2,
+                }}
+                underlayColor="gray"
+              />
+              <Text>拍照</Text>
+            </TouchableOpacity>
           </View>
         )
       default:
@@ -780,15 +797,16 @@ export default class Chat extends Component {
     }
   }
 
-  goToQUpgrade = () => {
-    Actions.Bonus()
+  goToUseBonus = () => {
+    // balance, cost, avatarUrl, reason
+    Actions.useBonus({balance: this.SubjectStore.bonus, avatarUrl: this.other.avatar, reason: "reason blah blah", cost: 10})
   }
 
   notInterested = () => {
     this.setState({ showVisitorModal: false, visit: false })
     this.SubjectStore.deleteConv(this.otherUid)
     this.firebase.database().ref(`users/${this.uid}/conversations/${this.otherUid}`).remove()
-    Actions.LineList({type: "reset", hideNavBar})
+    Actions.LineList({type: "reset"})
   }
 
   startChatting = () => {
@@ -798,14 +816,14 @@ export default class Chat extends Component {
     this.SubjectStore.setConvVisit(this.otherUid, false)
   }
 
-  handleInsufficientCredit = () => {
+  handleInsufficientBonus = () => {
     this.setState({
-      showInsufficientCreditModal: true,
+      showInsufficientBonusModal: true,
     })
   }
 
-  useCredit = (reason, val) => {
-    const balance = this.SubjectStore.credit
+  useBonus = (reason, val) => {
+    const balance = this.SubjectStore.bonus
     if (balance - val <= 0) {
       this.setState({
         showMsgLimitModal: false,
@@ -813,12 +831,12 @@ export default class Chat extends Component {
         showPriorityModal: false,
       })
       setTimeout(() => {
-        this.handleInsufficientCredit()
+        this.handleInsufficientBonus()
       }, 1000)
       return
     }
 
-    this.SubjectStore.deductCredit(val)
+    this.SubjectStore.deductBonus(val)
 
     switch (reason) {
       case "visitorMsgLimit":
@@ -837,23 +855,12 @@ export default class Chat extends Component {
     }
   }
 
-  buyCredit = () => {
-    this.setState({
-      showMsgLimitModal: false,
-      showVisitorModal: false,
-      showPriorityModal: false,
-      showInsufficientCreditModal: false,
-    })
-    this.goToQUpgrade()
-  }
-
   cancelSend = () => {
     this.setState({
       dontAskPriorityAgain: true,
       showMsgLimitModal: false,
       showVisitorModal: false,
       showPriorityModal: false,
-      showInsufficientCreditModal: false,
     })
   }
 
@@ -943,7 +950,6 @@ export default class Chat extends Component {
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
-            renderAvatarOnTop
             user={{
               _id: this.uid,
             }}
@@ -963,7 +969,6 @@ export default class Chat extends Component {
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
-            renderAvatarOnTop
             user={{
               _id: this.uid,
             }}
@@ -979,7 +984,7 @@ export default class Chat extends Component {
         <Modal
           isVisible={this.state.showVisitorModal}
           backdropColor="black"
-          backdropOpacity={0.6}
+          backdropOpacity={0.7}
         >
           <View
             style={{
@@ -991,12 +996,12 @@ export default class Chat extends Component {
             <Text style={{ margin: 10, color: "white" }}>新的來訪留言</Text>
             <Button
               title="與他/她聊聊"
-              buttonStyle={styles.modalButton1}
+              buttonStyle={styles.btnUseBonus}
               onPress={this.startChatting}
             />
             <Button
               title="不感興趣"
-              buttonStyle={styles.modalButton2}
+              buttonStyle={styles.btnCancel}
               onPress={this.notInterested}
             />
           </View>
@@ -1004,7 +1009,7 @@ export default class Chat extends Component {
         <Modal
           isVisible={this.state.showMsgLimitModal}
           backdropColor="black"
-          backdropOpacity={0.6}
+          backdropOpacity={0.7}
         >
           <View
             style={{
@@ -1012,34 +1017,26 @@ export default class Chat extends Component {
               justifyContent: "center",
               padding: 10,
               backgroundColor: "white",
+              borderRadius: 26,
             }}
           >
             <Text style={{ margin: 10 }}>超過訪客留言次數限制：請等待對方回覆或是使用Q點繼續留言</Text>
             <Button
-              title="使用Q點數(每一則30點)"
-              buttonStyle={styles.modalButton1}
-              onPress={() => this.useCredit("visitorMsgLimit", 30)}
+              title="使用Q點"
+              buttonStyle={styles.btnUseBonus}
+              onPress={() => this.useBonus("visitorMsgLimit", 30)}
             />
             <Button
               title="取消"
-              buttonStyle={styles.modalButton2}
+              buttonStyle={styles.btnCancel}
               onPress={this.cancelSend}
-            />
-            <Text>--------------------------------------</Text>
-            <Text style={{ margin: 10 }}>
-              您目前有 {this.SubjectStore.credit} Q點
-            </Text>
-            <Button
-              title="Q點儲值"
-              buttonStyle={styles.modalButton2}
-              onPress={this.buyCredit}
             />
           </View>
         </Modal>
         <Modal
           isVisible={this.state.showPriorityModal}
           backdropColor="black"
-          backdropOpacity={0.6}
+          backdropOpacity={0.7}
         >
           <View
             style={{
@@ -1053,56 +1050,15 @@ export default class Chat extends Component {
               訊息優先被看到：您可以使用Q點讓您的訊息優先顯示在對方的訊息中心！
             </Text>
             <Button
-              title="使用Q點(100點)優先顯示"
-              buttonStyle={styles.modalButton1}
-              onPress={() => this.useCredit("priority", 100)}
+              title="使用Q點"
+              buttonStyle={styles.btnUseBonus}
+              onPress={() => this.useBonus("priority", 100)}
             />
             <Button
               title="不用"
-              buttonStyle={styles.modalButton2}
+              buttonStyle={styles.btnCancel}
               onPress={this.cancelSend}
             />
-            <Text style={{ color: "black" }}>
-              --------------------------------------
-            </Text>
-            <Text style={{ margin: 10, color: "black" }}>
-              您目前有 {this.SubjectStore.credit} Q點
-            </Text>
-            <Button
-              title="Q點儲值"
-              buttonStyle={styles.modalButton2}
-              onPress={this.buyCredit}
-            />
-          </View>
-        </Modal>
-        <Modal
-          isVisible={this.state.showInsufficientCreditModal}
-          backdropColor="black"
-          backdropOpacity={0.6}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 10,
-              backgroundColor: "white",
-            }}
-          >
-            <Text style={{ margin: 10 }}>抱歉, 你的Q點餘額不足哦！</Text>
-            <Button
-              title="Q點儲值"
-              buttonStyle={styles.modalButton2}
-              onPress={this.buyCredit}
-            />
-            <Button
-              title="取消"
-              buttonStyle={styles.modalButton2}
-              onPress={this.cancelSend}
-            />
-            <Text>--------------------------------------</Text>
-            <Text style={{ margin: 10 }}>
-              您目前有 {this.SubjectStore.credit} Q點
-            </Text>
           </View>
         </Modal>
       </View>
