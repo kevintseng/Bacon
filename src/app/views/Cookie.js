@@ -20,16 +20,16 @@ const styles = {
   }
 }
 
-const ADD_IMAGE = require('Bacon/src/images/addImage.png')
+const ADD_IMAGE = require('./Cookie/img/ico_qy_head_preload.png')
 
 //const onPressButton = () => { console.warn("點擊頭像")}
 
-const Cookie = ({ name, ages, photoURL, children, onPressButton }) => {
+const Cookie = ({ name, ages, avatar, children, onPressButton }) => {
 
   return(
     <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
       <TouchableHighlight onPress={onPressButton}>
-        <Image source={ photoURL ? { uri: photoURL } : ADD_IMAGE } style={styles.itemImageStyle}/>
+        <Image source={ avatar ? { uri: avatar } : ADD_IMAGE } style={styles.itemImageStyle}/>
       </TouchableHighlight>
       <View style={{marginLeft:20}}>
         <View>
