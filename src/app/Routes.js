@@ -51,6 +51,8 @@ import LineCollectRoutesScene from './scenes/drawer/LineCollect/LineCollectRoute
 import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
 import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
 import LineScene from './scenes/drawer/Line/LineScene'
+
+import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
 // ###############drawer################ //
 
 // ###############header components################ //
@@ -141,10 +143,10 @@ export default class Routes extends Component {
   }
 
   // reason 就是text string 點數使用說明文字
-  goToUseBonus = (balance, cost, reason, avatarUrl) => {
-    // balance, cost, avatarUrl, reason
-    Actions.useBonus({balance, cost, reason, avatarUrl})
-  }
+  // goToUseBonus = (balance, cost, reason, avatarUrl, callbackFunc) => {
+  //   // balance, cost, avatarUrl, reason
+  //   Actions.UseBonus({balance, cost, reason, avatarUrl, callBackFunc})
+  // }
 
   baconMenu = () => (<View style={ styles.baconMenu }><BaconMenu/></View>)
 
@@ -238,6 +240,8 @@ export default class Routes extends Component {
               <Scene key='Bonus' title='Q點儲值' renderBackButton={ this.baconArrow } component={ BonusOneScene } />
 
               <Scene key='Line' title='訊息' renderBackButton={ this.baconArrow } component={ LineScene }/>
+
+              <Scene key='UseBonus' title='使用Q點' renderBackButton={ this.baconArrow } component={ UseBonusScene }/>
 
             </Scene>
           </Scene>
