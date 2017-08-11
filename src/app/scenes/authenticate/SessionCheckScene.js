@@ -189,7 +189,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setVip(Boolean(snap.val().vip))
           this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation)
           this.SubjectStore.setChatStatus(snap.val().chatStatus)
-          this.SubjectStore.setCredit(snap.val().credit)
+          this.SubjectStore.setBonus(snap.val().bonus)
           this.SubjectStore.setConversations(snap.val().conversations)
            //null(placeholder->邂逅) String
         } else {

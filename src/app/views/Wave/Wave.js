@@ -1,10 +1,12 @@
 import React from 'react'
-import { View, Image } from 'react-native'
+import { View, Image, Dimensions } from 'react-native'
+
+const { width, height } = Dimensions.get("window") //eslint-disable-line
 
 const Wave = () => {
   return(
-    <View>
-      <Image source={require('./img/pic_index_wave.png')} />
+    <View style={{flex:1, width}}>
+      <Image style={{width}} source={require('./img/pic_index_wave.png')} />
     </View>
   )
 }

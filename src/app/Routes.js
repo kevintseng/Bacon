@@ -52,6 +52,8 @@ import BonusTwoScene from './scenes/drawer/Bonus/BonusTwoScene'
 
 import NotificationScene from './scenes/drawer/Notification/NotificationScene'
 
+import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
+
 import LineListScene from './scenes/drawer/Line/LineListScene'
 import LineScene from './scenes/drawer/Line/LineScene'
 // ###############drawer################ //
@@ -200,6 +202,7 @@ export default class Routes extends Component {
               </Scene>
 
               <Scene key='LineList' title='訊息' hideNavBar renderLeftButton={ this.baconMenu } component={ LineListScene }/>
+
               <Scene key='Line' title='訊息' renderBackButton={ this.baconArrow } component={ LineScene }/>
 
               <Scene key='meetchance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
@@ -242,6 +245,8 @@ export default class Routes extends Component {
                 <Scene key='BonusOne' title='Q點儲值' renderBackButton={ this.baconArrow } component={ BonusOneScene } />
                 <Scene key='BonusTwo' title='Q點儲值' renderBackButton={ this.baconArrow } component={ BonusTwoScene } />
               </Scene>
+
+              <Scene key='useBonus' title='使用Q點' renderBackButton={ this.baconArrow } component={ UseBonusScene } />
 
             </Scene>
           </Scene>
