@@ -45,11 +45,11 @@ export default class DrawerScene extends Component {
   }
 
   goToAboutMe() {
-    Actions.aboutme({type: 'reset'})
+    Actions.AboutMe({type: 'reset'})
   }
 
   goToMeetChance() {
-    Actions.meetchance({type: 'reset'})
+    Actions.MeetChance({type: 'reset'})
   }
 
   goToLine() {
@@ -57,15 +57,15 @@ export default class DrawerScene extends Component {
   }
 
   goToMeetCute() {
-    Actions.meetcute({type: 'reset'})
+    Actions.MeetCute({type: 'reset'})
   }
 
   goToFate() {
-    Actions.fate({type: 'reset'})
+    Actions.Fate({type: 'reset'})
   }
 
   goToSetting() {
-    Actions.setting({type: 'reset'})
+    Actions.Setting({type: 'reset'})
   }
 
   render() {

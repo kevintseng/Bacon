@@ -17,7 +17,7 @@ export default class FateTabScene extends Component {
   render() {
     return(
       <ScrollableTabView
-        initialPage = {0}
+        initialPage = {this.props.initialPage || 0}
         tabBarPosition='top'
         renderTabBar={() => <ScrollableTabBar />}
         tabBarUnderlineStyle={{ backgroundColor: '#d63768' }}

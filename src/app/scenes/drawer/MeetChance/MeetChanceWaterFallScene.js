@@ -43,18 +43,18 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   goToAboutMeTab = () => {
-    Actions.aboutme({type: 'resest'})
+    Actions.AboutMe({type: 'reset'})
   }
 
   onPressButton = uid => {
     this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
     this.MeetChanceStore.setCourtInitialize(uid)
-    Actions.MeetChanceCourt({uid})
+    Actions.LineCollect({ Store: this.MeetChanceStore})
   }
 
   header = () => (
     <View style={ styles.self }>
-      <Cookie size={150} name={this.SubjectStore.nickname} photoURL={this.SubjectStore.avatar}/>
+      <Cookie size={150} name={this.SubjectStore.nickname} photoURL={this.SubjectStore.avatar} onPress={ this.goToAboutMeTab } />
     </View>
   )
 

@@ -35,8 +35,9 @@ export default class VisitorsContainer extends Component {
     this.FateStore.setVisitorsRealPreys()
   }
 
-  onPress = () => {
-    alert('轉到聊天')
+  onPress = uid => {
+    this.FateStore.setCourtInitialize(uid)
+    Actions.LineCollect({ Store: this.FateStore })
   }
   
   render() {
@@ -47,12 +48,11 @@ export default class VisitorsContainer extends Component {
           numColumns={1}
           renderItem={({item}) => 
           (
-            <TouchableOpacity onPress={ this.onPress }>
+            <TouchableOpacity onPress={ () => { this.onPress(item.key) } }>
               <Cookie
                 name={ item.nickname }
                 avatar={ item.avatar }
                 age={ calculateAge(item.birthday) }
-                onPress={ this.onPress }
               >
                 <Text style={styles.child}>剛剛來訪</Text>
               </Cookie>

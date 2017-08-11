@@ -386,7 +386,7 @@ export default class LineListScene extends Component {
   }
 
   goToMemberUpgrade = () => {
-    Actions.upgrade()
+    Actions.Upgrade()
   }
 
   handleSelfInputSubmit = () => {
