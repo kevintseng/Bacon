@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { BackHandler, ToastAndroid } from 'react-native'
+import { BackHandler, ToastAndroid, Dimensions } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
 import Welcome from '../../views/Welcome/Welcome'
+
+const { width, height } = Dimensions.get('window')
 
 @inject('ControlStore') @observer
 export default class WelcomeScene extends Component {
@@ -14,6 +16,7 @@ export default class WelcomeScene extends Component {
   }
 
   componentWillMount() {
+    //console.warn(width)
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 

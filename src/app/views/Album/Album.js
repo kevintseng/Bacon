@@ -14,6 +14,7 @@ const styles = {
     color: '#606060',
     letterSpacing: 3,
     fontFamily: 'NotoSans', 
+    backgroundColor: 'transparent',
     //fontWeight: '500',
   }
 }

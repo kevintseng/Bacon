@@ -31,7 +31,9 @@ const styles = {
   },
   bottom: {
     position: 'absolute', 
-    bottom: 0
+    bottom: 0,
+    alignItems: 'center',
+    alignSelf: 'center'
   }
 }
 

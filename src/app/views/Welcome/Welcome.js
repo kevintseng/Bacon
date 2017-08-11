@@ -1,5 +1,7 @@
 import React from 'react'
-import { View, Image, Text, TouchableOpacity } from 'react-native'
+import { View, Image, Text, TouchableOpacity, Dimensions } from 'react-native'
+
+const { width, height } = Dimensions.get('window')
 
 const styles = {
   welcomeView: {
@@ -73,7 +75,13 @@ const styles = {
   },
   bottomView: {
     position: 'absolute', 
-    bottom: 0
+    bottom: 0,
+    //width,
+    //backgroundColor: 'blue',
+    //alignSelf: 'center',
+    //alignItems: 'center',
+    //padding: 0,
+    //margin: 0
   }
 }
 
