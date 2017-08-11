@@ -5,7 +5,7 @@ import Wave from '../Wave/Wave'
 
 const styles = {
   view: {
-    alignItems: 'center',
+    alignItems: 'center'
   },
   routesImage: {
     justifyContent: 'center'

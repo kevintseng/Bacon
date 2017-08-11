@@ -11,7 +11,7 @@ const { width } = Dimensions.get('window')
 
 const x = 5
 
-const picWidth = (width - 4 * x)/3
+const picWidth = ((width - 4 * x)/3) + 25
 
 const styles = {
   self: {
@@ -54,7 +54,7 @@ export default class MeetChanceWaterFallScene extends Component {
 
   header = () => (
     <View style={ styles.self }>
-      <Cookie size={150} name={this.SubjectStore.nickname} photoURL={this.SubjectStore.avatar} onPress={ this.goToAboutMeTab } />
+      <Cookie size={150} name={this.SubjectStore.nickname} avatar={this.SubjectStore.avatar} onPress={ this.goToAboutMeTab } />
     </View>
   )
 
@@ -68,7 +68,7 @@ export default class MeetChanceWaterFallScene extends Component {
         renderItem={({item}) =>
         <Cookie
           name={ item.nickname }
-          photoURL={ item.avatar }
+          avatar={ item.avatar }
           onPress={ () => { this.onPressButton(item.key) } }
         /> }
         ListHeaderComponent={ this.header }
@@ -76,10 +76,14 @@ export default class MeetChanceWaterFallScene extends Component {
           {length: picWidth, offset: picWidth * index, index}
         )}
       />
-      <View style={{position: 'absolute', bottom: 0}}>
-        <Wave/>
-      </View>
     </View>
     )
   }
 }
+
+/*
+
+      <View style={{position: 'absolute', bottom: 0}}>
+        <Wave/>
+      </View>
+*/

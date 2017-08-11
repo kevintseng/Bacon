@@ -50,7 +50,7 @@ const BigAvatar = ({ imgSource, topButtonText, topButtonOnPress }) => {
       <View style={ styles.avatarView }>
         <Image 
           style={ styles.avatarImage }
-          source={ imgSource ? { uri: imgSource } : require('./img/addImage.png')}       
+          source={ imgSource ? { uri: imgSource } : require('../Cookie/img/ico_qy_head_preload.png')}       
         />
       </View> 
     </View>
