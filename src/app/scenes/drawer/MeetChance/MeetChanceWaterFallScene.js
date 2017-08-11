@@ -43,7 +43,7 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   goToAboutMeTab = () => {
-    Actions.aboutme({type: 'resest'})
+    Actions.AboutMeTab({type: 'reset'})
   }
 
   onPressButton = uid => {
@@ -54,7 +54,7 @@ export default class MeetChanceWaterFallScene extends Component {
 
   header = () => (
     <View style={ styles.self }>
-      <Cookie size={150} name={this.SubjectStore.nickname} photoURL={this.SubjectStore.avatar}/>
+      <Cookie size={150} name={this.SubjectStore.nickname} photoURL={this.SubjectStore.avatar} onPress={ this.goToAboutMeTab } />
     </View>
   )
 
