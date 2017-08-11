@@ -3,15 +3,15 @@ import { calculateAge } from '../../app/Utils'
 
 useStrict(true)
 
-const DefaultLanguages =  {
+const DefaultLanguages = {
   中文: false,
   英文: false,
-  韓文: false
+  韓文: false,
 }
 
 const DefaultHobbies = {
   打球: true,
-  唱歌: true
+  唱歌: true,
 }
 
 export default class SubjectStore {
@@ -57,17 +57,17 @@ export default class SubjectStore {
   // Object to Array FlatList
 
   @computed get albumToFlatList() {
-    return Object.keys(this.album).sort().map((key,index) => ({ key: key, uri: this.album[key] }))
+    return Object.keys(this.album).sort().map((key, index) => ({ key, uri: this.album[key] }))
     // { url: true } -> [{key: index, uri: url}]
   }
 
   @computed get languagesToFlatList() {
-    return Object.keys(this.languages).map((key,index) => ({ key: key, check: this.languages[key] }))
+    return Object.keys(this.languages).map((key, index) => ({ key, check: this.languages[key] }))
     // { 中文: true } -> [{key: 中文, check: true}]
   }
 
   @computed get hobbiesToFlatList() {
-    return Object.keys(this.hobbies).map((key,index) => ({ key: key, check: this.hobbies[key] }))
+    return Object.keys(this.hobbies).map((key, index) => ({ key, check: this.hobbies[key] }))
     // { 打球: true } -> [{key: 打球, check: true}]
   }
 
@@ -82,7 +82,7 @@ export default class SubjectStore {
     this.birthday = null
     this.bio = null
     this.languages = DefaultLanguages
-    this.hobbies = new Object
+    this.hobbies = new Object()
     this.album = new Object
     this.avatar = null
     this.vip = false
@@ -96,7 +96,7 @@ export default class SubjectStore {
     this.hideMessage = false
     this.conversations = null
     this.chatStatus = null
-    this.credit = null
+    this.bonus = null
   }
 
   @action setUid = uid => {
@@ -135,14 +135,14 @@ export default class SubjectStore {
     this.album = object
   }
 
-  @action addPhoto = (key,url) => {
+  @action addPhoto = (key, url) => {
     this.album[key] = url
-    this.album = Object.assign({},this.album)
+    this.album = Object.assign({}, this.album)
   }
 
   @action deletePhoto = key => {
     delete this.album[key]
-    this.album = Object.assign({},this.album)
+    this.album = Object.assign({}, this.album)
   }
 
   @action setVip = boolean => {
@@ -157,8 +157,8 @@ export default class SubjectStore {
     this.hobbies = object
   }
 
-  @action setCredit = (credit) => {
-    this.credit = credit
+  @action setBonus = (bonus) => {
+    this.bonus = bonus
   }
 
   @action setEmailVerified = boolean => {
@@ -182,17 +182,24 @@ export default class SubjectStore {
     this.hideMessage = !this.hideMessage
   }
 
-  @action addCredit = (points) => {
-    this.credit = this.credit + points
+  @action addBonus = (points) => {
+    if (!this.bonus) {
+      this.bonus = 0
+    }
+    this.bonus = this.bonus + points
   }
 
-  @action deductCredit = (points) => {
-    const deducted = this.credit - points
-    if(deducted < 0) {
-      this.credit = 0
-    } else {
-      this.credit = deducted
+  @action deductBonus = (points) => {
+    if (!this.bonus) {
+      this.bonus = 0
     }
+    const deducted = this.bonus - points
+    if (deducted < 0 || !deducted) {
+      this.bonus = 0
+    } else {
+      this.bonus = deducted
+    }
+    return this.bonus
   }
 
   @action setChatStatus = status => {

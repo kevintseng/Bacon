@@ -13,10 +13,10 @@ import MeetCuteStore from '../mobx/stores/MeetCuteStore'
 import MeetChanceStore from '../mobx/stores/MeetChanceStore'
 import FateStore from '../mobx/stores/FateStore'
 import LineStore from '../mobx/stores/LineStore'
-//import SignUpInStore from '../mobx/stores/SignUpInStore'
+// import SignUpInStore from '../mobx/stores/SignUpInStore'
 
 const FirebaseConfig = {
-  debug: true
+  debug: true,
 }
 
 const AppInitial = {
@@ -31,19 +31,19 @@ const AppInitial = {
     this.SubjectStore = new SubjectStore()
     this.SubjectEditStore = new SubjectEditStore()
 
-    //this.SignUpInStore = new SignUpInStore(this.firebase)
+    // this.SignUpInStore = new SignUpInStore(this.firebase)
     this.MeetCuteStore = new MeetCuteStore(this.firebase)
     this.MeetChanceStore = new MeetChanceStore(this.firebase)
     this.FateStore = new FateStore(this.firebase)
     this.LineStore = new LineStore(this.firebase)
     return this
-  }
+  },
 }.init()
 
 export default AppInitial
 
 
-//this.wooer = new SubjectStore(this.firebase,this.ui)
-//this.meetCute = Object.assign(new ObjectStore(this.firebase,this.wooer),MeetCuteAction)
-//this.meetChance = Object.assign(new ObjectStore(this.firebase,this.wooer),MeetChanceAction)
-//this.fate = Object.assign(new ObjectStore(this.firebase,this.wooer,this.meetChance),FateAction)
+// this.wooer = new SubjectStore(this.firebase,this.ui)
+// this.meetCute = Object.assign(new ObjectStore(this.firebase,this.wooer),MeetCuteAction)
+// this.meetChance = Object.assign(new ObjectStore(this.firebase,this.wooer),MeetChanceAction)
+// this.fate = Object.assign(new ObjectStore(this.firebase,this.wooer,this.meetChance),FateAction)
