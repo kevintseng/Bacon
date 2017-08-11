@@ -788,7 +788,7 @@ export default class Chat extends Component {
     this.setState({ showVisitorModal: false, visit: false })
     this.SubjectStore.deleteConv(this.otherUid)
     this.firebase.database().ref(`users/${this.uid}/conversations/${this.otherUid}`).remove()
-    Actions.conversations({type: "reset"})
+    Actions.LineList({type: "reset", hideNavBar})
   }
 
   startChatting = () => {
