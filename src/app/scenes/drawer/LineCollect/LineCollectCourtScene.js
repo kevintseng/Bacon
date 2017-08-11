@@ -9,15 +9,13 @@ import BadgeWallContainer from '../../../containers/LineCollectCourtScene/BadgeW
 
 const { width, height } = Dimensions.get('window')
 
-@inject('firebase','SubjectStore','MeetChanceStore') @observer
+@observer
 export default class LineCollectCourtScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.SubjectStore = this.props.SubjectStore
-    this.MeetChanceStore = this.props.MeetChanceStore
-
+    this.Store = this.props.Store // MeetChanceStore FateStore
   }
 
   componentWillMount() {
@@ -35,7 +33,7 @@ export default class LineCollectCourtScene extends Component {
   }
 
   componentDidMount() {
-    this.MeetChanceStore.setPrey()
+    this.Store.setPrey()
   }
 
   indicator = () => (
@@ -55,7 +53,7 @@ export default class LineCollectCourtScene extends Component {
   )
 
   goToLine = () => { 
-    Actions.Line()
+    Actions.Line({uid: this.Store.uid, name: this.Store.nickname})
   }
 
   goToBonusFilter = () => {
@@ -69,17 +67,17 @@ export default class LineCollectCourtScene extends Component {
   render() {
     return(
       <View style={{flex: 1}}>
-        { this.MeetChanceStore.loading &&
+        { this.Store.loading &&
           this.indicator()
         }
-        { !this.MeetChanceStore.loading &&
+        { !this.Store.loading &&
           <View style={{flex: 1}}>
             <ScrollView style={{flex: 1}}>
-              <CourtContainer/>
+              <CourtContainer Store={this.Store}/>
               <View style={{alignSelf: 'center',paddingTop: 40}}>
-                <InfosContainer/>
+                <InfosContainer Store={this.Store}/>
               </View>
-              <BadgeWallContainer/>
+              <BadgeWallContainer Store={this.Store}/>
             </ScrollView>
             <Button title='收藏滿了' onPress={ this.goToFate }/>
             <Button title='轉到聊天室' onPress={ this.goToLine }/>

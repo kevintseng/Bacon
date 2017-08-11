@@ -4,23 +4,23 @@ import { Actions } from 'react-native-router-flux'
 
 import Infos from '../../views/Infos/Infos'
  
-@inject('MeetChanceStore') @observer
+@observer
 export default class InfosContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.MeetChanceStore = this.props.MeetChanceStore
+    this.Store = this.props.Store // MeetChanceStore FateStore
   }
 
   render() {
     return(
       <Infos
-        verityEmail={ this.MeetChanceStore.emailVerified } 
-        verityPhoto={ this.MeetChanceStore.photoVerified }
-        displayName={ this.MeetChanceStore.nickname }
-        bio={ this.MeetChanceStore.bio }
-        age={ this.MeetChanceStore.age }
-        langs={ this.MeetChanceStore.languagesToString }
+        verityEmail={ this.Store.emailVerified } 
+        verityPhoto={ this.Store.photoVerified }
+        displayName={ this.Store.nickname }
+        bio={ this.Store.bio }
+        age={ this.Store.age }
+        langs={ this.Store.languagesToString }
         distance='35'
       />
     )
