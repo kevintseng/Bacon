@@ -49,7 +49,7 @@ export default class MeetChanceWaterFallScene extends Component {
   onPressButton = uid => {
     this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
     this.MeetChanceStore.setCourtInitialize(uid)
-    Actions.LineCollect({uid})
+    Actions.LineCollect({ Store: this.MeetChanceStore})
   }
 
   header = () => (
