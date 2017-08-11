@@ -199,7 +199,7 @@ export default class Routes extends Component {
                 <Scene key='MeetCuteConfig' title='邂逅' renderBackButton={ this.baconArrow } component={ MeetCuteConfigScene } />
               </Scene>
 
-              <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } component={ LineListScene }/>
+              <Scene key='LineList' title='訊息' hideNavBar renderLeftButton={ this.baconMenu } component={ LineListScene }/>
               <Scene key='Line' title='訊息' renderBackButton={ this.baconArrow } component={ LineScene }/>
 
               <Scene key='meetchance' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
