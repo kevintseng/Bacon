@@ -81,6 +81,7 @@ export default class ProfileContainer extends Component {
           city={ this.SubjectStore.address }
           bio={ this.SubjectStore.bio }
           langs={ this.SubjectStore.languagesToString }
+          bonus={ this.SubjectStore.bonus }
           //interests={ this.SubjectStore.hobbies }
 
           onPressDisplayName={ this.goToEditDisplayName } 

@@ -25,6 +25,7 @@ export default class SubjectStore {
   @observable bio
   @observable photos
   @observable vip
+  @observable bonus
   @observable languages
   @observable hobbies
   @observable emailVerified
