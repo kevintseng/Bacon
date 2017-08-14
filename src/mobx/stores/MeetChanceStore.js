@@ -1,4 +1,4 @@
-import { observable, action, computed, useStrict, runInAction } from 'mobx'
+import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx'
 import _ from 'lodash'
 import { calculateAge } from '../../app/Utils'
 
@@ -44,6 +44,10 @@ export default class MeetChanceStore {
     // { 打球: true } -> [{key: 打球, check: true}]
   }
 
+  @computed get preysToFlatList() {
+    return toJS(this.preys)
+  }
+
   @action initialize = () => {
     this.pool = new Array
     this.preyList = new Array
@@ -86,19 +90,14 @@ export default class MeetChanceStore {
   // pleylist = _.cloneDeep(pool)
 
   @action setPreyList = () => {
-    this.preyList = _.cloneDeep(this.pool)
+    this.preyList = toJS(this.pool)
     this.preyList.sort((a, b) => {
       return a.distance > b.distance ? 1 : -1
     })
-    if (this.preyList.length > 9) {
-      this.preyList.length = this.preyList.length - this.preyList.length % 3
-    }
   }
 
   @action setFakePreys = () => {
     this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
-    //console.log(this.preys)
-    //this.preys this.preyList 是完全不同物件 OK
   }
 
   @action setRealPreys = async () => {
@@ -106,24 +105,26 @@ export default class MeetChanceStore {
       await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
         if (snap.val()) {
           if (snap.val().hideMeetChance || snap.val().deleted ||  calculateAge(snap.val().birthday) < this.meetChanceMinAge || calculateAge(snap.val().birthday) > this.meetChanceMaxAge) {
-            this.preys[index] = null // 隱身了 或 帳號刪除了
+            runInAction(() => {
+              this.preys[index] = null // 隱身了 或 帳號刪除了
+            })
           } else {
-            this.preys[index].nickname = snap.val().nickname
-            this.preys[index].avatar = snap.val().avatar
+            runInAction(() => {
+              this.preys[index].nickname = snap.val().nickname
+              this.preys[index].avatar = snap.val().avatar
+            })
           }
         }
       }).catch(err => console.log(err))
     }))
     runInAction(() => {
       this.preys = this.preys.filter(ele => ele)
+      if (this.preys.length > 3) {
+        this.preys.length = this.preys.length - this.preys.length % 3
+      }
     })
-    console.log(this.preys)
-    //runInAction(() => {
-    //  this.preys = this.preys.peek()
-    //})
   }
 
-  // court
 
   @action setCourtInitialize = uid => {
     this.loading = true
