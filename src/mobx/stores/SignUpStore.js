@@ -20,6 +20,9 @@ export default class SignUpStore {
   @observable nicknameIndicator
   // sign up error
   @observable signUpIndicator
+  // modal
+  @observable policyModal
+  @observable ruleModal
 
   constructor(firebase) {
     this.firebase = firebase
@@ -48,6 +51,9 @@ export default class SignUpStore {
     this.birthdayIndicator = null
     // sign up error
     this.signUpIndicator = null
+    // modal
+    this.policyModal = false
+    this.ruleModal = false
   }
 
   @action switchGender = () => {
@@ -89,6 +95,14 @@ export default class SignUpStore {
   @action setAlbum = (key,url) => {
     this.album[key] = url
     //this.album = Object.assign({},this.album)
+  }
+
+  @action setPolicyModal = () => {
+    this.policyModal = !this.policyModal
+  }
+
+  @action setRuleModal = () => {
+    this.ruleModal = !this.ruleModal
   }
 
   // Blur

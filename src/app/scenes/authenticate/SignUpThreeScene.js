@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
-import { View, Platform, BackHandler, ToastAndroid } from 'react-native'
+import { View, Platform, BackHandler, ToastAndroid, Modal, Text, TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
+import { inject, observer } from "mobx-react"
 
 import EmailContainer from '../../containers/SignUpThreeScene/EmailContainer'
 import PasswordContainer from '../../containers/SignUpThreeScene/PasswordContainer'
 import NickNameContainer from '../../containers/SignUpThreeScene/NickNameContainer'
 import BirthdayContainer from '../../containers/SignUpThreeScene/BirthdayContainer'
 import PolicyContainer from '../../containers/SignUpThreeScene/PolicyContainer'
+import PolicyModalContainer from '../../containers/SignUpThreeScene/PolicyModalContainer'
+import RuleModalContainer from '../../containers/SignUpThreeScene/RuleModalContainer'
 
-import EmailStatesConatiner from '../../containers/SignUpThreeScene/EmailStatesConatiner'
-import PasswordStatesConatiner from '../../containers/SignUpThreeScene/PasswordStatesConatiner'
-import NickNameStatesConatiner from '../../containers/SignUpThreeScene/NickNameStatesConatiner'
-import FailureConatiner from '../../containers/SignUpThreeScene/FailureConatiner'
+
+import EmailStatesContainer from '../../containers/SignUpThreeScene/EmailStatesContainer'
+import PasswordStatesContainer from '../../containers/SignUpThreeScene/PasswordStatesContainer'
+import NickNameStatesContainer from '../../containers/SignUpThreeScene/NickNameStatesContainer'
+import FailureContainer from '../../containers/SignUpThreeScene/FailureContainer'
 
 import BaconRoutesContainer from '../../containers/SignUpThreeScene/BaconRoutesContainer'
 
@@ -29,7 +33,13 @@ const styles = {
   }
 }
 
+@inject('SignUpStore') @observer
 export default class SignUpThreeScene extends Component {
+
+  constructor(props) {
+    super(props)
+    this.SignUpStore = this.props.SignUpStore
+  }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
@@ -53,23 +63,27 @@ export default class SignUpThreeScene extends Component {
           <PasswordContainer/>
           <NickNameContainer/>
           <BirthdayContainer/>
+          <PolicyModalContainer/>
+          <RuleModalContainer/>
+
           <View style={{marginTop: 40}}>
             <PolicyContainer/>
           </View>
+
           <View style={{position: 'absolute', top: 2, left: 20}}>
-            <EmailStatesConatiner/>
+            <EmailStatesContainer/>
           </View>
 
           <View style={{position: 'absolute', top: 70, left: 20}}>
-            <PasswordStatesConatiner/>
+            <PasswordStatesContainer/>
           </View>
 
           <View style={{position: 'absolute', top: 140, left: 20}}>
-            <NickNameStatesConatiner/>
+            <NickNameStatesContainer/>
           </View>
 
           <View style={{position: 'absolute', bottom: 90, alignSelf: 'center',alignItems: 'center'}}>
-            <FailureConatiner/>
+            <FailureContainer/>
           </View>
 
         </View>
