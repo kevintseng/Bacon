@@ -6,16 +6,20 @@ import { observer, inject } from 'mobx-react'
 import CourtContainer from '../../../containers/LineCollectCourtScene/CourtContainer'
 import InfosContainer from '../../../containers/LineCollectCourtScene/InfosContainer'
 import BadgeWallContainer from '../../../containers/LineCollectCourtScene/BadgeWallContainer'
+import CollectionModalContainer from '../../../containers/LineCollectCourtScene/CollectionModalContainer'
 
 const { width, height } = Dimensions.get('window')
 
-@observer
+@inject('firebase','SubjectStore','FateStore','ControlStore') @observer
 export default class LineCollectCourtScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.Store = this.props.Store // MeetChanceStore FateStore
+    this.SubjectStore = this.props.SubjectStore
+    this.FateStore = this.props.FateStore
+    this.ControlStore = this.props.ControlStore
   }
 
   componentWillMount() {
@@ -25,15 +29,18 @@ export default class LineCollectCourtScene extends Component {
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+    this.SubjectStore.cleanCollect()
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/collect').set(this.SubjectStore.collect)
+    this.FateStore.setCollectionPreylist(this.SubjectStore.collect)
+  }
+
+  componentDidMount() {
+    this.Store.setPrey()
   }
 
   onBackAndroid = () => {
     Actions.pop()
     return true
-  }
-
-  componentDidMount() {
-    this.Store.setPrey()
   }
 
   indicator = () => (
@@ -79,7 +86,7 @@ export default class LineCollectCourtScene extends Component {
               </View>
               <BadgeWallContainer Store={this.Store}/>
             </ScrollView>
-            <Button title='收藏滿了' onPress={ this.goToFate }/>
+            <CollectionModalContainer/>
             <Button title='轉到聊天室' onPress={ this.goToLine }/>
             <Button title='轉到使用Q點頁' onPress={ this.goToBonusFilter }/>
           </View>

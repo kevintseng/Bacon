@@ -28,6 +28,8 @@ export default class SubjectStore {
   @observable bonus
   @observable languages
   @observable hobbies
+  @observable collect
+  @observable maxCollect
   @observable emailVerified
   @observable photoVerified
   // hide function
@@ -72,6 +74,10 @@ export default class SubjectStore {
     // { 打球: true } -> [{key: 打球, check: true}]
   }
 
+  @computed get collectCount() {
+    return Object.keys(this.collect).length
+  }
+
   // action
 
   @action initialize = () => {
@@ -84,6 +90,8 @@ export default class SubjectStore {
     this.bio = null
     this.languages = DefaultLanguages
     this.hobbies = new Object()
+    this.collect = new Object()
+    this.maxCollect = 5
     this.album = new Object
     this.avatar = null
     this.vip = false
@@ -156,6 +164,27 @@ export default class SubjectStore {
 
   @action setHobbies = object => {
     this.hobbies = object
+  }
+
+  @action setCollect = object => {
+    this.collect = object
+  }
+
+  @action switchCollect = key => {
+    if (this.collect[key]) {
+      this.collect[key] = false
+    } else {
+      this.collect[key] = Date.now()
+    }
+    //this.collect[key] = !this.collect[key]
+    this.collect = Object.assign({},this.collect)
+  }
+
+  @action cleanCollect = () => {
+    this.collect = Object.keys(this.collect).reduce((r, e) => {
+      if (this.collect[e] !== false ) r[e] = this.collect[e]
+      return r;
+    }, {})
   }
 
   @action setBonus = (bonus) => {

@@ -12,6 +12,7 @@ export default class ControlStore {
   @observable meetCuteMaxAge
   @observable meetChanceMinAge
   @observable meetChanceMaxAge
+  @observable getCollectionMax
   // bonues
   @observable bonus
   
@@ -31,6 +32,8 @@ export default class ControlStore {
     this.meetChanceMaxAge = 99
     // bonues
     this.bonus = { 200: true, 500: false, 1000: false }
+    // collection
+    this.getCollectionMax = false
   }
 
   @action setAuthenticateIndicator = str => {
@@ -75,5 +78,9 @@ export default class ControlStore {
 
   @action pickOneThousandBonus = () => {
     this.bonus = { 200: false, 500: false, 1000: true }
+  }
+
+  @action setGetCollectionMax = () => {
+    this.getCollectionMax = !this.getCollectionMax
   }
 }
