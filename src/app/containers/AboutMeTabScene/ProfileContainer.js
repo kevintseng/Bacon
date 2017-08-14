@@ -73,6 +73,7 @@ export default class ProfileContainer extends Component {
       <View style={{flex: 1}}>
         <Profile
           source={ this.SubjectStore.avatar }
+          vip={ this.SubjectStore.vip }
           verityEmail={ this.SubjectStore.emailVerified }
           //verityPhoto={ this.SubjectStore.photoVerified }
           displayName={ this.SubjectStore.nickname }
