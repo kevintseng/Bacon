@@ -10,6 +10,8 @@ export default class ControlStore {
   @observable syncIndicator
   @observable meetCuteMinAge
   @observable meetCuteMaxAge
+  // bonues
+  @observable bonus
   
   constructor() {
     this.initialize()
@@ -25,6 +27,8 @@ export default class ControlStore {
     this.meetCuteMaxAge = 99
     this.meetChanceMinAge = 18
     this.meetChanceMaxAge = 99
+    // bonues
+    this.bonus = { 200: true, 500: false, 1000: false }
   }
 
   @action setAuthenticateIndicator = str => {
@@ -49,5 +53,17 @@ export default class ControlStore {
 
   @action setMeetCuteMaxAge = int => {
     this.meetCuteMaxAge = int
+  }
+
+  @action pickTwoHundredBonus = () => {
+    this.bonus = { 200: true, 500: false, 1000: false }
+  }
+
+  @action pickFiveHundredBonus = () => {
+    this.bonus = { 200: false, 500: true, 1000: false }
+  }
+
+  @action pickOneThousandBonus = () => {
+    this.bonus = { 200: false, 500: false, 1000: true }
   }
 }
