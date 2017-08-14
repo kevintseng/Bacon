@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { inject, observer } from "mobx-react"
+import { inject, observer } from 'mobx-react'
+import { View, Modal, Text, TouchableOpacity } from 'react-native'
 
 import Policy from '../../views/Policy/Policy'
 
@@ -11,22 +12,15 @@ export default class PolicyContainer extends Component {
     this.SignUpStore = this.props.SignUpStore
   }
 
-  showPolicy = () => {
-    alert('showPolicy')
-  }
-
-  showRule = () => {
-    alert('showRule')
-  }
-
   render() {
     return(
-      <Policy
-        check={ this.SignUpStore.policyDetector }
-        onPressCheckBox={ this.SignUpStore.switchPolicyDetector }
-        onPressPolicy={ this.showPolicy }
-        onPressRule={ this.showRule }
-      />
+
+        <Policy
+          check={ this.SignUpStore.policyDetector }
+          onPressCheckBox={ this.SignUpStore.switchPolicyDetector }
+          onPressPolicy={ this.SignUpStore.setPolicyModal }
+          onPressRule={ this.SignUpStore.setRuleModal }
+        />
     )
   }
 }

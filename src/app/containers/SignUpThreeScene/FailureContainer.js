@@ -4,7 +4,7 @@ import { inject, observer } from "mobx-react"
 import StatesMessage from '../../views/StatesMessage'
 
 @inject('SignUpStore') @observer
-export default class FailureConatiner extends Component {
+export default class FailureContainer extends Component {
 
   constructor(props) {
     super(props)
