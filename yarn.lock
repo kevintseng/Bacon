@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@expo/react-native-action-sheet@cribspot/react-native-action-sheet#b422c54f26d30b9e85eb14a882ea9cec38600730":
+"@expo/react-native-action-sheet@github:cribspot/react-native-action-sheet#b422c54f26d30b9e85eb14a882ea9cec38600730":
   version "1.0.0"
   resolved "https://codeload.github.com/cribspot/react-native-action-sheet/tar.gz/b422c54f26d30b9e85eb14a882ea9cec38600730"
   dependencies:
@@ -1589,8 +1589,8 @@ es-to-primitive@^1.1.1:
     is-symbol "^1.0.1"
 
 es5-ext@^0.10.14, es5-ext@^0.10.9, es5-ext@~0.10.14:
-  version "0.10.26"
-  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.26.tgz#51b2128a531b70c4f6764093a73cbebb82186372"
+  version "0.10.27"
+  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.27.tgz#bf926b058c62b1cb5de1a887930673b6aa6d9a66"
   dependencies:
     es6-iterator "2"
     es6-symbol "~3.1"
@@ -1729,8 +1729,8 @@ eslint-plugin-jsx-a11y@^5.0.1:
     jsx-ast-utils "^1.4.0"
 
 eslint-plugin-react@^7.1.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.2.0.tgz#25c77a4ec307e3eebb248ea3350960e372ab6406"
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.2.1.tgz#c2673526ed6571b08c69c5f453d03f5f13e8ddbe"
   dependencies:
     doctrine "^2.0.0"
     has "^1.0.1"
@@ -3118,7 +3118,7 @@ mobx@^2.2.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-2.7.0.tgz#cf3d82d18c0ca7f458d8f2a240817b3dc7e54a01"
 
-mobx@^3.2.1:
+mobx@^3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-3.2.2.tgz#aa671459bededfd9880c948889a3f62bce09279c"
 
@@ -3691,8 +3691,8 @@ react-native-fast-image@1.0.0:
     prop-types "^15.5.10"
 
 react-native-firebase@^2.0.4:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-2.1.1.tgz#a6732e79351a60df22155375d4f3353b7e5ccf39"
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-2.1.2.tgz#bfa8b562e15f7e0fa212e57121acef0da2ac8125"
   dependencies:
     bows "^1.6.0"
     prop-types "^15.5.10"
@@ -3717,8 +3717,8 @@ react-native-google-places@kaymingmobile/react-native-google-places#patch-1:
   resolved "https://codeload.github.com/kaymingmobile/react-native-google-places/tar.gz/9c7e164a424817dc1702fd18b2af5db21450bc41"
 
 react-native-image-pan-zoom@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.0.5.tgz#907ba39968dc460bfadc701edd4f63f25bb55767"
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.0.6.tgz#93117d075dccd2f6b34009d70a4c17ae1a23f572"
 
 react-native-image-picker@kaymingmobile/react-native-image-picker#patch-1:
   version "0.26.2"
@@ -3726,7 +3726,7 @@ react-native-image-picker@kaymingmobile/react-native-image-picker#patch-1:
 
 react-native-image-resizer@bamlab/react-native-image-resizer#master:
   version "0.1.1"
-  resolved "https://codeload.github.com/bamlab/react-native-image-resizer/tar.gz/90ef9daac257eb229e5cae6fa5992c994f7b4eb1"
+  resolved "https://codeload.github.com/bamlab/react-native-image-resizer/tar.gz/975d9097d3ff3107d940dad1bef7565c72dc36b5"
 
 react-native-invertible-scroll-view@1.0.0:
   version "1.0.0"
@@ -3735,7 +3735,7 @@ react-native-invertible-scroll-view@1.0.0:
     react-clone-referenced-element "^1.0.1"
     react-native-scrollable-mixin "^1.0.1"
 
-react-native-lightbox@oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875:
+"react-native-lightbox@github:oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875":
   version "0.6.0"
   resolved "https://codeload.github.com/oblador/react-native-lightbox/tar.gz/c84a8543d4511fe6a44c3d7820747c9c1bddd875"
   dependencies:
@@ -4802,8 +4802,8 @@ wordwrap@~0.0.2:
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
 
 worker-farm@^1.3.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/worker-farm/-/worker-farm-1.4.1.tgz#a438bc993a7a7d133bcb6547c95eca7cff4897d8"
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/worker-farm/-/worker-farm-1.5.0.tgz#adfdf0cd40581465ed0a1f648f9735722afd5c8d"
   dependencies:
     errno "^0.1.4"
     xtend "^4.0.1"

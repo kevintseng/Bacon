@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import { View, FlatList, Dimensions } from 'react-native'
-//import update from 'react-addons-update'
 
 import Wave from '../../../views/Wave/Wave'
 import Cookie from '../../../views/Cookie/Cookie'
@@ -62,9 +61,8 @@ export default class MeetChanceWaterFallScene extends Component {
     return(
     <View style={{flex:1}}>
       <FlatList
-        data={this.MeetChanceStore.preys}
+        data={ this.MeetChanceStore.preysToFlatList }
         numColumns={3}
-        //extraData={this.MeetChanceStore.synchronize}
         renderItem={({item}) =>
         <Cookie
           name={ item.nickname }
@@ -72,9 +70,9 @@ export default class MeetChanceWaterFallScene extends Component {
           onPress={ () => { this.onPressButton(item.key) } }
         /> }
         ListHeaderComponent={ this.header }
-        getItemLayout={(data, index) => (
-          {length: picWidth, offset: picWidth * index, index}
-        )}
+        //getItemLayout={(data, index) => (
+        //  {length: picWidth, offset: picWidth * index, index}
+        //)}
       />
     </View>
     )
