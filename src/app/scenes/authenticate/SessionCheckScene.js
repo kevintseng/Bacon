@@ -38,6 +38,7 @@ export default class SessionCheckScene extends Component {
     this.meetCuteQuery = null
     this.visitorsQuery = null
     this.goodImpressionQuery = null
+    this.collectionQuery = null
   }
 
   componentWillMount() {
@@ -168,6 +169,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setAlbum(this.SignUpStore.album) // Object
     this.SubjectStore.setLanguages(DefaultLanguages) // Object
     this.SubjectStore.setHobbies(new Object) // Object
+    this.SubjectStore.setCollect(new Object) // Object
     this.SubjectStore.setVip(false) // boolean
     this.SubjectStore.setBonus(0) // Int
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
@@ -189,11 +191,14 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setAlbum(new Object(snap.val().album)) // Object
           this.SubjectStore.setLanguages(snap.val().languages || DefaultLanguages) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
+          this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
           this.SubjectStore.setVip(Boolean(snap.val().vip))
           this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation)
           this.SubjectStore.setChatStatus(snap.val().chatStatus)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
           this.SubjectStore.setConversations(snap.val().conversations)
+          // 收藏
+          this.FateStore.setCollectionPreylist(new Object(snap.val().collect)) // Object
            //null(placeholder->邂逅) String
         } else {
           //this.SubjectStore.initialize()

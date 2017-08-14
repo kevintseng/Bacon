@@ -1,4 +1,4 @@
-import { observable, action, computed, useStrict, runInAction } from 'mobx'
+import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx'
 import _ from 'lodash'
 import { calculateAge } from '../../app/Utils'
 
@@ -8,6 +8,7 @@ export default class FateStore {
 
   @observable visitorsPreys
   @observable goodImpressionPreys
+  @observable collectionPreys
   // court
   @observable loading
   // user data
@@ -51,6 +52,9 @@ export default class FateStore {
     this.goodImpressionPool = new Array
     this.goodImpressionPreylist = new Array
     this.goodImpressionPreys = new Array
+    //this.collectionPool = new Array
+    this.collectionPreylist = new Array
+    this.collectionPreys = new Array
     // court
     this.loading = true
     // user data
@@ -64,6 +68,10 @@ export default class FateStore {
     this.vip = false
     this.emailVerified = false
     this.photoVerified = false
+  }
+
+  @computed get collectionPreysToFlatList() {
+    return toJS(this.collectionPreys)
   }
 
   // visitors 
@@ -123,6 +131,34 @@ export default class FateStore {
     runInAction(() => {
       this.goodImpressionPreys = this.goodImpressionPreys.peek()
     })
+  }
+
+  // collection
+  //@action addPreyToCollectionPool = (uid,time) => {
+  //  this.collectionPool.push({uid: uid, time: time})
+  //}
+
+  @action setCollectionPreylist = object => {
+    this.collectionPreylist = Object.assign({},object)
+  }
+
+  @action setCollectionFakePreys = () => {
+    this.collectionPreys = Object.keys(this.collectionPreylist).map((uid,index) => ({ key: uid, time: this.collectionPreylist[uid], nickname: null, avatar: null, birthday: null }))
+    //this.collectionPreys = this.collectionPreylist.map((ele,index) => ({ key: ele.uid, time: ele.time, nickname: null, avatar: null, birthday: null }))
+  }
+
+  @action setCollectionRealPreys = async () => {
+    await Promise.all(Object.keys(this.collectionPreylist).map(async (uid,index) => {
+      await this.firebase.database().ref('users/' + uid).once('value').then(snap => {
+        if (snap.val()) {
+          runInAction(() => {
+            this.collectionPreys[index].nickname = snap.val().nickname
+            this.collectionPreys[index].avatar = snap.val().avatar
+            this.collectionPreys[index].birthday = snap.val().birthday 
+          })        
+        }
+      }).catch(err => console.log(err))
+    }))
   }
 
   // court

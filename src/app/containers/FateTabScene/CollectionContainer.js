@@ -28,23 +28,24 @@ const styles = {
   }
 }
 
-@inject('firebase','FateStore') @observer
+@inject('firebase','FateStore','SubjectStore') @observer
 export default class CollectionContainer extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    //this.FateStore = this.props.FateStore
+    this.SubjectStore = this.props.SubjectStore
+    this.FateStore = this.props.FateStore
   }
 
   componentWillMount() {
-    //this.FateStore.setVisitorsPreylist()
-    //this.FateStore.setVisitorsFakePreys()
+    //console.warn('初始化')
+    this.FateStore.setCollectionFakePreys()
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {
-    //this.FateStore.setVisitorsRealPreys()
+    this.FateStore.setCollectionRealPreys()
   }
 
   onPress = () => {
@@ -59,9 +60,9 @@ export default class CollectionContainer extends Component {
     <View style={ styles.headView }>
       <View style={ styles.count }>
         <Text>目前收藏數</Text>
-        <Text>12</Text>
+        <Text>{ this.SubjectStore.collectCount }</Text>
         <Text>/</Text>
-        <Text>20</Text>
+        <Text>{ this.SubjectStore.maxCollect }</Text>
       </View>
       <BaconBadgeYes
         text='提高我的收藏上限'
@@ -74,7 +75,7 @@ export default class CollectionContainer extends Component {
     return(
       <View>
         <FlatList
-          data={ [{key: 0, nickname: '大頭',avatar: 'https://s1.cutiesgeneration.com/2016/05/ChihYuChen/31.jpg', birthday: '1987-06-20'}] } // local 
+          data={ this.FateStore.collectionPreysToFlatList } // local 
           numColumns={1}
           ListHeaderComponent={ this.header }
           renderItem={({item}) => 
