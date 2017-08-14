@@ -9,6 +9,7 @@ export default class FateStore {
   @observable visitorsPreys
   @observable goodImpressionPreys
   @observable collectionPreys
+  //@observable collectionPreylist
   // court
   @observable loading
   // user data
@@ -45,6 +46,10 @@ export default class FateStore {
     // { 打球: true } -> [{key: 打球, check: true}]
   }
 
+  @computed get collectionPreysToFlatList() {
+    return toJS(this.collectionPreys)
+  }
+
   @action initialize = () => {
     this.visitorsPool = new Array
     this.visitorsPreylist = new Array
@@ -68,10 +73,6 @@ export default class FateStore {
     this.vip = false
     this.emailVerified = false
     this.photoVerified = false
-  }
-
-  @computed get collectionPreysToFlatList() {
-    return toJS(this.collectionPreys)
   }
 
   // visitors 
@@ -159,6 +160,7 @@ export default class FateStore {
         }
       }).catch(err => console.log(err))
     }))
+    //console.log(this.collectionPreys)
   }
 
   // court
@@ -166,6 +168,7 @@ export default class FateStore {
   @action setCourtInitialize = uid => {
     this.loading = true
     this.uid = uid
+    //console.warn(this.uid)
   }
 
   @action setPrey = async () => {
