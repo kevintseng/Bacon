@@ -97,6 +97,7 @@ export default class MeetChanceStore {
 
   @action setFakePreys = () => {
     this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
+    //console.log(this.preys)
     //this.preys this.preyList 是完全不同物件 OK
   }
 
@@ -105,7 +106,7 @@ export default class MeetChanceStore {
       await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
         if (snap.val()) {
           if (snap.val().hideMeetChance || snap.val().deleted ||  calculateAge(snap.val().birthday) < this.meetChanceMinAge || calculateAge(snap.val().birthday) > this.meetChanceMaxAge) {
-            this.preys.splice(index, 1) // 隱身了 或 帳號刪除了
+            this.preys[index] = null // 隱身了 或 帳號刪除了
           } else {
             this.preys[index].nickname = snap.val().nickname
             this.preys[index].avatar = snap.val().avatar
@@ -114,10 +115,12 @@ export default class MeetChanceStore {
       }).catch(err => console.log(err))
     }))
     runInAction(() => {
-      this.preys = this.preys.filter( ele => {
-        return ele !== undefined
-      })
+      this.preys = this.preys.filter(ele => ele)
     })
+    console.log(this.preys)
+    //runInAction(() => {
+    //  this.preys = this.preys.peek()
+    //})
   }
 
   // court
