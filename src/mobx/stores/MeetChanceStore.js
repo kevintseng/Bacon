@@ -61,7 +61,9 @@ export default class MeetChanceStore {
     this.vip = false
     this.emailVerified = false
     this.photoVerified = false
-    //this.synchronize = null
+    // config
+    this.meetChanceMinAge = 18
+    this.meetChanceMaxAge = 99
   }
 
   // pool
@@ -102,7 +104,7 @@ export default class MeetChanceStore {
     await Promise.all(this.preyList.map(async (ele,index) => {
       await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
         if (snap.val()) {
-          if (snap.val().hideMeetChance || snap.val().deleted) {
+          if (snap.val().hideMeetChance || snap.val().deleted ||  calculateAge(snap.val().birthday) < this.meetChanceMinAge || calculateAge(snap.val().birthday) > this.meetChanceMaxAge) {
             this.preys.splice(index, 1) // 隱身了 或 帳號刪除了
           } else {
             this.preys[index].nickname = snap.val().nickname
@@ -112,7 +114,9 @@ export default class MeetChanceStore {
       }).catch(err => console.log(err))
     }))
     runInAction(() => {
-      this.preys = this.preys.peek()
+      this.preys = this.preys.filter( ele => {
+        return ele !== undefined
+      })
     })
   }
 
@@ -147,6 +151,14 @@ export default class MeetChanceStore {
     runInAction(() => {
       this.loading = false
     })
+  }
+
+  @action setMeetChanceMinAge = int => {
+    this.meetChanceMinAge = int
+  }
+
+  @action setMeetChanceMaxAge = int => {
+    this.meetChanceMaxAge = int
   }
 
   sleep = ms => {

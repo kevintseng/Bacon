@@ -10,6 +10,8 @@ export default class ControlStore {
   @observable syncIndicator
   @observable meetCuteMinAge
   @observable meetCuteMaxAge
+  @observable meetChanceMinAge
+  @observable meetChanceMaxAge
   // bonues
   @observable bonus
   
@@ -53,6 +55,14 @@ export default class ControlStore {
 
   @action setMeetCuteMaxAge = int => {
     this.meetCuteMaxAge = int
+  }
+
+  @action setMeetChanceMinAge = int => {
+    this.meetChanceMinAge = int
+  }
+
+  @action setMeetChanceMaxAge = int => {
+    this.meetChanceMaxAge = int
   }
 
   @action pickTwoHundredBonus = () => {

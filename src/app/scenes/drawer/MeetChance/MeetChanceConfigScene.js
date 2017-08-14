@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, BackHandler, ToastAndroid } from 'react-native'
 import { Actions } from 'react-native-router-flux'
+import { inject, observer } from 'mobx-react'
 
 import BaconRoutesContainer from '../../../containers/MeetChanceConfigScene/BaconRoutesContainer'
 import SliderContainer from '../../../containers/MeetChanceConfigScene/SliderContainer'
@@ -34,14 +35,18 @@ const styles = {
   }
 }
 
+@inject('MeetChanceStore','ControlStore') @observer
 export default class MeetChanceConfigScene extends Component {
 
   constructor(props) {
     super(props)
-    this.firebase = this.props.firebase
+    this.ControlStore = this.props.ControlStore
+    this.MeetChanceStore = this.props.MeetChanceStore
   }
 
   componentWillMount() {
+    this.ControlStore.setMeetChanceMinAge(this.MeetChanceStore.meetChanceMinAge)  
+    this.ControlStore.setMeetChanceMaxAge(this.MeetChanceStore.meetChanceMaxAge)    
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     Actions.refresh({ key: 'Drawer', open: false })
   }
