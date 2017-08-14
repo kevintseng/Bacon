@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
 import { View, Animated } from 'react-native'
+
 import UpgradeTitle from '../../../views/UpgradeTitle'
 
 export default class UpgradeTitleContainer extends Component {
 
-   constructor(props) {
-     super(props);
-     this.state = {
-       fadeA: new Animated.Value(1), // init opacity 0
-       fadeB: new Animated.Value(0),
-       fadeC: new Animated.Value(0),
-       fadeD: new Animated.Value(0)
-     };
-   }
+  constructor(props) {
+    super(props)
+    this.state = {
+      fadeA: new Animated.Value(1),
+      fadeB: new Animated.Value(0),
+      fadeC: new Animated.Value(0),
+      fadeD: new Animated.Value(0)
+    }
+  }
 
-   componentDidMount() {
-     this.cycleAnimation()         
-   }
+  componentDidMount() {
+    this.cycleAnimation()         
+  }
 
   cycleAnimation = () => {
     Animated.sequence([

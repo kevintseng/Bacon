@@ -21,6 +21,14 @@ const styles = {
     top: 160,
     alignSelf: 'center',
   },
+  textView: {
+    position: 'absolute', 
+    bottom: 200,
+    alignSelf: 'center',
+  },
+  text: {
+    //
+  },
   bottom: {
     position: 'absolute', 
     bottom: 0
@@ -49,6 +57,10 @@ export default class BonusOneScene extends Component {
     Actions.pop()
     return true
   }
+
+  onPress = () => {
+    alert('條款細則')
+  }
   
   render() {
     return(
@@ -60,6 +72,10 @@ export default class BonusOneScene extends Component {
 
         <View style={ styles.middle }>
           <BonusContainer/>
+        </View>
+
+        <View style={ styles.textView }>
+          <Text style={ styles.text } onPress={ this.onPress }>條款細則</Text>
         </View>
 
         <View style={ styles.bottom }>
