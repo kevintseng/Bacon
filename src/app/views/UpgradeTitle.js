@@ -6,6 +6,11 @@ import BaconRoutes from './BaconRoutes/BaconRoutes'
 const { width, height } = Dimensions.get('window')
 
 const styles = {
+  view: {
+    flex: 1,
+    alignItems: 'center',
+    alignSelf: 'center'
+  },
   topText: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
@@ -28,7 +33,7 @@ const styles = {
 
 const UpgradeTitle = ({source, topText,upperText}) => {
   return(
-    <View style={{flex: 1,alignItems: 'center'}}>
+    <View style={styles.view}>
       <Image source={source}/>
       <Text style={styles.topText}>{topText}</Text>
       <Text style={styles.upperText}>{upperText}</Text>
