@@ -798,15 +798,15 @@ export default class Chat extends Component {
     }
   }
 
-  callbackFunc = (boolean, useCode) => {
-    console.log("callbackFunc called: ", boolean)
-    if (boolean) {
-      if (useCode == 'visitorMsgLimit') {
-        console.log("Add visitor msg limit by 1")
+  callbackFunc = (boolean, usageCode) => {
+    console.log("callbackFunc called: ", boolean, " ", usageCode)
+    if (boolean) { // true表示已完成扣點
+      if (usageCode == 'visitorMsgLimit') {
+        // console.log("Add visitor msg limit by 1")
         this.visitorMsgLimitAddOne(this.convKey, this.uid)
       }
-      if (useCode == 'priority') {
-        console.log("Make priority:")
+      if (usageCode == 'priority') {
+        // console.log("Make priority:")
         this.makeConversationPriority(this.uid, this.otherUid)
       }
     }
@@ -817,10 +817,10 @@ export default class Chat extends Component {
     // balance, cost, avatarUrl, reason
     Actions.UseBonus({
       cost: 100,
-      reason,
+      nickname: this.other.nickname,
       avatarUrl: this.other.avatar,
+      usageCode: 'priority',
       callback: this.callbackFunc,
-      useCode: 'priority',
     })
   }
 
@@ -829,10 +829,10 @@ export default class Chat extends Component {
     // balance, cost, avatarUrl, reason
     Actions.UseBonus({
       cost: 30,
-      reason,
+      nickname: this.other.nickname,
       avatarUrl: this.other.avatar,
+      usageCode: 'visitorMsgLimit',
       callback: this.callbackFunc,
-      useCode: 'visitorMsgLimit',
     })
   }
 
