@@ -120,6 +120,8 @@ export default class SessionCheckScene extends Component {
       address: this.SignUpStore.address,
       nickname: this.SignUpStore.nickname,
       birthday: this.SignUpStore.birthday,
+      vip: false,
+      bonus: 0
     }).then(() => {
         this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳成功')
       }).catch((error) => {
@@ -167,6 +169,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setLanguages(DefaultLanguages) // Object
     this.SubjectStore.setHobbies(new Object) // Object
     this.SubjectStore.setVip(false) // boolean
+    this.SubjectStore.setBonus(0) // Int
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
     this.ControlStore.setSyncDetector(true) // 同步完成
     this.meetCuteListener() // 非同步邂逅監聽
@@ -189,7 +192,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setVip(Boolean(snap.val().vip))
           this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation)
           this.SubjectStore.setChatStatus(snap.val().chatStatus)
-          this.SubjectStore.setBonus(snap.val().bonus)
+          this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
           this.SubjectStore.setConversations(snap.val().conversations)
            //null(placeholder->邂逅) String
         } else {

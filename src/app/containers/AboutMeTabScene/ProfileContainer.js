@@ -73,6 +73,7 @@ export default class ProfileContainer extends Component {
       <View style={{flex: 1}}>
         <Profile
           source={ this.SubjectStore.avatar }
+          vip={ this.SubjectStore.vip }
           verityEmail={ this.SubjectStore.emailVerified }
           //verityPhoto={ this.SubjectStore.photoVerified }
           displayName={ this.SubjectStore.nickname }
@@ -80,6 +81,7 @@ export default class ProfileContainer extends Component {
           city={ this.SubjectStore.address }
           bio={ this.SubjectStore.bio }
           langs={ this.SubjectStore.languagesToString }
+          bonus={ this.SubjectStore.bonus }
           //interests={ this.SubjectStore.hobbies }
 
           onPressDisplayName={ this.goToEditDisplayName } 
