@@ -214,20 +214,20 @@ export default class SessionCheckScene extends Component {
   meetChanceListener = (geoQuery) => {
     geoQuery.on('key_entered', (uid, location, distance) => {
       if (!(uid === this.SubjectStore.uid)) {
-        this.MeetChanceStore.addPreyToPool({uid: uid, distance: distance})
+        this.firebase.database().ref('users/' + uid + '/sexualOrientation').once('value').then((snap)=>{
+          if (snap.val() === this.reverseString(this.SubjectStore.sexualOrientation)) {
+            this.MeetChanceStore.addPreyToPool({uid: uid, distance: distance})
+          }
+        })
       }
     })
 
     geoQuery.on('key_moved', (uid, location, distance) => {
-      if (!(uid === this.SubjectStore.uid)) {
-        this.MeetChanceStore.updatePreyToPool(uid,distance)
-      }
+      this.MeetChanceStore.updatePreyToPool(uid,distance)
     })
 
     geoQuery.on('key_exited', (uid, location, distance) => {
-      if (!(uid === this.SubjectStore.uid)) {
-        this.MeetChanceStore.removePreyToPool(uid)
-      }
+      this.MeetChanceStore.removePreyToPool(uid)
     })
   }
 
@@ -279,6 +279,27 @@ export default class SessionCheckScene extends Component {
   }
 
   //////********************//////
+
+  reverseString = str => {
+    return str.split("").reverse().join("")
+  }
+
+  seekMeetQs = sexualOrientation => {
+    switch (sexualOrientation) {
+      case 'msf':
+        'fsm'
+        break
+      case 'msm':
+        'msm'
+        break
+      case 'fsm':
+        'msf'
+        break
+      case 'fsf':
+        'fsf'
+        break
+    }
+  }
 
   seekMeetQs = sexualOrientation => {
     switch (sexualOrientation) {
@@ -346,6 +367,8 @@ export default class SessionCheckScene extends Component {
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
+
+
 
   render() {
     return(

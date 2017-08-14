@@ -71,7 +71,10 @@ export default class MeetChanceStore {
   }
 
   @action updatePreyToPool = (uid,distance) => {
-    this.pool.find(ele => ele.uid === uid).distance = distance
+    const ele = this.pool.find(ele => ele.uid === uid)
+    if (ele) {
+      ele.distance = distance
+    }
   }
 
   @action removePreyToPool = uid => {
