@@ -9,6 +9,7 @@ import {
   Platform,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from "react-native"
 import { Actions } from "react-native-router-flux"
 import { observer, inject } from "mobx-react"
@@ -25,7 +26,7 @@ import Stickers from "./components/Stickers"
 const { width, height } = Dimensions.get("window") //eslint-disable-line
 const DEFAULT_VISITOR_MSG_LIMIT = 2
 const metadata = {
-  contentType: 'image/jpeg'
+  contentType: 'image/jpeg',
 }
 
 const styles = StyleSheet.create({
@@ -712,19 +713,19 @@ export default class Chat extends Component {
       // If height higher than 160, scroll won't work
       case "smily":
         return (
-          <View
-            style={{
-              paddingVertical: 5,
-              paddingLeft: 12,
-              width,
-              justifyContent: "center",
-              height: 230,
-              borderTopWidth: 0.5,
-              borderColor: "#E0E0E0",
-              marginRight: 5,
-            }}
-          >
-            <Stickers width={width} handleStickerPressed={this.handleStickerPressed} />
+          <View style={{ width, height: 200 }}>
+            <ScrollView
+              style={{
+                paddingVertical: 5,
+                paddingLeft: 12,
+                width,
+                borderTopWidth: 0.5,
+                borderColor: "#E0E0E0",
+                marginRight: 5,
+              }}
+            >
+              <Stickers width={width} handleStickerPressed={this.handleStickerPressed} />
+            </ScrollView>
           </View>
         )
       case "uploading":
@@ -798,41 +799,37 @@ export default class Chat extends Component {
     }
   }
 
-  callbackFunc = (boolean, useCode) => {
-    console.log("callbackFunc called: ", boolean)
-    if (boolean) {
-      if (useCode == 'visitorMsgLimit') {
-        console.log("Add visitor msg limit by 1")
+  callbackFunc = (boolean, usageCode) => {
+    console.log("callbackFunc called: ", boolean, " ", usageCode)
+    if (boolean) { // true表示已完成扣點
+      if (usageCode == 'visitorMsgLimit') {
+        // console.log("Add visitor msg limit by 1")
         this.visitorMsgLimitAddOne(this.convKey, this.uid)
       }
-      if (useCode == 'priority') {
-        console.log("Make priority:")
+      if (usageCode == 'priority') {
+        // console.log("Make priority:")
         this.makeConversationPriority(this.uid, this.otherUid)
       }
     }
   }
 
   useBonusForPriority = () => {
-    const reason = `讓${this.other.nickname}最先看到你的來訪留言！`
-    // balance, cost, avatarUrl, reason
     Actions.UseBonus({
       cost: 100,
-      reason,
+      nickname: this.other.nickname,
       avatarUrl: this.other.avatar,
+      usageCode: 'priority',
       callback: this.callbackFunc,
-      useCode: 'priority',
     })
   }
 
   useBonusForMoreMsg = () => {
-    const reason = `對${this.other.nickname}送出多一則訊息，展現你的真誠與積極！`
-    // balance, cost, avatarUrl, reason
     Actions.UseBonus({
       cost: 30,
-      reason,
+      nickname: this.other.nickname,
       avatarUrl: this.other.avatar,
+      usageCode: 'visitorMsgLimit',
       callback: this.callbackFunc,
-      useCode: 'visitorMsgLimit',
     })
   }
 
@@ -886,7 +883,7 @@ export default class Chat extends Component {
       case "plus":
         return 60
       case "smily":
-        return 145
+        return 120
       case "uploading":
         return 60
       case false:
@@ -933,7 +930,7 @@ export default class Chat extends Component {
     if (props.currentMessage.sticker) {
       return (
         <Image
-          style={{ width: 180, height: 149}}
+          style={{ width: 108, height: 90}}
           source={{uri: props.currentMessage.sticker}}
         />
       );
@@ -953,6 +950,7 @@ export default class Chat extends Component {
 
         {this.state.action &&
           <GiftedChat
+            style={{width}}
             messages={this.state.messages}
             messageIdGenerator={() => this.msgKeyGenerator}
             onSend={this.onSend}
@@ -972,6 +970,7 @@ export default class Chat extends Component {
           />}
         {!this.state.action &&
           <GiftedChat
+            style={{width}}
             messages={this.state.messages}
             messageIdGenerator={this.msgKeyGenerator}
             onSend={this.onSend}
