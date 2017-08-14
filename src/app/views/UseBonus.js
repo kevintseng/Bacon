@@ -31,7 +31,8 @@ const styles = {
   },
 }
 
-const UseBonus = ({balance, cost, avatarUrl, reason}) => {
+
+const UseBonus = ({balance, cost, avatarUrl, reasonStr, preStr, postStr}) => {
   return (
     <View style={{flex: 1, width, marginTop: 30}}>
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
@@ -52,15 +53,15 @@ const UseBonus = ({balance, cost, avatarUrl, reason}) => {
 
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={styles.text}>{reason || "$reason_prop"}</Text>
+          <Text style={styles.text}>{reasonStr || "$reason_prop"}</Text>
         </View>
       </View>
 
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={styles.text}>需要 </Text>
+          <Text style={styles.text}>{preStr} </Text>
           <Text style={[styles.colorTextLarge, {paddingBottom: 10}]}>{cost || "$cost_prop"}</Text>
-          <Text style={styles.text}> Q點</Text>
+          <Text style={styles.text}> {postStr}</Text>
         </View>
       </View>
 

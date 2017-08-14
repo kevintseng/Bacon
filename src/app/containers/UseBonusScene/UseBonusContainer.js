@@ -11,7 +11,9 @@ export default class UseBonusContainer extends Component {
     this.balance = this.props.balance
     this.cost = this.props.cost
     this.avatarUrl = this.props.avatarUrl
-    this.reason = this.props.reason
+    this.reasonStr = this.props.reasonStr
+    this.preStr = this.props.preStr
+    this.postStr = this.props.postStr
   }
 
   render() {
@@ -20,7 +22,9 @@ export default class UseBonusContainer extends Component {
         balance={this.balance}
         cost={this.cost}
         avatarUrl={this.avatarUrl}
-        reason={this.reason}
+        reasonStr={this.reasonStr}
+        preStr={this.preStr}
+        postStr={this.postStr}
       />
     )
   }
