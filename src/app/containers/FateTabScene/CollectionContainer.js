@@ -39,7 +39,6 @@ export default class CollectionContainer extends Component {
   }
 
   componentWillMount() {
-    //console.warn('初始化')
     this.FateStore.setCollectionFakePreys()
     Actions.refresh({ key: 'Drawer', open: false })
   }
@@ -48,8 +47,9 @@ export default class CollectionContainer extends Component {
     this.FateStore.setCollectionRealPreys()
   }
 
-  onPress = () => {
-    Actions.MeetChanceCourt()
+  onPress = uid => {
+    this.FateStore.setCourtInitialize(uid)
+    Actions.LineCollect({ Store: this.FateStore })
   }
 
   goToUpgradeMember = () => {
@@ -80,12 +80,11 @@ export default class CollectionContainer extends Component {
           ListHeaderComponent={ this.header }
           renderItem={({item}) => 
           (
-            <TouchableOpacity onPress={ this.onPress }>
+            <TouchableOpacity onPress={ () => { this.onPress(item.key) } }>
               <Cookie
                 name={ item.nickname }
                 avatar={ item.avatar }
                 age={ calculateAge(item.birthday) }
-                onPress={ this.onPress }
               >
                 <Text style={styles.child}>剛剛收藏</Text>
               </Cookie>

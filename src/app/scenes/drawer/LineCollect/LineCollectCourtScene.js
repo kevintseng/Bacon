@@ -27,11 +27,15 @@ export default class LineCollectCourtScene extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
     this.SubjectStore.cleanCollect()
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/collect').set(this.SubjectStore.collect)
     this.FateStore.setCollectionPreylist(this.SubjectStore.collect)
+    if (this.Store.constructor.name === 'FateStore') {
+      this.FateStore.setCollectionFakePreys()
+      this.FateStore.setCollectionRealPreys()
+    }
   }
 
   componentDidMount() {
