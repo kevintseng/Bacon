@@ -29,7 +29,6 @@ export default class SubjectStore {
   @observable languages
   @observable hobbies
   @observable collect
-  @observable maxCollect
   @observable emailVerified
   @observable photoVerified
   // hide function
@@ -48,6 +47,10 @@ export default class SubjectStore {
 
   @computed get age() {
     return calculateAge(this.birthday)
+  }
+
+  @computed get maxCollect() {
+    return this.vip ? 10 : 5 
   }
 
   // Object to String
@@ -91,7 +94,6 @@ export default class SubjectStore {
     this.languages = DefaultLanguages
     this.hobbies = new Object()
     this.collect = new Object()
-    this.maxCollect = 5
     this.album = new Object
     this.avatar = null
     this.vip = false

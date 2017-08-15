@@ -165,6 +165,10 @@ export default class MeetChanceStore {
     this.meetChanceMaxAge = int
   }
 
+  @action cleanLoading = () => {
+    this.loading = false
+  }
+  
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
   }

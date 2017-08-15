@@ -32,6 +32,7 @@ export default class LineCollectCourtScene extends Component {
     this.SubjectStore.cleanCollect()
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/collect').set(this.SubjectStore.collect)
     this.FateStore.setCollectionPreylist(this.SubjectStore.collect)
+    this.Store.cleanLoading()
     if (this.Store.constructor.name === 'FateStore') {
       this.FateStore.setCollectionFakePreys()
       this.FateStore.setCollectionRealPreys()
