@@ -9,24 +9,23 @@ export default class App extends Component {
   render() {
     return (
       <Provider
-        firebase={ AppInitial.firebase }
+        firebase={AppInitial.firebase}
 
-        ControlStore={ AppInitial.ControlStore }
+        ControlStore={AppInitial.ControlStore}
 
-        SignUpStore={ AppInitial.SignUpStore }
-        SignInStore={ AppInitial.SignInStore }
-        PasswordStore={ AppInitial.PasswordStore }
-        SubjectStore={ AppInitial.SubjectStore }
+        SignUpStore={AppInitial.SignUpStore}
+        SignInStore={AppInitial.SignInStore}
+        PasswordStore={AppInitial.PasswordStore}
+        SubjectStore={AppInitial.SubjectStore}
         SubjectEditStore={AppInitial.SubjectEditStore}
-
-        //SignUpInStore={ AppInitial.SignUpInStore }
-        MeetChanceStore={ AppInitial.MeetChanceStore }
-        MeetCuteStore={ AppInitial.MeetCuteStore }
-        FateStore={ AppInitial.FateStore }
-        LineStore={ AppInitial.LineStore }
-        >
-        <Routes/>
+        MeetChanceStore={AppInitial.MeetChanceStore}
+        MeetCuteStore={AppInitial.MeetCuteStore}
+        FateStore={AppInitial.FateStore}
+        LineStore={AppInitial.LineStore}
+      >
+        <Routes />
       </Provider>
     )
   }
 }
+//SignUpInStore={ AppInitial.SignUpInStore }

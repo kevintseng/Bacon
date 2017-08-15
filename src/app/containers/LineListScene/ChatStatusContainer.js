@@ -5,6 +5,8 @@ import { Actions } from "react-native-router-flux"
 import { Button } from "react-native-elements"
 import Modal from "react-native-modal"
 import ChatStatus from "../../views/ChatStatus"
+import CustomStatusInputModalContainer from "./CustomStatusInputModalContainer"
+import UpgradeModalContainer from "./UpgradeModalContainer"
 
 const styles = {
   touch: {
@@ -56,72 +58,39 @@ export default class ChatStatusContainer extends Component {
     this.firebase = this.props.firebase
 
     this.state = {
-      statusModalShow: false,
-      upgradeModalShow: false,
-      selfInputModalShow: false,
-      selfInputChatStatus: null,
+      showStatusMenuModal: false,
+      showUpgradeModal: false,
+      showCustomInputModal: false,
     }
   }
 
   handleOnPress = pressed => {
-    this.setState({statusModalShow: true})
-  }
-  showUpgradeModal = () => {
-    this.setState({
-      upgradeModalShow: true,
-    })
-  }
-
-  selfInputModal = () => {
-    this.setState({
-      selfInputModalShow: true,
-    })
-  }
-
-  goToMemberUpgrade = () => {
-    Actions.Upgrade()
-  }
-
-  handleSelfInputSubmit = () => {
-    // console.log("SelfInput submit pressed, myStatus: ", this.state.selfInputChatStatus)
-    this.setState({
-      selfInputModalShow: false,
-      // myStatus: this.state.selfInputChatStatus,
-    })
-    this.SubjectStore.setChatStatus(this.state.selfInputChatStatus)
-    this.firebase.database().ref(`users/${this.SubjectStore.uid}/chatStatus`).set(this.state.selfInputChatStatus)
-  }
-
-  handleSelfInputCancel = () => {
-    this.setState({ selfInputModalShow: false, selfInputChatStatus: "" })
-  }
-
-  handleUpgrade = () => {
-    this.setState({ upgradeModalShow: false })
-    this.goToMemberUpgrade()
+    this.setState({showStatusMenuModal: true})
   }
 
   handleUpdateStatus = statusCode => {
-    this.setState({ statusModalShow: false, myStatus: statusCode })
+    this.setState({ showCustomInputModal: false })
     this.SubjectStore.setChatStatus(statusCode)
     this.firebase.database().ref(`users/${this.uid}/chatStatus`).set(statusCode)
   }
 
   handleSelfInputPressed = () => {
-    this.setState({ statusModalShow: false })
+    // console.log(this.SubjectStore.vip)
+    this.setState({ showStatusMenuModal: false })
     if (!this.SubjectStore.vip) {
       setTimeout(() => {
-        this.showUpgradeModal()
+        // console.log('showUpgradeModal')
+        this.setState({
+          showUpgradeModal: true,
+        })
       }, 500)
-      return
+      return 0
     }
     setTimeout(() => {
-      this.selfInputModal()
+      this.setState({
+        showCustomInputModal: true,
+      })
     }, 500)
-  }
-
-  textInputOnChange = text => {
-    this.setState({ selfInputChatStatus: text })
   }
 
   render() {
@@ -135,12 +104,14 @@ export default class ChatStatusContainer extends Component {
       borderColor: "rgba(0, 0, 0, 0.1)",
       marginBottom: 100,
     }
+
+    console.log("showCustomInputModal ", this.state.showCustomInputModal)
     return (
       <View>
         <ChatStatus onPress={this.handleOnPress} code={this.SubjectStore.chatStatus || 0} />
         <Modal
           style={{ alignItems: "center" }}
-          isVisible={this.state.statusModalShow}
+          isVisible={this.state.showStatusMenuModal}
         >
           <View style={modalContent}>
             <Button
@@ -187,101 +158,17 @@ export default class ChatStatusContainer extends Component {
             />
           </View>
         </Modal>
-        <Modal
-          style={{ alignItems: "center" }}
-          isVisible={this.state.upgradeModalShow}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              padding: 20,
-              width: 300,
-              alignItems: "center",
-              borderRadius: 10,
-              borderColor: "rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <Text
-              style={{ marginVertical: 45, fontWeight: "600", fontSize: 16 }}
-            >
-              高級會員即可開啟此功能
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                width: 300,
-                justifyContent: "space-between",
-                paddingHorizontal: 50,
-              }}
-            >
-              <Button
-                title="取消"
-                onPress={() => this.setState({ upgradeModalShow: false })}
-                color="#0076FF"
-                buttonStyle={{ backgroundColor: "transparent" }}
-              />
-              <Button
-                title="升級"
-                onPress={() => this.handleUpgrade()}
-                color="#0076FF"
-                buttonStyle={{ backgroundColor: "transparent" }}
-              />
-            </View>
-          </View>
-        </Modal>
-        <Modal
-          style={{ alignItems: "center" }}
-          isVisible={this.state.selfInputModalShow}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              padding: 20,
-              width: 300,
-              alignItems: "center",
-              borderRadius: 10,
-              borderColor: "rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <Text style={{ marginTop: 25, fontWeight: "600", fontSize: 16 }}>
-              請輸入自定義狀態
-            </Text>
-            <TextInput
-              maxLength={3}
-              onChangeText={text => this.textInputOnChange(text)}
-              defaultValue={this.state.selfInputChatStatus}
-              style={{
-                marginVertical: 25,
-                height: 40,
-                width: 200,
-                borderColor: "#B3B3B3",
-                borderWidth: 1,
-                borderRadius: 5,
-              }}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                width: 300,
-                justifyContent: "space-between",
-                paddingHorizontal: 50,
-              }}
-            >
-              <Button
-                title="取消"
-                onPress={() => this.handleSelfInputCancel()}
-                color="#0076FF"
-                buttonStyle={{ backgroundColor: "transparent" }}
-              />
-              <Button
-                title="送出"
-                onPress={() => this.handleSelfInputSubmit()}
-                color="#0076FF"
-                buttonStyle={{ backgroundColor: "transparent" }}
-              />
-            </View>
-          </View>
-        </Modal>
+        {this.state.showUpgradeModal &&
+          <UpgradeModalContainer
+            showModal
+          />
+        }
+        {this.state.showCustomInputModal &&
+          <CustomStatusInputModalContainer
+            onSubmit={this.handleUpdateStatus}
+            showModal
+          />
+        }
       </View>
     )
   }
