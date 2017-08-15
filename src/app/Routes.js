@@ -247,7 +247,6 @@ export default class Routes extends Component {
 
               <Scene key="LineCollect" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="LineCollectCourt" title="LineCollect" renderBackButton={this.baconArrow} component={LineCollectCourtScene} />
-                <Scene key="LineCollectRoutes" title="LineCollect" renderBackButton={this.baconArrow} component={LineCollectRoutesScene} />
               </Scene>
 
               <Scene key="Setting" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>

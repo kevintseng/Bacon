@@ -35,8 +35,14 @@ export default class GoodImpressionContainer extends Component {
     this.FateStore.setGoodImpressionRealPreys()
   }
 
-  onPress = () => {
+  onPress = async uid => {
+    await this.FateStore.setCourtInitialize(uid)
+    await this.sleep(200)
     Actions.FateCourt()
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
   
   render() {
@@ -47,12 +53,11 @@ export default class GoodImpressionContainer extends Component {
           numColumns={1}
           renderItem={({item}) => 
           (
-            <TouchableOpacity onPress={ this.onPress }>
+            <TouchableOpacity onPress={ () => { this.onPress(item.key) } }>
               <Cookie
                 name={ item.nickname }
                 avatar={ item.avatar }
                 age={ calculateAge(item.birthday) }
-                onPress={ this.onPress }
               >
                 <Text style={styles.child}>你們距離大約7.9公里</Text>
               </Cookie>
