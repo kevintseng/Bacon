@@ -36,7 +36,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy01.png')}
+                source={require('./sticker_imgs/boy01.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -45,7 +45,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy02.png')}
+                source={require('./sticker_imgs/boy02.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -54,7 +54,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl01.png')}
+                source={require('./sticker_imgs/girl01.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -63,7 +63,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl02.png')}
+                source={require('./sticker_imgs/girl02.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -72,7 +72,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy03.png')}
+                source={require('./sticker_imgs/boy03.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -81,7 +81,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy04.png')}
+                source={require('./sticker_imgs/boy04.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -90,7 +90,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl03.png')}
+                source={require('./sticker_imgs/girl03.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -99,7 +99,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl04.png')}
+                source={require('./sticker_imgs/girl04.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -108,7 +108,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy05.png')}
+                source={require('./sticker_imgs/boy05.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -117,7 +117,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy06.png')}
+                source={require('./sticker_imgs/boy06.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -126,7 +126,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl05.png')}
+                source={require('./sticker_imgs/girl05.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -135,7 +135,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl06.png')}
+                source={require('./sticker_imgs/girl06.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -144,7 +144,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy07.png')}
+                source={require('./sticker_imgs/boy07.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -153,7 +153,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy08.png')}
+                source={require('./sticker_imgs/boy08.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -162,7 +162,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl07.png')}
+                source={require('./sticker_imgs/girl07.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -171,7 +171,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl08.png')}
+                source={require('./sticker_imgs/girl08.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -180,7 +180,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy09.png')}
+                source={require('./sticker_imgs/boy09.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -189,7 +189,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy10.png')}
+                source={require('./sticker_imgs/boy10.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -198,7 +198,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl09.png')}
+                source={require('./sticker_imgs/girl09.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -207,7 +207,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl10.png')}
+                source={require('./sticker_imgs/girl10.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -216,7 +216,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy11.png')}
+                source={require('./sticker_imgs/boy11.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -225,7 +225,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/boy12.png')}
+                source={require('./sticker_imgs/boy12.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -234,7 +234,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl11.png')}
+                source={require('./sticker_imgs/girl11.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -243,7 +243,7 @@ const Stickers = ({width, handleStickerPressed}) => {
             >
               <Image
                 style={{ width: 80, height: 66}}
-                source={require('../stickers/girl12.png')}
+                source={require('./sticker_imgs/girl12.png')}
               />
             </TouchableOpacity>
       </View>

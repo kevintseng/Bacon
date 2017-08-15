@@ -6,7 +6,7 @@ const DefaultLanguages = {
   菲律賓文: false,
   越南語: false,
   印尼文: false,
-  馬來文: false
+  馬來文: false,
 }
 
 export default DefaultLanguages
