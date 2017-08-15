@@ -13,7 +13,9 @@ export default class ControlStore {
   @observable meetChanceMinAge
   @observable meetChanceMaxAge
   @observable getCollectionMax
+  //
   @observable lineModal
+  @observable mateModal
   // bonues
   @observable bonus
   
@@ -35,7 +37,9 @@ export default class ControlStore {
     this.bonus = { 200: true, 500: false, 1000: false }
     // collection
     this.getCollectionMax = false
+    //
     this.lineModal = false
+    this.mateModal = false
   }
 
   @action setAuthenticateIndicator = str => {
@@ -88,5 +92,9 @@ export default class ControlStore {
 
   @action setLineModal = () => {
     this.lineModal = !this.lineModal
+  }
+
+  @action setMateModal = () => {
+    this.mateModal = !this.mateModal
   }
 }
