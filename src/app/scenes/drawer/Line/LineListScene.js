@@ -6,13 +6,13 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
-  TextInput,
+  // TextInput,
   FlatList,
 } from "react-native"
 import { observer, inject } from "mobx-react"
-import { List, Icon, Button } from "react-native-elements"
+import { List, Icon } from "react-native-elements"
 import { Actions } from "react-native-router-flux"
-import Modal from "react-native-modal"
+// import Modal from "react-native-modal"
 import DropdownMenu from "react-native-dropdown-menu"
 import { calculateAge } from "../../../Utils"
 import Conversation from "./components/Conversation"
@@ -42,14 +42,13 @@ const styles = {
   },
 }
 
-@inject("firebase", "FateStore", "SubjectStore")
+@inject("firebase", "SubjectStore")
 @observer
 export default class LineListScene extends Component {
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
-    this.FateStore = this.props.FateStore
 
     this.uid = this.SubjectStore.uid
     console.log("this.uid")
@@ -60,15 +59,9 @@ export default class LineListScene extends Component {
         height,
       },
       convs: [],
-      myStatus: this.SubjectStore.chatStatus ? this.SubjectStore.chatStatus : 1,
       isLoading: true,
-      pickerShow: false,
       listFilter: "all",
       noData: false,
-      statusModalShow: false,
-      selfInputChatStatus: "",
-      upgradeModalShow: false,
-      selfInputModalShow: false,
     }
   }
 
@@ -82,10 +75,6 @@ export default class LineListScene extends Component {
 
   componentWillUnmount() {
     this.stopListener()
-  }
-
-  onPress = () => {
-    Actions.Line()
   }
 
   onlineListener(userId, key, on) {
@@ -110,10 +99,6 @@ export default class LineListScene extends Component {
     }
     // console.log("onlineListener off: ", userId)
     return ref.off("value", listen)
-  }
-
-  onChatStatusPressed = () => {
-    this.setState({ statusModalShow: true })
   }
 
   getUserData = uid => {
@@ -184,21 +169,6 @@ export default class LineListScene extends Component {
       return myConvListRef.on("value", listen)
     }
     return myConvListRef.off("value", listen)
-  }
-
-  getChatStatus = status => {
-    switch (status) {
-      case 0:
-        return "我的狀態"
-      case 1:
-        return "放空中"
-      case 2:
-        return "忙碌中"
-      case 3:
-        return "低潮中"
-      default:
-        return status
-    }
   }
 
   startListener() {
@@ -371,135 +341,8 @@ export default class LineListScene extends Component {
     }
   }
 
-  showUpgradeModal = () => {
-    this.setState({
-      isLoading: false,
-      upgradeModalShow: true,
-    })
-  }
-
-  selfInputModal = () => {
-    this.setState({
-      isLoading: false,
-      selfInputModalShow: true,
-    })
-  }
-
-  goToMemberUpgrade = () => {
-    Actions.Upgrade()
-  }
-
-  handleSelfInputSubmit = () => {
-    // console.log("SelfInput submit pressed, myStatus: ", this.state.selfInputChatStatus)
-    this.setState({
-      selfInputModalShow: false,
-      myStatus: this.state.selfInputChatStatus,
-    })
-    this.SubjectStore.setChatStatus(this.state.selfInputChatStatus)
-    this.firebase.database().ref(`users/${this.uid}/chatStatus`).set(this.state.selfInputChatStatus)
-  }
-
-  handleSelfInputCancel = () => {
-    this.setState({ selfInputModalShow: false, selfInputChatStatus: "" })
-  }
-
-  handleUpgrade = () => {
-    this.setState({ upgradeModalShow: false })
-    this.goToMemberUpgrade()
-  }
-
-  handleUpdateStatus = statusCode => {
-    this.setState({ statusModalShow: false, myStatus: statusCode })
-    this.SubjectStore.setChatStatus(statusCode)
-    this.firebase.database().ref(`users/${this.uid}/chatStatus`).set(statusCode)
-  }
-
-  handleSelfInputPressed = () => {
-    this.setState({ statusModalShow: false })
-    if (!this.SubjectStore.vip) {
-      setTimeout(() => {
-        this.showUpgradeModal()
-      }, 500)
-      return
-    }
-    setTimeout(() => {
-      this.selfInputModal()
-    }, 500)
-  }
-
-  textInputOnChange = text => {
-    this.setState({ selfInputChatStatus: text })
-  }
-
-  renderHeader = status => {
-    const elementWidth = (width - 20) / 3
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          paddingTop: 20,
-          paddingHorizontal: 10,
-          width,
-          height: 64,
-          backgroundColor: "#FFFFFF",
-        }}
-      >
-        <View
-          style={{
-            height: 40,
-            width: elementWidth,
-            alignItems: "flex-start",
-            justifyContent: "center",
-          }}
-        >
-          <Icon
-            name="menu"
-            color="#000"
-            onPress={() =>
-              Actions.refresh({ key: "Drawer", open: value => !value })}
-          />
-        </View>
-        <View
-          style={{
-            height: 40,
-            width: elementWidth,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              letterSpacing: 3,
-              fontFamily: 'NotoSans',
-              color: '#606060',
-              fontWeight: '500',
-              fontSize: 18,
-            }}
-          >
-            {this.props.title}
-          </Text>
-        </View>
-        <View
-          style={{
-            height: 40,
-            width: elementWidth,
-            alignItems: "flex-end",
-            justifyContent: "center",
-          }}
-        >
-          <TouchableOpacity onPress={this.onChatStatusPressed}>
-            <Text>
-              {this.getChatStatus(status)}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    )
-  }
-
   render() {
     const convs = this.state.convs
-    const status = this.state.myStatus
     const indicator = (
       <ActivityIndicator
         style={{
@@ -512,56 +355,8 @@ export default class LineListScene extends Component {
       />
     )
 
-    const chatStatusStyles = {
-      containerStyle: {
-        width: 260,
-        alignItems: "center",
-      },
-      buttonStyle: {
-        backgroundColor: "white",
-      },
-      textStyle: {
-        backgroundColor: "white",
-      },
-      saveButtonStyle: {
-        marginTop: 10,
-        backgroundColor: "white",
-        borderColor: "black",
-        borderWidth: 1,
-        borderRadius: 5,
-        padding: 5,
-      },
-      upgradeButtonStyle: {
-        marginTop: 15,
-        backgroundColor: "white",
-        borderColor: "#B3B3B3",
-        borderWidth: 1,
-        borderRadius: 5,
-        padding: 5,
-      },
-      inputContainerStyle: {
-        borderBottomWidth: 1,
-        paddingLeft: 10,
-        width: 70,
-        borderBottomColor: "#BDBDBD",
-        alignItems: "center",
-      },
-    }
-
-    const modalContent = {
-      backgroundColor: "white",
-      padding: 20,
-      width: 300,
-      justifyContent: "center",
-      alignItems: "center",
-      borderRadius: 10,
-      borderColor: "rgba(0, 0, 0, 0.1)",
-      marginBottom: 100,
-    }
-
     return (
       <View>
-        {this.renderHeader(status)}
         <ScrollView style={{ marginTop: 0 }}>
           <DropdownMenu
             style={{ backgroundColor: "#D63768" }}
@@ -593,150 +388,6 @@ export default class LineListScene extends Component {
               </Text>}
           </DropdownMenu>
         </ScrollView>
-        <Modal
-          style={{ alignItems: "center" }}
-          isVisible={this.state.statusModalShow}
-        >
-          <View style={modalContent}>
-            <Button
-              title="放空中"
-              onPress={() => this.handleUpdateStatus(1)}
-              color="black"
-              textStyle={chatStatusStyles.textStyle}
-              buttonStyle={chatStatusStyles.buttonStyle}
-              style={chatStatusStyles.containerStyle}
-            />
-            <Button
-              title="忙碌中"
-              onPress={() => this.handleUpdateStatus(2)}
-              color="black"
-              textStyle={chatStatusStyles.textStyle}
-              buttonStyle={chatStatusStyles.buttonStyle}
-              style={chatStatusStyles.containerStyle}
-            />
-            <Button
-              title="低潮中"
-              onPress={() => this.handleUpdateStatus(3)}
-              color="black"
-              textStyle={chatStatusStyles.textStyle}
-              buttonStyle={chatStatusStyles.buttonStyle}
-              style={chatStatusStyles.containerStyle}
-            />
-            <Button
-              title="自定義"
-              onPress={() => this.handleSelfInputPressed()}
-              color="black"
-              textStyle={chatStatusStyles.textStyle}
-              buttonStyle={chatStatusStyles.buttonStyle}
-              style={chatStatusStyles.containerStyle}
-              iconRight
-              icon={{ name: "edit", color: "#D63768" }}
-            />
-            <Button
-              title="取消狀態"
-              onPress={() => this.handleUpdateStatus(0)}
-              color="black"
-              textStyle={chatStatusStyles.textStyle}
-              buttonStyle={chatStatusStyles.buttonStyle}
-              style={chatStatusStyles.containerStyle}
-            />
-          </View>
-        </Modal>
-        <Modal
-          style={{ alignItems: "center" }}
-          isVisible={this.state.upgradeModalShow}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              padding: 20,
-              width: 300,
-              alignItems: "center",
-              borderRadius: 10,
-              borderColor: "rgba(0, 0, 0, 0.1)"
-            }}
-          >
-            <Text
-              style={{ marginVertical: 45, fontWeight: "600", fontSize: 16 }}
-            >
-              高級會員即可開啟此功能
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                width: 300,
-                justifyContent: "space-between",
-                paddingHorizontal: 50
-              }}
-            >
-              <Button
-                title="取消"
-                onPress={() => this.setState({ upgradeModalShow: false })}
-                color="#0076FF"
-                buttonStyle={{ backgroundColor: "transparent" }}
-              />
-              <Button
-                title="升級"
-                onPress={() => this.handleUpgrade()}
-                color="#0076FF"
-                buttonStyle={{ backgroundColor: "transparent" }}
-              />
-            </View>
-          </View>
-        </Modal>
-        <Modal
-          style={{ alignItems: "center" }}
-          isVisible={this.state.selfInputModalShow}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              padding: 20,
-              width: 300,
-              alignItems: "center",
-              borderRadius: 10,
-              borderColor: "rgba(0, 0, 0, 0.1)"
-            }}
-          >
-            <Text style={{ marginTop: 25, fontWeight: "600", fontSize: 16 }}>
-              請輸入自定義狀態
-            </Text>
-            <TextInput
-              maxLength={3}
-              onChangeText={text => this.textInputOnChange(text)}
-              defaultValue={this.state.selfInputChatStatus}
-              style={{
-                marginVertical: 25,
-                height: 40,
-                width: 200,
-                borderColor: "#B3B3B3",
-                borderWidth: 1,
-                borderRadius: 5
-              }}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                width: 300,
-                justifyContent: "space-between",
-                paddingHorizontal: 50
-              }}
-            >
-              <Button
-                title="取消"
-                onPress={() => this.handleSelfInputCancel()}
-                color="#0076FF"
-                buttonStyle={{ backgroundColor: "transparent" }}
-              />
-              <Button
-                title="送出"
-                onPress={() => this.handleSelfInputSubmit()}
-                color="#0076FF"
-                buttonStyle={{ backgroundColor: "transparent" }}
-              />
-            </View>
-          </View>
-        </Modal>
       </View>
     )
   }

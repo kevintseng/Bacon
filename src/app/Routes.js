@@ -61,13 +61,15 @@ import BaconMenu from './views/BaconMenu/BaconMenu'
 import BaconTool from './views/BaconTool/BaconTool'
 import BaconArrow from './views/BaconArrow/BaconArrow'
 import BaconNotice from './views/BaconNotice'
+// import ChatStatus from './views/ChatStatus'
+import ChatStatusContainer from './containers/LineListScene/ChatStatusContainer'
 // ###############header components################ //
 
 const styles = {
   navBar: {
     backgroundColor: 'white',
     borderBottomColor: 'transparent',
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
   },
   navBarTitle: {
     letterSpacing: 3,
@@ -171,6 +173,8 @@ export default class Routes extends Component {
 
   baconToolAboutMe = () => (<View style={ styles.baconTool }><BaconNotice onPress={ this.goToNotification }/></View>)
 
+  baconToolLine = () => (<View style={ styles.baconTool }><ChatStatusContainer  /></View>)
+
   render() {
     return (
       <Router getSceneStyle={ this.getSceneStyle }>
@@ -207,7 +211,7 @@ export default class Routes extends Component {
                 <Scene key='SettingRemind' title='設定' renderBackButton={ this.baconArrow } component={ SettingRemindScene } />
                 <Scene key='SettingHide' title='設定' renderBackButton={ this.baconArrow } component={ SettingHideScene } />
               </Scene>
-              
+
               <Scene key='MeetCute' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='MeetCuteCourt' title='邂逅' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolMeetCute } component={ MeetCuteCourtScene } />
                 <Scene key='MeetCuteConfig' title='邂逅' renderBackButton={ this.baconArrow } component={ MeetCuteConfigScene } />
@@ -229,7 +233,7 @@ export default class Routes extends Component {
                 <Scene key='FateCourt' title='緣分' renderBackButton={ this.baconArrow } component={ FateCourtScene } />
               </Scene>
 
-              <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } component={ LineListScene }/>
+              <Scene key='LineList' title='訊息' renderLeftButton={ this.baconMenu } renderRightButton={ this.baconToolLine } component={ LineListScene }/>
 
               <Scene key='LineCollect' hideTabBar navigationBarStyle={ styles.navBar } titleStyle={styles.navBarTitle}>
                 <Scene key='LineCollectCourt' title='LineCollect' renderBackButton={ this.baconArrow } component={ LineCollectCourtScene } />
