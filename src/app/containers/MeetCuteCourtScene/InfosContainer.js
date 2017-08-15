@@ -15,6 +15,7 @@ export default class InfosContainer extends Component {
   render() {
     return(
       <Infos
+        showBlockade
         verityEmail={ this.MeetCuteStore.emailVerified } 
         verityPhoto={ this.MeetCuteStore.photoVerified }
         displayName={ this.MeetCuteStore.nickname }
