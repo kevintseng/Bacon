@@ -49,7 +49,7 @@ export default class CollectionContainer extends Component {
 
   onPress = uid => {
     this.FateStore.setCourtInitialize(uid)
-    Actions.LineCollect({ Store: this.FateStore })
+    Actions.LineCollect({ Store: this.FateStore, title: '緣分' })
   }
 
   goToUpgradeMember = () => {

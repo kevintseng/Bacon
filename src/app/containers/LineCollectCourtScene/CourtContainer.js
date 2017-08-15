@@ -39,8 +39,7 @@ export default class CourtContainer extends Component {
   }
 
   converse = () => {
-    //Actions.Line({uid: this.MeetChanceStore.uid, name: this.MeetChanceStore.nickname})
-    alert('跳出燈箱')
+    this.ControlStore.setLineModal()
   }
 
   render() {

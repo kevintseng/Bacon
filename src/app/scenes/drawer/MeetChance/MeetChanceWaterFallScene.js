@@ -48,7 +48,7 @@ export default class MeetChanceWaterFallScene extends Component {
   onPressButton = uid => {
     this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
     this.MeetChanceStore.setCourtInitialize(uid)
-    Actions.LineCollect({ Store: this.MeetChanceStore})
+    Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇'})
   }
 
   header = () => (
@@ -70,9 +70,9 @@ export default class MeetChanceWaterFallScene extends Component {
           onPress={ () => { this.onPressButton(item.key) } }
         /> }
         ListHeaderComponent={ this.header }
-        //getItemLayout={(data, index) => (
-        //  {length: picWidth, offset: picWidth * index, index}
-        //)}
+        getItemLayout={(data, index) => (
+          {length: picWidth, offset: picWidth * index, index}
+        )}
       />
     </View>
     )
