@@ -185,9 +185,10 @@ export default class FateStore {
       runInAction(() => {
         this.collectionPreys = collectionPreys
       })
+      //alert(this.collectionPreys.length)
     })
     .catch(err => {
-      console.log(err)
+      alert(err)
     })
   }
 
@@ -212,9 +213,13 @@ export default class FateStore {
           this.vip = Boolean(snap.val().vip)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
+          //this.loading = false
         })
       } else {
-        //console.warn('error')
+        runInAction(() => {
+          this.loading = false
+        })
+        alert('錯誤')
       }
     }).catch(err => {console.log(err)})
     //await this.sleep(300)

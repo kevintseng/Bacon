@@ -45,7 +45,11 @@ export default class MeetChanceStore {
   }
 
   @computed get preysToFlatList() {
-    return toJS(this.preys) // .filter(ele => ele !== null)
+    const arr = toJS(this.preys).filter(ele => ele !== null)
+    if (arr.length > 9) {
+      arr.length = arr.length - arr.length % 3
+    }
+    return arr
   }
 
   @action initialize = () => {
@@ -123,10 +127,10 @@ export default class MeetChanceStore {
     .then(preys => {
       runInAction(() => {
         this.preys = preys
-        this.preys = this.preys.filter(ele => ele !== null)
-        if (this.preys.length > 9) {
-          this.preys.length = this.preys.length - this.preys.length % 3
-        }
+        //this.preys = this.preys.filter(ele => ele !== null)
+        //if (this.preys.length > 9) {
+        //  this.preys.length = this.preys.length - this.preys.length % 3
+        //}
       })
     })
     .catch(err => {

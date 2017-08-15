@@ -7,6 +7,7 @@ import CourtContainer from '../../../containers/LineCollectCourtScene/CourtConta
 import InfosContainer from '../../../containers/LineCollectCourtScene/InfosContainer'
 import BadgeWallContainer from '../../../containers/LineCollectCourtScene/BadgeWallContainer'
 import CollectionModalContainer from '../../../containers/LineCollectCourtScene/CollectionModalContainer'
+import LineModalContainer from '../../../containers/LineCollectCourtScene/LineModalContainer'
 
 const { width, height } = Dimensions.get('window')
 
@@ -16,6 +17,7 @@ export default class LineCollectCourtScene extends Component {
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
+    this.title = this.props.title
     this.Store = this.props.Store // MeetChanceStore FateStore
     this.SubjectStore = this.props.SubjectStore
     this.FateStore = this.props.FateStore
@@ -24,7 +26,7 @@ export default class LineCollectCourtScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    Actions.refresh({ key: 'Drawer', open: false })
+    //Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentWillUnmount() {
@@ -32,9 +34,10 @@ export default class LineCollectCourtScene extends Component {
     this.SubjectStore.cleanCollect()
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/collect').set(this.SubjectStore.collect)
     this.FateStore.setCollectionPreylist(this.SubjectStore.collect)
-    this.Store.cleanLoading()
-    if (this.Store.constructor.name === 'FateStore') {
-      this.FateStore.setCollectionFakePreys()
+    this.FateStore.setCollectionRealPreys()
+    Actions.refresh({ title: this.title })
+    //alert(this.Store.constructor.name)
+    if (this.title === '緣分') {
       this.FateStore.setCollectionRealPreys()
     }
   }
@@ -64,18 +67,6 @@ export default class LineCollectCourtScene extends Component {
     </View>
   )
 
-  goToLine = () => { 
-    Actions.Line({uid: this.Store.uid, name: this.Store.nickname})
-  }
-
-  goToBonusFilter = () => {
-    Actions.LineCollectRoutes()
-  }
-
-  goToFate = () => {
-    Actions.Fate({initialPage: 3})
-  }
-
   render() {
     return(
       <View style={{flex: 1}}>
@@ -92,11 +83,15 @@ export default class LineCollectCourtScene extends Component {
               <BadgeWallContainer Store={this.Store}/>
             </ScrollView>
             <CollectionModalContainer/>
-            <Button title='轉到聊天室' onPress={ this.goToLine }/>
-            <Button title='轉到使用Q點頁' onPress={ this.goToBonusFilter }/>
+            <LineModalContainer/>
           </View>
         }
       </View>
     )
   }
 }
+
+/*
+            <Button title='轉到聊天室' onPress={ this.goToLine }/>
+            <Button title='轉到使用Q點頁' onPress={ this.goToBonusFilter }/>
+          */
