@@ -13,9 +13,11 @@ export default class BaconRoutesContainer extends Component {
     this.MeetChanceStore = this.props.MeetChanceStore
   }
   
-  buttonOnPress = () => {
-    this.MeetChanceStore.setMeetChanceMinAge(this.ControlStore.meetChanceMinAge)  
-    this.MeetChanceStore.setMeetChanceMaxAge(this.ControlStore.meetChanceMaxAge)
+  buttonOnPress = async () => {
+    await this.MeetChanceStore.setMeetChanceMinAge(this.ControlStore.meetChanceMinAge)  
+    await this.MeetChanceStore.setMeetChanceMaxAge(this.ControlStore.meetChanceMaxAge)
+    this.MeetChanceStore.setPreyList()
+    this.MeetChanceStore.setRealPreys()
     Actions.MeetChanceWaterFall({type: 'reset'})
   }
 

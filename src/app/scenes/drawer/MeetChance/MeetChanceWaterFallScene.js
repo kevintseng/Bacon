@@ -26,14 +26,14 @@ export default class MeetChanceWaterFallScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.MeetChanceStore = this.props.MeetChanceStore
-    this.state = {
-      preys: new Array
-    }
   }
 
   componentWillMount() {
-    this.MeetChanceStore.setPreyList()
-    this.MeetChanceStore.setFakePreys()
+    //console.log('wdwdwd')
+    //console.log(this.MeetChanceStore.meetChanceMinAge)
+    //console.log(this.MeetChanceStore.meetChanceMaxAge)
+    //this.MeetChanceStore.setPreyList()
+    //this.MeetChanceStore.setFakePreys()
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
