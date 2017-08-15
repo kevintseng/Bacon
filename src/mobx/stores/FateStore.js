@@ -134,7 +134,18 @@ export default class FateStore {
 
 
   @action setGoodImpressionPreylist = () => {
-    this.goodImpressionPreylist = _.cloneDeep(this.goodImpressionPool)
+    const b = _.cloneDeep(this.matchPool)
+    const PreyList = b.map(ele=> ele.uid)
+    const c = _.cloneDeep(this.goodImpressionPool)
+    //this.goodImpressionPreylist = _.cloneDeep(this.goodImpressionPool)
+    this.goodImpressionPreylist = c.map(ele => {
+      if ( PreyList.indexOf(ele.uid) > -1 ) {
+        return null
+      } else {
+        return ele
+      }
+    })
+    this.goodImpressionPreylist = this.goodImpressionPreylist.filter(ele => ele)
   }
 
   @action setGoodImpressionFakePreys = () => {
@@ -212,8 +223,8 @@ export default class FateStore {
     const b = _.cloneDeep(this.matchPool)
     const wooerList = a.map(ele=> ele.uid)
     const PreyList = b.map(ele=> ele.uid)
-    console.log(wooerList)
-    console.log(PreyList)
+    //console.log(wooerList)
+    //console.log(PreyList)
     this.matchPreylist = wooerList.map(uid => {
       if (PreyList.indexOf(uid) > -1) {
         return uid
