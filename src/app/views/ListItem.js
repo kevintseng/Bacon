@@ -7,11 +7,11 @@ const ListItem = ({listPicSource, listTitle, showBadge, badgeCount, listOnPress}
   const _badgeCount = badgeCount > 99 ? 99 : badgeCount
 
   return(
-    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+    <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 7, paddingBottom: 7}} onPress={ listOnPress }>
       <View style={{width: 40,opacity: 0, justifyContent: 'center'}} >
         <Badge value={0} containerStyle={{ backgroundColor: 'red'}}/>
       </View>   
-      <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', paddingLeft: 35, paddingRight: 35}} onPress={ listOnPress }>      
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>      
         <View style={{flexDirection: 'row'}}>
           <View style={{alignSelf: 'center', marginRight: 5}}>
             <Image source={ listPicSource } />
@@ -20,11 +20,11 @@ const ListItem = ({listPicSource, listTitle, showBadge, badgeCount, listOnPress}
             <Text style={{textAlign: 'center',color: '#606060',fontWeight: 'normal'}}>{ listTitle }</Text>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
       <View style={ showBadge ? { width: 40,justifyContent: 'center' } : { width: 40, opacity: 0,justifyContent: 'center'} } >
         <Badge value={ _badgeCount } containerStyle={{ backgroundColor: 'red'}}/>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

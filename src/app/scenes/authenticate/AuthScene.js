@@ -63,7 +63,7 @@ export default class AuthScene extends Component {
   render(){
     return(
       <Loading
-        showWarning
+        showWarning={false}
         UpInStatus={ this.ControlStore.authenticateIndicator } // 登入 註冊
       />
     )}

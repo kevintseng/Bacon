@@ -23,13 +23,13 @@ const styles = {
 
 //const onPressButton = () => { console.warn("點擊頭像")}
 
-const Cookie = ({ name, ages, avatar, children, onPressButton }) => {
+const Cookie = ({ name, ages, avatar, children }) => {
 
   return(
     <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
-      <TouchableHighlight onPress={onPressButton}>
+      <View>
         <Image source={ avatar ? { uri: avatar } : require('./Cookie/img/ico_qy_head_preload.png') } style={styles.itemImageStyle}/>
-      </TouchableHighlight>
+      </View>
       <View style={{marginLeft:20}}>
         <View>
           <Text style={{color: '#000000'}}>{ name }, { ages }</Text>

@@ -72,6 +72,8 @@ export default class MeetChanceStore {
     // config
     this.meetChanceMinAge = 18
     this.meetChanceMaxAge = 99
+    //
+    this.fetchPreyQuery
   }
 
   // pool
@@ -169,8 +171,10 @@ export default class MeetChanceStore {
     this.uid = uid
   }
 
-  @action setPrey = async () => {
-    await this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
+  @action fetchPrey = () => {
+    //alert('進來抓資料囉')  
+    this.fetchPreyQuery = this.firebase.database().ref('users/' + this.uid)
+    this.fetchPreyQuery.once('value').then(snap => {
       if (snap.val()) {
         runInAction(() => {
           this.uid = this.uid
@@ -183,16 +187,25 @@ export default class MeetChanceStore {
           this.vip = Boolean(snap.val().vip)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
-        })
+          this.loading = false
+        })  
+        //alert('抓完囉應該要重渲染')      
       } else {
-        console.warn('error')
-        //this.initializeCourt()
+        //
+        alert('錯誤')
+        runInAction(() => {
+          this.loading = false
+        })
       }
-    }).catch(err => {console.log(err)})
-    //await this.sleep(300)
-    runInAction(() => {
-      this.loading = false
-    })
+    }).catch(err => { 
+        alert(err) }
+      )
+  }
+
+  @action cleanFetch = () => {
+    this.loading = false
+    this.fetchPreyQuery.off()
+    this.fetchPreyQuery = null
   }
 
   @action setMeetChanceMinAge = int => {
