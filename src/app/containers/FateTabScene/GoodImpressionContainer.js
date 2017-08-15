@@ -28,7 +28,6 @@ export default class GoodImpressionContainer extends Component {
   componentWillMount() {
     this.FateStore.setGoodImpressionPreylist()
     this.FateStore.setGoodImpressionFakePreys()
-    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {

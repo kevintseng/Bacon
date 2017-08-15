@@ -9,6 +9,7 @@ export default class FateStore {
   @observable visitorsPreys
   @observable goodImpressionPreys
   @observable collectionPreys
+  @observable matchPreys
   //@observable collectionPreylist
   // court
   @observable loading
@@ -54,6 +55,10 @@ export default class FateStore {
     return toJS(this.collectionPreys)
   }
 
+  @computed get matchPreysToFlatList() {
+    return toJS(this.matchPreys)
+  }
+
   @action initialize = () => {
     this.visitorsPool = new Array
     this.visitorsPreylist = new Array
@@ -64,6 +69,9 @@ export default class FateStore {
     //this.collectionPool = new Array
     this.collectionPreylist = new Array
     this.collectionPreys = new Array
+    this.matchPool = new Array
+    this.matchPreylist = new Array
+    this.matchPreys = new Array
     // court
     this.loading = true
     // user data
@@ -193,7 +201,55 @@ export default class FateStore {
       alert(err)
     })
   }
+  // match
 
+  @action addPreyToMatchPool = (uid,time) => {
+    this.matchPool.push({uid: uid, time: time})
+  }
+
+  @action filterMatchList = () => {
+    const a = _.cloneDeep(this.goodImpressionPool)
+    const b = _.cloneDeep(this.matchPool)
+    const wooerList = a.map(ele=> ele.uid)
+    const PreyList = b.map(ele=> ele.uid)
+    console.log(wooerList)
+    console.log(PreyList)
+    this.matchPreylist = wooerList.map(uid => {
+      if (PreyList.indexOf(uid) > -1) {
+        return uid
+      } else {
+        return null
+      }
+    })
+    this.matchPreylist = this.matchPreylist.filter(ele => ele)
+  }
+
+  @action setMatchFakePreys = () => {
+    this.matchPreys = this.matchPreylist.map((uid,index) => ({ key: uid, time: null, nickname: null, avatar: null, birthday: null }))
+  }
+
+  @action setMatchRealPreys = () => {
+    const matchPromises = this.matchPreylist.map((uid,index) => (
+      this.firebase.database().ref('users/' + uid).once('value').then( snap => (
+        {
+          key: uid,
+          nickname: snap.val().nickname,
+          avatar: snap.val().avatar,
+          birthday: snap.val().birthday  
+        }
+      ))
+    ))
+
+    Promise.all(matchPromises)
+    .then(matchPreys => {
+      runInAction(() => {
+        this.matchPreys = matchPreys
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })    
+  }
   // court
 
   @action setCourtInitialize = uid => {
