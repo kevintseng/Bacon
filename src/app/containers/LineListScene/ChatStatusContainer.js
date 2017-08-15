@@ -137,7 +137,6 @@ export default class ChatStatusContainer extends Component {
     }
     return (
       <View>
-        <Text>Te</Text>
         <ChatStatus onPress={this.handleOnPress} code={this.SubjectStore.chatStatus || 0} />
         <Modal
           style={{ alignItems: "center" }}
