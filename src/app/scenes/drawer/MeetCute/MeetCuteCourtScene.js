@@ -8,6 +8,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import CourtContainer from '../../../containers/MeetCuteCourtScene/CourtContainer'
 import InfosContainer from '../../../containers/MeetCuteCourtScene/InfosContainer'
 import BadgeWallContainer from '../../../containers/MeetCuteCourtScene/BadgeWallContainer'
+import MateModalContainer from '../../../containers/MeetCuteCourtScene/MateModalContainer'
 
 const { width, height } = Dimensions.get('window')
 
@@ -102,6 +103,7 @@ export default class MeetCuteCourtScene extends Component {
                 <InfosContainer/> 
               </View>
               <BadgeWallContainer/> 
+              <MateModalContainer/>
             </ScrollView>
           </View>
         }

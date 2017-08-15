@@ -4,13 +4,14 @@ import { Actions } from 'react-native-router-flux'
 
 import Court from '../../views/Court'
 
-@inject('firebase','SubjectStore','MeetCuteStore') @observer
+@inject('firebase','SubjectStore','MeetCuteStore','ControlStore') @observer
 export default class CourtContainer extends Component {
 
   constructor(props) {
     super(props)
     this.SubjectStore = this.props.SubjectStore
     this.MeetCuteStore = this.props.MeetCuteStore
+    this.ControlStore = this.props.ControlStore
     this.firebase = this.props.firebase
     this.state = {
       visible: false
@@ -38,7 +39,11 @@ export default class CourtContainer extends Component {
     // 寄到別人好感
     await this.firebase.database().ref('goodImpression/' + this.SubjectStore.uid + this.MeetCuteStore.uid ).set({ wooer: this.SubjectStore.uid , prey: this.MeetCuteStore.uid, time: Date.now() })
     // 45天紀錄
-    this.goToNext()
+    if (true) {
+      this.ControlStore.setMateModal()
+    } else {
+      this.goToNext()
+    }
   }
 
   unlike = () => {
