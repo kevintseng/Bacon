@@ -25,25 +25,30 @@ export default class LineCollectCourtScene extends Component {
   }
 
   componentWillMount() {
+    //alert('初始化')
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    //Actions.refresh({ key: 'Drawer', open: false })
+    Actions.refresh({ title: this.title })
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-    this.SubjectStore.cleanCollect()
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/collect').set(this.SubjectStore.collect)
-    this.FateStore.setCollectionPreylist(this.SubjectStore.collect)
-    this.FateStore.setCollectionRealPreys()
-    Actions.refresh({ title: this.title })
-    //alert(this.Store.constructor.name)
-    if (this.title === '緣分') {
-      this.FateStore.setCollectionRealPreys()
-    }
+    this.Store.cleanFetch()
+    this.handleCollection() // 處理收集
+    //alert('解除了')
   }
 
   componentDidMount() {
-    this.Store.setPrey()
+    //alert('應該要進去抓資料囉')
+    this.Store.fetchPrey()
+  }
+
+  handleCollection = () => {
+    this.SubjectStore.filterCollect() // 把 false 清掉
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/collect').set(this.SubjectStore.collect) // 非同步上傳收集
+    this.FateStore.setCollectionPreylist(this.SubjectStore.collect) // 複製給 FateStore
+    if (this.title === '緣分') {
+      this.FateStore.setCollectionRealPreys() // 從緣分來的幫他重新整理
+    }
   }
 
   onBackAndroid = () => {
@@ -90,8 +95,3 @@ export default class LineCollectCourtScene extends Component {
     )
   }
 }
-
-/*
-            <Button title='轉到聊天室' onPress={ this.goToLine }/>
-            <Button title='轉到使用Q點頁' onPress={ this.goToBonusFilter }/>
-          */

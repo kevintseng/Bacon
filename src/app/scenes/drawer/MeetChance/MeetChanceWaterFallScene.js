@@ -29,11 +29,8 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   componentWillMount() {
-    //console.log('wdwdwd')
-    //console.log(this.MeetChanceStore.meetChanceMinAge)
-    //console.log(this.MeetChanceStore.meetChanceMaxAge)
-    //this.MeetChanceStore.setPreyList()
-    //this.MeetChanceStore.setFakePreys()
+    this.MeetChanceStore.setPreyList()
+    this.MeetChanceStore.setFakePreys()
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
@@ -45,9 +42,10 @@ export default class MeetChanceWaterFallScene extends Component {
     Actions.AboutMe({type: 'reset'})
   }
 
-  onPressButton = uid => {
+  onPressButton = async uid => {
     this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
-    this.MeetChanceStore.setCourtInitialize(uid)
+    await this.MeetChanceStore.setCourtInitialize(uid)
+    await this.sleep(200)
     Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇'})
   }
 
@@ -56,6 +54,10 @@ export default class MeetChanceWaterFallScene extends Component {
       <Cookie size={150} name={this.SubjectStore.nickname} avatar={this.SubjectStore.avatar} onPress={ this.goToAboutMeTab } />
     </View>
   )
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
 
   render() {
     return(

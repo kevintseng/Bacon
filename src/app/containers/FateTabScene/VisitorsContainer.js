@@ -35,11 +35,16 @@ export default class VisitorsContainer extends Component {
     this.FateStore.setVisitorsRealPreys()
   }
 
-  onPress = uid => {
-    this.FateStore.setCourtInitialize(uid)
+  onPress = async uid => {
+    await this.FateStore.setCourtInitialize(uid)
+    await this.sleep(200)
     Actions.LineCollect({ Store: this.FateStore, title: '緣分' })
   }
-  
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
   render() {
     return(
       <View>

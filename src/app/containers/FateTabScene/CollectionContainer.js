@@ -47,13 +47,18 @@ export default class CollectionContainer extends Component {
     this.FateStore.setCollectionRealPreys()
   }
 
-  onPress = uid => {
-    this.FateStore.setCourtInitialize(uid)
+  onPress = async uid => {
+    await this.FateStore.setCourtInitialize(uid)
+    await this.sleep(200)
     Actions.LineCollect({ Store: this.FateStore, title: '緣分' })
   }
 
   goToUpgradeMember = () => {
     Actions.Upgrade()
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   header = () => (

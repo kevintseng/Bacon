@@ -58,31 +58,31 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
           </View>
         </View>
 
-        <View style={{marginTop: 30}}>
+        <View style={{marginTop: 20}}>
           <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
         </View>
       
-        <View style={{marginTop: 20}}>
+        <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='邂逅' showBadge={false} listOnPress={ meetcueOnPress }/>
         </View>
 
-        <View style={{marginTop: 20}}>
+        <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='訊息' showBadge={false} badgeCount={6} listOnPress={ messageOnPress }/>
         </View>
 
-        <View style={{marginTop: 20}}>
+        <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_yf.png')} listTitle='緣分' showBadge={false} badgeCount={9} listOnPress={ fateOnPress }/>
         </View>
 
-        <View style={{marginTop: 20}}>
+        <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_column.png')} listTitle='專欄'/>
         </View>
 
-        <View style={{marginTop: 20}}>
+        <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
         </View>
 
-        <View style={{marginTop: 20,alignSelf: 'center'}}>
+        <View style={{marginTop: 7,alignSelf: 'center'}}>
           <Text style={{color: 'red'}}>{ warningTop }</Text>
         </View>
 

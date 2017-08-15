@@ -182,7 +182,7 @@ export default class SubjectStore {
     this.collect = Object.assign({},this.collect)
   }
 
-  @action cleanCollect = () => {
+  @action filterCollect = () => {
     this.collect = Object.keys(this.collect).reduce((r, e) => {
       if (this.collect[e] !== false ) r[e] = this.collect[e]
       return r;
