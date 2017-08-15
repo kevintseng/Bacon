@@ -69,7 +69,7 @@ export default class ChatStatusContainer extends Component {
   }
 
   handleUpdateStatus = statusCode => {
-    this.setState({ showCustomInputModal: false })
+    this.setState({ showCustomInputModal: false, showStatusMenuModal: false })
     this.SubjectStore.setChatStatus(statusCode)
     this.firebase.database().ref(`users/${this.uid}/chatStatus`).set(statusCode)
   }
