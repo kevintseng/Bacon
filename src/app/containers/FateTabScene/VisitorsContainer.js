@@ -44,7 +44,7 @@ export default class VisitorsContainer extends Component {
     return(
       <View>
         <FlatList
-          data={ this.FateStore.visitorsPreys } 
+          data={ this.FateStore.visitorsPreysToFlatList } 
           numColumns={1}
           renderItem={({item}) => 
           (

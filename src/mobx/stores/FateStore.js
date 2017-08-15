@@ -46,6 +46,10 @@ export default class FateStore {
     // { 打球: true } -> [{key: 打球, check: true}]
   }
 
+  @computed get visitorsPreysToFlatList() {
+    return toJS(this.visitorsPreys)
+  }
+
   @computed get collectionPreysToFlatList() {
     return toJS(this.collectionPreys)
   }
@@ -89,18 +93,26 @@ export default class FateStore {
     this.visitorsPreys = this.visitorsPreylist.map((ele,index)=>({ key: ele.uid, time: ele.time, nickname: null, avatar: null, birthday: null }))
   }
 
-  @action setVisitorsRealPreys = async () => {
-    await Promise.all(this.visitorsPreylist.map(async (ele,index) => {
-      await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
-        if (snap.val()) {
-          this.visitorsPreys[index].nickname = snap.val().nickname
-          this.visitorsPreys[index].avatar = snap.val().avatar
-          this.visitorsPreys[index].birthday = snap.val().birthday         
+  @action setVisitorsRealPreys = () => {
+    const visitorsPromises = this.visitorsPreylist.map((ele,index) => (
+      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => (
+        {
+          key: ele.uid,
+          nickname: snap.val().nickname,
+          avatar: snap.val().avatar,
+          birthday: snap.val().birthday  
         }
-      }).catch(err => console.log(err))
-    }))
-    runInAction(() => {
-      this.visitorsPreys = this.visitorsPreys.peek()
+      ))
+    ))
+
+    Promise.all(visitorsPromises)
+    .then(visitorsPreys => {
+      runInAction(() => {
+        this.visitorsPreys = visitorsPreys
+      })
+    })
+    .catch(err => {
+      console.log(err)
     })
   }
 
@@ -119,25 +131,30 @@ export default class FateStore {
     this.goodImpressionPreys = this.goodImpressionPreylist.map((ele,index) => ({ key: ele.uid, time: ele.time, nickname: null, avatar: null, birthday: null }))
   }
 
-  @action setGoodImpressionRealPreys = async () => {
-    await Promise.all(this.goodImpressionPreylist.map(async (ele,index) => {
-      await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
-        if (snap.val()) {
-          this.goodImpressionPreys[index].nickname = snap.val().nickname
-          this.goodImpressionPreys[index].avatar = snap.val().avatar
-          this.goodImpressionPreys[index].birthday = snap.val().birthday         
+  @action setGoodImpressionRealPreys = () => {
+    const goodImpressionPromises = this.goodImpressionPreylist.map((ele,index) => (
+      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => (
+        {
+          key: ele.uid,
+          nickname: snap.val().nickname,
+          avatar: snap.val().avatar,
+          birthday: snap.val().birthday  
         }
-      }).catch(err => console.log(err))
-    }))
-    runInAction(() => {
-      this.goodImpressionPreys = this.goodImpressionPreys.peek()
+      ))
+    ))
+
+    Promise.all(goodImpressionPromises)
+    .then(goodImpressionPreys => {
+      runInAction(() => {
+        this.goodImpressionPreys = goodImpressionPreys
+      })
+    })
+    .catch(err => {
+      console.log(err)
     })
   }
 
   // collection
-  //@action addPreyToCollectionPool = (uid,time) => {
-  //  this.collectionPool.push({uid: uid, time: time})
-  //}
 
   @action setCollectionPreylist = object => {
     this.collectionPreylist = Object.assign({},object)
@@ -145,7 +162,6 @@ export default class FateStore {
 
   @action setCollectionFakePreys = () => {
     this.collectionPreys = Object.keys(this.collectionPreylist).map((uid,index) => ({ key: uid, time: this.collectionPreylist[uid], nickname: null, avatar: null, birthday: null }))
-    //this.collectionPreys = this.collectionPreylist.map((ele,index) => ({ key: ele.uid, time: ele.time, nickname: null, avatar: null, birthday: null }))
   }
 
   @action setCollectionPreysLength = () => {
@@ -173,58 +189,13 @@ export default class FateStore {
     .catch(err => {
       console.log(err)
     })
-    /*
-    const a = await Promise.all(Object.keys(this.collectionPreylist).map(async (uid,index) => (
-      await this.firebase.database().ref('users/' + uid).once('value').then(snap => {
-        if (snap.val()) {
-          runInAction(() => {
-            this.collectionPreys[index].nickname = snap.val().nickname
-            this.collectionPreys[index].avatar = snap.val().avatar
-            this.collectionPreys[index].birthday = snap.val().birthday 
-          })        
-        }
-      }).catch(err => console.log(err))
-    )))
-    runInAction(() => {
-      this.collectionPreys = this.collectionPreys.peek()
-    })
-    console.log(a)
-    */
   }
 
-  @action cleanCollectionRealPreys = () => {
-    //this.collectionPreys = new Array
-  }
-/*
-  @action addRealPrey = async () => {
-    //console.warn(this.uid)
-    await this.firebase.database().ref('users/' + this.uid).once('value').then(snap => {
-      if (snap.val()) {
-        runInAction(() => {
-          this.collectionPreys.push({
-            key: this.uid,
-            nickname: snap.val().nickname,
-            avatar: snap.val().avatar,
-            birthday: snap.val().birthday     
-          }) 
-        })    
-      }
-    }).catch(err => console.log(err))
-    runInAction(() => {
-      this.collectionPreys = this.collectionPreys.peek()
-    })
-  }
-
-  @action removeRealPrey = () => {
-    this.collectionPreys.remove()
-  }
-*/
   // court
 
   @action setCourtInitialize = uid => {
     this.loading = true
     this.uid = uid
-    //console.warn(this.uid)
   }
 
   @action setPrey = async () => {

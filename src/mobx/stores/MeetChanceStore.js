@@ -45,7 +45,7 @@ export default class MeetChanceStore {
   }
 
   @computed get preysToFlatList() {
-    return toJS(this.preys)
+    return toJS(this.preys) // .filter(ele => ele !== null)
   }
 
   @action initialize = () => {
@@ -99,7 +99,41 @@ export default class MeetChanceStore {
   @action setFakePreys = () => {
     this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
   }
+  @action setRealPreys = () => {
+    const preysPromises = this.preyList.map((ele,index) => (
+      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
+        if (snap.val()) {
+          if (snap.val().hideMeetChance || snap.val().deleted ||  calculateAge(snap.val().birthday) < this.meetChanceMinAge || calculateAge(snap.val().birthday) > this.meetChanceMaxAge) {
+            return null
+          } else {
+            return({
+              key: ele.uid,
+              nickname: snap.val().nickname,
+              avatar: snap.val().avatar,
+              birthday: snap.val().birthday  
+            })
+          }          
+        } else {
+          // return null
+        }
+      }).catch(err => console.log(err))
+    ))
 
+    Promise.all(preysPromises)
+    .then(preys => {
+      runInAction(() => {
+        this.preys = preys
+        this.preys = this.preys.filter(ele => ele !== null)
+        if (this.preys.length > 9) {
+          this.preys.length = this.preys.length - this.preys.length % 3
+        }
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })    
+  }
+/*
   @action setRealPreys = async () => {
     await Promise.all(this.preyList.map(async (ele,index) => {
       await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
@@ -124,7 +158,7 @@ export default class MeetChanceStore {
       }
     })
   }
-
+*/
 
   @action setCourtInitialize = uid => {
     this.loading = true
@@ -168,7 +202,7 @@ export default class MeetChanceStore {
   @action cleanLoading = () => {
     this.loading = false
   }
-  
+
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
