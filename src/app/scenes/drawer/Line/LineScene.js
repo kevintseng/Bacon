@@ -1031,11 +1031,13 @@ export default class Chat extends Component {
             <Text style={{ margin: 10 }}>超過訪客留言次數限制：請等待對方回覆或是使用Q點繼續留言</Text>
             <Button
               title="使用Q點"
+              textStyle={styles.btnTextUseBonus}
               buttonStyle={styles.btnUseBonus}
               onPress={() => this.useBonus("visitorMsgLimit", 30)}
             />
             <Button
               title="取消"
+              textStyle={styles.btnTextCancel}
               buttonStyle={styles.btnCancel}
               onPress={this.cancelSend}
             />
