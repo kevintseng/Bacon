@@ -23,6 +23,7 @@ const getChatStatus = statusCode => {
 }
 
 const ChatStatus = ({onPress, code}) => {
+  // console.log("code: ", code)
   const label = getChatStatus(code)
   return (
     <TouchableOpacity style={styles.notice} onPress={onPress} >
