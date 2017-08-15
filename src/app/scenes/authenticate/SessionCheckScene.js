@@ -39,6 +39,7 @@ export default class SessionCheckScene extends Component {
     this.visitorsQuery = null
     this.goodImpressionQuery = null
     this.collectionQuery = null
+    this.matchQuery = null
   }
 
   componentWillMount() {
@@ -54,6 +55,7 @@ export default class SessionCheckScene extends Component {
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
+          this.matchListener() // 配對
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           // 同步
@@ -65,6 +67,7 @@ export default class SessionCheckScene extends Component {
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
+          this.matchListener() // 配對
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           // 同步
@@ -79,6 +82,7 @@ export default class SessionCheckScene extends Component {
         this.removeMeetCuteListener() // 移除邂逅監聽
         this.removeVisitorsListener() // 移除邂逅監聽
         this.removeGoodImpressionListener() // 移除好感監聽
+        this.removeMatchListener() // 配對
         this.SignUpStore.initialize() // 初始註冊入狀態
         this.SignInStore.initialize() // 初始化登入狀態
         this.SubjectStore.initialize() // 初始主體入狀態
@@ -247,11 +251,18 @@ export default class SessionCheckScene extends Component {
 
   goodImpressionListener = () => {
     this.goodImpressionQuery = this.firebase.database().ref('goodImpression').orderByChild('prey').equalTo(this.SubjectStore.uid)
-    this.goodImpressionQuery.on('value', snap => {
-      snap.forEach( childsnap => {
-        this.FateStore.addPreyToGoodImpressionPool(childsnap.val().wooer,childsnap.val().time)
-      })
+    this.goodImpressionQuery.on('child_added', child => {
+      //snap.forEach( childsnap => {
+        this.FateStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
+      //})
     })
+  }
+
+  matchListener = () => {
+    this.matchQuery = this.firebase.database().ref('goodImpression').orderByChild('wooer').equalTo(this.SubjectStore.uid)
+    this.matchQuery.on('child_added', child => {
+      this.FateStore.addPreyToMatchPool(child.val().prey,child.val().time)
+    })    
   }
 
   removeMeetCuteListener = () => {
@@ -280,6 +291,13 @@ export default class SessionCheckScene extends Component {
     if (this.goodImpressionQuery) {
       this.goodImpressionQuery.off()
       this.goodImpressionQuery = null
+    }
+  }
+
+  removeMatchListener = () => {
+    if (this.matchQuery) {
+      this.matchQuery.off()
+      this.matchQuery = null
     }
   }
 
