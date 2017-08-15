@@ -32,18 +32,22 @@ export default class CourtContainer extends Component {
   }
 
   like = () => {
-    //alert('跳出配對視窗')
+    this.firebase.database().ref('goodImpression/' + this.SubjectStore.uid + this.FateStore.uid ).set({ wooer: this.SubjectStore.uid , prey: this.FateStore.uid, time: Date.now() })
     this.ControlStore.setMateModal()
-    // 寄到別人好感
-    //await this.firebase.database().ref('goodImpression/' + this.SubjectStore.uid + this.MeetCuteStore.uid ).set({ wooer: this.SubjectStore.uid , prey: this.MeetCuteStore.uid, time: Date.now() })
-    // 45天紀錄
-    //this.goToNext()
+    //const prey = this.FateStore.goodImpressionPreys.find( ele => (ele.key === this.FateStore.uid) )
+    //console.log(prey)
+    this.FateStore.goodImpressionPreys.remove(this.FateStore.goodImpressionPreys.find( ele => (ele.key === this.FateStore.uid) ))
+    //alert('移除好感紀錄')
+    //alert('新增配對紀錄')
+
   }
 
   unlike = () => {
-    alert('移除好感紀錄')
-    // 45天紀錄
-    //this.goToNext()
+    this.firebase.database().ref('goodImpression/' + this.FateStore.uid + this.SubjectStore.uid).remove()
+    this.FateStore.goodImpressionPreys.remove(this.FateStore.goodImpressionPreys.find( ele => (ele.key === this.FateStore.uid) ))
+    Actions.FateTab({type: 'reset', initialPage: 1})
+    //alert('sadsdasdasd')
+    //alert('移除好感紀錄')
   }
 
   render() {

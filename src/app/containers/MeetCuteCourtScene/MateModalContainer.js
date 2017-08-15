@@ -82,12 +82,12 @@ export default class MateModalContainer extends Component {
                   </View>
                   <View style={{width, flexDirection: 'row',marginTop: 50, justifyContent: 'space-around'}}>
                     <TouchableOpacity onPress={ this.goToLine }>
-                      <Image  style={{alignItems: 'center',justifyContent: 'center'}} source={require('../../../images/btn_meet_keepswiping.png')}>
+                      <Image  style={{alignItems: 'center',justifyContent: 'center'}} source={require('../../../images/btn_meet_startchat.png')}>
                         <Text style={ styles.text }>     開始聊天</Text>
                       </Image>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={ this.keepMeetCute }>
-                      <Image style={{alignItems: 'center',justifyContent: 'center'}} source={require('../../../images/btn_meet_startchat.png')}>
+                      <Image style={{alignItems: 'center',justifyContent: 'center'}} source={require('../../../images/btn_meet_keepswiping.png')}>
                         <Text style={ styles.text }>     繼續邂逅</Text>
                       </Image>
                     </TouchableOpacity>
