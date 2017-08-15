@@ -72,6 +72,7 @@ export default class FateStore {
     this.matchPool = new Array
     this.matchPreylist = new Array
     this.matchPreys = new Array
+    this.mateHistory = new Array
     // court
     this.loading = true
     // user data
@@ -128,6 +129,10 @@ export default class FateStore {
 
   // goodImpression 
 
+  @action addMateHistory = uid => {
+    this.mateHistory.push(uid)
+  }
+
   @action addPreyToGoodImpressionPool = (uid,time) => {
     this.goodImpressionPool.push({uid: uid, time: time})
   }
@@ -139,7 +144,7 @@ export default class FateStore {
     const c = _.cloneDeep(this.goodImpressionPool)
     //this.goodImpressionPreylist = _.cloneDeep(this.goodImpressionPool)
     this.goodImpressionPreylist = c.map(ele => {
-      if ( PreyList.indexOf(ele.uid) > -1 ) {
+      if ( PreyList.indexOf(ele.uid) > -1 || this.mateHistory.indexOf(ele.uid) > -1) {
         return null
       } else {
         return ele

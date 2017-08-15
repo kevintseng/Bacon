@@ -31,23 +31,16 @@ export default class CourtContainer extends Component {
     })
   }
 
-  like = () => {
+  like = async () => {
     this.firebase.database().ref('goodImpression/' + this.SubjectStore.uid + this.FateStore.uid ).set({ wooer: this.SubjectStore.uid , prey: this.FateStore.uid, time: Date.now() })
+    await this.FateStore.addMateHistory(this.FateStore.uid)
     this.ControlStore.setMateModal()
-    //const prey = this.FateStore.goodImpressionPreys.find( ele => (ele.key === this.FateStore.uid) )
-    //console.log(prey)
-    this.FateStore.goodImpressionPreys.remove(this.FateStore.goodImpressionPreys.find( ele => (ele.key === this.FateStore.uid) ))
-    //alert('移除好感紀錄')
-    //alert('新增配對紀錄')
-
   }
 
-  unlike = () => {
+  unlike = async () => {
     this.firebase.database().ref('goodImpression/' + this.FateStore.uid + this.SubjectStore.uid).remove()
-    this.FateStore.goodImpressionPreys.remove(this.FateStore.goodImpressionPreys.find( ele => (ele.key === this.FateStore.uid) ))
+    await this.FateStore.addMateHistory(this.FateStore.uid)
     Actions.FateTab({type: 'reset', initialPage: 1})
-    //alert('sadsdasdasd')
-    //alert('移除好感紀錄')
   }
 
   render() {
