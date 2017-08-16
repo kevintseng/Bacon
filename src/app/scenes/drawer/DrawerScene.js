@@ -5,6 +5,7 @@ import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
 import GeoFire from 'geofire'
 import Geolocation from 'Geolocation'
+import RNExitApp from 'react-native-exit-app'
 
 import Sider from '../../views/Sider/Sider'
 
@@ -17,11 +18,12 @@ const drawerStyles = {
   }
 }
 
-@inject('ControlStore','SubjectStore') @observer
+@inject('firebase','ControlStore','SubjectStore') @observer
 export default class DrawerScene extends Component {
 
   constructor(props) {
     super(props)
+    this.firebase = this.props.firebase
     this.ControlStore = this.props.ControlStore
     this.SubjectStore = this.props.SubjectStore
   }
@@ -37,7 +39,8 @@ export default class DrawerScene extends Component {
   onBackAndroid = () => {
     if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
         //return false
-        BackHandler.exitApp() //最近2秒内按過返回键，可以退出程式
+        //BackHandler.exitApp() //最近2秒内按過返回键，可以退出程式
+        RNExitApp.exitApp()
     }
     this.lastBackPressed = Date.now()
     ToastAndroid.show('再按一次離開程式', ToastAndroid.SHORT)

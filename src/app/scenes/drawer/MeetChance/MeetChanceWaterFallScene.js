@@ -10,7 +10,7 @@ const { width } = Dimensions.get('window')
 
 const x = 5
 
-const picWidth = ((width - 4 * x)/3) + 25
+const itemHight = ((width - 4 * x)/3) + 30
 
 const styles = {
   self: {
@@ -63,6 +63,7 @@ export default class MeetChanceWaterFallScene extends Component {
     return(
     <View style={{flex:1}}>
       <FlatList
+        removeClippedSubviews
         data={ this.MeetChanceStore.preysToFlatList }
         numColumns={3}
         renderItem={({item}) =>
@@ -73,7 +74,7 @@ export default class MeetChanceWaterFallScene extends Component {
         /> }
         ListHeaderComponent={ this.header }
         getItemLayout={(data, index) => (
-          {length: picWidth, offset: picWidth * index, index}
+          {length: itemHight, offset: itemHight * index, index}
         )}
       />
     </View>
