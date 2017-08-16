@@ -21,8 +21,8 @@ const styles = {
     textAlign: 'center',
     backgroundColor: 'transparent',
     letterSpacing: 3,
-    fontFamily: 'NotoSans', 
-    color: '#606060',   
+    fontFamily: 'NotoSans',
+    color: '#606060',
   }
 }
 @inject('ControlStore') @observer
@@ -33,7 +33,7 @@ export default class LineModalContainer extends Component {
     this.ControlStore = this.props.ControlStore
   }
 
-  goToLine = () => { 
+  goToLine = () => {
     Actions.Line({uid: this.Store.uid, name: this.Store.nickname})
   }
 
