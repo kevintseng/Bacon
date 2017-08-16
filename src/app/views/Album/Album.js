@@ -46,6 +46,7 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, v
         </View>
       </Modal>
       <FlatList
+        removeClippedSubviews
         data={ photos } 
         numColumns={3}
         renderItem={({item}) => (

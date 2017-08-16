@@ -33,6 +33,7 @@ export default class SessionCheckScene extends Component {
     this.FateStore = this.props.FateStore
     this.firebase = this.props.firebase
     this.lastAppState = AppState.currentState
+    // 監聽函數
     this.geoQuery = null
     this.geoFire = null
     this.meetCuteQuery = null
@@ -45,11 +46,16 @@ export default class SessionCheckScene extends Component {
   componentWillMount() {
     this.firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        // 使用者登入 只要登入成功一定有 uid
-        this.SubjectStore.setUid(user.uid)
-        this.SubjectStore.setEmail(user.email) // String
+        // 入口點 -> 移除所有監聽函數 初始化狀態
+        this.initialize()
+        // 開始做事
+        // 使用者登入 -> 只要登入成功一定有 uid email
+        this.SubjectStore.setUid(user.uid) // 設置 uid
+        this.SubjectStore.setEmail(user.email) // 設置 email
+        //////////////////////////////////////////////////////////
         if (this.ControlStore.authenticateIndicator == '註冊') {
-          // 非同步
+          // 從註冊來的
+          ///////// 非同步 /////////
           this.uploadAvatar() // 非同步上傳相簿
           this.uploadSignUpData() // 非同步上傳註冊資料
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
@@ -58,11 +64,12 @@ export default class SessionCheckScene extends Component {
           this.matchListener() // 配對
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
-          // 同步
+          ///////// 同步 /////////
           this.uploadEmailVerity()
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
         } else {
-          // 非同步
+          // 從登入來的
+          ///////// 非同步 /////////
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
@@ -70,28 +77,32 @@ export default class SessionCheckScene extends Component {
           this.matchListener() // 配對
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
-          // 同步
+          ///////// 同步 /////////
           this.uploadEmailVerity()
         }
-        Actions.Drawer({type: 'reset'}) // 切換場景
+        Actions.Drawer({type: 'reset'}) // 進入 Drawer
       } else {
-        // 入口點 -> 沒有使用者登入 user = null
-        // 移除所有監聽函數 初始化狀態
-        AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
-        this.removeMeetChanceListener() // 非同步移除地理監聽
-        this.removeMeetCuteListener() // 移除邂逅監聽
-        this.removeVisitorsListener() // 移除邂逅監聽
-        this.removeGoodImpressionListener() // 移除好感監聽
-        this.removeMatchListener() // 配對
-        this.SignUpStore.initialize() // 初始註冊入狀態
-        this.SignInStore.initialize() // 初始化登入狀態
-        this.SubjectStore.initialize() // 初始主體入狀態
-        this.MeetChanceStore.initialize()
-        this.MeetCuteStore.initialize()
-        this.FateStore.initialize()
-        Actions.Welcome({type: 'reset'}) // 轉到註冊登入頁面
+        // 入口點 -> 移除所有監聽函數 初始化狀態
+        this.initialize()
+        // 沒有使用者登入 user = null
+        Actions.Welcome({type: 'reset'}) // 轉到 Welcome
       }
     })
+  }
+
+  initialize = () => {
+    AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
+    this.removeMeetChanceListener() // 非同步移除地理監聽
+    this.removeMeetCuteListener() // 移除邂逅監聽
+    this.removeVisitorsListener() // 移除邂逅監聽
+    this.removeGoodImpressionListener() // 移除好感監聽
+    this.removeMatchListener() // 配對
+    this.SignUpStore.initialize() // 初始註冊入狀態
+    this.SignInStore.initialize() // 初始化登入狀態
+    this.SubjectStore.initialize() // 初始主體入狀態
+    this.MeetChanceStore.initialize()
+    this.MeetCuteStore.initialize()
+    this.FateStore.initialize()    
   }
 
   uploadAvatar = () => {

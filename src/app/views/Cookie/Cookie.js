@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Image, Text, Dimensions, TouchableOpacity, TouchableNativeFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { Avatar, Badge } from 'react-native-elements'
 import MKPLoadImageView from 'mkp-react-native-image-view'
@@ -25,14 +25,28 @@ const styles = {
     alignItems: 'center', 
     marginLeft: size ? 0 : x, 
     marginBottom: 10,
-    //backgroundColor: 'red'
+    //backgroundColor: 'blue'
   },
   image: {
     width: circleSize,
     height: circleSize,
-    marginBottom: 5,
-    borderRadius: circleSize/2,
-    overflow: 'hidden'
+  },
+  circle: {
+    width: circleSize,
+    height: circleSize,
+    borderRadius: circleSize / 2,
+    overflow: 'hidden',
+  },
+  fixCircleClipping: {
+    position: 'absolute',
+    top: -circleFixBorder,
+    bottom: -circleFixBorder,
+    right: -circleFixBorder,
+    left: -circleFixBorder,
+    borderRadius: circleSize / 2 + circleFixBorder / 2,
+    borderWidth: circleFixBorder,
+    borderColor: 'white',
+    //backgroundColor: 'red'
   },
   indicatorProps: {
     color:'red',
@@ -49,14 +63,19 @@ const styles = {
     lineHeight: 20
   }
 }
-
   return(
+    <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#d63768')} onPress={ onPress }>
     <View style={styles.view}>
-      <MKPLoadImageView hiddenProgress={true} style={ styles.image } source={ styles.avatar } defaultSource={ DEFAULT_IMAGE } onPress={ onPress }/>
+      <View style={styles.circle} >
+        <MKPLoadImageView style={ styles.image } source={ styles.avatar } defaultSource={ DEFAULT_IMAGE } />
+        <View style={styles.fixCircleClipping} />
+      </View>
       <Text style={ styles.text } lineBreakMode={ lineBreakMode } numberOfLines={1} >{ name }</Text>
     </View>
+    </TouchableNativeFeedback>
   )
 }
 
 export default Cookie
-// activeOpacity={0.8} onPress={onPress}
+// onPress={ onPress }
+// opacity={1} activeOpacity={0.7} onPress={ onPress }
