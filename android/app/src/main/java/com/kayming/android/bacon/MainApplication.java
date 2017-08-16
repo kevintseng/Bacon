@@ -4,6 +4,7 @@ import android.app.Application;
 import com.horcrux.svg.SvgPackage;
 import com.idehub.Billing.InAppBillingBridgePackage;
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
 import com.github.wumke.RNExitApp.RNExitAppPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFSPackage(),
             new RNExitAppPackage(),
             new SvgPackage(),
             new InAppBillingBridgePackage(),

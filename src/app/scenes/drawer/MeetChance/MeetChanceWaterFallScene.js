@@ -30,7 +30,7 @@ export default class MeetChanceWaterFallScene extends Component {
 
   componentWillMount() {
     this.MeetChanceStore.setPreyList()
-    this.MeetChanceStore.setFakePreys()
+    //this.MeetChanceStore.setFakePreys()
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
