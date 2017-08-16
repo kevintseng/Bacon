@@ -3732,6 +3732,10 @@ react-native-image-resizer@bamlab/react-native-image-resizer#master:
   version "0.1.1"
   resolved "https://codeload.github.com/bamlab/react-native-image-resizer/tar.gz/975d9097d3ff3107d940dad1bef7565c72dc36b5"
 
+react-native-in-app-utils@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-in-app-utils/-/react-native-in-app-utils-5.5.0.tgz#4575414da8311103a1f33fbaf3f0a0a605eba4d9"
+
 react-native-invertible-scroll-view@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-invertible-scroll-view/-/react-native-invertible-scroll-view-1.0.0.tgz#60ceb384dc950c34eba3a5aeda39f97cdc7d4e23"
