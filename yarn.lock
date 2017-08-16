@@ -947,8 +947,8 @@ babel-types@^6.19.0, babel-types@^6.23.0, babel-types@^6.24.1, babel-types@^6.25
     to-fast-properties "^1.0.1"
 
 babylon@^6.17.0, babylon@^6.17.2:
-  version "6.17.4"
-  resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.17.4.tgz#3e8b7402b88d22c3423e137a1577883b15ff869a"
+  version "6.18.0"
+  resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -3672,6 +3672,10 @@ react-native-elements@^0.15.0:
     prop-types "^15.5.8"
     react-native-side-menu "^0.20.1"
     react-native-tab-navigator "^0.3.3"
+
+react-native-exit-app@kaymingmobile/react-native-exit-app#master:
+  version "0.1.0"
+  resolved "https://codeload.github.com/kaymingmobile/react-native-exit-app/tar.gz/861dc55bfb903596b52e7eb70c3898a0eac03175"
 
 react-native-experimental-navigation@^0.28.0:
   version "0.28.0"

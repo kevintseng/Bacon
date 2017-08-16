@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import { Avatar, Badge } from 'react-native-elements'
 
 const { width } = Dimensions.get('window')
 
@@ -17,7 +18,10 @@ const styles = {
     width: size || picWidth,
     height: size || picWidth,
     marginBottom: 5,
-    borderRadius: size ? size/2 : picWidth/2,
+    borderRadius: size ? size/2 : picWidth*2,
+  },
+  nickname: {
+    height: 20
   }
 }
 
@@ -26,7 +30,7 @@ const styles = {
       <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
         <Image source={ avatar ? { uri: avatar } : require('./img/ico_qy_head_preload.png') } style={styles.itemImageStyle}/>
       </TouchableOpacity>
-      <View>
+      <View style={styles.nickname}>
         <Text lineBreakMode="tail" numberOfLines={1} >{ name }</Text>
       </View>
     </View>

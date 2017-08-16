@@ -28,6 +28,7 @@
     "react-native-drawer": "^2.3.0",
     "react-native-dropdown-menu": "git+https://github.com/kaymingmobile/react-native-dropdown-menu.git",
     "react-native-elements": "^0.15.0",
+    "react-native-exit-app": "kaymingmobile/react-native-exit-app#master",
     "react-native-fast-image": "1.0.0",
     "react-native-firebase": "^2.0.4",
     "react-native-gifted-chat": "^0.2.5",
