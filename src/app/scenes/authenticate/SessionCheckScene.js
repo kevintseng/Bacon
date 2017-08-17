@@ -1,10 +1,9 @@
 import React, { Component }  from 'react'
-import { AppState, AsyncStorage } from 'react-native'
+import { AppState } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
-import Storage from 'react-native-storage'
 import Moment from 'moment'
 
 import { calculateAge } from '../../../app/Utils'
@@ -43,18 +42,6 @@ export default class SessionCheckScene extends Component {
     this.goodImpressionQuery = null
     this.collectionQuery = null
     this.matchQuery = null
-    const localdb = new Storage({
-      size: 1000, // maximum capacity, default 1000
-      storageBackend: AsyncStorage,
-      defaultExpires: 1000 * 60, // 24 小時
-      enableCache: true,
-      sync : {
-        preyListHistory(params){
-          console.log(params)
-        }
-      }     
-    })
-    global.storage = localdb
   }
 
   componentWillMount() {
@@ -232,7 +219,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setConversations(snap.val().conversations)
           this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
           // 收藏
-          this.FateStore.setCollectionPreylist(new Object(snap.val().collect)) // Object
+          //this.FateStore.setCollectionPreylist(new Object(snap.val().collect)) // Object
            //null(placeholder->邂逅) String
         } else {
           //this.SubjectStore.initialize()

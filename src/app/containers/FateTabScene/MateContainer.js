@@ -4,7 +4,8 @@ import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
 import { calculateAge } from '../../Utils'
-import Cookie from '../../views/Cookie'
+import CookieList from '../../views/CookieList'
+import localdb from '../../../configs/localdb'
 
 const styles = {
   view: {
@@ -37,7 +38,7 @@ export default class MateContainer extends Component {
 
   componentWillMount() {
     this.FateStore.filterMatchList()
-    this.FateStore.setMatchFakePreys()
+    //this.FateStore.setMatchFakePreys()
   }
 
   componentDidMount() {
@@ -47,8 +48,14 @@ export default class MateContainer extends Component {
 
   onPress = async uid => {
     await this.FateStore.setCourtInitialize(uid)
-    await this.sleep(200)
-    Actions.LineCollect({ Store: this.FateStore, title: '緣分' })
+    //await this.sleep(200)
+    await localdb.getIdsForKey('collection').then(ids => {
+      if (ids.includes(uid)) {
+        Actions.LineCollect({ Store: this.FateStore, title: '緣分', collection: true })
+      } else {
+        Actions.LineCollect({ Store: this.FateStore, title: '緣分', collection: false })
+      }
+    }).catch(err => console.log(err)) 
   }
 
   sleep = ms => {
@@ -63,36 +70,22 @@ export default class MateContainer extends Component {
           numColumns={1}
           renderItem={({item}) => 
           (
-            <TouchableOpacity onPress={ () => { this.onPress(item.key) } }>
-              <Cookie
+              <CookieList
                 name={ item.nickname }
                 avatar={ item.avatar }
                 age={ calculateAge(item.birthday) }
+                onPress={()=>this.onPress(item.key)}
               >
                 <View style={styles.view}>
                   <Text style={styles.text}>你們在</Text>
                   <Text style={styles.middleText}> 2017年五月 </Text>
                   <Text style={styles.text}>互有好感</Text>
                 </View>
-              </Cookie>
-            </TouchableOpacity>) 
+              </CookieList>
+) 
           } 
         />
       </View>
     )
   }
 }
-/*
-        <Cookie
-          name='Dora Li'
-          ages='19'
-          //onPress={ this.onPress } 
-        >
-          <View style={styles.view}>
-            <Text style={styles.text}>你們在</Text>
-            <Text style={styles.middleText}> 2017年五月 </Text>
-            <Text style={styles.text}>互有好感</Text>
-          </View>
-        </Cookie>
-
-      */

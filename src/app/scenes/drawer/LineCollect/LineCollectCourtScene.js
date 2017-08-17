@@ -18,6 +18,7 @@ export default class LineCollectCourtScene extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.title = this.props.title
+    this.collection = this.props.collection
     this.Store = this.props.Store // MeetChanceStore FateStore
     this.SubjectStore = this.props.SubjectStore
     this.FateStore = this.props.FateStore
@@ -33,19 +34,14 @@ export default class LineCollectCourtScene extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
     this.Store.cleanFetch()
-    this.handleCollection() // 處理收集
-    //alert('解除了')
+    this.handleCollection()
   }
 
   componentDidMount() {
-    //alert('應該要進去抓資料囉')
     this.Store.fetchPrey()
   }
 
   handleCollection = () => {
-    this.SubjectStore.filterCollect() // 把 false 清掉
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/collect').set(this.SubjectStore.collect) // 非同步上傳收集
-    this.FateStore.setCollectionPreylist(this.SubjectStore.collect) // 複製給 FateStore
     if (this.title === '緣分') {
       this.FateStore.setCollectionRealPreys() // 從緣分來的幫他重新整理
     }
@@ -81,7 +77,7 @@ export default class LineCollectCourtScene extends Component {
         { !this.Store.loading &&
           <View style={{flex: 1}}>
             <ScrollView style={{flex: 1}}>
-              <CourtContainer Store={this.Store}/>
+              <CourtContainer Store={this.Store} collection={this.collection}/>
               <View style={{alignSelf: 'center',paddingTop: 40}}>
                 <InfosContainer Store={this.Store}/>
               </View>

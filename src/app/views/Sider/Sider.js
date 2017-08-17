@@ -41,7 +41,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
             width={picWidth}
             heigh={picWidth}
             rounded
-            source={ avatar ? {uri: avatar} : avatar }
+            source={ avatar ? {uri: avatar} : require('../Cookie/img/ico_qy_head_preload.png') }
             activeOpacity={0.7}
           />
         </View>

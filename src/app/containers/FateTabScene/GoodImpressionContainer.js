@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
 import { calculateAge } from '../../Utils'
-import Cookie from '../../views/Cookie'
+import CookieList from '../../views/CookieList'
 
 const styles = {
   child: {
@@ -27,7 +27,7 @@ export default class GoodImpressionContainer extends Component {
 
   componentWillMount() {
     this.FateStore.setGoodImpressionPreylist()
-    this.FateStore.setGoodImpressionFakePreys()
+    //this.FateStore.setGoodImpressionFakePreys()
   }
 
   componentDidMount() {
@@ -53,15 +53,15 @@ export default class GoodImpressionContainer extends Component {
           numColumns={1}
           renderItem={({item}) => 
           (
-            <TouchableOpacity onPress={ () => { this.onPress(item.key) } }>
-              <Cookie
+              <CookieList
                 name={ item.nickname }
                 avatar={ item.avatar }
                 age={ calculateAge(item.birthday) }
+                onPress={()=>this.onPress(item.key)}
               >
                 <Text style={styles.child}>你們距離大約7.9公里</Text>
-              </Cookie>
-            </TouchableOpacity>) 
+              </CookieList>
+           ) 
           } 
         />
       </View>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { Avatar, Badge } from 'react-native-elements'
 import MKPLoadImageView from 'mkp-react-native-image-view'
@@ -13,7 +13,7 @@ const picWidth = (width - 4 * x)/3
 
 const DEFAULT_IMAGE = require('./img/ico_qy_head_preload.png')
 
-const Cookie = ({ name, size, avatar, onPress }) => {
+const Cookie = ({ name, size, avatar, onPress, borderColor }) => {
 
 const circleSize = size || picWidth
 
@@ -35,7 +35,7 @@ const styles = {
   circle: {
     width: circleSize,
     height: circleSize,
-    borderRadius: circleSize / 2,
+    borderRadius: circleFixBorder,
     overflow: 'hidden',
   },
   fixCircleClipping: {
@@ -44,9 +44,9 @@ const styles = {
     bottom: -circleFixBorder,
     right: -circleFixBorder,
     left: -circleFixBorder,
-    borderRadius: circleSize / 2 + circleFixBorder / 2,
+    borderRadius: circleFixBorder + circleFixBorder / 2,
     borderWidth: circleFixBorder,
-    borderColor: 'white',
+    borderColor: borderColor || 'white',
     //backgroundColor: 'red'
   },
   indicatorProps: {

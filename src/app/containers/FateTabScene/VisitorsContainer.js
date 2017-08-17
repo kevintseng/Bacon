@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
+import Moment from 'moment'
 
 import { calculateAge } from '../../Utils'
-import Cookie from '../../views/Cookie'
+import CookieList from '../../views/CookieList'
+import localdb from '../../../configs/localdb'
 
 const styles = {
   child: {
@@ -26,8 +28,9 @@ export default class VisitorsContainer extends Component {
   }
 
   componentWillMount() {
+    //console.log('dsadasdada' + Moment.duration(100, 'hours').humanize())
     this.FateStore.setVisitorsPreylist()
-    this.FateStore.setVisitorsFakePreys()
+    //this.FateStore.setVisitorsFakePreys()
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
@@ -37,12 +40,22 @@ export default class VisitorsContainer extends Component {
 
   onPress = async uid => {
     await this.FateStore.setCourtInitialize(uid)
-    await this.sleep(200)
-    Actions.LineCollect({ Store: this.FateStore, title: '緣分' })
+    //await this.sleep(200)
+    await localdb.getIdsForKey('collection').then(ids => {
+      if (ids.includes(uid)) {
+        Actions.LineCollect({ Store: this.FateStore, title: '緣分', collection: true })
+      } else {
+        Actions.LineCollect({ Store: this.FateStore, title: '緣分', collection: false })
+      }
+    }).catch(err => console.log(err)) 
   }
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  duration = (time) => {
+    return Moment.duration(Moment().diff(time)).humanize()
   }
 
   render() {
@@ -53,15 +66,14 @@ export default class VisitorsContainer extends Component {
           numColumns={1}
           renderItem={({item}) => 
           (
-            <TouchableOpacity onPress={ () => { this.onPress(item.key) } }>
-              <Cookie
+              <CookieList
                 name={ item.nickname }
                 avatar={ item.avatar }
                 age={ calculateAge(item.birthday) }
+                onPress={()=>this.onPress(item.key)}
               >
-                <Text style={styles.child}>剛剛來訪</Text>
-              </Cookie>
-            </TouchableOpacity>) 
+                <Text style={styles.child}>{this.duration(item.time)}</Text>
+              </CookieList>)
           } 
         />
       </View>
