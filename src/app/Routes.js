@@ -195,7 +195,7 @@ export default class Routes extends Component {
 
   render() {
     return (
-      <Router getSceneStyle={this.getSceneStyle}>
+      <Router getSceneStyle={this.getSceneStyle} duration={0}>
         <Scene key="root" hideTabBar hideNavBar navigationBarStyle={styles.navBar} >
 
           <Scene key="SessionCheck" component={SessionCheckScene} />
