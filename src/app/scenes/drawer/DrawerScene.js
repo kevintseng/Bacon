@@ -3,8 +3,6 @@ import Drawer from 'react-native-drawer'
 import { BackHandler, ToastAndroid, Dimensions } from 'react-native'
 import { Actions, DefaultRenderer } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react/native'
-import GeoFire from 'geofire'
-import Geolocation from 'Geolocation'
 import RNExitApp from 'react-native-exit-app'
 
 import Sider from '../../views/Sider/Sider'

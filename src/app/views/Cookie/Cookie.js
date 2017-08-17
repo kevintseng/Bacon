@@ -64,7 +64,7 @@ const styles = {
   }
 }
   return(
-    <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#d63768')} onPress={ onPress }>
+    <TouchableOpacity activeOpacity={0.7} onPress={ onPress }>
     <View style={styles.view}>
       <View style={styles.circle} >
         <MKPLoadImageView style={ styles.image } source={ styles.avatar } defaultSource={ DEFAULT_IMAGE } />
@@ -72,7 +72,7 @@ const styles = {
       </View>
       <Text style={ styles.text } lineBreakMode={ lineBreakMode } numberOfLines={1} >{ name }</Text>
     </View>
-    </TouchableNativeFeedback>
+    </TouchableOpacity>
   )
 }
 
