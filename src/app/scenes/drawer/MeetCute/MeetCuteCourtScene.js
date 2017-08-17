@@ -45,7 +45,6 @@ export default class MeetCuteCourtScene extends Component {
   }
 
   componentWillMount() {
-    //this.MeetCuteStore.noHaveNewPreys()
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
