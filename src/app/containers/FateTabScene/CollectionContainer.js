@@ -80,6 +80,7 @@ export default class CollectionContainer extends Component {
     return(
       <View>
         <FlatList
+          removeClippedSubviews
           data={ this.FateStore.collectionPreysToFlatList } // local 
           numColumns={1}
           ListHeaderComponent={ this.header }
