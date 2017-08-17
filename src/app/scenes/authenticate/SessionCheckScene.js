@@ -205,7 +205,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setBio(snap.val().bio) // null(placeholder) String
           this.SubjectStore.setAvatar(snap.val().avatar) // null(placeholder) String Url
           this.SubjectStore.setAlbum(new Object(snap.val().album)) // Object
-          this.SubjectStore.setLanguages(snap.val().languages || DefaultLanguages) // Object
+          this.SubjectStore.setLanguages(Object.assign({},DefaultLanguages,snap.val().languages)) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
           this.SubjectStore.setVip(Boolean(snap.val().vip))
