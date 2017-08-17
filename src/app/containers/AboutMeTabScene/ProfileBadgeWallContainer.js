@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import { inject, observer } from 'mobx-react'
 
 import { BaconBadgeYes, BaconBadgeNo } from '../../views/BaconBadge/BaconBadge'
@@ -42,8 +42,8 @@ export default class ProfileBadgeWallContainer extends Component {
   )
 
   result = () => {
-    const badges = this.showBadge()
-    if (badges.length === 0) {
+    //const badges = this.showBadge()
+    if (this.SubjectStore.hobbiesToFlatList.length === 0) {
       return (
         <View pointerEvents="none" style={{flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'flex-start'}}>
         { this.showText() }
@@ -51,8 +51,13 @@ export default class ProfileBadgeWallContainer extends Component {
       )
     } else {
       return (
-        <View pointerEvents="none" style={{flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'center',alignSelf: 'center'}}>
-          { badges }
+        <View style={{alignItems: 'center',height: 140}}>
+          <FlatList
+            removeClippedSubviews
+            data={ this.SubjectStore.hobbiesToFlatList }
+            numColumns={4}
+            renderItem={({item}) => (<BaconBadgeYes text={item.key} />)} 
+          />
         </View>
       )
     }    
@@ -69,3 +74,11 @@ export default class ProfileBadgeWallContainer extends Component {
     )
   }
 }
+
+/*
+
+          
+        <View pointerEvents="none" style={{flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'center',alignSelf: 'center'}}>
+          { badges }
+        </View>
+      */

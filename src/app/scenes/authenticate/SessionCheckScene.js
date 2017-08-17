@@ -8,16 +8,12 @@ import Moment from 'moment'
 
 import { calculateAge } from '../../../app/Utils'
 import Loading from '../../views/Loading/Loading'
+import DefaultLanguages from '../../../configs/DefaultLanguages'
 
 const metadata = {
   contentType: 'image/jpeg'
 }
 
-const DefaultLanguages =  {
-  中文: false,
-  英文: false,
-  韓文: false
-}
 
 @inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','MeetCuteStore','FateStore','firebase',) @observer
 export default class SessionCheckScene extends Component {

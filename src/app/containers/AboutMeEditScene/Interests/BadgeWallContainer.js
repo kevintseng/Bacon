@@ -17,7 +17,7 @@ export default class BadgeWallContainer extends Component {
 
   render() {
     return(
-      <View style={{flex: 1,alignItems: 'center'}}>
+      <View style={{flex: 1,alignItems: 'center',height: 140}}>
         <FlatList
           removeClippedSubviews
           data={ this.SubjectEditStore.hobbiesToFlatList }
