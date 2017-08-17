@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, Image, Text, Dimensions, TouchableOpacity, TouchableNativeFeedback } from 'react-native'
+import { View, Image, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { Avatar, Badge } from 'react-native-elements'
 import MKPLoadImageView from 'mkp-react-native-image-view'
+import ImageLoad from 'react-native-image-placeholder'
 
 const { width } = Dimensions.get('window')
 
@@ -64,18 +65,14 @@ const styles = {
   }
 }
   return(
-    <TouchableOpacity activeOpacity={0.7} onPress={ onPress }>
-    <View style={styles.view}>
+    <TouchableOpacity activeOpacity={1} style={styles.view} onPress={ onPress }>
       <View style={styles.circle} >
-        <MKPLoadImageView style={ styles.image } source={ styles.avatar } defaultSource={ DEFAULT_IMAGE } />
+        <MKPLoadImageView style={ styles.image } source={ avatar ? { uri: avatar } : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
         <View style={styles.fixCircleClipping} />
       </View>
       <Text style={ styles.text } lineBreakMode={ lineBreakMode } numberOfLines={1} >{ name }</Text>
-    </View>
     </TouchableOpacity>
   )
 }
 
 export default Cookie
-// onPress={ onPress }
-// opacity={1} activeOpacity={0.7} onPress={ onPress }
