@@ -51,7 +51,7 @@ export default class ProfileBadgeWallContainer extends Component {
       )
     } else {
       return (
-        <View style={{alignItems: 'center',height: 140}}>
+        <View pointerEvents="none" style={{alignItems: 'center',height: 140}}>
           <FlatList
             removeClippedSubviews
             data={ this.SubjectStore.hobbiesToFlatList }

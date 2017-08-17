@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View,Text, BackHandler, ToastAndroid } from 'react-native'
+import { View,Text, BackHandler, ToastAndroid, Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
 import BlankButton from '../../../views/BlankButton/BlankButton'
@@ -34,6 +34,13 @@ export default class SettingAboutScene extends Component {
     return true
   }
 
+  version = () => {
+    Alert.alert( 
+      '目前版本', 'Alpha-1.1.3', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
+  }
+
   render() {
     return(
       <View style={{flex: 1, alignItems: 'center'}}>
@@ -43,6 +50,7 @@ export default class SettingAboutScene extends Component {
         <View style={{flex: 1, justifyContent: 'space-around', marginBottom: 100}}>
           <BlankButton 
             text='版本'
+            onPress={ this.version }
           />
           <BlankButton
             text='服務條款'
