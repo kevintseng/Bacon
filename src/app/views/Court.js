@@ -9,7 +9,7 @@ import Infos from './Infos/Infos'
 
 const { width, height } = Dimensions.get('window')
 
-const DEFAULT_IMAGE = require('./Cookie/img/ico_qy_head_preload.png')
+const DEFAULT_IMAGE = require('../../images/ico_qy_head_preload.png')
 
 export default class Court extends Component {
 
@@ -30,7 +30,7 @@ export default class Court extends Component {
         imageWidth={width}
         imageHeight={height}
       >
-        <MKPLoadImageView style={{height, width}}  resizeMode='contain' source={{uri: photo}} defaultSource={ DEFAULT_IMAGE }/>
+        <MKPLoadImageView style={{height, width}} resizeMode='contain' source={{uri: photo}} defaultSource={ DEFAULT_IMAGE }/>
       </ImageZoom>
     ))
   )
@@ -48,7 +48,7 @@ export default class Court extends Component {
 
   renderAlbum = (album) => (
     album.map( photo => (
-      <MKPLoadImageView key={photo} activeOpacity={1} style={{height: width, width}}  source={{uri: photo}} defaultSource={ DEFAULT_IMAGE } onPress={this.props.openAlbum}/>
+      <MKPLoadImageView key={photo} style={{height: width, width}}  source={{uri: photo}} defaultSource={ DEFAULT_IMAGE } onPress={this.props.openAlbum}/>
     ))
   )
 
@@ -64,7 +64,7 @@ export default class Court extends Component {
     return (
       <View style={{flex: 1}}>
 
-        <Modal animationType={"fade"} onRequestClose={onRequestClose} visible={ visible || false } transparent={false}>
+        <Modal hardwareAccelerated animationType={'none'} onRequestClose={onRequestClose} visible={ visible || false } transparent={false}>
           <Carousel
             ref={(carousel) => { this.carousel = carousel }}
             swipe

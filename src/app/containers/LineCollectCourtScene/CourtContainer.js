@@ -102,6 +102,7 @@ export default class CourtContainer extends Component {
           openAlbum={ this.openAlbum }
           onPressRightIcon={ this.collection }
           onPressLeftIcon={ this.converse }
+          onRequestClose={ this.closeAlbum }
         />
         <LineModalContainer
           uid={this.Store.uid}
