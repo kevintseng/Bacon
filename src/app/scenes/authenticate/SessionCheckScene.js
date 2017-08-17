@@ -45,11 +45,9 @@ export default class SessionCheckScene extends Component {
   }
 
   componentWillMount() {
-    this.firebase.auth().onAuthStateChanged((user) => {
+    this.firebase.auth().onAuthStateChanged( user => {
       if (user) {
-        // 入口點 -> 移除所有監聽函數 初始化狀態
-        this.initialize()
-        // 開始做事
+        // 入口點
         // 使用者登入 -> 只要登入成功一定有 uid email
         this.SubjectStore.setUid(user.uid) // 設置 uid
         this.SubjectStore.setEmail(user.email) // 設置 email
@@ -70,6 +68,8 @@ export default class SessionCheckScene extends Component {
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
         } else {
           // 從登入來的
+          //移除所有監聽函數 初始化狀態
+          this.initialize()
           ///////// 非同步 /////////
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
@@ -83,7 +83,10 @@ export default class SessionCheckScene extends Component {
         }
         Actions.Drawer({type: 'reset'}) // 進入 Drawer
       } else {
-        // 入口點 -> 移除所有監聽函數 初始化狀態
+        // 入口點
+        // 下線
+        this.setOffline()
+        //移除所有監聽函數 初始化狀態
         this.initialize()
         // 沒有使用者登入 user = null
         Actions.Welcome({type: 'reset'}) // 轉到 Welcome
@@ -386,7 +389,7 @@ export default class SessionCheckScene extends Component {
   }
 
   setOffline() {
-    this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove()
+    this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove().catch(err => { console.log(err) })
   }
 
   genderToString = () => (

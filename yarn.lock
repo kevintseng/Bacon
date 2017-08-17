@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@expo/react-native-action-sheet@github:cribspot/react-native-action-sheet#b422c54f26d30b9e85eb14a882ea9cec38600730":
+"@expo/react-native-action-sheet@cribspot/react-native-action-sheet#b422c54f26d30b9e85eb14a882ea9cec38600730":
   version "1.0.0"
   resolved "https://codeload.github.com/cribspot/react-native-action-sheet/tar.gz/b422c54f26d30b9e85eb14a882ea9cec38600730"
   dependencies:
@@ -3767,6 +3767,10 @@ react-native-image-picker@kaymingmobile/react-native-image-picker#patch-1:
   version "0.26.2"
   resolved "https://codeload.github.com/kaymingmobile/react-native-image-picker/tar.gz/33892368cde41b7041bf1e36693b0d9cf99e027a"
 
+react-native-image-placeholder@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/react-native-image-placeholder/-/react-native-image-placeholder-1.0.12.tgz#9e3027a97d6637221ed9a9ba14ee30d95f0aa10d"
+
 react-native-image-resizer@bamlab/react-native-image-resizer#master:
   version "0.1.1"
   resolved "https://codeload.github.com/bamlab/react-native-image-resizer/tar.gz/975d9097d3ff3107d940dad1bef7565c72dc36b5"
@@ -3782,7 +3786,7 @@ react-native-invertible-scroll-view@1.0.0:
     react-clone-referenced-element "^1.0.1"
     react-native-scrollable-mixin "^1.0.1"
 
-"react-native-lightbox@github:oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875":
+react-native-lightbox@oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875:
   version "0.6.0"
   resolved "https://codeload.github.com/oblador/react-native-lightbox/tar.gz/c84a8543d4511fe6a44c3d7820747c9c1bddd875"
   dependencies:
