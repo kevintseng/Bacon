@@ -41,7 +41,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
             width={picWidth}
             heigh={picWidth}
             rounded
-            source={{uri: avatar}}
+            source={ avatar ? {uri: avatar} : avatar }
             activeOpacity={0.7}
           />
         </View>
