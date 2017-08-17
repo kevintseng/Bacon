@@ -44,7 +44,7 @@ export default class SessionCheckScene extends Component {
   }
 
   componentWillMount() {
-    this.firebase.auth().onAuthStateChanged((user) => {
+    this.firebase.auth().onAuthStateChanged( user => {
       if (user) {
         // 入口點
         // 使用者登入 -> 只要登入成功一定有 uid email
@@ -67,8 +67,8 @@ export default class SessionCheckScene extends Component {
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
         } else {
           // 從登入來的
-          // 移除所有監聽函數 初始化狀態
-          //this.initialize()
+          //移除所有監聽函數 初始化狀態
+          this.initialize()
           ///////// 非同步 /////////
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
