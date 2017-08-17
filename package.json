@@ -38,6 +38,7 @@
     "react-native-google-places": "kaymingmobile/react-native-google-places#patch-1",
     "react-native-image-pan-zoom": "^2.0.5",
     "react-native-image-picker": "kaymingmobile/react-native-image-picker#patch-1",
+    "react-native-image-placeholder": "^1.0.12",
     "react-native-image-resizer": "bamlab/react-native-image-resizer#master",
     "react-native-in-app-utils": "^5.5.0",
     "react-native-linear-gradient": "^2.1.0",

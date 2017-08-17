@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { View, Image, Text, Dimensions, TouchableHighlight } from 'react-native'
 import FastImage from 'react-native-fast-image'
 

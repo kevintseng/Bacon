@@ -13,12 +13,10 @@ export default class LoginOutContainer extends Component {
   }
 
   _loginOut = () => {
-    this.firebase.auth().signOut()
-    this.setOffline(this.user.uid)
-  }
-
-  setOffline(uid) {
-    this.firebase.database().ref(`/online/${uid}`).remove()
+    this.firebase.auth().signOut().catch( err => {
+      console.log(err)
+      alert('登出發生錯誤')
+    })
   }
 
   render() {

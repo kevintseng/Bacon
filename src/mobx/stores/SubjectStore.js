@@ -86,8 +86,8 @@ export default class SubjectStore {
 
   @action initialize = () => {
     // user data
-    this.uid = null
-    this.email = null
+    //this.uid = null
+    //this.email = null
     this.nickname = null
     this.address = null
     this.birthday = null
