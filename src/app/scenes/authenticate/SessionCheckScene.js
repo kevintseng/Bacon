@@ -1,9 +1,10 @@
 import React, { Component }  from 'react'
-import { AppState } from 'react-native'
+import { AppState, AsyncStorage } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
+import Storage from 'react-native-storage'
 
 import { calculateAge } from '../../../app/Utils'
 import Loading from '../../views/Loading/Loading'
@@ -41,6 +42,18 @@ export default class SessionCheckScene extends Component {
     this.goodImpressionQuery = null
     this.collectionQuery = null
     this.matchQuery = null
+    const localdb = new Storage({
+      size: 1000, // maximum capacity, default 1000
+      storageBackend: AsyncStorage,
+      defaultExpires: 1000 * 60, // 24 小時
+      enableCache: true,
+      sync : {
+        preyListHistory(params){
+          console.log(params)
+        }
+      }     
+    })
+    global.storage = localdb
   }
 
   componentWillMount() {
