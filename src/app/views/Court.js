@@ -3,9 +3,13 @@ import { Dimensions, Image, Modal, View, Text, TouchableOpacity } from 'react-na
 import Carousel from 'react-native-looped-carousel'
 import ImageZoom from 'react-native-image-pan-zoom'
 import FastImage from 'react-native-fast-image'
+import MKPLoadImageView from 'mkp-react-native-image-view'
+import { Icon } from 'react-native-elements'
 import Infos from './Infos/Infos'
 
 const { width, height } = Dimensions.get('window')
+
+const DEFAULT_IMAGE = require('./Cookie/img/ico_qy_head_preload.png')
 
 export default class Court extends Component {
 
@@ -26,7 +30,7 @@ export default class Court extends Component {
         imageWidth={width}
         imageHeight={height}
       >
-        <FastImage style={{height, width}}  resizeMode='contain' source={{uri: photo}}/>
+        <MKPLoadImageView style={{height, width}}  resizeMode='contain' source={{uri: photo}} defaultSource={ DEFAULT_IMAGE }/>
       </ImageZoom>
     ))
   )
@@ -44,9 +48,7 @@ export default class Court extends Component {
 
   renderAlbum = (album) => (
     album.map( photo => (
-      <TouchableOpacity activeOpacity={1} key={photo} onPress={this.props.openAlbum}>
-        <FastImage style={{height: width, width}}  source={{uri: photo}}/>
-      </TouchableOpacity>
+      <MKPLoadImageView key={photo} activeOpacity={1} style={{height: width, width}}  source={{uri: photo}} defaultSource={ DEFAULT_IMAGE } onPress={this.props.openAlbum}/>
     ))
   )
 
@@ -57,12 +59,12 @@ export default class Court extends Component {
 
   render() {
 
-    const { album, rightIcon, leftIcon, visible, closeAlbum, openAlbum, onPressRightIcon, onPressLeftIcon } = this.props
+    const { album, rightIcon, leftIcon, visible, closeAlbum, openAlbum, onPressRightIcon, onPressLeftIcon, onRequestClose } = this.props
 
     return (
       <View style={{flex: 1}}>
 
-        <Modal animationType={"fade"} onRequestClose={()=>{}} visible={ visible || false } transparent={false}>
+        <Modal animationType={"fade"} onRequestClose={onRequestClose} visible={ visible || false } transparent={false}>
           <Carousel
             ref={(carousel) => { this.carousel = carousel }}
             swipe
@@ -76,8 +78,8 @@ export default class Court extends Component {
             { album.length > 0 ? this.renderAlbumZoom(album) : this.renderOnePhotoZoom() }
           </Carousel>
           <View style={{width, position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
-            <View ><Text onPress={ closeAlbum } style={{color:'white',fontFamily: 'NotoSans',backgroundColor: 'transparent'}}>返回</Text></View>
-            <View ><Text onPress={ this.nextphoto } style={{color:'white',fontFamily: 'NotoSans',backgroundColor: 'transparent'}}>下一張</Text></View>
+            <View ><Icon name='heart' size={50} type='evilicon' color='white' underlayColor='transparent' onPress={ closeAlbum } /></View>
+            <View ><Icon name='arrow-right' size={50} type='evilicon' color='white' underlayColor='transparent' onPress={ this.nextphoto }/></View>
           </View>
         </Modal>
  
