@@ -1,5 +1,5 @@
 const DefaultLanguages = {
-  中文: false,
+  中文: true,
   英文: false,
   日文: false,
   韓文: false,

@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
+import { inject, observer } from 'mobx-react'
 
 import SwitchLists from '../../views/SwitchLists'
 
+@inject('SubjectStore') @observer
 export default class OptionContainer extends Component {
 
   constructor(props) {
     super(props)
+    this.SubjectStore = this.props.SubjectStore
     this.state = {
       // Prompt
       vistorPrompt : false,
@@ -14,11 +17,19 @@ export default class OptionContainer extends Component {
   }
 
   setVistorPrompt = () => {
-    this.setState({ vistorPrompt : !this.state.vistorPrompt})
+    if (this.SubjectStore.vip) {
+      this.setState({ vistorPrompt : !this.state.vistorPrompt})
+    } else {
+      alert('此功能僅限高級會員使用')
+    }
   }
 
   setGoodPrompt = () => {
-    this.setState({ goodPrompt : !this.state.goodPrompt})
+    if (this.SubjectStore.vip) {
+      this.setState({ goodPrompt : !this.state.goodPrompt})
+    } else {
+      alert('此功能僅限高級會員使用')
+    }
   }
 
   render() {
