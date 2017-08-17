@@ -11,6 +11,7 @@ export default class MeetChanceStore {
   @observable loading
   // user data
   @observable nickname
+  @observable avatar
   @observable bio
   @observable birthday
   @observable languages
@@ -61,6 +62,7 @@ export default class MeetChanceStore {
     // user data
     this.uid = null
     this.nickname = null
+    this.avatar = null
     this.bio = null
     this.birthday = null
     this.languages = new Object
@@ -117,9 +119,9 @@ export default class MeetChanceStore {
               key: ele.uid,
               nickname: snap.val().nickname,
               avatar: snap.val().avatar,
-              birthday: snap.val().birthday  
+              birthday: snap.val().birthday
             })
-          }          
+          }
         } else {
           // return null
         }
@@ -138,7 +140,7 @@ export default class MeetChanceStore {
     })
     .catch(err => {
       console.log(err)
-    })    
+    })
   }
 
   @action setCourtInitialize = uid => {
@@ -147,12 +149,13 @@ export default class MeetChanceStore {
   }
 
   @action fetchPrey = () => {
-    //alert('進來抓資料囉')  
+    //alert('進來抓資料囉')
     this.fetchPreyQuery = this.firebase.database().ref('users/' + this.uid)
     this.fetchPreyQuery.once('value').then(snap => {
       if (snap.val()) {
         runInAction(() => {
           this.uid = this.uid
+          this.avatar = snap.val().avatar
           this.nickname = snap.val().nickname
           this.bio = snap.val().bio
           this.birthday = snap.val().birthday
@@ -163,8 +166,8 @@ export default class MeetChanceStore {
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
           this.loading = false
-        })  
-        //alert('抓完囉應該要重渲染')      
+        })
+        //alert('抓完囉應該要重渲染')
       } else {
         //
         alert('錯誤')
@@ -172,7 +175,7 @@ export default class MeetChanceStore {
           this.loading = false
         })
       }
-    }).catch(err => { 
+    }).catch(err => {
         alert(err) }
       )
   }

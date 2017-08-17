@@ -12,22 +12,22 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="bg_intro" translatesAutoresizingMaskIntoConstraints="NO" id="b7W-HJ-Lux">
-                    <rect key="frame" x="53" y="-93" width="375" height="667"/>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="ico_intro_logo" translatesAutoresizingMaskIntoConstraints="NO" id="8j8-6N-TcL">
+                    <rect key="frame" x="113" y="174" width="148" height="144"/>
                     <autoresizingMask key="autoresizingMask"/>
                 </imageView>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="ico_intro_logo" translatesAutoresizingMaskIntoConstraints="NO" id="8j8-6N-TcL">
-                    <rect key="frame" x="166" y="96" width="148" height="144"/>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="bg_intro" translatesAutoresizingMaskIntoConstraints="NO" id="b7W-HJ-Lux">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <autoresizingMask key="autoresizingMask"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="548" y="455"/>
+            <point key="canvasLocation" x="495.5" y="335.5"/>
         </view>
     </objects>
     <resources>
