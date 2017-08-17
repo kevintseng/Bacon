@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Image, Text, Dimensions, TouchableOpacity, TouchableNativeFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { Avatar, Badge } from 'react-native-elements'
+import MKPLoadImageView from 'mkp-react-native-image-view'
 
 const { width } = Dimensions.get('window')
 
@@ -9,32 +10,72 @@ const x = 5
 
 const picWidth = (width - 4 * x)/3
 
-const ADD_IMAGE = require('Bacon/src/images/addImage.png')
+const DEFAULT_IMAGE = require('./img/ico_qy_head_preload.png')
 
 const Cookie = ({ name, size, avatar, onPress }) => {
 
+const circleSize = size || picWidth
+
+const circleFixBorder = circleSize/2
+
+const lineBreakMode ='tail'
+
 const styles = {
-  itemImageStyle: {
-    width: size || picWidth,
-    height: size || picWidth,
-    marginBottom: 5,
-    borderRadius: size ? size/2 : picWidth*2,
+  view: {
+    alignItems: 'center', 
+    marginLeft: size ? 0 : x, 
+    marginBottom: 10,
+    //backgroundColor: 'blue'
   },
-  nickname: {
-    height: 20
+  image: {
+    width: circleSize,
+    height: circleSize,
+  },
+  circle: {
+    width: circleSize,
+    height: circleSize,
+    borderRadius: circleSize / 2,
+    overflow: 'hidden',
+  },
+  fixCircleClipping: {
+    position: 'absolute',
+    top: -circleFixBorder,
+    bottom: -circleFixBorder,
+    right: -circleFixBorder,
+    left: -circleFixBorder,
+    borderRadius: circleSize / 2 + circleFixBorder / 2,
+    borderWidth: circleFixBorder,
+    borderColor: 'white',
+    //backgroundColor: 'red'
+  },
+  indicatorProps: {
+    color:'red',
+    style:
+    {
+      margin:10,
+      flex:1
+    }
+  },
+  avatar: {
+    uri: avatar
+  },
+  text: {
+    lineHeight: 20
   }
 }
-
   return(
-    <View style={{alignItems: 'center', marginLeft: size ? 0 : x, marginBottom: 10}}>
-      <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
-        <Image source={ avatar ? { uri: avatar } : require('./img/ico_qy_head_preload.png') } style={styles.itemImageStyle}/>
-      </TouchableOpacity>
-      <View style={styles.nickname}>
-        <Text lineBreakMode="tail" numberOfLines={1} >{ name }</Text>
+    <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#d63768')} onPress={ onPress }>
+    <View style={styles.view}>
+      <View style={styles.circle} >
+        <MKPLoadImageView style={ styles.image } source={ styles.avatar } defaultSource={ DEFAULT_IMAGE } />
+        <View style={styles.fixCircleClipping} />
       </View>
+      <Text style={ styles.text } lineBreakMode={ lineBreakMode } numberOfLines={1} >{ name }</Text>
     </View>
+    </TouchableNativeFeedback>
   )
 }
 
 export default Cookie
+// onPress={ onPress }
+// opacity={1} activeOpacity={0.7} onPress={ onPress }

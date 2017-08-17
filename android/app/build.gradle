@@ -107,8 +107,8 @@ android {
         applicationId "com.kayming.android.bacon"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 7
-        versionName "Alpha-1.0.7"
+        versionCode 8
+        versionName "Alpha-1.0.8"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -144,6 +144,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fs')
     compile project(':react-native-exit-app')
     compile project(':react-native-svg')
     compile project(':react-native-google-places')

@@ -48,6 +48,7 @@ export default class GoodImpressionContainer extends Component {
     return(
       <View>
         <FlatList
+          removeClippedSubviews
           data={ this.FateStore.goodImpressionPreys } 
           numColumns={1}
           renderItem={({item}) => 
