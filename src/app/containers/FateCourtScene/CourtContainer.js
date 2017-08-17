@@ -54,6 +54,7 @@ export default class CourtContainer extends Component {
         openAlbum={ this.openAlbum }
         onPressRightIcon={ this.like }
         onPressLeftIcon={ this.unlike }
+        onRequestClose={ this.closeAlbum }
       />
     )
   }
