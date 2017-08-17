@@ -52,7 +52,7 @@ export default class CustomStatusInputModalContainer extends Component {
             style={modalContentStyle}
           >
             <Text style={{ marginTop: 25, fontWeight: "600", fontSize: 16 }}>
-              請輸入自定義狀態
+              請輸入自訂狀態
             </Text>
             <TextInput
               maxLength={3}

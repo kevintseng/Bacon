@@ -135,18 +135,18 @@ export default class Chat extends Component {
       visit: this.visit,
       showVisitorModal: false,
       showMsgLimitModal: false,
-      showPriorityModal: true,
+      showPriorityModal: false,
       dontAskPriorityAgain: false,
       minToolBarHeight: 45,
     }
   }
 
   componentWillMount() {
-    this.getUserData(this.otherUid)
   }
 
   componentDidMount() {
-    // this.getUserData(this.otherUid)
+    this.getUserData(this.otherUid)
+    this.visitConvSentTodayUpdate()
   }
 
   getUserData = uid => {
@@ -588,7 +588,7 @@ export default class Chat extends Component {
               },
               image: uploadedFile.downloadUrl,
             }
-
+            this.setState({ showPriorityModal: true })
             this.syncMsgToFirebase(msgObj)
             // adds 1 to conversation
             this.unreadAddOne(this.convKey, this.otherUid)
@@ -646,6 +646,7 @@ export default class Chat extends Component {
               image: uploadedFile.downloadUrl,
             }
 
+            this.setState({ showPriorityModal: true })
             this.syncMsgToFirebase(msgObj)
             // adds 1 to conversation
             this.unreadAddOne(this.convKey, this.otherUid)
@@ -696,7 +697,7 @@ export default class Chat extends Component {
         },
         sticker: uri,
       }
-
+      this.setState({ showPriorityModal: true })
       this.syncMsgToFirebase(msgObj)
       // adds 1 to conversation
       this.unreadAddOne(this.convKey, this.otherUid)
@@ -815,7 +816,6 @@ export default class Chat extends Component {
 
   useBonusForPriority = () => {
     Actions.UseBonus({
-      cost: 100,
       nickname: this.other.nickname,
       avatarUrl: this.other.avatar,
       usageCode: 'priority',
@@ -825,7 +825,6 @@ export default class Chat extends Component {
 
   useBonusForMoreMsg = () => {
     Actions.UseBonus({
-      cost: 30,
       nickname: this.other.nickname,
       avatarUrl: this.other.avatar,
       usageCode: 'visitorMsgLimit',
@@ -890,6 +889,10 @@ export default class Chat extends Component {
         return 42
       default:
     }
+  }
+
+  visitConvSentTodayUpdate = () => {
+    this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday`).set(this.SubjectStore.visitConvSentToday)
   }
 
   refreshHeader = (user) => {
