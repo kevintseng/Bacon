@@ -1,6 +1,7 @@
 import { observable, action, computed, useStrict, runInAction } from 'mobx'
 import _ from 'lodash'
 import { calculateAge } from '../../app/Utils'
+import localdb from '../../configs/localdb'
 
 useStrict(true)
 
@@ -74,10 +75,10 @@ export default class MeetCuteStore {
   }
 
   @action setPreyList = async () => {
-    await storage.getIdsForKey('preyListHistory').then(ids => {
+    await localdb.getIdsForKey('preyListHistory').then(ids => {
       this.preyListHistory = ids
-      console.log(ids)
     })
+    console.log('this.preyListHistory : ' + this.preyListHistory)
     while (this.haveNewPreys === false) {
       if ((this.poolLastLenght !== this.pool.length) || (this.clean === true)) {
         this.poolLastLenght = this.pool.length
@@ -122,7 +123,7 @@ export default class MeetCuteStore {
   }
 
   @action pickNextPrey = async () => {
-    storage.save({
+    localdb.save({
       key: 'preyListHistory',
       id: this.uid,
       data: null,
@@ -135,7 +136,7 @@ export default class MeetCuteStore {
       this.setPreyList()
     } else {
       this.uid = this.preyList[this.index].uid
-      storage.save({
+      localdb.save({
         key: 'preyListHistory',
         id: this.uid,
         data: null,
@@ -175,10 +176,10 @@ export default class MeetCuteStore {
   }
 
   @action cleanHistory = () => {
-    storage.getIdsForKey('preyListHistory').then(ids => {
+    localdb.getIdsForKey('preyListHistory').then(ids => {
     if (ids.length > 0) {
           //this.preyListHistory = new Array
-          storage.clearMapForKey('preyListHistory')
+          localdb.clearMapForKey('preyListHistory')
           this.clean = true
         }
     })

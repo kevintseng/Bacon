@@ -8,10 +8,14 @@ import ImageResizer from 'react-native-image-resizer'
 import Album from '../../views/Album/Album'
 
 const options = {
+  title: '請上傳一張大頭照',
+  takePhotoButtonTitle: '使用相機現場拍一張',
+  chooseFromLibraryButtonTitle: '從相簿中選擇',
+  cancelButtonTitle: '取消',
   mediaType: 'photo',
-  maxWidth: 1000,
-  maxHeight: 1000,
-  quality: 0.8,
+  maxWidth: 1200,
+  maxHeight: 1200,
+  quality: 1.0,
   noData: false,
   storageOptions: {
     skipBackup: true,

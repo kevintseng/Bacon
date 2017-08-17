@@ -5,6 +5,7 @@ import { View, FlatList, Dimensions } from 'react-native'
 
 import Wave from '../../../views/Wave/Wave'
 import Cookie from '../../../views/Cookie/Cookie'
+import localdb from '../../../../configs/localdb'
 
 const { width } = Dimensions.get('window')
 
@@ -42,11 +43,18 @@ export default class MeetChanceWaterFallScene extends Component {
     Actions.AboutMe({type: 'reset'})
   }
 
-  onPressButton = async uid => {
+  onPress = async uid => {
+    // 來訪記錄
     this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
     await this.MeetChanceStore.setCourtInitialize(uid)
-    await this.sleep(200)
-    Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇'})
+    //await this.sleep(200)
+    await localdb.getIdsForKey('collection').then(ids => {
+      if (ids.includes(uid)) {
+        Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇', collection: true})
+      } else {
+        Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇', collection: false})
+      }
+    }).catch(err => console.log(err)) 
   }
 
   header = () => (
@@ -70,7 +78,7 @@ export default class MeetChanceWaterFallScene extends Component {
         <Cookie
           name={ item.nickname }
           avatar={ item.avatar }
-          onPress={ () => { this.onPressButton(item.key) } }
+          onPress={ () => { this.onPress(item.key) } }
         /> }
         ListHeaderComponent={ this.header }
         getItemLayout={(data, index) => (
@@ -81,10 +89,3 @@ export default class MeetChanceWaterFallScene extends Component {
     )
   }
 }
-
-/*
-
-      <View style={{position: 'absolute', bottom: 0}}>
-        <Wave/>
-      </View>
-*/

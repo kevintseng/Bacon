@@ -1,6 +1,7 @@
 import { observable, action, computed, useStrict, runInAction, toJS, autorun } from 'mobx'
 import _ from 'lodash'
 import { calculateAge } from '../../app/Utils'
+import localdb from '../../configs/localdb'
 
 useStrict(true)
 
@@ -109,6 +110,7 @@ export default class FateStore {
       this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => (
         {
           key: ele.uid,
+          time: ele.time,
           nickname: snap.val().nickname,
           avatar: snap.val().avatar,
           birthday: snap.val().birthday  
@@ -182,42 +184,47 @@ export default class FateStore {
 
   // collection
 
-  @action setCollectionPreylist = object => {
-    this.collectionPreylist = Object.assign({},object)
-  }
-
   @action setCollectionFakePreys = () => {
-    this.collectionPreys = Object.keys(this.collectionPreylist).map((uid,index) => ({ key: uid, time: this.collectionPreylist[uid], nickname: null, avatar: null, birthday: null }))
-  }
-
-  @action setCollectionPreysLength = () => {
-    this.collectionPreys.length = Object.keys(this.collectionPreylist).length
+    localdb.getIdsForKey('collection').then(collectionPreylist => {
+      runInAction(() => {
+        this.collectionPreys = collectionPreylist.map((uid,index) => ({ key: uid, time: this.collectionPreylist[uid], nickname: null, avatar: null, birthday: null }))
+      })
+    }).catch(err => console.log(err))
   }
 
   @action setCollectionRealPreys = () => {
-    const collectionPromises = Object.keys(this.collectionPreylist).map((uid,index) => (
-      this.firebase.database().ref('users/' + uid).once('value').then( snap => (
-        {
-          key: uid,
-          nickname: snap.val().nickname,
-          avatar: snap.val().avatar,
-          birthday: snap.val().birthday  
-        }
+    localdb.getIdsForKey('collection').then(collectionPreylist => {
+      const collectionPromises = collectionPreylist.map((uid,index) => (
+        this.firebase.database().ref('users/' + uid).once('value').then( snap => (
+          {
+            key: uid,
+            //time: ret.time,
+            nickname: snap.val().nickname,
+            avatar: snap.val().avatar,
+            birthday: snap.val().birthday  
+          }
+        ))
       ))
-    ))
-
-    Promise.all(collectionPromises)
-    .then(collectionPreys => {
-      runInAction(() => {
-        this.collectionPreys = collectionPreys
+      // 等待全部抓完
+      Promise.all(collectionPromises)
+      .then(collectionPreys => {
+        localdb.getAllDataForKey('collection').then(datas => {
+          datas.map((ele,index)=>{
+            collectionPreys[index]['time'] = ele && ele.time
+          })
+          runInAction(() => {
+            this.collectionPreys = collectionPreys
+          })
+        })
       })
-      //alert(this.collectionPreys.length)
-    })
-    .catch(err => {
-      alert(err)
-    })
+      .catch(err => {
+        alert(err)
+      })
+
+    }).catch(err => console.log(err))
   }
-  // match
+
+  // mates
 
   @action addPreyToMatchPool = (uid,time) => {
     this.matchPool.push({uid: uid, time: time})
