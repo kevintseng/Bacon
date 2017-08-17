@@ -52,7 +52,7 @@ export default class CourtContainer extends Component {
     this.firebase.database().ref(`users/${this.SubjectStore.uid}/conversations/${this.Store.uid}`).once("value").then(snap => {
       if (!snap.exists()) {
         // 如果是新對話, 檢查今天的quota是否已達到
-        if (this.SubjectStore.visitConvSentToday < 2) {
+        if (this.SubjectStore.visitConvSentToday < 10) {
           this.SubjectStore.addOneToVisitConvSentToday()
           this.goToLine()
         } else {
@@ -62,13 +62,6 @@ export default class CourtContainer extends Component {
       }
       this.goToLine()
     })
-  }
-
-  callbackFunc = () => {
-    console.log("Callback function in Court")
-    this.SubjectStore.setVisitConvSentToday(1)
-    this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday`).set(1)
-    this.goToLine()
   }
 
   render() {
@@ -85,6 +78,7 @@ export default class CourtContainer extends Component {
           onPressLeftIcon={ this.converse }
         />
         <LineModalContainer
+          uid={this.Store.uid}
           nickname={this.Store.nickname}
           avatar={this.Store.avatar}
           callback={this.callbackFunc}

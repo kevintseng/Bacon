@@ -26,20 +26,25 @@ const styles = {
     color: '#606060',
   },
 }
-@inject('ControlStore') @observer
+@inject('firebase', 'ControlStore', 'SubjectStore') @observer
 export default class LineModalContainer extends Component {
 
   constructor(props) {
     super(props)
+    this.firebase = this.props.firebase
+    this.SubjectStore = this.props.SubjectStore
     this.ControlStore = this.props.ControlStore
+    this.nickname = this.props.nickname
+    this.avatarUrl = this.props.avatar
+    this.callback = this.props.callback
   }
 
   goToBonusFilter = async () => {
     await this.ControlStore.setLineModal()
     // UseBonusScene 吃的props: nickname, avatarUrl, usageCode, callback
     Actions.UseBonus({
-      nickname: this.props.nickname,
-      avatarUrl: this.props.avatar,
+      nickname: this.nickname,
+      avatarUrl: this.avatar,
       usageCode: 'sentTooManyVisitorMsg',
       callback: this.callbackFunc,
     })
@@ -49,7 +54,8 @@ export default class LineModalContainer extends Component {
     console.log("callbackFunc1 called: ", boolean, " ", usageCode)
     if (boolean) { // true表示已完成扣點
       if (usageCode == 'sentTooManyVisitorMsg') {
-        this.props.callback()
+        this.SubjectStore.setVisitConvSentToday(0)
+        this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday`).set(0)
       }
     }
   }
