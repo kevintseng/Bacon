@@ -2,8 +2,12 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import InAppBilling from 'react-native-billing'
 import { observer, inject } from 'mobx-react'
+import { NativeModules } from 'react-native'
 
 import BaconRoutes from '../../views/BaconRoutes/BaconRoutes'
+
+const { InAppUtils } = NativeModules
+
 
 @inject('SubjectStore','ControlStore','firebase') @observer
 export default class BaconRoutesContainer extends Component {
@@ -42,12 +46,12 @@ export default class BaconRoutesContainer extends Component {
       Actions.AboutMe({type: 'reset'})
     }
   }
-  
+
   render() {
     return(
       <BaconRoutes
         routesText='儲值'
-        routesOnPress={ this.pay } 
+        routesOnPress={ this.pay }
       />
     )
   }

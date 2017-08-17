@@ -12,6 +12,8 @@ const styles = {
     fontSize: 17,
     fontWeight: '500',
     color: '#606060',
+    textAlign: 'center',
+    flexWrap: 'wrap',
   },
   colorText: {
     backgroundColor: 'transparent',
@@ -51,18 +53,14 @@ const UseBonus = ({balance, cost, avatarUrl, reasonStr, preStr, postStr}) => {
         />
       </View>
 
-      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={styles.text}>{reasonStr}</Text>
-        </View>
+      <View style={{alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20}}>
+        <Text style={styles.text}>{reasonStr}</Text>
       </View>
 
-      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={styles.text}>{preStr} </Text>
-          <Text style={[styles.colorTextLarge, {paddingBottom: 10}]}>{cost || "$cost_prop"}</Text>
-          <Text style={styles.text}> {postStr}</Text>
-        </View>
+      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20}}>
+        <Text style={styles.text}>{preStr} </Text>
+        <Text style={[styles.colorTextLarge, {paddingBottom: 10}]}>{cost || "$cost_prop"}</Text>
+        <Text style={styles.text}> {postStr}</Text>
       </View>
 
     </View>

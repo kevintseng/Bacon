@@ -38,6 +38,7 @@ export default class SubjectStore {
   @observable hideMessage
   @observable conversations
   @observable chatStatus
+  @observable visitConvSentToday
 
   constructor() {
     this.initialize()
@@ -50,7 +51,7 @@ export default class SubjectStore {
   }
 
   @computed get maxCollect() {
-    return this.vip ? 10 : 5 
+    return this.vip ? 10 : 5
   }
 
   // Object to String
@@ -212,6 +213,14 @@ export default class SubjectStore {
 
   @action setHideMessage = () => {
     this.hideMessage = !this.hideMessage
+  }
+
+  @action setVisitConvSentToday = val => {
+    this.visitConvSentToday = val
+  }
+
+  @action addOneToVisitConvSentToday = () => {
+    this.visitConvSentToday = this.visitConvSentToday + 1
   }
 
   @action addBonus = (points) => {
