@@ -105,6 +105,7 @@ export default class MeetChanceStore {
   @action setFakePreys = () => {
     this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
   }
+  
   @action setRealPreys = () => {
     const preysPromises = this.preyList.map((ele,index) => (
       this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
@@ -139,32 +140,6 @@ export default class MeetChanceStore {
       console.log(err)
     })    
   }
-/*
-  @action setRealPreys = async () => {
-    await Promise.all(this.preyList.map(async (ele,index) => {
-      await this.firebase.database().ref('users/' + ele.uid).once('value').then(snap => {
-        if (snap.val()) {
-          if (snap.val().hideMeetChance || snap.val().deleted ||  calculateAge(snap.val().birthday) < this.meetChanceMinAge || calculateAge(snap.val().birthday) > this.meetChanceMaxAge) {
-            runInAction(() => {
-              this.preys[index] = null // 隱身了 或 帳號刪除了
-            })
-          } else {
-            runInAction(() => {
-              this.preys[index].nickname = snap.val().nickname
-              this.preys[index].avatar = snap.val().avatar
-            })
-          }
-        }
-      }).catch(err => console.log(err))
-    }))
-    runInAction(() => {
-      this.preys = this.preys.filter(ele => ele)
-      if (this.preys.length > 3) {
-        this.preys.length = this.preys.length - this.preys.length % 3
-      }
-    })
-  }
-*/
 
   @action setCourtInitialize = uid => {
     this.loading = true

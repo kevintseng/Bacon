@@ -74,6 +74,10 @@ export default class MeetCuteStore {
   }
 
   @action setPreyList = async () => {
+    await storage.getIdsForKey('preyListHistory').then(ids => {
+      this.preyListHistory = ids
+      console.log(ids)
+    })
     while (this.haveNewPreys === false) {
       if ((this.poolLastLenght !== this.pool.length) || (this.clean === true)) {
         this.poolLastLenght = this.pool.length
@@ -118,14 +122,26 @@ export default class MeetCuteStore {
   }
 
   @action pickNextPrey = async () => {
-    this.preyListHistory.push(this.uid)
+    storage.save({
+      key: 'preyListHistory',
+      id: this.uid,
+      data: null,
+      expires: 1000 * 60   
+    })
+    //this.preyListHistory.push(this.uid)
     this.index = this.index + 1
     if (this.index === this.preyList.length) {
       this.haveNewPreys = false // 沒人了
       this.setPreyList()
     } else {
       this.uid = this.preyList[this.index].uid
-      this.preyListHistory.push(this.uid)
+      storage.save({
+        key: 'preyListHistory',
+        id: this.uid,
+        data: null,
+        expires: 1000 * 60   
+      })
+      //this.preyListHistory.push(this.uid)
       this.fetchPrey()
     }
   }
@@ -159,10 +175,13 @@ export default class MeetCuteStore {
   }
 
   @action cleanHistory = () => {
-    if (this.preyListHistory.length > 0) {
-      this.preyListHistory = new Array
-      this.clean = true
-    }
+    storage.getIdsForKey('preyListHistory').then(ids => {
+    if (ids.length > 0) {
+          //this.preyListHistory = new Array
+          storage.clearMapForKey('preyListHistory')
+          this.clean = true
+        }
+    })
   }
 
   @action resetAge = () => {
