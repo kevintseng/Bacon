@@ -28,6 +28,8 @@ const styles = {
   },
 }
 
+// UseBonusScene 吃的props: nickname, cost, avatarUrl, usageCode, callback
+
 @inject('firebase', 'SubjectStore')
 @observer
 export default class UseBonusScene extends Component {
@@ -38,7 +40,6 @@ export default class UseBonusScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.balance = this.SubjectStore.bonus
     this.nickname = this.props.nickname
-    this.cost = this.props.cost
     this.avatarUrl = this.props.avatarUrl
     this.usageCode = this.props.usageCode
     this.callback = this.props.callback
@@ -65,21 +66,25 @@ export default class UseBonusScene extends Component {
         this.reasonStr = `讓 ${this.nickname} 最先看到你的來訪留言！`
         this.preStr = "需要"
         this.postStr = "Q點"
+        this.cost = 100
         break;
       case 'visitorMsgLimit':
         this.reasonStr = `對 ${this.nickname} 送出更多訊息，展現你的真誠與積極！`
         this.preStr = "每多一則需要"
         this.postStr = "Q點"
+        this.cost = 30
         break;
       case 'receivedTooManyVisitorMsg':
         this.reasonStr = `把握現在，不想等待！現在就對 ${this.nickname} 送出留言`
         this.preStr = "需要"
         this.postStr = "Q點"
+        this.cost = 30
         break;
       case 'sentTooManyVisitorMsg':
-        this.reasonStr = `不想等明天現在就與 ${this.nickname} 以及其他會員送出留言`
+        this.reasonStr = `不想等明天現在就與 ${this.nickname} 以及其他9位會員送出留言`
         this.preStr = "需要"
-        this.postStr = "Q點，可以再與10位會員進行來訪留言"
+        this.postStr = "Q點"
+        this.cost = 30
         break
       default:
     }

@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
+import Moment from 'moment'
 
 import { calculateAge } from '../../../app/Utils'
 import Loading from '../../views/Loading/Loading'
@@ -102,7 +103,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.initialize() // 初始主體入狀態
     this.MeetChanceStore.initialize()
     this.MeetCuteStore.initialize()
-    this.FateStore.initialize()    
+    this.FateStore.initialize()
   }
 
   uploadAvatar = () => {
@@ -187,6 +188,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setCollect(new Object) // Object
     this.SubjectStore.setVip(false) // boolean
     this.SubjectStore.setBonus(0) // Int
+    this.SubjectStore.setVisitConvSentToday(0)
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
     this.ControlStore.setSyncDetector(true) // 同步完成
     this.meetCuteListener() // 非同步邂逅監聽
@@ -212,6 +214,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setChatStatus(snap.val().chatStatus)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
           this.SubjectStore.setConversations(snap.val().conversations)
+          this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
           // 收藏
           this.FateStore.setCollectionPreylist(new Object(snap.val().collect)) // Object
            //null(placeholder->邂逅) String
@@ -224,6 +227,7 @@ export default class SessionCheckScene extends Component {
         this.ControlStore.setSyncDetector(true) // 同步完成
         console.log(error)
       })
+    this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
     this.meetCuteListener() // 非同步邂逅
   }
 
@@ -273,7 +277,7 @@ export default class SessionCheckScene extends Component {
     this.matchQuery = this.firebase.database().ref('goodImpression').orderByChild('wooer').equalTo(this.SubjectStore.uid)
     this.matchQuery.on('child_added', child => {
       this.FateStore.addPreyToMatchPool(child.val().prey,child.val().time)
-    })    
+    })
   }
 
   removeMeetCuteListener = () => {
@@ -402,10 +406,35 @@ export default class SessionCheckScene extends Component {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
+  updateVisitConvInvites = () => {
+    const start = Moment().startOf("day").unix()
+    const end = Moment().endOf("day").unix()
+    let sent = 0
+    this.firebase.database().ref(`users/${this.SubjectStore.uid}/conversations/`)
+    .orderByChild("createTime")
+    .startAt(start)
+    .endAt(end)
+    .once("value")
+    .then(snap => {
+      sent = snap.numChildren()
+      snap.forEach(child => {
+        if (child.val().wooer != this.SubjectStore.uid) {
+          sent -= 1
+        }
+      })
+      return sent
+    })
+    .then(() => {
+      console.log("Total new convs today: ", sent)
+      this.SubjectStore.setVisitConvSentToday(sent)
+      this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday/`).set(sent)
+    })
+  }
 
 
   render() {
-    return(
-      <Loading/>
-  )}
+    return (
+      <Loading />
+    )
+  }
 }
