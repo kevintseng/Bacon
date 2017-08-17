@@ -142,11 +142,10 @@ export default class Chat extends Component {
   }
 
   componentWillMount() {
-    this.getUserData(this.otherUid)
   }
 
   componentDidMount() {
-    // this.getUserData(this.otherUid)
+    this.getUserData(this.otherUid)
     this.visitConvSentTodayUpdate()
   }
 
