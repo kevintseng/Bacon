@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, Dimensions } from 'react-native'
+import { View, TextInput, Dimensions, ScrollView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
 
@@ -25,19 +25,21 @@ export default class BioInputContainer extends Component {
   render() {
     return(
       <View style={{alignSelf: 'center'}}>
-        <TextInput
-          style={styles.textInput}
-          underlineColorAndroid="#d63768"
-          textAlignVertical = 'top'
-          placeholder = '請輸入自我介紹'
-          multiline
-          autoCorrect
-          numberOfLines = { 100 }
-          //editable = { true }
-          maxLength = { 100 }        
-          onChangeText = { this.SubjectEditStore.setBio }
-          value = {this.SubjectEditStore.bio }
-        />
+        <ScrollView scrollEnabled={false}>
+          <TextInput
+            style={styles.textInput}
+            underlineColorAndroid="#d63768"
+            textAlignVertical = 'top'
+            placeholder = '請輸入自我介紹'
+            multiline
+            autoCorrect
+            numberOfLines = { 100 }
+            //editable = { true }
+            maxLength = { 100 }
+            onChangeText = { this.SubjectEditStore.setBio }
+            value = {this.SubjectEditStore.bio }
+          />
+        </ScrollView>
       </View>
     )
   }

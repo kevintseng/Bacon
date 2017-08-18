@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, ScrollView } from 'react-native'
 import { Button } from "react-native-elements"
 import Modal from "react-native-modal"
 
@@ -47,19 +47,21 @@ export default class CustomStatusInputModalContainer extends Component {
         <Text style={{ marginTop: 25, fontWeight: "600", fontSize: 16 }}>
           請輸入自訂狀態
         </Text>
-        <TextInput
-          maxLength={3}
-          onChangeText={text => this.textInputOnChange(text)}
-          defaultValue={this.state.selfInputChatStatus}
-          style={{
-            marginVertical: 25,
-            height: 40,
-            width: 200,
-            borderColor: "#B3B3B3",
-            borderWidth: 1,
-            borderRadius: 5,
-          }}
-        />
+        <ScrollView scrollEnabled={false}>
+          <TextInput
+            maxLength={3}
+            onChangeText={text => this.textInputOnChange(text)}
+            defaultValue={this.state.selfInputChatStatus}
+            style={{
+              marginVertical: 25,
+              height: 40,
+              width: 200,
+              borderColor: "#B3B3B3",
+              borderWidth: 1,
+              borderRadius: 5,
+            }}
+          />
+        </ScrollView>
         <View
           style={{
             flexDirection: "row",

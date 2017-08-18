@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TextInput, Dimensions } from 'react-native'
+import { TextInput, Dimensions, ScrollView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
 
@@ -36,16 +36,18 @@ export default class InputBadgeContainer extends Component {
 
   render() {
     return(
-      <TextInput
-        underlineColorAndroid="#d63768"
-        maxLength = { 5 }
-        numberOfLines = { 1 }
-        style={styles.textInput}
-        placeholder = '請輸入自訂興趣'
-        onSubmitEditing = { this.addHobby }     
-        onChangeText = { this.onChangeText }
-        value = { this.state.badge }
-      /> 
+      <ScrollView scrollEnabled={false}>
+        <TextInput
+          underlineColorAndroid="#d63768"
+          maxLength = { 5 }
+          numberOfLines = { 1 }
+          style={styles.textInput}
+          placeholder = '請輸入自訂興趣'
+          onSubmitEditing = { this.addHobby }
+          onChangeText = { this.onChangeText }
+          value = { this.state.badge }
+        />
+      </ScrollView>
     )
   }
 }
