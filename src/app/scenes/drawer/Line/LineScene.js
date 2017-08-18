@@ -165,25 +165,6 @@ export default class Chat extends Component {
     })
   }
 
-  initChatRoom = () => {
-    if (this.convKey) {
-      // convKey is given
-      this.updateAndLoad(this.convKey)
-    } else if (
-      !this.SubjectStore.conversations ||
-      !this.SubjectStore.conversations[this.otherUid]
-    ) {
-      // Create a new conversation
-      this.createNewConv()
-    } else {
-      // convKey not given but theOtherUid is given
-      this.convKey = this.SubjectStore.conversations[
-        this.otherUid
-      ].convKey
-      this.updateAndLoad(this.convKey)
-    }
-  }
-
   // update last read and clear unread count
   updateLastRead = (convKey, msgId, uid) => {
     this.firebase
@@ -199,6 +180,7 @@ export default class Chat extends Component {
       .ref(`conversations/${convKey}/messages`)
       .orderByChild("_id")
       .startAt(startAt)
+      .limitToLast(10)
       .on("child_added", msgSnap => {
         // console.log(`child_added: ${msgSnap.key}`)
         this.setState(previousState => {
@@ -451,7 +433,9 @@ export default class Chat extends Component {
         !this.getPriority(this.uid, this.otherUid) &&
         !this.state.dontAskPriorityAgain
       ) {
-        this.setState({ showPriorityModal: true })
+        setTimeout(() => {
+          this.setState({ showPriorityModal: true })
+        }, 1000)
       }
 
       Keyboard.dismiss()
@@ -593,11 +577,16 @@ export default class Chat extends Component {
               !this.getPriority(this.uid, this.otherUid) &&
               !this.state.dontAskPriorityAgain
             ) {
-              this.setState({ showPriorityModal: true })
+              setTimeout(() => {
+                this.setState({ showPriorityModal: true })
+              }, 1000)
             }
             this.syncMsgToFirebase(msgObj)
             // adds 1 to conversation
             this.unreadAddOne(this.convKey, this.otherUid)
+            if (this.state.visitorMsgLimit > 0) {
+              this.visitorMsgLimitDeductOne(this.convKey, this.uid)
+            }
             // 有發言回應後就取消 priority
             this.removeConversationPriority(this.uid, this.otherUid)
           }, err => {
@@ -652,10 +641,20 @@ export default class Chat extends Component {
               image: uploadedFile.downloadUrl,
             }
 
-            this.setState({ showPriorityModal: true })
+            if (
+              !this.getPriority(this.uid, this.otherUid) &&
+              !this.state.dontAskPriorityAgain
+            ) {
+              setTimeout(() => {
+                this.setState({ showPriorityModal: true })
+              }, 1000)
+            }
             this.syncMsgToFirebase(msgObj)
             // adds 1 to conversation
             this.unreadAddOne(this.convKey, this.otherUid)
+            if (this.state.visitorMsgLimit > 0) {
+              this.visitorMsgLimitDeductOne(this.convKey, this.uid)
+            }
             // 有發言回應後就取消 priority
             this.removeConversationPriority(this.uid, this.otherUid)
           }, err => {
@@ -708,11 +707,16 @@ export default class Chat extends Component {
         !this.getPriority(this.uid, this.otherUid) &&
         !this.state.dontAskPriorityAgain
       ) {
-        this.setState({ showPriorityModal: true })
+        setTimeout(() => {
+          this.setState({ showPriorityModal: true })
+        }, 1000)
       }
       this.syncMsgToFirebase(msgObj)
       // adds 1 to conversation
       this.unreadAddOne(this.convKey, this.otherUid)
+      if (this.state.visitorMsgLimit > 0) {
+        this.visitorMsgLimitDeductOne(this.convKey, this.uid)
+      }
       // 有發言回應後就取消 priority
       this.removeConversationPriority(this.uid, this.otherUid)
     } else {
@@ -896,6 +900,25 @@ export default class Chat extends Component {
     }
   }
 
+  initChatRoom = () => {
+    if (this.convKey) {
+      // convKey is given
+      this.updateAndLoad(this.convKey)
+    } else if (
+      !this.SubjectStore.conversations ||
+      !this.SubjectStore.conversations[this.otherUid]
+    ) {
+      // Create a new conversation
+      this.createNewConv()
+    } else {
+      // convKey not given but theOtherUid is given
+      this.convKey = this.SubjectStore.conversations[
+        this.otherUid
+      ].convKey
+      this.updateAndLoad(this.convKey)
+    }
+  }
+
   visitConvSentTodayUpdate = () => {
     this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday`).set(this.SubjectStore.visitConvSentToday)
   }
@@ -964,7 +987,7 @@ export default class Chat extends Component {
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
-            isLoadingEarlier={this.state.isLoadingEarlier}
+            isLoadingEarlier={true}
             user={{
               _id: this.uid,
             }}
@@ -984,7 +1007,7 @@ export default class Chat extends Component {
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
-            isLoadingEarlier={this.state.isLoadingEarlier}
+            isLoadingEarlier={true}
             user={{
               _id: this.uid,
             }}
