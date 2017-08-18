@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, Text, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import { observer, inject } from "mobx-react"
 import { Actions } from "react-native-router-flux"
 import { Button } from "react-native-elements"

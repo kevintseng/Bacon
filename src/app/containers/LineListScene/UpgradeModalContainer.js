@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, Text, TextInput } from 'react-native'
+import { View, Text } from 'react-native'
 import { Actions } from "react-native-router-flux"
 import { Button } from "react-native-elements"
 import Modal from "react-native-modal"
