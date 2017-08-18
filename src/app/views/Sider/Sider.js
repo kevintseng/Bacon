@@ -43,13 +43,14 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
             rounded
             source={ avatar ? {uri: avatar} : require('../Cookie/img/ico_qy_head_preload.png') }
             activeOpacity={0.7}
+            onPress={displayNameOnPress}
           />
         </View>
 
         <View style={{marginTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={{width: 40, opacity: 0}}>
             <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
-          </View>         
+          </View>
           <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={ displayNameOnPress }>
             <Text style={{textAlign: 'center',color: '#606060',fontWeight: 'normal'}}>{ displayName }</Text>
           </TouchableOpacity>
@@ -61,7 +62,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         <View style={{marginTop: 20}}>
           <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
         </View>
-      
+
         <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='邂逅' showBadge={false} listOnPress={ meetcueOnPress }/>
         </View>
