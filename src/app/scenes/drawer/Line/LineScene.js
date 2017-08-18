@@ -728,28 +728,18 @@ export default class Chat extends Component {
         return (
           <View
             style={{
-              backgroundColor: '#6A85B1',
-              height: 640,
+              width,
+              height: 200,
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
-            }}
-            contentContainerStyle={{
-              flex: 1,
-              alignItems: 'center',
-              paddingVertical: 5,
-              width,
-              height: 640,
-              backgroundColor: "#E0EEEE",
             }}
           >
             <ScrollView
               contentContainerStyle={{
                 flex: 1,
+                width,
                 alignItems: 'center',
                 paddingVertical: 5,
-                width,
-                height: 640,
-                backgroundColor: "#E0EEEE",
               }}
             >
               <Stickers
@@ -763,15 +753,13 @@ export default class Chat extends Component {
         return (
           <View
             style={{
-              padding: 10,
-              width: width - 10,
+              width,
+              height: 115,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
-              marginRight: 4,
-              height: 80,
             }}
           >
             <ActivityIndicator />
@@ -782,49 +770,33 @@ export default class Chat extends Component {
         return (
           <View
             style={{
-              padding: 10,
-              width: width - 10,
+              width,
+              height: 115,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
-              marginRight: 4,
-              height: 80,
             }}
           >
-            <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }} onPress={this.handlePhotoPicker}>
-              <Icon
-                name="collections"
-                size={25}
-                color="orange"
-                containerStyle={{
-                  width: 25,
-                  height: 25,
-                  borderRadius: 5,
-                  borderWidth: 0,
-                  margin: 2,
-                }}
-                underlayColor="gray"
-              />
-              <Text>相簿</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }} onPress={this.handleCameraPicker}>
-              <Icon
-                name="camera-alt"
-                size={25}
-                color="orange"
-                containerStyle={{
-                  width: 25,
-                  height: 25,
-                  borderRadius: 5,
-                  borderWidth: 0,
-                  margin: 2,
-                }}
-                underlayColor="gray"
-              />
-              <Text>拍照</Text>
-            </TouchableOpacity>
+            <View style={{ flex: 1, alignItems: "center", paddingLeft: 20 }}>
+              <TouchableOpacity onPress={this.handlePhotoPicker}>
+                <Image
+                  style={{ width: 51, height: 39 }}
+                  source={require('../../../../images/btn_chat_album.png')}
+                />
+                <Text style={{ marginTop: 3, alignSelf: 'center'}}>相簿</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, alignItems: "center", paddingRight: 20 }}>
+              <TouchableOpacity onPress={this.handleCameraPicker}>
+                <Image
+                  style={{ width: 51, height: 39}}
+                  source={require('../../../../images/btn_chat_shot.png')}
+                />
+                <Text style={{ marginTop: 3, alignSelf: 'center'}}>拍照</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )
       default:
@@ -913,11 +885,11 @@ export default class Chat extends Component {
   getToolbarHeight = () => {
     switch (this.state.action) {
       case "plus":
-        return 60
+        return 80
       case "smily":
         return 120
       case "uploading":
-        return 60
+        return 65
       case false:
         return 42
       default:
