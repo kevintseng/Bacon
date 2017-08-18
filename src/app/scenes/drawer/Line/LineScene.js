@@ -736,6 +736,7 @@ export default class Chat extends Component {
               height: 200,
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
+              backgroundColor: "#FDFDFD",
             }}
           >
             <ScrollView
@@ -744,6 +745,7 @@ export default class Chat extends Component {
                 width,
                 alignItems: 'center',
                 paddingVertical: 5,
+                backgroundColor: "#FDFDFD",
               }}
             >
               <Stickers
@@ -764,6 +766,7 @@ export default class Chat extends Component {
               justifyContent: "center",
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
+              backgroundColor: "#FDFDFD",
             }}
           >
             <ActivityIndicator />
@@ -781,6 +784,7 @@ export default class Chat extends Component {
               justifyContent: "center",
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
+              backgroundColor: "#FDFDFD",
             }}
           >
             <View style={{ flex: 1, alignItems: "center", paddingLeft: 20 }}>
