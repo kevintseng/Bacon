@@ -75,22 +75,32 @@ export default class ChatStatusContainer extends Component {
   }
 
   handleSelfInputPressed = () => {
-    // console.log(this.SubjectStore.vip)
     this.setState({ showStatusMenuModal: false })
     if (!this.SubjectStore.vip) {
       setTimeout(() => {
-        // console.log('showUpgradeModal')
         this.setState({
           showUpgradeModal: true,
         })
       }, 500)
-      return 0
+    } else {
+      setTimeout(() => {
+        this.setState({
+          showCustomInputModal: true,
+        })
+      }, 500)
     }
-    setTimeout(() => {
-      this.setState({
-        showCustomInputModal: true,
-      })
-    }, 500)
+  }
+
+  displayUpgrade = () => {
+    this.setState({
+      showUpgradeModal: true,
+    })
+  }
+
+  displayCustomInput = () => {
+    this.setState({
+      showCustomInputModal: true,
+    })
   }
 
   render() {
@@ -158,17 +168,13 @@ export default class ChatStatusContainer extends Component {
             />
           </View>
         </Modal>
-        {this.state.showUpgradeModal &&
-          <UpgradeModalContainer
-            showModal
-          />
-        }
-        {this.state.showCustomInputModal &&
-          <CustomStatusInputModalContainer
-            onSubmit={this.handleUpdateStatus}
-            showModal
-          />
-        }
+        <UpgradeModalContainer
+          showModal={this.state.showUpgradeModal}
+        />
+        <CustomStatusInputModalContainer
+          onSubmit={this.handleUpdateStatus}
+          showModal={this.state.showCustomInputModal}
+        />
       </View>
     )
   }
