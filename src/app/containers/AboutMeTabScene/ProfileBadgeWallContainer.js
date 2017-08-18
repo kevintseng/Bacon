@@ -51,12 +51,12 @@ export default class ProfileBadgeWallContainer extends Component {
       )
     } else {
       return (
-        <View pointerEvents="none" style={{alignItems: 'center',height: 140}}>
+        <View style={{alignItems: 'center',height: 140}}>
           <FlatList
             removeClippedSubviews
             data={ this.SubjectStore.hobbiesToFlatList }
             numColumns={4}
-            renderItem={({item}) => (<BaconBadgeYes text={item.key} />)} 
+            renderItem={({item}) => (<BaconBadgeYes text={item.key} onPress={ this.props.onPressInterests }/>)} 
           />
         </View>
       )
@@ -65,12 +65,12 @@ export default class ProfileBadgeWallContainer extends Component {
 
   render() {
     return(
-      <TouchableOpacity onPress={ this.props.onPressInterests }>
+      <View>
         <View>
           <Text style={ styles.titleStyle }>興趣愛好</Text>
         </View>
         { this.result() }
-      </TouchableOpacity>
+      </View>
     )
   }
 }

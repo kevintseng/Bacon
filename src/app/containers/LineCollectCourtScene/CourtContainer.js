@@ -59,7 +59,7 @@ export default class CourtContainer extends Component {
 
   collection = () => {
     localdb.getIdsForKey('collection').then(ids => {
-      if ((ids.length >= this.SubjectStore.maxCollect) && this.state.collection == false) {
+      if ((ids.length >= this.SubjectStore.maxCollect) && !ids.includes(this.Store.uid)) {
         this.ControlStore.setGetCollectionMax()
       } else {
         this.setState({

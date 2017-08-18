@@ -28,10 +28,8 @@ export default class VisitorsContainer extends Component {
   }
 
   componentWillMount() {
-    //console.log('dsadasdada' + Moment.duration(100, 'hours').humanize())
     this.FateStore.setVisitorsPreylist()
     //this.FateStore.setVisitorsFakePreys()
-    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {
