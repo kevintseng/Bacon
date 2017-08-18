@@ -9,6 +9,7 @@ import CourtContainer from '../../../containers/MeetCuteCourtScene/CourtContaine
 import InfosContainer from '../../../containers/MeetCuteCourtScene/InfosContainer'
 import BadgeWallContainer from '../../../containers/MeetCuteCourtScene/BadgeWallContainer'
 import MateModalContainer from '../../../containers/MeetCuteCourtScene/MateModalContainer'
+import BaconRadar from '../../../views/BaconRadar'
 
 const { width, height } = Dimensions.get('window')
 
@@ -102,8 +103,13 @@ export default class MeetCuteCourtScene extends Component {
                 <InfosContainer/> 
               </View>
               <BadgeWallContainer/> 
-              <MateModalContainer/>
+              { this.SubjectStore.vip && 
+                <View style={{paddingTop: 10}}>
+                  <BaconRadar/>
+                </View>
+              }
             </ScrollView>
+            <MateModalContainer/>
           </View>
         }
       </View>
