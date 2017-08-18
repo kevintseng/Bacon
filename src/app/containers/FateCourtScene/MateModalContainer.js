@@ -92,8 +92,8 @@ export default class MateModalContainer extends Component {
                       </Image>
                     </TouchableOpacity>
                   </View>
-
               </LinearGradient>
+              
             </TouchableOpacity>
           </TouchableOpacity>
         </Modal>
