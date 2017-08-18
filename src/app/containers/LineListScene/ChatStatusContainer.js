@@ -58,49 +58,43 @@ export default class ChatStatusContainer extends Component {
     this.firebase = this.props.firebase
 
     this.state = {
-      showStatusMenuModal: false,
-      showUpgradeModal: false,
-      showCustomInputModal: false,
+      showModal: false,
+      showUpgrade: false,
+      showCustomInput: false,
+      showStatusMenu: true,
     }
   }
 
   handleOnPress = pressed => {
-    this.setState({showStatusMenuModal: true})
+    this.setState({showModal: true})
   }
 
   handleUpdateStatus = statusCode => {
-    this.setState({ showCustomInputModal: false, showStatusMenuModal: false })
+    this.setState({
+      showModal: false,
+      showStatusMenu: true,
+      showCustomInput: false,
+      showUpgrade: false,
+    })
     this.SubjectStore.setChatStatus(statusCode)
     this.firebase.database().ref(`users/${this.SubjectStore.uid}/chatStatus`).set(statusCode)
   }
 
+  handleCancel = () => {
+    this.setState({
+      showModal: false,
+      showStatusMenu: true,
+      showCustomInput: false,
+      showUpgrade: false,
+    })
+  }
+
   handleSelfInputPressed = () => {
-    this.setState({ showStatusMenuModal: false })
-    if (!this.SubjectStore.vip) {
-      setTimeout(() => {
-        this.setState({
-          showUpgradeModal: true,
-        })
-      }, 500)
+    if (this.SubjectStore.vip) {
+      this.setState({ showStatusMenu: false, showUpgrade: true })
     } else {
-      setTimeout(() => {
-        this.setState({
-          showCustomInputModal: true,
-        })
-      }, 500)
+      this.setState({ showStatusMenu: false, showCustomInput: true })
     }
-  }
-
-  displayUpgrade = () => {
-    this.setState({
-      showUpgradeModal: true,
-    })
-  }
-
-  displayCustomInput = () => {
-    this.setState({
-      showCustomInputModal: true,
-    })
   }
 
   render() {
@@ -115,15 +109,14 @@ export default class ChatStatusContainer extends Component {
       marginBottom: 100,
     }
 
-    console.log("showCustomInputModal ", this.state.showCustomInputModal)
     return (
       <View>
         <ChatStatus onPress={this.handleOnPress} code={this.SubjectStore.chatStatus || 0} />
         <Modal
           style={{ alignItems: "center" }}
-          isVisible={this.state.showStatusMenuModal}
+          isVisible={this.state.showModal}
         >
-          <View style={modalContent}>
+          { this.state.showStatusMenu && <View style={modalContent}>
             <Button
               title="放空中"
               onPress={() => this.handleUpdateStatus(1)}
@@ -167,14 +160,22 @@ export default class ChatStatusContainer extends Component {
               style={styles.chatStatusStyles.containerStyle}
             />
           </View>
+        }
+          { this.state.showCustomInput
+            &&
+            <CustomStatusInputModalContainer
+              onSubmit={this.handleUpdateStatus}
+              onCancel={this.handleCancel}
+            />
+        }
+          {
+          this.state.showUpgrade
+          &&
+          <UpgradeModalContainer
+            onCancel={this.handleCancel}
+          />
+        }
         </Modal>
-        <UpgradeModalContainer
-          showModal={this.state.showUpgradeModal}
-        />
-        <CustomStatusInputModalContainer
-          onSubmit={this.handleUpdateStatus}
-          showModal={this.state.showCustomInputModal}
-        />
       </View>
     )
   }

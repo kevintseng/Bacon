@@ -18,57 +18,48 @@ const modalContentStyle = {
 export default class UpgradeModalContainer extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      showModal: this.props.showModal,
-    }
   }
 
   handleCancel = () => {
-    this.setState({showModal: false})
+    this.props.onCancel()
   }
 
   handleUpgrade = () => {
-    this.setState({ showModal: false })
     Actions.Upgrade()
   }
 
   render() {
     return (
-      <Modal
-        style={{ alignItems: "center" }}
-        isVisible={this.state.showModal}
+      <View
+        style={modalContentStyle}
       >
-        <View
-          style={modalContentStyle}
+        <Text
+          style={{ marginVertical: 45, fontWeight: "600", fontSize: 16 }}
         >
-          <Text
-            style={{ marginVertical: 45, fontWeight: "600", fontSize: 16 }}
-          >
-            高級會員即可開啟此功能
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              width: 300,
-              justifyContent: "space-between",
-              paddingHorizontal: 50,
-            }}
-          >
-            <Button
-              title="取消"
-              onPress={this.handleCancel}
-              color="#0076FF"
-              buttonStyle={{ backgroundColor: "transparent" }}
-            />
-            <Button
-              title="升級"
-              onPress={this.handleUpgrade}
-              color="#0076FF"
-              buttonStyle={{ backgroundColor: "transparent" }}
-            />
-          </View>
+          高級會員即可開啟此功能
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            width: 300,
+            justifyContent: "space-between",
+            paddingHorizontal: 50,
+          }}
+        >
+          <Button
+            title="取消"
+            onPress={this.handleCancel}
+            color="#0076FF"
+            buttonStyle={{ backgroundColor: "transparent" }}
+          />
+          <Button
+            title="升級"
+            onPress={this.handleUpgrade}
+            color="#0076FF"
+            buttonStyle={{ backgroundColor: "transparent" }}
+          />
         </View>
-      </Modal>
+      </View>
     )
   }
 }
