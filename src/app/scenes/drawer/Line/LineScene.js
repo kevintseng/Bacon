@@ -187,7 +187,6 @@ export default class Chat extends Component {
           const msgId = msgSnap.val()._id
           // Update lastRead
           this.updateLastRead(convKey, msgId, uid)
-          this.removeConversationPriority(this.uid, this.otherUid)
           this.clearUnread(convKey, uid)
           return {
             messages: GiftedChat.append(previousState.messages, msgSnap.val()),
@@ -305,15 +304,6 @@ export default class Chat extends Component {
     unreadRef.update({ unread: 0 })
   }
 
-  // Only removes the priority of current user"s conversation record
-  removeConversationPriority = (uid, otherUid) => {
-    const convRef = this.firebase
-      .database()
-      .ref(`users/${uid}/conversations/${otherUid}`)
-
-    convRef.update({ priority: 99 })
-  }
-
   getPriority = (uid, otherUid) => {
     this.firebase
       .database()
@@ -333,10 +323,18 @@ export default class Chat extends Component {
       )
   }
 
-  makeConversationPriority = (uid, otherUid) => {
+  updatePriority = (uid, otherUid, absolute) => {
+    let pos = -99999999999
+    if(!absolute) {
+      p = Moment().unix()
+      p = -1 * p
+    }
     this.firebase
       .database()
-      .ref(`users/${otherUid}/conversations/${uid}/priority`).set(0)
+      .ref(`users/${otherUid}/conversations/${uid}/priority`).set(p)
+    this.firebase
+      .database()
+      .ref(`users/${uid}/conversations/${otherUid}/priority`).set(p)
     // convRef.update({ priority: 0 })
     this.setState({ dontAskPriorityAgain: true })
   }
@@ -430,14 +428,13 @@ export default class Chat extends Component {
       }
 
       if (
-        !this.getPriority(this.uid, this.otherUid) &&
-        !this.state.dontAskPriorityAgain
+        !this.getPriority(this.uid, this.otherUid) && !this.state.visit && this.role == "wooer" && !this.state.dontAskPriorityAgain
       ) {
         setTimeout(() => {
           this.setState({ showPriorityModal: true })
         }, 1000)
       }
-
+      this.updatePriority(this.uid, this.otherUid, false)
       Keyboard.dismiss()
     } else {
       this.setState({ showMsgLimitModal: true })
@@ -574,8 +571,7 @@ export default class Chat extends Component {
               image: uploadedFile.downloadUrl,
             }
             if (
-              !this.getPriority(this.uid, this.otherUid) &&
-              !this.state.dontAskPriorityAgain
+              !this.getPriority(this.uid, this.otherUid) && !this.state.visit && this.role == "wooer" && !this.state.dontAskPriorityAgain
             ) {
               setTimeout(() => {
                 this.setState({ showPriorityModal: true })
@@ -588,7 +584,7 @@ export default class Chat extends Component {
               this.visitorMsgLimitDeductOne(this.convKey, this.uid)
             }
             // 有發言回應後就取消 priority
-            this.removeConversationPriority(this.uid, this.otherUid)
+            this.updatePriority(this.uid, this.otherUid, false)
           }, err => {
             console.error('上傳失敗')
             this.setState({ action: false })
@@ -642,8 +638,7 @@ export default class Chat extends Component {
             }
 
             if (
-              !this.getPriority(this.uid, this.otherUid) &&
-              !this.state.dontAskPriorityAgain
+              !this.getPriority(this.uid, this.otherUid) && !this.state.visit && this.role == "wooer" && !this.state.dontAskPriorityAgain
             ) {
               setTimeout(() => {
                 this.setState({ showPriorityModal: true })
@@ -656,7 +651,7 @@ export default class Chat extends Component {
               this.visitorMsgLimitDeductOne(this.convKey, this.uid)
             }
             // 有發言回應後就取消 priority
-            this.removeConversationPriority(this.uid, this.otherUid)
+            this.updatePriority(this.uid, this.otherUid, false)
           }, err => {
             console.error('上傳失敗')
             this.setState({ action: false })
@@ -704,8 +699,7 @@ export default class Chat extends Component {
       }
 
       if (
-        !this.getPriority(this.uid, this.otherUid) &&
-        !this.state.dontAskPriorityAgain
+        !this.getPriority(this.uid, this.otherUid) && !this.state.visit && this.role == "wooer" && !this.state.dontAskPriorityAgain
       ) {
         setTimeout(() => {
           this.setState({ showPriorityModal: true })
@@ -718,7 +712,7 @@ export default class Chat extends Component {
         this.visitorMsgLimitDeductOne(this.convKey, this.uid)
       }
       // 有發言回應後就取消 priority
-      this.removeConversationPriority(this.uid, this.otherUid)
+      this.updatePriority(this.uid, this.otherUid, false)
     } else {
       this.setState({ showMsgLimitModal: true })
     }
@@ -821,7 +815,7 @@ export default class Chat extends Component {
       }
       if (usageCode == 'priority') {
         // console.log("Make priority:")
-        this.makeConversationPriority(this.uid, this.otherUid)
+        this.updatePriority(this.uid, this.otherUid, true)
         this.setState({dontAskPriorityAgain: true})
       }
     }

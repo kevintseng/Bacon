@@ -101,6 +101,19 @@ export default class LineListScene extends Component {
     return ref.off("value", listen)
   }
 
+  sortConv = () => {
+    const newC = this.state.convs
+    newC.sort(this.compare())
+  }
+
+  compare(a, b) {
+    if (a.sortKey < b.sortKey)
+      return -1;
+    if (a.sortKey > b.sortKey)
+      return 1;
+    return 0;
+  }
+
   getUserData = uid => {
     const ref = this.firebase.database().ref(`users/${uid}`)
     ref.once("value").then(snap => {
