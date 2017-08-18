@@ -885,11 +885,11 @@ export default class Chat extends Component {
   getToolbarHeight = () => {
     switch (this.state.action) {
       case "plus":
-        return 45
+        return 80
       case "smily":
-        return 45
+        return 120
       case "uploading":
-        return 45
+        return 80
       case false:
         return 45
       default:
