@@ -33,31 +33,32 @@ export default class ProfileBadgeWallContainer extends Component {
     this.SubjectStore = this.props.SubjectStore
   }
 
-  showBadge = () => (
-    this.SubjectStore.hobbiesToFlatList.map((ele) => (<BaconBadgeYes key={ele.key} text={ele.key}  />))
-  )
-
-  showText = () => (
-    <Text style={ styles.subtitleTextStyle }>您尚未編輯興趣愛好，點此編輯興趣愛好</Text>
-  )
-
   result = () => {
-    //const badges = this.showBadge()
     if (this.SubjectStore.hobbiesToFlatList.length === 0) {
       return (
-        <View pointerEvents="none" style={{flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'flex-start'}}>
-        { this.showText() }
-         </View>
+      <TouchableOpacity onPress={ this.props.onPressInterests }>
+        <View>
+          <Text style={ styles.titleStyle }>興趣愛好</Text>
+        </View>
+        <View style={{flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'flex-start'}}>
+          <Text style={ styles.subtitleTextStyle }>您尚未編輯興趣愛好，點此編輯興趣愛好</Text>
+        </View>
+      </TouchableOpacity>
       )
     } else {
       return (
-        <View style={{alignItems: 'center',height: 140}}>
-          <FlatList
-            removeClippedSubviews
-            data={ this.SubjectStore.hobbiesToFlatList }
-            numColumns={4}
-            renderItem={({item}) => (<BaconBadgeYes text={item.key} onPress={ this.props.onPressInterests }/>)} 
-          />
+        <View>
+          <View>
+            <Text style={ styles.titleStyle }>興趣愛好</Text>
+          </View>
+          <View style={{alignItems: 'center',height: 140}}>
+            <FlatList
+              removeClippedSubviews
+              data={ this.SubjectStore.hobbiesToFlatList }
+              numColumns={4}
+              renderItem={({item}) => (<BaconBadgeYes text={item.key} onPress={ this.props.onPressInterests }/>)} 
+            />
+          </View>
         </View>
       )
     }    
@@ -65,20 +66,7 @@ export default class ProfileBadgeWallContainer extends Component {
 
   render() {
     return(
-      <View>
-        <View>
-          <Text style={ styles.titleStyle }>興趣愛好</Text>
-        </View>
-        { this.result() }
-      </View>
+      this.result()
     )
   }
 }
-
-/*
-
-          
-        <View pointerEvents="none" style={{flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'center',alignSelf: 'center'}}>
-          { badges }
-        </View>
-      */

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
+import { Alert } from 'react-native'
 
 import SwitchLists from '../../views/SwitchLists'
 
@@ -20,7 +21,10 @@ export default class OptionContainer extends Component {
     if (this.SubjectStore.vip) {
       this.setState({ vistorPrompt : !this.state.vistorPrompt})
     } else {
-      alert('此功能僅限高級會員使用')
+      Alert.alert( 
+        '管理員提示', '此功能僅限高級會員使用', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
     }
   }
 
@@ -28,7 +32,10 @@ export default class OptionContainer extends Component {
     if (this.SubjectStore.vip) {
       this.setState({ goodPrompt : !this.state.goodPrompt})
     } else {
-      alert('此功能僅限高級會員使用')
+      Alert.alert( 
+        '管理員提示', '此功能僅限高級會員使用', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
     }
   }
 
