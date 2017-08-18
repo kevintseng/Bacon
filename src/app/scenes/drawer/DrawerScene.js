@@ -13,9 +13,6 @@ const drawerStyles = {
   drawer: {
     borderRightWidth: 0,
     width,
-    shadowColor: '#000000',
-    shadowOpacity: 0.8,
-    shadowRadius: 3,
     opacity: 0.9,
   },
 }
