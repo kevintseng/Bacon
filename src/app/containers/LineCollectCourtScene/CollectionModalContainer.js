@@ -20,6 +20,7 @@ const styles = {
     padding: 10    
   }
 }
+
 @inject('ControlStore') @observer
 export default class CollectionModalContainer extends Component {
 
@@ -30,7 +31,7 @@ export default class CollectionModalContainer extends Component {
 
   goToFate = async () => {
     await this.ControlStore.setGetCollectionMax()
-    Actions.Fate({initialPage: 3})
+    Actions.Fate({type: 'replace', initialPage: 3})
   }
 
   render() {

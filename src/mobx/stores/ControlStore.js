@@ -97,4 +97,5 @@ export default class ControlStore {
   @action setMateModal = () => {
     this.mateModal = !this.mateModal
   }
+
 }

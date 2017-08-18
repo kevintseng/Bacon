@@ -9,6 +9,9 @@ import CollectionContainer from '../../../containers/FateTabScene/CollectionCont
 
 export default class FateTabScene extends Component {
 
+  constructor(props) {
+    super(props)
+  }
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
@@ -17,7 +20,7 @@ export default class FateTabScene extends Component {
   render() {
     return(
       <ScrollableTabView
-        initialPage = {this.props.initialPage || 0}
+        initialPage = { this.props.initialPage || 0 }
         tabBarPosition='top'
         renderTabBar={() => <ScrollableTabBar />}
         tabBarUnderlineStyle={{ backgroundColor: '#d63768' }}
