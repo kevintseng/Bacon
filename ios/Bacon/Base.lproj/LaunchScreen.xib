@@ -19,9 +19,9 @@
                     <rect key="frame" x="0.0" y="-1" width="375" height="668"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="ico_intro_logo" translatesAutoresizingMaskIntoConstraints="NO" id="9CO-JX-3Fl">
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" semanticContentAttribute="spatial" fixedFrame="YES" image="ico_intro_logo" translatesAutoresizingMaskIntoConstraints="NO" id="9CO-JX-3Fl">
                     <rect key="frame" x="113" y="261" width="148" height="144"/>
-                    <autoresizingMask key="autoresizingMask"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
