@@ -419,7 +419,7 @@ export default class Chat extends Component {
       // console.log("onSend: ", messages[0].createdAt)
       const msgObj = messages[0]
       this.syncMsgToFirebase(msgObj)
-
+      this.updatePriority(this.uid, this.otherUid, false)
       // adds 1 to the other user"s conversation bucket"s unread field
       this.unreadAddOne(this.convKey, this.otherUid)
       // console.log("visitorMsgLimit: ", this.state.visitorMsgLimit)
@@ -434,7 +434,6 @@ export default class Chat extends Component {
           this.setState({ showPriorityModal: true })
         }, 1000)
       }
-      this.updatePriority(this.uid, this.otherUid, false)
       Keyboard.dismiss()
     } else {
       this.setState({ showMsgLimitModal: true })
@@ -781,7 +780,7 @@ export default class Chat extends Component {
               backgroundColor: "#FDFDFD",
             }}
           >
-            <View style={{ flex: 1, alignItems: "center", paddingLeft: 20 }}>
+            <View style={{ flex: 1, backgroundColor: "#FDFDFD", alignItems: "center", paddingLeft: 20 }}>
               <TouchableOpacity onPress={this.handlePhotoPicker}>
                 <Image
                   style={{ width: 51, height: 39 }}
@@ -790,7 +789,7 @@ export default class Chat extends Component {
                 <Text style={{ marginTop: 3, alignSelf: 'center'}}>相簿</Text>
               </TouchableOpacity>
             </View>
-            <View style={{ flex: 1, alignItems: "center", paddingRight: 20 }}>
+            <View style={{ flex: 1, backgroundColor: "#FDFDFD", alignItems: "center", paddingRight: 20 }}>
               <TouchableOpacity onPress={this.handleCameraPicker}>
                 <Image
                   style={{ width: 51, height: 39}}
