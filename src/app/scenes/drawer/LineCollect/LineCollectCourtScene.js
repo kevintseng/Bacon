@@ -8,6 +8,7 @@ import InfosContainer from '../../../containers/LineCollectCourtScene/InfosConta
 import BadgeWallContainer from '../../../containers/LineCollectCourtScene/BadgeWallContainer'
 import CollectionModalContainer from '../../../containers/LineCollectCourtScene/CollectionModalContainer'
 import LineModalContainer from '../../../containers/LineCollectCourtScene/LineModalContainer'
+import BaconRadar from '../../../views/BaconRadar'
 
 const { width, height } = Dimensions.get('window')
 
@@ -82,6 +83,11 @@ export default class LineCollectCourtScene extends Component {
                 <InfosContainer Store={this.Store}/>
               </View>
               <BadgeWallContainer Store={this.Store}/>
+              { this.SubjectStore.vip && 
+                <View style={{paddingTop: 10}}>
+                  <BaconRadar/>
+                </View>
+              }
             </ScrollView>
             <CollectionModalContainer/>
             <LineModalContainer/>
