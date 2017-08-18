@@ -13,7 +13,6 @@ const drawerStyles = {
   drawer: {
     borderRightWidth: 0,
     width,
-    opacity: 0.9,
   },
 }
 
@@ -71,7 +70,6 @@ export default class DrawerScene extends Component {
   }
 
   render() {
-
     const state = this.props.navigationState
     const children = state.children
 

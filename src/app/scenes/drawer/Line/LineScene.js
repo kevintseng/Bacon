@@ -18,6 +18,7 @@ import ImagePicker from "react-native-image-picker"
 import Moment from "moment"
 import { Icon, Button } from "react-native-elements"
 import Modal from "react-native-modal"
+import uuid from 'uuid';
 // import ImageResizer from 'react-native-image-resizer'
 import { translateChatStatus } from "../../../Utils"
 import Stickers from "./components/Stickers"
@@ -473,7 +474,7 @@ export default class Chat extends Component {
   }
 
   // TODO: Rewrite this when have time
-  renderActions = () => {
+  renderActionBar = () => {
     if (!this.state.action) {
       return (
         <View
@@ -509,7 +510,7 @@ export default class Chat extends Component {
         <View
           style={{
             flex: 0,
-            width: 80,
+            width: 45,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
@@ -531,7 +532,7 @@ export default class Chat extends Component {
         <View
           style={{
             flex: 0,
-            width: 80,
+            width: 45,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
@@ -552,7 +553,7 @@ export default class Chat extends Component {
   }
 
   handleCameraPicker = () => {
-    if (this.meetMsgLimit()) {
+    if (!this.meetMsgLimit()) {
       const msgRef = this.firebase
         .database()
         .ref(`conversations/${this.convKey}/messages`)
@@ -576,7 +577,7 @@ export default class Chat extends Component {
           this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, metadata)
           .then(uploadedFile => {
             console.log("downloadUrl: ", uploadedFile.downloadUrl)
-            const _id = msgRef.push().key
+            const _id = uuid.v4()
             const msgObj = {
               _id,
               text: "",
@@ -588,7 +589,12 @@ export default class Chat extends Component {
               },
               image: uploadedFile.downloadUrl,
             }
-            this.setState({ showPriorityModal: true })
+            if (
+              !this.getPriority(this.uid, this.otherUid) &&
+              !this.state.dontAskPriorityAgain
+            ) {
+              this.setState({ showPriorityModal: true })
+            }
             this.syncMsgToFirebase(msgObj)
             // adds 1 to conversation
             this.unreadAddOne(this.convKey, this.otherUid)
@@ -633,7 +639,7 @@ export default class Chat extends Component {
           this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, metadata)
           .then(uploadedFile => {
             console.log("downloadUrl: ", uploadedFile.downloadUrl)
-            const _id = msgRef.push().key
+            const _id = uuid.v4()
             const msgObj = {
               _id,
               text: "",
@@ -685,7 +691,7 @@ export default class Chat extends Component {
         .database()
         .ref(`conversations/${this.convKey}/messages`)
 
-      const _id = msgRef.push().key
+      const _id = uuid.v4()
       const msgObj = {
         _id,
         text: "",
@@ -697,7 +703,13 @@ export default class Chat extends Component {
         },
         sticker: uri,
       }
-      this.setState({ showPriorityModal: true })
+
+      if (
+        !this.getPriority(this.uid, this.otherUid) &&
+        !this.state.dontAskPriorityAgain
+      ) {
+        this.setState({ showPriorityModal: true })
+      }
       this.syncMsgToFirebase(msgObj)
       // adds 1 to conversation
       this.unreadAddOne(this.convKey, this.otherUid)
@@ -714,18 +726,36 @@ export default class Chat extends Component {
       // If height higher than 160, scroll won't work
       case "smily":
         return (
-          <View style={{ width, height: 200 }}>
+          <View
+            style={{
+              backgroundColor: '#6A85B1',
+              height: 640,
+              borderTopWidth: 0.5,
+              borderColor: "#E0E0E0",
+            }}
+            contentContainerStyle={{
+              flex: 1,
+              alignItems: 'center',
+              paddingVertical: 5,
+              width,
+              height: 640,
+              backgroundColor: "#E0EEEE",
+            }}
+          >
             <ScrollView
-              style={{
+              contentContainerStyle={{
+                flex: 1,
+                alignItems: 'center',
                 paddingVertical: 5,
-                paddingLeft: 12,
                 width,
-                borderTopWidth: 0.5,
-                borderColor: "#E0E0E0",
-                marginRight: 5,
+                height: 640,
+                backgroundColor: "#E0EEEE",
               }}
             >
-              <Stickers width={width} handleStickerPressed={this.handleStickerPressed} />
+              <Stickers
+                width={width}
+                handleStickerPressed={this.handleStickerPressed}
+              />
             </ScrollView>
           </View>
         )
@@ -741,6 +771,7 @@ export default class Chat extends Component {
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
               marginRight: 4,
+              height: 80,
             }}
           >
             <ActivityIndicator />
@@ -759,6 +790,7 @@ export default class Chat extends Component {
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
               marginRight: 4,
+              height: 80,
             }}
           >
             <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 20 }} onPress={this.handlePhotoPicker}>
@@ -810,6 +842,7 @@ export default class Chat extends Component {
       if (usageCode == 'priority') {
         // console.log("Make priority:")
         this.makeConversationPriority(this.uid, this.otherUid)
+        this.setState({dontAskPriorityAgain: true})
       }
     }
   }
@@ -839,7 +872,7 @@ export default class Chat extends Component {
         this.useBonusForMoreMsg()
         break
       case "priority":
-        this.setState({ showPriorityModal: false })
+        this.setState({ showPriorityModal: false, dontAskPriorityAgain: true })
         this.useBonusForPriority()
         break
       default:
@@ -955,7 +988,7 @@ export default class Chat extends Component {
           <GiftedChat
             style={{width}}
             messages={this.state.messages}
-            messageIdGenerator={() => this.msgKeyGenerator}
+            messageIdGenerator={() => uuid.v4()}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
@@ -966,7 +999,7 @@ export default class Chat extends Component {
             minInputToolbarHeight={this.getToolbarHeight()}
             placeholder="輸入訊息..."
             renderAccessory={this.renderAccessory}
-            renderActions={this.renderActions}
+            renderActions={this.renderActionBar}
             renderFooter={this.renderFooter}
             renderBubble={this.renderBubble}
             renderCustomView={this.renderStickerView}
@@ -975,7 +1008,7 @@ export default class Chat extends Component {
           <GiftedChat
             style={{width}}
             messages={this.state.messages}
-            messageIdGenerator={this.msgKeyGenerator}
+            messageIdGenerator={() => uuid.v4()}
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
@@ -987,7 +1020,7 @@ export default class Chat extends Component {
             minInputToolbarHeight={this.getToolbarHeight()}
             imageProps={this.state.image}
             placeholder="輸入訊息..."
-            renderActions={this.renderActions}
+            renderActions={this.renderActionBar}
             renderFooter={this.renderFooter}
             renderBubble={this.renderBubble}
             renderCustomView={this.renderStickerView}
