@@ -12,11 +12,15 @@ const { width } = Dimensions.get('window')
 const drawerStyles = {
   drawer: {
     borderRightWidth: 0,
-    width
-  }
+    width,
+    shadowColor: '#000000',
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    opacity: 0.9,
+  },
 }
 
-@inject('firebase','ControlStore','SubjectStore') @observer
+@inject('firebase', 'ControlStore', 'SubjectStore') @observer
 export default class DrawerScene extends Component {
 
   constructor(props) {
