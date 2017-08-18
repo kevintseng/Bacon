@@ -39,10 +39,10 @@ export default class CourtContainer extends Component {
     // 寄到別人好感
     await this.firebase.database().ref('goodImpression/' + this.SubjectStore.uid + this.MeetCuteStore.uid ).set({ wooer: this.SubjectStore.uid , prey: this.MeetCuteStore.uid, time: Date.now() })
     // 45天紀錄
-    if (this.checkMatch()) {
+    if (true) {
       this.ControlStore.setMateModal()
     } else {
-      this.goToNext()
+      this.goToNext() // his.checkMatch()
     }
   }
 

@@ -9,11 +9,12 @@ import CourtContainer from '../../../containers/MeetCuteCourtScene/CourtContaine
 import InfosContainer from '../../../containers/MeetCuteCourtScene/InfosContainer'
 import BadgeWallContainer from '../../../containers/MeetCuteCourtScene/BadgeWallContainer'
 import MateModalContainer from '../../../containers/MeetCuteCourtScene/MateModalContainer'
+import SearchModalContainer from '../../../containers/MeetCuteCourtScene/SearchModalContainer'
 import BaconRadar from '../../../views/BaconRadar'
 
 const { width, height } = Dimensions.get('window')
 
-const colors = ['#f4a764', '#d63768']
+//const colors = ['rgba(244, 167, 100, 0.5)', 'rgba(214, 55, 104, 0.5)']
 
 const styles = {
   animation: {
@@ -77,19 +78,8 @@ export default class MeetCuteCourtScene extends Component {
     return(
       <View style={{flex: 1}}>  
         { !this.MeetCuteStore.haveNewPreys &&
-          <View style={{flex: 1,justifyContent: 'space-between'}}>
-            <View></View>
-            <View>
-              <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={styles.animation} >搜尋邂逅名單中</Animatable.Text>
-              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>❤️</Animatable.Text>
-            </View>
-            <TouchableOpacity onPress={ this.cleanHistory } >
-              <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>
-                <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
-                  <Text style={ styles.text }>重新來場美麗的邂逅</Text>
-                </View>
-              </LinearGradient>  
-            </TouchableOpacity>           
+          <View style={{flex: 1,justifyContent: 'space-between',backgroundColor: 'transparent'}}>
+            <SearchModalContainer/>        
           </View>
         }
         { this.MeetCuteStore.haveNewPreys && this.MeetCuteStore.loading && 
@@ -116,4 +106,21 @@ export default class MeetCuteCourtScene extends Component {
     )
   }
 }
+
+/*
+
+            <View></View>
+            <View>
+              <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={styles.animation} >搜尋邂逅名單中</Animatable.Text>
+              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>❤️</Animatable.Text>
+            </View> 
+
+            <TouchableOpacity onPress={ this.cleanHistory } >
+              <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>
+                <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
+                  <Text style={ styles.text }>重新來場美麗的邂逅</Text>
+                </View>
+              </LinearGradient>  
+            </TouchableOpacity> 
+          */
 
