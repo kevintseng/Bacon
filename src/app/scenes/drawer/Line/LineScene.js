@@ -984,7 +984,7 @@ export default class Chat extends Component {
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
-            isLoadingEarlier={true}
+            isLoadingEarlier={this.state.isLoadingEarlier}
             user={{
               _id: this.uid,
             }}
@@ -1004,7 +1004,7 @@ export default class Chat extends Component {
             onSend={this.onSend}
             label="送出"
             onLoadEarlier={this.onLoadEarlier}
-            isLoadingEarlier={true}
+            isLoadingEarlier={this.state.isLoadingEarlier}
             user={{
               _id: this.uid,
             }}
