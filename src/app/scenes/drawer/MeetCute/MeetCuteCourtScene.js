@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ActivityIndicator, Button, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, ActivityIndicator, Button, ScrollView, Dimensions, TouchableOpacity, Modal } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import * as Animatable from 'react-native-animatable'
@@ -10,6 +10,8 @@ import InfosContainer from '../../../containers/MeetCuteCourtScene/InfosContaine
 import BadgeWallContainer from '../../../containers/MeetCuteCourtScene/BadgeWallContainer'
 import MateModalContainer from '../../../containers/MeetCuteCourtScene/MateModalContainer'
 import SearchModalContainer from '../../../containers/MeetCuteCourtScene/SearchModalContainer'
+import LoadingModalContainer from '../../../containers/MeetCuteCourtScene/LoadingModalContainer'
+
 import BaconRadar from '../../../views/BaconRadar'
 
 const { width, height } = Dimensions.get('window')
@@ -58,22 +60,6 @@ export default class MeetCuteCourtScene extends Component {
     this.MeetCuteStore.cleanHistory()
   }
 
-  indicator = () => (
-    <View style={{flex: 1}}>
-      <ActivityIndicator
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf: 'center',
-          paddingBottom: 110
-        }}
-        size="large"
-        color='#d63768'
-      />
-    </View>
-  )
-
   render() {
     return(
       <View style={{flex: 1}}>  
@@ -82,10 +68,7 @@ export default class MeetCuteCourtScene extends Component {
             <SearchModalContainer/>        
           </View>
         }
-        { this.MeetCuteStore.haveNewPreys && this.MeetCuteStore.loading && 
-          this.indicator() 
-        }
-        { this.MeetCuteStore.haveNewPreys && !this.MeetCuteStore.loading &&
+        { this.MeetCuteStore.haveNewPreys &&
           <View style={{flex: 1}}>
             <ScrollView style={{flex: 1}}>
               <CourtContainer/>
@@ -99,6 +82,7 @@ export default class MeetCuteCourtScene extends Component {
                 </View>
               }
             </ScrollView>
+            <LoadingModalContainer/>
             <MateModalContainer/>
           </View>
         }
@@ -106,6 +90,12 @@ export default class MeetCuteCourtScene extends Component {
     )
   }
 }
+
+/*
+        { this.MeetCuteStore.haveNewPreys && this.MeetCuteStore.loading &&
+          this.indicator() 
+        }
+*/
 
 /*
 

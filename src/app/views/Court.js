@@ -30,7 +30,7 @@ export default class Court extends Component {
         imageWidth={width}
         imageHeight={height}
       >
-        <MKPLoadImageView style={{height, width}} resizeMode='contain' source={{uri: photo}} defaultSource={ DEFAULT_IMAGE }/>
+        <MKPLoadImageView style={{height, width}} resizeMode='contain' source={{uri: photo}} />
       </ImageZoom>
     ))
   )
@@ -48,7 +48,7 @@ export default class Court extends Component {
 
   renderAlbum = (album) => (
     album.map( photo => (
-      <MKPLoadImageView key={photo} style={{height: width, width}}  source={{uri: photo}} defaultSource={ DEFAULT_IMAGE } onPress={this.props.openAlbum}/>
+      <MKPLoadImageView onLoadEnd={ this.props.onLoadEnd } key={photo} style={{height: width, width}}  source={{uri: photo}}  onPress={this.props.openAlbum}/>
     ))
   )
 
@@ -68,7 +68,8 @@ export default class Court extends Component {
           <Carousel
             ref={(carousel) => { this.carousel = carousel }}
             swipe
-            style={{flex:1,backgroundColor: 'black'}}
+            delay={0}
+            style={{flex:1,backgroundColor: 'transparent'}}
             bullets
             autoplay={false}
             pageInfoTextStyle={{color: 'red'}}
@@ -78,20 +79,22 @@ export default class Court extends Component {
             { album.length > 0 ? this.renderAlbumZoom(album) : this.renderOnePhotoZoom() }
           </Carousel>
           <View style={{width, position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
-            <View ><Icon name='heart' size={50} type='evilicon' color='white' underlayColor='transparent' onPress={ closeAlbum } /></View>
-            <View ><Icon name='arrow-right' size={50} type='evilicon' color='white' underlayColor='transparent' onPress={ this.nextphoto }/></View>
+            <View><Icon name='heart' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ closeAlbum } /></View>
+            <View><Icon name='arrow-right' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ this.nextphoto }/></View>
           </View>
         </Modal>
  
         <Carousel
           swipe
-          style={{backgroundColor: 'black',width, height: width}}
+          delay={0}
+          style={{backgroundColor: 'transparent',width, height: width}}
           bullets
           autoplay={false}
           pageInfoTextStyle={{color: 'red'}}
           onAnimateNextPage={(p) => console.log(p)}
           bulletsContainerPosition={{ top: 5, left: width/5*4 }}
           bulletsStyle={{position: 'absolute',top: 10}}
+          onLoadEnd={ this.props.carouselOnLoadEnd }
         >
           { album.length > 0 ? this.renderAlbum(album) : this.renderOnePhoto() }
         </Carousel>
