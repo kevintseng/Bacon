@@ -9,6 +9,8 @@ export default class MeetCuteStore {
 
   @observable haveNewPreys
   @observable loading
+  @observable imageLoading
+  @observable carouselLoading
   // user data
   @observable nickname
   @observable bio
@@ -51,6 +53,8 @@ export default class MeetCuteStore {
     this.preyListHistory = new Array
     this.haveNewPreys = false
     this.loading = false
+    this.imageLoading = false
+    this.carouselLoading = false
     this.poolLastLenght = 0
     this.clean = false
     this.index = 0
@@ -68,6 +72,7 @@ export default class MeetCuteStore {
     // config
     this.meetCuteMinAge = 18
     this.meetCuteMaxAge = 99
+    this.imageLoadingCount = 0
   }
 
   @action addPreyToPool = (uid,birthday) => {
@@ -150,6 +155,9 @@ export default class MeetCuteStore {
   @action fetchPrey = async () => {
     runInAction(() => {
       this.loading = true
+      //this.carouselLoading = true
+      //this.imageLoading = true
+      this.imageLoadingCount = 0
     })
     await this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
       if (snap.val()) {
@@ -169,11 +177,31 @@ export default class MeetCuteStore {
         //this.initializeCourt()
       }
     })
+  }
+
+  //@action setOnLoadStart = () => {
+  //  this.imageLoading = true
+  //}
+
+  @action setOnLoadEnd = () => {
+    this.imageLoadingCount ++
+    if (this.imageLoadingCount >= this.albumToArray.length) {
+      this.showPrey()
+    } else {
+      //console.warn(this.imageLoadingCount)
+    }
+  }
+
+  @action showPrey = async () => {
     await this.sleep(300)
     runInAction(() => {
       this.loading = false
     })
   }
+
+  //@action setCarouselOnLoadEnd = () => {
+  //  this.carouselLoading = false
+  //}
 
   @action cleanHistory = () => {
     localdb.getIdsForKey('preyListHistory').then(ids => {
