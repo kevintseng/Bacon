@@ -27,6 +27,11 @@ import Stickers from "./components/Stickers"
 
 const { width, height } = Dimensions.get("window") //eslint-disable-line
 const DEFAULT_VISITOR_MSG_LIMIT = 2
+const DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT = 44
+const DEFAULT_INPUT_OFFSET = 110
+const PLUS_TOOLBAR_HEIGHT = 160
+const STICKER_TOOLBAR_HEIGHT = 220
+
 const pngmetadata = {
   contentType: 'image/png',
 }
@@ -136,7 +141,7 @@ export default class Chat extends Component {
       typingText: null,
       inputText: '',
       lines: 1,
-      inputOffset: 150,
+      inputOffset: DEFAULT_INPUT_OFFSET,
       inputHeight: 40,
       loadEarlier: false,
       isLoadingEarlier: false,
@@ -147,7 +152,7 @@ export default class Chat extends Component {
       showMsgLimitModal: false,
       showPriorityModal: false,
       dontAskPriorityAgain: false,
-      minToolBarHeight: 44,
+      minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
     }
   }
 
@@ -157,6 +162,45 @@ export default class Chat extends Component {
   componentDidMount() {
     this.getUserData(this.otherUid)
     this.visitConvSentTodayUpdate()
+  }
+
+  onSend = (messages = []) => {
+    if (!this.meetMsgLimit()) {
+      const createdAt = Moment().format()
+      const _id = uuid.v4()
+      const msgObj = {
+        _id,
+        text: this.state.inputText,
+        createdAt,
+        user: {
+          _id: this.uid,
+          name: this.SubjectStore.nickname,
+          avatar: this.SubjectStore.avatar,
+        },
+      }
+      // console.log("msgObj: ", msgObj)
+      messages[0] = msgObj
+      this.syncMsgToFirebase(msgObj)
+
+      // 有發言回應後就取消 priority
+      this.updatePriority(this.uid, this.otherUid, false)
+      // adds 1 to the other user"s conversation bucket"s unread field
+      this.unreadAddOne(this.convKey, this.otherUid)
+      // console.log("visitorMsgLimit: ", this.state.visitorMsgLimit)
+      if (this.state.visitorMsgLimit > 0) {
+        this.visitorMsgLimitDeductOne(this.convKey, this.uid)
+      }
+
+      if (!this.state.dontAskPriorityAgain) {
+        setTimeout(() => {
+          this.setState({ showPriorityModal: true })
+        }, 1000)
+      }
+
+      Keyboard.dismiss()
+    } else {
+      this.setState({ showMsgLimitModal: true })
+    }
   }
 
   getUserData = uid => {
@@ -402,50 +446,6 @@ export default class Chat extends Component {
     )
   }
 
-  onSend = (messages = []) => {
-    if (!this.meetMsgLimit()) {
-      const createdAt = Moment().format()
-      // messages[0].user.name = this.SubjectStore.nickname
-      // messages[0].user.avatar = this.SubjectStore.avatar
-      // messages[0].createdAt = createdAt
-      // messages[0].text = this.state.inputText
-      //
-      // // console.log("onSend: ", messages[0].createdAt)
-      // const msgObj = messages[0]
-      const _id = uuid.v4()
-      const msgObj = {
-        _id,
-        text: this.state.inputText,
-        createdAt,
-        user: {
-          _id: this.uid,
-          name: this.SubjectStore.nickname,
-          avatar: this.SubjectStore.avatar,
-        },
-      }
-      messages[0] = msgObj
-      this.syncMsgToFirebase(msgObj)
-
-      // 有發言回應後就取消 priority
-      this.updatePriority(this.uid, this.otherUid, false)
-      // adds 1 to the other user"s conversation bucket"s unread field
-      this.unreadAddOne(this.convKey, this.otherUid)
-      // console.log("visitorMsgLimit: ", this.state.visitorMsgLimit)
-      if (this.state.visitorMsgLimit > 0) {
-        this.visitorMsgLimitDeductOne(this.convKey, this.uid)
-      }
-      this.setState({inputText: ''})
-      if (!this.state.dontAskPriorityAgain) {
-        setTimeout(() => {
-          this.setState({ showPriorityModal: true })
-        }, 1000)
-      }
-      Keyboard.dismiss()
-    } else {
-      this.setState({ showMsgLimitModal: true })
-    }
-  }
-
   renderFooter = () => {
     if (this.state.typingText) {
       return (
@@ -460,13 +460,12 @@ export default class Chat extends Component {
   }
 
   // TODO: Rewrite this when have time
-  renderActionBar = () => {
+  renderActions = () => {
     if (!this.state.action) {
       return (
         <View
           style={{
-            flex: 0,
-            width: 80,
+            width: 70,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
@@ -478,59 +477,21 @@ export default class Chat extends Component {
           <Icon
             name="add"
             onPress={() => {
+              this.setState({
+                action: "plus",
+                minToolBarHeight: PLUS_TOOLBAR_HEIGHT,
+              })
               Keyboard.dismiss()
-              this.setState({ action: "plus", minToolBarHeight: 115 })
             }}
           />
           <Icon
             name="mood"
             onPress={() => {
+              this.setState({
+                action: "smily",
+                minToolBarHeight: STICKER_TOOLBAR_HEIGHT,
+              })
               Keyboard.dismiss()
-              this.setState({ action: "smily", minToolBarHeight: 200 })
-            }}
-          />
-        </View>
-      )
-    } else if (this.state.action == "plus") {
-      return (
-        <View
-          style={{
-            flex: 0,
-            width: 45,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingHorizontal: 10,
-            paddingVertical: 3,
-            alignSelf: "center",
-          }}
-        >
-          <Icon
-            name="keyboard-hide"
-            onPress={() => {
-              this.setState({ action: false, minToolBarHeight: 44, inputOffset: 150 })
-            }}
-          />
-        </View>
-      )
-    } else if (this.state.action == "smily") {
-      return (
-        <View
-          style={{
-            flex: 0,
-            width: 45,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingHorizontal: 10,
-            paddingVertical: 3,
-            alignSelf: "center",
-          }}
-        >
-          <Icon
-            name="keyboard-hide"
-            onPress={() => {
-              this.setState({ action: false, minToolBarHeight: 44, inputOffset: 150 })
             }}
           />
         </View>
@@ -588,14 +549,13 @@ export default class Chat extends Component {
             if (this.state.visitorMsgLimit > 0) {
               this.visitorMsgLimitDeductOne(this.convKey, this.uid)
             }
+
             // 有發言回應後就取消 priority
             this.updatePriority(this.uid, this.otherUid, false)
           }, err => {
             console.error('上傳失敗')
-            this.setState({ action: false })
           })
           .then(() => {
-            this.setState({ action: false })
             if (!this.state.dontAskPriorityAgain) {
               setTimeout(() => {
                 this.setState({ showPriorityModal: true })
@@ -629,10 +589,10 @@ export default class Chat extends Component {
           let meta
           const filename = response.fileName
           const imgType = filename.split('.').pop()
-          if(imgType == 'PNG' || imgType == 'png') {
+          if (imgType == 'PNG' || imgType == 'png') {
             meta = pngmetadata
           }
-          if(imgType == 'JPG' || imgType == 'jpg' || imgType == 'jpeg' || imgType == 'JPEG') {
+          if (imgType == 'JPG' || imgType == 'jpg' || imgType == 'jpeg' || imgType == 'JPEG') {
             meta = jpgmetadata
           }
           console.log("response: ", response)
@@ -668,7 +628,6 @@ export default class Chat extends Component {
             this.setState({ action: false })
           })
           .then(() => {
-            this.setState({ action: false })
             if (!this.state.dontAskPriorityAgain) {
               setTimeout(() => {
                 this.setState({ showPriorityModal: true })
@@ -688,14 +647,15 @@ export default class Chat extends Component {
       .ref(`conversations/${this.convKey}/messages/${msgObj._id}`).set(msgObj)
 
     this.setState({
+      minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
       action: false,
+      inputText: '',
     })
   }
 
   // TODO: use custom message obj for stickers with sticker id only and place
   // sticker images in storage to be called as static image source.
   handleStickerPressed = uri => {
-    // https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/16861101/android/sticker.pngcompress=true
     if (!this.meetMsgLimit()) {
       const msgRef = this.firebase
         .database()
@@ -732,36 +692,43 @@ export default class Chat extends Component {
     }
   }
 
-  renderInputToolBar = () => {
-    return (
-      <View>
-        <Text>test123</Text>
-      </View>
-    )
-  }
-
-  renderAccessory = () => {
-    // console.log("renderAccessory: ", this.state.action)
+  renderComposer = () => {
+    // console.log("renderComposer: ", this.state.action)
     switch (this.state.action) {
-      // If height higher than 160, scroll won't work
       case "smily":
         return (
           <View
             style={{
               width,
-              height: 200,
+              height: STICKER_TOOLBAR_HEIGHT,
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
-              backgroundColor: "#FDFDFD",
+              alignItems: "center",
             }}
           >
+            <View
+              style={{
+                width: 45,
+                marginVertical: 2,
+              }}
+            >
+              <Icon
+                name="keyboard-hide"
+                onPress={() => {
+                  this.setState({
+                    action: false,
+                    minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
+                    inputOffset: DEFAULT_INPUT_OFFSET,
+                  })
+                }}
+              />
+            </View>
             <ScrollView
               contentContainerStyle={{
                 flex: 1,
                 width,
                 alignItems: 'center',
                 paddingVertical: 5,
-                backgroundColor: "#FDFDFD",
               }}
             >
               <Stickers
@@ -776,13 +743,10 @@ export default class Chat extends Component {
           <View
             style={{
               width,
-              height: 115,
+              height: 60,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
-              borderTopWidth: 0.5,
-              borderColor: "#E0E0E0",
-              backgroundColor: "#FDFDFD",
             }}
           >
             <ActivityIndicator />
@@ -794,32 +758,55 @@ export default class Chat extends Component {
           <View
             style={{
               width,
-              height: 115,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
+              height: PLUS_TOOLBAR_HEIGHT,
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
-              backgroundColor: "#FDFDFD",
+              alignItems: "center",
             }}
           >
-            <View style={{ flex: 1, backgroundColor: "#FDFDFD", alignItems: "center", paddingLeft: 20 }}>
-              <TouchableOpacity onPress={this.handlePhotoPicker}>
-                <Image
-                  style={{ width: 51, height: 39 }}
-                  source={require('../../../../images/btn_chat_album.png')}
-                />
-                <Text style={{ marginTop: 3, alignSelf: 'center'}}>相簿</Text>
-              </TouchableOpacity>
+            <View
+              style={{
+                width: 45,
+              }}
+            >
+              <Icon
+                name="keyboard-hide"
+                onPress={() => {
+                  this.setState({
+                    action: false,
+                    minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
+                    inputOffset: DEFAULT_INPUT_OFFSET,
+                  })
+                }}
+              />
             </View>
-            <View style={{ flex: 1, backgroundColor: "#FDFDFD", alignItems: "center", paddingRight: 20 }}>
-              <TouchableOpacity onPress={this.handleCameraPicker}>
-                <Image
-                  style={{ width: 51, height: 39}}
-                  source={require('../../../../images/btn_chat_shot.png')}
-                />
-                <Text style={{ marginTop: 3, alignSelf: 'center'}}>拍照</Text>
-              </TouchableOpacity>
+            <View
+              style={{
+                width,
+                height: 120,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <View style={{ flex: 1, backgroundColor: "#FDFDFD", alignItems: "center", paddingLeft: 20 }}>
+                <TouchableOpacity onPress={this.handlePhotoPicker}>
+                  <Image
+                    style={{ width: 51, height: 39.5 }}
+                    source={require('../../../../images/btn_chat_album.png')}
+                  />
+                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>相簿</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 1, backgroundColor: "#FDFDFD", alignItems: "center", paddingRight: 20 }}>
+                <TouchableOpacity onPress={this.handleCameraPicker}>
+                  <Image
+                    style={{ width: 51, height: 39.5}}
+                    source={require('../../../../images/btn_chat_shot.png')}
+                  />
+                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>拍照</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         )
@@ -827,13 +814,13 @@ export default class Chat extends Component {
         return (
           <ScrollView
             scrollEnabled={false}
-            style={{
+            contentContainerStyle={{
               flexDirection: 'row',
-              alignItems: 'flex-start',
+              alignItems: 'center',
               width: width - this.state.inputOffset }}
           >
             <TextInput
-              placeholderTextColor="rgba(67,88,101,0.4)"
+              placeholderTextColor="#E0E0E0"
               placeholder="請輸入.."
               autoFocus
               style={{
@@ -846,25 +833,15 @@ export default class Chat extends Component {
                 width: width - this.state.inputOffset,
                 padding: 5,
               }}
-              onChange={text => {
+              onChangeText={(text) => {
                 this.setState({inputText: text})
-              }}
-              numberOfLines={this.state.lines}
-              onContentSizeChange={(event) => {
-                const iosTextHeight = 20.5
-                const androidTextHeight = 20.5
-                const textHeight = Platform.OS === 'ios' ? iosTextHeight : androidTextHeight
-                const h = Platform.OS === 'ios'
-                  ? event.nativeEvent.contentSize.height
-                  : event.nativeEvent.contentSize.height - androidTextHeight
-                const lines = Math.round(h / textHeight)
-                const visibleLines = lines < 4 ? lines : 4
-                const visibleHeight = textHeight * (visibleLines + 1)
-                this.setState({ inputHeight: visibleHeight, lines: visibleLines })
               }}
             />
             <TouchableOpacity onPress={this.onSend}>
-              <Text>send</Text>
+              <Image
+                style={{ width: 30, height: 30}}
+                source={require('../../../../images/btn_chat_send.png')}
+              />
             </TouchableOpacity>
           </ScrollView>
         )
@@ -939,14 +916,6 @@ export default class Chat extends Component {
       showVisitorModal: false,
       showPriorityModal: false,
     })
-  }
-
-  msgKeyGenerator = () => {
-    const key = this.firebase
-      .database()
-      .ref(`conversations/${this.convKey}/messages`)
-      .push().key
-    return key
   }
 
   initChatRoom = () => {
@@ -1041,9 +1010,8 @@ export default class Chat extends Component {
           onInputTextChanged={() => this.meetMsgLimit()}
           minInputToolbarHeight={this.state.minToolBarHeight}
           placeholder="輸入訊息..."
-          renderInputToolBar={this.renderInputToolBar}
-          renderComposer={this.renderAccessory}
-          renderActions={this.renderActionBar}
+          renderComposer={this.renderComposer}
+          renderActions={this.renderActions}
           renderFooter={this.renderFooter}
           renderBubble={this.renderBubble}
           renderCustomView={this.renderStickerView}
