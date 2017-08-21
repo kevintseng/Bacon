@@ -9,7 +9,7 @@ import BaconRoutes from '../../views/BaconRoutes/BaconRoutes'
 const { InAppUtils } = NativeModules
 
 
-@inject('SubjectStore','ControlStore','firebase') @observer
+@inject('SubjectStore', 'ControlStore', 'firebase') @observer
 export default class BaconRoutesContainer extends Component {
 
   constructor(props) {
@@ -20,7 +20,7 @@ export default class BaconRoutesContainer extends Component {
   }
 
   pay = async () => {
-    const productId = 'android.test.purchased'//'android.test.purchased'
+    const productId = 'android.test.purchased' // 'android.test.purchased'
     await InAppBilling.close()
     try {
       await InAppBilling.open()
