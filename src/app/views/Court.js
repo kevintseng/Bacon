@@ -48,13 +48,17 @@ export default class Court extends Component {
 
   renderAlbum = (album) => (
     album.map( photo => (
-      <FastImage onLoadEnd={ this.props.onLoadEnd } key={photo} style={{height: width, width}}  source={{uri: photo}}  onPress={this.props.openAlbum} />
+      <TouchableOpacity onPress={this.props.openAlbum}>
+        <FastImage onLoadEnd={ this.props.onLoadEnd } key={photo} style={{height: width, width}}  source={{uri: photo}} />
+      </TouchableOpacity>
     ))
   )
 
 
   renderOnePhoto = () => (
-    <Image style={{height: width, width}}  source={require('../../images/ico_qy_head_preload.png')} onPress={this.props.openAlbum}/>
+    <TouchableOpacity onPress={this.props.openAlbum}>
+      <Image style={{height: width, width}}  source={require('../../images/ico_qy_head_preload.png')} />
+    </TouchableOpacity>
   )
 
   render() {
