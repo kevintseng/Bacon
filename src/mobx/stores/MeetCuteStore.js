@@ -206,7 +206,6 @@ export default class MeetCuteStore {
   }
 
   @action setCarouselOnLoadEnd = (boolean) => {
-    //alert('dsdads')
     this.carouselLoading = boolean
   }
 
