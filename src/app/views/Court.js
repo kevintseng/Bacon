@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Dimensions, Image, Modal, View, Text, TouchableOpacity } from 'react-native'
+import { Dimensions, Image, Modal, View, Text, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
 import Carousel from 'react-native-looped-carousel'
 import ImageZoom from 'react-native-image-pan-zoom'
 import FastImage from 'react-native-fast-image'
@@ -30,7 +30,7 @@ export default class Court extends Component {
         imageWidth={width}
         imageHeight={height}
       >
-        <FastImage style={{height, width}} resizeMode='contain' source={{uri: photo}} />
+        <Image style={{height, width}} resizeMode='contain' source={{uri: photo}} />
       </ImageZoom>
     ))
   )
@@ -48,17 +48,17 @@ export default class Court extends Component {
 
   renderAlbum = (album) => (
     album.map( photo => (
-      <TouchableOpacity onPress={this.props.openAlbum}>
-        <FastImage onLoadEnd={ this.props.onLoadEnd } key={photo} style={{height: width, width}}  source={{uri: photo}} />
-      </TouchableOpacity>
+      <TouchableWithoutFeedback key={photo} onPress={this.props.openAlbum}>
+        <Image onLoad={ this.props.onLoadEnd } style={{height: width, width}}  source={{uri: photo}} />
+      </TouchableWithoutFeedback>
     ))
   )
 
 
   renderOnePhoto = () => (
-    <TouchableOpacity onPress={this.props.openAlbum}>
+    <TouchableWithoutFeedback onPress={this.props.openAlbum}>
       <Image style={{height: width, width}}  source={require('../../images/ico_qy_head_preload.png')} />
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   )
 
   render() {
@@ -72,7 +72,7 @@ export default class Court extends Component {
           <Carousel
             ref={(carousel) => { this.carousel = carousel }}
             swipe
-            delay={0}
+            //delay={0}
             style={{flex:1,backgroundColor: 'transparent'}}
             bullets
             autoplay={false}
@@ -90,7 +90,7 @@ export default class Court extends Component {
  
         <Carousel
           swipe
-          delay={0}
+          //delay={0}
           style={{backgroundColor: 'transparent',width, height: width}}
           bullets
           autoplay={false}
