@@ -185,7 +185,8 @@ export default class MeetCuteStore {
 
   @action setOnLoadEnd = () => {
     this.imageLoadingCount ++
-    if (this.imageLoadingCount === 2*this.albumToArray.length || this.albumToArray.length === 0) {
+    if (this.imageLoadingCount === this.albumToArray.length || this.albumToArray.length === 0) {
+      console.warn(this.imageLoadingCount)
       if (this.index == 0) {
         this.showFirstPrey()
       } else {

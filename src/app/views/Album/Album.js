@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, FlatList, Dimensions, TouchableOpacity, Button, View, Modal, Text } from 'react-native'
 import ImageZoom from 'react-native-image-pan-zoom'
 import LinearGradient from 'react-native-linear-gradient'
+import MKPLoadImageView from 'mkp-react-native-image-view'
 
 const { width, height } = Dimensions.get('window')
 
@@ -51,7 +52,7 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, v
         numColumns={3}
         renderItem={({item}) => (
         <TouchableOpacity onPress={ () => { photoOnPress(item.key) } } onLongPress={ photoOnLongPress } >
-          <Image style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
+          <MKPLoadImageView style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
         </TouchableOpacity>
         )} 
       />
