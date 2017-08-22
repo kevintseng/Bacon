@@ -26,18 +26,19 @@ export default class BaconRoutesContainer extends Component {
       await InAppBilling.open()
       if (!await InAppBilling.isPurchased(productId)) {
         const details = await InAppBilling.purchase(productId)
-        //console.log('You purchased: ', details);
+        // console.log('You purchased: ', details);
       }
       const transactionStatus = await InAppBilling.getPurchaseTransactionDetails(productId)
-      //console.log('Transaction Status', transactionStatus);
+      // console.log('Transaction Status', transactionStatus);
       console.log(transactionStatus.purchaseState)
-      if (transactionStatus.purchaseState ==='PurchasedSuccessfully') {
+      if (transactionStatus.purchaseState === 'PurchasedSuccessfully') {
         const bonus = parseInt(Object.keys(this.ControlStore.bonus).find(key => this.ControlStore.bonus[key] === true))
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/bonus').set(this.SubjectStore.bonus + bonus)
+        
+        this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + bonus)
         this.SubjectStore.addBonus(bonus)
       }
-      //const productDetails = await InAppBilling.getProductDetails(productId)
-      //console.log(productDetails);
+      // const productDetails = await InAppBilling.getProductDetails(productId)
+      // console.log(productDetails);
     } catch (err) {
       console.log(err)
     } finally {
@@ -48,10 +49,10 @@ export default class BaconRoutesContainer extends Component {
   }
 
   render() {
-    return(
+    return (
       <BaconRoutes
-        routesText='儲值'
-        routesOnPress={ this.pay }
+        routesText="儲值"
+        routesOnPress={this.pay}
       />
     )
   }

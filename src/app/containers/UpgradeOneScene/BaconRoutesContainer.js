@@ -45,21 +45,32 @@ export default class BaconRoutesContainer extends Component {
         Actions.AboutMe({type: 'reset'})
       }
     } else {
-      const productId = this.props.pid
-      try {
-        await InAppUtils.purchaseProduct(productId), (error, response) => {
-          if (response && response.productIdentifier) {
-            this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
-            this.SubjectStore.setVip(true)
-          }
-        }
-      } catch (error) {
-        console.log(err)
-      } finally {
-        await InAppBilling.consumePurchase(productId)
-        await InAppBilling.close()
-        Actions.AboutMe({type: 'reset'})
-      }
+      const products = []
+      InAppUtils.loadProducts(products, (error, products) => {
+        console.log("products: ", products)
+      })
+      // InAppUtils.canMakePayments(async (enabled) => {
+      //   if (enabled) {
+      //     const productId = this.props.pid
+      //     try {
+      //       await InAppUtils.purchaseProduct(productId, (error, response) => {
+      //         if (response && response.productIdentifier) {
+      //           console.log("IAP response: ", response)
+      //           // this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
+      //           // this.SubjectStore.setVip(true)
+      //         }
+      //       })
+      //     } catch (err) {
+      //       console.log(err)
+      //     } finally {
+      //       // await InAppBilling.consumePurchase(productId)
+      //       // await InAppBilling.close()
+      //       Actions.AboutMe({type: 'reset'})
+      //     }
+      //   } else {
+      //     console.error('IAP disabled');
+      //   }
+      // })
     }
   }
 
