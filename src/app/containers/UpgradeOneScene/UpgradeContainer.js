@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Text,Button } from 'react-native'
+import { View, TouchableOpacity, Text, Button } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import RNGooglePlaces from 'react-native-google-places'
 
@@ -10,34 +10,34 @@ export default class UpgradeContainer extends Component {
 
   constructor(props) {
     super(props)
-    //this.SignUpStore = this.props.SignUpStore
-    this.state={
+    // this.SignUpStore = this.props.SignUpStore
+    this.state = {
       topCheck: true,
-      upperCheck: false
+      upperCheck: false,
     }
   }
 
   topCheckOnPress = () => {
     this.setState({
       topCheck: !this.state.topCheck,
-      upperCheck: !this.state.upperCheck
+      upperCheck: !this.state.upperCheck,
     })
   }
 
   upperCheckOnPress = () => {
     this.setState({
       topCheck: !this.state.topCheck,
-      upperCheck: !this.state.upperCheck
-    })    
+      upperCheck: !this.state.upperCheck,
+    })
   }
 
   render() {
-    return(
+    return (
       <Upgrade
-        topCheck={ this.state.topCheck }
-        upperCheck={ this.state.upperCheck }
-        topCheckOnPress={ this.topCheckOnPress }
-        upperCheckOnPress={ this.upperCheckOnPress }
+        topCheck={this.state.topCheck}
+        upperCheck={this.state.upperCheck}
+        topCheckOnPress={this.topCheckOnPress}
+        upperCheckOnPress={this.upperCheckOnPress}
       />
     )
   }
