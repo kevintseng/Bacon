@@ -54,7 +54,7 @@ export default class MeetCuteCourtScene extends Component {
 
   componentDidMount = async () => {
     await this.sleep(260)
-    //this.MeetCuteStore.setPreyList()    
+    this.MeetCuteStore.setPreyList()    
   }
 
   cleanHistory = () => {
@@ -68,7 +68,6 @@ export default class MeetCuteCourtScene extends Component {
   render() {
     return(
         <View style={{flex: 1}}>
-          <LoadingModalContainer/>
           <ScrollView style={{flex: 1}}>
             <CourtContainer/>
             <View style={{alignSelf: 'center',paddingTop: 40}}>
@@ -81,6 +80,7 @@ export default class MeetCuteCourtScene extends Component {
               </View>
             }
           </ScrollView>
+          { this.MeetCuteStore.loading && <LoadingModalContainer/> }
           { (!this.MeetCuteStore.haveNewPreys || this.MeetCuteStore.firstLoading) && <SearchModalContainer/> }
         </View>
     )
