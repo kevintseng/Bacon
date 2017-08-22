@@ -30,7 +30,7 @@ export default class Court extends Component {
         imageWidth={width}
         imageHeight={height}
       >
-        <MKPLoadImageView style={{height, width}} resizeMode='contain' source={{uri: photo}} />
+        <FastImage style={{height, width}} resizeMode='contain' source={{uri: photo}} />
       </ImageZoom>
     ))
   )
@@ -48,7 +48,7 @@ export default class Court extends Component {
 
   renderAlbum = (album) => (
     album.map( photo => (
-      <MKPLoadImageView onLoadEnd={ this.props.onLoadEnd } key={photo} style={{height: width, width}}  source={{uri: photo}}  onPress={this.props.openAlbum} />
+      <FastImage onLoadEnd={ this.props.onLoadEnd } key={photo} style={{height: width, width}}  source={{uri: photo}}  onPress={this.props.openAlbum} />
     ))
   )
 
