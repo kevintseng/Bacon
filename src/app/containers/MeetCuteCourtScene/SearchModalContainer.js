@@ -24,7 +24,7 @@ const styles = {
     fontFamily: 'NotoSans',
     //fontSize: 20,
     //fontWeight: '500',
-    color: 'white',
+    color: '#F4A764',
     //textAlign: 'center',    
   }
 }
@@ -59,12 +59,12 @@ export default class SearchModalContainer extends Component {
           <LinearGradient colors={colors} style={{justifyContent: 'space-between',width, alignItems: 'center',height: height*0.4, paddingTop: 30, paddingBottom: 30}}>
             <Image source={require('../../../images/ico_meet_likeeo_heart.png')}/>
             <View style={{marginTop: 20}}>
-              <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={styles.animation} >搜尋邂逅名單中</Animatable.Text>
-              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>❤️</Animatable.Text>
+              <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={styles.text} >搜尋邂逅名單中</Animatable.Text>
+              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center',backgroundColor: 'transparent' }}>❤️</Animatable.Text>
             </View>
             <TouchableOpacity onPress={ this.cleanHistory } >
               <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
-                <Text style={ styles.text }>重新來場美麗的邂逅</Text>
+                <Text style={ [styles.text,{color: 'white'}] }>重新來場美麗的邂逅</Text>
               </View>
             </TouchableOpacity> 
           </LinearGradient>
