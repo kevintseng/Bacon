@@ -17,7 +17,8 @@ export default class BaconRoutesContainer extends Component {
     this.MeetCuteStore.setMeetCuteMinAge(this.ControlStore.meetCuteMinAge)  
     this.MeetCuteStore.setMeetCuteMaxAge(this.ControlStore.meetCuteMaxAge)
     this.MeetCuteStore.resetAge()
-    Actions.MeetCuteCourt({type: 'reset'})
+    //Actions.MeetCuteCourt({type: 'push'})
+    Actions.MeetCuteCourt({type: 'replace'})
   }
 
   render() {

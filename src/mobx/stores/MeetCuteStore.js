@@ -104,9 +104,12 @@ export default class MeetCuteStore {
   }
 
   @action setFirstPrey = async () => {
-    //await this.sleep(300)
     this.index = 0
     this.uid = this.preyList[this.index].uid
+    runInAction(() => {
+      this.firstLoading = true
+      this.imageLoadingCount = 0
+    })
     await this.firebase.database().ref('users/' + this.uid).once('value', snap => {
       if (snap.val()) {
         runInAction(() => {
@@ -179,39 +182,27 @@ export default class MeetCuteStore {
     })
   }
 
-  //@action setOnLoadStart = () => {
-  //  this.imageLoading = true
-  //}
-
-  @action setOnLoadEnd = () => {
+  @action setOnLoadEnd = async () => {
     this.imageLoadingCount ++
     if (this.imageLoadingCount === this.albumToArray.length || this.albumToArray.length === 0) {
-      //console.warn(this.imageLoadingCount)
+      //console.warn(this.albumToArray.length)
+      await this.sleep(100)
       if (this.index == 0) {
         this.showFirstPrey()
       } else {
         this.showPrey()
       }
-      //console.log(this.albumToArray.length)
-      //console.log(this.imageLoadingCount)
-      //this.loading = false
     } else {
-      //console.warn(this.imageLoadingCount)
+      //
     }
   }
 
-  @action showPrey = async () => {
-    //await this.sleep(100)
-    runInAction(() => {
-      this.loading = false
-    })
+  @action showPrey = () => {
+    this.loading = false
   }
 
-  @action showFirstPrey = async () => {
-    //await this.sleep(100)
-    runInAction(() => {
-      this.firstLoading = false
-    })
+  @action showFirstPrey = () => {
+    this.firstLoading = false
   }
 
   @action setCarouselOnLoadEnd = (boolean) => {
@@ -232,7 +223,6 @@ export default class MeetCuteStore {
   @action resetAge = () => {
     this.clean = true
     this.haveNewPreys = false
-    this.setPreyList()
   }
 
 
