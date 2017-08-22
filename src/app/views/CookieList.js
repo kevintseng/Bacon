@@ -48,7 +48,7 @@ const styles = {
 const CookieList = ({ name, ages, avatar, children, onPress }) => {
 
   return(
-    <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', margin: 10}} onPress={ onPress }>
+    <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', margin: 10}} activeOpacity={1} onPress={ onPress }>
       <View style={styles.circle} >
         <MKPLoadImageView style={ styles.image } source={ avatar ? { uri: avatar } : require('./Cookie/img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
         <View style={styles.fixCircleClipping} />

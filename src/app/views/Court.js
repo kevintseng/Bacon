@@ -54,7 +54,7 @@ export default class Court extends Component {
 
 
   renderOnePhoto = () => (
-    <Image style={{height: width, width}}  source={require('../../images/ico_qy_head_preload.png')}/>
+    <Image style={{height: width, width}}  source={require('../../images/ico_qy_head_preload.png')} onPress={this.props.openAlbum}/>
   )
 
   render() {
@@ -75,6 +75,7 @@ export default class Court extends Component {
             pageInfoTextStyle={{color: 'red'}}
             onAnimateNextPage={(p) => console.log(p)}
             bulletsStyle={{position: 'absolute',bottom: 10}}
+            onLoadEnd={ () => {} }
             >
             { album.length > 0 ? this.renderAlbumZoom(album) : this.renderOnePhotoZoom() }
           </Carousel>
@@ -87,7 +88,7 @@ export default class Court extends Component {
         <Carousel
           swipe
           delay={0}
-          style={{backgroundColor: 'transparent',width, height: width}}
+          style={{backgroundColor: 'red',width, height: width}}
           bullets
           autoplay={false}
           pageInfoTextStyle={{color: 'red'}}

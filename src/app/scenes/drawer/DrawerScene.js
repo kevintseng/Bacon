@@ -45,27 +45,33 @@ export default class DrawerScene extends Component {
     return true
   }
 
-  goToAboutMe() {
+  goToAboutMe = () => {
+    //this._drawer.close()
     Actions.AboutMe({type: 'reset'})
   }
 
-  goToMeetChance() {
+  goToMeetChance = () => {
+    //this._drawer.close()
     Actions.MeetChance({type: 'reset'})
+    //Actions.refresh({ key: 'Drawer', open: false })
   }
 
   goToLine() {
     Actions.LineList({type: 'reset'})
   }
 
-  goToMeetCute() {
+  goToMeetCute = () => {
+    //this._drawer.close()
     Actions.MeetCute({type: 'reset'})
   }
 
-  goToFate() {
+  goToFate = () => {
+    //this._drawer.close()
     Actions.Fate({type: 'reset'})
   }
 
-  goToSetting() {
+  goToSetting = () => {
+    //this._drawer.close()
     Actions.Setting({type: 'reset'})
   }
 
@@ -76,6 +82,7 @@ export default class DrawerScene extends Component {
     return (
       <Drawer
         ref='navigation'
+        //ref={(ref) => this._drawer = ref}
         type='overlay'
         styles={ drawerStyles }
         onOpen={() => Actions.refresh({ key: state.key, open: true })}

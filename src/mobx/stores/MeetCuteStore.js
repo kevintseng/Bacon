@@ -83,7 +83,7 @@ export default class MeetCuteStore {
     await localdb.getIdsForKey('preyListHistory').then(ids => {
       this.preyListHistory = ids
     })
-    console.log('this.preyListHistory : ' + this.preyListHistory)
+    //console.log('this.preyListHistory : ' + this.preyListHistory)
     while (this.haveNewPreys === false) {
       if ((this.poolLastLenght !== this.pool.length) || (this.clean === true)) {
         this.poolLastLenght = this.pool.length
@@ -155,7 +155,6 @@ export default class MeetCuteStore {
   @action fetchPrey = async () => {
     runInAction(() => {
       this.loading = true
-      //this.carouselLoading = true
       //this.imageLoading = true
       this.imageLoadingCount = 0
     })
@@ -185,8 +184,11 @@ export default class MeetCuteStore {
 
   @action setOnLoadEnd = () => {
     this.imageLoadingCount ++
-    if (this.imageLoadingCount >= this.albumToArray.length) {
-      this.showPrey()
+    if (this.imageLoadingCount === this.albumToArray.length || this.albumToArray.length === 0) {
+      //this.showPrey()
+      //console.log(this.albumToArray.length)
+      //console.log(this.imageLoadingCount)
+      this.loading = false
     } else {
       //console.warn(this.imageLoadingCount)
     }
@@ -199,9 +201,10 @@ export default class MeetCuteStore {
     })
   }
 
-  //@action setCarouselOnLoadEnd = () => {
-  //  this.carouselLoading = false
-  //}
+  @action setCarouselOnLoadEnd = (boolean) => {
+    //alert('dsdads')
+    this.carouselLoading = boolean
+  }
 
   @action cleanHistory = () => {
     localdb.getIdsForKey('preyListHistory').then(ids => {
