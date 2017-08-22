@@ -57,10 +57,6 @@ export default class MeetCuteCourtScene extends Component {
     this.MeetCuteStore.setPreyList()    
   }
 
-  cleanHistory = () => {
-    this.MeetCuteStore.cleanHistory()
-  }
-
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
