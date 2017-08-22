@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { View, Modal, Text, TouchableOpacity, ScrollView, Dimensions, Image } from 'react-native'
+import { View, Modal, Text, Platform, TouchableOpacity, ScrollView, Dimensions, Image } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import LinearGradient from 'react-native-linear-gradient'
 import * as Animatable from 'react-native-animatable'
@@ -40,31 +40,21 @@ export default class SearchModalContainer extends Component {
     this.MeetCuteStore = this.props.MeetCuteStore
   }
 
-  goToLine = async () => { 
-    await this.ControlStore.setMateModal()
-    Actions.Line({uid: this.MeetCuteStore.uid, name: this.MeetCuteStore.nickname})
-  }
-
-  keepMeetCute = async () => {
-    await this.ControlStore.setMateModal()
-    //Actions.UseBonus()
-  }
-
   cleanHistory = () => {
     this.MeetCuteStore.cleanHistory()
   }
 
   render() {
     return(
-      <Modal animationType={"none"} transparent={true} visible={!this.MeetCuteStore.haveNewPreys || this.MeetCuteStore.loading} onRequestClose={()=>{}}>
         <View
           style={{
-            backgroundColor: 'rgba(52, 52, 52, 1.0)',
+            height: height - (Platform.OS === 'ios' ? 64 : 54),
+            backgroundColor: 'rgba(25, 25, 25, 1.0)',
             alignSelf: 'center',
-                alignItems: 'center',
-                flex: 1,
-                justifyContent: 'center'
-              }}
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute'
+            }}
             >
           <LinearGradient colors={colors} style={{justifyContent: 'space-between',width, alignItems: 'center',height: height*0.4, paddingTop: 30, paddingBottom: 30}}>
             <Image source={require('../../../images/ico_meet_likeeo_heart.png')}/>
@@ -79,7 +69,6 @@ export default class SearchModalContainer extends Component {
             </TouchableOpacity> 
           </LinearGradient>
         </View>
-      </Modal>
     )
   }
 }

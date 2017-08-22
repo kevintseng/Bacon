@@ -9,8 +9,9 @@ export default class MeetCuteStore {
 
   @observable haveNewPreys
   @observable loading
-  @observable imageLoading
-  @observable carouselLoading
+  //@observable imageLoading
+  @observable firstLoading
+  //@observable carouselLoading
   // user data
   @observable nickname
   @observable bio
@@ -53,8 +54,9 @@ export default class MeetCuteStore {
     this.preyListHistory = new Array
     this.haveNewPreys = false
     this.loading = false
-    this.imageLoading = false
-    this.carouselLoading = false
+    this.firstLoading = true
+    //this.imageLoading = false
+    //this.carouselLoading = false
     this.poolLastLenght = 0
     this.clean = false
     this.index = 0
@@ -183,8 +185,12 @@ export default class MeetCuteStore {
 
   @action setOnLoadEnd = () => {
     this.imageLoadingCount ++
-    if (this.imageLoadingCount === this.albumToArray.length || this.albumToArray.length === 0) {
-      this.showPrey()
+    if (this.imageLoadingCount === 2*this.albumToArray.length || this.albumToArray.length === 0) {
+      if (this.index == 0) {
+        this.showFirstPrey()
+      } else {
+        this.showPrey()
+      }
       //console.log(this.albumToArray.length)
       //console.log(this.imageLoadingCount)
       //this.loading = false
@@ -197,6 +203,13 @@ export default class MeetCuteStore {
     await this.sleep(100)
     runInAction(() => {
       this.loading = false
+    })
+  }
+
+  @action showFirstPrey = async () => {
+    await this.sleep(100)
+    runInAction(() => {
+      this.firstLoading = false
     })
   }
 
