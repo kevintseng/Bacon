@@ -5,6 +5,7 @@ import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
 import Moment from 'moment'
+import FastImage from 'react-native-fast-image'
 
 import { calculateAge } from '../../../app/Utils'
 import Loading from '../../views/Loading/Loading'
@@ -226,6 +227,7 @@ export default class SessionCheckScene extends Component {
         this.ControlStore.setSyncDetector(true) // 同步完成
         console.log(error)
       })
+    FastImage.preload(this.SubjectStore.albumToFlatList)
     this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
     this.meetCuteListener() // 非同步邂逅
   }
