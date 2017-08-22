@@ -49,7 +49,6 @@ export default class MeetCuteCourtScene extends Component {
   }
 
   componentWillMount() {
-    this.MeetCuteStore.setCarouselOnLoadEnd(true)
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
@@ -69,33 +68,32 @@ export default class MeetCuteCourtScene extends Component {
   render() {
     return(
       <View style={{flex: 1}}>  
-        { !this.MeetCuteStore.haveNewPreys &&
-          <View style={{flex: 1,justifyContent: 'space-between',backgroundColor: 'transparent'}}>
-            <SearchModalContainer/>        
-          </View>
-        }
-        { this.MeetCuteStore.haveNewPreys &&
-          <View style={{flex: 1}}>
-            <ScrollView style={{flex: 1}}>
-              <CourtContainer/>
-              <View style={{alignSelf: 'center',paddingTop: 40}}>
-                <InfosContainer/> 
+        <View style={{flex: 1}}>
+          <SearchModalContainer/>
+          <LoadingModalContainer/>
+          <ScrollView style={{flex: 1}}>
+            <CourtContainer/>
+            <View style={{alignSelf: 'center',paddingTop: 40}}>
+              <InfosContainer/> 
+            </View>
+            <BadgeWallContainer/> 
+            { this.SubjectStore.vip && 
+              <View style={{paddingTop: 10}}>
+                <BaconRadar/>
               </View>
-              <BadgeWallContainer/> 
-              { this.SubjectStore.vip && 
-                <View style={{paddingTop: 10}}>
-                  <BaconRadar/>
-                </View>
-              }
-            </ScrollView>
-            <LoadingModalContainer/>
-            <MateModalContainer/>
-          </View>
-        }
+            }
+          </ScrollView>
+        </View>
       </View>
     )
   }
 }
+/*
+<SearchModalContainer/> 
+           <SearchModalContainer/>   
+            <LoadingModalContainer/>
+            <MateModalContainer/>
+*/
 
 /*
         { this.MeetCuteStore.haveNewPreys && this.MeetCuteStore.loading &&
