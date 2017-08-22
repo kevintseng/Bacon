@@ -49,15 +49,21 @@ export default class MeetCuteCourtScene extends Component {
   }
 
   componentWillMount() {
+    this.MeetCuteStore.setCarouselOnLoadEnd(true)
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
+    await this.sleep(260)
     this.MeetCuteStore.setPreyList()    
   }
 
   cleanHistory = () => {
     this.MeetCuteStore.cleanHistory()
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   render() {

@@ -71,9 +71,9 @@ export default class CourtContainer extends Component {
     alert('onLoad')
   }
 
-  //carouselOnLoadEnd = () => {
-  //  this.MeetCuteStore.setCarouselOnLoadEnd()
-  //}
+  carouselOnLoadEnd = () => {
+    this.MeetCuteStore.setCarouselOnLoadEnd(false)
+  }
 
   render() {
     return(
@@ -89,7 +89,7 @@ export default class CourtContainer extends Component {
         onRequestClose={ this.closeAlbum }
         onLoadEnd={ this.onLoadEnd }
         //onLoadStart={ this.onLoadStart }
-        //carouselOnLoadEnd={ this.carouselOnLoadEnd }
+        carouselOnLoadEnd={ this.carouselOnLoadEnd }
       />
     )
   }

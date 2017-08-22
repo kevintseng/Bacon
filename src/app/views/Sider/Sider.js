@@ -5,7 +5,7 @@ import { Avatar, Badge } from 'react-native-elements'
 import ListItem from '../ListItem'
 import BaconTitle from '../BaconTitle/BaconTitle'
 import BaconMenu from '../BaconMenu/BaconMenu'
-
+import Cookie from '../Cookie/Cookie'
 
 const { width, height } = Dimensions.get('window')
 
@@ -14,7 +14,7 @@ const picWidth = (width * 0.8)/3
 const styles = {
   scrollView: {
     flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)'
+    backgroundColor: 'rgba(255, 255, 255, 1)'
   }
 }
 
@@ -36,35 +36,34 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
           </View>
         </View>
 
-        <View style={{alignItems: 'center',marginTop: 20}}>
-          <Avatar
-            width={picWidth}
-            heigh={picWidth}
-            rounded
-            source={ avatar ? {uri: avatar} : require('../Cookie/img/ico_qy_head_preload.png') }
-            activeOpacity={0.7}
-            onPress={displayNameOnPress}
-          />
-        </View>
+        <TouchableOpacity width={width * 0.8} activeOpacity={1} onPress={ displayNameOnPress }>
+          <View style={{alignItems: 'center',marginTop: 20}}>
+            <Cookie
+              size={picWidth}
+              avatar={avatar}
+              borderColor='rgba(255, 255, 255, 1)'
+            />
+          </View>
 
-        <View style={{marginTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View style={{width: 40, opacity: 0}}>
-            <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
+          <View style={{marginTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{width: 40, opacity: 0}}>
+              <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
+            </View>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={{textAlign: 'center',color: '#606060',fontWeight: 'normal'}}>{ displayName }</Text>
+            </View>
+            <View style={{width: 40, opacity: 0 }}>
+              <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
+            </View>
           </View>
-          <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={ displayNameOnPress }>
-            <Text style={{textAlign: 'center',color: '#606060',fontWeight: 'normal'}}>{ displayName }</Text>
-          </TouchableOpacity>
-          <View style={{width: 40, opacity: 0 }}>
-            <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
-          </View>
-        </View>
+        </TouchableOpacity>
 
         <View style={{marginTop: 20}}>
-          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
         </View>
 
         <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='邂逅' showBadge={false} listOnPress={ meetcueOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ meetcueOnPress }/>
         </View>
 
         <View style={{marginTop: 7}}>

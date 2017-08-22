@@ -35,7 +35,8 @@ export default class MeetChanceWaterFallScene extends Component {
     //this.MeetChanceStore.setFakePreys()
   }
 
-  componentDidMount() {
+  componentDidMount = async() => {
+    await this.sleep(260)
     this.MeetChanceStore.setRealPreys()
   }
 
