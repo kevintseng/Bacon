@@ -102,7 +102,7 @@ export default class MeetCuteStore {
   }
 
   @action setFirstPrey = async () => {
-    await this.sleep(300)
+    //await this.sleep(300)
     this.index = 0
     this.uid = this.preyList[this.index].uid
     await this.firebase.database().ref('users/' + this.uid).once('value', snap => {
@@ -155,7 +155,6 @@ export default class MeetCuteStore {
   @action fetchPrey = async () => {
     runInAction(() => {
       this.loading = true
-      //this.imageLoading = true
       this.imageLoadingCount = 0
     })
     await this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
@@ -185,17 +184,17 @@ export default class MeetCuteStore {
   @action setOnLoadEnd = () => {
     this.imageLoadingCount ++
     if (this.imageLoadingCount === this.albumToArray.length || this.albumToArray.length === 0) {
-      //this.showPrey()
+      this.showPrey()
       //console.log(this.albumToArray.length)
       //console.log(this.imageLoadingCount)
-      this.loading = false
+      //this.loading = false
     } else {
       //console.warn(this.imageLoadingCount)
     }
   }
 
   @action showPrey = async () => {
-    await this.sleep(300)
+    await this.sleep(100)
     runInAction(() => {
       this.loading = false
     })
@@ -209,10 +208,10 @@ export default class MeetCuteStore {
   @action cleanHistory = () => {
     localdb.getIdsForKey('preyListHistory').then(ids => {
     if (ids.length > 0) {
-          //this.preyListHistory = new Array
-          localdb.clearMapForKey('preyListHistory')
-          this.clean = true
-        }
+        //this.preyListHistory = new Array
+        localdb.clearMapForKey('preyListHistory')
+        this.clean = true
+      }
     })
   }
 

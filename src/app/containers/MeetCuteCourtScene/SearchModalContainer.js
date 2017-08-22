@@ -56,35 +56,30 @@ export default class SearchModalContainer extends Component {
 
   render() {
     return(
-            <View
-              //activeOpacity={1}
-              style={{
-                backgroundColor: 'rgba(52, 52, 52, 0.8)',
-                alignSelf: 'center',
+      <Modal animationType={"none"} transparent={true} visible={!this.MeetCuteStore.haveNewPreys || this.MeetCuteStore.loading} onRequestClose={()=>{}}>
+        <View
+          style={{
+            backgroundColor: 'rgba(52, 52, 52, 1.0)',
+            alignSelf: 'center',
                 alignItems: 'center',
-                //aspectRatio: 1.5,
-                //width,
-                //height: height*0.4,
-                //position: 'absolute',
-                //borderRadius: 15,
-                //height: height*0.4
                 flex: 1,
                 justifyContent: 'center'
               }}
             >
-              <LinearGradient colors={colors} style={{justifyContent: 'space-between',width, alignItems: 'center',height: height*0.4, paddingTop: 30, paddingBottom: 30}}>
-                <Image source={require('../../../images/ico_meet_likeeo_heart.png')}/>
-                <View style={{marginTop: 20}}>
-                    <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={styles.animation} >搜尋邂逅名單中</Animatable.Text>
-                    <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>❤️</Animatable.Text>
-                </View>
-                <TouchableOpacity onPress={ this.cleanHistory } >
-                  <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
-                    <Text style={ styles.text }>重新來場美麗的邂逅</Text>
-                  </View>
-                </TouchableOpacity> 
-              </LinearGradient>
+          <LinearGradient colors={colors} style={{justifyContent: 'space-between',width, alignItems: 'center',height: height*0.4, paddingTop: 30, paddingBottom: 30}}>
+            <Image source={require('../../../images/ico_meet_likeeo_heart.png')}/>
+            <View style={{marginTop: 20}}>
+              <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={styles.animation} >搜尋邂逅名單中</Animatable.Text>
+              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>❤️</Animatable.Text>
             </View>
+            <TouchableOpacity onPress={ this.cleanHistory } >
+              <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
+                <Text style={ styles.text }>重新來場美麗的邂逅</Text>
+              </View>
+            </TouchableOpacity> 
+          </LinearGradient>
+        </View>
+      </Modal>
     )
   }
 }

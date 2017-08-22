@@ -9,7 +9,7 @@ import Infos from './Infos/Infos'
 
 const { width, height } = Dimensions.get('window')
 
-const DEFAULT_IMAGE = require('../../images/ico_qy_head_preload.png')
+const DEFAULT_IMAGE = require('../../images/Loading_icon.gif')
 
 export default class Court extends Component {
 
@@ -48,7 +48,7 @@ export default class Court extends Component {
 
   renderAlbum = (album) => (
     album.map( photo => (
-      <MKPLoadImageView onLoadEnd={ this.props.onLoadEnd } key={photo} style={{height: width, width}}  source={{uri: photo}}  onPress={this.props.openAlbum}/>
+      <MKPLoadImageView onLoadEnd={ this.props.onLoadEnd } key={photo} style={{height: width, width}}  source={{uri: photo}}  onPress={this.props.openAlbum} />
     ))
   )
 
@@ -88,7 +88,7 @@ export default class Court extends Component {
         <Carousel
           swipe
           delay={0}
-          style={{backgroundColor: 'red',width, height: width}}
+          style={{backgroundColor: 'transparent',width, height: width}}
           bullets
           autoplay={false}
           pageInfoTextStyle={{color: 'red'}}
