@@ -201,14 +201,14 @@ export default class MeetCuteStore {
   }
 
   @action showPrey = async () => {
-    await this.sleep(100)
+    //await this.sleep(100)
     runInAction(() => {
       this.loading = false
     })
   }
 
   @action showFirstPrey = async () => {
-    await this.sleep(100)
+    //await this.sleep(100)
     runInAction(() => {
       this.firstLoading = false
     })
