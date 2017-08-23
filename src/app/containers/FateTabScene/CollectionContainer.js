@@ -44,14 +44,19 @@ export default class CollectionContainer extends Component {
     //this.FateStore.setCollectionFakePreys()
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
+    await this.sleep(260)
     this.FateStore.setCollectionRealPreys()
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   onPress = async uid => {
     await this.FateStore.setCourtInitialize(uid)
     //await this.sleep(200)
-    await localdb.getIdsForKey('collection').then(ids => {
+    await localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
       if (ids.includes(uid)) {
         Actions.LineCollect({ Store: this.FateStore, title: '緣分', collection: true })
       } else {

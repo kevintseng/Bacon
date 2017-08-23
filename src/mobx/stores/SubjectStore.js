@@ -64,7 +64,7 @@ export default class SubjectStore {
   // Object to Array FlatList
 
   @computed get albumToFlatList() {
-    return Object.keys(this.album).sort().map((key, index) => ({ key, uri: this.album[key] }))
+    return Object.keys(this.album).sort().map((key, index) => ({ key, uri: this.album[key], avatar: this.album[key] === this.avatar }))
     // { url: true } -> [{key: index, uri: url}]
   }
 

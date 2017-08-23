@@ -29,7 +29,7 @@ export default class CourtContainer extends Component {
     if (this.state.collection === true) {
       // 收集此人 加入local db
       localdb.save({
-        key: 'collection',
+        key: 'collection' + this.SubjectStore.uid,
         id: this.Store.uid,
         data: {
           time: Date.now()
@@ -39,7 +39,7 @@ export default class CourtContainer extends Component {
     } else {
       // 將此人移出local db
       localdb.remove({
-        key: 'collection',
+        key: 'collection' + this.SubjectStore.uid,
         id: this.Store.uid
       })
     }
@@ -58,7 +58,7 @@ export default class CourtContainer extends Component {
   }
 
   collection = () => {
-    localdb.getIdsForKey('collection').then(ids => {
+    localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
       if ((ids.length >= this.SubjectStore.maxCollect) && !ids.includes(this.Store.uid)) {
         this.ControlStore.setGetCollectionMax()
       } else {

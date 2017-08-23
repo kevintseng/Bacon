@@ -30,7 +30,8 @@ export default class GoodImpressionContainer extends Component {
     //this.FateStore.setGoodImpressionFakePreys()
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
+    await this.sleep(260)
     this.FateStore.setGoodImpressionRealPreys()
   }
 

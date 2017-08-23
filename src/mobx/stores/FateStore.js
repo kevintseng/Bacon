@@ -15,6 +15,7 @@ export default class FateStore {
   // court
   @observable loading
   // user data
+  //@observable selfUid
   @observable nickname
   @observable bio
   @observable birthday
@@ -27,6 +28,7 @@ export default class FateStore {
 
   constructor(firebase) {
     this.firebase = firebase
+    this.selfUid = null // 自己的uid
     this.initialize()
   }
 
@@ -183,22 +185,22 @@ export default class FateStore {
   }
 
   // collection
-
+/*
   @action setCollectionFakePreys = () => {
-    localdb.getIdsForKey('collection').then(collectionPreylist => {
+    localdb.getIdsForKey('collection' + this.selfUid).then(collectionPreylist => {
       runInAction(() => {
         this.collectionPreys = collectionPreylist.map((uid,index) => ({ key: uid, time: this.collectionPreylist[uid], nickname: null, avatar: null, birthday: null }))
       })
     }).catch(err => console.log(err))
   }
-
+*/
   @action setCollectionRealPreys = () => {
-    localdb.getIdsForKey('collection').then(collectionPreylist => {
+    localdb.getIdsForKey('collection' + this.selfUid).then(collectionPreylist => {
       const collectionPromises = collectionPreylist.map((uid,index) => (
         this.firebase.database().ref('users/' + uid).once('value').then( snap => (
           {
             key: uid,
-            //time: ret.time,
+            time: null,
             nickname: snap.val().nickname,
             avatar: snap.val().avatar,
             birthday: snap.val().birthday  
@@ -208,7 +210,7 @@ export default class FateStore {
       // 等待全部抓完
       Promise.all(collectionPromises)
       .then(collectionPreys => {
-        localdb.getAllDataForKey('collection').then(datas => {
+        localdb.getAllDataForKey('collection' + this.selfUid).then(datas => {
           datas.map((ele,index)=>{
             collectionPreys[index]['time'] = ele && ele.time
           })
@@ -315,6 +317,10 @@ export default class FateStore {
     this.loading = false
     this.fetchPreyQuery.off()
     this.fetchPreyQuery = null
+  }
+
+  @action setSelfUid = uid => {
+    this.selfUid = uid
   }
 
   sleep = ms => {
