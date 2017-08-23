@@ -516,21 +516,16 @@ export default class Chat extends Component {
           console.log("User tapped custom button: ", response.customButton)
         } else {
           this.setState({ action: "uploading" })
-          let meta
-          const filename = response.fileName
-          const imgType = filename.split('.').pop()
-          if (imgType == 'PNG' || imgType == 'png') {
-            meta = pngmetadata
-          }
-          if (imgType == 'JPG' || imgType == 'jpg' || imgType == 'jpeg' || imgType == 'JPEG') {
-            meta = jpgmetadata
-          }
+          console.log("camera response: ", response)
+          const _id = uuid.v4()
+          const filename = _id + ".jpg"
+          // const imgType = filename.split('.').pop()
 
           const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
-          this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, meta)
+          this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, jpgmetadata)
           .then(uploadedFile => {
             console.log("downloadUrl: ", uploadedFile.downloadUrl)
-            const _id = uuid.v4()
+            // const _id = uuid.v4()
             const msgObj = {
               _id,
               text: "",
