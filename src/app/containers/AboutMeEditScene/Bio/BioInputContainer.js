@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Keyboard, View, Button, TextInput, Dimensions, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import { Keyboard, Text, View, TextInput, Dimensions, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react'
 
@@ -12,6 +12,13 @@ const styles = {
     width: width - 60,
     alignItems: 'center',
     fontSize: 18
+  },
+  text: {
+    color: '#D63768',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans', 
+    fontSize: 15 ,
+    backgroundColor: 'transparent'  
   }
 }
 
@@ -38,6 +45,7 @@ export default class BioInputContainer extends Component {
             <TextInput
               ref={'bio'}
               style={styles.textInput}
+              underlineColorAndroid='transparent'
               textAlignVertical = 'top'
               placeholder = '請輸入自我介紹'
               multiline
@@ -48,9 +56,9 @@ export default class BioInputContainer extends Component {
               value = {this.SubjectEditStore.bio }
             />
           </View>
-          <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
-            <Button title='清除' onPress={this.clear}/>
-            <Button title='確認' onPress={this.ensure}/>
+          <View style={{marginTop: 5, flexDirection: 'row',justifyContent: 'space-between'}}>
+            <Text style={styles.text} onPress={this.clear}>清除</Text>
+            <Text style={styles.text} onPress={this.ensure}>確認</Text>
           </View>
       </View>
     )
