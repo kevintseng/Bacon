@@ -25,7 +25,9 @@ export default class DisplayNameAgeContainer extends Component {
     return(
       <View style={{flex: 1}}>
         <DisplayNameContainer/>
-        <BirthdayContainer/>
+        <View style={{marginTop: 20}}>
+          <BirthdayContainer/>
+        </View>
         <View style={{ position: 'absolute', bottom: 0}}>
           <BaconRoutesContainer/>
         </View>
