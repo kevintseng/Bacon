@@ -49,7 +49,7 @@ export default class MeetChanceWaterFallScene extends Component {
     this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
     await this.MeetChanceStore.setCourtInitialize(uid)
     //await this.sleep(200)
-    await localdb.getIdsForKey('collection').then(ids => {
+    await localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
       if (ids.includes(uid)) {
         Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇', collection: true})
       } else {

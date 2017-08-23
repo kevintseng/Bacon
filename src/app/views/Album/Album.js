@@ -50,11 +50,20 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, v
         removeClippedSubviews
         data={ photos } 
         numColumns={3}
-        renderItem={({item}) => (
-        <TouchableOpacity onPress={ () => { photoOnPress(item.key) } } onLongPress={ photoOnLongPress } >
-          <FastImage style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
-        </TouchableOpacity>
-        )} 
+        renderItem={({item}) => {
+          if (item.avatar) {
+            return(
+            <TouchableOpacity onPress={ () => { photoOnPress(item.key) } } onLongPress={ photoOnLongPress } >
+              <FastImage style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
+              <Image style={{position: 'absolute', left: 5, top: 5}} source={require('./img/ico_aboutme_profilepic.png')}/>
+            </TouchableOpacity>)
+          } else {
+            return(
+            <TouchableOpacity onPress={ () => { photoOnPress(item.key) } } onLongPress={ photoOnLongPress } >
+              <FastImage style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
+            </TouchableOpacity>)
+          }
+        }} 
       />
       <TouchableOpacity onPress={ footerOnPress } >
         <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>

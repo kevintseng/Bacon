@@ -10,6 +10,7 @@ import FastImage from 'react-native-fast-image'
 import { calculateAge } from '../../../app/Utils'
 import Loading from '../../views/Loading/Loading'
 import DefaultLanguages from '../../../configs/DefaultLanguages'
+//import localdb from '../../../configs/localdb'
 
 const metadata = {
   contentType: 'image/jpeg'
@@ -37,7 +38,7 @@ export default class SessionCheckScene extends Component {
     this.meetCuteQuery = null
     this.visitorsQuery = null
     this.goodImpressionQuery = null
-    this.collectionQuery = null
+    //this.collectionQuery = null
     this.matchQuery = null
   }
 
@@ -46,8 +47,10 @@ export default class SessionCheckScene extends Component {
       if (user) {
         // 入口點
         // 使用者登入 -> 只要登入成功一定有 uid email
+        //console.warn(user.uid)
         this.SubjectStore.setUid(user.uid) // 設置 uid
         this.SubjectStore.setEmail(user.email) // 設置 email
+        this.FateStore.setSelfUid(user.uid) // 設置 uid
         //////////////////////////////////////////////////////////
         if (this.ControlStore.authenticateIndicator == '註冊') {
           // 從註冊來的
@@ -73,6 +76,7 @@ export default class SessionCheckScene extends Component {
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
+          //this.collectionDB() // 從LocalDB抓配對資料
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           ///////// 同步 /////////

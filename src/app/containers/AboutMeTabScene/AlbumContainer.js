@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import ImagePicker from 'react-native-image-picker'
@@ -64,9 +65,16 @@ export default class AlbumContainer extends Component {
   }
 
   deletePhoto = () => {
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album').child(this.state.key).remove()
-    this.SubjectStore.deletePhoto(this.state.key)
-    this.setState({ visible: false })
+    if (this.SubjectStore.avatar === this.SubjectStore.album[this.state.key]) {
+      Alert.alert( 
+        '管理員提示', '大頭照無法刪除，請先設置其他大頭照', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
+    } else {
+      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album').child(this.state.key).remove()
+      this.SubjectStore.deletePhoto(this.state.key)
+      this.setState({ visible: false })
+    }
   }
 
   openPicChoose = () => {

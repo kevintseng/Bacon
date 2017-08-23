@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
@@ -49,7 +49,14 @@ export default class ProfileContainer extends Component {
   }
 
   goToMemberUpgrade = () => {
-    Actions.Upgrade()
+    if (this.SubjectStore.vip) {
+      Alert.alert( 
+        '管理員提示', '您已是高級會員', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
+    } else {
+      Actions.Upgrade()
+    }
   }
 
   goToQUpgrade = () => {

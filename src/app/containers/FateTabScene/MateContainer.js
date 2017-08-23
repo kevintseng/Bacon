@@ -27,13 +27,14 @@ const styles = {
   }
 }
 
-@inject('firebase','FateStore') @observer
+@inject('firebase','FateStore','SubjectStore') @observer
 export default class MateContainer extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.FateStore = this.props.FateStore
+    this.SubjectStore = this.props.SubjectStore
   }
 
   componentWillMount() {
@@ -41,15 +42,19 @@ export default class MateContainer extends Component {
     //this.FateStore.setMatchFakePreys()
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
+    await this.sleep(260)
     this.FateStore.setMatchRealPreys()
-    //console.log(this.FateStore.matchPreylist)
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   onPress = async uid => {
     await this.FateStore.setCourtInitialize(uid)
     //await this.sleep(200)
-    await localdb.getIdsForKey('collection').then(ids => {
+    await localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
       if (ids.includes(uid)) {
         Actions.LineCollect({ Store: this.FateStore, title: '緣分', collection: true })
       } else {
