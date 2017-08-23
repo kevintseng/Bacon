@@ -196,6 +196,7 @@ export default class FateStore {
 */
   @action setCollectionRealPreys = () => {
     localdb.getIdsForKey('collection' + this.selfUid).then(collectionPreylist => {
+      console.log(collectionPreylist)
       const collectionPromises = collectionPreylist.map((uid,index) => (
         this.firebase.database().ref('users/' + uid).once('value').then( snap => (
           {
@@ -210,6 +211,7 @@ export default class FateStore {
       // 等待全部抓完
       Promise.all(collectionPromises)
       .then(collectionPreys => {
+        console.log(collectionPreys)
         localdb.getAllDataForKey('collection' + this.selfUid).then(datas => {
           datas.map((ele,index)=>{
             collectionPreys[index]['time'] = ele && ele.time

@@ -18,7 +18,7 @@ const styles = {
   }
 }
 
-const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, settingOnPress }) => {
+const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, settingOnPress, articleOnPress }) => {
 
   return(
     <View style = { styles.scrollView } >
@@ -75,7 +75,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </View>
 
         <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_column.png')} listTitle='專欄'/>
+          <ListItem listPicSource={require('./img/ico_menu_column.png')} listTitle='專欄' showBadge={false} listOnPress={ articleOnPress }/>
         </View>
 
         <View style={{marginTop: 7}}>
