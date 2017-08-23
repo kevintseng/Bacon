@@ -45,7 +45,7 @@ const styles = {
 
 //const onPressButton = () => { console.warn("點擊頭像")}
 
-const CookieList = ({ name, ages, avatar, children, onPress }) => {
+const CookieList = ({ name, age, avatar, children, onPress }) => {
 
   return(
     <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', margin: 10}} activeOpacity={1} onPress={ onPress }>
@@ -55,7 +55,7 @@ const CookieList = ({ name, ages, avatar, children, onPress }) => {
       </View>
       <View style={{marginLeft:20}}>
         <View>
-          <Text style={{color: '#000000'}}>{ name }, { ages }</Text>
+          <Text style={{color: '#000000'}}>{ name }, { age }</Text>
         </View>
         <View>
           { children }

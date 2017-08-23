@@ -18,6 +18,7 @@ export default class CourtContainer extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.ControlStore = this.props.ControlStore
     this.FateStore = this.props.FateStore 
+    this.title = this.props.title
     this.state = {
       visible: false,
       match: false,
@@ -25,10 +26,10 @@ export default class CourtContainer extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = async () => {
     if (this.state.collection === true) {
       // 收集此人 加入local db
-      localdb.save({
+      await localdb.save({
         key: 'collection' + this.SubjectStore.uid,
         id: this.Store.uid,
         data: {
@@ -38,10 +39,18 @@ export default class CourtContainer extends Component {
       })
     } else {
       // 將此人移出local db
-      localdb.remove({
+      await localdb.remove({
         key: 'collection' + this.SubjectStore.uid,
         id: this.Store.uid
       })
+    }
+    this.Store.cleanFetch()
+    this.handleCollection()
+  }
+
+  handleCollection = () => {
+    if (this.title === '緣分') {
+      this.FateStore.setCollectionRealPreys() // 從緣分來的幫他重新整理
     }
   }
 

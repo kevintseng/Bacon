@@ -70,6 +70,10 @@ export default class DrawerScene extends Component {
     Actions.Fate({type: 'reset'})
   }
 
+  goToArticle = () => {
+    Actions.Article({type: 'reset'})
+  }
+
   goToSetting = () => {
     //this._drawer.close()
     Actions.Setting({type: 'reset'})
@@ -99,6 +103,7 @@ export default class DrawerScene extends Component {
             meetcueOnPress={ this.goToMeetCute }
             messageOnPress={ this.goToLine }
             fateOnPress={ this.goToFate }
+            articleOnPress={ this.goToArticle }
             settingOnPress={ this.goToSetting }
           />
         }

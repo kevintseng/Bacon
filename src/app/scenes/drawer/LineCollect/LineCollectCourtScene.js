@@ -34,8 +34,8 @@ export default class LineCollectCourtScene extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-    this.Store.cleanFetch()
-    this.handleCollection()
+    //this.Store.cleanFetch()
+    //this.handleCollection()
   }
 
   componentDidMount() {
@@ -78,7 +78,7 @@ export default class LineCollectCourtScene extends Component {
         { !this.Store.loading &&
           <View style={{flex: 1}}>
             <ScrollView style={{flex: 1}}>
-              <CourtContainer Store={this.Store} collection={this.collection}/>
+              <CourtContainer title={this.title} Store={this.Store} collection={this.collection}/>
               <View style={{alignSelf: 'center',paddingTop: 40}}>
                 <InfosContainer Store={this.Store}/>
               </View>
