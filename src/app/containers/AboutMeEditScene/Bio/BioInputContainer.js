@@ -11,7 +11,7 @@ const styles = {
   textInput: {
     width: width - 60,
     alignItems: 'center',
-    fontSize: 18
+    fontSize: 15
   },
   text: {
     color: '#D63768',
@@ -41,7 +41,7 @@ export default class BioInputContainer extends Component {
   render() {
     return(
       <View style={{alignSelf: 'center'}}>
-          <View style={{height: 300,borderColor: '#D63768',borderWidth: 1, borderRadius: 5}}>
+          <View style={{height: 250,borderColor: '#D63768',borderWidth: 1, borderRadius: 5}}>
             <TextInput
               ref={'bio'}
               style={styles.textInput}
