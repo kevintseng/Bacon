@@ -65,6 +65,7 @@ export default class MeetCuteCourtScene extends Component {
   render() {
     return(
         <View style={{flex: 1}}>
+          <MateModalContainer/>
           <ScrollView style={{flex: 1}}>
             <CourtContainer/>
             <View style={{alignSelf: 'center',paddingTop: 40}}>
@@ -88,7 +89,7 @@ export default class MeetCuteCourtScene extends Component {
 <SearchModalContainer/> 
            <SearchModalContainer/>   
             <LoadingModalContainer/>
-            <MateModalContainer/>
+            
 */
 
 /*

@@ -39,17 +39,17 @@ export default class CourtContainer extends Component {
     // 寄到別人好感
     await this.firebase.database().ref('goodImpression/' + this.SubjectStore.uid + this.MeetCuteStore.uid ).set({ wooer: this.SubjectStore.uid , prey: this.MeetCuteStore.uid, time: Date.now() })
     // 45天紀錄
-    if (true) {
+    if (this.checkMatch()) {
       this.ControlStore.setMateModal()
     } else {
-      this.goToNext() // his.checkMatch()
+      this.goToNext() // this.checkMatch()
     }
   }
 
 
   checkMatch = () => {
     const goodImpressList = this.FateStore.goodImpressionPool.map(ele => ele.uid)
-    if (goodImpressList.indexOf(this.SubjectStore.uid) > -1 ) {
+    if (goodImpressList.indexOf(this.MeetCuteStore.uid) > -1 ) {
       return true
     } else {
       return false
