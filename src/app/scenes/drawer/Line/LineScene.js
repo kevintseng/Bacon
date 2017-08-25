@@ -27,10 +27,19 @@ import Stickers from "./components/Stickers"
 
 const { width, height } = Dimensions.get("window") //eslint-disable-line
 const DEFAULT_VISITOR_MSG_LIMIT = 2
-const DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT = 44
-const DEFAULT_INPUT_OFFSET = 110
+const DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT = 55
+const DEFAULT_INPUT_OFFSET = 140
 const PLUS_TOOLBAR_HEIGHT = 160
-const STICKER_TOOLBAR_HEIGHT = 220
+const STICKER_TOOLBAR_HEIGHT = 240
+
+const LABEL_SEND = "送出"
+const LABEL_ALBUM = "相簿"
+const LABEL_CAMERA = "拍照"
+const LABEL_USE_BONUS = "使用Q點"
+const LABEL_CANCEL = "取消"
+const PLACEHOLDER = "請輸入..."
+const MSG_TOO_MANY_SENT = "超過訪客留言次數限制：請等待對方回覆或是使用Q點繼續留言"
+const MSG_PRIORITY = "訊息優先被看到：您可以使用Q點讓您的訊息優先顯示在對方的訊息中心！"
 
 const pngmetadata = {
   contentType: 'image/png',
@@ -142,7 +151,7 @@ export default class Chat extends Component {
       inputText: '',
       lines: 1,
       inputOffset: DEFAULT_INPUT_OFFSET,
-      inputHeight: 40,
+      inputHeight: 55,
       loadEarlier: false,
       isLoadingEarlier: false,
       action: false,
@@ -233,7 +242,7 @@ export default class Chat extends Component {
       .ref(`conversations/${convKey}/messages`)
       .orderByChild("_id")
       .startAt(startAt)
-      .limitToLast(10)
+      .limitToLast(25)
       .on("child_added", msgSnap => {
         // console.log(`child_added: ${msgSnap.key}`)
         this.setState(previousState => {
@@ -465,7 +474,7 @@ export default class Chat extends Component {
       return (
         <View
           style={{
-            width: 70,
+            width: 90,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
@@ -475,6 +484,7 @@ export default class Chat extends Component {
           }}
         >
           <Icon
+            size={30}
             name="add"
             onPress={() => {
               this.setState({
@@ -485,6 +495,7 @@ export default class Chat extends Component {
             }}
           />
           <Icon
+            size={30}
             name="mood"
             onPress={() => {
               this.setState({
@@ -642,9 +653,9 @@ export default class Chat extends Component {
       .ref(`conversations/${this.convKey}/messages/${msgObj._id}`).set(msgObj)
 
     this.setState({
+      inputText: '',
       minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
       action: false,
-      inputText: '',
     })
   }
 
@@ -703,12 +714,13 @@ export default class Chat extends Component {
           >
             <View
               style={{
-                width: 45,
+                width: 60,
                 marginVertical: 2,
               }}
             >
               <Icon
                 name="keyboard-hide"
+                size={30}
                 onPress={() => {
                   this.setState({
                     action: false,
@@ -766,6 +778,7 @@ export default class Chat extends Component {
             >
               <Icon
                 name="keyboard-hide"
+                size={30}
                 onPress={() => {
                   this.setState({
                     action: false,
@@ -790,7 +803,7 @@ export default class Chat extends Component {
                     style={{ width: 51, height: 39.5 }}
                     source={require('../../../../images/btn_chat_album.png')}
                   />
-                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>相簿</Text>
+                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>{LABEL_ALBUM}</Text>
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 1, backgroundColor: "#FDFDFD", alignItems: "center", paddingRight: 20 }}>
@@ -799,7 +812,7 @@ export default class Chat extends Component {
                     style={{ width: 51, height: 39.5}}
                     source={require('../../../../images/btn_chat_shot.png')}
                   />
-                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>拍照</Text>
+                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>{LABEL_CAMERA}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -812,12 +825,14 @@ export default class Chat extends Component {
             contentContainerStyle={{
               flexDirection: 'row',
               alignItems: 'center',
+              justifyContent: 'space-between',
               width: width - this.state.inputOffset }}
           >
             <TextInput
               placeholderTextColor="#E0E0E0"
-              placeholder="請輸入.."
+              placeholder={PLACEHOLDER}
               autoFocus
+              value={this.state.inputText.toString()}
               style={{
                 marginTop: 3,
                 maxHeight: 100,
@@ -843,14 +858,14 @@ export default class Chat extends Component {
     }
   }
 
-  callbackFunc = (boolean, usageCode) => {
-    console.log("callbackFunc called: ", boolean, " ", usageCode)
+  callbackFunc = (boolean, code) => {
+    console.log("callbackFunc called: ", boolean, " ", code)
     if (boolean) { // true表示已完成扣點
-      if (usageCode == 'visitorMsgLimit') {
+      if (code == 'visitorMsgLimit') {
         // console.log("Add visitor msg limit by 1")
         this.visitorMsgLimitAddOne(this.convKey, this.uid)
       }
-      if (usageCode == 'priority') {
+      if (code == 'priority') {
         // console.log("Make priority:")
         this.updatePriority(this.uid, this.otherUid, true)
         this.setState({dontAskPriorityAgain: true})
@@ -862,7 +877,7 @@ export default class Chat extends Component {
     Actions.UseBonus({
       nickname: this.other.nickname,
       avatarUrl: this.other.avatar,
-      usageCode: 'priority',
+      code: 'priority',
       callback: this.callbackFunc,
     })
   }
@@ -871,7 +886,7 @@ export default class Chat extends Component {
     Actions.UseBonus({
       nickname: this.other.nickname,
       avatarUrl: this.other.avatar,
-      usageCode: 'visitorMsgLimit',
+      code: 'visitorMsgLimit',
       callback: this.callbackFunc,
     })
   }
@@ -894,7 +909,7 @@ export default class Chat extends Component {
     this.setState({ showVisitorModal: false, visit: false })
     this.SubjectStore.deleteConv(this.otherUid)
     this.firebase.database().ref(`users/${this.uid}/conversations/${this.otherUid}`).remove()
-    Actions.LineList({type: "reset"})
+    Actions.LineList({t: "reset"})
   }
 
   startChatting = () => {
@@ -996,7 +1011,7 @@ export default class Chat extends Component {
           messages={this.state.messages}
           messageIdGenerator={() => uuid.v4()}
           onSend={this.onSend}
-          label="送出"
+          label={LABEL_SEND}
           onLoadEarlier={this.onLoadEarlier}
           isLoadingEarlier={this.state.isLoadingEarlier}
           user={{
@@ -1004,7 +1019,7 @@ export default class Chat extends Component {
           }}
           onInputTextChanged={() => this.meetMsgLimit()}
           minInputToolbarHeight={this.state.minToolBarHeight}
-          placeholder="輸入訊息..."
+          placeholder={PLACEHOLDER}
           renderComposer={this.renderComposer}
           renderActions={this.renderActions}
           renderFooter={this.renderFooter}
@@ -1050,15 +1065,15 @@ export default class Chat extends Component {
               borderRadius: 26,
             }}
           >
-            <Text style={{ margin: 10 }}>超過訪客留言次數限制：請等待對方回覆或是使用Q點繼續留言</Text>
+            <Text style={{ margin: 10 }}>{MSG_TOO_MANY_SENT}</Text>
             <Button
-              title="使用Q點"
+              title={LABEL_USE_BONUS}
               textStyle={styles.btnTextUseBonus}
               buttonStyle={styles.btnUseBonus}
               onPress={() => this.useBonus("visitorMsgLimit", 30)}
             />
             <Button
-              title="取消"
+              title={LABEL_CANCEL}
               textStyle={styles.btnTextCancel}
               buttonStyle={styles.btnCancel}
               onPress={this.cancelSend}
@@ -1074,16 +1089,16 @@ export default class Chat extends Component {
             style={styles.modalViewContainer}
           >
             <Text style={styles.modalText}>
-              訊息優先被看到：您可以使用Q點讓您的訊息優先顯示在對方的訊息中心！
+              {MSG_PRIORITY}
             </Text>
             <Button
-              title="使用Q點"
+              title="LABEL_USE_BONUS"
               textStyle={styles.btnTextUseBonus}
               buttonStyle={styles.btnUseBonus}
               onPress={() => this.useBonus("priority", 100)}
             />
             <Button
-              title="不用"
+              title="LABEL_CANCEL"
               textStyle={styles.btnTextCancel}
               buttonStyle={styles.btnCancel}
               onPress={this.cancelSend}

@@ -39,6 +39,7 @@ export default class SubjectStore {
   @observable conversations
   @observable chatStatus
   @observable visitConvSentToday
+  @observable unhandledPass
 
   constructor() {
     this.initialize()
@@ -93,8 +94,8 @@ export default class SubjectStore {
     this.birthday = null
     this.bio = null
     this.languages = DefaultLanguages
-    this.hobbies = new Object()
-    this.collect = new Object()
+    this.hobbies = new Object
+    this.collect = new Object
     this.album = new Object
     this.avatar = null
     this.vip = false
@@ -109,6 +110,7 @@ export default class SubjectStore {
     this.conversations = null
     this.chatStatus = null
     this.bonus = null
+    this.unhandledPass = new Object
   }
 
   @action setUid = uid => {
@@ -180,7 +182,7 @@ export default class SubjectStore {
       this.collect[key] = Date.now()
     }
     //this.collect[key] = !this.collect[key]
-    this.collect = Object.assign({},this.collect)
+    this.collect = Object.assign({}, this.collect)
   }
 
   @action filterCollect = () => {
@@ -217,6 +219,20 @@ export default class SubjectStore {
 
   @action setVisitConvSentToday = val => {
     this.visitConvSentToday = val
+  }
+
+  @action setUnhandledPass = object => {
+    this.unhandledPass = object
+  }
+
+  @action deleteUnhandledPass = key => {
+    delete this.unhandledPass[key]
+    this.unhandledPass = Object.assign({}, this.unhandledPass)
+  }
+
+  @action addUnhandledPass = (key) => {
+    this.unhandledPass[key] = true
+    this.unhandledPass = Object.assign({}, this.unhandledPass)
   }
 
   @action addOneToVisitConvSentToday = () => {

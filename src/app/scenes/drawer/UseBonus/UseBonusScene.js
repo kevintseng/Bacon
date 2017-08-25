@@ -28,7 +28,7 @@ const styles = {
   },
 }
 
-// UseBonusScene 吃的props: nickname, cost, avatarUrl, usageCode, callback
+// UseBonusScene 吃的props: nickname, cost, avatarUrl, code, callback
 
 @inject('firebase', 'SubjectStore')
 @observer
@@ -41,9 +41,9 @@ export default class UseBonusScene extends Component {
     this.balance = this.SubjectStore.bonus
     this.nickname = this.props.nickname
     this.avatarUrl = this.props.avatarUrl
-    this.usageCode = this.props.usageCode
+    this.code = this.props.code
     this.callback = this.props.callback
-    this.genText(this.usageCode)
+    this.genText(this.code)
   }
 
   componentWillMount() {
@@ -60,8 +60,8 @@ export default class UseBonusScene extends Component {
     return true
   }
 
-  genText = usageCode => {
-    switch (usageCode) {
+  genText = code => {
+    switch (code) {
       case 'priority':
         this.reasonStr = `讓 ${this.nickname} 最先看到你的來訪留言！`
         this.preStr = "需要"
@@ -74,17 +74,17 @@ export default class UseBonusScene extends Component {
         this.postStr = "Q點"
         this.cost = 30
         break;
-      case 'receivedTooManyVisitorMsg':
-        this.reasonStr = `把握現在，不想等待！現在就對 ${this.nickname} 送出留言`
-        this.preStr = "需要"
-        this.postStr = "Q點"
-        this.cost = 30
-        break;
       case 'sentTooManyVisitorMsg':
         this.reasonStr = `不想等明天現在就與 ${this.nickname} 以及其他9位會員送出留言`
         this.preStr = "需要"
         this.postStr = "Q點"
-        this.cost = 30
+        this.cost = 100
+        break
+      case 'tooManyUnhandled':
+        this.reasonStr = `把握現在，不想等待！現在就對 ${this.nickname} 送出留言`
+        this.preStr = "需要"
+        this.postStr = "Q點"
+        this.cost = 50
         break
       default:
     }
@@ -95,7 +95,7 @@ export default class UseBonusScene extends Component {
     const newBalance = this.SubjectStore.deductBonus(this.cost)
     // console.log("newBalance: ", newBalance)
     this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(newBalance)
-    this.callback(true, this.usageCode)
+    this.callback(true, this.code)
     Actions.pop()
     return true
   }
