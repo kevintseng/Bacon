@@ -126,6 +126,7 @@ export default class Chat extends Component {
     this.loadAfterMsgId = 0
     this.title = ""
     this.role = "wooer"
+    this.msgSent = 0
 
     if (this.convKey) {
       if (this.SubjectStore.conversations[this.props.uid].prey == this.uid) {
@@ -174,6 +175,9 @@ export default class Chat extends Component {
   }
 
   onSend = (messages = []) => {
+    if (this.state.inputText == "") {
+      return false
+    }
     if (!this.meetMsgLimit()) {
       const createdAt = Moment().format()
       const _id = uuid.v4()
@@ -188,7 +192,8 @@ export default class Chat extends Component {
         },
       }
       // console.log("msgObj: ", msgObj)
-      messages[0] = msgObj
+      // messages[0] = msgObj
+
       this.syncMsgToFirebase(msgObj)
 
       // 有發言回應後就取消 priority
@@ -200,7 +205,8 @@ export default class Chat extends Component {
         this.visitorMsgLimitDeductOne(this.convKey, this.uid)
       }
 
-      if (!this.state.dontAskPriorityAgain) {
+      if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
+        this.msgSent = this.msgSent + 1
         setTimeout(() => {
           this.setState({ showPriorityModal: true })
         }, 1000)
@@ -242,17 +248,20 @@ export default class Chat extends Component {
       .ref(`conversations/${convKey}/messages`)
       .orderByChild("_id")
       .startAt(startAt)
-      .limitToLast(25)
+      .limitToLast(50)
       .on("child_added", msgSnap => {
-        // console.log(`child_added: ${msgSnap.key}`)
-        this.setState(previousState => {
-          const msgId = msgSnap.val()._id
-          // Update lastRead
-          this.updateLastRead(convKey, msgId, uid)
-          this.clearUnread(convKey, uid)
-          return {
-            messages: GiftedChat.append(previousState.messages, msgSnap.val()),
-          }
+        // console.log(`child_added:`, msgSnap.val().user._id)
+        // 預防對方馬上回應來訪留言, 原邀請者還沒離開對話但已收到對方回應就不再檢查來訪留言限制
+        if (this.uid != msgSnap.val().user._id && this.role == "wooer" && this.state.visit) {
+          this.setState({ visit: false })
+          this.visit = false
+        }
+        const msgId = msgSnap.val()._id
+        // Update lastRead
+        this.updateLastRead(convKey, msgId, uid)
+        this.clearUnread(convKey, uid)
+        this.setState({
+          messages: GiftedChat.append(this.state.messages, msgSnap.val()),
         })
       })
   }
@@ -515,9 +524,9 @@ export default class Chat extends Component {
       const msgRef = this.firebase
         .database()
         .ref(`conversations/${this.convKey}/messages`)
-      console.log("handleCameraPicker called")
+      // console.log("handleCameraPicker called")
       ImagePicker.launchCamera(ImagePickerOptions, response => {
-        console.log("Response = ", response)
+        // console.log("Response = ", response)
 
         if (response.didCancel) {
           console.log("User cancelled image picker")
@@ -527,7 +536,7 @@ export default class Chat extends Component {
           console.log("User tapped custom button: ", response.customButton)
         } else {
           this.setState({ action: "uploading" })
-          console.log("camera response: ", response)
+          // console.log("camera response: ", response)
           const _id = uuid.v4()
           const filename = _id + ".jpg"
           // const imgType = filename.split('.').pop()
@@ -535,7 +544,7 @@ export default class Chat extends Component {
           const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
           this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, jpgmetadata)
           .then(uploadedFile => {
-            console.log("downloadUrl: ", uploadedFile.downloadUrl)
+            // console.log("downloadUrl: ", uploadedFile.downloadUrl)
             // const _id = uuid.v4()
             const msgObj = {
               _id,
@@ -562,7 +571,8 @@ export default class Chat extends Component {
             console.error('上傳失敗')
           })
           .then(() => {
-            if (!this.state.dontAskPriorityAgain) {
+            if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
+              this.msgSent = this.msgSent + 1
               setTimeout(() => {
                 this.setState({ showPriorityModal: true })
               }, 1000)
@@ -580,9 +590,9 @@ export default class Chat extends Component {
       const msgRef = this.firebase
         .database()
         .ref(`conversations/${this.convKey}/messages`)
-      console.log("handlePhotoPicker called")
+      // console.log("handlePhotoPicker called")
       ImagePicker.launchImageLibrary(ImagePickerOptions, response => {
-        console.log("Response = ", response)
+        // console.log("Response = ", response)
 
         if (response.didCancel) {
           console.log("User cancelled image picker")
@@ -601,8 +611,8 @@ export default class Chat extends Component {
           if (imgType == 'JPG' || imgType == 'jpg' || imgType == 'jpeg' || imgType == 'JPEG') {
             meta = jpgmetadata
           }
-          console.log("response: ", response)
-          console.log("meta: ", meta)
+          // console.log("response: ", response)
+          // console.log("meta: ", meta)
 
           const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
 
@@ -621,6 +631,7 @@ export default class Chat extends Component {
               },
               image: uploadedFile.downloadUrl,
             }
+
             this.syncMsgToFirebase(msgObj)
             // adds 1 to conversation
             this.unreadAddOne(this.convKey, this.otherUid)
@@ -634,7 +645,8 @@ export default class Chat extends Component {
             this.setState({ action: false })
           })
           .then(() => {
-            if (!this.state.dontAskPriorityAgain) {
+            if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
+              this.msgSent = this.msgSent + 1
               setTimeout(() => {
                 this.setState({ showPriorityModal: true })
               }, 1000)
@@ -679,7 +691,7 @@ export default class Chat extends Component {
         },
         sticker: uri,
       }
-      console.log("uri: ", uri)
+      // console.log("uri: ", uri)
       this.syncMsgToFirebase(msgObj)
       // adds 1 to conversation
       this.unreadAddOne(this.convKey, this.otherUid)
@@ -690,7 +702,8 @@ export default class Chat extends Component {
       this.updatePriority(this.uid, this.otherUid, false)
     } else {
       this.setState({ showMsgLimitModal: true })
-      if (!this.state.dontAskPriorityAgain) {
+      if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
+        this.msgSent = this.msgSent + 1
         setTimeout(() => {
           this.setState({ showPriorityModal: true })
         }, 1000)
@@ -859,7 +872,7 @@ export default class Chat extends Component {
   }
 
   callbackFunc = (boolean, code) => {
-    console.log("callbackFunc called: ", boolean, " ", code)
+    // console.log("callbackFunc called: ", boolean, " ", code)
     if (boolean) { // true表示已完成扣點
       if (code == 'visitorMsgLimit') {
         // console.log("Add visitor msg limit by 1")
@@ -964,6 +977,8 @@ export default class Chat extends Component {
   }
 
   meetMsgLimit = () => {
+    // console.log("this.state.messages: ", this.state.messages)
+    // console.log("this.state.visit: ", this.state.visit, " this.role: ", this.role, " this.state.visitorMsgLimit: ", this.state.visitorMsgLimit)
     if (this.state.visit && this.role == "wooer" && this.state.visitorMsgLimit <= 0) {
       return true
     }
@@ -1012,6 +1027,7 @@ export default class Chat extends Component {
           messageIdGenerator={() => uuid.v4()}
           onSend={this.onSend}
           label={LABEL_SEND}
+          LoadEarlier={true}
           onLoadEarlier={this.onLoadEarlier}
           isLoadingEarlier={this.state.isLoadingEarlier}
           user={{

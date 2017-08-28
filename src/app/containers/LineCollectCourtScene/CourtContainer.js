@@ -115,8 +115,8 @@ export default class CourtContainer extends Component {
             let maxUnhandled = 1
             if (this.Store.vip) {
               // maxUnhandled = 50
-              // DEBUG: 測試期間先設為3
-              maxUnhandled = 3
+              // DEBUG: 測試期間先設為2
+              maxUnhandled = 2
             }
 
             if (maxUnhandled > unhandledCount) {
