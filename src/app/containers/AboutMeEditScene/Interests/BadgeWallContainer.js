@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { FlatList, View, Text } from 'react-native'
+import { FlatList, View, Text, Dimensions, ScrollView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react'
 
 import { BaconBadgeYes, BaconBadgeNo } from '../../../views/BaconBadge/BaconBadge'
+
+const { width } = Dimensions.get('window')
 
 @inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class BadgeWallContainer extends Component {
@@ -17,20 +19,52 @@ export default class BadgeWallContainer extends Component {
 
   render() {
     return(
-      <View style={{flex: 1,alignItems: 'center',height: 140}}>
+          <View style={{height: 140, width: width, marginLeft: 8}}>
+            <ScrollView>
+              <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                {
+                  this.SubjectEditStore.hobbiesToFlatList.map(item => {
+                    if(item.check) {
+                      return (
+                        <View key={item.key} style={{minWidth: width/4}}>
+                          <BaconBadgeYes text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
+                        </View>
+                      )
+                    } else {
+                      return (
+                        <View key={item.key} style={{minWidth: width/4}}>
+                          <BaconBadgeNo text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
+                        </View>
+                      )
+                    }
+                  })
+                }
+              </View>
+            </ScrollView>
+          </View>
+    )
+  }
+}
+
+/*
         <FlatList
           removeClippedSubviews
           data={ this.SubjectEditStore.hobbiesToFlatList }
           numColumns={4}
           renderItem={({item}) => {
             if(item.check) {
-              return <BaconBadgeYes text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
+              return (
+                <View style={{minWidth: width/4}}>
+                  <BaconBadgeYes text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
+                </View>
+              )
             } else {
-              return <BaconBadgeNo text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
+              return (
+                <View style={{minWidth: width/4}}>
+                  <BaconBadgeNo text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
+                </View>
+              )
             }
           }} 
         />
-      </View>
-    )
-  }
-}
+*/

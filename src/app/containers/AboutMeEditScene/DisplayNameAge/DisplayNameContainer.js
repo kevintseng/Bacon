@@ -4,12 +4,17 @@ import { inject, observer } from "mobx-react"
 
 import BaconForm from '../../../views/BaconForm'
 
-@inject('SubjectEditStore') @observer
+@inject('SubjectEditStore','SubjectStore') @observer
 export default class DisplayNameContainer extends Component {
 
   constructor(props) {
     super(props)
     this.SubjectEditStore = this.props.SubjectEditStore
+    this.SubjectStore = this.props.SubjectStore  
+  }
+
+  componentWillMount() {
+    this.SubjectEditStore.setNickname(this.SubjectStore.nickname)      
   }
 
   render() {

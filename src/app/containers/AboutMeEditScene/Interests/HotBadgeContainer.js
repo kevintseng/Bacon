@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { FlatList, View, Text } from 'react-native'
+import { FlatList, View, Text, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react'
 
 import { BaconBadgeYes } from '../../../views/BaconBadge/BaconBadge'
 import DefaultInterests from '../../../../configs/DefaultInterests'
+
+const { width } = Dimensions.get('window')
 
 @inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class HotBadgeContainer extends Component {
@@ -20,15 +22,26 @@ export default class HotBadgeContainer extends Component {
     return(
       <View style={{flex: 1}}>
         <View style={{alignItems: 'center'}}><Text style={{color: '#d63768'}}>熱門興趣提示</Text></View>
-        <View style={{flex: 1, borderColor: '#d63768',margin: 10, alignItems: 'center',height: 140}}>
+          <View style={{borderColor: '#d63768',marginTop: 10, marginLeft: 8, height: 140, width, flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start'}}>
+            {
+              DefaultInterests.map(item => (
+                                        <View key={item.key} style={{minWidth: width/4}}>
+
+                  <BaconBadgeYes key={item.key} text={item.key} onPress={ () => { this.SubjectEditStore.addHobby(item.key) }}/>
+                  </View>
+                ))
+              }
+          </View>
+      </View>
+    )
+  }
+}
+
+/*
           <FlatList
             removeClippedSubviews
             data={ DefaultInterests }
             numColumns={4}
             renderItem={({item}) => (<BaconBadgeYes text={item.key} onPress={ () => { this.SubjectEditStore.addHobby(item.key) }}/>)} 
           />
-        </View>
-      </View>
-    )
-  }
-}
+*/
