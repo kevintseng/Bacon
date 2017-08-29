@@ -13,7 +13,7 @@ const styles = {
     fontSize: 15,
     //fontWeight: '500',
     color: '#606060',
-    textAlign: 'center',    
+    textAlign: 'center',
   },
   image: {
     marginRight: 20,
@@ -32,19 +32,19 @@ const Bonus = ({topCheck, middleCheck, upperCheck, topCheckOnPress, middleCheckO
           <Text style={styles.text}>Q點 200點</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}>NT$ 99</Text>
+          <Text style={styles.text}>$120</Text>
         </View>
       </View>
 
-      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 15, marginRight: 40,marginTop: 20}}>
+      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 15, marginRight: 40, marginTop: 20}}>
         <View style={{flexDirection: 'row', alignItems: 'center',justifyContent: 'center'}}>
         <TouchableOpacity onPress={ middleCheckOnPress }>
           <Image style={styles.image} source={middleCheck ? require('./img/btn_radio_1.png') : require('./img/btn_radio_0.png')} />
         </TouchableOpacity>
-          <Text style={styles.text}>Q點 500點</Text>
+          <Text style={styles.text}>Q點 600點</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}>NT$ 289</Text>
+          <Text style={styles.text}>$330</Text>
         </View>
       </View>
 
@@ -53,10 +53,10 @@ const Bonus = ({topCheck, middleCheck, upperCheck, topCheckOnPress, middleCheckO
         <TouchableOpacity onPress={ upperCheckOnPress }>
           <Image style={styles.image} source={upperCheck ? require('./img/btn_radio_1.png') : require('./img/btn_radio_0.png')} />
         </TouchableOpacity>
-          <Text style={styles.text}>Q點 1000點</Text>
+          <Text style={styles.text}>Q點 1200點</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}>NT$ 549</Text>
+          <Text style={styles.text}>$630</Text>
         </View>
       </View>
     </View>

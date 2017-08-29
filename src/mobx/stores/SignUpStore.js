@@ -117,7 +117,7 @@ export default class SignUpStore {
 
   @action setPasswordDetector = boolean => {
     this.passwordDetector = boolean
-  } 
+  }
 
   @action setPasswordIndicator = str => {
     this.passwordIndicator = str
@@ -125,7 +125,7 @@ export default class SignUpStore {
 
   @action setNicknameDetector = boolean => {
     this.nicknameDetector = boolean
-  } 
+  }
 
   @action setNicknameIndicator = str => {
     this.nicknameIndicator = str
@@ -155,7 +155,7 @@ export default class SignUpStore {
     } else {
       this.setEmailDetector(false)
       this.setEmailIndicator('帳號格式錯誤')
-      return false 
+      return false
     }
   }
 
@@ -166,21 +166,21 @@ export default class SignUpStore {
     } else {
       this.setPasswordDetector(false)
       this.setPasswordIndicator('請輸入數字或英文字母組合的6~12字密碼')
-      return false    
+      return false
     }
     return true
   }
 
   @action checkNickname = () => {
-    if (/^[^null]{2,6}$/.test(this.nickname)) {
+    if (/^[^null]{2,20}$/.test(this.nickname)) {
       this.setNicknameDetector(true)
       this.setNicknameIndicator('此暱稱可以使用')
     } else {
       this.setNicknameDetector(false)
-      this.setNicknameIndicator('請輸入2~6字的暱稱')
-      return false     
+      this.setNicknameIndicator('請輸入2~20字的暱稱')
+      return false
     }
-    return true    
+    return true
   }
 
   checkEmailFormat(email) {
