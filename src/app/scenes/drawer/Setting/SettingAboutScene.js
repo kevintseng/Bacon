@@ -11,7 +11,7 @@ const styles = {
     backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',  
-    textAlign: 'center', 
+    textAlign: 'left', 
     //fontWeight: '500',
     color: '#606060',
     fontSize: 15
@@ -44,8 +44,13 @@ export default class SettingAboutScene extends Component {
   render() {
     return(
       <View style={{flex: 1, alignItems: 'center'}}>
-        <View style={{flex: 1,paddingTop: 10, paddingRight: 40, paddingLeft: 40}}>
-          <Text style={styles.text}>陸軍馬祖防衛指揮部黃姓女下士腳傷，轉支援醫療連，連長命她操課時間讀軍事準則，她卻廿五度摸魚，還投訴媒體遭霸凌、性騷擾。檢察官將她依陸海空軍刑法抗命罪起訴，她還向法官埋怨「連上沒幫我做過生日」。連江地院認為服從為軍人天職，判她六月徒刑，得易科罰金、緩刑兩年。</Text>
+        <View style={{flex: 1,paddingTop: 20, paddingLeft: 40, paddingRight: 30}}>
+            <Text style={styles.text}>
+              我相信網路是讓我擴大交友圈最好的方式我很重視隱私，我不要交友軟體跟FB或手機通訊錄有任何關聯我對於要付錢才能打個招呼或是付錢才能看對方資料非常反感我討厭主動跟我打招呼或示好的是假賬號或是機器人賬號如果你跟我們一樣，歡迎加入BACON！
+            </Text>
+            <Text style={{textAlign: 'right',paddingTop: 20, paddingRight: 7}}>
+              BACON團隊
+            </Text>
         </View>
         <View style={{flex: 1, justifyContent: 'space-around', marginBottom: 100}}>
           <BlankButton 
