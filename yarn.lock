@@ -4000,9 +4000,9 @@ react-native-drawer@^2.3.0:
     prop-types "^15.5.8"
     tween-functions "^1.0.1"
 
-"react-native-dropdown-menu@git+https://github.com/kaymingmobile/react-native-dropdown-menu.git":
+react-native-dropdown-menu@kaymingmobile/react-native-dropdown-menu#bacon:
   version "1.1.0"
-  resolved "git+https://github.com/kaymingmobile/react-native-dropdown-menu.git#de483cf950a41374a1d89dc62fb0cfa128d1dfa4"
+  resolved "https://codeload.github.com/kaymingmobile/react-native-dropdown-menu/tar.gz/1ca18d2f9469ef40b899c72724c8efd2ce35c160"
 
 react-native-elements@^0.15.0:
   version "0.15.0"

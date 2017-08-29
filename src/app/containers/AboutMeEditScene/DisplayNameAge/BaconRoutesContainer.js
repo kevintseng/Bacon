@@ -24,21 +24,21 @@ export default class BaconRoutesContainer extends Component {
         this.SubjectStore.setBirthday(this.SubjectEditStore.birthday)
         Actions.AboutMeTab({type: 'reset'})
       } else {
-        Alert.alert( 
-          '輸入錯誤', '請輸入您的生日', [ 
-          {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+        Alert.alert(
+          '輸入錯誤', '請輸入您的生日', [
+          {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false }
         )
       }
     } else {
-      Alert.alert( 
-        '輸入錯誤', '請輸入2~6字的暱稱', [ 
-        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      Alert.alert(
+        '輸入錯誤', '請輸入2~20字的暱稱', [
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false }
       )
     }
   }
 
   nicknameChecker = () => {
-    if (/^[^null]{2,6}$/.test(this.SubjectEditStore.nickname)) {
+    if (/^[^null]{2,20}$/.test(this.SubjectEditStore.nickname)) {
       return true
     }
     return false
@@ -46,7 +46,7 @@ export default class BaconRoutesContainer extends Component {
 
   birthdayChecker = () => {
     if (this.SubjectEditStore.birthday) {
-      return true 
+      return true
     }
     return false
   }
@@ -55,7 +55,7 @@ export default class BaconRoutesContainer extends Component {
     return(
       <BaconRoutes
         routesText='完成'
-        routesOnPress={ this._buttonOnPress } 
+        routesOnPress={ this._buttonOnPress }
       />
     )
   }
