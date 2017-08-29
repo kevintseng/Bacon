@@ -9,7 +9,7 @@ const { width, height } = Dimensions.get('window')
 
 const styles = {
   textInput: {
-    width: width - 60
+    width: width - 17
   }
 }
 
@@ -39,10 +39,10 @@ export default class InputBadgeContainer extends Component {
       <ScrollView scrollEnabled={false}>
         <TextInput
           underlineColorAndroid="#d63768"
-          maxLength = { 5 }
+          maxLength = { 8 }
           numberOfLines = { 1 }
           style={styles.textInput}
-          placeholder = '請輸入自訂興趣'
+          placeholder = '請輸入1~8個字的自訂興趣'
           onSubmitEditing = { this.addHobby }
           onChangeText = { this.onChangeText }
           value = { this.state.badge }

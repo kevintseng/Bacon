@@ -10,12 +10,7 @@ const DefaultInterests = [
   { key: "夜店" },
   { key: "聊天" },
   { key: "爬山" },
-  { key: "潛水" },
-  { key: "踏青" },
-  { key: "看書" },
-  { key: "睡覺" },
-  { key: "交友" },
-  { key: "義工" }
+  { key: "潛水" }
 ]
 
 export default DefaultInterests

@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native'
 import { inject, observer } from 'mobx-react'
 
 import { BaconBadgeYes, BaconBadgeNo } from '../../views/BaconBadge/BaconBadge'
+
+const { width } = Dimensions.get('window')
 
 const styles = {
   titleStyle: {
@@ -51,13 +53,18 @@ export default class ProfileBadgeWallContainer extends Component {
           <View>
             <Text style={ styles.titleStyle }>興趣愛好</Text>
           </View>
-          <View style={{alignItems: 'center',height: 140}}>
-            <FlatList
-              removeClippedSubviews
-              data={ this.SubjectStore.hobbiesToFlatList }
-              numColumns={4}
-              renderItem={({item}) => (<BaconBadgeYes text={item.key} onPress={ this.props.onPressInterests }/>)} 
-            />
+          <View style={{height: 140, width, marginLeft: 5}}>
+            <ScrollView>
+              <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                {
+                  this.SubjectStore.hobbiesToFlatList.map(item => (
+                    <View  key={item.key} style={{minWidth: width/4}}>
+                      <BaconBadgeYes text={item.key} onPress={ this.props.onPressInterests }/>
+                    </View>
+                  ))
+                }
+              </View>
+            </ScrollView>
           </View>
         </View>
       )
@@ -70,3 +77,18 @@ export default class ProfileBadgeWallContainer extends Component {
     )
   }
 }
+
+/*
+
+            <FlatList
+              removeClippedSubviews
+              data={ this.SubjectStore.hobbiesToFlatList }
+              numColumns={4}
+              renderItem={({item}) => (
+                <View style={{minWidth: width/4}}>
+                  <BaconBadgeYes text={item.key} onPress={ this.props.onPressInterests }/>
+                </View>
+              )} 
+            />
+
+          */
