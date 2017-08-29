@@ -48,6 +48,7 @@
 		415C98ACE196122AAE099D2B /* libPods-Bacon-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0DE4F47B40E995678246D2F /* libPods-Bacon-tvOSTests.a */; };
 		459C11C81F558597001A66BF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB61A68108700A75B9A /* Info.plist */; };
 		459C11C91F558598001A66BF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB61A68108700A75B9A /* Info.plist */; };
+		459C11CD1F558F34001A66BF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 459C11CC1F558F34001A66BF /* StoreKit.framework */; };
 		47B935412EB84C40919D0839 /* libInAppUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5818299020DF408DB9C68A3D /* libInAppUtils.a */; };
 		4D398B3B15294019A39CC1CB /* NotoSansUI-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D47F9EEA9D8B4F5DA6AB1383 /* NotoSansUI-BoldItalic.ttf */; };
 		506AC5ADD6C3452599C67CF9 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0A02AFDFFBA4D8BAE118667 /* Octicons.ttf */; };
@@ -428,6 +429,8 @@
 		31EBB4CBA7A94BCEB6F964C8 /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 		346BF99E1F27ACB400C7E22D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Bacon/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3FA69EF6C1B24EE3BC5707E4 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+		459C11CC1F558F34001A66BF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		459C11CE1F558F3B001A66BF /* Bacon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Bacon.entitlements; path = Bacon/Bacon.entitlements; sourceTree = "<group>"; };
 		482D8E96FC0F4EA8913398BD /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		534A64EED61E4B5FBAF1F68E /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		5818299020DF408DB9C68A3D /* libInAppUtils.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libInAppUtils.a; sourceTree = "<group>"; };
@@ -485,6 +488,7 @@
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
+				459C11CD1F558F34001A66BF /* StoreKit.framework in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
@@ -614,6 +618,7 @@
 		13B07FAE1A68108700A75B9A /* Bacon */ = {
 			isa = PBXGroup;
 			children = (
+				459C11CE1F558F3B001A66BF /* Bacon.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -833,6 +838,7 @@
 		C419994BFCB1504C39F1B073 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				459C11CC1F558F34001A66BF /* StoreKit.framework */,
 				1E225C3E4FADB607CC574D6D /* libPods-Bacon.a */,
 				B0DE4F47B40E995678246D2F /* libPods-Bacon-tvOSTests.a */,
 				1B6F1491A26BD79421AC1CB5 /* libPods-BaconTests.a */,
@@ -965,6 +971,26 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = MJ662F5CV9;
+						SystemCapabilities = {
+							com.apple.ApplePay = {
+								enabled = 1;
+							};
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1758,6 +1784,7 @@
 			baseConfigurationReference = 7AB7D4B3B9AA94C2E110BE7C /* Pods-Bacon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Bacon/Bacon.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = MJ662F5CV9;
@@ -1791,6 +1818,7 @@
 			baseConfigurationReference = A01B7ACA4B5C9C7F2F8DF6EA /* Pods-Bacon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Bacon/Bacon.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MJ662F5CV9;
 				HEADER_SEARCH_PATHS = (
