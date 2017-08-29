@@ -15,7 +15,7 @@ const styles = {
     marginBottom: 120,
   },
   routesImage: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   routesText: {
     backgroundColor: 'transparent',
@@ -24,10 +24,10 @@ const styles = {
     textAlign: 'center',
     fontWeight: '500',
     color: 'white',
-    fontSize: 20
+    fontSize: 20,
   },
   warningView: {
-    marginTop: 5
+    marginTop: 5,
   },
   warningText: {
     backgroundColor: 'transparent',
@@ -36,16 +36,16 @@ const styles = {
     textAlign: 'center',
     fontWeight: '500',
     color: '#606060',
-    fontSize: 10
+    fontSize: 10,
   },
   wave: {
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 }
 
 const BaconRoutesNoWave = ({ routesText, routesOnPress, warningText, warningOnPress }) => {
-  return(
-    <View style={ styles.view }>
+  return (
+    <View style={styles.view}>
 
       <View>
         <BaconRedButton
@@ -53,7 +53,7 @@ const BaconRoutesNoWave = ({ routesText, routesOnPress, warningText, warningOnPr
           routesOnPress={routesOnPress}
           warningText={warningText}
           warningOnPress={warningOnPress}
-          />
+        />
       </View>
 
     </View>

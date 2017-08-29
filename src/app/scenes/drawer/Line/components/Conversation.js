@@ -17,9 +17,8 @@ const getAvatarStyle = (onlineStatus, chatStatus) => {
       height: 60,
       width: 60,
       borderRadius: 30,
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: "#06E300",
-      marginTop: 5,
     }
   } else if (!onlineStatus && chatStatus) {
     return {
@@ -32,7 +31,7 @@ const getAvatarStyle = (onlineStatus, chatStatus) => {
       height: 60,
       width: 60,
       borderRadius: 30,
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: "#06E300",
     }
   }

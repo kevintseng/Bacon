@@ -24,6 +24,7 @@ const styles = {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     color: '#606060',
+    flexWrap: 'wrap',
   },
 }
 @inject('firebase', 'ControlStore', 'SubjectStore') @observer
@@ -34,30 +35,44 @@ export default class LineModalContainer extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.ControlStore = this.props.ControlStore
+    this.uid = this.props.uid
     this.nickname = this.props.nickname
     this.avatarUrl = this.props.avatar
     this.callback = this.props.callback
+    this.useBtnLabel = '使用Q點'
+    this.cancelBtnLabel = '取消'
+    console.log("LineModal code: ", this.props.code)
+    this.dispMsg = '您今天的來訪留言次數已經用完或是使用Q點來增加留言次數'
+    if (this.props.code == 'tooManyUnhandled') {
+      this.dispMsg = '抱歉，對方的未讀留言過多，請稍後再試試或是使用Q點特權留言'
+    }
+    console.log("LineModal dispMsg: ", this.dispMsg)
   }
 
   goToBonusFilter = async () => {
     await this.ControlStore.setLineModal()
-    // UseBonusScene 吃的props: nickname, avatarUrl, usageCode, callback
+    // UseBonusScene 吃的props: nickname, avatarUrl, code, callback
     Actions.UseBonus({
       nickname: this.nickname,
       avatarUrl: this.avatar,
-      usageCode: 'sentTooManyVisitorMsg',
+      code: this.props.code,
       callback: this.callbackFunc,
     })
   }
 
-  callbackFunc = (boolean, usageCode) => {
-    console.log("callbackFunc1 called: ", boolean, " ", usageCode)
+  callbackFunc = (boolean, code) => {
+    console.log("callbackFunc1 called: ", boolean, " ", code)
     if (boolean) { // true表示已完成扣點
-      if (usageCode == 'sentTooManyVisitorMsg') {
+      if (code == 'sentTooManyVisitorMsg') {
         this.SubjectStore.setVisitConvSentToday(0)
         this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday`).set(0)
       }
+      if (code == 'tooManyUnhandled') {
+        this.SubjectStore.addUnhandledPass(this.uid)
+        this.firebase.database().ref(`users/${this.SubjectStore.uid}/unhandledPass/${this.uid}`).set(true)
+      }
     }
+    this.ControlStore.setLineModal()
   }
 
   render() {
@@ -88,13 +103,13 @@ export default class LineModalContainer extends Component {
           >
             <View style={{justifyContent: 'space-between'}}>
               <View>
-                <Text style={styles.text}>您今天的來訪留言次數已經用完或是使用Q點來增加留言次數</Text>
+                <Text style={styles.text}>{this.dispMsg}</Text>
               </View>
               <View>
-                <Text style={styles.title} onPress={this.goToBonusFilter}>使用Q點</Text>
+                <Text style={styles.title} onPress={this.goToBonusFilter}>{this.useBtnLabel}</Text>
               </View>
               <View>
-                <Text style={styles.title} onPress={this.ControlStore.setLineModal}>取消</Text>
+                <Text style={styles.title} onPress={this.ControlStore.setLineModal}>{this.cancelBtnLabel}</Text>
               </View>
             </View>
           </TouchableOpacity>

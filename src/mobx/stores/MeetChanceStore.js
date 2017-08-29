@@ -113,7 +113,7 @@ export default class MeetChanceStore {
   @action setFakePreys = () => {
     this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
   }
-  
+
   @action setRealPreys = () => {
     const preysPromises = this.preyList.map((ele,index) => (
       this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
