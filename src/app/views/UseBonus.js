@@ -59,7 +59,7 @@ const UseBonus = ({balance, cost, avatarUrl, reasonStr, preStr, postStr}) => {
 
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20}}>
         <Text style={styles.text}>{preStr} </Text>
-        <Text style={[styles.colorTextLarge, {paddingBottom: 10}]}>{cost || "$cost_prop"}</Text>
+        <Text style={[styles.colorTextLarge, {paddingBottom: 10}]}>{cost}</Text>
         <Text style={styles.text}> {postStr}</Text>
       </View>
 
