@@ -2,6 +2,7 @@ import React from "react"
 import {
   View,
   Text,
+  Platform
 } from "react-native"
 import { Actions } from "react-native-router-flux"
 // import { observer } from "mobx-react/native"
@@ -17,9 +18,8 @@ const getAvatarStyle = (onlineStatus, chatStatus) => {
       height: 60,
       width: 60,
       borderRadius: 30,
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: "#06E300",
-      marginTop: 5,
     }
   } else if (!onlineStatus && chatStatus) {
     return {
@@ -32,7 +32,7 @@ const getAvatarStyle = (onlineStatus, chatStatus) => {
       height: 60,
       width: 60,
       borderRadius: 30,
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: "#06E300",
     }
   }
@@ -46,7 +46,7 @@ const getAvatarStyle = (onlineStatus, chatStatus) => {
 const getAvatarContainerStyle = (status) => {
   if (status == 0) {
     return {
-      marginTop: -10,
+      marginTop:  Platform.OS === 'ios' ? -10 : 0,
       height: 60,
       width: 60,
       borderRadius: 30,
@@ -171,6 +171,7 @@ const Conversation = props => (
     avatar={{ uri: props.conv.avatar }}
     avatarOverlayContainerStyle={getAvatarContainerStyle(props.conv.chatStatus)}
     avatarStyle={getAvatarStyle(props.conv.online, props.conv.chatStatus)}
+    avatarContainerStyle={{backgroundColor: 'transparent', height: 60, width: 60, borderRadius: 30}}
     key={props.conv.key}
     title={renderTitle(props.conv.name, props.conv.birthday, props.conv.chatStatus)}
     badge={renderUnread(props.conv.unread, props.conv.chatStatus)}
