@@ -5,11 +5,11 @@ import { Radar } from 'react-native-pathjs-charts'
 const { width, height } = Dimensions.get('window')
 
     const defaultData = [{
-      "魅力值": 30,
       "熱門度": 77,
       "好感度": 20,
       "友好度": 99,
       "活耀度": 18,
+      "魅力值": 30,
     }]
 
     const options = {

@@ -31,6 +31,7 @@ export default class SubjectStore {
   @observable collect
   @observable emailVerified
   @observable photoVerified
+  @observable radar
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -109,6 +110,13 @@ export default class SubjectStore {
     this.conversations = null
     this.chatStatus = null
     this.bonus = null
+    this.radar = [{
+      "熱門度": 0,
+      "好感度": 0,
+      "友好度": 0,
+      "活耀度": 0,
+      "魅力值": 0,
+    }]
   }
 
   @action setUid = uid => {
@@ -196,6 +204,10 @@ export default class SubjectStore {
 
   @action setEmailVerified = boolean => {
     this.emailVerified = boolean
+  }
+
+  @action setRadar = radar => {
+    this.radar = radar
   }
   // hide function
 

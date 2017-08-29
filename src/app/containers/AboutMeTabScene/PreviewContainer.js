@@ -7,7 +7,7 @@ import { observer, inject } from 'mobx-react'
 import CourtContainer from './CourtContainer'
 import InfosContainer from './InfosContainer'
 import PreviewBadgeWallContainer from './PreviewBadgeWallContainer'
-import BaconRadar from '../../views/BaconRadar'
+import RadarContainer from './RadarContainer'
 
 const { width, height } = Dimensions.get('window')
 
@@ -30,7 +30,7 @@ export default class PreviewContainer extends Component {
           </View>
           <PreviewBadgeWallContainer/> 
           <View style={{paddingTop: 10}}>
-            <BaconRadar/>
+            <RadarContainer/>
           </View>
           </ScrollView>
       </View>
