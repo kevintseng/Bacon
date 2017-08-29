@@ -210,7 +210,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setBio(snap.val().bio) // null(placeholder) String
           this.SubjectStore.setAvatar(snap.val().avatar) // null(placeholder) String Url
           this.SubjectStore.setAlbum(new Object(snap.val().album)) // Object
-          this.SubjectStore.setLanguages(Object.assign({},DefaultLanguages,snap.val().languages)) // Object
+          this.SubjectStore.setLanguages(Object.assign({}, DefaultLanguages, snap.val().languages)) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
           this.SubjectStore.setVip(Boolean(snap.val().vip))
@@ -219,6 +219,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
           this.SubjectStore.setConversations(snap.val().conversations)
           this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
+          this.SubjectStore.setUnhandledPass(new Object(snap.val().unhandledPass) || {})
           // 收藏
           //this.FateStore.setCollectionPreylist(new Object(snap.val().collect)) // Object
            //null(placeholder->邂逅) String

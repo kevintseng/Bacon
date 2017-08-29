@@ -12,7 +12,6 @@ import {
 import { observer, inject } from "mobx-react"
 import { List, Icon } from "react-native-elements"
 import { Actions } from "react-native-router-flux"
-// import Modal from "react-native-modal"
 import DropdownMenu from "react-native-dropdown-menu"
 import { calculateAge } from "../../../Utils"
 import Conversation from "./components/Conversation"
@@ -82,11 +81,11 @@ export default class LineListScene extends Component {
     const listen = snap => {
       const newConvs = this.state.convs
       if (snap.exists()) {
-        console.log(newConvs[key].name, " is online")
+        // console.log(newConvs[key].name, " is online")
         newConvs[key].online = true
         this.setState({ convs: newConvs })
       } else {
-        console.log(newConvs[key].name, " is offline")
+        // console.log(newConvs[key].name, " is offline")
         newConvs[key].online = false
         this.setState({ convs: newConvs })
       }
@@ -101,18 +100,18 @@ export default class LineListScene extends Component {
     return ref.off("value", listen)
   }
 
-  sortConv = () => {
-    const newC = this.state.convs
-    newC.sort(this.compare())
-  }
+  // sortConv = () => {
+  //   const newC = this.state.convs
+  //   newC.sort(this.compare())
+  // }
 
-  compare(a, b) {
-    if (a.sortKey < b.sortKey)
-      return -1;
-    if (a.sortKey > b.sortKey)
-      return 1;
-    return 0;
-  }
+  // compare(a, b) {
+  //   if (a.sortKey < b.sortKey)
+  //     return -1;
+  //   if (a.sortKey > b.sortKey)
+  //     return 1;
+  //   return 0;
+  // }
 
   getUserData = uid => {
     const ref = this.firebase.database().ref(`users/${uid}`)
@@ -148,29 +147,31 @@ export default class LineListScene extends Component {
           let convData = {}
 
           convRef.once("value").then(snap => {
-            const data = snap.val()
-            const myUid = this.SubjectStore.uid
-            const myData = data.users[myUid]
-            const theOtherData = data.users[theOtherUid]
-            convData = {
-              convKey,
-              unread: myData.unread,
-              lastRead: myData.lastRead,
-              visit,
-              uid: theOtherUid,
-              chatStatus: 0,
-              priority,
-              name: theOtherData.name,
-              avatar: theOtherData.avatar,
-              birthday: theOtherData.birthday,
-              online: false,
-              subtitle: null,
-            }
+            if (snap.exists()) {
+              const myUid = this.uid
+              console.log("myData: ", snap.val().users[myUid])
+              const myData = snap.val().users[myUid]
+              const theOtherData = snap.val().users[theOtherUid]
+              convData = {
+                convKey,
+                unread: myData.unread,
+                lastRead: myData.lastRead,
+                visit,
+                uid: theOtherUid,
+                chatStatus: 0,
+                priority,
+                name: theOtherData.name,
+                avatar: theOtherData.avatar,
+                birthday: theOtherData.birthday,
+                online: false,
+                subtitle: null,
+              }
 
-            convs.push(convData)
-            // console.log("CHECK convs: ", this.state.convs)
-            this.setState({ noData: false, isLoading: false, convs })
-            this.startListener()
+              convs.push(convData)
+              // console.log("CHECK convs: ", this.state.convs)
+              this.setState({ noData: false, isLoading: false, convs })
+              this.startListener()
+            }
           })
         })
       } else {
@@ -202,7 +203,7 @@ export default class LineListScene extends Component {
       this.chatStatusListener(conv.uid, key, false)
       this.onlineListener(conv.uid, key, false)
       this.lastSentenceListener(conv.convKey, key, false)
-      return 0
+      return false
     })
   }
 
@@ -377,7 +378,7 @@ export default class LineListScene extends Component {
             tintColor={"white"}
             selectItemColor={"#D63768"}
             data={menuData}
-            maxHeight={430}
+            maxHeight={300}
             handler={(selection, row) =>
               this.handleFilterChange(menuData[selection][row], selection, row)}
           >

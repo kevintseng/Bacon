@@ -45,13 +45,16 @@ export default class BaconRoutesContainer extends Component {
         Actions.AboutMe({type: 'reset'})
       }
     } else {
-      const products = []
+      const pid = "premium_3m"
+      const products = ["q_points_200", "q_points_600", "q_points_1200"]
+
       InAppUtils.loadProducts(products, (error, products) => {
-        console.log("products: ", products)
+        console.log("loadProducts: ", products, " error: ", error)
       })
+
       // InAppUtils.canMakePayments(async (enabled) => {
       //   if (enabled) {
-      //     const productId = this.props.pid
+      //     const productId = "premium_3m"
       //     try {
       //       await InAppUtils.purchaseProduct(productId, (error, response) => {
       //         if (response && response.productIdentifier) {
