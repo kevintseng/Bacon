@@ -27,10 +27,19 @@ import Stickers from "./components/Stickers"
 
 const { width, height } = Dimensions.get("window") //eslint-disable-line
 const DEFAULT_VISITOR_MSG_LIMIT = 2
-const DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT = 44
-const DEFAULT_INPUT_OFFSET = 110
+const DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT = 55
+const DEFAULT_INPUT_OFFSET = 140
 const PLUS_TOOLBAR_HEIGHT = 160
-const STICKER_TOOLBAR_HEIGHT = 220
+const STICKER_TOOLBAR_HEIGHT = 240
+
+const LABEL_SEND = "送出"
+const LABEL_ALBUM = "相簿"
+const LABEL_CAMERA = "拍照"
+const LABEL_USE_BONUS = "使用Q點"
+const LABEL_CANCEL = "取消"
+const PLACEHOLDER = "請輸入..."
+const MSG_TOO_MANY_SENT = "超過訪客留言次數限制：請等待對方回覆或是使用Q點繼續留言"
+const MSG_PRIORITY = "訊息優先被看到：您可以使用Q點讓您的訊息優先顯示在對方的訊息中心！"
 
 const pngmetadata = {
   contentType: 'image/png',
@@ -117,6 +126,7 @@ export default class Chat extends Component {
     this.loadAfterMsgId = 0
     this.title = ""
     this.role = "wooer"
+    this.msgSent = 0
 
     if (this.convKey) {
       if (this.SubjectStore.conversations[this.props.uid].prey == this.uid) {
@@ -142,7 +152,7 @@ export default class Chat extends Component {
       inputText: '',
       lines: 1,
       inputOffset: DEFAULT_INPUT_OFFSET,
-      inputHeight: 40,
+      inputHeight: 55,
       loadEarlier: false,
       isLoadingEarlier: false,
       action: false,
@@ -165,6 +175,9 @@ export default class Chat extends Component {
   }
 
   onSend = (messages = []) => {
+    if (this.state.inputText == "") {
+      return false
+    }
     if (!this.meetMsgLimit()) {
       const createdAt = Moment().format()
       const _id = uuid.v4()
@@ -179,7 +192,8 @@ export default class Chat extends Component {
         },
       }
       // console.log("msgObj: ", msgObj)
-      messages[0] = msgObj
+      // messages[0] = msgObj
+
       this.syncMsgToFirebase(msgObj)
 
       // 有發言回應後就取消 priority
@@ -191,7 +205,8 @@ export default class Chat extends Component {
         this.visitorMsgLimitDeductOne(this.convKey, this.uid)
       }
 
-      if (!this.state.dontAskPriorityAgain) {
+      if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
+        this.msgSent = this.msgSent + 1
         setTimeout(() => {
           this.setState({ showPriorityModal: true })
         }, 1000)
@@ -233,17 +248,20 @@ export default class Chat extends Component {
       .ref(`conversations/${convKey}/messages`)
       .orderByChild("_id")
       .startAt(startAt)
-      .limitToLast(10)
+      .limitToLast(50)
       .on("child_added", msgSnap => {
-        // console.log(`child_added: ${msgSnap.key}`)
-        this.setState(previousState => {
-          const msgId = msgSnap.val()._id
-          // Update lastRead
-          this.updateLastRead(convKey, msgId, uid)
-          this.clearUnread(convKey, uid)
-          return {
-            messages: GiftedChat.append(previousState.messages, msgSnap.val()),
-          }
+        // console.log(`child_added:`, msgSnap.val().user._id)
+        // 預防對方馬上回應來訪留言, 原邀請者還沒離開對話但已收到對方回應就不再檢查來訪留言限制
+        if (this.uid != msgSnap.val().user._id && this.role == "wooer" && this.state.visit) {
+          this.setState({ visit: false })
+          this.visit = false
+        }
+        const msgId = msgSnap.val()._id
+        // Update lastRead
+        this.updateLastRead(convKey, msgId, uid)
+        this.clearUnread(convKey, uid)
+        this.setState({
+          messages: GiftedChat.append(this.state.messages, msgSnap.val()),
         })
       })
   }
@@ -465,7 +483,7 @@ export default class Chat extends Component {
       return (
         <View
           style={{
-            width: 70,
+            width: 90,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
@@ -475,6 +493,7 @@ export default class Chat extends Component {
           }}
         >
           <Icon
+            size={30}
             name="add"
             onPress={() => {
               this.setState({
@@ -485,6 +504,7 @@ export default class Chat extends Component {
             }}
           />
           <Icon
+            size={30}
             name="mood"
             onPress={() => {
               this.setState({
@@ -504,9 +524,9 @@ export default class Chat extends Component {
       const msgRef = this.firebase
         .database()
         .ref(`conversations/${this.convKey}/messages`)
-      console.log("handleCameraPicker called")
+      // console.log("handleCameraPicker called")
       ImagePicker.launchCamera(ImagePickerOptions, response => {
-        console.log("Response = ", response)
+        // console.log("Response = ", response)
 
         if (response.didCancel) {
           console.log("User cancelled image picker")
@@ -516,7 +536,7 @@ export default class Chat extends Component {
           console.log("User tapped custom button: ", response.customButton)
         } else {
           this.setState({ action: "uploading" })
-          console.log("camera response: ", response)
+          // console.log("camera response: ", response)
           const _id = uuid.v4()
           const filename = _id + ".jpg"
           // const imgType = filename.split('.').pop()
@@ -524,7 +544,7 @@ export default class Chat extends Component {
           const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
           this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, jpgmetadata)
           .then(uploadedFile => {
-            console.log("downloadUrl: ", uploadedFile.downloadUrl)
+            // console.log("downloadUrl: ", uploadedFile.downloadUrl)
             // const _id = uuid.v4()
             const msgObj = {
               _id,
@@ -551,7 +571,8 @@ export default class Chat extends Component {
             console.error('上傳失敗')
           })
           .then(() => {
-            if (!this.state.dontAskPriorityAgain) {
+            if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
+              this.msgSent = this.msgSent + 1
               setTimeout(() => {
                 this.setState({ showPriorityModal: true })
               }, 1000)
@@ -569,9 +590,9 @@ export default class Chat extends Component {
       const msgRef = this.firebase
         .database()
         .ref(`conversations/${this.convKey}/messages`)
-      console.log("handlePhotoPicker called")
+      // console.log("handlePhotoPicker called")
       ImagePicker.launchImageLibrary(ImagePickerOptions, response => {
-        console.log("Response = ", response)
+        // console.log("Response = ", response)
 
         if (response.didCancel) {
           console.log("User cancelled image picker")
@@ -590,8 +611,8 @@ export default class Chat extends Component {
           if (imgType == 'JPG' || imgType == 'jpg' || imgType == 'jpeg' || imgType == 'JPEG') {
             meta = jpgmetadata
           }
-          console.log("response: ", response)
-          console.log("meta: ", meta)
+          // console.log("response: ", response)
+          // console.log("meta: ", meta)
 
           const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
 
@@ -610,6 +631,7 @@ export default class Chat extends Component {
               },
               image: uploadedFile.downloadUrl,
             }
+
             this.syncMsgToFirebase(msgObj)
             // adds 1 to conversation
             this.unreadAddOne(this.convKey, this.otherUid)
@@ -623,7 +645,8 @@ export default class Chat extends Component {
             this.setState({ action: false })
           })
           .then(() => {
-            if (!this.state.dontAskPriorityAgain) {
+            if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
+              this.msgSent = this.msgSent + 1
               setTimeout(() => {
                 this.setState({ showPriorityModal: true })
               }, 1000)
@@ -642,9 +665,9 @@ export default class Chat extends Component {
       .ref(`conversations/${this.convKey}/messages/${msgObj._id}`).set(msgObj)
 
     this.setState({
+      inputText: '',
       minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
       action: false,
-      inputText: '',
     })
   }
 
@@ -668,7 +691,7 @@ export default class Chat extends Component {
         },
         sticker: uri,
       }
-      console.log("uri: ", uri)
+      // console.log("uri: ", uri)
       this.syncMsgToFirebase(msgObj)
       // adds 1 to conversation
       this.unreadAddOne(this.convKey, this.otherUid)
@@ -679,7 +702,8 @@ export default class Chat extends Component {
       this.updatePriority(this.uid, this.otherUid, false)
     } else {
       this.setState({ showMsgLimitModal: true })
-      if (!this.state.dontAskPriorityAgain) {
+      if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
+        this.msgSent = this.msgSent + 1
         setTimeout(() => {
           this.setState({ showPriorityModal: true })
         }, 1000)
@@ -703,12 +727,13 @@ export default class Chat extends Component {
           >
             <View
               style={{
-                width: 45,
+                width: 60,
                 marginVertical: 2,
               }}
             >
               <Icon
                 name="keyboard-hide"
+                size={30}
                 onPress={() => {
                   this.setState({
                     action: false,
@@ -766,6 +791,7 @@ export default class Chat extends Component {
             >
               <Icon
                 name="keyboard-hide"
+                size={30}
                 onPress={() => {
                   this.setState({
                     action: false,
@@ -790,7 +816,7 @@ export default class Chat extends Component {
                     style={{ width: 51, height: 39.5 }}
                     source={require('../../../../images/btn_chat_album.png')}
                   />
-                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>相簿</Text>
+                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>{LABEL_ALBUM}</Text>
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 1, backgroundColor: "#FDFDFD", alignItems: "center", paddingRight: 20 }}>
@@ -799,7 +825,7 @@ export default class Chat extends Component {
                     style={{ width: 51, height: 39.5}}
                     source={require('../../../../images/btn_chat_shot.png')}
                   />
-                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>拍照</Text>
+                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>{LABEL_CAMERA}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -812,12 +838,14 @@ export default class Chat extends Component {
             contentContainerStyle={{
               flexDirection: 'row',
               alignItems: 'center',
+              justifyContent: 'space-between',
               width: width - this.state.inputOffset }}
           >
             <TextInput
               placeholderTextColor="#E0E0E0"
-              placeholder="請輸入.."
+              placeholder={PLACEHOLDER}
               autoFocus
+              value={this.state.inputText.toString()}
               style={{
                 marginTop: 3,
                 maxHeight: 100,
@@ -843,14 +871,14 @@ export default class Chat extends Component {
     }
   }
 
-  callbackFunc = (boolean, usageCode) => {
-    console.log("callbackFunc called: ", boolean, " ", usageCode)
+  callbackFunc = (boolean, code) => {
+    // console.log("callbackFunc called: ", boolean, " ", code)
     if (boolean) { // true表示已完成扣點
-      if (usageCode == 'visitorMsgLimit') {
+      if (code == 'visitorMsgLimit') {
         // console.log("Add visitor msg limit by 1")
         this.visitorMsgLimitAddOne(this.convKey, this.uid)
       }
-      if (usageCode == 'priority') {
+      if (code == 'priority') {
         // console.log("Make priority:")
         this.updatePriority(this.uid, this.otherUid, true)
         this.setState({dontAskPriorityAgain: true})
@@ -862,7 +890,7 @@ export default class Chat extends Component {
     Actions.UseBonus({
       nickname: this.other.nickname,
       avatarUrl: this.other.avatar,
-      usageCode: 'priority',
+      code: 'priority',
       callback: this.callbackFunc,
     })
   }
@@ -871,7 +899,7 @@ export default class Chat extends Component {
     Actions.UseBonus({
       nickname: this.other.nickname,
       avatarUrl: this.other.avatar,
-      usageCode: 'visitorMsgLimit',
+      code: 'visitorMsgLimit',
       callback: this.callbackFunc,
     })
   }
@@ -894,7 +922,7 @@ export default class Chat extends Component {
     this.setState({ showVisitorModal: false, visit: false })
     this.SubjectStore.deleteConv(this.otherUid)
     this.firebase.database().ref(`users/${this.uid}/conversations/${this.otherUid}`).remove()
-    Actions.LineList({type: "reset"})
+    Actions.LineList({t: "reset"})
   }
 
   startChatting = () => {
@@ -949,6 +977,8 @@ export default class Chat extends Component {
   }
 
   meetMsgLimit = () => {
+    // console.log("this.state.messages: ", this.state.messages)
+    // console.log("this.state.visit: ", this.state.visit, " this.role: ", this.role, " this.state.visitorMsgLimit: ", this.state.visitorMsgLimit)
     if (this.state.visit && this.role == "wooer" && this.state.visitorMsgLimit <= 0) {
       return true
     }
@@ -996,7 +1026,8 @@ export default class Chat extends Component {
           messages={this.state.messages}
           messageIdGenerator={() => uuid.v4()}
           onSend={this.onSend}
-          label="送出"
+          label={LABEL_SEND}
+          LoadEarlier={true}
           onLoadEarlier={this.onLoadEarlier}
           isLoadingEarlier={this.state.isLoadingEarlier}
           user={{
@@ -1004,7 +1035,7 @@ export default class Chat extends Component {
           }}
           onInputTextChanged={() => this.meetMsgLimit()}
           minInputToolbarHeight={this.state.minToolBarHeight}
-          placeholder="輸入訊息..."
+          placeholder={PLACEHOLDER}
           renderComposer={this.renderComposer}
           renderActions={this.renderActions}
           renderFooter={this.renderFooter}
@@ -1050,15 +1081,15 @@ export default class Chat extends Component {
               borderRadius: 26,
             }}
           >
-            <Text style={{ margin: 10 }}>超過訪客留言次數限制：請等待對方回覆或是使用Q點繼續留言</Text>
+            <Text style={{ margin: 10 }}>{MSG_TOO_MANY_SENT}</Text>
             <Button
-              title="使用Q點"
+              title={LABEL_USE_BONUS}
               textStyle={styles.btnTextUseBonus}
               buttonStyle={styles.btnUseBonus}
               onPress={() => this.useBonus("visitorMsgLimit", 30)}
             />
             <Button
-              title="取消"
+              title={LABEL_CANCEL}
               textStyle={styles.btnTextCancel}
               buttonStyle={styles.btnCancel}
               onPress={this.cancelSend}
@@ -1074,16 +1105,16 @@ export default class Chat extends Component {
             style={styles.modalViewContainer}
           >
             <Text style={styles.modalText}>
-              訊息優先被看到：您可以使用Q點讓您的訊息優先顯示在對方的訊息中心！
+              {MSG_PRIORITY}
             </Text>
             <Button
-              title="使用Q點"
+              title="LABEL_USE_BONUS"
               textStyle={styles.btnTextUseBonus}
               buttonStyle={styles.btnUseBonus}
               onPress={() => this.useBonus("priority", 100)}
             />
             <Button
-              title="不用"
+              title="LABEL_CANCEL"
               textStyle={styles.btnTextCancel}
               buttonStyle={styles.btnCancel}
               onPress={this.cancelSend}
