@@ -18,15 +18,21 @@ export default class RadarContainer extends Component {
     this.fetchRadar.once('value').then(snap => {
       if (snap.val()) {
         const popularity = parseInt(snap.val().popularityNum) / parseInt(snap.val().popularityDen)
+        const favorability = parseInt(snap.val().favorabilityNum) / parseInt(snap.val().favorabilityDen)
+        const friendliness = 0
+        const activityness = 0
         if (isNaN(popularity)) {
           popularity = 0
         }
+        if (isNaN(favorability)) {
+          favorability = 0
+        }
         this.SubjectStore.setRadar([{
           "熱門度":  popularity,
-          "好感度": 10,
-          "友好度": 20,
-          "活耀度": 30,
-          "魅力值": 40
+          "好感度":  favorability,
+          "友好度":  friendliness,
+          "活耀度":  activityness,
+          "魅力值":  popularity * 2 + favorability * 3 + friendliness * 6
         }])
       } else {
         alert('錯誤')

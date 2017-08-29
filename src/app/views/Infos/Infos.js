@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 
 
-const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance, showBlockade}) => (
+const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance, showDistance, showBlockade}) => (
   <View>
     <View style={{flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
       <Image style={{marginRight: 5}} source={verityEmail ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
@@ -18,11 +18,12 @@ const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance
       <Image style={{marginRight: 5}} source={require('./img/ico_meet_globe.png')}/>
       <Text style={{fontSize: 10,color: '#606060',fontFamily: 'NotoSans'}}>{ langs }</Text>
     </View>
-
-    <View style={{marginTop: 10, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
-      <Image style={{marginRight: 5}} source={require('./img/ico_meet_locate.png')}/>
-      <Text style={{fontSize: 10,color: '#606060',fontFamily: 'NotoSans'}}>你們距離大約 { distance } 公里</Text>
-    </View>
+    { showDistance &&
+      <View style={{marginTop: 10, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
+        <Image style={{marginRight: 5}} source={require('./img/ico_meet_locate.png')}/>
+        <Text style={{fontSize: 10,color: '#606060',fontFamily: 'NotoSans'}}>你們距離大約 { distance } 公里</Text>
+      </View>
+    }
     { showBlockade &&
     <TouchableOpacity style={{marginTop: 10, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
       <Image style={{marginRight: 5}} source={require('./img/btn_meet_block.png')}/>
