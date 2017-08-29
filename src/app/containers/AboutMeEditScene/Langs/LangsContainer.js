@@ -22,7 +22,7 @@ export default class LangsContainer extends Component {
   render() {
     return(
       <View style={{flex: 1}}>
-        <View>
+        <View style={{height: 390}}>
           <LangListContainer/>
         </View>
         <View style={{ position: 'absolute', bottom: 0}}>
