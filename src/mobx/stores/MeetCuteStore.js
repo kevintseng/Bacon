@@ -107,11 +107,13 @@ export default class MeetCuteStore {
     this.index = 0
     this.uid = this.preyList[this.index].uid
     runInAction(() => {
-      this.firstLoading = true
+      //this.firstLoading = true
       this.imageLoadingCount = 0
     })
     await this.firebase.database().ref('users/' + this.uid).once('value', snap => {
       if (snap.val()) {
+        const favorabilityDen = snap.val().favorabilityDen || 0
+        this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
         runInAction(() => {
           this.nickname = snap.val().nickname
           this.bio = snap.val().bio
@@ -143,6 +145,7 @@ export default class MeetCuteStore {
     this.index = this.index + 1
     if (this.index === this.preyList.length) {
       this.haveNewPreys = false // 沒人了
+      //this.firstLoading = false
       this.setPreyList()
     } else {
       this.uid = this.preyList[this.index].uid
@@ -164,6 +167,8 @@ export default class MeetCuteStore {
     })
     await this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
       if (snap.val()) {
+        const favorabilityDen = snap.val().favorabilityDen || 0
+        this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
         runInAction(() => {
           this.nickname = snap.val().nickname
           this.bio = snap.val().bio
@@ -222,6 +227,7 @@ export default class MeetCuteStore {
   @action resetAge = () => {
     this.clean = true
     this.haveNewPreys = false
+    //this.firstLoading = false
   }
 
 

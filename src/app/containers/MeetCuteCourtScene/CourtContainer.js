@@ -36,9 +36,20 @@ export default class CourtContainer extends Component {
   }
 
   like = async () => {
-    // 寄到別人好感
+    // 雷達記錄
+    //const favorabilityNum = 0
+
+    await this.firebase.database().ref('users/' +  this.MeetCuteStore.uid).once('value').then(snap => {
+      if (snap.val()) {
+        const favorabilityNum = snap.val().favorabilityNum || 0
+        this.firebase.database().ref('users/' + this.MeetCuteStore.uid + '/favorabilityNum').set(favorabilityNum + 1)
+      } else {
+        //
+      }
+    })
+    // 記到別人好感
     await this.firebase.database().ref('goodImpression/' + this.SubjectStore.uid + this.MeetCuteStore.uid ).set({ wooer: this.SubjectStore.uid , prey: this.MeetCuteStore.uid, time: Date.now() })
-    // 45天紀錄
+    // 檢查配對
     if (this.checkMatch()) {
       this.ControlStore.setMateModal()
     } else {
