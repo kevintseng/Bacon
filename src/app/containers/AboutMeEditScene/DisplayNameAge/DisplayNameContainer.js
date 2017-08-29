@@ -15,10 +15,10 @@ export default class DisplayNameContainer extends Component {
   render() {
     return(
       <BaconForm
-        iconSource={ require('../../../../images/ico_logo_nn.png') } 
-        placeholder='請輸入2~6字的暱稱'
+        iconSource={ require('../../../../images/ico_logo_nn.png') }
+        placeholder='請輸入2~20字的暱稱'
         value={ this.SubjectEditStore.nickname }
-        maxLength={ 6 } 
+        maxLength={ 20 }
         onChangeText={ this.SubjectEditStore.setNickname }
         //onBlur={ this.SignUpInStore.checkDisplayName }
       />

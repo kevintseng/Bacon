@@ -17,16 +17,18 @@ const styles = {
     backgroundColor: 'rgba(255, 255, 255, 1)'
   },
   displayName: {
-    letterSpacing: 3, 
+    letterSpacing: 3,
     fontFamily: 'NotoSans',
     textAlign: 'center',
     color: '#606060',
     fontWeight: '500',
-    fontSize: 17
+    fontSize: 17,
+    width: 130,
+    flexWrap: "wrap",
   },
   badge: {
-    width: 40, 
-    opacity: 0 
+    width: 40,
+    opacity: 0
   }
 }
 

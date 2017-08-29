@@ -13,7 +13,7 @@ const styles = {
     fontSize: 15,
     //fontWeight: '500',
     color: '#606060',
-    textAlign: 'center',    
+    textAlign: 'center',
   },
   image: {
     marginRight: 20,
@@ -32,7 +32,7 @@ const Upgrade = ({topCheck, upperCheck, topCheckOnPress, upperCheckOnPress}) => 
           <Text style={styles.text}>三個月</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}>NT$ 349</Text>
+          <Text style={styles.text}>$350</Text>
         </View>
       </View>
 
@@ -44,7 +44,7 @@ const Upgrade = ({topCheck, upperCheck, topCheckOnPress, upperCheckOnPress}) => 
           <Text style={styles.text}>一年</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}>NT$ 799</Text>
+          <Text style={styles.text}>$930</Text>
         </View>
       </View>
     </View>
