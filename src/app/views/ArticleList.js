@@ -23,6 +23,7 @@ const styles = {
     fontSize: 18,
     fontWeight: '500',
     color: '#606060',
+    backgroundColor: 'transparent'
   },
   content: {
     paddingLeft: 10,

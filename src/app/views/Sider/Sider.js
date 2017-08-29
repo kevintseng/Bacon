@@ -18,6 +18,21 @@ const styles = {
   }
 }
 
+const styles = {
+  displayName: {
+    letterSpacing: 3, 
+    fontFamily: 'NotoSans',
+    textAlign: 'center',
+    color: '#606060',
+    fontWeight: '500',
+    fontSize: 17
+  },
+  badge: {
+    width: 40, 
+    opacity: 0 
+  }
+}
+
 const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, settingOnPress, articleOnPress }) => {
 
   return(
@@ -37,6 +52,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </View>
 
         <TouchableOpacity width={width * 0.8} activeOpacity={1} onPress={ displayNameOnPress }>
+
           <View style={{alignItems: 'center',marginTop: 20}}>
             <Cookie
               size={picWidth}
@@ -44,21 +60,21 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
               borderColor='rgba(255, 255, 255, 1)'
             />
           </View>
-
-          <View style={{marginTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View style={{width: 40, opacity: 0}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={ styles.badge }>
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={{textAlign: 'center',color: '#606060',fontWeight: 'normal'}}>{ displayName }</Text>
+              <Text style={styles.displayName}>{ displayName }</Text>
             </View>
-            <View style={{width: 40, opacity: 0 }}>
+            <View style={styles.badge}>
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
             </View>
           </View>
+
         </TouchableOpacity>
 
-        <View style={{marginTop: 20}}>
+        <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
         </View>
 
