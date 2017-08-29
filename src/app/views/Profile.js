@@ -37,7 +37,7 @@ const styles = {
 
 const colors = ['#f4a764', '#d63768']
 
-const Profile = ({source, vip, bonus, verityEmail, verityPhoto, displayName, age, city, bio, langs, interests, onPressDisplayName, onPressCity, onPressBio, onPressLangs, onPressInterests, onPressMemberUpgrade, onPressQUpgrade, onPressEmail}) => {
+const Profile = ({source, vip, bonus, verityEmail, verityPhoto, displayName, age, city, bio, langs, interests, onPressDisplayName, onPressCity, onPressBio, onPressLangs, onPressInterests, onPressMemberUpgrade, onPressQUpgrade, onPressEmail, showVerityPhoto}) => {
   return(
     <View>
       <View style={{flexDirection: 'row',padding: 5}}>
@@ -52,7 +52,7 @@ const Profile = ({source, vip, bonus, verityEmail, verityPhoto, displayName, age
         </View>
 
         <View style={{flex:1,paddingTop: 10, paddingLeft: 10, paddingRight: 10}}>
-          <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
+          <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
             <View>
               <VerityEmail
                 verity={ verityEmail }
@@ -60,12 +60,14 @@ const Profile = ({source, vip, bonus, verityEmail, verityPhoto, displayName, age
                 onPress={ onPressEmail }
               />
             </View>
-            <View style={{paddingRight: 10}}>
-              <VerityPhoto
-                verity={ verityPhoto }
-                verityText={ verityPhoto ? '已認證' : '尚未認證'}
-              />
-            </View>
+            { showVerityPhoto &&
+              <View style={{paddingRight: 10}}>
+                <VerityPhoto
+                  verity={ verityPhoto }
+                  verityText={ verityPhoto ? '已認證' : '尚未認證'}
+                />
+              </View>
+            }
           </View>
           <TouchableOpacity onPress={ onPressDisplayName }>
             <ListItem subtitle={ displayName + ', ' + age } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
