@@ -104,6 +104,12 @@ export default class MeetChanceStore {
     })
   }
 
+  //@action setPopularityDen = () => {
+  //  this.preyList.forEach((ele)=>{
+  //    this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(100)
+  //  })
+  //}
+
   @action setFakePreys = () => {
     this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
   }
@@ -115,6 +121,8 @@ export default class MeetChanceStore {
           if (snap.val().hideMeetChance || snap.val().deleted ||  calculateAge(snap.val().birthday) < this.meetChanceMinAge || calculateAge(snap.val().birthday) > this.meetChanceMaxAge) {
             return null
           } else {
+            const popularityDen = snap.val().popularityDen || 0
+            this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(popularityDen + 1)
             return({
               key: ele.uid,
               nickname: snap.val().nickname,
@@ -153,6 +161,8 @@ export default class MeetChanceStore {
     this.fetchPreyQuery = this.firebase.database().ref('users/' + this.uid)
     this.fetchPreyQuery.once('value').then(snap => {
       if (snap.val()) {
+        const popularityNum = snap.val().popularityNum || 0
+        this.firebase.database().ref('users/' + this.uid + '/popularityNum').set(popularityNum + 1)
         runInAction(() => {
           this.uid = this.uid
           this.avatar = snap.val().avatar
