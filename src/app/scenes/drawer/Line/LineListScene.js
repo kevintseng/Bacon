@@ -12,7 +12,6 @@ import {
 import { observer, inject } from "mobx-react"
 import { List, Icon } from "react-native-elements"
 import { Actions } from "react-native-router-flux"
-// import Modal from "react-native-modal"
 import DropdownMenu from "react-native-dropdown-menu"
 import { calculateAge } from "../../../Utils"
 import Conversation from "./components/Conversation"
@@ -379,7 +378,7 @@ export default class LineListScene extends Component {
             tintColor={"white"}
             selectItemColor={"#D63768"}
             data={menuData}
-            maxHeight={430}
+            maxHeight={300}
             handler={(selection, row) =>
               this.handleFilterChange(menuData[selection][row], selection, row)}
           >
