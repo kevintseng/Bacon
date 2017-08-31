@@ -29,8 +29,8 @@ export default class VisitorsContainer extends Component {
   }
 
   componentWillMount() {
-    this.FateStore.setVisitorsPreylist()
     //this.FateStore.setVisitorsFakePreys()
+    this.FateStore.setVisitorsPreylist()
   }
 
   componentDidMount = async () => {

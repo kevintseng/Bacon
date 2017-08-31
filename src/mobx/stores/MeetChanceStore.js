@@ -108,8 +108,6 @@ export default class MeetChanceStore {
     this.pool = this.pool.filter(ele => !(ele.uid === uid))
   }
 
-  // pleylist = _.cloneDeep(pool)
-
   @action setPreyList = () => {
     this.preyList = toJS(this.pool)
     this.preyList.sort((a, b) => {
@@ -117,20 +115,41 @@ export default class MeetChanceStore {
     })
   }
 
-  //@action setPopularityDen = () => {
-  //  this.preyList.forEach((ele)=>{
-  //    this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(100)
-  //  })
-  //}
-
   @action setFakePreys = () => {
-    this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
+    //this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
+    this.preys = new Array
   }
 
   @action setRealPreys = () => {
     const preysPromises = this.preyList.map((ele,index) => (
       this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
-        if (snap.val()) {
+        if (snap.val() && !snap.val().hideMeetChance && snap.val().birthday && ((calculateAge(snap.val().birthday) >= this.meetChanceMinAge) && (calculateAge(snap.val().birthday) <= this.meetChanceMaxAge))) {
+          const popularityDen = snap.val().popularityDen || 0
+          this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(popularityDen + 1)
+          return({
+            key: ele.uid,
+            nickname: snap.val().nickname,
+            avatar: snap.val().avatar,
+            birthday: snap.val().birthday
+          })
+        } else {
+          return null
+        }
+      }).catch(err => console.log(err))
+    ))
+
+    Promise.all(preysPromises)
+    .then(preys => {
+      runInAction(() => {
+        this.preys = preys
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
+/*
           if (snap.val().hideMeetChance || snap.val().deleted ||  calculateAge(snap.val().birthday) < this.meetChanceMinAge || calculateAge(snap.val().birthday) > this.meetChanceMaxAge) {
             return null
           } else {
@@ -143,26 +162,7 @@ export default class MeetChanceStore {
               birthday: snap.val().birthday
             })
           }
-        } else {
-          // return null
-        }
-      }).catch(err => console.log(err))
-    ))
-
-    Promise.all(preysPromises)
-    .then(preys => {
-      runInAction(() => {
-        this.preys = preys
-        //this.preys = this.preys.filter(ele => ele !== null)
-        //if (this.preys.length > 9) {
-        //  this.preys.length = this.preys.length - this.preys.length % 3
-        //}
-      })
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
+      */
 
   @action setCourtInitialize = uid => {
     this.loading = true

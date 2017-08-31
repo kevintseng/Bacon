@@ -67,7 +67,7 @@ export default class FateStore {
   }
 
   @action initialize = () => {
-    this.visitorsPool = new Array
+    this.visitorsPool = new Object
     this.visitorsPreylist = new Array
     this.visitorsPreys = new Array
     this.goodImpressionPool = new Object
@@ -111,34 +111,43 @@ export default class FateStore {
   // visitors 
 
   @action addPreyToVisitorsPool = (uid,time) => {
-    this.visitorsPool.push({uid: uid, time: time})
+    this.visitorsPool[uid] = time
   }
 
   @action setVisitorsPreylist = () => {
-    this.visitorsPreylist = _.cloneDeep(this.visitorsPool)
+    this.visitorsPreylist = Object.keys( this.visitorsPool).map( uid => ({uid: uid, time: this.visitorsPool[uid]}))
+    this.visitorsPreylist.sort((a, b) => {
+      return b.time > a.time ? 1 : -1
+    })
   }
 
   @action setVisitorsFakePreys = () => {
-    this.visitorsPreys = this.visitorsPreylist.map((ele,index)=>({ key: ele.uid, time: ele.time, nickname: null, avatar: null, birthday: null }))
+    this.visitorsPreys = new Array
   }
 
   @action setVisitorsRealPreys = () => {
     const visitorsPromises = this.visitorsPreylist.map((ele,index) => (
-      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => (
-        {
-          key: ele.uid,
-          time: ele.time,
-          nickname: snap.val().nickname,
-          avatar: snap.val().avatar,
-          birthday: snap.val().birthday  
+      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
+        if (snap.val() && !snap.val().hideVister) {
+          return(
+            {
+              key: ele.uid,
+              time: ele.time,
+              nickname: snap.val().nickname,
+              avatar: snap.val().avatar,
+              birthday: snap.val().birthday  
+            }
+          )
+        } else {
+          return null
         }
-      ))
+      })
     ))
 
     Promise.all(visitorsPromises)
     .then(visitorsPreys => {
       runInAction(() => {
-        this.visitorsPreys = visitorsPreys
+        this.visitorsPreys = visitorsPreys.filter(ele => ele)
       })
     })
     .catch(err => {
@@ -153,16 +162,14 @@ export default class FateStore {
   }
 
   @action addPreyToGoodImpressionPool = (uid,time) => {
-    //this.goodImpressionPool.push({uid: uid, time: time})
     this.goodImpressionPool[uid] = time
   }
 
+  @action setGoodImpressionFakePreys = () => {
+    this.goodImpressionPreys = new Array
+  }
 
   @action setGoodImpressionPreylist = () => {
-    //const b = _.cloneDeep(this.matchPool)
-    //const PreyList = b.map(ele=> ele.uid)
-    //const c = _.cloneDeep(this.goodImpressionPool)
-    //this.goodImpressionPreylist = _.cloneDeep(this.goodImpressionPool)
     const PreyList = Object.keys(this.matchPool)
     const c = Object.keys(this.goodImpressionPool)
     this.goodImpressionPreylist = c.map(uid => {
@@ -173,10 +180,6 @@ export default class FateStore {
       }
     })
     this.goodImpressionPreylist = this.goodImpressionPreylist.filter(ele => ele)
-  }
-
-  @action setGoodImpressionFakePreys = () => {
-    //this.goodImpressionPreys = this.goodImpressionPreylist.map((uid,index) => ({ key: uid, time: null nickname: null, avatar: null, birthday: null }))
   }
 
   @action setGoodImpressionRealPreys = () => {
@@ -204,15 +207,11 @@ export default class FateStore {
   }
 
   // collection
-/*
+
   @action setCollectionFakePreys = () => {
-    localdb.getIdsForKey('collection' + this.selfUid).then(collectionPreylist => {
-      runInAction(() => {
-        this.collectionPreys = collectionPreylist.map((uid,index) => ({ key: uid, time: this.collectionPreylist[uid], nickname: null, avatar: null, birthday: null }))
-      })
-    }).catch(err => console.log(err))
+    this.collectionPreys = new Array
   }
-*/
+
   @action setCollectionRealPreys = () => {
     localdb.getIdsForKey('collection' + this.selfUid).then(collectionPreylist => {
       console.log(collectionPreylist)
@@ -250,15 +249,10 @@ export default class FateStore {
   // mates
 
   @action addPreyToMatchPool = (uid,time) => {
-    //this.matchPool.push({uid: uid, time: time})
     this.matchPool[uid] = time
   }
 
   @action filterMatchList = () => {
-    //const a = _.cloneDeep(this.goodImpressionPool)
-    //const b = _.cloneDeep(this.matchPool)
-    //const wooerList = a.map(ele=> ele.uid)
-    //const PreyList = b.map(ele=> ele.uid)
     const wooerList = Object.keys(this.goodImpressionPool)
     const PreyList = Object.keys(this.matchPool)
     this.matchPreylist = wooerList.map(uid => {
@@ -280,7 +274,7 @@ export default class FateStore {
   }
 
   @action setMatchFakePreys = () => {
-    //this.matchPreys = this.matchPreylist.map((uid,index) => ({ key: uid, time: null, nickname: null, avatar: null, birthday: null }))
+    this.matchPreys = new Array
   }
 
   @action setMatchRealPreys = () => {

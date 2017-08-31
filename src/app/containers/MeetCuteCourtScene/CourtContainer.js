@@ -32,6 +32,7 @@ export default class CourtContainer extends Component {
   }
 
   goToNext = () => {
+    this.MeetCuteStore.setfirstLoad(false)
     this.MeetCuteStore.pickNextPrey()
   }
 
