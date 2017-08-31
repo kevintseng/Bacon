@@ -6,7 +6,6 @@ const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance
   <View>
     <View style={{flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
       <Image style={{marginRight: 5}} source={verityEmail ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
-      <Image style={{marginRight: 5}} source={verityPhoto ? require('./img/ico_meet_picture_1.png') : require('./img/ico_aboutme_picture_0.png')}/>
       <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>{ displayName }</Text>
       <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>, </Text>
       <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>{ age }</Text>
@@ -34,3 +33,7 @@ const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance
 )
 
 export default Infos
+
+/*
+      <Image style={{marginRight: 5}} source={verityPhoto ? require('./img/ico_meet_picture_1.png') : require('./img/ico_aboutme_picture_0.png')}/>
+*/
