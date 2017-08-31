@@ -23,9 +23,6 @@ export default class ProfileContainer extends Component {
     this.SubjectStore = this.props.SubjectStore
   }
 
-  componentWillMount() {
-  }
-
   goToEditDisplayName = () => {
     Actions.AboutMeEdit({title: '暱稱年齡',content: <DisplayNameAgeContainer/>})
   }

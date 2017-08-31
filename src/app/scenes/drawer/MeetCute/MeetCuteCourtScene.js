@@ -49,10 +49,11 @@ export default class MeetCuteCourtScene extends Component {
   }
 
   componentWillMount() {
+    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount = async () => {
-    await this.sleep(260)
+    await this.sleep(250)
     this.MeetCuteStore.setPreyList()  
   }
 

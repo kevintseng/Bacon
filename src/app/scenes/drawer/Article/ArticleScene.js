@@ -25,9 +25,18 @@ export default class ArticleScene extends Component {
   }
 
   componentWillMount() {
+    Actions.refresh({ key: 'Drawer', open: false })
+  }
+
+  componentDidMount = async () => {
+    await this.sleep(260)
   }
 
   componentWillUnmount() {
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   render() {

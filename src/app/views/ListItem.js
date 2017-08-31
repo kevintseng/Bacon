@@ -8,8 +8,8 @@ const styles = {
     justifyContent: 'space-between', 
     paddingTop: 7, 
     paddingBottom: 7,
-    backgroundColor: 'rgba(192,192,192,0.3)',
-    height: 50
+    //backgroundColor: 'rgba(192,192,192,0.3)',
+    height: 45
   },
   badge: {
     width: 40,
@@ -38,7 +38,7 @@ const styles = {
     textAlign: 'center',
     color: '#606060',
     fontWeight: 'normal', 
-    fontSize: 16
+    fontSize: 17
   },
   _container: {
     backgroundColor: 'red'    
