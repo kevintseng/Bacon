@@ -24,6 +24,7 @@ export default class FateStore {
   @observable hobbies
   @observable album
   @observable vip
+  @observable distance
   @observable emailVerified
   @observable photoVerified
   @observable latitude
@@ -90,6 +91,7 @@ export default class FateStore {
     this.hobbies = new Object
     this.album = new Object
     this.vip = false
+    this.distance = null
     this.emailVerified = false
     this.photoVerified = false
     this.latitude = null
@@ -325,6 +327,7 @@ export default class FateStore {
           this.hobbies = snap.val().hobbies || new Object
           this.album = snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
+          this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
           this.loading = false

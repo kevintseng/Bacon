@@ -16,13 +16,14 @@ export default class InfosContainer extends Component {
     return(
       <Infos
         showBlockade
+        showDistance
         verityEmail={ this.MeetCuteStore.emailVerified } 
         verityPhoto={ this.MeetCuteStore.photoVerified }
         displayName={ this.MeetCuteStore.nickname }
         bio={ this.MeetCuteStore.bio }
         age={ this.MeetCuteStore.age }
         langs={ this.MeetCuteStore.languagesToString }
-        distance='35'
+        distance={ this.MeetCuteStore.distance }
       />
     )
   }
