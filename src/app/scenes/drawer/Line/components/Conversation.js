@@ -46,7 +46,7 @@ const getAvatarStyle = (onlineStatus, chatStatus) => {
 const getAvatarContainerStyle = (status) => {
   if (status == 0) {
     return {
-      marginTop:  Platform.OS === 'ios' ? -10 : 0,
+      marginTop: Platform.OS === 'ios' ? -10 : 0,
       height: 60,
       width: 60,
       borderRadius: 30,
