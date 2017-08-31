@@ -25,7 +25,6 @@ export default class SettingIndexScene extends Component {
         </View>
 
         <View style={{flexDirection: 'row',justifyContent: 'space-around', marginTop: 30}}>
-          <RemindContainer/>
           <HideContainer/>
         </View>
 
@@ -37,3 +36,6 @@ export default class SettingIndexScene extends Component {
     )
   }
 }
+/*
+<RemindContainer/>
+*/
