@@ -1,5 +1,6 @@
 import { observable, action, computed, useStrict, runInAction, toJS, autorun } from 'mobx'
 import _ from 'lodash'
+import geolib from 'geolib'
 import { calculateAge } from '../../app/Utils'
 import localdb from '../../configs/localdb'
 
@@ -25,6 +26,8 @@ export default class FateStore {
   @observable vip
   @observable emailVerified
   @observable photoVerified
+  @observable latitude
+  @observable longitude
 
   constructor(firebase) {
     this.firebase = firebase
@@ -66,13 +69,13 @@ export default class FateStore {
     this.visitorsPool = new Array
     this.visitorsPreylist = new Array
     this.visitorsPreys = new Array
-    this.goodImpressionPool = new Array
+    this.goodImpressionPool = new Object
     this.goodImpressionPreylist = new Array
     this.goodImpressionPreys = new Array
     //this.collectionPool = new Array
     this.collectionPreylist = new Array
     this.collectionPreys = new Array
-    this.matchPool = new Array
+    this.matchPool = new Object
     this.matchPreylist = new Array
     this.matchPreys = new Array
     this.mateHistory = new Array
@@ -89,8 +92,18 @@ export default class FateStore {
     this.vip = false
     this.emailVerified = false
     this.photoVerified = false
+    this.latitude = null
+    this.longitude = null
     //
     this.fetchPreyQuery = null
+  }
+
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
   }
 
   // visitors 
@@ -138,34 +151,38 @@ export default class FateStore {
   }
 
   @action addPreyToGoodImpressionPool = (uid,time) => {
-    this.goodImpressionPool.push({uid: uid, time: time})
+    //this.goodImpressionPool.push({uid: uid, time: time})
+    this.goodImpressionPool[uid] = time
   }
 
 
   @action setGoodImpressionPreylist = () => {
-    const b = _.cloneDeep(this.matchPool)
-    const PreyList = b.map(ele=> ele.uid)
-    const c = _.cloneDeep(this.goodImpressionPool)
+    //const b = _.cloneDeep(this.matchPool)
+    //const PreyList = b.map(ele=> ele.uid)
+    //const c = _.cloneDeep(this.goodImpressionPool)
     //this.goodImpressionPreylist = _.cloneDeep(this.goodImpressionPool)
-    this.goodImpressionPreylist = c.map(ele => {
-      if ( PreyList.indexOf(ele.uid) > -1 || this.mateHistory.indexOf(ele.uid) > -1) {
+    const PreyList = Object.keys(this.matchPool)
+    const c = Object.keys(this.goodImpressionPool)
+    this.goodImpressionPreylist = c.map(uid => {
+      if ( PreyList.indexOf(uid) > -1 || this.mateHistory.indexOf(uid) > -1) {
         return null
       } else {
-        return ele
+        return uid
       }
     })
     this.goodImpressionPreylist = this.goodImpressionPreylist.filter(ele => ele)
   }
 
   @action setGoodImpressionFakePreys = () => {
-    this.goodImpressionPreys = this.goodImpressionPreylist.map((ele,index) => ({ key: ele.uid, time: ele.time, nickname: null, avatar: null, birthday: null }))
+    //this.goodImpressionPreys = this.goodImpressionPreylist.map((uid,index) => ({ key: uid, time: null nickname: null, avatar: null, birthday: null }))
   }
 
   @action setGoodImpressionRealPreys = () => {
-    const goodImpressionPromises = this.goodImpressionPreylist.map((ele,index) => (
-      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => (
+    const goodImpressionPromises = this.goodImpressionPreylist.map((uid,index) => (
+      this.firebase.database().ref('users/' + uid).once('value').then( snap => (
         {
-          key: ele.uid,
+          key: uid,
+          distance: this.getDistance(snap.val().latitude,snap.val().longitude),
           nickname: snap.val().nickname,
           avatar: snap.val().avatar,
           birthday: snap.val().birthday  
@@ -231,19 +248,28 @@ export default class FateStore {
   // mates
 
   @action addPreyToMatchPool = (uid,time) => {
-    this.matchPool.push({uid: uid, time: time})
+    //this.matchPool.push({uid: uid, time: time})
+    this.matchPool[uid] = time
   }
 
   @action filterMatchList = () => {
-    const a = _.cloneDeep(this.goodImpressionPool)
-    const b = _.cloneDeep(this.matchPool)
-    const wooerList = a.map(ele=> ele.uid)
-    const PreyList = b.map(ele=> ele.uid)
-    //console.log(wooerList)
-    //console.log(PreyList)
+    //const a = _.cloneDeep(this.goodImpressionPool)
+    //const b = _.cloneDeep(this.matchPool)
+    //const wooerList = a.map(ele=> ele.uid)
+    //const PreyList = b.map(ele=> ele.uid)
+    const wooerList = Object.keys(this.goodImpressionPool)
+    const PreyList = Object.keys(this.matchPool)
     this.matchPreylist = wooerList.map(uid => {
       if (PreyList.indexOf(uid) > -1) {
-        return uid
+        const time_a = this.goodImpressionPool[uid]
+        const time_b = this.matchPool[uid]
+        if (time_a > time_b) {
+          console.log('time_a > time_b')
+          return { uid: uid, time: time_a }
+        } else {
+          console.log('time_b > time_a')
+          return { uid: uid, time: time_b }
+        }
       } else {
         return null
       }
@@ -252,14 +278,15 @@ export default class FateStore {
   }
 
   @action setMatchFakePreys = () => {
-    this.matchPreys = this.matchPreylist.map((uid,index) => ({ key: uid, time: null, nickname: null, avatar: null, birthday: null }))
+    //this.matchPreys = this.matchPreylist.map((uid,index) => ({ key: uid, time: null, nickname: null, avatar: null, birthday: null }))
   }
 
   @action setMatchRealPreys = () => {
-    const matchPromises = this.matchPreylist.map((uid,index) => (
-      this.firebase.database().ref('users/' + uid).once('value').then( snap => (
+    const matchPromises = this.matchPreylist.map((ele,index) => (
+      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => (
         {
-          key: uid,
+          key: ele.uid,
+          time: ele.time,
           nickname: snap.val().nickname,
           avatar: snap.val().avatar,
           birthday: snap.val().birthday  
@@ -327,6 +354,17 @@ export default class FateStore {
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  getDistance = (latitude,longitude) => {
+    if (this.latitude && this.longitude && latitude && longitude) {
+      return geolib.getDistance(
+        {latitude: this.latitude, longitude: this.longitude},
+        {latitude: latitude, longitude: longitude}
+      )/1000
+    } else {
+      return '?'
+    }  
   }
 
 }
