@@ -35,7 +35,7 @@ export default class BaconRoutesContainer extends Component {
   }
 
   pay = async () => {
-    if (!Platform.OS === 'ios') {
+    if (!(Platform.OS === 'ios')) {
       const productId = 'android.test.purchased'// 'android.test.purchased'
       await InAppBilling.close()
       try {
@@ -46,7 +46,7 @@ export default class BaconRoutesContainer extends Component {
         }
         const transactionStatus = await InAppBilling.getPurchaseTransactionDetails(productId)
         // console.log('Transaction Status', transactionStatus);
-        console.log(transactionStatus.purchaseState)
+        //console.log(transactionStatus.purchaseState)
         if (transactionStatus.purchaseState === 'PurchasedSuccessfully') {
           this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
           this.SubjectStore.setVip(true)
