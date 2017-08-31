@@ -223,23 +223,41 @@ export default class SubjectStore {
   @action setLongitude = longitude => {
     this.longitude = longitude
   }
-  // hide function
+  // switch hide function
 
-  @action setHideMeetCute = () => {
+  @action switchHideMeetCute = () => {
     this.hideMeetCute = !this.hideMeetCute
   }
 
-  @action setHideMeetChance = () => {
+  @action switchHideMeetChance = () => {
     this.hideMeetChance = !this.hideMeetChance
   }
 
-  @action setHideVister = () => {
+  @action switchHideVister = () => {
     this.hideVister = !this.hideVister
   }
 
-  @action setHideMessage = () => {
+  @action switchHideMessage = () => {
     this.hideMessage = !this.hideMessage
   }
+  // set hide function
+  @action setHideMeetCute = boolen => {
+    this.hideMeetCute = boolen
+  }
+
+  @action setHideMeetChance = boolen => {
+    this.hideMeetChance = boolen
+  }
+
+  @action setHideVister = boolen => {
+    this.hideVister = boolen
+  }
+
+  @action setHideMessage = boolen => {
+    this.hideMessage = boolen
+  }
+
+  //
 
   @action setVisitConvSentToday = val => {
     this.visitConvSentToday = val

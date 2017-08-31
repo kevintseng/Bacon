@@ -53,15 +53,14 @@ export default class MeetCuteStore {
   }
 
   @action initialize = () => {
-    this.pool = new Array
+    this.pool = new Object
     this.preyList = new Array
-    this.preyListHistory = new Array
     this.haveNewPreys = false
     this.loading = false
     this.firstLoading = true
-    //this.imageLoading = false
-    //this.carouselLoading = false
+    this.firstLoad = false
     this.poolLastLenght = 0
+    this.poolLength = 0
     this.clean = false
     this.index = 0
     // user data
@@ -85,21 +84,27 @@ export default class MeetCuteStore {
   }
 
   @action addPreyToPool = (uid,birthday) => {
-    this.pool.push({uid: uid, birthday: birthday})
+    //this.pool.push({uid: uid, birthday: birthday})
+    this.pool[uid] = birthday
   }
 
-  @action setPreyList = async () => {
-    await localdb.getIdsForKey('preyListHistory').then(ids => {
-      this.preyListHistory = ids
+  @action setPreyList = () => {
+    localdb.getIdsForKey('preyListHistory').then(preyListHistory => {
+      this.serachLoop(preyListHistory)
     })
-    //console.log('this.preyListHistory : ' + this.preyListHistory)
+  }
+
+  @action serachLoop = async preyListHistory => {
     while (this.haveNewPreys === false) {
-      if ((this.poolLastLenght !== this.pool.length) || (this.clean === true)) {
-        this.poolLastLenght = this.pool.length
-        this.clean === false
-        this.preyList = _.cloneDeep(this.pool)
-        this.preyList = this.preyList.filter(ele => !(this.preyListHistory.includes(ele.uid))) // 排除 45 天
-        this.preyList = this.preyList.filter(ele => ( (calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= this.meetCuteMaxAge) ) ) // 過濾年紀
+      this.preyList = Object.keys(this.pool).map(uid => ({uid: uid, birthday: this.pool[uid]}))
+      this.poolLength = this.preyList.length
+      if ( (this.poolLength > this.poolLastLenght) || (this.clean === true) ) {
+        this.poolLastLenght = this.poolLength
+        this.clean = false
+        //this.preyList = this.pool.map(ele => ({}))
+        this.preyList = this.preyList.filter(ele => 
+          ( !(preyListHistory.includes(ele.uid)) && ele.birthday && ((calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= this.meetCuteMaxAge)) )
+        ) // 排除 45 天 // 過濾年紀
         this.shuffle(this.preyList)
         if (this.preyList.length > 0) {
           this.setFirstPrey()
@@ -107,18 +112,18 @@ export default class MeetCuteStore {
         }
       }
       await this.sleep(300)
-    }
+    }    
   }
 
   @action setFirstPrey = async () => {
+    this.firstLoad = true
     this.index = 0
     this.uid = this.preyList[this.index].uid
     runInAction(() => {
-      //this.firstLoading = true
       this.imageLoadingCount = 0
     })
-    await this.firebase.database().ref('users/' + this.uid).once('value', snap => {
-      if (snap.val()) {
+    await this.firebase.database().ref('users/' + this.uid).once('value', async snap => {
+      if (snap.val() && !(snap.val().hideMeetCute)) {
         const favorabilityDen = snap.val().favorabilityDen || 0
         this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
         runInAction(() => {
@@ -133,37 +138,29 @@ export default class MeetCuteStore {
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
         })
+        runInAction(() => {
+          this.haveNewPreys = true
+        })
+        localdb.save({
+          key: 'preyListHistory',
+          id: this.uid,
+          data: null,
+          expires: 1000 * 60   
+        })
       } else {
-        //this.initializeCourt()
+        this.pickNextPrey()
+        console.log('隱藏了')
       }
-    })
-    runInAction(() => {
-      this.haveNewPreys = true
     })
   }
 
   @action pickNextPrey = async () => {
-    localdb.save({
-      key: 'preyListHistory',
-      id: this.uid,
-      data: null,
-      expires: 1000 * 60   
-    })
-    //this.preyListHistory.push(this.uid)
     this.index = this.index + 1
     if (this.index === this.preyList.length) {
       this.haveNewPreys = false // 沒人了
-      //this.firstLoading = false
       this.setPreyList()
     } else {
       this.uid = this.preyList[this.index].uid
-      localdb.save({
-        key: 'preyListHistory',
-        id: this.uid,
-        data: null,
-        expires: 1000 * 60   
-      })
-      //this.preyListHistory.push(this.uid)
       this.fetchPrey()
     }
   }
@@ -173,8 +170,9 @@ export default class MeetCuteStore {
       this.loading = true
       this.imageLoadingCount = 0
     })
-    await this.firebase.database().ref('users/' + this.uid).once('value', snap =>{
-      if (snap.val()) {
+    await this.firebase.database().ref('users/' + this.uid).once('value', async snap => {
+      if (snap.val() && !(snap.val().hideMeetCute) ) {
+        // 過濾隱藏
         const favorabilityDen = snap.val().favorabilityDen || 0
         this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
         runInAction(() => {
@@ -189,9 +187,18 @@ export default class MeetCuteStore {
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
         })
+        runInAction(() => {
+          this.haveNewPreys = true
+        })
+        localdb.save({
+          key: 'preyListHistory',
+          id: this.uid,
+          data: null,
+          expires: 1000 * 60   
+        })
       } else {
-        alert('發生錯誤')
-        //this.initializeCourt()
+        this.pickNextPrey()
+        console.log('隱藏了')
       }
     })
   }
@@ -199,9 +206,8 @@ export default class MeetCuteStore {
   @action setOnLoadEnd = async () => {
     this.imageLoadingCount ++
     if (this.imageLoadingCount === this.albumToArray.length || this.albumToArray.length === 0) {
-      //console.warn(this.albumToArray.length)
       await this.sleep(100)
-      if (this.index == 0) {
+      if (this.firstLoad === true) {
         this.showFirstPrey()
       } else {
         this.showPrey()
@@ -216,6 +222,7 @@ export default class MeetCuteStore {
   }
 
   @action showFirstPrey = () => {
+    this.loading = false
     this.firstLoading = false
   }
 
@@ -226,17 +233,20 @@ export default class MeetCuteStore {
   @action cleanHistory = () => {
     localdb.getIdsForKey('preyListHistory').then(ids => {
     if (ids.length > 0) {
-        //this.preyListHistory = new Array
-        localdb.clearMapForKey('preyListHistory')
+      localdb.clearMapForKey('preyListHistory').then(()=>{
         this.clean = true
-      }
+        }
+      )}
     })
+  }
+
+  @action setfirstLoad = boolean => {
+    this.firstLoad = boolean
   }
 
   @action resetAge = () => {
     this.clean = true
     this.haveNewPreys = false
-    //this.firstLoading = false
   }
 
 

@@ -190,7 +190,7 @@ export default class SessionCheckScene extends Component {
     this.geoFire = new GeoFire(this.firebase.database().ref('/user_locations/'))
     this.geoQuery = this.geoFire.query({
         center: [latitude,longitude],
-        radius: 300
+        radius: 394 // 台灣從北到南394公里
     })
     this.meetChanceListener(this.geoQuery)
     this.geoFire.set(this.SubjectStore.uid,[latitude,longitude])
@@ -255,6 +255,14 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setConversations(snap.val().conversations)
           this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
           this.SubjectStore.setUnhandledPass(new Object(snap.val().unhandledPass) || {})
+          // hide
+          this.SubjectStore.setHideMeetCute(snap.val().hideMeetCute || false)
+          this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
+          this.SubjectStore.setHideVister(snap.val().hideVister || false)
+          this.SubjectStore.setHideMessage(snap.val().hideMessage || false)
+          // ages config
+          this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)  
+          this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 99)
           // 收藏
           //this.FateStore.setCollectionPreylist(new Object(snap.val().collect)) // Object
            //null(placeholder->邂逅) String
@@ -267,7 +275,7 @@ export default class SessionCheckScene extends Component {
         this.ControlStore.setSyncDetector(true) // 同步完成
         console.log(error)
       })
-    FastImage.preload(this.SubjectStore.albumToFlatList)
+    //FastImage.preload(this.SubjectStore.albumToFlatList)
     this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
     this.meetCuteListener() // 非同步邂逅
   }
@@ -298,19 +306,15 @@ export default class SessionCheckScene extends Component {
 
   visitorsListener = () => {
     this.visitorsQuery = this.firebase.database().ref('visitors').orderByChild('prey').equalTo(this.SubjectStore.uid)
-    this.visitorsQuery.on('value', snap => {
-      snap.forEach( childsnap => {
-        this.FateStore.addPreyToVisitorsPool(childsnap.val().wooer,childsnap.val().time)
-      })
+    this.visitorsQuery.on('child_added', child => {
+      this.FateStore.addPreyToVisitorsPool(child.val().wooer,child.val().time)
     })
   }
 
   goodImpressionListener = () => {
     this.goodImpressionQuery = this.firebase.database().ref('goodImpression').orderByChild('prey').equalTo(this.SubjectStore.uid)
     this.goodImpressionQuery.on('child_added', child => {
-      //snap.forEach( childsnap => {
-        this.FateStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
-      //})
+      this.FateStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
     })
   }
 
@@ -400,9 +404,11 @@ export default class SessionCheckScene extends Component {
   mq = sexualOrientation => {
     this.meetCuteQuery = this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation)
     this.meetCuteQuery.on('child_added', child => {
-      if (child.val().hideMeetChance || child.val().deleted) {
-        // 隱身了 或 帳號刪除了
-      } else {
+      this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
+    })
+    this.meetCuteQuery.on('child_changed', child => {
+      // birthday changed
+      if (this.MeetCuteStore.pool[child.key] !== child.val().birthday) {
         this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
       }
     })

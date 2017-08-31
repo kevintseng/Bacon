@@ -26,8 +26,8 @@ export default class GoodImpressionContainer extends Component {
   }
 
   componentWillMount() {
-    this.FateStore.setGoodImpressionPreylist()
     //this.FateStore.setGoodImpressionFakePreys()
+    this.FateStore.setGoodImpressionPreylist()
   }
 
   componentDidMount = async () => {

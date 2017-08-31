@@ -39,6 +39,7 @@ export default class MateContainer extends Component {
   }
 
   componentWillMount() {
+    //this.FateStore.setMatchFakePreys()
     this.FateStore.filterMatchList()
   }
 
