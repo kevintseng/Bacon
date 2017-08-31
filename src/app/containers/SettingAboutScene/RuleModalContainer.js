@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { View, Modal, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
 
-import Policy from '../../../configs/Policy'
+import Rule from '../../../configs/Rule'
 
 const { width, height } = Dimensions.get('window')
 
@@ -21,20 +21,20 @@ const styles = {
     padding: 10    
   }
 }
-@inject('SignUpStore') @observer
-export default class PolicyModalContainer extends Component {
+@inject('ControlStore') @observer
+export default class RuleModalContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpStore = this.props.SignUpStore
+    this.ControlStore = this.props.ControlStore
   }
 
   render() {
     return(
-        <Modal animationType={"fade"} transparent={true} visible={this.SignUpStore.policyModal} onRequestClose={ this.SignUpStore.setPolicyModal } >
+        <Modal animationType={"fade"} transparent={true} visible={this.ControlStore.settingRuleModal} onRequestClose={ this.ControlStore.setSettingRuleModal } >
           <TouchableOpacity
             activeOpacity={1}
-            onPress={ this.SignUpStore.setPolicyModal }
+            onPress={ this.ControlStore.setSettingRuleModal }
             style={{
               backgroundColor: 'rgba(52, 52, 52, 0.4)',
               flex: 1,
@@ -56,13 +56,13 @@ export default class PolicyModalContainer extends Component {
             >
               <View style={{justifyContent: 'space-between'}}>
                 <View>
-                  <Text style={ styles.title }>服務條款</Text>
+                  <Text style={ styles.title }>個資保護政策</Text>
                 </View>
                 <ScrollView>
-                  <Policy/>
+                  <Rule/>
                 </ScrollView>
                 <View>
-                  <Text style={ styles.title } onPress={ this.SignUpStore.setPolicyModal }>我知道了!</Text>
+                  <Text style={ styles.title } onPress={ this.ControlStore.setSettingRuleModal }>我知道了!</Text>
                 </View>
               </View>
             </TouchableOpacity>

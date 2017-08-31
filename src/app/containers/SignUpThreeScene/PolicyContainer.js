@@ -14,7 +14,6 @@ export default class PolicyContainer extends Component {
 
   render() {
     return(
-
         <Policy
           check={ this.SignUpStore.policyDetector }
           onPressCheckBox={ this.SignUpStore.switchPolicyDetector }
