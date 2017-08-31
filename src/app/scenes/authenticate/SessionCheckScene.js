@@ -202,8 +202,12 @@ export default class SessionCheckScene extends Component {
     )
     this.SubjectStore.setLatitude(latitude)
     this.SubjectStore.setLongitude(longitude)
+    this.MeetCuteStore.setLatitude(latitude)
+    this.MeetCuteStore.setLongitude(longitude) 
+    this.MeetChanceStore.setLatitude(latitude)
+    this.MeetChanceStore.setLongitude(longitude) 
     this.FateStore.setLatitude(latitude)
-    this.FateStore.setLongitude(longitude)    
+    this.FateStore.setLongitude(longitude) 
   }
 
   uploadEmailVerity = () => {
