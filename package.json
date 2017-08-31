@@ -29,7 +29,7 @@
     "react-native-animatable": "^1.2.3",
     "react-native-billing": "^2.3.1",
     "react-native-datepicker": "^1.6.0",
-    "react-native-drawer": "^2.3.0",
+    "react-native-drawer": "2.3.0",
     "react-native-dropdown-menu": "kaymingmobile/react-native-dropdown-menu#bacon",
     "react-native-elements": "^0.15.0",
     "react-native-exit-app": "kaymingmobile/react-native-exit-app#master",

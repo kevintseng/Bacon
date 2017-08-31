@@ -4007,11 +4007,10 @@ react-native-datepicker@^1.6.0:
   dependencies:
     moment "2.x.x"
 
-react-native-drawer@^2.3.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-drawer/-/react-native-drawer-2.5.0.tgz#022cba5c0516126a9fc9cce3185cb46c644b51c4"
+react-native-drawer@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-drawer/-/react-native-drawer-2.3.0.tgz#a0369ec80ff0b61c9f152dbdea91fe76c843113a"
   dependencies:
-    prop-types "^15.5.8"
     tween-functions "^1.0.1"
 
 react-native-dropdown-menu@kaymingmobile/react-native-dropdown-menu#bacon:
