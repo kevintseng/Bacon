@@ -52,31 +52,32 @@ export default class DrawerScene extends Component {
 
   goToMeetChance = () => {
     //this._drawer.close()
-    Actions.MeetChance({type: 'reset'})
-    //Actions.refresh({ key: 'Drawer', open: false })
+    Actions.MeetChance({type: 'replace'})
   }
 
   goToLine() {
-    Actions.LineList({type: 'reset'})
+    //this._drawer.close()
+    Actions.LineList({type: 'replace'})
   }
 
   goToMeetCute = () => {
     //this._drawer.close()
-    Actions.MeetCute({type: 'reset'})
+    Actions.MeetCute({type: 'replace'})
   }
 
   goToFate = () => {
     //this._drawer.close()
-    Actions.Fate({type: 'reset'})
+    Actions.Fate({type: 'replace'})
   }
 
   goToArticle = () => {
-    Actions.Article({type: 'reset'})
+    //this._drawer.close()
+    Actions.Article({type: 'replace'})
   }
 
   goToSetting = () => {
     //this._drawer.close()
-    Actions.Setting({type: 'reset'})
+    Actions.Setting({type: 'replace'})
   }
 
   render() {

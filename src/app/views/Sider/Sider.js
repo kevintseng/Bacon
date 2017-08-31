@@ -22,7 +22,7 @@ const styles = {
     textAlign: 'center',
     color: '#606060',
     fontWeight: '500',
-    fontSize: 17,
+    fontSize: 18,
     width: 130,
     flexWrap: "wrap",
   },
