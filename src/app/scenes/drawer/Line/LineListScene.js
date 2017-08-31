@@ -65,6 +65,7 @@ export default class LineListScene extends Component {
   }
 
   componentWillMount() {
+    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {

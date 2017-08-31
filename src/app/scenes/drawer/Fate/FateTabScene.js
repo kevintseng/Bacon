@@ -14,10 +14,7 @@ export default class FateTabScene extends Component {
   }
 
   componentWillMount () {
-  }
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
+    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   render() {

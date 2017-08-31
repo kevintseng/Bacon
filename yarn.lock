@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@expo/react-native-action-sheet@cribspot/react-native-action-sheet#b422c54f26d30b9e85eb14a882ea9cec38600730":
+"@expo/react-native-action-sheet@github:cribspot/react-native-action-sheet#b422c54f26d30b9e85eb14a882ea9cec38600730":
   version "1.0.0"
   resolved "https://codeload.github.com/cribspot/react-native-action-sheet/tar.gz/b422c54f26d30b9e85eb14a882ea9cec38600730"
   dependencies:
@@ -1417,8 +1417,8 @@ core-js@^1.0.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
 core-js@^2.2.2, core-js@^2.4.0, core-js@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.0.tgz#569c050918be6486b3837552028ae0466b717086"
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.1.tgz#ae6874dc66937789b80754ff5428df66819ca50b"
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -2606,8 +2606,8 @@ inquirer@^0.12.0:
     through "^2.3.6"
 
 inquirer@^3.0.6:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-3.2.2.tgz#c2aaede1507cc54d826818737742d621bef2e823"
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-3.2.3.tgz#1c7b1731cf77b934ec47d22c9ac5aa8fe7fbe095"
   dependencies:
     ansi-escapes "^2.0.0"
     chalk "^2.0.0"
@@ -2937,8 +2937,8 @@ jsx-ast-utils@^1.4.0:
   resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-1.4.1.tgz#3867213e8dd79bf1e8f2300c0cfc1efb182c0df1"
 
 jsx-ast-utils@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-2.0.0.tgz#ec06a3d60cf307e5e119dac7bad81e89f096f0f8"
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-2.0.1.tgz#e801b1b39985e20fffc87b40e3748080e2dcac7f"
   dependencies:
     array-includes "^3.0.3"
 
@@ -4117,7 +4117,7 @@ react-native-invertible-scroll-view@1.0.0:
     react-clone-referenced-element "^1.0.1"
     react-native-scrollable-mixin "^1.0.1"
 
-react-native-lightbox@oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875:
+"react-native-lightbox@github:oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875":
   version "0.6.0"
   resolved "https://codeload.github.com/oblador/react-native-lightbox/tar.gz/c84a8543d4511fe6a44c3d7820747c9c1bddd875"
   dependencies:

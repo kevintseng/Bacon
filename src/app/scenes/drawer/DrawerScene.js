@@ -44,37 +44,37 @@ export default class DrawerScene extends Component {
   }
 
   goToAboutMe = () => {
-    this._drawer.close()
+    //this._drawer.close()
     Actions.AboutMe({type: 'reset'})
   }
 
   goToMeetChance = () => {
-    this._drawer.close()
+    //this._drawer.close()
     Actions.MeetChance({type: 'replace'})
   }
 
   goToLine = () => {
-    this._drawer.close()
+    //this._drawer.close()
     Actions.LineList({type: 'replace'})
   }
 
   goToMeetCute = () => {
-    this._drawer.close()
+    //this._drawer.close()
     Actions.MeetCute({type: 'replace'})
   }
 
   goToFate = () => {
-    this._drawer.close()
+    //this._drawer.close()
     Actions.Fate({type: 'replace'})
   }
 
   goToArticle = () => {
-    this._drawer.close()
+    //this._drawer.close()
     Actions.Article({type: 'replace'})
   }
 
   goToSetting = () => {
-    this._drawer.close()
+    //this._drawer.close()
     Actions.Setting({type: 'replace'})
   }
 
@@ -84,12 +84,12 @@ export default class DrawerScene extends Component {
 
     return (
       <Drawer
-        //ref='navigation'
-        ref={(ref) => this._drawer = ref}
+        ref='navigation'
+        //ref={(ref) => this._drawer = ref}
         type='overlay'
         styles={ drawerStyles }
-        onOpen={() => Actions.refresh({ key: state.key, open: true })}
-        onClose={() => Actions.refresh({ key: state.key, open: false })}
+        //onOpen={() => Actions.refresh({ key: state.key, open: true })}
+        //onClose={() => Actions.refresh({ key: state.key, open: false })}
         open={ state.open }
         content={
           <Sider

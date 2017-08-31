@@ -30,12 +30,13 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   componentWillMount() {
+    Actions.refresh({ key: 'Drawer', open: false })
     //this.MeetChanceStore.setFakePreys()
     this.MeetChanceStore.setPreyList()
   }
 
-  componentDidMount = async() => {
-    await this.sleep(260)
+  componentDidMount = async () => {
+    await this.sleep(250)
     this.MeetChanceStore.setRealPreys()
   }
 
