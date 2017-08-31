@@ -4141,6 +4141,10 @@ react-native-modal@^2.4.0:
     prop-types "15.5.10"
     react-native-animatable "^1.2.3"
 
+react-native-orientation-locker@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.0.3.tgz#27c85af1a58cc3529f666fc0437b1c786873c1b2"
+
 react-native-parsed-text@0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/react-native-parsed-text/-/react-native-parsed-text-0.0.18.tgz#b528eb6f1410f552d2e3fd8d80da7ff0a7890c71"
