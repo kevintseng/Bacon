@@ -49,8 +49,6 @@ export default class MeetCuteCourtScene extends Component {
   }
 
   componentWillMount() {
-    //alert('aaaa')
-    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount = async () => {

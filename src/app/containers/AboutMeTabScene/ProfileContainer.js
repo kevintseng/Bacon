@@ -24,8 +24,6 @@ export default class ProfileContainer extends Component {
   }
 
   componentWillMount() {
-    console.log(this.SubjectStore.hobbiesToFlatList)
-    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   goToEditDisplayName = () => {

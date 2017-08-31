@@ -43,7 +43,6 @@ export default class AlbumContainer extends Component {
   }
 
   componentWillMount() {
-    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   openPicZoom = key => {

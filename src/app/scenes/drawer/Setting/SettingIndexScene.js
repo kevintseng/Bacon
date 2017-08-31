@@ -12,8 +12,6 @@ import Knife from '../../../views/Knife/Knife'
 export default class SettingIndexScene extends Component {
 
   componentWillMount() {
-    Actions.refresh({ key: 'Drawer', open: false })
-    //await this.sleep(250)
   }
 
   sleep = ms => {
