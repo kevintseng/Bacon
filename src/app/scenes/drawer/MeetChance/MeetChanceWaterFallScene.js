@@ -30,7 +30,6 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   componentWillMount() {
-    Actions.refresh({ key: 'Drawer', open: false })
     //this.MeetChanceStore.setFakePreys()
     this.MeetChanceStore.setPreyList()
   }
@@ -41,7 +40,7 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   goToAboutMeTab = () => {
-    Actions.AboutMe({type: 'reset'})
+    Actions.AboutMe({type: 'replace'})
   }
 
   onPress = async uid => {

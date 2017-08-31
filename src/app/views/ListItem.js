@@ -7,7 +7,9 @@ const styles = {
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     paddingTop: 7, 
-    paddingBottom: 7 
+    paddingBottom: 7,
+    backgroundColor: 'rgba(192,192,192,0.3)',
+    height: 50
   },
   badge: {
     width: 40,

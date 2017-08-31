@@ -8,7 +8,6 @@ export default class BulletinContainer extends Component {
   }
 
   componentWillMount() {
-    //Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {

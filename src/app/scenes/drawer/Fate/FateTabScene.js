@@ -14,7 +14,6 @@ export default class FateTabScene extends Component {
   }
 
   componentWillMount () {
-    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   sleep = ms => {

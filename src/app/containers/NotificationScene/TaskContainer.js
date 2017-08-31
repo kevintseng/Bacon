@@ -8,7 +8,6 @@ export default class TaskContainer extends Component {
   }
 
   componentWillMount() {
-    //Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {
