@@ -19,8 +19,10 @@ export default class CityChooseContainer extends Component {
       country: 'TW'
     })
     .then((place) => {
-    //console.log(place);
-    this.SignUpStore.setAddress(place.address)
+    //console.log(place)
+      this.SignUpStore.setAddress(place.address)
+      this.SignUpStore.setLatitude(place.latitude)
+      this.SignUpStore.setLongitude(place.longitude)
     }).catch(error => console.log(error.message))
   }
 

@@ -76,7 +76,7 @@ export default class VisitorsContainer extends Component {
                 age={ calculateAge(item.birthday) }
                 onPress={()=>this.onPress(item.key)}
               >
-                <Text style={styles.child}>{this.duration(item.time)}</Text>
+                <Text style={styles.child}>{this.duration(item.time) + '前來訪'}</Text>
               </CookieList>)
           } 
         />

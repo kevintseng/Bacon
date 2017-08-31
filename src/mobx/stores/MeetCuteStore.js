@@ -1,5 +1,6 @@
 import { observable, action, computed, useStrict, runInAction } from 'mobx'
 import _ from 'lodash'
+import geolib from 'geolib'
 import { calculateAge } from '../../app/Utils'
 import localdb from '../../configs/localdb'
 
@@ -20,8 +21,11 @@ export default class MeetCuteStore {
   @observable hobbies
   @observable album
   @observable vip
+  @observable distance
   @observable emailVerified
   @observable photoVerified
+  @observable latitude
+  @observable longitude
   // config
   //@observable meetCuteMinAge
   //@observable meetCuteMaxAge  
@@ -69,8 +73,11 @@ export default class MeetCuteStore {
     this.hobbies = new Object
     this.album = new Object
     this.vip = false
+    this.distance = null
     this.emailVerified = false
     this.photoVerified = false
+    this.latitude = null
+    this.longitude = null
     // config
     this.meetCuteMinAge = 18
     this.meetCuteMaxAge = 99
@@ -122,6 +129,7 @@ export default class MeetCuteStore {
           this.hobbies = snap.val().hobbies || new Object
           this.album = snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
+          this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
         })
@@ -177,6 +185,7 @@ export default class MeetCuteStore {
           this.hobbies = snap.val().hobbies || new Object
           this.album = snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
+          this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
         })
@@ -239,6 +248,14 @@ export default class MeetCuteStore {
     this.meetCuteMaxAge = int
   }
 
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
+  }
+
   shuffle = o => {
     for(let j, x, i = o.length; i;) {
       j = Math.floor(Math.random() * i);
@@ -251,6 +268,17 @@ export default class MeetCuteStore {
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  getDistance = (latitude,longitude) => {
+    if (this.latitude && this.longitude && latitude && longitude) {
+      return geolib.getDistance(
+        {latitude: this.latitude, longitude: this.longitude},
+        {latitude: latitude, longitude: longitude}
+      )/1000
+    } else {
+      return '?'
+    }  
   }
 
 }
