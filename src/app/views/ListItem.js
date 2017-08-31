@@ -7,7 +7,7 @@ const styles = {
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     //paddingTop: 7, 
-    //paddingBottom: 7,
+    paddingRight: 7,
     alignItems: 'flex-start',
     //backgroundColor: 'rgba(192,192,192,0.3)',
     height: 45
