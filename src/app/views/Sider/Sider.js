@@ -23,7 +23,7 @@ const styles = {
     color: '#606060',
     fontWeight: '500',
     fontSize: 20,
-    width: 130,
+    //width: 130,
     flexWrap: "wrap",
   },
   badge: {
@@ -63,7 +63,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={styles.displayName}>{ displayName }</Text>
+              <Text style={styles.displayName}>{ displayName + ' '}</Text>
             </View>
             <View style={styles.badge}>
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
