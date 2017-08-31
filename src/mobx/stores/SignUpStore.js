@@ -14,6 +14,8 @@ export default class SignUpStore {
   @observable policyDetector
   @observable avatar
   @observable album
+  @observable latitude
+  @observable longitude
   // error handle
   @observable emailIndicator
   @observable passwordIndicator
@@ -49,6 +51,8 @@ export default class SignUpStore {
     this.nicknameIndicator = null
     this.birthdayDetector = false
     this.birthdayIndicator = null
+    this.latitude = 0
+    this.longitude = 0
     // sign up error
     this.signUpIndicator = null
     // modal
@@ -97,6 +101,14 @@ export default class SignUpStore {
     //this.album = Object.assign({},this.album)
   }
 
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
+  }
+  
   @action setPolicyModal = () => {
     this.policyModal = !this.policyModal
   }

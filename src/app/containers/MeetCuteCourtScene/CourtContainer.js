@@ -59,7 +59,7 @@ export default class CourtContainer extends Component {
 
 
   checkMatch = () => {
-    const goodImpressList = this.FateStore.goodImpressionPool.map(ele => ele.uid)
+    const goodImpressList = Object.keys(this.FateStore.goodImpressionPool)
     if (goodImpressList.indexOf(this.MeetCuteStore.uid) > -1 ) {
       return true
     } else {
