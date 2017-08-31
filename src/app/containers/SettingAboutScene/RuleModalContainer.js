@@ -29,20 +29,24 @@ export default class RuleModalContainer extends Component {
     this.ControlStore = this.props.ControlStore
   }
 
+  close = () => {
+    //this.ControlStore.setSettingRuleModal
+  }
+
   render() {
     return(
-        <Modal animationType={"fade"} transparent={true} visible={this.ControlStore.settingRuleModal} onRequestClose={ this.ControlStore.setSettingRuleModal } >
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={ this.ControlStore.setSettingRuleModal }
+        <Modal animationType={"fade"} transparent={true} visible={this.ControlStore.settingRuleModal} onRequestClose={ this.close } >
+          <View
+            //activeOpacity={1}
+            //onPress={ this.ControlStore.setSettingRuleModal }
             style={{
               backgroundColor: 'rgba(52, 52, 52, 0.4)',
               flex: 1,
               justifyContent: 'center'
             }}
           >
-            <TouchableOpacity
-              activeOpacity={1}
+            <View
+              //activeOpacity={1}
               style={{
                 backgroundColor: 'white',
                 alignSelf: 'center',
@@ -62,11 +66,11 @@ export default class RuleModalContainer extends Component {
                   <Rule/>
                 </ScrollView>
                 <View>
-                  <Text style={ styles.title } onPress={ this.ControlStore.setSettingRuleModal }>我知道了!</Text>
+                  <Text style={ styles.title } onPress={ this.ControlStore.setSettingRuleModal }>我知道了</Text>
                 </View>
               </View>
-            </TouchableOpacity>
-          </TouchableOpacity>
+            </View>
+          </View>
         </Modal>
     )
   }

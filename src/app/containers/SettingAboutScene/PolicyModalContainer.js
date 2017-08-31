@@ -29,20 +29,24 @@ export default class PolicyModalContainer extends Component {
     this.ControlStore = this.props.ControlStore
   }
 
+  close = () => {
+    //this.ControlStore.setSettingPolicyModal
+  }
+
   render() {
     return(
-        <Modal animationType={"fade"} transparent={true} visible={this.ControlStore.settingPolicyModal} onRequestClose={ this.ControlStore.setSettingPolicyModal } >
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={ this.ControlStore.setSettingPolicyModal }
+        <Modal animationType={"fade"} transparent={true} visible={this.ControlStore.settingPolicyModal} onRequestClose={ this.close } >
+          <View
+            //activeOpacity={1}
+            //onPress={ this.ControlStore.setSettingPolicyModal }
             style={{
               backgroundColor: 'rgba(52, 52, 52, 0.4)',
               flex: 1,
               justifyContent: 'center'
             }}
           >
-            <TouchableOpacity
-              activeOpacity={1}
+            <View
+              //activeOpacity={1}
               style={{
                 backgroundColor: 'white',
                 alignSelf: 'center',
@@ -62,11 +66,11 @@ export default class PolicyModalContainer extends Component {
                   <Policy/>
                 </ScrollView>
                 <View>
-                  <Text style={ styles.title } onPress={ this.ControlStore.setSettingPolicyModal }>我知道了!</Text>
+                  <Text style={ styles.title } onPress={ this.ControlStore.setSettingPolicyModal }>我知道了</Text>
                 </View>
               </View>
-            </TouchableOpacity>
-          </TouchableOpacity>
+            </View>
+          </View>
         </Modal>
     )
   }
