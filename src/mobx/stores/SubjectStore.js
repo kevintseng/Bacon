@@ -32,6 +32,8 @@ export default class SubjectStore {
   @observable emailVerified
   @observable photoVerified
   @observable radar
+  @observable latitude
+  @observable longitude
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -118,6 +120,8 @@ export default class SubjectStore {
       "活耀度": 0,
       "魅力值": 0,
     }]
+    this.latitude = null
+    this.longitude = null
     this.unhandledPass = new Object
   }
 
@@ -210,6 +214,14 @@ export default class SubjectStore {
 
   @action setRadar = radar => {
     this.radar = radar
+  }
+
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
   }
   // hide function
 

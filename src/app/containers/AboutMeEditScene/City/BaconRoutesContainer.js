@@ -18,6 +18,8 @@ export default class BaconRoutesContainer extends Component {
   buttonOnPress = () => {
     if (this.SubjectEditStore.address) {
       this.firebase.database().ref('users/' + this.SubjectStore.uid + '/address').set(this.SubjectEditStore.address)
+      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/latitude').set(this.SubjectEditStore.latitude)
+      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/longitude').set(this.SubjectEditStore.longitude)
       this.SubjectStore.setAddress(this.SubjectEditStore.address)
       Actions.AboutMeTab({type: 'reset'})
     } else {

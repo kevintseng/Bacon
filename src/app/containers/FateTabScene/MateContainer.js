@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
+import Moment from 'moment'
 
 import { calculateAge } from '../../Utils'
 import CookieList from '../../views/CookieList'
@@ -39,7 +40,6 @@ export default class MateContainer extends Component {
 
   componentWillMount() {
     this.FateStore.filterMatchList()
-    //this.FateStore.setMatchFakePreys()
   }
 
   componentDidMount = async () => {
@@ -83,7 +83,7 @@ export default class MateContainer extends Component {
               >
                 <View style={styles.view}>
                   <Text style={styles.text}>你們在</Text>
-                  <Text style={styles.middleText}> 2017年五月 </Text>
+                  <Text style={styles.middleText}>{ Moment(item.time).format('LL') }</Text>
                   <Text style={styles.text}>互有好感</Text>
                 </View>
               </CookieList>
@@ -94,3 +94,9 @@ export default class MateContainer extends Component {
     )
   }
 }
+
+/*
+    Moment(item.time).updateLocale('zh-tw', MomentLocale).format('LL')
+
+Moment(item.time).locale('zh-tw').format('LL')
+*/

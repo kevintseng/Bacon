@@ -4,6 +4,7 @@ import android.app.Application;
 import com.horcrux.svg.SvgPackage;
 import com.idehub.Billing.InAppBillingBridgePackage;
 import com.facebook.react.ReactApplication;
+import org.wonday.orientation.OrientationPackage;
 import com.rnfs.RNFSPackage;
 import com.github.wumke.RNExitApp.RNExitAppPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new OrientationPackage(),
             new RNFSPackage(),
             new RNExitAppPackage(),
             new SvgPackage(),

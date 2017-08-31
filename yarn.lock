@@ -2303,6 +2303,10 @@ geofire@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/geofire/-/geofire-4.1.2.tgz#031632e757605e9b885bd6e8febaef7a0e85869f"
 
+geolib@^2.0.23:
+  version "2.0.23"
+  resolved "https://registry.yarnpkg.com/geolib/-/geolib-2.0.23.tgz#7b2f2f597277f710b604a0c669697aa77982f522"
+
 get-caller-file@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.2.tgz#f702e63127e7e231c160a80c1554acb70d5047e5"
@@ -4142,6 +4146,10 @@ react-native-modal@^2.4.0:
   dependencies:
     prop-types "15.5.10"
     react-native-animatable "^1.2.3"
+
+react-native-orientation-locker@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.0.3.tgz#27c85af1a58cc3529f666fc0437b1c786873c1b2"
 
 react-native-parsed-text@0.0.18:
   version "0.0.18"

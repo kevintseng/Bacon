@@ -1,5 +1,6 @@
 import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx'
 import _ from 'lodash'
+import geolib from 'geolib'
 import { calculateAge } from '../../app/Utils'
 
 useStrict(true)
@@ -18,6 +19,7 @@ export default class MeetChanceStore {
   @observable hobbies
   @observable album
   @observable vip
+  @observable distance
   @observable emailVerified
   @observable photoVerified
   //@observable synchronize
@@ -69,13 +71,24 @@ export default class MeetChanceStore {
     this.hobbies = new Object
     this.album = new Object
     this.vip = false
+    this.distance = null
     this.emailVerified = false
     this.photoVerified = false
+    this.latitude = null
+    this.longitude = null
     // config
     this.meetChanceMinAge = 18
     this.meetChanceMaxAge = 99
     //
     this.fetchPreyQuery
+  }
+
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
   }
 
   // pool
@@ -173,6 +186,7 @@ export default class MeetChanceStore {
           this.hobbies = snap.val().hobbies || new Object
           this.album = snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
+          this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
           this.loading = false
@@ -210,6 +224,17 @@ export default class MeetChanceStore {
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  getDistance = (latitude,longitude) => {
+    if (this.latitude && this.longitude && latitude && longitude) {
+      return geolib.getDistance(
+        {latitude: this.latitude, longitude: this.longitude},
+        {latitude: latitude, longitude: longitude}
+      )/1000
+    } else {
+      return '?'
+    }  
   }
 
 }
