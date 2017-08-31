@@ -6,8 +6,9 @@ const styles = {
   listItems: {
     flexDirection: 'row', 
     justifyContent: 'space-between', 
-    paddingTop: 7, 
-    paddingBottom: 7,
+    //paddingTop: 7, 
+    //paddingBottom: 7,
+    alignItems: 'flex-start',
     //backgroundColor: 'rgba(192,192,192,0.3)',
     height: 45
   },
@@ -38,7 +39,7 @@ const styles = {
     textAlign: 'center',
     color: '#606060',
     fontWeight: 'normal', 
-    fontSize: 17
+    fontSize: 16
   },
   _container: {
     backgroundColor: 'red'    

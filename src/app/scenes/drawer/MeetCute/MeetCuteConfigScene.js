@@ -50,7 +50,7 @@ export default class MeetCuteConfigScene extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
