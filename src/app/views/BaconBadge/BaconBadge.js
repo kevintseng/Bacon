@@ -6,7 +6,7 @@ import { observer } from 'mobx-react'
 const BaconBadgeYes = observer(({ text, onPress }) => {
   return(
     <TouchableOpacity onPress={onPress}>
-      <View style={{margin: 10, flexDirection: 'row'}}>
+      <View style={{margin: 7, flexDirection: 'row'}}>
         <Badge containerStyle={{ backgroundColor: 'white', borderColor: '#d63768', borderWidth: 1}}>
           <Text style={{color: '#d63768'}}>{ text }</Text>
         </Badge>
@@ -18,7 +18,7 @@ const BaconBadgeYes = observer(({ text, onPress }) => {
 const BaconBadgeNo = observer(({ text, onPress }) => {
   return(
     <TouchableOpacity onPress={onPress}>
-      <View style={{margin: 10, flexDirection: 'row'}}>
+      <View style={{margin: 7, flexDirection: 'row'}}>
         <Badge containerStyle={{ paddingLeft: 20, backgroundColor: 'white', borderColor: '#d63768', borderWidth: 1}}>
           <Text style={{color: '#d63768'}}>{ text }</Text>
         </Badge>

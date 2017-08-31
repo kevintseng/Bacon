@@ -22,13 +22,13 @@ export default class HotBadgeContainer extends Component {
     return(
       <View style={{flex: 1}}>
         <View style={{alignItems: 'center'}}><Text style={{color: '#d63768'}}>熱門興趣提示</Text></View>
-          <View style={{borderColor: '#d63768',marginTop: 10, marginLeft: 8, height: 140, width, flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start'}}>
+          <View style={{borderColor: '#d63768',marginTop: 10, height: 140, width, flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center'}}>
             {
               DefaultInterests.map(item => (
-                                        <View key={item.key} style={{minWidth: width/4}}>
+                                       
 
                   <BaconBadgeYes key={item.key} text={item.key} onPress={ () => { this.SubjectEditStore.addHobby(item.key) }}/>
-                  </View>
+                  
                 ))
               }
           </View>

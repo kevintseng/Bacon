@@ -244,7 +244,7 @@ export default class Routes extends Component {
               </Scene>
 
               <Scene key="AboutMe" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
-                <Scene key="AboutMeTab" title="關於我" renderLeftButton={this.baconMenu} renderRightButton={this.baconToolAboutMe} component={AboutMeTabScene} />
+                <Scene key="AboutMeTab" title="關於我" renderLeftButton={this.baconMenu}  component={AboutMeTabScene} />
                 <Scene key="AboutMeEdit" title="關於我" renderBackButton={this.baconArrow} component={AboutMeEditScene} />
                 <Scene key="AboutMeBoard" title="通知" renderBackButton={this.baconArrow} component={AboutMeBoardScene} />
               </Scene>
@@ -279,3 +279,4 @@ export default class Routes extends Component {
     )
   }
 }
+// renderRightButton={this.baconToolAboutMe}
