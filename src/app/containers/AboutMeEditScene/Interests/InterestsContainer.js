@@ -31,10 +31,10 @@ export default class Interests extends Component {
         <View style={{position: 'absolute', top: 10,  alignSelf: 'center'}}>
           <BadgeWallContainer/>
         </View>
-        <View style={{position: 'absolute', top: 160, alignSelf: 'center'}}>
+        <View style={{position: 'absolute', top: 180, alignSelf: 'center'}}>
           <InputBadgeContainer/>
         </View>
-        <View style={{position: 'absolute', top: 210, alignSelf: 'center'}}>
+        <View style={{position: 'absolute', top: 230, alignSelf: 'center'}}>
           <HotBadgeContainer/>
         </View>
         <View style={{ position: 'absolute', bottom: 0}}>

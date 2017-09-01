@@ -19,7 +19,7 @@ export default class BadgeWallContainer extends Component {
 
   render() {
     return(
-          <View style={{height: 140, width: width - 8, marginLeft: 8}}>
+          <View style={{height: 158, width: width - 8, marginLeft: 8}}>
             <ScrollView>
               <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start'}}>
                 {
