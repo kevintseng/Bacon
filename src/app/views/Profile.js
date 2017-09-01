@@ -21,7 +21,8 @@ const styles = {
     color: '#606060',
     letterSpacing: 3,
     fontFamily: 'NotoSans',
-    fontWeight: 'normal'   
+    fontWeight: 'normal',
+    fontSize: 14   
   },
   titleStyle: {
     position: 'relative', 

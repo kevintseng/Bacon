@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native'
 
+const { width } = Dimensions.get('window')
 
 const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance, showDistance, showBlockade}) => (
-  <View>
+  <View style={{width: width*0.8}}>
     <View style={{flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
       <Image style={{marginRight: 5}} source={verityEmail ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
       <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>{ displayName }</Text>
@@ -11,22 +12,22 @@ const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance
       <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>{ age }</Text>
     </View>
 
-    <View style={{marginTop: 10, alignSelf: 'center', alignItems: 'center', paddingRight: 20, paddingLeft: 20}}><Text style={{fontSize: 10,color: '#606060',textAlign: 'center'}}>{ bio }</Text></View>
+    <View style={{marginTop: 10, alignSelf: 'center', alignItems: 'center', paddingRight: 20, paddingLeft: 20}}><Text style={{fontSize: 13,color: '#606060',textAlign: 'center'}}>{ bio || '?' }</Text></View>
     
     <View style={{marginTop: 10, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
       <Image style={{marginRight: 5}} source={require('./img/ico_meet_globe.png')}/>
-      <Text style={{fontSize: 10,color: '#606060',fontFamily: 'NotoSans'}}>{ langs }</Text>
+      <Text style={{fontSize: 13,color: '#606060',fontFamily: 'NotoSans'}}>{ langs || '?' }</Text>
     </View>
     { showDistance &&
       <View style={{marginTop: 10, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
         <Image style={{marginRight: 5}} source={require('./img/ico_meet_locate.png')}/>
-        <Text style={{fontSize: 10,color: '#606060',fontFamily: 'NotoSans'}}>你們距離大約 { distance } 公里</Text>
+        <Text style={{fontSize: 13,color: '#606060',fontFamily: 'NotoSans'}}>你們距離大約 { distance } 公里</Text>
       </View>
     }
     { showBlockade &&
     <TouchableOpacity style={{marginTop: 10, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
       <Image style={{marginRight: 5}} source={require('./img/btn_meet_block.png')}/>
-      <Text style={{fontSize: 10,color: '#606060',fontFamily: 'NotoSans'}}>封鎖此人</Text>
+      <Text style={{fontSize: 13,color: '#606060',fontFamily: 'NotoSans'}}>封鎖此人</Text>
     </TouchableOpacity>
     }
   </View>
