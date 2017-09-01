@@ -59,14 +59,9 @@ export default class CourtContainer extends Component {
   }
 
 
-  checkMatch = () => {
-    const goodImpressList = Object.keys(this.FateStore.goodImpressionPool)
-    if (goodImpressList.indexOf(this.MeetCuteStore.uid) > -1 ) {
-      return true
-    } else {
-      return false
-    }
-  }
+  checkMatch = () => (
+    this.FateStore.goodImpressionPool[this.MeetCuteStore.uid]
+  )
 
   unlike = () => {
     // 45天紀錄

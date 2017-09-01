@@ -20,7 +20,6 @@ export default class FateCourtScene extends Component {
   }
 
   componentWillMount() {
-    this.FateStore.cleanFetch()
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
@@ -29,6 +28,7 @@ export default class FateCourtScene extends Component {
   }
 
   componentWillUnmount(){
+    this.FateStore.cleanFetch()
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
   }
 

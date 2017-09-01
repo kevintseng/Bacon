@@ -170,7 +170,6 @@ export default class MeetChanceStore {
   }
 
   @action fetchPrey = () => {
-    //alert('進來抓資料囉')
     this.fetchPreyQuery = this.firebase.database().ref('users/' + this.uid)
     this.fetchPreyQuery.once('value').then(snap => {
       if (snap.val()) {
@@ -191,13 +190,11 @@ export default class MeetChanceStore {
           this.photoVerified = Boolean(snap.val().photoVerified)
           this.loading = false
         })
-        //alert('抓完囉應該要重渲染')
       } else {
-        //
         alert('錯誤')
-        runInAction(() => {
-          this.loading = false
-        })
+        //runInAction(() => {
+        //  this.loading = false
+        //})
       }
     }).catch(err => {
         alert(err) }

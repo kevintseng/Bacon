@@ -41,6 +41,7 @@ export default class MateModalContainer extends Component {
 
   goToLine = async () => { 
     await this.ControlStore.setMateModal()
+    this.FateStore.realTimeSetMatch()
     Actions.Line({uid: this.FateStore.uid, name: this.FateStore.nickname})
   }
 

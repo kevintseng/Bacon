@@ -33,14 +33,17 @@ export default class CourtContainer extends Component {
 
   like = async () => {
     this.firebase.database().ref('goodImpression/' + this.SubjectStore.uid + this.FateStore.uid ).set({ wooer: this.SubjectStore.uid , prey: this.FateStore.uid, time: Date.now() })
-    await this.FateStore.addMateHistory(this.FateStore.uid)
     this.ControlStore.setMateModal()
   }
 
   unlike = async () => {
-    this.firebase.database().ref('goodImpression/' + this.FateStore.uid + this.SubjectStore.uid).remove()
-    await this.FateStore.addMateHistory(this.FateStore.uid)
+    await this.firebase.database().ref('goodImpression/' + this.FateStore.uid + this.SubjectStore.uid).remove()
+    await this.sleep(100)
     Actions.FateTab({type: 'reset', initialPage: 1})
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   render() {
