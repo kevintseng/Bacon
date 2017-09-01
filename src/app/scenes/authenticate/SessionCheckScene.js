@@ -316,12 +316,18 @@ export default class SessionCheckScene extends Component {
     this.goodImpressionQuery.on('child_added', child => {
       this.FateStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
     })
+    this.goodImpressionQuery.on('child_removed', child => {
+      this.FateStore.removePreyToGoodImpressionPool(child.val().wooer)
+    })
   }
 
   matchListener = () => {
     this.matchQuery = this.firebase.database().ref('goodImpression').orderByChild('wooer').equalTo(this.SubjectStore.uid)
     this.matchQuery.on('child_added', child => {
       this.FateStore.addPreyToMatchPool(child.val().prey,child.val().time)
+    })
+    this.matchQuery.on('child_removed', child => {
+      this.FateStore.removePreyToMatchPool(child.val().prey)
     })
   }
 

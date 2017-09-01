@@ -79,7 +79,7 @@ export default class FateStore {
     this.matchPool = new Object
     this.matchPreylist = new Array
     this.matchPreys = new Array
-    this.mateHistory = new Array
+    //this.mateHistory = new Array
     // court
     this.loading = true
     // user data
@@ -157,12 +157,12 @@ export default class FateStore {
 
   // goodImpression 
 
-  @action addMateHistory = uid => {
-    this.mateHistory.push(uid)
-  }
-
   @action addPreyToGoodImpressionPool = (uid,time) => {
     this.goodImpressionPool[uid] = time
+  }
+
+  @action removePreyToGoodImpressionPool = uid => {
+    delete this.goodImpressionPool[uid]
   }
 
   @action setGoodImpressionFakePreys = () => {
@@ -170,10 +170,10 @@ export default class FateStore {
   }
 
   @action setGoodImpressionPreylist = () => {
-    const PreyList = Object.keys(this.matchPool)
-    const c = Object.keys(this.goodImpressionPool)
-    this.goodImpressionPreylist = c.map(uid => {
-      if ( PreyList.indexOf(uid) > -1 || this.mateHistory.indexOf(uid) > -1) {
+    const matchPreyList = Object.keys(this.matchPool)
+    const goodImpressionPreylist = Object.keys(this.goodImpressionPool)
+    this.goodImpressionPreylist = goodImpressionPreylist.map(uid => {
+      if ( matchPreyList.indexOf(uid) > -1) {
         return null
       } else {
         return uid
@@ -206,50 +206,19 @@ export default class FateStore {
     })
   }
 
-  // collection
-
-  @action setCollectionFakePreys = () => {
-    this.collectionPreys = new Array
-  }
-
-  @action setCollectionRealPreys = () => {
-    localdb.getIdsForKey('collection' + this.selfUid).then(collectionPreylist => {
-      console.log(collectionPreylist)
-      const collectionPromises = collectionPreylist.map((uid,index) => (
-        this.firebase.database().ref('users/' + uid).once('value').then( snap => (
-          {
-            key: uid,
-            time: null,
-            nickname: snap.val().nickname,
-            avatar: snap.val().avatar,
-            birthday: snap.val().birthday  
-          }
-        ))
-      ))
-      // 等待全部抓完
-      Promise.all(collectionPromises)
-      .then(collectionPreys => {
-        console.log(collectionPreys)
-        localdb.getAllDataForKey('collection' + this.selfUid).then(datas => {
-          datas.map((ele,index)=>{
-            collectionPreys[index]['time'] = ele && ele.time
-          })
-          runInAction(() => {
-            this.collectionPreys = collectionPreys
-          })
-        })
-      })
-      .catch(err => {
-        alert(err)
-      })
-
-    }).catch(err => console.log(err))
-  }
 
   // mates
 
+  @action addMateHistory = uid => {
+    //this.mateHistory.push(uid)
+  }
+
   @action addPreyToMatchPool = (uid,time) => {
     this.matchPool[uid] = time
+  }
+
+  @action removePreyToMatchPool = uid => {
+    delete this.matchPool[uid]
   }
 
   @action filterMatchList = () => {
@@ -300,6 +269,56 @@ export default class FateStore {
       console.log(err)
     })    
   }
+
+  @action realTimeSetMatch = () => {
+    this.matchPreys = this.matchPreys.push(this.goodImpressionPreys.find(ele => ele.uid === this.uid))
+    this.goodImpressionPreys = this.goodImpressionPreys.filter(ele => !ele.uid === this.uid)
+  }
+
+  @action setSelfUid = uid => {
+    this.selfUid = uid
+  }
+
+  // collection
+
+  @action setCollectionFakePreys = () => {
+    this.collectionPreys = new Array
+  }
+
+  @action setCollectionRealPreys = () => {
+    localdb.getIdsForKey('collection' + this.selfUid).then(collectionPreylist => {
+      console.log(collectionPreylist)
+      const collectionPromises = collectionPreylist.map((uid,index) => (
+        this.firebase.database().ref('users/' + uid).once('value').then( snap => (
+          {
+            key: uid,
+            time: null,
+            nickname: snap.val().nickname,
+            avatar: snap.val().avatar,
+            birthday: snap.val().birthday  
+          }
+        ))
+      ))
+      // 等待全部抓完
+      Promise.all(collectionPromises)
+      .then(collectionPreys => {
+        console.log(collectionPreys)
+        localdb.getAllDataForKey('collection' + this.selfUid).then(datas => {
+          datas.map((ele,index)=>{
+            collectionPreys[index]['time'] = ele && ele.time
+          })
+          runInAction(() => {
+            this.collectionPreys = collectionPreys
+          })
+        })
+      })
+      .catch(err => {
+        alert(err)
+      })
+
+    }).catch(err => console.log(err))
+  }
+
   // court
 
   @action setCourtInitialize = uid => {
@@ -308,7 +327,6 @@ export default class FateStore {
   }
 
   @action fetchPrey = () => {
-    //alert('進來抓資料囉')
     this.fetchPreyQuery = this.firebase.database().ref('users/' + this.uid)
     this.fetchPreyQuery.once('value').then(snap => {
       if (snap.val()) {
@@ -330,9 +348,9 @@ export default class FateStore {
       } else {
         //
         alert('錯誤')
-        runInAction(() => {
-          this.loading = false
-        })
+        //runInAction(() => {
+        //  this.loading = false
+        //})
       }
     }).catch(err => { 
         alert(err) }
@@ -345,9 +363,7 @@ export default class FateStore {
     this.fetchPreyQuery = null
   }
 
-  @action setSelfUid = uid => {
-    this.selfUid = uid
-  }
+  //
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
