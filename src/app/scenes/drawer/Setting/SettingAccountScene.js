@@ -5,6 +5,7 @@ import { Actions } from 'react-native-router-flux'
 import ResetPasswordContainer from '../../../containers/SettingAccountScene/ResetPasswordContainer'
 import LoginOutContainer from '../../../containers/SettingAccountScene/LoginOutContainer'
 import DeleteAccountContainer from '../../../containers/SettingAccountScene/DeleteAccountContainer'
+import DeleteModalContainer from '../../../containers/SettingAccountScene/DeleteModalContainer'
 
 import Knife from '../../../views/Knife/Knife'
 
@@ -26,7 +27,7 @@ export default class SettingAccountScene extends Component {
   render() {
     return(
       <View style={{flex: 1,alignItems: 'center'}}>
-
+        <DeleteModalContainer/>
         <View style={{position: 'absolute',top: 30}}>
           <ResetPasswordContainer/>
         </View>

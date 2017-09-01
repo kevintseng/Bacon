@@ -16,6 +16,7 @@ export default class ControlStore {
   @observable bonusPolicyModal
   @observable settingPolicyModal
   @observable settingRuleModal
+  @observable deleteAccounrModal
   //
   @observable lineModal
   @observable mateModal
@@ -47,6 +48,8 @@ export default class ControlStore {
     this.bonusPolicyModal = false
     this.settingPolicyModal = false
     this.settingRuleModal = false
+    //
+    this.deleteAccounrModal = false
   }
 
   @action setAuthenticateIndicator = str => {
@@ -115,5 +118,9 @@ export default class ControlStore {
 
   @action setSettingRuleModal = () => {
     this.settingRuleModal = !this.settingRuleModal
+  }
+
+  @action setDeleteAccounrModal = () => {
+    this.deleteAccounrModal = !this.deleteAccounrModal
   }
 }
