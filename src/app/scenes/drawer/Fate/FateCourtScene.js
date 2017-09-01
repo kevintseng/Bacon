@@ -66,9 +66,11 @@ export default class FateCourtScene extends Component {
               <View style={{alignSelf: 'center',paddingTop: 40}}>
                 <InfosContainer/> 
               </View>
-              <BadgeWallContainer/> 
-              <MateModalContainer/>
+              <View style={{paddingTop: 10}}>
+                <BadgeWallContainer/> 
+              </View>
             </ScrollView>
+            <MateModalContainer/>
           </View>
         }
       </View>

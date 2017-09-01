@@ -73,7 +73,9 @@ export default class LineCollectCourtScene extends Component {
               <View style={{alignSelf: 'center',paddingTop: 40}}>
                 <InfosContainer Store={this.Store}/>
               </View>
-              <BadgeWallContainer Store={this.Store}/>
+              <View style={{paddingTop: 10}}>
+                <BadgeWallContainer Store={this.Store}/>
+              </View>
               { this.SubjectStore.vip && 
                 <View style={{paddingTop: 10}}>
                   <BaconRadar/>
