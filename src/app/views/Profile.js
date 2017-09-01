@@ -71,10 +71,10 @@ const Profile = ({source, vip, bonus, verityEmail, verityPhoto, displayName, age
             }
           </View>
           <TouchableOpacity onPress={ onPressDisplayName }>
-            <ListItem subtitle={ displayName + ', ' + age } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
+            <ListItem subtitle={ (displayName || '?') + ', ' + (age || '?') } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
           </TouchableOpacity>
           <TouchableOpacity onPress={ onPressCity }>
-            <ListItem subtitle={ city } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
+            <ListItem subtitle={ city || '?' } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
           </TouchableOpacity>
         </View>     
 
@@ -82,12 +82,12 @@ const Profile = ({source, vip, bonus, verityEmail, verityPhoto, displayName, age
       <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>
         <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
             <MemberUpgrade
-              vip={ vip }
+              vip={ vip || false }
               onPress={ onPressMemberUpgrade }
             />
             <QUpgrade
               QUpgradeText='Q點'
-              QUpgradeValue={ bonus }
+              QUpgradeValue={ bonus || 0 }
               onPress={ onPressQUpgrade }
             />
         </View>
