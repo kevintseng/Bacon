@@ -62,8 +62,12 @@ export default class SubjectEditStore {
   }
 
   @action addHobby = key => {
-    this.hobbies[key] = true
-    this.hobbies = Object.assign({},this.hobbies)
+    if (this.hobbies[key]) {
+      this.switchHobbies(key)
+    } else {
+      this.hobbies[key] = true
+      this.hobbies = Object.assign({},this.hobbies)
+    }
   }
 
   @action setLatitude = latitude => {
