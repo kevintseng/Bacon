@@ -70,7 +70,9 @@ export default class MeetCuteCourtScene extends Component {
             <View style={{alignSelf: 'center',paddingTop: 40}}>
               <InfosContainer/> 
             </View>
-            <BadgeWallContainer/> 
+            <View style={{paddingTop: 10}}>
+              <BadgeWallContainer/> 
+            </View>
             { this.SubjectStore.vip && 
               <View style={{paddingTop: 10}}>
                 <BaconRadar/>

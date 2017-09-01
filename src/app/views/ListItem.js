@@ -36,9 +36,11 @@ const styles = {
     marginLeft: 5
   },
   title: {
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
     textAlign: 'center',
     color: '#606060',
-    fontWeight: 'normal', 
+    fontWeight: '400', 
     fontSize: 16
   },
   _container: {
