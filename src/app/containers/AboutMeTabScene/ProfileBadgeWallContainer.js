@@ -53,7 +53,7 @@ export default class ProfileBadgeWallContainer extends Component {
           <View>
             <Text style={ styles.titleStyle }>興趣愛好</Text>
           </View>
-          <View style={{height: 140, width: width - 8, marginLeft: 8}}>
+          <View style={{height: 190, width: width - 8, marginLeft: 8}}>
             <ScrollView>
               <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start'}}>
                 {
