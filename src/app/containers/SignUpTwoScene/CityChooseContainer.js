@@ -45,7 +45,7 @@ export default class CityChooseContainer extends Component {
     return(
       <View>
         <View>
-          <BlankButton text='選個位置' onPress={ this.openSearchModal } /> 
+          <BlankButton text='輸入位置' onPress={ this.openSearchModal } /> 
         </View>
         <View style={{marginTop: 20}}> 
           <BlankButton text='現在位置' onPress={ this.current } /> 

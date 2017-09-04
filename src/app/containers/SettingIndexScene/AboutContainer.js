@@ -31,7 +31,7 @@ export default class AboutContainer extends Component {
   render() {
     return(
       <Square
-        text='關於Bacon'
+        text='關於BACON'
         imageSource={require('../../../images/btn_setting_about.png')}
         onPressimageSource={require('../../../images/btn_setting_about_fb.png')}
         statu={ this.state.statu }
