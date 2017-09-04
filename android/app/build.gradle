@@ -107,8 +107,8 @@ android {
         applicationId "com.kayming.android.bacon"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 16
-        versionName "Alpha-1.1.6"
+        versionCode 19
+        versionName "Alpha-1.1.9"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -144,6 +144,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-orientation-locker')
     compile project(':react-native-fs')
     compile project(':react-native-exit-app')
     compile project(':react-native-svg')

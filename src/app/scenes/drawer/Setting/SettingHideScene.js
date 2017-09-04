@@ -9,7 +9,6 @@ export default class SettingHideScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    //Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentWillUnmount(){

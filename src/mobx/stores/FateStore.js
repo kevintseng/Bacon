@@ -1,5 +1,6 @@
 import { observable, action, computed, useStrict, runInAction, toJS, autorun } from 'mobx'
 import _ from 'lodash'
+import geolib from 'geolib'
 import { calculateAge } from '../../app/Utils'
 import localdb from '../../configs/localdb'
 
@@ -23,8 +24,11 @@ export default class FateStore {
   @observable hobbies
   @observable album
   @observable vip
+  @observable distance
   @observable emailVerified
   @observable photoVerified
+  @observable latitude
+  @observable longitude
 
   constructor(firebase) {
     this.firebase = firebase
@@ -63,19 +67,19 @@ export default class FateStore {
   }
 
   @action initialize = () => {
-    this.visitorsPool = new Array
+    this.visitorsPool = new Object
     this.visitorsPreylist = new Array
     this.visitorsPreys = new Array
-    this.goodImpressionPool = new Array
+    this.goodImpressionPool = new Object
     this.goodImpressionPreylist = new Array
     this.goodImpressionPreys = new Array
     //this.collectionPool = new Array
     this.collectionPreylist = new Array
     this.collectionPreys = new Array
-    this.matchPool = new Array
+    this.matchPool = new Object
     this.matchPreylist = new Array
     this.matchPreys = new Array
-    this.mateHistory = new Array
+    //this.mateHistory = new Array
     // court
     this.loading = true
     // user data
@@ -87,43 +91,63 @@ export default class FateStore {
     this.hobbies = new Object
     this.album = new Object
     this.vip = false
+    this.distance = null
     this.emailVerified = false
     this.photoVerified = false
+    this.latitude = null
+    this.longitude = null
     //
     this.fetchPreyQuery = null
+  }
+
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
   }
 
   // visitors 
 
   @action addPreyToVisitorsPool = (uid,time) => {
-    this.visitorsPool.push({uid: uid, time: time})
+    this.visitorsPool[uid] = time
   }
 
   @action setVisitorsPreylist = () => {
-    this.visitorsPreylist = _.cloneDeep(this.visitorsPool)
+    this.visitorsPreylist = Object.keys( this.visitorsPool).map( uid => ({uid: uid, time: this.visitorsPool[uid]}))
+    this.visitorsPreylist.sort((a, b) => {
+      return b.time > a.time ? 1 : -1
+    })
   }
 
   @action setVisitorsFakePreys = () => {
-    this.visitorsPreys = this.visitorsPreylist.map((ele,index)=>({ key: ele.uid, time: ele.time, nickname: null, avatar: null, birthday: null }))
+    this.visitorsPreys = new Array
   }
 
   @action setVisitorsRealPreys = () => {
     const visitorsPromises = this.visitorsPreylist.map((ele,index) => (
-      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => (
-        {
-          key: ele.uid,
-          time: ele.time,
-          nickname: snap.val().nickname,
-          avatar: snap.val().avatar,
-          birthday: snap.val().birthday  
+      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
+        if (snap.val() && !snap.val().hideVister) {
+          return(
+            {
+              key: ele.uid,
+              time: ele.time,
+              nickname: snap.val().nickname,
+              avatar: snap.val().avatar,
+              birthday: snap.val().birthday  
+            }
+          )
+        } else {
+          return null
         }
-      ))
+      })
     ))
 
     Promise.all(visitorsPromises)
     .then(visitorsPreys => {
       runInAction(() => {
-        this.visitorsPreys = visitorsPreys
+        this.visitorsPreys = visitorsPreys.filter(ele => ele)
       })
     })
     .catch(err => {
@@ -133,39 +157,37 @@ export default class FateStore {
 
   // goodImpression 
 
-  @action addMateHistory = uid => {
-    this.mateHistory.push(uid)
-  }
-
   @action addPreyToGoodImpressionPool = (uid,time) => {
-    this.goodImpressionPool.push({uid: uid, time: time})
+    this.goodImpressionPool[uid] = time
   }
 
+  @action removePreyToGoodImpressionPool = uid => {
+    delete this.goodImpressionPool[uid]
+  }
+
+  @action setGoodImpressionFakePreys = () => {
+    this.goodImpressionPreys = new Array
+  }
 
   @action setGoodImpressionPreylist = () => {
-    const b = _.cloneDeep(this.matchPool)
-    const PreyList = b.map(ele=> ele.uid)
-    const c = _.cloneDeep(this.goodImpressionPool)
-    //this.goodImpressionPreylist = _.cloneDeep(this.goodImpressionPool)
-    this.goodImpressionPreylist = c.map(ele => {
-      if ( PreyList.indexOf(ele.uid) > -1 || this.mateHistory.indexOf(ele.uid) > -1) {
+    const matchPreyList = Object.keys(this.matchPool)
+    const goodImpressionPreylist = Object.keys(this.goodImpressionPool)
+    this.goodImpressionPreylist = goodImpressionPreylist.map(uid => {
+      if ( matchPreyList.indexOf(uid) > -1) {
         return null
       } else {
-        return ele
+        return uid
       }
     })
     this.goodImpressionPreylist = this.goodImpressionPreylist.filter(ele => ele)
   }
 
-  @action setGoodImpressionFakePreys = () => {
-    this.goodImpressionPreys = this.goodImpressionPreylist.map((ele,index) => ({ key: ele.uid, time: ele.time, nickname: null, avatar: null, birthday: null }))
-  }
-
   @action setGoodImpressionRealPreys = () => {
-    const goodImpressionPromises = this.goodImpressionPreylist.map((ele,index) => (
-      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => (
+    const goodImpressionPromises = this.goodImpressionPreylist.map((uid,index) => (
+      this.firebase.database().ref('users/' + uid).once('value').then( snap => (
         {
-          key: ele.uid,
+          key: uid,
+          distance: this.getDistance(snap.val().latitude,snap.val().longitude),
           nickname: snap.val().nickname,
           avatar: snap.val().avatar,
           birthday: snap.val().birthday  
@@ -184,16 +206,85 @@ export default class FateStore {
     })
   }
 
-  // collection
-/*
-  @action setCollectionFakePreys = () => {
-    localdb.getIdsForKey('collection' + this.selfUid).then(collectionPreylist => {
-      runInAction(() => {
-        this.collectionPreys = collectionPreylist.map((uid,index) => ({ key: uid, time: this.collectionPreylist[uid], nickname: null, avatar: null, birthday: null }))
-      })
-    }).catch(err => console.log(err))
+
+  // mates
+
+  @action addMateHistory = uid => {
+    //this.mateHistory.push(uid)
   }
-*/
+
+  @action addPreyToMatchPool = (uid,time) => {
+    this.matchPool[uid] = time
+  }
+
+  @action removePreyToMatchPool = uid => {
+    delete this.matchPool[uid]
+  }
+
+  @action filterMatchList = () => {
+    const wooerList = Object.keys(this.goodImpressionPool)
+    const PreyList = Object.keys(this.matchPool)
+    this.matchPreylist = wooerList.map(uid => {
+      if (PreyList.indexOf(uid) > -1) {
+        const time_a = this.goodImpressionPool[uid]
+        const time_b = this.matchPool[uid]
+        if (time_a > time_b) {
+          console.log('time_a > time_b')
+          return { uid: uid, time: time_a }
+        } else {
+          console.log('time_b > time_a')
+          return { uid: uid, time: time_b }
+        }
+      } else {
+        return null
+      }
+    })
+    this.matchPreylist = this.matchPreylist.filter(ele => ele)
+  }
+
+  @action setMatchFakePreys = () => {
+    this.matchPreys = new Array
+  }
+
+  @action setMatchRealPreys = () => {
+    const matchPromises = this.matchPreylist.map((ele,index) => (
+      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => (
+        {
+          key: ele.uid,
+          time: ele.time,
+          nickname: snap.val().nickname,
+          avatar: snap.val().avatar,
+          birthday: snap.val().birthday  
+        }
+      ))
+    ))
+
+    Promise.all(matchPromises)
+    .then(matchPreys => {
+      runInAction(() => {
+        this.matchPreys = matchPreys
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })    
+  }
+
+  @action realTimeSetMatch = () => {
+    this.matchPreys = this.matchPreys.push(this.goodImpressionPreys.find(ele => ele.uid === this.uid))
+    this.goodImpressionPreys = this.goodImpressionPreys.filter(ele => !ele.uid === this.uid)
+  }
+
+  @action setSelfUid = uid => {
+    this.selfUid = uid
+  }
+
+  // collection
+
+  @action setCollectionFakePreys = () => {
+    this.collectionPreys = new Array
+  }
+
   @action setCollectionRealPreys = () => {
     localdb.getIdsForKey('collection' + this.selfUid).then(collectionPreylist => {
       console.log(collectionPreylist)
@@ -228,55 +319,6 @@ export default class FateStore {
     }).catch(err => console.log(err))
   }
 
-  // mates
-
-  @action addPreyToMatchPool = (uid,time) => {
-    this.matchPool.push({uid: uid, time: time})
-  }
-
-  @action filterMatchList = () => {
-    const a = _.cloneDeep(this.goodImpressionPool)
-    const b = _.cloneDeep(this.matchPool)
-    const wooerList = a.map(ele=> ele.uid)
-    const PreyList = b.map(ele=> ele.uid)
-    //console.log(wooerList)
-    //console.log(PreyList)
-    this.matchPreylist = wooerList.map(uid => {
-      if (PreyList.indexOf(uid) > -1) {
-        return uid
-      } else {
-        return null
-      }
-    })
-    this.matchPreylist = this.matchPreylist.filter(ele => ele)
-  }
-
-  @action setMatchFakePreys = () => {
-    this.matchPreys = this.matchPreylist.map((uid,index) => ({ key: uid, time: null, nickname: null, avatar: null, birthday: null }))
-  }
-
-  @action setMatchRealPreys = () => {
-    const matchPromises = this.matchPreylist.map((uid,index) => (
-      this.firebase.database().ref('users/' + uid).once('value').then( snap => (
-        {
-          key: uid,
-          nickname: snap.val().nickname,
-          avatar: snap.val().avatar,
-          birthday: snap.val().birthday  
-        }
-      ))
-    ))
-
-    Promise.all(matchPromises)
-    .then(matchPreys => {
-      runInAction(() => {
-        this.matchPreys = matchPreys
-      })
-    })
-    .catch(err => {
-      console.log(err)
-    })    
-  }
   // court
 
   @action setCourtInitialize = uid => {
@@ -285,7 +327,6 @@ export default class FateStore {
   }
 
   @action fetchPrey = () => {
-    //alert('進來抓資料囉')
     this.fetchPreyQuery = this.firebase.database().ref('users/' + this.uid)
     this.fetchPreyQuery.once('value').then(snap => {
       if (snap.val()) {
@@ -298,6 +339,7 @@ export default class FateStore {
           this.hobbies = snap.val().hobbies || new Object
           this.album = snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
+          this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
           this.loading = false
@@ -306,9 +348,9 @@ export default class FateStore {
       } else {
         //
         alert('錯誤')
-        runInAction(() => {
-          this.loading = false
-        })
+        //runInAction(() => {
+        //  this.loading = false
+        //})
       }
     }).catch(err => { 
         alert(err) }
@@ -321,12 +363,21 @@ export default class FateStore {
     this.fetchPreyQuery = null
   }
 
-  @action setSelfUid = uid => {
-    this.selfUid = uid
-  }
+  //
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  getDistance = (latitude,longitude) => {
+    if (this.latitude && this.longitude && latitude && longitude) {
+      return geolib.getDistance(
+        {latitude: this.latitude, longitude: this.longitude},
+        {latitude: latitude, longitude: longitude}
+      )/1000
+    } else {
+      return '?'
+    }  
   }
 
 }

@@ -13,6 +13,10 @@ export default class ControlStore {
   @observable meetChanceMinAge
   @observable meetChanceMaxAge
   @observable getCollectionMax
+  @observable bonusPolicyModal
+  @observable settingPolicyModal
+  @observable settingRuleModal
+  @observable deleteAccounrModal
   //
   @observable lineModal
   @observable mateModal
@@ -40,6 +44,12 @@ export default class ControlStore {
     //
     this.lineModal = false
     this.mateModal = false
+    //
+    this.bonusPolicyModal = false
+    this.settingPolicyModal = false
+    this.settingRuleModal = false
+    //
+    this.deleteAccounrModal = false
   }
 
   @action setAuthenticateIndicator = str => {
@@ -98,4 +108,19 @@ export default class ControlStore {
     this.mateModal = !this.mateModal
   }
 
+  @action setBonusPolicyModal = () => {
+    this.bonusPolicyModal = !this.bonusPolicyModal
+  }
+
+  @action setSettingPolicyModal = () => {
+    this.settingPolicyModal = !this.settingPolicyModal
+  }
+
+  @action setSettingRuleModal = () => {
+    this.settingRuleModal = !this.settingRuleModal
+  }
+
+  @action setDeleteAccounrModal = () => {
+    this.deleteAccounrModal = !this.deleteAccounrModal
+  }
 }

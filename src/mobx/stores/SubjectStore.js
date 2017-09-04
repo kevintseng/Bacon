@@ -32,6 +32,8 @@ export default class SubjectStore {
   @observable emailVerified
   @observable photoVerified
   @observable radar
+  @observable latitude
+  @observable longitude
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -118,6 +120,8 @@ export default class SubjectStore {
       "活耀度": 0,
       "魅力值": 0,
     }]
+    this.latitude = null
+    this.longitude = null
     this.unhandledPass = new Object
   }
 
@@ -211,23 +215,49 @@ export default class SubjectStore {
   @action setRadar = radar => {
     this.radar = radar
   }
-  // hide function
 
-  @action setHideMeetCute = () => {
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
+  }
+  // switch hide function
+
+  @action switchHideMeetCute = () => {
     this.hideMeetCute = !this.hideMeetCute
   }
 
-  @action setHideMeetChance = () => {
+  @action switchHideMeetChance = () => {
     this.hideMeetChance = !this.hideMeetChance
   }
 
-  @action setHideVister = () => {
+  @action switchHideVister = () => {
     this.hideVister = !this.hideVister
   }
 
-  @action setHideMessage = () => {
+  @action switchHideMessage = () => {
     this.hideMessage = !this.hideMessage
   }
+  // set hide function
+  @action setHideMeetCute = boolen => {
+    this.hideMeetCute = boolen
+  }
+
+  @action setHideMeetChance = boolen => {
+    this.hideMeetChance = boolen
+  }
+
+  @action setHideVister = boolen => {
+    this.hideVister = boolen
+  }
+
+  @action setHideMessage = boolen => {
+    this.hideMessage = boolen
+  }
+
+  //
 
   @action setVisitConvSentToday = val => {
     this.visitConvSentToday = val

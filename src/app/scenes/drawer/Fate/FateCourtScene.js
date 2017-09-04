@@ -20,17 +20,22 @@ export default class FateCourtScene extends Component {
   }
 
   componentWillMount() {
-  }
-
-  componentWillUnmount() {
-    this.FateStore.cleanFetch()
-
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
   componentDidMount() {
     this.FateStore.fetchPrey()
   }
 
+  componentWillUnmount(){
+    this.FateStore.cleanFetch()
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.pop()
+    return true
+  }
 
   indicator = () => (
     <View style={{flex: 1}}>
@@ -61,9 +66,11 @@ export default class FateCourtScene extends Component {
               <View style={{alignSelf: 'center',paddingTop: 40}}>
                 <InfosContainer/> 
               </View>
-              <BadgeWallContainer/> 
-              <MateModalContainer/>
+              <View style={{paddingTop: 10}}>
+                <BadgeWallContainer/> 
+              </View>
             </ScrollView>
+            <MateModalContainer/>
           </View>
         }
       </View>

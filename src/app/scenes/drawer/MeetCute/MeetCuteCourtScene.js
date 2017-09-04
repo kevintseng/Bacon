@@ -49,12 +49,11 @@ export default class MeetCuteCourtScene extends Component {
   }
 
   componentWillMount() {
-    //alert('aaaa')
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount = async () => {
-    await this.sleep(260)
+    await this.sleep(250)
     this.MeetCuteStore.setPreyList()  
   }
 
@@ -71,7 +70,9 @@ export default class MeetCuteCourtScene extends Component {
             <View style={{alignSelf: 'center',paddingTop: 40}}>
               <InfosContainer/> 
             </View>
-            <BadgeWallContainer/> 
+            <View style={{paddingTop: 10}}>
+              <BadgeWallContainer/> 
+            </View>
             { this.SubjectStore.vip && 
               <View style={{paddingTop: 10}}>
                 <BaconRadar/>

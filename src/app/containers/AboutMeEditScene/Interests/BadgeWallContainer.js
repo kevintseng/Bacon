@@ -19,22 +19,18 @@ export default class BadgeWallContainer extends Component {
 
   render() {
     return(
-          <View style={{height: 140, width: width, marginLeft: 8}}>
+          <View style={{height: 158, width: width - 8, marginLeft: 8}}>
             <ScrollView>
               <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start'}}>
                 {
                   this.SubjectEditStore.hobbiesToFlatList.map(item => {
                     if(item.check) {
                       return (
-                        <View key={item.key} style={{minWidth: width/4}}>
-                          <BaconBadgeYes text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
-                        </View>
+                          <BaconBadgeYes key={item.key} text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
                       )
                     } else {
                       return (
-                        <View key={item.key} style={{minWidth: width/4}}>
-                          <BaconBadgeNo text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
-                        </View>
+                          <BaconBadgeNo key={item.key} text={item.key} onPress={ () => { this.SubjectEditStore.switchHobbies(item.key)} } />
                       )
                     }
                   })

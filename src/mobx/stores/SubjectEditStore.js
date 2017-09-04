@@ -10,8 +10,12 @@ export default class SubjectEditStore {
   @observable bio
   @observable languages
   @observable hobbies
+  @observable latitude
+  @observable longitude
 
   constructor() {
+    this.latitude = null
+    this.longitude = null
   }
 
 
@@ -58,7 +62,19 @@ export default class SubjectEditStore {
   }
 
   @action addHobby = key => {
-    this.hobbies[key] = true
-    this.hobbies = Object.assign({},this.hobbies)
+    if (this.hobbies[key]) {
+      this.switchHobbies(key)
+    } else {
+      this.hobbies[key] = true
+      this.hobbies = Object.assign({},this.hobbies)
+    }
+  }
+
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
   }
 }

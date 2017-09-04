@@ -53,14 +53,14 @@ export default class ProfileBadgeWallContainer extends Component {
           <View>
             <Text style={ styles.titleStyle }>興趣愛好</Text>
           </View>
-          <View style={{height: 140, width, marginLeft: 5}}>
+          <View style={{height: 158, width: width - 8, marginLeft: 8, marginTop: 5}}>
             <ScrollView>
               <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start'}}>
                 {
                   this.SubjectStore.hobbiesToFlatList.map(item => (
-                    <View  key={item.key} style={{minWidth: width/4}}>
-                      <BaconBadgeYes text={item.key} onPress={ this.props.onPressInterests }/>
-                    </View>
+                   
+                      <BaconBadgeYes key={item.key} text={item.key} onPress={ this.props.onPressInterests }/>
+                    
                   ))
                 }
               </View>
@@ -79,6 +79,8 @@ export default class ProfileBadgeWallContainer extends Component {
 }
 
 /*
+
+ <View  key={item.key} style={{minWidth: width/4}}>
 
             <FlatList
               removeClippedSubviews

@@ -48,7 +48,6 @@ export default class MateModalContainer extends Component {
   keepMeetCute = async () => {
     await this.ControlStore.setMateModal()
     this.goToNext()
-    //Actions.UseBonus()
   }
 
   goToNext = () => {

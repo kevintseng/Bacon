@@ -45,7 +45,7 @@ export default class CollectionContainer extends Component {
   }
 
   componentDidMount = async () => {
-    await this.sleep(260)
+    //await this.sleep(260)
     this.FateStore.setCollectionRealPreys()
   }
 
@@ -113,7 +113,7 @@ export default class CollectionContainer extends Component {
                 age={ calculateAge(item.birthday) }
                 onPress={()=>this.onPress(item.key)}
               >
-                <Text style={styles.child}>{this.duration(item.time)}</Text>
+                <Text style={styles.child}>{this.duration(item.time) + '前收藏'}</Text>
               </CookieList>
 ) 
           } 

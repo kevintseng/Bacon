@@ -27,25 +27,16 @@ export default class LineCollectCourtScene extends Component {
   }
 
   componentWillMount() {
-    //alert('初始化')
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     Actions.refresh({ title: this.title })
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-    //this.Store.cleanFetch()
-    //this.handleCollection()
   }
 
   componentDidMount() {
     this.Store.fetchPrey()
-  }
-
-  handleCollection = () => {
-    if (this.title === '緣分') {
-      this.FateStore.setCollectionRealPreys() // 從緣分來的幫他重新整理
-    }
   }
 
   onBackAndroid = () => {
@@ -82,7 +73,9 @@ export default class LineCollectCourtScene extends Component {
               <View style={{alignSelf: 'center',paddingTop: 40}}>
                 <InfosContainer Store={this.Store}/>
               </View>
-              <BadgeWallContainer Store={this.Store}/>
+              <View style={{paddingTop: 10}}>
+                <BadgeWallContainer Store={this.Store}/>
+              </View>
               { this.SubjectStore.vip && 
                 <View style={{paddingTop: 10}}>
                   <BaconRadar/>

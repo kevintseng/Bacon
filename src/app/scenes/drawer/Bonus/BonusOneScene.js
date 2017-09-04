@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux'
 import BaconRoutesContainer from '../../../containers/BonusOneScene/BaconRoutesContainer'
 import BonusContainer from '../../../containers/BonusOneScene/BonusContainer'
 import BonusTitleContainer from  '../../../containers/BonusOneScene/BonusTitleContainer/BonusTitleContainer'
+import PolicyModalContainer from '../../../containers/BonusOneScene/PolicyModalContainer'
 
 const styles = {
   view: {
@@ -35,18 +36,17 @@ const styles = {
   }
 }
 
-@inject('SubjectStore') @observer
+@inject('ControlStore') @observer
 export default class BonusOneScene extends Component {
 
   constructor(props) {
     super(props)
-    this.SubjectStore = this.props.SubjectStore
+    this.ControlStore = this.props.ControlStore
   }
 
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentWillUnmount(){
@@ -57,15 +57,11 @@ export default class BonusOneScene extends Component {
     Actions.pop()
     return true
   }
-
-  onPress = () => {
-    alert('條款細則')
-  }
   
   render() {
     return(
       <View style={ styles.view }>
-
+        <PolicyModalContainer/>
         <View style={ styles.top }>
           <BonusTitleContainer/>
         </View>
@@ -75,7 +71,7 @@ export default class BonusOneScene extends Component {
         </View>
 
         <View style={ styles.textView }>
-          <Text style={ styles.text } onPress={ this.onPress }>條款細則</Text>
+          <Text style={ styles.text } onPress={ this.ControlStore.setBonusPolicyModal }>條款細則</Text>
         </View>
 
         <View style={ styles.bottom }>

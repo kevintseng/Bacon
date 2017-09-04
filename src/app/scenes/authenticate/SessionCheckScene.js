@@ -5,6 +5,7 @@ import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
 import Moment from 'moment'
+import MomentLocale from 'moment/locale/zh-tw'
 import FastImage from 'react-native-fast-image'
 
 import { calculateAge } from '../../../app/Utils'
@@ -86,13 +87,14 @@ export default class SessionCheckScene extends Component {
       } else {
         // 入口點
         // 下線
-        this.setOffline()
+        //this.setOffline()
         //移除所有監聽函數 初始化狀態
         this.initialize()
         // 沒有使用者登入 user = null
         Actions.Welcome({type: 'reset'}) // 轉到 Welcome
       }
     })
+    Moment.updateLocale('zh-tw', MomentLocale)
   }
 
   initialize = () => {
@@ -154,25 +156,58 @@ export default class SessionCheckScene extends Component {
   uploadLocation = () => {
     Geolocation.getCurrentPosition(
       location => {
-        this.geoFire = new GeoFire(this.firebase.database().ref('/user_locations/'))
-        this.geoQuery = this.geoFire.query({
-          center: [location.coords.latitude,location.coords.longitude],
-          radius: 3000
-        })
-        this.meetChanceListener(this.geoQuery)
-        this.geoFire.set(this.SubjectStore.uid,[location.coords.latitude,location.coords.longitude])
-          .then(() => {
-            console.log('獲取位置成功並上傳'+[location.coords.latitude,location.coords.longitude]);
-          }, error => {
-            console.log('上傳位置失敗：' + error);
-          }
-        )
-
+        this.setLocation(location.coords.latitude,location.coords.longitude)
       },
       error => {
-        console.log('獲取位置失敗：'+ error)
+        console.log('獲取位置失敗：' + error)
+        if (this.ControlStore.authenticateIndicator == '註冊') {
+          if (this.SignUpStore.latitude && this.SignUpStore.longitude) {
+            this.uploadFirebaseLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
+            this.setLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
+          } else {
+            console.log('從firebase獲取位置失敗')
+          }
+        } else {
+          this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value', snap => {
+            if (snap.val() && snap.val().latitude && snap.val().longitude) {
+              console.log('從firebase獲取位置成功:' + [snap.val().latitude,snap.val().longitude])
+              this.setLocation(snap.val().latitude,snap.val().longitude)
+            } else {
+              console.log('從firebase獲取位置失敗')
+            }
+          })
+        }
       }
     )
+  }
+
+  uploadFirebaseLocation = (latitude,longitude) => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/latitude').set(latitude)
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/longitude').set(longitude)    
+  }
+
+  setLocation = (latitude,longitude) => {
+    this.geoFire = new GeoFire(this.firebase.database().ref('/user_locations/'))
+    this.geoQuery = this.geoFire.query({
+        center: [latitude,longitude],
+        radius: 394 // 台灣從北到南394公里
+    })
+    this.meetChanceListener(this.geoQuery)
+    this.geoFire.set(this.SubjectStore.uid,[latitude,longitude])
+      .then(() => {
+        console.log('獲取位置成功'+[latitude,longitude])
+      }, error => {
+        console.log('上傳位置失敗：' + error)
+      }
+    )
+    this.SubjectStore.setLatitude(latitude)
+    this.SubjectStore.setLongitude(longitude)
+    this.MeetCuteStore.setLatitude(latitude)
+    this.MeetCuteStore.setLongitude(longitude) 
+    this.MeetChanceStore.setLatitude(latitude)
+    this.MeetChanceStore.setLongitude(longitude) 
+    this.FateStore.setLatitude(latitude)
+    this.FateStore.setLongitude(longitude) 
   }
 
   uploadEmailVerity = () => {
@@ -203,7 +238,7 @@ export default class SessionCheckScene extends Component {
     await this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
-          console.log(snap.val().sexualOrientation)
+          //console.log(snap.val().sexualOrientation)
           this.SubjectStore.setNickname(snap.val().nickname) // null(placeholder) String
           this.SubjectStore.setAddress(snap.val().address) // null(placeholder) String
           this.SubjectStore.setBirthday(snap.val().birthday) // null -> undefinded
@@ -220,6 +255,14 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setConversations(snap.val().conversations)
           this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
           this.SubjectStore.setUnhandledPass(new Object(snap.val().unhandledPass) || {})
+          // hide
+          this.SubjectStore.setHideMeetCute(snap.val().hideMeetCute || false)
+          this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
+          this.SubjectStore.setHideVister(snap.val().hideVister || false)
+          this.SubjectStore.setHideMessage(snap.val().hideMessage || false)
+          // ages config
+          this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)  
+          this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 99)
           // 收藏
           //this.FateStore.setCollectionPreylist(new Object(snap.val().collect)) // Object
            //null(placeholder->邂逅) String
@@ -232,7 +275,7 @@ export default class SessionCheckScene extends Component {
         this.ControlStore.setSyncDetector(true) // 同步完成
         console.log(error)
       })
-    FastImage.preload(this.SubjectStore.albumToFlatList)
+    //FastImage.preload(this.SubjectStore.albumToFlatList)
     this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
     this.meetCuteListener() // 非同步邂逅
   }
@@ -263,19 +306,18 @@ export default class SessionCheckScene extends Component {
 
   visitorsListener = () => {
     this.visitorsQuery = this.firebase.database().ref('visitors').orderByChild('prey').equalTo(this.SubjectStore.uid)
-    this.visitorsQuery.on('value', snap => {
-      snap.forEach( childsnap => {
-        this.FateStore.addPreyToVisitorsPool(childsnap.val().wooer,childsnap.val().time)
-      })
+    this.visitorsQuery.on('child_added', child => {
+      this.FateStore.addPreyToVisitorsPool(child.val().wooer,child.val().time)
     })
   }
 
   goodImpressionListener = () => {
     this.goodImpressionQuery = this.firebase.database().ref('goodImpression').orderByChild('prey').equalTo(this.SubjectStore.uid)
     this.goodImpressionQuery.on('child_added', child => {
-      //snap.forEach( childsnap => {
-        this.FateStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
-      //})
+      this.FateStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
+    })
+    this.goodImpressionQuery.on('child_removed', child => {
+      this.FateStore.removePreyToGoodImpressionPool(child.val().wooer)
     })
   }
 
@@ -283,6 +325,9 @@ export default class SessionCheckScene extends Component {
     this.matchQuery = this.firebase.database().ref('goodImpression').orderByChild('wooer').equalTo(this.SubjectStore.uid)
     this.matchQuery.on('child_added', child => {
       this.FateStore.addPreyToMatchPool(child.val().prey,child.val().time)
+    })
+    this.matchQuery.on('child_removed', child => {
+      this.FateStore.removePreyToMatchPool(child.val().prey)
     })
   }
 
@@ -365,9 +410,11 @@ export default class SessionCheckScene extends Component {
   mq = sexualOrientation => {
     this.meetCuteQuery = this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation)
     this.meetCuteQuery.on('child_added', child => {
-      if (child.val().hideMeetChance || child.val().deleted) {
-        // 隱身了 或 帳號刪除了
-      } else {
+      this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
+    })
+    this.meetCuteQuery.on('child_changed', child => {
+      // birthday changed
+      if (this.MeetCuteStore.pool[child.key] !== child.val().birthday) {
         this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
       }
     })

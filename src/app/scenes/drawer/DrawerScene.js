@@ -36,9 +36,7 @@ export default class DrawerScene extends Component {
 
   onBackAndroid = () => {
     if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
-        //return false
-        //BackHandler.exitApp() //最近2秒内按過返回键，可以退出程式
-        RNExitApp.exitApp()
+      RNExitApp.exitApp()
     }
     this.lastBackPressed = Date.now()
     ToastAndroid.show('再按一次離開程式', ToastAndroid.SHORT)
@@ -46,37 +44,31 @@ export default class DrawerScene extends Component {
   }
 
   goToAboutMe = () => {
-    //this._drawer.close()
     Actions.AboutMe({type: 'reset'})
   }
 
   goToMeetChance = () => {
-    //this._drawer.close()
-    Actions.MeetChance({type: 'reset'})
-    //Actions.refresh({ key: 'Drawer', open: false })
+    Actions.MeetChance({type: 'replace'})
   }
 
-  goToLine() {
-    Actions.LineList({type: 'reset'})
+  goToLine = () => {
+    Actions.LineList({type: 'replace'})
   }
 
   goToMeetCute = () => {
-    //this._drawer.close()
-    Actions.MeetCute({type: 'reset'})
+    Actions.MeetCute({type: 'replace'})
   }
 
   goToFate = () => {
-    //this._drawer.close()
-    Actions.Fate({type: 'reset'})
+    Actions.Fate({type: 'replace'})
   }
 
   goToArticle = () => {
-    Actions.Article({type: 'reset'})
+    Actions.Article({type: 'replace'})
   }
 
   goToSetting = () => {
-    //this._drawer.close()
-    Actions.Setting({type: 'reset'})
+    Actions.Setting({type: 'replace'})
   }
 
   render() {
@@ -86,7 +78,6 @@ export default class DrawerScene extends Component {
     return (
       <Drawer
         ref='navigation'
-        //ref={(ref) => this._drawer = ref}
         type='overlay'
         styles={ drawerStyles }
         onOpen={() => Actions.refresh({ key: state.key, open: true })}

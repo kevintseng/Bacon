@@ -1,5 +1,6 @@
 import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx'
 import _ from 'lodash'
+import geolib from 'geolib'
 import { calculateAge } from '../../app/Utils'
 
 useStrict(true)
@@ -18,6 +19,7 @@ export default class MeetChanceStore {
   @observable hobbies
   @observable album
   @observable vip
+  @observable distance
   @observable emailVerified
   @observable photoVerified
   //@observable synchronize
@@ -69,13 +71,24 @@ export default class MeetChanceStore {
     this.hobbies = new Object
     this.album = new Object
     this.vip = false
+    this.distance = null
     this.emailVerified = false
     this.photoVerified = false
+    this.latitude = null
+    this.longitude = null
     // config
     this.meetChanceMinAge = 18
     this.meetChanceMaxAge = 99
     //
     this.fetchPreyQuery
+  }
+
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
   }
 
   // pool
@@ -95,8 +108,6 @@ export default class MeetChanceStore {
     this.pool = this.pool.filter(ele => !(ele.uid === uid))
   }
 
-  // pleylist = _.cloneDeep(pool)
-
   @action setPreyList = () => {
     this.preyList = toJS(this.pool)
     this.preyList.sort((a, b) => {
@@ -104,20 +115,41 @@ export default class MeetChanceStore {
     })
   }
 
-  //@action setPopularityDen = () => {
-  //  this.preyList.forEach((ele)=>{
-  //    this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(100)
-  //  })
-  //}
-
   @action setFakePreys = () => {
-    this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
+    //this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
+    this.preys = new Array
   }
 
   @action setRealPreys = () => {
     const preysPromises = this.preyList.map((ele,index) => (
       this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
-        if (snap.val()) {
+        if (snap.val() && !snap.val().hideMeetChance && snap.val().birthday && ((calculateAge(snap.val().birthday) >= this.meetChanceMinAge) && (calculateAge(snap.val().birthday) <= this.meetChanceMaxAge))) {
+          const popularityDen = snap.val().popularityDen || 0
+          this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(popularityDen + 1)
+          return({
+            key: ele.uid,
+            nickname: snap.val().nickname,
+            avatar: snap.val().avatar,
+            birthday: snap.val().birthday
+          })
+        } else {
+          return null
+        }
+      }).catch(err => console.log(err))
+    ))
+
+    Promise.all(preysPromises)
+    .then(preys => {
+      runInAction(() => {
+        this.preys = preys
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
+/*
           if (snap.val().hideMeetChance || snap.val().deleted ||  calculateAge(snap.val().birthday) < this.meetChanceMinAge || calculateAge(snap.val().birthday) > this.meetChanceMaxAge) {
             return null
           } else {
@@ -130,26 +162,7 @@ export default class MeetChanceStore {
               birthday: snap.val().birthday
             })
           }
-        } else {
-          // return null
-        }
-      }).catch(err => console.log(err))
-    ))
-
-    Promise.all(preysPromises)
-    .then(preys => {
-      runInAction(() => {
-        this.preys = preys
-        //this.preys = this.preys.filter(ele => ele !== null)
-        //if (this.preys.length > 9) {
-        //  this.preys.length = this.preys.length - this.preys.length % 3
-        //}
-      })
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
+      */
 
   @action setCourtInitialize = uid => {
     this.loading = true
@@ -157,7 +170,6 @@ export default class MeetChanceStore {
   }
 
   @action fetchPrey = () => {
-    //alert('進來抓資料囉')
     this.fetchPreyQuery = this.firebase.database().ref('users/' + this.uid)
     this.fetchPreyQuery.once('value').then(snap => {
       if (snap.val()) {
@@ -173,17 +185,16 @@ export default class MeetChanceStore {
           this.hobbies = snap.val().hobbies || new Object
           this.album = snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
+          this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
           this.loading = false
         })
-        //alert('抓完囉應該要重渲染')
       } else {
-        //
         alert('錯誤')
-        runInAction(() => {
-          this.loading = false
-        })
+        //runInAction(() => {
+        //  this.loading = false
+        //})
       }
     }).catch(err => {
         alert(err) }
@@ -210,6 +221,17 @@ export default class MeetChanceStore {
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  getDistance = (latitude,longitude) => {
+    if (this.latitude && this.longitude && latitude && longitude) {
+      return geolib.getDistance(
+        {latitude: this.latitude, longitude: this.longitude},
+        {latitude: latitude, longitude: longitude}
+      )/1000
+    } else {
+      return '?'
+    }  
   }
 
 }
