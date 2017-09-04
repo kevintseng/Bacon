@@ -24,12 +24,12 @@ const styles = {
     fontFamily: 'NotoSans',
     //fontSize: 20,
     //fontWeight: '500',
-    color: '#F4A764',
-    //textAlign: 'center',    
+    color: 'black',
+    textAlign: 'center',    
   }
 }
 
-const colors = ['rgba(244, 167, 100, 0.5)', 'rgba(214, 55, 104, 0.5)']
+const colors = ['rgba(244, 167, 100, 1)', 'rgba(214, 55, 104, 1)']
 
 @inject('ControlStore','MeetCuteStore') @observer
 export default class SearchModalContainer extends Component {
@@ -46,29 +46,17 @@ export default class SearchModalContainer extends Component {
 
   render() {
     return(
-        <View
-          style={{
-            height: height - (Platform.OS === 'ios' ? 64 : 54),
-            backgroundColor: 'rgba(25, 25, 25, 1.0)',
-            alignSelf: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute'
-            }}
-            >
-          <LinearGradient colors={colors} style={{justifyContent: 'space-between',width, alignItems: 'center',height: height*0.4, paddingTop: 30, paddingBottom: 30}}>
-            <Image source={require('../../../images/ico_meet_likeeo_heart.png')}/>
-            <View style={{marginTop: 20}}>
+
+          <LinearGradient colors={colors} style={{justifyContent: 'center',width, alignItems: 'center',height}}>
+            <View style={{paddingBottom: 54}}>
               <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={styles.text} >搜尋邂逅名單中</Animatable.Text>
-              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center',backgroundColor: 'transparent' }}>❤️</Animatable.Text>
+              <TouchableOpacity onPress={ this.cleanHistory } >
+                <View style={{flexDirection: 'row',justifyContent: 'center',alignItems: 'center',paddingTop: 10}}>
+                  <Text style={ [styles.text,{color: 'white'}] }>重新來場美麗的邂逅</Text>
+                </View>
+              </TouchableOpacity> 
             </View>
-            <TouchableOpacity onPress={ this.cleanHistory } >
-              <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
-                <Text style={ [styles.text,{color: 'white'}] }>重新來場美麗的邂逅</Text>
-              </View>
-            </TouchableOpacity> 
           </LinearGradient>
-        </View>
     )
   }
 }

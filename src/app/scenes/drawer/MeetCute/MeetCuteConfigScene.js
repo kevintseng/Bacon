@@ -48,10 +48,9 @@ export default class MeetCuteConfigScene extends Component {
     this.ControlStore.setMeetCuteMinAge(this.MeetCuteStore.meetCuteMinAge)  
     this.ControlStore.setMeetCuteMaxAge(this.MeetCuteStore.meetCuteMaxAge)    
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    //Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
   }
 

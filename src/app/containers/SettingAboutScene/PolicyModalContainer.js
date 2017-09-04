@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { View, Modal, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
-
 import Policy from '../../../configs/Policy'
 
 const { width, height } = Dimensions.get('window')
@@ -21,24 +20,25 @@ const styles = {
     padding: 10    
   }
 }
-@inject('SignUpStore') @observer
+
+@inject('ControlStore') @observer
 export default class PolicyModalContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SignUpStore = this.props.SignUpStore
+    this.ControlStore = this.props.ControlStore
   }
 
   close = () => {
-    this.SignUpStore.setPolicyModal    
+    //this.ControlStore.setSettingPolicyModal
   }
 
   render() {
     return(
-        <Modal animationType={"fade"} transparent={true} visible={this.SignUpStore.policyModal} onRequestClose={ this.close } >
+        <Modal animationType={"fade"} transparent={true} visible={this.ControlStore.settingPolicyModal} onRequestClose={ this.close } >
           <View
             //activeOpacity={1}
-            //onPress={ this.SignUpStore.setPolicyModal }
+            //onPress={ this.ControlStore.setSettingPolicyModal }
             style={{
               backgroundColor: 'rgba(52, 52, 52, 0.4)',
               flex: 1,
@@ -46,7 +46,7 @@ export default class PolicyModalContainer extends Component {
             }}
           >
             <View
-              activeOpacity={1}
+              //activeOpacity={1}
               style={{
                 backgroundColor: 'white',
                 alignSelf: 'center',
@@ -66,7 +66,7 @@ export default class PolicyModalContainer extends Component {
                   <Policy/>
                 </ScrollView>
                 <View>
-                  <Text style={ styles.title } onPress={ this.SignUpStore.setPolicyModal }>我知道了</Text>
+                  <Text style={ styles.title } onPress={ this.ControlStore.setSettingPolicyModal }>我知道了</Text>
                 </View>
               </View>
             </View>

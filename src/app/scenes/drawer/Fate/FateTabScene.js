@@ -17,10 +17,6 @@ export default class FateTabScene extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
   render() {
     return(
       <ScrollableTabView

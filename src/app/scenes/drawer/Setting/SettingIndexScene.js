@@ -13,11 +13,6 @@ export default class SettingIndexScene extends Component {
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
-    //await this.sleep(250)
-  }
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   render() {
@@ -30,7 +25,6 @@ export default class SettingIndexScene extends Component {
         </View>
 
         <View style={{flexDirection: 'row',justifyContent: 'space-around', marginTop: 30}}>
-          <RemindContainer/>
           <HideContainer/>
         </View>
 
@@ -42,3 +36,6 @@ export default class SettingIndexScene extends Component {
     )
   }
 }
+/*
+<RemindContainer/>
+*/

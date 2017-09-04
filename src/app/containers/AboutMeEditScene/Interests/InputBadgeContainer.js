@@ -9,7 +9,7 @@ const { width, height } = Dimensions.get('window')
 
 const styles = {
   textInput: {
-    width: width - 17
+    width: width - 25
   }
 }
 

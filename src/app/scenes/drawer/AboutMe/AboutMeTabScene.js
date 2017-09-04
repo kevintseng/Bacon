@@ -19,15 +19,6 @@ export default class AboutMeTabScene extends Component {
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
-    //await this.sleep(250)
-  }
-
-  componentDidMount() {
-    //Perf.stop()
-  }
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   render(){

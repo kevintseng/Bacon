@@ -32,6 +32,7 @@ export default class CourtContainer extends Component {
   }
 
   goToNext = () => {
+    this.MeetCuteStore.setfirstLoad(false)
     this.MeetCuteStore.pickNextPrey()
   }
 
@@ -58,14 +59,9 @@ export default class CourtContainer extends Component {
   }
 
 
-  checkMatch = () => {
-    const goodImpressList = this.FateStore.goodImpressionPool.map(ele => ele.uid)
-    if (goodImpressList.indexOf(this.MeetCuteStore.uid) > -1 ) {
-      return true
-    } else {
-      return false
-    }
-  }
+  checkMatch = () => (
+    this.FateStore.goodImpressionPool[this.MeetCuteStore.uid]
+  )
 
   unlike = () => {
     // 45天紀錄

@@ -26,12 +26,12 @@ export default class GoodImpressionContainer extends Component {
   }
 
   componentWillMount() {
-    this.FateStore.setGoodImpressionPreylist()
     //this.FateStore.setGoodImpressionFakePreys()
+    this.FateStore.setGoodImpressionPreylist()
   }
 
   componentDidMount = async () => {
-    await this.sleep(260)
+    //await this.sleep(260)
     this.FateStore.setGoodImpressionRealPreys()
   }
 
@@ -60,7 +60,7 @@ export default class GoodImpressionContainer extends Component {
                 age={ calculateAge(item.birthday) }
                 onPress={()=>this.onPress(item.key)}
               >
-                <Text style={styles.child}>你們距離大約7.9公里</Text>
+                <Text style={styles.child}>{'你們距離大約' + item.distance + '公里'}</Text>
               </CookieList>
            ) 
           } 

@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  BackHandler, 
+  ToastAndroid
 } from "react-native"
 import { Actions } from "react-native-router-flux"
 import { observer, inject } from "mobx-react"
@@ -167,11 +169,21 @@ export default class Chat extends Component {
   }
 
   componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
   componentDidMount() {
     this.getUserData(this.otherUid)
     this.visitConvSentTodayUpdate()
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.pop()
+    return true
   }
 
   onSend = (messages = []) => {

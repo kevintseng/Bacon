@@ -28,7 +28,9 @@ export default class PreviewContainer extends Component {
           <View style={{alignSelf: 'center',paddingTop: 10}}>
             <InfosContainer/>  
           </View>
-          <PreviewBadgeWallContainer/> 
+          <View style={{paddingTop: 10}}>
+            <PreviewBadgeWallContainer/> 
+          </View>
           <View style={{paddingTop: 10}}>
             <RadarContainer/>
           </View>

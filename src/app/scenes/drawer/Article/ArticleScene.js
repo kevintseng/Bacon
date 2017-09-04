@@ -15,7 +15,7 @@ const data = [
   {key: 7, uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkKsTsB05e6xKVlF6SaX6kDOsov5GbGvS4oE38QRwAiugDHm5cAQOBqqw',title:'愛情市場學，愛上宅男的五大好處'}
 ] 
 
-@observer @inject('firebase', 'SubjectStore')
+@inject('firebase', 'SubjectStore') @observer 
 export default class ArticleScene extends Component {
 
   constructor(props) {
@@ -28,7 +28,15 @@ export default class ArticleScene extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
+  componentDidMount = async () => {
+    await this.sleep(260)
+  }
+
   componentWillUnmount() {
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   render() {
@@ -48,7 +56,3 @@ export default class ArticleScene extends Component {
     )
   }
 }
-
-/*
-
-*/

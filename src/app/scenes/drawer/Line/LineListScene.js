@@ -65,7 +65,7 @@ export default class LineListScene extends Component {
   }
 
   componentWillMount() {
-    Actions.refresh({ key: "Drawer", open: false })
+    Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {
@@ -378,7 +378,7 @@ export default class LineListScene extends Component {
             tintColor={"white"}
             selectItemColor={"#D63768"}
             data={menuData}
-            maxHeight={300}
+            maxHeight={430}
             handler={(selection, row) =>
               this.handleFilterChange(menuData[selection][row], selection, row)}
           >

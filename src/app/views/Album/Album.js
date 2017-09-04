@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, FlatList, Dimensions, TouchableOpacity, Button, View, Modal, Text } from 'react-native'
 import ImageZoom from 'react-native-image-pan-zoom'
 import LinearGradient from 'react-native-linear-gradient'
-import FastImage from 'react-native-fast-image'
+//import FastImage from 'react-native-fast-image'
 
 const { width, height } = Dimensions.get('window')
 
@@ -54,13 +54,13 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, v
           if (item.avatar) {
             return(
             <TouchableOpacity onPress={ () => { photoOnPress(item.key) } } onLongPress={ photoOnLongPress } >
-              <FastImage style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
+              <Image style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
               <Image style={{position: 'absolute', left: 5, top: 5}} source={require('./img/ico_aboutme_profilepic.png')}/>
             </TouchableOpacity>)
           } else {
             return(
             <TouchableOpacity onPress={ () => { photoOnPress(item.key) } } onLongPress={ photoOnLongPress } >
-              <FastImage style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
+              <Image style={{width: picWidth, height: picWidth}} source={{uri: item.uri}} />
             </TouchableOpacity>)
           }
         }} 

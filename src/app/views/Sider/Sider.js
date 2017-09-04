@@ -22,8 +22,8 @@ const styles = {
     textAlign: 'center',
     color: '#606060',
     fontWeight: '500',
-    fontSize: 17,
-    width: 130,
+    fontSize: 20,
+    //width: 130,
     flexWrap: "wrap",
   },
   badge: {
@@ -50,28 +50,26 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
           </View>
         </View>
 
-        <TouchableOpacity width={width * 0.8} activeOpacity={1} onPress={ displayNameOnPress }>
-
-          <View style={{alignItems: 'center',marginTop: 20}}>
+        <View>
+          <View style={{alignItems: 'center',marginTop: 10}}>
             <Cookie
               size={picWidth}
               avatar={avatar}
               borderColor='rgba(255, 255, 255, 1)'
             />
           </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <TouchableOpacity style={{alignItems: 'flex-start',flexDirection: 'row', justifyContent: 'space-between',height: 45}} onPress={ displayNameOnPress }>
             <View style={ styles.badge }>
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={styles.displayName}>{ displayName }</Text>
+              <Text style={styles.displayName}>{ (displayName || '?') + ' '}</Text>
             </View>
             <View style={styles.badge}>
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
             </View>
-          </View>
-
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
 
         <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
