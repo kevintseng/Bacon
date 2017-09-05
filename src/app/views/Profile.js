@@ -57,7 +57,7 @@ const Profile = ({source, vip, bonus, verityEmail, verityPhoto, displayName, age
             <View>
               <VerityEmail
                 verity={ verityEmail }
-                verityText={ verityEmail ? '已認證' : '尚未認證'}
+                verityText={ verityEmail ? '電子郵件已認證' : '電子郵件尚未認證'}
                 onPress={ onPressEmail }
               />
             </View>

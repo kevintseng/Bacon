@@ -1,4 +1,5 @@
 import { useStrict, observable, action, computed } from 'mobx'
+import _ from 'lodash'
 import { calculateAge } from '../../app/Utils'
 
 useStrict(true)
@@ -43,6 +44,12 @@ export default class SubjectStore {
   @observable chatStatus
   @observable visitConvSentToday
   @observable unhandledPass
+  // task 
+  @observable tasks
+  //@observable task1
+  //@observable task2
+  //@observable task3
+  //@observable task4
 
   constructor() {
     this.initialize()
@@ -86,6 +93,12 @@ export default class SubjectStore {
     return Object.keys(this.collect).length
   }
 
+  @computed get tasksToFlatList() {
+    const tasks_title = ['電子郵件認證獎勵','上傳三張照片獎勵','完成自我介紹獎勵','完成興趣愛好獎勵']
+    const tasks_bonus = [20,20,20,20]
+    return Object.keys(this.tasks).map((key, index) => ({ key, task: tasks_title[index], bonus: tasks_bonus[index], taken: this.tasks[key] }))
+  }
+
   // action
 
   @action initialize = () => {
@@ -123,6 +136,13 @@ export default class SubjectStore {
     this.latitude = null
     this.longitude = null
     this.unhandledPass = new Object
+    //
+    this.tasks = {
+      1: false,
+      2: false,
+      3: false,
+      4: false
+    }
   }
 
   @action setUid = uid => {
@@ -321,6 +341,24 @@ export default class SubjectStore {
 
   @action setConvVisit = (uid, boolean) => {
     this.conversations[uid].visit = boolean
+  }
+
+  // task
+
+  @action setTask1 = boolean => {
+    this.tasks[1] = boolean
+  }
+
+  @action setTask2 = boolean => {
+    this.tasks[2] = boolean
+  }
+
+  @action setTask3 = boolean => {
+    this.tasks[3] = boolean
+  }
+
+  @action setTask4 = boolean => {
+    this.tasks[4] = boolean
   }
 
 }
