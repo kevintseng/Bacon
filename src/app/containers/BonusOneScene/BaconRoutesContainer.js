@@ -33,10 +33,9 @@ export default class BaconRoutesContainer extends Component {
         this.androidPay(bonus,productId)
       } else {
         //const productId = 'android.test.purchased' // 'android.test.purchased'
-        console.warn(bonus)
+        //console.warn(bonus)
         alert('錯誤')
       }
-
     } else {
       console.log("Platform is iOS")
     }

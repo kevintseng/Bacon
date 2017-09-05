@@ -5,37 +5,39 @@ import RNGooglePlaces from 'react-native-google-places'
 
 import Upgrade from '../../views/Bill/Upgrade'
 
-@inject('SignUpStore') @observer
+@inject('ControlStore') @observer
 export default class UpgradeContainer extends Component {
 
   constructor(props) {
     super(props)
-    // this.SignUpStore = this.props.SignUpStore
-    this.state = {
-      topCheck: true,
-      upperCheck: false,
-    }
+    this.ControlStore = this.props.ControlStore
+    //this.state = {
+    //  topCheck: true,
+    //  upperCheck: false,
+    //}
   }
 
   topCheckOnPress = () => {
-    this.setState({
-      topCheck: !this.state.topCheck,
-      upperCheck: !this.state.upperCheck,
-    })
+    this.ControlStore.pickThreeMonthUpfrade()
+    //this.setState({
+    //  topCheck: !this.state.topCheck,
+    //  upperCheck: !this.state.upperCheck,
+    //})
   }
 
   upperCheckOnPress = () => {
-    this.setState({
-      topCheck: !this.state.topCheck,
-      upperCheck: !this.state.upperCheck,
-    })
+    this.ControlStore.pickOneYearUpfrade()
+    //this.setState({
+    //  topCheck: !this.state.topCheck,
+    //  upperCheck: !this.state.upperCheck,
+    //})
   }
 
   render() {
     return (
       <Upgrade
-        topCheck={this.state.topCheck}
-        upperCheck={this.state.upperCheck}
+        topCheck={ this.ControlStore.upgrade['3_month'] }
+        upperCheck={ this.ControlStore.upgrade['1_year'] }
         topCheckOnPress={this.topCheckOnPress}
         upperCheckOnPress={this.upperCheckOnPress}
       />
