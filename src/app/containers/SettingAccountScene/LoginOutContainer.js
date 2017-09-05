@@ -18,12 +18,14 @@ export default class LoginOutContainer extends Component {
       const lastOnline = snap.val().lastOnline
       const location = snap.val().location
       this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove()
+      this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(false)
       .then(() => {
         this.firebase.auth().signOut().catch( err => {
           this.firebase.database().ref('/online/' + this.SubjectStore.uid).set({
             lastOnline: lastOnline,
             location: location
           })
+          this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(true)
           console.log(err)
           alert('登出發生錯誤')
         })
