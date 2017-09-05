@@ -17,6 +17,7 @@ export default class BaconRoutesContainer extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.ControlStore = this.props.ControlStore
     this.firebase = this.props.firebase
+    this.purchaseState = null
   }
 
   pay = async () => {
@@ -46,24 +47,24 @@ export default class BaconRoutesContainer extends Component {
       try {
         await InAppBilling.open()
         if (!await InAppBilling.isPurchased(productId)) {
-          const details = await InAppBilling.purchase(productId)
-          // console.log('You purchased: ', details);
+          await InAppBilling.purchase(productId).then( details => {
+            this.purchaseState = details.purchaseState
+            if (this.purchaseState === 'PurchasedSuccessfully') {
+              this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + bonus)
+              this.SubjectStore.addBonus(bonus)
+            }
+          })
         }
-        const transactionStatus = await InAppBilling.getPurchaseTransactionDetails(productId)
-        // console.log('Transaction Status', transactionStatus);
-        //console.log(transactionStatus.purchaseState)
-        if (transactionStatus.purchaseState === 'PurchasedSuccessfully') {
-          this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + bonus)
-          this.SubjectStore.addBonus(bonus)
-        }
-        // const productDetails = await InAppBilling.getProductDetails(productId)
-        // console.log(productDetails);
       } catch (err) {
-        //console.log(err)
+        alert('錯誤')
       } finally {
-        await InAppBilling.consumePurchase(productId)
-        await InAppBilling.close()
-        Actions.AboutMe({type: 'reset'})
+        if (this.purchaseState === 'PurchasedSuccessfully') {
+          await InAppBilling.consumePurchase(productId)
+          await InAppBilling.close()
+          Actions.AboutMe({type: 'reset'})
+        } else {
+          await InAppBilling.close()
+        }
       }    
   }
 
