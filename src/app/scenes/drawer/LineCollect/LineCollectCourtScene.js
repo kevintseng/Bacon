@@ -28,7 +28,7 @@ export default class LineCollectCourtScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    Actions.refresh({ title: this.title })
+    //Actions.refresh({ title: this.title })
   }
 
   componentWillUnmount() {
