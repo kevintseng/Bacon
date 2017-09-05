@@ -7,6 +7,7 @@ import Geolocation from  'Geolocation'
 import Moment from 'moment'
 import MomentLocale from 'moment/locale/zh-tw'
 import FastImage from 'react-native-fast-image'
+import InAppBilling from 'react-native-billing'
 
 import { calculateAge } from '../../../app/Utils'
 import Loading from '../../views/Loading/Loading'
@@ -73,6 +74,7 @@ export default class SessionCheckScene extends Component {
           this.initialize()
           ///////// 非同步 /////////
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
+          this.setVip()
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
@@ -143,7 +145,7 @@ export default class SessionCheckScene extends Component {
       address: this.SignUpStore.address,
       nickname: this.SignUpStore.nickname,
       birthday: this.SignUpStore.birthday,
-      vip: false,
+      //vip: false,
       bonus: 0
     }).then(() => {
         this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳成功')
@@ -248,7 +250,6 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setLanguages(Object.assign({}, DefaultLanguages, snap.val().languages)) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
-          this.SubjectStore.setVip(Boolean(snap.val().vip))
           this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation)
           this.SubjectStore.setChatStatus(snap.val().chatStatus)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
@@ -283,6 +284,18 @@ export default class SessionCheckScene extends Component {
     //FastImage.preload(this.SubjectStore.albumToFlatList)
     this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
     this.meetCuteListener() // 非同步邂逅
+  }
+
+  setVip = () => {
+    InAppBilling.open()
+    .then(() => InAppBilling.getSubscriptionDetailsArray(['3_month', 'premium_3m']).then( productDetailsArray => {
+      if (productDetailsArray.length > 0) {
+        this.SubjectStore.setVip(true)
+      } else {
+        this.SubjectStore.setVip(false)
+      }
+    }).catch(err => console.log(err)) )
+    .catch(err => console.log(err))
   }
 
   meetCuteListener = () => {
