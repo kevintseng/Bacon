@@ -171,7 +171,7 @@ export default class MeetCuteStore {
       this.imageLoadingCount = 0
     })
     await this.firebase.database().ref('users/' + this.uid).once('value', async snap => {
-      if (snap.val() && !(snap.val().hideMeetCute) ) {
+      if (snap.val() && !(snap.val().hideMeetCute) && !(snap.val().deleted) ) {
         // 過濾隱藏
         const favorabilityDen = snap.val().favorabilityDen || 0
         this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)

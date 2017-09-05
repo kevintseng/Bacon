@@ -123,7 +123,7 @@ export default class MeetChanceStore {
   @action setRealPreys = () => {
     const preysPromises = this.preyList.map((ele,index) => (
       this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
-        if (snap.val() && !snap.val().hideMeetChance && snap.val().birthday && ((calculateAge(snap.val().birthday) >= this.meetChanceMinAge) && (calculateAge(snap.val().birthday) <= this.meetChanceMaxAge))) {
+        if (snap.val() && !(snap.val().hideMeetChance) && !(snap.val().deleted) && snap.val().birthday && ((calculateAge(snap.val().birthday) >= this.meetChanceMinAge) && (calculateAge(snap.val().birthday) <= this.meetChanceMaxAge))) {
           const popularityDen = snap.val().popularityDen || 0
           this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(popularityDen + 1)
           return({
