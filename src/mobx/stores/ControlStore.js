@@ -22,6 +22,7 @@ export default class ControlStore {
   @observable mateModal
   // bonues
   @observable bonus
+  @observable upgrade
   
   constructor() {
     this.initialize()
@@ -39,6 +40,7 @@ export default class ControlStore {
     this.meetChanceMaxAge = 99
     // bonues
     this.bonus = { 200: true, 600: false, 1200: false }
+    this.upgrade = {'3_month': true, '1_year': false}
     // collection
     this.getCollectionMax = false
     //
@@ -94,6 +96,14 @@ export default class ControlStore {
 
   @action pickOneThousandBonus = () => {
     this.bonus = { 200: false, 600: false, 1200: true }
+  }
+
+  @action pickThreeMonthUpfrade = () => {
+    this.upgrade = {'3_month': true, '1_year': false}
+  }
+
+  @action pickOneYearUpfrade = () => {
+    this.upgrade = {'3_month': false, '1_year': true}
   }
 
   @action setGetCollectionMax = () => {
