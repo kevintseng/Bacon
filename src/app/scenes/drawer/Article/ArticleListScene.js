@@ -43,6 +43,7 @@ export default class ArticleListScene extends Component {
           numColumns={1}
           renderItem={({item}) =>
             <ArticleList 
+              avatar={item.avatar}
               source={item.uri}
               title={item.title}
               onPress={ () => { this.goToArticleDetail(item.title, item.uri, item.content) } }
