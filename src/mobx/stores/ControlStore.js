@@ -38,7 +38,7 @@ export default class ControlStore {
     this.meetChanceMinAge = 18
     this.meetChanceMaxAge = 99
     // bonues
-    this.bonus = { 200: true, 500: false, 1000: false }
+    this.bonus = { 200: true, 600: false, 1200: false }
     // collection
     this.getCollectionMax = false
     //
@@ -85,15 +85,15 @@ export default class ControlStore {
   }
 
   @action pickTwoHundredBonus = () => {
-    this.bonus = { 200: true, 500: false, 1000: false }
+    this.bonus = { 200: true, 600: false, 1200: false }
   }
 
   @action pickFiveHundredBonus = () => {
-    this.bonus = { 200: false, 500: true, 1000: false }
+    this.bonus = { 200: false, 600: true, 1200: false }
   }
 
   @action pickOneThousandBonus = () => {
-    this.bonus = { 200: false, 500: false, 1000: true }
+    this.bonus = { 200: false, 600: false, 1200: true }
   }
 
   @action setGetCollectionMax = () => {
