@@ -8,7 +8,15 @@ const styles = {
   },
   date: {
     color: '#d63768',
-    textAlign: 'right'
+    textAlign: 'right',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    backgroundColor: 'transparent'
+  },
+  titleText: {
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    backgroundColor: 'transparent'
   }
 }
 
@@ -16,7 +24,7 @@ const BulletinList = ({title,date}) => {
 
   return(
     <View style={styles.title}>
-      <Text>{title}</Text>
+      <Text style={styles.titleText}>{title}</Text>
       <Text style={styles.date}>{date}</Text>
     </View>
   )
