@@ -4,16 +4,7 @@ import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
 import ArticleList from '../../../views/ArticleList'
-
-const data = [
-  {key: 1, uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkKsTsB05e6xKVlF6SaX6kDOsov5GbGvS4oE38QRwAiugDHm5cAQOBqqw',title:'愛情市場學，愛上宅男的五大好處'},
-  {key: 2, uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkKsTsB05e6xKVlF6SaX6kDOsov5GbGvS4oE38QRwAiugDHm5cAQOBqqw',title:'愛情市場學，愛上宅男的五大好處'},
-  {key: 3, uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkKsTsB05e6xKVlF6SaX6kDOsov5GbGvS4oE38QRwAiugDHm5cAQOBqqw',title:'愛情市場學，愛上宅男的五大好處'},
-  {key: 4, uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkKsTsB05e6xKVlF6SaX6kDOsov5GbGvS4oE38QRwAiugDHm5cAQOBqqw',title:'愛情市場學，愛上宅男的五大好處'},
-  {key: 5, uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkKsTsB05e6xKVlF6SaX6kDOsov5GbGvS4oE38QRwAiugDHm5cAQOBqqw',title:'愛情市場學，愛上宅男的五大好處'},
-  {key: 6, uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkKsTsB05e6xKVlF6SaX6kDOsov5GbGvS4oE38QRwAiugDHm5cAQOBqqw',title:'愛情市場學，愛上宅男的五大好處'},
-  {key: 7, uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkKsTsB05e6xKVlF6SaX6kDOsov5GbGvS4oE38QRwAiugDHm5cAQOBqqw',title:'愛情市場學，愛上宅男的五大好處'}
-] 
+import Articles from '../../../../configs/Articles'
 
 @inject('firebase', 'SubjectStore') @observer 
 export default class ArticleScene extends Component {
@@ -44,7 +35,7 @@ export default class ArticleScene extends Component {
       <View>
         <FlatList
           removeClippedSubviews
-          data={ data }
+          data={ Articles }
           numColumns={1}
           renderItem={({item}) =>
             <ArticleList 
