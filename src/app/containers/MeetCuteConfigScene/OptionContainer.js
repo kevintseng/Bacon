@@ -44,7 +44,7 @@ export default class OptionContainer extends Component {
       <SwitchLists
         flatListData={
           [
-            { key: 0, switchText: '顯示離線的會員', switchValue: this.state.vistorPrompt, switchonValueChange: this.setVistorPrompt },
+            { key: 0, switchText: '僅顯示三張照片以上的會員', switchValue: this.state.vistorPrompt, switchonValueChange: this.setVistorPrompt },
             { key: 1, switchText: '對方互動狀態分析可見', switchValue: this.state.goodPrompt, switchonValueChange:  this.setGoodPrompt }
           ]          
         }
