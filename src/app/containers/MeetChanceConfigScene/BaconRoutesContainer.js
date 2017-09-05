@@ -19,6 +19,8 @@ export default class BaconRoutesContainer extends Component {
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/meetChanceMinAge').set(this.ControlStore.meetChanceMinAge)
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/meetChanceMaxAge').set(this.ControlStore.meetChanceMaxAge)
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/meetChanceRadar').set(this.ControlStore.meetChanceRadar)
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/meetChanceOfflineMember').set(this.ControlStore.meetChanceOfflineMember)
+    this.MeetChanceStore.setMeetChanceOfflineMember(this.ControlStore.meetChanceOfflineMember)  
     this.MeetChanceStore.setMeetChanceMinAge(this.ControlStore.meetChanceMinAge)  
     this.MeetChanceStore.setMeetChanceMaxAge(this.ControlStore.meetChanceMaxAge)
     this.MeetChanceStore.setMeetChanceRadar(this.ControlStore.meetChanceRadar)
