@@ -6,18 +6,15 @@ import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
 import Moment from 'moment'
 import MomentLocale from 'moment/locale/zh-tw'
-import FastImage from 'react-native-fast-image'
 import InAppBilling from 'react-native-billing'
 
 import { calculateAge } from '../../../app/Utils'
 import Loading from '../../views/Loading/Loading'
 import DefaultLanguages from '../../../configs/DefaultLanguages'
-//import localdb from '../../../configs/localdb'
 
 const metadata = {
   contentType: 'image/jpeg'
 }
-
 
 @inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','MeetCuteStore','FateStore','firebase',) @observer
 export default class SessionCheckScene extends Component {
@@ -240,7 +237,6 @@ export default class SessionCheckScene extends Component {
     await this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
-          //console.log(snap.val().sexualOrientation)
           this.SubjectStore.setNickname(snap.val().nickname) // null(placeholder) String
           this.SubjectStore.setAddress(snap.val().address) // null(placeholder) String
           this.SubjectStore.setBirthday(snap.val().birthday) // null -> undefinded
@@ -266,22 +262,23 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
           this.SubjectStore.setHideVister(snap.val().hideVister || false)
           this.SubjectStore.setHideMessage(snap.val().hideMessage || false)
-          // ages config
+          // meetCute config
           this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)  
           this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 99)
-          // 收藏
-          //this.FateStore.setCollectionPreylist(new Object(snap.val().collect)) // Object
-           //null(placeholder->邂逅) String
+          this.MeetCuteStore.setMeetCuteRadar(snap.val().meetCuteRadar)
+          // meetChance config
+          this.MeetChanceStore.setMeetChanceMinAge(snap.val().meetChanceMinAge || 18)  
+          this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 99)
+          this.MeetChanceStore.setMeetChanceRadar(snap.val().meetChanceRadar)
         } else {
-          //this.SubjectStore.initialize()
+          //
         }
         this.ControlStore.setSyncDetector(true) // 同步完成
       }, error => {
-        //this.SubjectStore.initialize()
+        //
         this.ControlStore.setSyncDetector(true) // 同步完成
         console.log(error)
       })
-    //FastImage.preload(this.SubjectStore.albumToFlatList)
     this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
     this.meetCuteListener() // 非同步邂逅
   }
@@ -501,7 +498,6 @@ export default class SessionCheckScene extends Component {
       this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday/`).set(sent)
     })
   }
-
 
   render() {
     return (

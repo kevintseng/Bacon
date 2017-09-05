@@ -23,6 +23,9 @@ export default class ControlStore {
   // bonues
   @observable bonus
   @observable upgrade
+  //
+  @observable meetCuteRadar
+  @observable meetChanceRadar
   
   constructor() {
     this.initialize()
@@ -52,6 +55,9 @@ export default class ControlStore {
     this.settingRuleModal = false
     //
     this.deleteAccounrModal = false
+    //
+    this.meetCuteRadar = false
+    this.meetChanceRadar = false
   }
 
   @action setAuthenticateIndicator = str => {
@@ -132,5 +138,21 @@ export default class ControlStore {
 
   @action setDeleteAccounrModal = () => {
     this.deleteAccounrModal = !this.deleteAccounrModal
+  }
+
+  @action switchMeetCuteRadar = () => {
+    this.meetCuteRadar = !this.meetCuteRadar
+  }
+
+  @action switchMeetChanceRadar = () => {
+    this.meetChanceRadar = !this.meetChanceRadar
+  }
+
+  @action setMeetCuteRadar = boolean => {
+    this.meetCuteRadar = boolean
+  }
+
+  @action setMeetChanceRadar = boolean => {
+    this.meetChanceRadar = boolean
   }
 }

@@ -46,10 +46,6 @@ export default class SubjectStore {
   @observable unhandledPass
   // task 
   @observable tasks
-  //@observable task1
-  //@observable task2
-  //@observable task3
-  //@observable task4
 
   constructor() {
     this.initialize()
