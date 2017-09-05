@@ -54,8 +54,8 @@ import LineScene from './scenes/drawer/Line/LineScene'
 //
 import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
 //
-import ArticleScene from './scenes/drawer/Article/ArticleScene'
-
+import ArticleListScene from './scenes/drawer/Article/ArticleListScene'
+import ArticleDetailScene from './scenes/drawer/Article/ArticleDetailScene'
 // ###############drawer################ //
 
 // ###############header components################ //
@@ -260,7 +260,10 @@ export default class Routes extends Component {
                 <Scene key="LineCollectCourt" title="LineCollect" renderBackButton={this.baconArrow} component={LineCollectCourtScene} />
               </Scene>
 
-              <Scene key="Article" title="專欄" renderLeftButton={this.baconMenu} component={ArticleScene} />
+              <Scene key="Article" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
+                <Scene key="ArticleList" title="專欄" renderLeftButton={this.baconMenu} component={ArticleListScene} />
+                <Scene key="ArticleDetail" title="專欄" renderBackButton={this.baconArrow} component={ArticleDetailScene} />
+              </Scene>
 
               <Scene key="Upgrade" title="會員升級" renderBackButton={this.baconArrow} component={UpgradeOneScene} />
 

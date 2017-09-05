@@ -7,7 +7,7 @@ import ArticleList from '../../../views/ArticleList'
 import Articles from '../../../../configs/Articles'
 
 @inject('firebase', 'SubjectStore') @observer 
-export default class ArticleScene extends Component {
+export default class ArticleListScene extends Component {
 
   constructor(props) {
     super(props)
@@ -30,6 +30,10 @@ export default class ArticleScene extends Component {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
+  goToArticleDetail = (title,uri,content) => {
+    Actions.ArticleDetail({articleAitle: title, uri: uri, content: content})
+  }
+
   render() {
     return (
       <View>
@@ -40,7 +44,10 @@ export default class ArticleScene extends Component {
           renderItem={({item}) =>
             <ArticleList 
               source={item.uri}
-              title={item.title}/>
+              title={item.title}
+              onPress={ () => { this.goToArticleDetail(item.title, item.uri, item.content) } }
+              />
+
            }
         />
       </View>
