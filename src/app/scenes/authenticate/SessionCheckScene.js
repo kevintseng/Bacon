@@ -449,6 +449,7 @@ export default class SessionCheckScene extends Component {
   }
 
   setOnline = () => {
+    this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(true)
     this.firebase.database().ref('/online/' + this.SubjectStore.uid).set({
       lastOnline: Math.floor(Date.now() / 1000),
       location: 'Taipei, Taiwan'
@@ -456,6 +457,7 @@ export default class SessionCheckScene extends Component {
   }
 
   setOffline() {
+    this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(false)
     this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove().catch(err => { console.log(err) })
   }
 
