@@ -46,8 +46,8 @@ export default class AboutMeBoardScene extends Component {
         //onChangeTab={}
         ref={ (tabView) => { this.tabView = tabView } }
         >
-        <TaskContainer label='Visitors' tabLabel='任務' />
-        <BulletinContainer label='GoodImpression' tabLabel='公告' />
+        <TaskContainer label='Task' tabLabel='任務' />
+        <BulletinContainer label='Bulletin' tabLabel='公告' />
       </ScrollableTabView>
     )
   }
