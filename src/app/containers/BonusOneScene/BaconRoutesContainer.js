@@ -20,8 +20,29 @@ export default class BaconRoutesContainer extends Component {
   }
 
   pay = async () => {
+    const bonus = parseInt(Object.keys(this.ControlStore.bonus).find(key => this.ControlStore.bonus[key] === true))
     if (Platform.OS === "android") {
-      const productId = 'android.test.purchased' // 'android.test.purchased'
+      if (bonus === 1200) {
+        const productId = 'q_points_1200' // 'android.test.purchased'
+        this.androidPay(bonus,productId)
+      } else if (bonus === 600) {
+        const productId = 'q_points_600' // 'android.test.purchased'
+        this.androidPay(bonus,productId)
+      } else if (bonus === 200) {
+        const productId = 'q_points_200' // 'android.test.purchased'
+        this.androidPay(bonus,productId)
+      } else {
+        //const productId = 'android.test.purchased' // 'android.test.purchased'
+        console.warn(bonus)
+        alert('錯誤')
+      }
+
+    } else {
+      console.log("Platform is iOS")
+    }
+  }
+
+  androidPay = async (bonus,productId) => {
       await InAppBilling.close()
       try {
         await InAppBilling.open()
@@ -31,25 +52,20 @@ export default class BaconRoutesContainer extends Component {
         }
         const transactionStatus = await InAppBilling.getPurchaseTransactionDetails(productId)
         // console.log('Transaction Status', transactionStatus);
-        console.log(transactionStatus.purchaseState)
+        //console.log(transactionStatus.purchaseState)
         if (transactionStatus.purchaseState === 'PurchasedSuccessfully') {
-          const bonus = parseInt(Object.keys(this.ControlStore.bonus).find(key => this.ControlStore.bonus[key] === true))
-
           this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + bonus)
           this.SubjectStore.addBonus(bonus)
         }
         // const productDetails = await InAppBilling.getProductDetails(productId)
         // console.log(productDetails);
       } catch (err) {
-        console.log(err)
+        //console.log(err)
       } finally {
         await InAppBilling.consumePurchase(productId)
         await InAppBilling.close()
         Actions.AboutMe({type: 'reset'})
-      }
-    } else {
-      console.log("Platform is iOS")
-    }
+      }    
   }
 
   render() {

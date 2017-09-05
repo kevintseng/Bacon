@@ -17,8 +17,8 @@ export default class BonusContainer extends Component {
     return(
       <Bonus
         topCheck={ this.ControlStore.bonus[200] }
-        middleCheck={ this.ControlStore.bonus[500] }
-        upperCheck={ this.ControlStore.bonus[1000] }
+        middleCheck={ this.ControlStore.bonus[600] }
+        upperCheck={ this.ControlStore.bonus[1200] }
         topCheckOnPress={ this.ControlStore.pickTwoHundredBonus }
         middleCheckOnPress={ this.ControlStore.pickFiveHundredBonus }
         upperCheckOnPress={ this.ControlStore.pickOneThousandBonus }
