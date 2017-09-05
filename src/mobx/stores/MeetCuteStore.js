@@ -76,6 +76,7 @@ export default class MeetCuteStore {
     this.meetCuteMinAge = 18
     this.meetCuteMaxAge = 99
     this.meetCuteRadar = false
+    this.meetCuteThreePhotos = false
     this.imageLoadingCount = 0
   }
 
@@ -264,6 +265,10 @@ export default class MeetCuteStore {
 
   @action setMeetCuteRadar = boolean => {
     this.meetCuteRadar = boolean
+  }
+
+  @action setMeetCuteThreePhotos = boolean => {
+    this.meetCuteThreePhotos = boolean
   }
 
   shuffle = o => {

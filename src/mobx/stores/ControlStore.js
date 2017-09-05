@@ -25,7 +25,9 @@ export default class ControlStore {
   @observable upgrade
   //
   @observable meetCuteRadar
+  @observable meetCuteThreePhotos
   @observable meetChanceRadar
+  @observable meetChanceOfflineMember
   
   constructor() {
     this.initialize()
@@ -58,6 +60,7 @@ export default class ControlStore {
     //
     this.meetCuteRadar = false
     this.meetChanceRadar = false
+    this.meetChanceOfflineMember = false
   }
 
   @action setAuthenticateIndicator = str => {
@@ -144,6 +147,10 @@ export default class ControlStore {
     this.meetCuteRadar = !this.meetCuteRadar
   }
 
+  @action switchMeetCuteThreePhotos = () => {
+    this.meetCuteThreePhotos = !this.meetCuteThreePhotos
+  }
+
   @action switchMeetChanceRadar = () => {
     this.meetChanceRadar = !this.meetChanceRadar
   }
@@ -152,7 +159,19 @@ export default class ControlStore {
     this.meetCuteRadar = boolean
   }
 
+  @action setMeetCuteThreePhotos = boolean => {
+    this.meetCuteThreePhotos = boolean
+  }
+
   @action setMeetChanceRadar = boolean => {
     this.meetChanceRadar = boolean
+  }
+
+  @action switchMeetChanceOfflineMember = () => {
+    this.meetChanceOfflineMember = !this.meetChanceOfflineMember
+  }
+
+  @action setMeetChanceOfflineMember = boolean => {
+    this.meetChanceOfflineMember = boolean
   }
 }

@@ -219,6 +219,10 @@ export default class MeetChanceStore {
     this.meetChanceRadar = boolean
   }
 
+  @action setMeetChanceOfflineMember = boolean => {
+    this.meetChanceOfflineMember = boolean
+  }
+
   @action cleanLoading = () => {
     this.loading = false
   }

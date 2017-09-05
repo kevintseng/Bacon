@@ -47,7 +47,8 @@ export default class MeetCuteConfigScene extends Component {
   componentWillMount() {
     this.ControlStore.setMeetCuteMinAge(this.MeetCuteStore.meetCuteMinAge)  
     this.ControlStore.setMeetCuteMaxAge(this.MeetCuteStore.meetCuteMaxAge) 
-    this.ControlStore.setMeetCuteRadar(this.MeetCuteStore.meetCuteRadar)   
+    this.ControlStore.setMeetCuteRadar(this.MeetCuteStore.meetCuteRadar) 
+    this.ControlStore.setMeetCuteThreePhotos(this.MeetCuteStore.meetCuteThreePhotos)   
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
