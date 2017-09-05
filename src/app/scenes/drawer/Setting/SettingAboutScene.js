@@ -43,7 +43,7 @@ export default class SettingAboutScene extends Component {
 
   version = () => {
     Alert.alert( 
-      '目前版本', 'Alpha-2.1.0', [ 
+      '目前版本', 'Alpha-2.2.0', [ 
         {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
       )
   }
