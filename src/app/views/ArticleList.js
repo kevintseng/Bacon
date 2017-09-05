@@ -2,6 +2,8 @@ import React from 'react'
 import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
 import { BaconBadgeYes, BaconBadgeNo } from './BaconBadge/BaconBadge'
 
+import Cookie from './Cookie/Cookie'
+
 const DEFAULT_IMAGE = require('./Cookie/img/ico_qy_head_preload.png')
 
 const styles = {
@@ -28,17 +30,30 @@ const styles = {
   content: {
     paddingLeft: 10,
     justifyContent: 'space-between'
+  },
+  avatar: {
+    width: 30,
+    height: 30,
+    borderRadius: 15   
+  },
+  bottom: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 5
   }
 }
 
-const ArticleList = ({source,title,onPress}) => {
+const ArticleList = ({source,title,onPress,avatar}) => {
 
   return(
     <TouchableOpacity style={styles.article} onPress={ onPress }>
       <Image style={styles.image} source={source} />
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
-        <BaconBadgeYes text='熱門'/>
+        <View style={styles.bottom}>
+          <BaconBadgeYes text='熱門'/>
+          <Cookie local size={30} avatar={avatar} name={'艾姬'}/>
+        </View>
       </View>
     </TouchableOpacity>
   )
