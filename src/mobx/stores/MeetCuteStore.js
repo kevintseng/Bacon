@@ -10,9 +10,7 @@ export default class MeetCuteStore {
 
   @observable haveNewPreys
   @observable loading
-  //@observable imageLoading
   @observable firstLoading
-  //@observable carouselLoading
   // user data
   @observable nickname
   @observable bio
@@ -26,9 +24,6 @@ export default class MeetCuteStore {
   @observable photoVerified
   @observable latitude
   @observable longitude
-  // config
-  //@observable meetCuteMinAge
-  //@observable meetCuteMaxAge  
 
   constructor(firebase) {
     this.firebase = firebase
@@ -80,6 +75,7 @@ export default class MeetCuteStore {
     // config
     this.meetCuteMinAge = 18
     this.meetCuteMaxAge = 99
+    this.meetCuteRadar = false
     this.imageLoadingCount = 0
   }
 
@@ -264,6 +260,10 @@ export default class MeetCuteStore {
 
   @action setLongitude = longitude => {
     this.longitude = longitude
+  }
+
+  @action setMeetCuteRadar = boolean => {
+    this.meetCuteRadar = boolean
   }
 
   shuffle = o => {

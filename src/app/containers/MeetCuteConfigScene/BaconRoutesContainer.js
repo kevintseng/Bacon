@@ -18,6 +18,8 @@ export default class BaconRoutesContainer extends Component {
   buttonOnPress = () => {
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/meetCuteMinAge').set(this.ControlStore.meetCuteMinAge)
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/meetCuteMaxAge').set(this.ControlStore.meetCuteMaxAge)
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/meetCuteRadar').set(this.ControlStore.meetCuteRadar)
+    this.MeetCuteStore.setMeetCuteRadar(this.ControlStore.meetCuteRadar)
     this.MeetCuteStore.setMeetCuteMinAge(this.ControlStore.meetCuteMinAge)  
     this.MeetCuteStore.setMeetCuteMaxAge(this.ControlStore.meetCuteMaxAge)
     this.MeetCuteStore.resetAge()

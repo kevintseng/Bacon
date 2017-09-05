@@ -22,7 +22,6 @@ export default class MeetChanceStore {
   @observable distance
   @observable emailVerified
   @observable photoVerified
-  //@observable synchronize
 
   constructor(firebase) {
     this.firebase = firebase
@@ -79,6 +78,7 @@ export default class MeetChanceStore {
     // config
     this.meetChanceMinAge = 18
     this.meetChanceMaxAge = 99
+    this.meetChanceRadar = false
     //
     this.fetchPreyQuery
   }
@@ -213,6 +213,10 @@ export default class MeetChanceStore {
 
   @action setMeetChanceMaxAge = int => {
     this.meetChanceMaxAge = int
+  }
+
+  @action setMeetChanceRadar = boolean => {
+    this.meetChanceRadar = boolean
   }
 
   @action cleanLoading = () => {

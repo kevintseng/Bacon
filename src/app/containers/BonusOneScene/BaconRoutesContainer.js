@@ -33,8 +33,6 @@ export default class BaconRoutesContainer extends Component {
         const productId = 'q_points_200' // 'android.test.purchased'
         this.androidPay(bonus,productId)
       } else {
-        //const productId = 'android.test.purchased' // 'android.test.purchased'
-        //console.warn(bonus)
         alert('錯誤')
       }
     } else {
@@ -43,29 +41,29 @@ export default class BaconRoutesContainer extends Component {
   }
 
   androidPay = async (bonus,productId) => {
-      await InAppBilling.close()
-      try {
-        await InAppBilling.open()
-        if (!await InAppBilling.isPurchased(productId)) {
-          await InAppBilling.purchase(productId).then( details => {
-            this.purchaseState = details.purchaseState
-            if (this.purchaseState === 'PurchasedSuccessfully') {
-              this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + bonus)
-              this.SubjectStore.addBonus(bonus)
-            }
-          })
-        }
-      } catch (err) {
-        alert('錯誤')
-      } finally {
-        if (this.purchaseState === 'PurchasedSuccessfully') {
-          await InAppBilling.consumePurchase(productId)
-          await InAppBilling.close()
-          Actions.AboutMe({type: 'reset'})
-        } else {
-          await InAppBilling.close()
-        }
-      }    
+    await InAppBilling.close()
+    try {
+      await InAppBilling.open()
+      if (!await InAppBilling.isPurchased(productId)) {
+        await InAppBilling.purchase(productId).then( details => {
+          this.purchaseState = details.purchaseState
+          if (this.purchaseState === 'PurchasedSuccessfully') {
+            this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + bonus)
+            this.SubjectStore.addBonus(bonus)
+          }
+        })
+      }
+    } catch (err) {
+      alert('錯誤')
+    } finally {
+      if (this.purchaseState === 'PurchasedSuccessfully') {
+        await InAppBilling.consumePurchase(productId)
+        await InAppBilling.close()
+        Actions.AboutMe({type: 'reset'})
+      } else {
+        await InAppBilling.close()
+      }
+    }    
   }
 
   render() {

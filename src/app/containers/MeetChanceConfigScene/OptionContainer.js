@@ -4,22 +4,23 @@ import { Alert } from 'react-native'
 
 import SwitchLists from '../../views/SwitchLists'
 
-@inject('SubjectStore') @observer
+@inject('SubjectStore','ControlStore') @observer
 export default class OptionContainer extends Component {
 
   constructor(props) {
     super(props)
     this.SubjectStore = this.props.SubjectStore
-    this.state = {
+    this.ControlStore = this.props.ControlStore
+    //this.state = {
       // Prompt
-      vistorPrompt : false,
-      goodPrompt: false,
-    }
+     // vistorPrompt : false,
+     // goodPrompt: false,
+    //}
   }
 
   setVistorPrompt = () => {
     if (this.SubjectStore.vip) {
-      this.setState({ vistorPrompt : !this.state.vistorPrompt})
+      this.ControlStore.switchMeetChanceRadar()
     } else {
       Alert.alert( 
         '管理員提示', '此功能僅限高級會員使用', [ 
@@ -30,7 +31,7 @@ export default class OptionContainer extends Component {
 
   setGoodPrompt = () => {
     if (this.SubjectStore.vip) {
-      this.setState({ goodPrompt : !this.state.goodPrompt})
+      this.ControlStore.switchMeetChanceRadar()
     } else {
       Alert.alert( 
         '管理員提示', '此功能僅限高級會員使用', [ 
@@ -44,8 +45,8 @@ export default class OptionContainer extends Component {
       <SwitchLists
         flatListData={
           [
-            { key: 0, switchText: '不顯示離線的會員', switchValue: this.state.vistorPrompt, switchonValueChange: this.setVistorPrompt },
-            { key: 1, switchText: '對方互動狀態分析可見', switchValue: this.state.goodPrompt, switchonValueChange:  this.setGoodPrompt }
+            { key: 0, switchText: '不顯示離線的會員', switchValue: this.ControlStore.meetChanceRadar, switchonValueChange: this.setVistorPrompt },
+            { key: 1, switchText: '對方互動狀態分析可見', switchValue: this.ControlStore.meetChanceRadar, switchonValueChange:  this.setGoodPrompt }
           ]          
         }
       />
