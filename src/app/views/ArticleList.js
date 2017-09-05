@@ -35,7 +35,7 @@ const ArticleList = ({source,title,onPress}) => {
 
   return(
     <TouchableOpacity style={styles.article} onPress={ onPress }>
-      <Image style={styles.image} source={{uri: source}} />
+      <Image style={styles.image} source={source} />
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
         <BaconBadgeYes text='熱門'/>
