@@ -17,7 +17,7 @@ const styles = {
     padding: 10
   },
   text: {
-    padding: 10    
+    padding: 10
   }
 }
 
@@ -65,7 +65,7 @@ export default class PolicyModalContainer extends Component {
                 <ScrollView>
                   <Policy/>
                 </ScrollView>
-                <View>
+                <View style={{ height: 50, justifyContent: "center" }}>
                   <Text style={ styles.title } onPress={ this.ControlStore.setSettingPolicyModal }>我知道了</Text>
                 </View>
               </View>

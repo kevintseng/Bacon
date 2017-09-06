@@ -18,7 +18,7 @@ const styles = {
     padding: 10
   },
   text: {
-    padding: 10    
+    padding: 10
   }
 }
 @inject('SignUpStore') @observer
@@ -30,7 +30,7 @@ export default class RuleModalContainer extends Component {
   }
 
   close = () => {
-    //this.SignUpStore.setRuleModal 
+    //this.SignUpStore.setRuleModal
   }
 
   render() {

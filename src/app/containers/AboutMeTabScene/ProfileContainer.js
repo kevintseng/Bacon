@@ -45,9 +45,10 @@ export default class ProfileContainer extends Component {
 
   goToMemberUpgrade = () => {
     if (this.SubjectStore.vip) {
-      Alert.alert( 
-        '管理員提示', '您已是高級會員', [ 
-        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      // console.log("this.SubjectStore.vip: ", this.SubjectStore.vip)
+      Alert.alert(
+        '管理員提示', '您已是高級會員', [
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false }
       )
     } else {
       Actions.Upgrade()
@@ -86,7 +87,7 @@ export default class ProfileContainer extends Component {
           bonus={ this.SubjectStore.bonus }
           //interests={ this.SubjectStore.hobbies }
 
-          onPressDisplayName={ this.goToEditDisplayName } 
+          onPressDisplayName={ this.goToEditDisplayName }
           onPressCity={ this.goToEditCity }
           onPressBio={ this.goToEditBio }
           onPressLangs={ this.goToEditLangs }
@@ -101,4 +102,3 @@ export default class ProfileContainer extends Component {
     )
   }
 }
-

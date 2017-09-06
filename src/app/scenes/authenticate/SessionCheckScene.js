@@ -1,5 +1,5 @@
 import React, { Component }  from 'react'
-import { AppState } from 'react-native'
+import { AppState, Platform } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
@@ -182,7 +182,7 @@ export default class SessionCheckScene extends Component {
 
   uploadFirebaseLocation = (latitude,longitude) => {
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/latitude').set(latitude)
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/longitude').set(longitude)    
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/longitude').set(longitude)
   }
 
   setLocation = (latitude,longitude) => {
@@ -202,11 +202,11 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setLatitude(latitude)
     this.SubjectStore.setLongitude(longitude)
     this.MeetCuteStore.setLatitude(latitude)
-    this.MeetCuteStore.setLongitude(longitude) 
+    this.MeetCuteStore.setLongitude(longitude)
     this.MeetChanceStore.setLatitude(latitude)
-    this.MeetChanceStore.setLongitude(longitude) 
+    this.MeetChanceStore.setLongitude(longitude)
     this.FateStore.setLatitude(latitude)
-    this.FateStore.setLongitude(longitude) 
+    this.FateStore.setLongitude(longitude)
   }
 
   uploadEmailVerity = () => {
@@ -263,12 +263,12 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setHideVister(snap.val().hideVister || false)
           this.SubjectStore.setHideMessage(snap.val().hideMessage || false)
           // meetCute config
-          this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)  
+          this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)
           this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 99)
           this.MeetCuteStore.setMeetCuteRadar(snap.val().meetCuteRadar)
           this.MeetCuteStore.setMeetCuteThreePhotos(snap.val().meetCuteThreePhotos)
           // meetChance config
-          this.MeetChanceStore.setMeetChanceMinAge(snap.val().meetChanceMinAge || 18)  
+          this.MeetChanceStore.setMeetChanceMinAge(snap.val().meetChanceMinAge || 18)
           this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 99)
           this.MeetChanceStore.setMeetChanceRadar(snap.val().meetChanceRadar)
           this.MeetChanceStore.setMeetChanceOfflineMember(snap.val().meetCuteOfflineMember)
@@ -286,15 +286,27 @@ export default class SessionCheckScene extends Component {
   }
 
   setVip = () => {
-    InAppBilling.open()
-    .then(() => InAppBilling.getSubscriptionDetailsArray(['3_month', 'premium_3m']).then( productDetailsArray => {
-      if (productDetailsArray.length > 0) {
-        this.SubjectStore.setVip(true)
-      } else {
-        this.SubjectStore.setVip(false)
-      }
-    }).catch(err => console.log(err)) )
-    .catch(err => console.log(err))
+    if (Platform.OS === "android") {
+      InAppBilling.open()
+      .then(() => InAppBilling.getSubscriptionDetailsArray(['3_month', 'premium_3m']).then( productDetailsArray => {
+        if (productDetailsArray.length > 0) {
+          this.SubjectStore.setVip(true)
+        } else {
+          this.SubjectStore.setVip(false)
+        }
+      }).catch(err => console.log(err)))
+      .catch(err => console.log(err))
+    } else { // iOS
+      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/vip').once('value').then((snap)=> {
+        if (snap.exists()) {
+          if (snap.val()) {
+            this.SubjectStore.setVip(true)
+          } else {
+            this.SubjectStore.setVip(false)
+          }
+        }
+      })
+    }
   }
 
   meetCuteListener = () => {
