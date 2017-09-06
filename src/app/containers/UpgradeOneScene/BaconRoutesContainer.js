@@ -61,18 +61,23 @@ export default class BaconRoutesContainer extends Component {
         Actions.AboutMe({type: 'reset'})
       }
     } else {
-      const pid = "premium_3m"
-      const products = ["q_points_200", "q_points_600", "q_points_1200"]
+      console.log("iOS IAP Membership Upgrade")
       try {
-        InAppUtils.loadProducts(products, (error, products) => {
-          console.log("loadProducts: ", products, " error: ", error)
-          InAppUtils.receiptData((err, receiptData) => {
-            console.log("receiptData: ", receiptData)
-            this.validate(receiptData)
-          })
-        })
+        // InAppUtils.loadProducts(products, (error, products) => {
+        //   console.log("loadProducts: ", products, " error: ", error)
+        //   InAppUtils.receiptData((err, receiptData) => {
+        //     console.log("receiptData: ", receiptData)
+        //     this.validate(receiptData)
+        //   })
+        // })
+        
+        console.log("iOS IAP Bonus")
+        this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
+        this.SubjectStore.setVip(true)
       } catch (err) {
         console.log(err)
+      } finally {
+        Actions.AboutMe({type: 'reset'})
       }
 
       // InAppUtils.canMakePayments(async (enabled) => {

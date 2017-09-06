@@ -48,7 +48,27 @@ export default class BaconRoutesContainer extends Component {
         Actions.AboutMe({type: 'reset'})
       }
     } else {
-      console.log("Platform is iOS")
+      console.log("iOS IAP Bonus")
+      try {
+        console.log(this.ControlStore)
+        let bonus = 0
+        if (this.ControlStore.bonus[200]) {
+          bonus = 200
+        }
+        if (this.ControlStore.bonus[500]) {
+          bonus = 600
+        }
+        if (this.ControlStore.bonus[1000]) {
+          bonus = 1200
+        }
+
+        this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + bonus)
+        this.SubjectStore.addBonus(bonus)
+      } catch (err) {
+        console.log(err)
+      } finally {
+        Actions.AboutMe({type: 'reset'})
+      }
     }
   }
 
