@@ -16,71 +16,57 @@ export default class UpgradeTitleContainer extends Component {
   }
 
   componentDidMount() {
-    this.cycleAnimation()         
+    this.cycleAnimation()
   }
 
   cycleAnimation = () => {
     Animated.sequence([
-      Animated.timing(          
-        this.state.fadeA,  
-        { 
-          toValue: 0,
-          duration: 2000
-        }      
-      ), 
-      Animated.timing(          
-        this.state.fadeB,  
-        {
-          toValue: 1,
-          duration: 2000
-        }      
-      ),
-      Animated.timing(          
-        this.state.fadeB,  
+      Animated.timing(
+        this.state.fadeA,
         {
           toValue: 0,
           duration: 2000
-        }      
+        }
       ),
-      Animated.timing(          
-        this.state.fadeC,  
+      Animated.timing(
+        this.state.fadeB,
         {
           toValue: 1,
           duration: 2000
-        }      
+        }
       ),
-      Animated.timing(          
-        this.state.fadeC,  
+      Animated.timing(
+        this.state.fadeB,
         {
           toValue: 0,
           duration: 2000
-        }      
+        }
       ),
-      Animated.timing(          
-        this.state.fadeD,  
+      Animated.timing(
+        this.state.fadeC,
         {
           toValue: 1,
           duration: 2000
-        }      
+        }
       ),
-      Animated.timing(          
-        this.state.fadeD,  
+      Animated.timing(
+        this.state.fadeC,
         {
           toValue: 0,
           duration: 2000
-        }      
+        }
       ),
-      Animated.timing(          
-        this.state.fadeA,  
+      Animated.timing(
+        this.state.fadeA,
         {
           toValue: 1,
           duration: 2000
-        }      
-      )    
+        }
+      )
       ]
     ).start(() => {
       this.cycleAnimation()
-    }) 
+    })
   }
 
   render() {
@@ -105,13 +91,6 @@ export default class UpgradeTitleContainer extends Component {
             source={require('./img/ico_upgrade_3.png')}
             topText='提高未讀招呼，與收藏的上限'
             upperText='讓難得的緣分不漏接'
-          />
-        </Animated.View>
-        <Animated.View style={{opacity: this.state.fadeD, position: 'absolute'}}>
-          <UpgradeTitle
-            source={require('./img/ico_upgrade_4.png')}
-            topText='少了會員升級四'
-            upperText='少了會員升級四'
           />
         </Animated.View>
       </View>
