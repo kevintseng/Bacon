@@ -13,7 +13,7 @@ const picWidth = (width - 4 * x)/3
 
 const DEFAULT_IMAGE = require('./img/ico_qy_head_preload.png')
 
-const Cookie = ({ name, size, avatar, onPress, borderColor }) => {
+const Cookie = ({ name, size, avatar, onPress, borderColor, local }) => {
 
 const circleSize = size || picWidth
 
@@ -62,13 +62,22 @@ const styles = {
     uri: avatar
   },
   text: {
-    lineHeight: 20
+    lineHeight: 20,
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    //fontSize: 18,
+    //fontWeight: '500',
+    color: '#606060',
+    backgroundColor: 'transparent'
   }
 }
   return(
     <TouchableOpacity activeOpacity={1} style={styles.view} onPress={ onPress }>
       <View style={styles.circle} >
-        <MKPLoadImageView style={ styles.image } source={ avatar ? { uri: avatar } : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
+        { local ? 
+          <MKPLoadImageView style={ styles.image } source={ avatar ? avatar : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
+        : <MKPLoadImageView style={ styles.image } source={ avatar ? { uri: avatar } : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
+        }
         <View style={styles.fixCircleClipping} />
       </View>
       <Text style={ styles.text } lineBreakMode={ lineBreakMode } numberOfLines={1} >{ name }</Text>

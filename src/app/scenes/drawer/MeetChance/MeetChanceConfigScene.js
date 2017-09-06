@@ -46,7 +46,9 @@ export default class MeetChanceConfigScene extends Component {
 
   componentWillMount() {
     this.ControlStore.setMeetChanceMinAge(this.MeetChanceStore.meetChanceMinAge)  
-    this.ControlStore.setMeetChanceMaxAge(this.MeetChanceStore.meetChanceMaxAge)    
+    this.ControlStore.setMeetChanceMaxAge(this.MeetChanceStore.meetChanceMaxAge) 
+    this.ControlStore.setMeetChanceRadar(this.MeetChanceStore.meetChanceRadar) 
+    this.ControlStore.setMeetChanceOfflineMember(this.MeetChanceStore.meetChanceOfflineMember)  
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 

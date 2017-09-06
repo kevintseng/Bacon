@@ -16,16 +16,16 @@ export default class BaconRoutesContainer extends Component {
   }
   
   buttonOnPress = () => {
-    if (this.SubjectEditStore.bio) {
+    //if (this.SubjectEditStore.bio) {
       this.firebase.database().ref('users/' + this.SubjectStore.uid + '/bio').set(this.SubjectEditStore.bio)
       this.SubjectStore.setBio(this.SubjectEditStore.bio)
       Actions.AboutMeTab({type: 'reset'})
-    } else {
-      Alert.alert( 
-        '輸入錯誤', '請輸入自我介紹', [ 
-        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
-      )
-    }
+    //} else {
+    //  Alert.alert( 
+    //    '輸入錯誤', '請輸入自我介紹', [ 
+    //    {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+    //  )
+    //}
   }
 
   render() {

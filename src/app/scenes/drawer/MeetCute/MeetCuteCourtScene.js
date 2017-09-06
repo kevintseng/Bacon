@@ -38,7 +38,7 @@ const styles = {
     color: '#606060',    
   }
 }
-@inject('firebase','SubjectStore','MeetCuteStore') @observer
+@inject('firebase','SubjectStore','MeetCuteStore','ControlStore') @observer
 export default class MeetCuteCourtScene extends Component {
 
   constructor(props) {
@@ -46,6 +46,7 @@ export default class MeetCuteCourtScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.MeetCuteStore = this.props.MeetCuteStore
+    this.ControlStore = this.props.ControlStore
   }
 
   componentWillMount() {
@@ -73,7 +74,7 @@ export default class MeetCuteCourtScene extends Component {
             <View style={{paddingTop: 10}}>
               <BadgeWallContainer/> 
             </View>
-            { this.SubjectStore.vip && 
+            { this.MeetCuteStore.meetCuteRadar && 
               <View style={{paddingTop: 10}}>
                 <BaconRadar/>
               </View>

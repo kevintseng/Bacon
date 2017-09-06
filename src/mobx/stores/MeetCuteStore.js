@@ -10,9 +10,7 @@ export default class MeetCuteStore {
 
   @observable haveNewPreys
   @observable loading
-  //@observable imageLoading
   @observable firstLoading
-  //@observable carouselLoading
   // user data
   @observable nickname
   @observable bio
@@ -26,9 +24,6 @@ export default class MeetCuteStore {
   @observable photoVerified
   @observable latitude
   @observable longitude
-  // config
-  //@observable meetCuteMinAge
-  //@observable meetCuteMaxAge  
 
   constructor(firebase) {
     this.firebase = firebase
@@ -80,6 +75,8 @@ export default class MeetCuteStore {
     // config
     this.meetCuteMinAge = 18
     this.meetCuteMaxAge = 99
+    this.meetCuteRadar = false
+    this.meetCuteThreePhotos = false
     this.imageLoadingCount = 0
   }
 
@@ -123,7 +120,7 @@ export default class MeetCuteStore {
       this.imageLoadingCount = 0
     })
     await this.firebase.database().ref('users/' + this.uid).once('value', async snap => {
-      if (snap.val() && !(snap.val().hideMeetCute)) {
+      if (snap.val() && !(snap.val().hideMeetCute) && !(snap.val().deleted) && this.checkPhoto(snap.val().album)) {
         const favorabilityDen = snap.val().favorabilityDen || 0
         this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
         runInAction(() => {
@@ -171,7 +168,7 @@ export default class MeetCuteStore {
       this.imageLoadingCount = 0
     })
     await this.firebase.database().ref('users/' + this.uid).once('value', async snap => {
-      if (snap.val() && !(snap.val().hideMeetCute) ) {
+      if (snap.val() && !(snap.val().hideMeetCute) && !(snap.val().deleted) && this.checkPhoto(snap.val().album) ) {
         // 過濾隱藏
         const favorabilityDen = snap.val().favorabilityDen || 0
         this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
@@ -266,6 +263,14 @@ export default class MeetCuteStore {
     this.longitude = longitude
   }
 
+  @action setMeetCuteRadar = boolean => {
+    this.meetCuteRadar = boolean
+  }
+
+  @action setMeetCuteThreePhotos = boolean => {
+    this.meetCuteThreePhotos = boolean
+  }
+
   shuffle = o => {
     for(let j, x, i = o.length; i;) {
       j = Math.floor(Math.random() * i);
@@ -289,6 +294,18 @@ export default class MeetCuteStore {
     } else {
       return '?'
     }  
+  }
+
+  checkPhoto = album => {
+    const length = Object.keys(album).length
+    //console.warn(length)
+    if (!this.meetCuteThreePhotos) {
+      return true
+    } else if (this.meetCuteThreePhotos && length >= 3) {
+      return true
+    } else {
+      return false
+    }
   }
 
 }
