@@ -16,9 +16,9 @@ const styles = {
   text: {
     color: '#D63768',
     letterSpacing: 3,
-    fontFamily: 'NotoSans', 
+    fontFamily: 'NotoSans',
     fontSize: 15 ,
-    backgroundColor: 'transparent'  
+    backgroundColor: 'transparent'
   }
 }
 
@@ -40,7 +40,8 @@ export default class BioInputContainer extends Component {
 
   render() {
     return(
-      <View style={{alignSelf: 'center'}}>
+      // 這裡用 ScrollView 是因為這樣可以讓user在鍵盤出現的時候只要點擊任何一個非鍵盤區域就會收起鍵盤
+      <ScrollView scrollEnabled={false} style={{alignSelf: 'center'}}>
           <View style={{height: 250,borderColor: '#D63768',borderWidth: 1, borderRadius: 5}}>
             <TextInput
               ref={'bio'}
@@ -58,9 +59,9 @@ export default class BioInputContainer extends Component {
           </View>
           <View style={{marginTop: 5, flexDirection: 'row',justifyContent: 'space-between'}}>
             <Text style={styles.text} onPress={this.clear}>清除</Text>
-            <Text style={styles.text} onPress={this.ensure}>確認</Text>
+            <Text style={styles.text} onPress={this.ensure}>完成</Text>
           </View>
-      </View>
+      </ScrollView>
     )
   }
 }

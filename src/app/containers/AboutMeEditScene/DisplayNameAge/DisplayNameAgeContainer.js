@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { inject, observer } from 'mobx-react'
 
 import BaconRoutesContainer from './BaconRoutesContainer'
@@ -11,7 +11,7 @@ export default class DisplayNameAgeContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.SubjectStore = this.props.SubjectStore  
+    this.SubjectStore = this.props.SubjectStore
     this.SubjectEditStore = this.props.SubjectEditStore
     this.firebase = this.props.firebase
   }
@@ -25,9 +25,9 @@ export default class DisplayNameAgeContainer extends Component {
     return(
       <View style={{flex: 1}}>
         <DisplayNameContainer/>
-        <View style={{marginTop: 20}}>
+        <ScrollView scrollEnabled={false} style={{marginTop: 20}}>
           <BirthdayContainer/>
-        </View>
+        </ScrollView>
         <View style={{ position: 'absolute', bottom: 0}}>
           <BaconRoutesContainer/>
         </View>
