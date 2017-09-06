@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
-import { View, FlatList, Dimensions } from 'react-native'
+import { View, FlatList, Dimensions, Text } from 'react-native'
 
 import Wave from '../../../views/Wave/Wave'
 import Cookie from '../../../views/Cookie/Cookie'
@@ -16,7 +16,14 @@ const itemHight = ((width - 4 * x)/3) + 30
 const styles = {
   self: {
     alignSelf:'center'
-  }
+  },
+  text: {
+    fontFamily: 'NotoSans',
+    fontSize: 15,
+    color: '#606060',
+    textAlign: 'center',
+    flexWrap: 'wrap',
+  },
 }
 
 @inject('firebase','SubjectStore','MeetChanceStore') @observer
@@ -27,6 +34,9 @@ export default class MeetChanceWaterFallScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.MeetChanceStore = this.props.MeetChanceStore
+    this.state = {
+      notFound: false
+    }
   }
 
   componentWillMount() {
@@ -38,6 +48,10 @@ export default class MeetChanceWaterFallScene extends Component {
   componentDidMount = async () => {
     await this.sleep(250)
     this.MeetChanceStore.setRealPreys()
+    await this.sleep(250)
+    if (this.MeetChanceStore.preysToFlatList.length == 0) {
+      this.setState({ notFound: true })
+    }
   }
 
   goToAboutMeTab = () => {
@@ -55,7 +69,7 @@ export default class MeetChanceWaterFallScene extends Component {
       } else {
         Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇', collection: false})
       }
-    }).catch(err => console.log(err)) 
+    }).catch(err => console.log(err))
   }
 
   header = () => (
@@ -70,22 +84,31 @@ export default class MeetChanceWaterFallScene extends Component {
 
   render() {
     return(
-    <View style={{flex:1}}>
-      <FlatList
-        removeClippedSubviews
-        data={ this.MeetChanceStore.preysToFlatList }
-        numColumns={3}
-        renderItem={({item}) =>
-        <Cookie
-          name={ item.nickname }
-          avatar={ item.avatar }
-          onPress={ () => { this.onPress(item.key) } }
-        /> }
-        ListHeaderComponent={ this.header }
-        getItemLayout={(data, index) => (
-          {length: itemHight, offset: itemHight * index, index}
-        )}
-      />
+    <View style={{flex:1, justifyContent: "flex-start", alignItems: "center"}}>
+      {
+        !this.state.notFound &&
+        <FlatList
+          removeClippedSubviews
+          data={ this.MeetChanceStore.preysToFlatList }
+          numColumns={3}
+          renderItem={({item}) =>
+          <Cookie
+            name={ item.nickname }
+            avatar={ item.avatar }
+            onPress={ () => { this.onPress(item.key) } }
+          /> }
+          ListHeaderComponent={ this.header }
+          getItemLayout={(data, index) => (
+            {length: itemHight, offset: itemHight * index, index}
+          )}
+        />
+      }
+      {
+        this.state.notFound &&
+        <View style={{ width: 250, marginTop: 200 }}>
+          <Text style={styles.text}>抱歉, 您所在的位置搜尋不到任何對象</Text>
+        </View>
+      }
     </View>
     )
   }
