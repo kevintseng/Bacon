@@ -32,7 +32,7 @@ const Upgrade = ({topCheck, upperCheck, topCheckOnPress, upperCheckOnPress}) => 
           <Text style={styles.text}>三個月</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}>$350</Text>
+          <Text style={styles.text}>$290</Text>
         </View>
       </View>
 
@@ -44,7 +44,7 @@ const Upgrade = ({topCheck, upperCheck, topCheckOnPress, upperCheckOnPress}) => 
           <Text style={styles.text}>一年</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}>$930</Text>
+          <Text style={styles.text}>$790</Text>
         </View>
       </View>
     </View>

@@ -22,6 +22,12 @@ export default class ControlStore {
   @observable mateModal
   // bonues
   @observable bonus
+  @observable upgrade
+  //
+  @observable meetCuteRadar
+  @observable meetCuteThreePhotos
+  @observable meetChanceRadar
+  @observable meetChanceOfflineMember
   
   constructor() {
     this.initialize()
@@ -38,7 +44,8 @@ export default class ControlStore {
     this.meetChanceMinAge = 18
     this.meetChanceMaxAge = 99
     // bonues
-    this.bonus = { 200: true, 500: false, 1000: false }
+    this.bonus = { 200: true, 600: false, 1200: false }
+    this.upgrade = {'3_month': true, '1_year': false}
     // collection
     this.getCollectionMax = false
     //
@@ -50,6 +57,10 @@ export default class ControlStore {
     this.settingRuleModal = false
     //
     this.deleteAccounrModal = false
+    //
+    this.meetCuteRadar = false
+    this.meetChanceRadar = false
+    this.meetChanceOfflineMember = false
   }
 
   @action setAuthenticateIndicator = str => {
@@ -85,15 +96,23 @@ export default class ControlStore {
   }
 
   @action pickTwoHundredBonus = () => {
-    this.bonus = { 200: true, 500: false, 1000: false }
+    this.bonus = { 200: true, 600: false, 1200: false }
   }
 
   @action pickFiveHundredBonus = () => {
-    this.bonus = { 200: false, 500: true, 1000: false }
+    this.bonus = { 200: false, 600: true, 1200: false }
   }
 
   @action pickOneThousandBonus = () => {
-    this.bonus = { 200: false, 500: false, 1000: true }
+    this.bonus = { 200: false, 600: false, 1200: true }
+  }
+
+  @action pickThreeMonthUpfrade = () => {
+    this.upgrade = {'3_month': true, '1_year': false}
+  }
+
+  @action pickOneYearUpfrade = () => {
+    this.upgrade = {'3_month': false, '1_year': true}
   }
 
   @action setGetCollectionMax = () => {
@@ -122,5 +141,37 @@ export default class ControlStore {
 
   @action setDeleteAccounrModal = () => {
     this.deleteAccounrModal = !this.deleteAccounrModal
+  }
+
+  @action switchMeetCuteRadar = () => {
+    this.meetCuteRadar = !this.meetCuteRadar
+  }
+
+  @action switchMeetCuteThreePhotos = () => {
+    this.meetCuteThreePhotos = !this.meetCuteThreePhotos
+  }
+
+  @action switchMeetChanceRadar = () => {
+    this.meetChanceRadar = !this.meetChanceRadar
+  }
+
+  @action setMeetCuteRadar = boolean => {
+    this.meetCuteRadar = boolean
+  }
+
+  @action setMeetCuteThreePhotos = boolean => {
+    this.meetCuteThreePhotos = boolean
+  }
+
+  @action setMeetChanceRadar = boolean => {
+    this.meetChanceRadar = boolean
+  }
+
+  @action switchMeetChanceOfflineMember = () => {
+    this.meetChanceOfflineMember = !this.meetChanceOfflineMember
+  }
+
+  @action setMeetChanceOfflineMember = boolean => {
+    this.meetChanceOfflineMember = boolean
   }
 }

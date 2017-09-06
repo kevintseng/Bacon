@@ -14,7 +14,7 @@ export default class EmailContainer extends Component {
 
   realTimeCheckEmail = str => {
     this.SignUpStore.setEmail(str)
-    this.SignUpStore.checkEmail()
+    //this.SignUpStore.checkEmail()
   }
 
   render() {
@@ -25,7 +25,7 @@ export default class EmailContainer extends Component {
         value={ this.SignUpStore.email }
         maxLength={ 30 } 
         onChangeText={ this.realTimeCheckEmail }
-        onBlur={ this.SignUpStore.checkEmail }
+        //onBlur={ this.SignUpStore.checkEmail }
         keyboardType='email-address'
       />
     )

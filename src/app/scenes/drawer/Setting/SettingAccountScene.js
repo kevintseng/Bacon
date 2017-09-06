@@ -48,13 +48,3 @@ export default class SettingAccountScene extends Component {
     )
   }
 }
-
-/*
-      <View>
-        <Button title= '登出' onPress={ this.onPressSignOut }/>
-        <Image 
-          style={{ alignSelf: 'center', width: 300, height: 300 }}
-          source={require('../../../../images/avatar.jpg')}       
-        />
-      </View>
-*/

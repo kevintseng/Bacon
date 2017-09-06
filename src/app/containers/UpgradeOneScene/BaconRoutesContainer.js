@@ -14,12 +14,13 @@ const password = 'd882b9dc156a47b4ae2ff9a094fc53c5'
 const production = false
 const validateReceipt = iapReceiptValidator(password, production)
 
-@inject('SubjectStore', 'firebase') @observer
+@inject('SubjectStore','ControlStore','firebase') @observer
 export default class BaconRoutesContainer extends Component {
 
   constructor(props) {
     super(props)
     this.SubjectStore = this.props.SubjectStore
+    this.ControlStore = this.props.ControlStore
     this.firebase = this.props.firebase
   }
 
@@ -35,31 +36,17 @@ export default class BaconRoutesContainer extends Component {
   }
 
   pay = async () => {
-    if (!(Platform.OS === 'ios')) {
-      const productId = 'android.test.purchased'// 'android.test.purchased'
-      await InAppBilling.close()
-      try {
-        await InAppBilling.open()
-        if (!await InAppBilling.isPurchased(productId)) {
-          const details = await InAppBilling.purchase(productId)
-          // console.log('You purchased: ', details);
-        }
-        const transactionStatus = await InAppBilling.getPurchaseTransactionDetails(productId)
-        // console.log('Transaction Status', transactionStatus);
-        //console.log(transactionStatus.purchaseState)
-        if (transactionStatus.purchaseState === 'PurchasedSuccessfully') {
-          this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
-          this.SubjectStore.setVip(true)
-        }
-        // const productDetails = await InAppBilling.getProductDetails(productId)
-        // console.log(productDetails);
-      } catch (err) {
-        console.log(err)
-      } finally {
-        await InAppBilling.consumePurchase(productId)
-        await InAppBilling.close()
-        Actions.AboutMe({type: 'reset'})
-      }
+    if (Platform.OS === "android") {
+      const upgrade_way = Object.keys(this.ControlStore.upgrade).find(key => this.ControlStore.upgrade[key] === true)
+      if (upgrade_way === '3_month') {
+        const productId = 'premium_3m' // 'android.test.purchased'
+        this.androidPay(productId)
+      } else if (upgrade_way === '1_year') {
+        const productId = 'premium_1y' // 'android.test.purchased'
+        this.androidPay(productId)
+      } else {
+        alert('錯誤')
+      }      
     } else {
       console.log("iOS IAP Membership Upgrade")
       try {
@@ -79,30 +66,33 @@ export default class BaconRoutesContainer extends Component {
       } finally {
         Actions.AboutMe({type: 'reset'})
       }
-
-      // InAppUtils.canMakePayments(async (enabled) => {
-      //   if (enabled) {
-      //     const productId = "premium_3m"
-      //     try {
-      //       await InAppUtils.purchaseProduct(productId, (error, response) => {
-      //         if (response && response.productIdentifier) {
-      //           console.log("IAP response: ", response)
-      //           // this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
-      //           // this.SubjectStore.setVip(true)
-      //         }
-      //       })
-      //     } catch (err) {
-      //       console.log(err)
-      //     } finally {
-      //       // await InAppBilling.consumePurchase(productId)
-      //       // await InAppBilling.close()
-      //       Actions.AboutMe({type: 'reset'})
-      //     }
-      //   } else {
-      //     console.error('IAP disabled');
-      //   }
-      // })
     }
+  }
+
+  androidPay = async (productId) => {
+    await InAppBilling.close()
+    try {
+      await InAppBilling.open()
+      if (!await InAppBilling.isPurchased(productId)) {
+        await InAppBilling.purchase(productId).then( details => {
+          this.purchaseState = details.purchaseState
+          if (this.purchaseState === 'PurchasedSuccessfully') {
+            this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
+            this.SubjectStore.setVip(true)
+          }
+        })
+      }
+    } catch (err) {
+      alert('錯誤')
+    } finally {
+      if (this.purchaseState === 'PurchasedSuccessfully') {
+        await InAppBilling.consumePurchase(productId)
+        await InAppBilling.close()
+        Actions.AboutMe({type: 'reset'})
+      } else {
+        await InAppBilling.close()
+      }
+    }    
   }
 
   render() {

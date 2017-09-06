@@ -14,7 +14,7 @@ export default class NickNameContainer extends Component {
 
   realTimeCheckNickname = str => {
     this.SignUpStore.setNickname(str)
-    this.SignUpStore.checkNickname()
+    //this.SignUpStore.checkNickname()
   }
 
   render() {
@@ -25,7 +25,7 @@ export default class NickNameContainer extends Component {
         value={ this.SignUpStore.nickname }
         maxLength={ 20 }
         onChangeText={ this.realTimeCheckNickname }
-        onBlur={ this.SignUpStore.checkNickname }
+        //onBlur={ this.SignUpStore.checkNickname }
       />
     )
   }

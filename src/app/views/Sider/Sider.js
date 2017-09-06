@@ -95,14 +95,6 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
           <ListItem listPicSource={require('./img/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
         </View>
 
-        <View style={{marginTop: 7,alignSelf: 'center'}}>
-          <Text style={{color: 'red'}}>{ warningTop }</Text>
-        </View>
-
-        <View style={{marginTop: 20,alignSelf: 'center'}}>
-          <Text style={{color: 'red'}}>{ warningBottom }</Text>
-        </View>
-
       </View>
 
     </View>
@@ -110,3 +102,14 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
  }
 
 export default Drawer
+
+/*
+
+        <View style={{marginTop: 7,alignSelf: 'center'}}>
+          <Text style={{color: 'red'}}>{ warningTop }</Text>
+        </View>
+
+        <View style={{marginTop: 20,alignSelf: 'center'}}>
+          <Text style={{color: 'red'}}>{ warningBottom }</Text>
+        </View>
+*/

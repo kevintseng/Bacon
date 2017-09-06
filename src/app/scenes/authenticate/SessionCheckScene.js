@@ -6,17 +6,15 @@ import GeoFire from 'geofire'
 import Geolocation from  'Geolocation'
 import Moment from 'moment'
 import MomentLocale from 'moment/locale/zh-tw'
-import FastImage from 'react-native-fast-image'
+import InAppBilling from 'react-native-billing'
 
 import { calculateAge } from '../../../app/Utils'
 import Loading from '../../views/Loading/Loading'
 import DefaultLanguages from '../../../configs/DefaultLanguages'
-//import localdb from '../../../configs/localdb'
 
 const metadata = {
   contentType: 'image/jpeg'
 }
-
 
 @inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','MeetCuteStore','FateStore','firebase',) @observer
 export default class SessionCheckScene extends Component {
@@ -73,6 +71,7 @@ export default class SessionCheckScene extends Component {
           this.initialize()
           ///////// 非同步 /////////
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
+          this.setVip()
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
@@ -143,7 +142,7 @@ export default class SessionCheckScene extends Component {
       address: this.SignUpStore.address,
       nickname: this.SignUpStore.nickname,
       birthday: this.SignUpStore.birthday,
-      vip: false,
+      //vip: false,
       bonus: 0
     }).then(() => {
         this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳成功')
@@ -238,7 +237,6 @@ export default class SessionCheckScene extends Component {
     await this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
-          //console.log(snap.val().sexualOrientation)
           this.SubjectStore.setNickname(snap.val().nickname) // null(placeholder) String
           this.SubjectStore.setAddress(snap.val().address) // null(placeholder) String
           this.SubjectStore.setBirthday(snap.val().birthday) // null -> undefinded
@@ -248,36 +246,55 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setLanguages(Object.assign({}, DefaultLanguages, snap.val().languages)) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
-          this.SubjectStore.setVip(Boolean(snap.val().vip))
           this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation)
           this.SubjectStore.setChatStatus(snap.val().chatStatus)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
           this.SubjectStore.setConversations(snap.val().conversations)
           this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
           this.SubjectStore.setUnhandledPass(new Object(snap.val().unhandledPass) || {})
+          // tasks
+          this.SubjectStore.setTask1(snap.val().task1)
+          this.SubjectStore.setTask2(snap.val().task2)
+          this.SubjectStore.setTask3(snap.val().task3)
+          this.SubjectStore.setTask4(snap.val().task4)
           // hide
           this.SubjectStore.setHideMeetCute(snap.val().hideMeetCute || false)
           this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
           this.SubjectStore.setHideVister(snap.val().hideVister || false)
           this.SubjectStore.setHideMessage(snap.val().hideMessage || false)
-          // ages config
+          // meetCute config
           this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)  
           this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 99)
-          // 收藏
-          //this.FateStore.setCollectionPreylist(new Object(snap.val().collect)) // Object
-           //null(placeholder->邂逅) String
+          this.MeetCuteStore.setMeetCuteRadar(snap.val().meetCuteRadar)
+          this.MeetCuteStore.setMeetCuteThreePhotos(snap.val().meetCuteThreePhotos)
+          // meetChance config
+          this.MeetChanceStore.setMeetChanceMinAge(snap.val().meetChanceMinAge || 18)  
+          this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 99)
+          this.MeetChanceStore.setMeetChanceRadar(snap.val().meetChanceRadar)
+          this.MeetChanceStore.setMeetChanceOfflineMember(snap.val().meetCuteOfflineMember)
         } else {
-          //this.SubjectStore.initialize()
+          //
         }
         this.ControlStore.setSyncDetector(true) // 同步完成
       }, error => {
-        //this.SubjectStore.initialize()
+        //
         this.ControlStore.setSyncDetector(true) // 同步完成
         console.log(error)
       })
-    //FastImage.preload(this.SubjectStore.albumToFlatList)
     this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
     this.meetCuteListener() // 非同步邂逅
+  }
+
+  setVip = () => {
+    InAppBilling.open()
+    .then(() => InAppBilling.getSubscriptionDetailsArray(['3_month', 'premium_3m']).then( productDetailsArray => {
+      if (productDetailsArray.length > 0) {
+        this.SubjectStore.setVip(true)
+      } else {
+        this.SubjectStore.setVip(false)
+      }
+    }).catch(err => console.log(err)) )
+    .catch(err => console.log(err))
   }
 
   meetCuteListener = () => {
@@ -432,6 +449,7 @@ export default class SessionCheckScene extends Component {
   }
 
   setOnline = () => {
+    this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(true)
     this.firebase.database().ref('/online/' + this.SubjectStore.uid).set({
       lastOnline: Math.floor(Date.now() / 1000),
       location: 'Taipei, Taiwan'
@@ -439,6 +457,7 @@ export default class SessionCheckScene extends Component {
   }
 
   setOffline() {
+    this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(false)
     this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove().catch(err => { console.log(err) })
   }
 
@@ -483,7 +502,6 @@ export default class SessionCheckScene extends Component {
       this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday/`).set(sent)
     })
   }
-
 
   render() {
     return (

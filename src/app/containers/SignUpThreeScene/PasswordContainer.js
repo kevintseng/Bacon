@@ -13,7 +13,7 @@ export default class PasswordContainer extends Component {
 
   realTimeCheckPassword = str => {
     this.SignUpStore.setPassword(str)
-    this.SignUpStore.checkPassword()
+    //this.SignUpStore.checkPassword()
   }
 
   render() {
@@ -24,7 +24,7 @@ export default class PasswordContainer extends Component {
         value={ this.SignUpStore.password }
         maxLength={ 12 } 
         onChangeText={ this.realTimeCheckPassword }
-        onBlur={ this.SignUpStore.checkPassword }
+        //onBlur={ this.SignUpStore.checkPassword }
         secureTextEntry
       />
     )

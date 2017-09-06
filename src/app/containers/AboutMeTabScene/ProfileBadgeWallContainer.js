@@ -43,7 +43,7 @@ export default class ProfileBadgeWallContainer extends Component {
           <Text style={ styles.titleStyle }>興趣愛好</Text>
         </View>
         <View style={{flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'flex-start'}}>
-          <Text style={ styles.subtitleTextStyle }>您尚未編輯興趣愛好，點此編輯興趣愛好</Text>
+          <Text style={ styles.subtitleTextStyle }>點此編輯興趣愛好</Text>
         </View>
       </TouchableOpacity>
       )
