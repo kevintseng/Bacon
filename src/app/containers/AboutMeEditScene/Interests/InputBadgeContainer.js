@@ -36,6 +36,7 @@ export default class InputBadgeContainer extends Component {
 
   render() {
     return(
+      // 這裡用 ScrollView 是因為這樣可以讓user在鍵盤出現的時候只要點擊任何一個非鍵盤區域就會收起鍵盤
       <ScrollView scrollEnabled={false}>
         <TextInput
           underlineColorAndroid="#d63768"
