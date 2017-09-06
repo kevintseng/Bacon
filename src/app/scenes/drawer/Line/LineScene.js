@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  BackHandler, 
+  BackHandler,
   ToastAndroid
 } from "react-native"
 import { Actions } from "react-native-router-flux"
@@ -845,6 +845,7 @@ export default class Chat extends Component {
         )
       default:
         return (
+          // 這裡用 ScrollView 是因為這樣可以讓user在鍵盤出現的時候只要點擊任何一個非鍵盤區域就會收起鍵盤
           <ScrollView
             scrollEnabled={false}
             contentContainerStyle={{

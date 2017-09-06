@@ -12,8 +12,8 @@ const styles = {
   text: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
-    fontFamily: 'NotoSans',  
-    textAlign: 'left', 
+    fontFamily: 'NotoSans',
+    textAlign: 'left',
     //fontWeight: '500',
     color: '#606060',
     fontSize: 15
@@ -42,9 +42,9 @@ export default class SettingAboutScene extends Component {
   }
 
   version = () => {
-    Alert.alert( 
-      '目前版本', 'Beta-1.0.0', [ 
-        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+    Alert.alert(
+      '目前版本', 'Beta-1.0.0', [
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false }
       )
   }
 
@@ -62,7 +62,7 @@ export default class SettingAboutScene extends Component {
           </Text>
         </View>
         <View style={{flex: 1, justifyContent: 'space-around', marginBottom: 100}}>
-          <BlankButton 
+          <BlankButton
             text='版本'
             onPress={ this.version }
           />
@@ -82,4 +82,3 @@ export default class SettingAboutScene extends Component {
     )
   }
 }
-

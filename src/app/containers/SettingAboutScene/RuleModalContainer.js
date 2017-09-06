@@ -18,7 +18,7 @@ const styles = {
     padding: 10
   },
   text: {
-    padding: 10    
+    padding: 10
   }
 }
 @inject('ControlStore') @observer
@@ -65,7 +65,7 @@ export default class RuleModalContainer extends Component {
                 <ScrollView>
                   <Rule/>
                 </ScrollView>
-                <View>
+                <View style={{ height: 50, justifyContent: "center" }}>
                   <Text style={ styles.title } onPress={ this.ControlStore.setSettingRuleModal }>我知道了</Text>
                 </View>
               </View>
