@@ -42,12 +42,12 @@ export default class BonusContainer extends Component {
           upperCheckOnPress={ this.ControlStore.pickOneThousandBonus }
         />
         <View style={{ width: 160, flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 30 }}>
-          <TouchableOpacity onPress={this.ControlStore.setSettingPolicyModal}>
+          <TouchableOpacity style={{ marginRight: 5 }} onPress={this.ControlStore.setSettingPolicyModal}>
             <Text style={styles.link}>
               服務條款
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.ControlStore.setSettingRuleModal}>
+          <TouchableOpacity style={{ marginLeft: 5 }} onPress={this.ControlStore.setSettingRuleModal}>
             <Text style={styles.link}>
               個資保護政策
             </Text>

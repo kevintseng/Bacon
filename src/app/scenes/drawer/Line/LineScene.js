@@ -512,7 +512,6 @@ export default class Chat extends Component {
                 action: "plus",
                 minToolBarHeight: PLUS_TOOLBAR_HEIGHT,
               })
-              Keyboard.dismiss()
             }}
           />
           <Icon
@@ -523,7 +522,6 @@ export default class Chat extends Component {
                 action: "smily",
                 minToolBarHeight: STICKER_TOOLBAR_HEIGHT,
               })
-              Keyboard.dismiss()
             }}
           />
         </View>
