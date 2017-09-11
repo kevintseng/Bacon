@@ -147,12 +147,12 @@ export default class SignUpStore {
     this.signUpIndicator = str
   }
 
-  @action checkEmail = () => {
+  @action checkEmail = async () => {
     if (this.checkEmailFormat(this.email)) {
-      this.firebase.auth().fetchProvidersForEmail(this.email).then( providers => {
+      await this.firebase.auth().fetchProvidersForEmail(this.email).then( providers => {
         if (providers.length === 0) {
           this.setEmailDetector(true)
-          //this.setEmailIndicator('此帳號可以使用')
+          this.setEmailIndicator('此帳號可以使用')
           return true
         } else {
           this.setEmailDetector(false)
@@ -174,7 +174,7 @@ export default class SignUpStore {
   @action checkPassword = () => {
     if (/^[A-Za-z0-9]{6,12}$/.test(this.password)) {
       this.setPasswordDetector(true)
-      //this.setPasswordIndicator('此密碼可以使用')
+      this.setPasswordIndicator('此密碼可以使用')
     } else {
       this.setPasswordDetector(false)
       this.setPasswordIndicator('請輸入數字或英文字母組合的6~12字密碼')
@@ -184,9 +184,9 @@ export default class SignUpStore {
   }
 
   @action checkNickname = () => {
-    if (/^[^null]{2,20}$/.test(this.nickname)) {
+    if (/^[^null]{2,20}/.test(this.nickname)) {
       this.setNicknameDetector(true)
-      //this.setNicknameIndicator('此暱稱可以使用')
+      this.setNicknameIndicator('此暱稱可以使用')
     } else {
       this.setNicknameDetector(false)
       this.setNicknameIndicator('請輸入2~20字的暱稱')

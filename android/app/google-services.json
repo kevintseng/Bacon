@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "371060154058",
-    "firebase_url": "https://bacon-tsao.firebaseio.com",
-    "project_id": "bacon-tsao",
-    "storage_bucket": "bacon-tsao.appspot.com"
+    "project_number": "861448059059",
+    "firebase_url": "https://bacon-fake.firebaseio.com",
+    "project_id": "bacon-fake",
+    "storage_bucket": "bacon-fake.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:371060154058:android:502ae573c6eadfec",
+        "mobilesdk_app_id": "1:861448059059:android:502ae573c6eadfec",
         "android_client_info": {
           "package_name": "com.kayming.android.bacon"
         }
       },
       "oauth_client": [
         {
-          "client_id": "371060154058-ts5b9bfk0u1052tcabsun4rlbjg9311f.apps.googleusercontent.com",
+          "client_id": "861448059059-rk6jcmbnhmgpqr6hoe0u99aok0m0lb8b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBrQdQrsBXcawBJtUgTa_qGrUb6JQoII3k"
+          "current_key": "AIzaSyDYPkRjDmgoBjA9Nlwx86PVKZLGxlnjYbI"
         }
       ],
       "services": {
