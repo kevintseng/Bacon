@@ -721,24 +721,30 @@ export default class Chat extends Component {
     }
   }
 
+  handleActionPressed = () => {
+    console.log("Action pressed: ", this.state.action)
+  }
+
   renderComposer = () => {
     // console.log("renderComposer: ", this.state.action)
     switch (this.state.action) {
       case "smily":
         return (
-          <View
+          <ScrollView
+            scrollEnabled={false}
             style={{
+              flex: 1,
               width,
               height: STICKER_TOOLBAR_HEIGHT,
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
-              alignItems: "center",
             }}
           >
             <View
               style={{
-                width: 60,
-                marginVertical: 2,
+                width,
+                marginVertical: 5,
+                alignSelf: "center",
               }}
             >
               <Icon
@@ -758,7 +764,7 @@ export default class Chat extends Component {
                 flex: 1,
                 width,
                 alignItems: 'center',
-                paddingVertical: 5,
+                paddingVertical: 3,
               }}
             >
               <Stickers
@@ -766,7 +772,7 @@ export default class Chat extends Component {
                 handleStickerPressed={this.handleStickerPressed}
               />
             </ScrollView>
-          </View>
+          </ScrollView>
         )
       case "uploading":
         return (
@@ -785,18 +791,20 @@ export default class Chat extends Component {
         )
       case "plus":
         return (
-          <View
+          <ScrollView
+            scrollEnabled={false}
             style={{
               width,
-              height: PLUS_TOOLBAR_HEIGHT,
+              height: STICKER_TOOLBAR_HEIGHT,
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
-              alignItems: "center",
             }}
           >
             <View
               style={{
-                width: 45,
+                width: 60,
+                marginVertical: 5,
+                alignSelf: "center",
               }}
             >
               <Icon
@@ -839,7 +847,7 @@ export default class Chat extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </ScrollView>
         )
       default:
         return (
@@ -850,7 +858,8 @@ export default class Chat extends Component {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
-              width: width - this.state.inputOffset }}
+              width: width - this.state.inputOffset
+            }}
           >
             <TextInput
               placeholderTextColor="#E0E0E0"
@@ -1049,6 +1058,7 @@ export default class Chat extends Component {
           placeholder={PLACEHOLDER}
           renderComposer={this.renderComposer}
           renderActions={this.renderActions}
+          onPressActionButton={this.handleActionPressed}
           renderFooter={this.renderFooter}
           renderBubble={this.renderBubble}
           renderCustomView={this.renderStickerView}
