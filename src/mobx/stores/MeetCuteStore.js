@@ -78,6 +78,25 @@ export default class MeetCuteStore {
     this.meetCuteRadar = false
     this.meetCuteThreePhotos = false
     this.imageLoadingCount = 0
+    // mate
+    this.goodImpressionPool = new Object
+    this.matchPool = new Object
+  }
+
+  @action addPreyToGoodImpressionPool = (uid,time) => {
+    this.goodImpressionPool[uid] = time
+  }
+
+  @action removePreyToGoodImpressionPool = uid => {
+    delete this.goodImpressionPool[uid]
+  }
+
+  @action addPreyToMatchPool = (uid,time) => {
+    this.matchPool[uid] = time
+  }
+
+  @action removePreyToMatchPool = uid => {
+    delete this.matchPool[uid]
   }
 
   @action addPreyToPool = (uid,birthday) => {
@@ -87,11 +106,11 @@ export default class MeetCuteStore {
 
   @action setPreyList = () => {
     localdb.getIdsForKey('preyListHistory').then(preyListHistory => {
-      this.serachLoop(preyListHistory)
+      this.serachLoop(preyListHistory,this.filterMatchList())
     })
   }
 
-  @action serachLoop = async preyListHistory => {
+  @action serachLoop = async (preyListHistory,matchList) => {
     while (this.haveNewPreys === false) {
       this.preyList = Object.keys(this.pool).map(uid => ({uid: uid, birthday: this.pool[uid]}))
       this.poolLength = this.preyList.length
@@ -100,7 +119,7 @@ export default class MeetCuteStore {
         this.clean = false
         //this.preyList = this.pool.map(ele => ({}))
         this.preyList = this.preyList.filter(ele => 
-          ( !(preyListHistory.includes(ele.uid)) && ele.birthday && ((calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= this.meetCuteMaxAge)) )
+          ( !(preyListHistory.includes(ele.uid)) && !(matchList.includes(ele.uid)) && ele.birthday && ((calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= this.meetCuteMaxAge)) )
         ) // 排除 45 天 // 過濾年紀
         this.shuffle(this.preyList)
         if (this.preyList.length > 0) {
@@ -110,6 +129,20 @@ export default class MeetCuteStore {
       }
       await this.sleep(300)
     }    
+  }
+
+  @action filterMatchList = () => {
+    const wooerList = Object.keys(this.goodImpressionPool)
+    const PreyList = Object.keys(this.matchPool)
+    this.matchPreylist = wooerList.map(uid => {
+      if (PreyList.indexOf(uid) > -1) {
+        return uid
+      } else {
+        return null
+      }
+    })
+    this.matchPreylist = this.matchPreylist.filter(ele => ele)
+    return this.matchPreylist
   }
 
   @action setFirstPrey = async () => {
@@ -137,6 +170,9 @@ export default class MeetCuteStore {
         })
         runInAction(() => {
           this.haveNewPreys = true
+          if (this.albumToArray.length === 0) {
+            this.showFirstPrey()
+          }
         })
         localdb.save({
           key: 'preyListHistory',
@@ -186,6 +222,9 @@ export default class MeetCuteStore {
         })
         runInAction(() => {
           this.haveNewPreys = true
+          if (this.albumToArray.length === 0) {
+            this.showPrey()
+          }
         })
         localdb.save({
           key: 'preyListHistory',
@@ -297,7 +336,8 @@ export default class MeetCuteStore {
   }
 
   checkPhoto = album => {
-    const length = Object.keys(album).length
+    const _album = new Object(album)
+    const length = Object.keys(_album).length
     //console.warn(length)
     if (!this.meetCuteThreePhotos) {
       return true
