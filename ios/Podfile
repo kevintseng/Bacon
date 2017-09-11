@@ -16,6 +16,7 @@ target 'Bacon' do
     'BatchedBridge', # Required For React Native 0.45.0+
     'Core',
     'ART',
+    'DevSupport'
   ]
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
