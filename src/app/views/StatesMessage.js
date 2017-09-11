@@ -19,7 +19,7 @@ const StatesMessage = ({state, message}) => {
   return(
     <View style={ styles.view }>
     {
-      message &&
+      message && !state &&
         <Text style={state ? styles.success : styles.failure }>
           { message }
         </Text>

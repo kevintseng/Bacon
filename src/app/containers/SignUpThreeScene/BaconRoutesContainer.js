@@ -14,10 +14,10 @@ export default class BaconRoutesContainer extends Component {
   }
 
 
-  _buttonOnPress = () => {
-    this.SignUpStore.checkEmail()
-    this.SignUpStore.checkPassword()
-    this.SignUpStore.checkNickname()
+  _buttonOnPress = async () => {
+    await this.SignUpStore.checkEmail()
+    await this.SignUpStore.checkPassword()
+    await this.SignUpStore.checkNickname()
     if (this.checkInput()) {
       if (this.checkBirthday()) {
         if (this.SignUpStore.policyDetector) {
@@ -35,15 +35,15 @@ export default class BaconRoutesContainer extends Component {
         )
       }
     } else {
-      //alert('請再檢查一次輸入資料')
+        Alert.alert( 
+          '輸入錯誤', '請再檢查一次帳號密碼暱稱', [ 
+          {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+        )
     }
   }
 
   checkInput = () => {
-    if (this.SignUpStore.emailDetector && this.SignUpStore.passwordDetector && this.SignUpStore.nicknameDetector) {
-      return true
-    }
-    return false
+    return this.SignUpStore.emailDetector && this.SignUpStore.passwordDetector && this.SignUpStore.nicknameDetector
   }
 
   checkBirthday = () => {
