@@ -344,9 +344,11 @@ export default class SessionCheckScene extends Component {
     this.goodImpressionQuery = this.firebase.database().ref('goodImpression').orderByChild('prey').equalTo(this.SubjectStore.uid)
     this.goodImpressionQuery.on('child_added', child => {
       this.FateStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
+      this.MeetCuteStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
     })
     this.goodImpressionQuery.on('child_removed', child => {
       this.FateStore.removePreyToGoodImpressionPool(child.val().wooer)
+      this.MeetCuteStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
     })
   }
 
@@ -354,9 +356,11 @@ export default class SessionCheckScene extends Component {
     this.matchQuery = this.firebase.database().ref('goodImpression').orderByChild('wooer').equalTo(this.SubjectStore.uid)
     this.matchQuery.on('child_added', child => {
       this.FateStore.addPreyToMatchPool(child.val().prey,child.val().time)
+      this.MeetCuteStore.addPreyToMatchPool(child.val().prey,child.val().time)
     })
     this.matchQuery.on('child_removed', child => {
       this.FateStore.removePreyToMatchPool(child.val().prey)
+      this.MeetCuteStore.removePreyToMatchPool(child.val().prey)
     })
   }
 
