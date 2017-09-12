@@ -64,12 +64,12 @@ export default class UpgradeContainer extends Component {
             若您於高級會員服務訂閱期滿前未取消訂閱，將會於訂閱期滿自動續訂。
           </Text>
           <View style={{ width: 160, flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 20}}>
-            <TouchableOpacity onPress={this.ControlStore.setSettingPolicyModal}>
+            <TouchableOpacity style={{ marginRight: 5 }} onPress={this.ControlStore.setSettingPolicyModal}>
               <Text style={styles.link}>
                 服務條款
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.ControlStore.setSettingRuleModal}>
+            <TouchableOpacity style={{ marginLeft: 5 }} onPress={this.ControlStore.setSettingRuleModal}>
               <Text style={styles.link}>
                 個資保護政策
               </Text>
