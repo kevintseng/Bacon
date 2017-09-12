@@ -181,6 +181,14 @@ export default class Chat extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+        prevState.minInputToolbarHeight != this.state.minInputToolbarHeight
+    ) {
+        this.chat.resetInputToolbar();
+    }
+  }
+
   onBackAndroid = () => {
     Actions.pop()
     return true
@@ -1006,15 +1014,21 @@ export default class Chat extends Component {
   }
 
   renderBubble(props) {
+    let leftBgColor = "#E7E7E7"
+    let rightBgColor = "#F4A764"
+    if (props.currentMessage.sticker || props.currentMessage.image) {
+      leftBgColor = "transparent"
+      rightBgColor = "transparent"
+    }
     return (
       <Bubble
         {...props}
         wrapperStyle={{
           left: {
-            backgroundColor: props.currentMessage.sticker ? "transparent" : "#E7E7E7",
+            backgroundColor: leftBgColor,
           },
           right: {
-            backgroundColor: props.currentMessage.sticker ? "transparent" : "#F4A764",
+            backgroundColor: rightBgColor,
           } }}
       />
     )
@@ -1042,6 +1056,7 @@ export default class Chat extends Component {
         }}
       >
         <GiftedChat
+          ref={ref => (this.chat = ref)}
           style={{width}}
           messages={this.state.messages}
           messageIdGenerator={() => uuid.v4()}
@@ -1146,3 +1161,14 @@ export default class Chat extends Component {
     )
   }
 }
+
+// <Modal
+//   isVisible={this.state.action == "smily"}
+//   backdropColor="black"
+//   backdropOpacity={0.7}
+// >
+//   <Stickers
+//     width={width}
+//     handleStickerPressed={this.handleStickerPressed}
+//   />
+// </Modal>
