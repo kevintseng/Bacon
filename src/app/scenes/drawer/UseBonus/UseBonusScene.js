@@ -113,6 +113,9 @@ export default class UseBonusScene extends Component {
             postStr={this.postStr}
           />
         </View>
+        <View style={styles.middle}>
+          <Text> </Text>
+        </View>
 
         <View style={styles.bottom}>
           <BaconRoutesContainer

@@ -181,6 +181,13 @@ export default class Chat extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log("prevState.minToolBarHeight: ", prevState.minToolBarHeight, ", this.state.minToolBarHeight: ", this.state.minToolBarHeight)
+    if (prevState.minToolBarHeight != this.state.minToolBarHeight) {
+      this.chat.resetInputToolbar()
+    }
+  }
+
   onBackAndroid = () => {
     Actions.pop()
     return true
@@ -192,7 +199,7 @@ export default class Chat extends Component {
     }
     if (!this.meetMsgLimit()) {
       const createdAt = Moment().format()
-      const _id = uuid.v4()
+      const _id = this.genID()
       const msgObj = {
         _id,
         text: this.state.inputText,
@@ -512,7 +519,6 @@ export default class Chat extends Component {
                 action: "plus",
                 minToolBarHeight: PLUS_TOOLBAR_HEIGHT,
               })
-              Keyboard.dismiss()
             }}
           />
           <Icon
@@ -523,7 +529,6 @@ export default class Chat extends Component {
                 action: "smily",
                 minToolBarHeight: STICKER_TOOLBAR_HEIGHT,
               })
-              Keyboard.dismiss()
             }}
           />
         </View>
@@ -549,7 +554,7 @@ export default class Chat extends Component {
         } else {
           this.setState({ action: "uploading" })
           // console.log("camera response: ", response)
-          const _id = uuid.v4()
+          const _id = this.genID()
           const filename = _id + ".jpg"
           // const imgType = filename.split('.').pop()
 
@@ -557,11 +562,10 @@ export default class Chat extends Component {
           this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, jpgmetadata)
           .then(uploadedFile => {
             // console.log("downloadUrl: ", uploadedFile.downloadUrl)
-            // const _id = uuid.v4()
             const msgObj = {
               _id,
               text: "",
-              createdAt: new Date(),
+              createdAt: Moment().format(),
               user: {
                 _id: this.uid,
                 name: this.SubjectStore.nickname,
@@ -631,11 +635,11 @@ export default class Chat extends Component {
           this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, meta)
           .then(uploadedFile => {
             // console.log("downloadUrl: ", uploadedFile.downloadUrl)
-            const _id = uuid.v4()
+            const _id = this.genID()
             const msgObj = {
               _id,
               text: "",
-              createdAt: new Date(),
+              createdAt: Moment().format(),
               user: {
                 _id: this.uid,
                 name: this.SubjectStore.nickname,
@@ -671,6 +675,11 @@ export default class Chat extends Component {
     }
   }
 
+  genID = () => {
+    const id = Moment().unix()
+    return id
+  }
+
   syncMsgToFirebase = msgObj => {
     this.firebase
       .database()
@@ -691,11 +700,11 @@ export default class Chat extends Component {
         .database()
         .ref(`conversations/${this.convKey}/messages`)
 
-      const _id = uuid.v4()
+      const _id = this.genID()
       const msgObj = {
         _id,
         text: "",
-        createdAt: new Date(),
+        createdAt: Moment().format(),
         user: {
           _id: this.uid,
           name: this.SubjectStore.nickname,
@@ -723,24 +732,30 @@ export default class Chat extends Component {
     }
   }
 
+  handleActionPressed = () => {
+    console.log("Action pressed: ", this.state.action)
+  }
+
   renderComposer = () => {
     // console.log("renderComposer: ", this.state.action)
     switch (this.state.action) {
       case "smily":
         return (
-          <View
+          <ScrollView
+            scrollEnabled={false}
             style={{
+              flex: 1,
               width,
               height: STICKER_TOOLBAR_HEIGHT,
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
-              alignItems: "center",
             }}
           >
             <View
               style={{
-                width: 60,
-                marginVertical: 2,
+                width,
+                marginVertical: 5,
+                alignSelf: "center",
               }}
             >
               <Icon
@@ -760,7 +775,7 @@ export default class Chat extends Component {
                 flex: 1,
                 width,
                 alignItems: 'center',
-                paddingVertical: 5,
+                paddingVertical: 3,
               }}
             >
               <Stickers
@@ -768,37 +783,40 @@ export default class Chat extends Component {
                 handleStickerPressed={this.handleStickerPressed}
               />
             </ScrollView>
-          </View>
+          </ScrollView>
         )
       case "uploading":
         return (
           <View
             style={{
+              marginTop: 50,
               width,
-              height: 60,
+              height: 50,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
             <ActivityIndicator />
-            <Text> 照片壓縮處理中... </Text>
+            <Text>照片壓縮處理中...</Text>
           </View>
         )
       case "plus":
         return (
-          <View
+          <ScrollView
+            scrollEnabled={false}
             style={{
               width,
-              height: PLUS_TOOLBAR_HEIGHT,
+              height: STICKER_TOOLBAR_HEIGHT,
               borderTopWidth: 0.5,
               borderColor: "#E0E0E0",
-              alignItems: "center",
             }}
           >
             <View
               style={{
-                width: 45,
+                width: 60,
+                marginVertical: 5,
+                alignSelf: "center",
               }}
             >
               <Icon
@@ -841,7 +859,7 @@ export default class Chat extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </ScrollView>
         )
       default:
         return (
@@ -852,7 +870,8 @@ export default class Chat extends Component {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
-              width: width - this.state.inputOffset }}
+              width: width - this.state.inputOffset
+            }}
           >
             <TextInput
               placeholderTextColor="#E0E0E0"
@@ -999,15 +1018,21 @@ export default class Chat extends Component {
   }
 
   renderBubble(props) {
+    let leftBgColor = "#E7E7E7"
+    let rightBgColor = "#F4A764"
+    if (props.currentMessage.sticker || props.currentMessage.image) {
+      leftBgColor = "transparent"
+      rightBgColor = "transparent"
+    }
     return (
       <Bubble
         {...props}
         wrapperStyle={{
           left: {
-            backgroundColor: props.currentMessage.sticker ? "transparent" : "#E7E7E7",
+            backgroundColor: leftBgColor,
           },
           right: {
-            backgroundColor: props.currentMessage.sticker ? "transparent" : "#F4A764",
+            backgroundColor: rightBgColor,
           } }}
       />
     )
@@ -1035,9 +1060,10 @@ export default class Chat extends Component {
         }}
       >
         <GiftedChat
+          ref={ref => (this.chat = ref)}
           style={{width}}
           messages={this.state.messages}
-          messageIdGenerator={() => uuid.v4()}
+          messageIdGenerator={this.genID}
           onSend={this.onSend}
           label={LABEL_SEND}
           LoadEarlier={true}
@@ -1051,6 +1077,7 @@ export default class Chat extends Component {
           placeholder={PLACEHOLDER}
           renderComposer={this.renderComposer}
           renderActions={this.renderActions}
+          onPressActionButton={this.handleActionPressed}
           renderFooter={this.renderFooter}
           renderBubble={this.renderBubble}
           renderCustomView={this.renderStickerView}
@@ -1138,3 +1165,14 @@ export default class Chat extends Component {
     )
   }
 }
+
+// <Modal
+//   isVisible={this.state.action == "smily"}
+//   backdropColor="black"
+//   backdropOpacity={0.7}
+// >
+//   <Stickers
+//     width={width}
+//     handleStickerPressed={this.handleStickerPressed}
+//   />
+// </Modal>
