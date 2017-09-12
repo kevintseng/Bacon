@@ -199,7 +199,7 @@ export default class Chat extends Component {
     }
     if (!this.meetMsgLimit()) {
       const createdAt = Moment().format()
-      const _id = uuid.v4()
+      const _id = this.genID()
       const msgObj = {
         _id,
         text: this.state.inputText,
@@ -554,7 +554,7 @@ export default class Chat extends Component {
         } else {
           this.setState({ action: "uploading" })
           // console.log("camera response: ", response)
-          const _id = uuid.v4()
+          const _id = this.genID()
           const filename = _id + ".jpg"
           // const imgType = filename.split('.').pop()
 
@@ -562,11 +562,10 @@ export default class Chat extends Component {
           this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, jpgmetadata)
           .then(uploadedFile => {
             // console.log("downloadUrl: ", uploadedFile.downloadUrl)
-            // const _id = uuid.v4()
             const msgObj = {
               _id,
               text: "",
-              createdAt: new Date(),
+              createdAt: Moment().format(),
               user: {
                 _id: this.uid,
                 name: this.SubjectStore.nickname,
@@ -636,11 +635,11 @@ export default class Chat extends Component {
           this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, meta)
           .then(uploadedFile => {
             // console.log("downloadUrl: ", uploadedFile.downloadUrl)
-            const _id = uuid.v4()
+            const _id = this.genID()
             const msgObj = {
               _id,
               text: "",
-              createdAt: new Date(),
+              createdAt: Moment().format(),
               user: {
                 _id: this.uid,
                 name: this.SubjectStore.nickname,
@@ -676,6 +675,11 @@ export default class Chat extends Component {
     }
   }
 
+  genID = () => {
+    const id = Moment().unix()
+    return id
+  }
+
   syncMsgToFirebase = msgObj => {
     this.firebase
       .database()
@@ -696,11 +700,11 @@ export default class Chat extends Component {
         .database()
         .ref(`conversations/${this.convKey}/messages`)
 
-      const _id = uuid.v4()
+      const _id = this.genID()
       const msgObj = {
         _id,
         text: "",
-        createdAt: new Date(),
+        createdAt: Moment().format(),
         user: {
           _id: this.uid,
           name: this.SubjectStore.nickname,
@@ -785,15 +789,16 @@ export default class Chat extends Component {
         return (
           <View
             style={{
+              marginTop: 50,
               width,
-              height: 60,
+              height: 50,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
             <ActivityIndicator />
-            <Text> 照片壓縮處理中... </Text>
+            <Text>照片壓縮處理中...</Text>
           </View>
         )
       case "plus":
@@ -1058,7 +1063,7 @@ export default class Chat extends Component {
           ref={ref => (this.chat = ref)}
           style={{width}}
           messages={this.state.messages}
-          messageIdGenerator={() => uuid.v4()}
+          messageIdGenerator={this.genID}
           onSend={this.onSend}
           label={LABEL_SEND}
           LoadEarlier={true}
