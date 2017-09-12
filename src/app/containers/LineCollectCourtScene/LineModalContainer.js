@@ -35,15 +35,11 @@ export default class LineModalContainer extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.ControlStore = this.props.ControlStore
-    this.uid = this.props.uid
-    this.nickname = this.props.nickname
-    this.avatarUrl = this.props.avatar
-    this.callback = this.props.callback
     this.useBtnLabel = '使用Q點'
     this.cancelBtnLabel = '取消'
     console.log("LineModal code: ", this.props.code)
     this.dispMsg = '您今天的來訪留言次數已經用完或是使用Q點來增加留言次數'
-    if (this.props.code == 'tooManyUnhandled') {
+    if (this.code == 'tooManyUnhandled') {
       this.dispMsg = '抱歉，對方的未讀留言過多，請稍後再試試或是使用Q點特權留言'
     }
     console.log("LineModal dispMsg: ", this.dispMsg)
@@ -52,10 +48,11 @@ export default class LineModalContainer extends Component {
   goToBonusFilter = async () => {
     await this.ControlStore.setLineModal()
     // UseBonusScene 吃的props: nickname, avatarUrl, code, callback
+    // console.log("this.props.ControlStore: ", this.ControlStore.LineModalUid)
     Actions.UseBonus({
-      nickname: this.nickname,
-      avatarUrl: this.avatar,
-      code: this.props.code,
+      nickname: this.ControlStore.LineModalNickname,
+      avatarUrl: this.ControlStore.LineModalAvatar,
+      code: this.ControlStore.LineModalCode,
       callback: this.callbackFunc,
     })
   }
@@ -68,8 +65,8 @@ export default class LineModalContainer extends Component {
         this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday`).set(0)
       }
       if (code == 'tooManyUnhandled') {
-        this.SubjectStore.addUnhandledPass(this.uid)
-        this.firebase.database().ref(`users/${this.SubjectStore.uid}/unhandledPass/${this.uid}`).set(true)
+        this.SubjectStore.addUnhandledPass(this.ControlStore.LineModalUid)
+        this.firebase.database().ref(`users/${this.SubjectStore.uid}/unhandledPass/${this.ControlStore.LineModalUid}`).set(true)
       }
     }
     this.ControlStore.setLineModal()

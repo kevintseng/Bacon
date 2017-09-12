@@ -28,7 +28,12 @@ export default class ControlStore {
   @observable meetCuteThreePhotos
   @observable meetChanceRadar
   @observable meetChanceOfflineMember
-  
+  //
+  @observable LineModalUid
+  @observable LineModalCode
+  @observable LineModalNickname
+  @observable LineModalAvatar
+
   constructor() {
     this.initialize()
   }
@@ -61,6 +66,27 @@ export default class ControlStore {
     this.meetCuteRadar = false
     this.meetChanceRadar = false
     this.meetChanceOfflineMember = false
+    //
+    this.LineModalUid = null
+    this.LineModalCode = null
+    this.LineModalNickname = null
+    this.LineModalAvatar = null
+  }
+
+  @action setLineModalUid = str => {
+    this.LineModalUid = str
+  }
+
+  @action setLineModalNickname = str => {
+    this.LineModalNickname = str
+  }
+
+  @action setLineModalCode = str => {
+    this.LineModalCode = str
+  }
+
+  @action setLineModalAvatar = str => {
+    this.LineModalAvatar = str
   }
 
   @action setAuthenticateIndicator = str => {

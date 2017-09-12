@@ -9,7 +9,8 @@ import LineModalContainer from './LineModalContainer'
 import localdb from '../../../configs/localdb'
 import Court from '../../views/Court'
 
-@inject('firebase', 'SubjectStore', 'ControlStore', 'FateStore') @observer
+@inject('firebase', 'SubjectStore', 'ControlStore', 'FateStore')
+@observer
 export default class CourtContainer extends Component {
 
   constructor(props) {
@@ -24,7 +25,6 @@ export default class CourtContainer extends Component {
       visible: false,
       match: false,
       collection: this.props.collection || false,
-      code: "sentTooManyVisitorMsg",
     }
   }
 
@@ -111,12 +111,15 @@ export default class CourtContainer extends Component {
     // 先檢查是否已經有存在對話
     this.firebase.database().ref(`users/${this.SubjectStore.uid}/conversations/${this.Store.uid}`).once("value").then(async snap => {
       if (!snap.exists()) {
+        this.ControlStore.setLineModalUid(this.Store.uid)
+        this.ControlStore.setLineModalNickname(this.Store.nickname)
+        this.ControlStore.setLineModalAvatar(this.Store.avatar)
         // 如果是新對話, 檢查今天的quota是否已達到
         // DEBUG: 測試期間先設為3
         // if (this.SubjectStore.visitConvSentToday < 10) {
-        const unhandledCount = await this.unhandledVisitorConv(this.Store.uid)
         if (this.SubjectStore.visitConvSentToday <= 3) {
-          console.log("check visitConvSentToday: ", this.SubjectStore.visitConvSentToday)
+          const unhandledCount = await this.unhandledVisitorConv(this.Store.uid)
+          // console.log("check visitConvSentToday: ", this.SubjectStore.visitConvSentToday)
           if (!this.SubjectStore.unhandledPass[this.Store.uid]) {
             // let maxUnhandled = 20
             // DEBUG: 測試期間先設為1
@@ -128,13 +131,13 @@ export default class CourtContainer extends Component {
             }
 
             if (maxUnhandled > unhandledCount) {
-              console.log("unhandledCount: ", unhandledCount, ", maxUnhandled: ", maxUnhandled)
+              // console.log("unhandledCount: ", unhandledCount, ", maxUnhandled: ", maxUnhandled)
               this.SubjectStore.addOneToVisitConvSentToday()
               this.goToLine()
               return true
             } else {
-              console.log("check unhandledCount: ", unhandledCount, ", maxUnhandled: ", maxUnhandled)
-              this.setState({ code: "tooManyUnhandled" })
+              // console.log("check unhandledCount: ", unhandledCount, ", maxUnhandled: ", maxUnhandled)
+              this.ControlStore.setLineModalCode("tooManyUnhandled")
               this.ControlStore.setLineModal()
               return true
             }
@@ -146,6 +149,7 @@ export default class CourtContainer extends Component {
             return true
           }
         } else {
+          this.ControlStore.setLineModalCode("sentTooManyVisitorMsg")
           this.ControlStore.setLineModal()
           return true
         }
@@ -169,12 +173,7 @@ export default class CourtContainer extends Component {
           onPressLeftIcon={this.startConv}
           onRequestClose={this.closeAlbum}
         />
-        <LineModalContainer
-          code={this.state.code}
-          uid={this.Store.uid}
-          nickname={this.Store.nickname}
-          avatar={this.Store.avatar}
-        />
+        <LineModalContainer />
       </View>
     )
   }

@@ -22,9 +22,10 @@ const styles = {
     top: 200,
     alignSelf: 'center',
   },
-  bottom: {
+  botton: {
+    marginTop: 10,
     position: 'absolute',
-    bottom: 0,
+    botton: 0,
   },
 }
 
@@ -114,7 +115,7 @@ export default class UseBonusScene extends Component {
           />
         </View>
 
-        <View style={styles.bottom}>
+        <View style={styles.botton}>
           <BaconRoutesContainer
             balance={this.balance}
             cost={this.cost}
