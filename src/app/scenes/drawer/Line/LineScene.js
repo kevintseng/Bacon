@@ -732,10 +732,6 @@ export default class Chat extends Component {
     }
   }
 
-  handleActionPressed = () => {
-    console.log("Action pressed: ", this.state.action)
-  }
-
   renderComposer = () => {
     // console.log("renderComposer: ", this.state.action)
     switch (this.state.action) {
@@ -765,7 +761,6 @@ export default class Chat extends Component {
                   this.setState({
                     action: false,
                     minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
-                    inputOffset: DEFAULT_INPUT_OFFSET,
                   })
                 }}
               />
@@ -826,7 +821,6 @@ export default class Chat extends Component {
                   this.setState({
                     action: false,
                     minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
-                    inputOffset: DEFAULT_INPUT_OFFSET,
                   })
                 }}
               />
@@ -876,7 +870,6 @@ export default class Chat extends Component {
             <TextInput
               placeholderTextColor="#E0E0E0"
               placeholder={PLACEHOLDER}
-              autoFocus
               value={this.state.inputText.toString()}
               style={{
                 marginTop: 3,
@@ -1077,7 +1070,6 @@ export default class Chat extends Component {
           placeholder={PLACEHOLDER}
           renderComposer={this.renderComposer}
           renderActions={this.renderActions}
-          onPressActionButton={this.handleActionPressed}
           renderFooter={this.renderFooter}
           renderBubble={this.renderBubble}
           renderCustomView={this.renderStickerView}
