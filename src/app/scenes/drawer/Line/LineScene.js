@@ -737,8 +737,7 @@ export default class Chat extends Component {
     switch (this.state.action) {
       case "smily":
         return (
-          <ScrollView
-            scrollEnabled={false}
+          <View
             style={{
               flex: 1,
               width,
@@ -750,6 +749,7 @@ export default class Chat extends Component {
             <View
               style={{
                 width,
+                backgroundColor: "white",
                 marginVertical: 5,
                 alignSelf: "center",
               }}
@@ -778,7 +778,7 @@ export default class Chat extends Component {
                 handleStickerPressed={this.handleStickerPressed}
               />
             </ScrollView>
-          </ScrollView>
+          </View>
         )
       case "uploading":
         return (
@@ -790,6 +790,7 @@ export default class Chat extends Component {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
+              backgroundColor: "white",
             }}
           >
             <ActivityIndicator />
@@ -798,8 +799,7 @@ export default class Chat extends Component {
         )
       case "plus":
         return (
-          <ScrollView
-            scrollEnabled={false}
+          <View
             style={{
               width,
               height: STICKER_TOOLBAR_HEIGHT,
@@ -809,9 +809,10 @@ export default class Chat extends Component {
           >
             <View
               style={{
-                width: 60,
+                width,
                 marginVertical: 5,
                 alignSelf: "center",
+                backgroundColor: "white",
               }}
             >
               <Icon
@@ -853,7 +854,7 @@ export default class Chat extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </ScrollView>
+          </View>
         )
       default:
         return (
