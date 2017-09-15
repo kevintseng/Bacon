@@ -5,7 +5,7 @@ import ImageZoom from 'react-native-image-pan-zoom'
 import FastImage from 'react-native-fast-image'
 import MKPLoadImageView from 'mkp-react-native-image-view'
 import { Icon } from 'react-native-elements'
-import Infos from './Infos/Infos'
+// import Infos from './Infos/Infos'
 
 const { width, height } = Dimensions.get('window')
 
@@ -23,7 +23,7 @@ export default class Court extends Component {
 
   renderAlbumZoom = (album) => (
     album.map( photo => (
-      <ImageZoom 
+      <ImageZoom
         key={photo}
         cropWidth={width}
         cropHeight={height}
@@ -87,7 +87,7 @@ export default class Court extends Component {
             <View><Icon name='arrow-right' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ this.nextphoto }/></View>
           </View>
         </Modal>
- 
+
         <Carousel
           swipe
           //delay={0}
