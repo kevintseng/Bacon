@@ -1,6 +1,6 @@
 import { action } from 'mobx'
 //import GeoFire from 'geofire'
-//import Moment from 'moment'
+// import Moment from 'moment'
 
 //useStrict(true)
 const MeetCuteAction = {
@@ -74,7 +74,7 @@ const MeetCuteAction = {
         } else {
           this.user.meetCuteHistory = [this.user.uid]
           await this.updateToFirebase("meetCuteHistory",this.user.meetCuteHistory.slice())
-          this.fetchPreyListsByMeetCute(this.user.sexOrientation)          
+          this.fetchPreyListsByMeetCute(this.user.sexOrientation)
         }
       this.loading = false
     })
@@ -115,7 +115,7 @@ const MeetCuteAction = {
     }
     await this.sleep(700)
     this.loading = false
-  }), 
+  }),
 
   setUser: action(function setUser(){
     this.user = this.store.user
@@ -135,8 +135,8 @@ const MeetCuteAction = {
 
   sleep: function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
-  
+  },
+
 }
 
 export default MeetCuteAction

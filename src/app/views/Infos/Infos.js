@@ -1,9 +1,11 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native'
+import { Icon } from 'react-native-elements'
+import { Modal } from 'react-native-modal'
 
 const { width } = Dimensions.get('window')
 
-const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance, showDistance, showBlockade}) => (
+const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance, showDistance, showBlockade, showReportUser, onReportUserPressed}) => (
   <View style={{width: width*0.8}}>
     <View style={{flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
       <Image style={{marginRight: 5}} source={verityEmail ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
@@ -13,7 +15,7 @@ const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance
     </View>
 
     <View style={{marginTop: 10, alignSelf: 'center', alignItems: 'center', paddingRight: 20, paddingLeft: 20}}><Text style={{fontSize: 13,color: '#606060',textAlign: 'center'}}>{ bio || '?' }</Text></View>
-    
+
     <View style={{marginTop: 10, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
       <Image style={{marginRight: 5}} source={require('./img/ico_meet_globe.png')}/>
       <Text style={{fontSize: 13,color: '#606060',fontFamily: 'NotoSans'}}>{ langs || '?' }</Text>
@@ -29,6 +31,12 @@ const Infos = ({verityEmail, verityPhoto, displayName, bio, age, langs, distance
       <Image style={{marginRight: 5}} source={require('./img/btn_meet_block.png')}/>
       <Text style={{fontSize: 13,color: '#606060',fontFamily: 'NotoSans'}}>封鎖此人</Text>
     </TouchableOpacity>
+    }
+    { showReportUser &&
+      <TouchableOpacity style={{marginTop: 10, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}} onPress={onReportUserPressed}>
+        <Icon name='report' color='#D63768'/>
+        <Text style={{fontSize: 13,color: '#606060',fontFamily: 'NotoSans'}}> 檢舉</Text>
+      </TouchableOpacity>
     }
   </View>
 )
