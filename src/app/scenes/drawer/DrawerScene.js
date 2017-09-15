@@ -71,6 +71,10 @@ export default class DrawerScene extends Component {
     Actions.Setting({type: 'replace'})
   }
 
+  gotToMster = () => {
+    Actions.Master({type: 'replace'})
+  }
+
   render() {
     const state = this.props.navigationState
     const children = state.children
@@ -96,6 +100,7 @@ export default class DrawerScene extends Component {
             fateOnPress={ this.goToFate }
             articleOnPress={ this.goToArticle }
             settingOnPress={ this.goToSetting }
+            masterOnPress={ this.gotToMster }
           />
         }
         tapToClose
