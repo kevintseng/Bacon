@@ -732,17 +732,12 @@ export default class Chat extends Component {
     }
   }
 
-  handleActionPressed = () => {
-    console.log("Action pressed: ", this.state.action)
-  }
-
   renderComposer = () => {
     // console.log("renderComposer: ", this.state.action)
     switch (this.state.action) {
       case "smily":
         return (
-          <ScrollView
-            scrollEnabled={false}
+          <View
             style={{
               flex: 1,
               width,
@@ -754,6 +749,7 @@ export default class Chat extends Component {
             <View
               style={{
                 width,
+                backgroundColor: "white",
                 marginVertical: 5,
                 alignSelf: "center",
               }}
@@ -765,7 +761,6 @@ export default class Chat extends Component {
                   this.setState({
                     action: false,
                     minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
-                    inputOffset: DEFAULT_INPUT_OFFSET,
                   })
                 }}
               />
@@ -783,7 +778,7 @@ export default class Chat extends Component {
                 handleStickerPressed={this.handleStickerPressed}
               />
             </ScrollView>
-          </ScrollView>
+          </View>
         )
       case "uploading":
         return (
@@ -795,6 +790,7 @@ export default class Chat extends Component {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
+              backgroundColor: "white",
             }}
           >
             <ActivityIndicator />
@@ -803,8 +799,7 @@ export default class Chat extends Component {
         )
       case "plus":
         return (
-          <ScrollView
-            scrollEnabled={false}
+          <View
             style={{
               width,
               height: STICKER_TOOLBAR_HEIGHT,
@@ -814,9 +809,10 @@ export default class Chat extends Component {
           >
             <View
               style={{
-                width: 60,
+                width,
                 marginVertical: 5,
                 alignSelf: "center",
+                backgroundColor: "white",
               }}
             >
               <Icon
@@ -826,7 +822,6 @@ export default class Chat extends Component {
                   this.setState({
                     action: false,
                     minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
-                    inputOffset: DEFAULT_INPUT_OFFSET,
                   })
                 }}
               />
@@ -859,7 +854,7 @@ export default class Chat extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </ScrollView>
+          </View>
         )
       default:
         return (
@@ -876,7 +871,6 @@ export default class Chat extends Component {
             <TextInput
               placeholderTextColor="#E0E0E0"
               placeholder={PLACEHOLDER}
-              autoFocus
               value={this.state.inputText.toString()}
               style={{
                 marginTop: 3,
@@ -1077,7 +1071,6 @@ export default class Chat extends Component {
           placeholder={PLACEHOLDER}
           renderComposer={this.renderComposer}
           renderActions={this.renderActions}
-          onPressActionButton={this.handleActionPressed}
           renderFooter={this.renderFooter}
           renderBubble={this.renderBubble}
           renderCustomView={this.renderStickerView}
