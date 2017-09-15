@@ -61,10 +61,10 @@ const MeetChanceAction = {
 
   setPreyListByKey: action(function setPreyListByKey(key){
     this.firebase.database().ref('users/' + key).once('value').then(
-      (snap) => { 
+      (snap) => {
         if (!(snap.val() == null)){
-          this.preyList.push(snap.val()) 
-        } 
+          this.preyList.push(snap.val())
+        }
       }
     ).catch((error) => {
       console.warn(error)
@@ -91,7 +91,7 @@ const MeetChanceAction = {
       if (snap.val() == null) {
         this.firebase.database().ref("collection").push({wooer: this.user.uid , prey: this.prey.uid})
       } else {
-        snap.forEach((childsnap) => 
+        snap.forEach((childsnap) =>
           {
             if (childsnap.val().wooer === this.user.uid) {
               is_coll = childsnap.key
