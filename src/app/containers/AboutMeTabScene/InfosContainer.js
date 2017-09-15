@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
 import Infos from '../../views/Infos/Infos'
- 
+
 @inject('SubjectStore') @observer
 export default class InfosContainer extends Component {
 
@@ -15,7 +15,7 @@ export default class InfosContainer extends Component {
   render() {
     return(
       <Infos
-        verityEmail={this.SubjectStore.emailVerified} 
+        verityEmail={this.SubjectStore.emailVerified}
         verityPhoto={this.SubjectStore.photoVerified}
         displayName={this.SubjectStore.nickname}
         bio={this.SubjectStore.bio}
