@@ -35,6 +35,8 @@ import MeetChanceConfigScene from './scenes/drawer/MeetChance/MeetChanceConfigSc
 // Fate
 import FateTabScene from './scenes/drawer/Fate/FateTabScene'
 import FateCourtScene from './scenes/drawer/Fate/FateCourtScene'
+// Master
+import MasterTabScene from './scenes/drawer/Master/MasterTabScene'
 // Setting
 import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
 import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
@@ -272,6 +274,10 @@ export default class Routes extends Component {
               <Scene key="Line" title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
 
               <Scene key="UseBonus" title="使用Q點" renderBackButton={this.baconArrow} component={UseBonusScene} />
+
+              <Scene key="Master" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
+                <Scene key="MasterTab" title="達人聊天室" renderLeftButton={this.baconMenu} component={MasterTabScene} />
+              </Scene>
 
             </Scene>
           </Scene>
