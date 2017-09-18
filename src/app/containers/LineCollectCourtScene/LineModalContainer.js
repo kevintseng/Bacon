@@ -37,12 +37,18 @@ export default class LineModalContainer extends Component {
     this.ControlStore = this.props.ControlStore
     this.useBtnLabel = '使用Q點'
     this.cancelBtnLabel = '取消'
-    console.log("LineModal code: ", this.props.code)
-    this.dispMsg = '您今天的來訪留言次數已經用完或是使用Q點來增加留言次數'
-    if (this.code == 'tooManyUnhandled') {
-      this.dispMsg = '抱歉，對方的未讀留言過多，請稍後再試試或是使用Q點特權留言'
+
+    this.state = {
+      dispMsg: '您今天的來訪留言次數已經用完或是使用Q點來增加留言次數'
     }
-    console.log("LineModal dispMsg: ", this.dispMsg)
+  }
+
+  componentDidLoad() {
+    if (this.ControlStore.LineModalCode == 'tooManyUnhandled') {
+      this.setState({
+        dispMsg: '抱歉，對方的未讀留言過多，請稍後再試試或是使用Q點特權留言'
+      })
+    }
   }
 
   goToBonusFilter = async () => {
@@ -100,7 +106,7 @@ export default class LineModalContainer extends Component {
           >
             <View style={{justifyContent: 'space-between'}}>
               <View>
-                <Text style={styles.text}>{this.dispMsg}</Text>
+                <Text style={styles.text}>{this.state.dispMsg}</Text>
               </View>
               <View>
                 <Text style={styles.title} onPress={this.goToBonusFilter}>{this.useBtnLabel}</Text>

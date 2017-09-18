@@ -10,21 +10,6 @@ import UseBonusContainer from '../../../containers/UseBonusScene/UseBonusContain
 const styles = {
   view: {
     flex: 1,
-    marginBottom: 40,
-  },
-  top: {
-    position: 'absolute',
-    top: 30,
-    alignSelf: 'center',
-  },
-  middle: {
-    position: 'absolute',
-    top: 200,
-    alignSelf: 'center',
-  },
-  bottom: {
-    position: 'absolute',
-    bottom: 0,
   },
 }
 
@@ -102,8 +87,7 @@ export default class UseBonusScene extends Component {
   render() {
     return (
       <View style={styles.view}>
-
-        <View style={styles.top}>
+        <View style={{ height: 100 }}>
           <UseBonusContainer
             balance={this.balance}
             cost={this.cost}
@@ -113,11 +97,10 @@ export default class UseBonusScene extends Component {
             postStr={this.postStr}
           />
         </View>
-        <View style={styles.middle}>
+        <View style={{ height: 20 }}>
           <Text> </Text>
         </View>
-
-        <View style={styles.bottom}>
+        <View style={{ marginTop: 100}}>
           <BaconRoutesContainer
             balance={this.balance}
             cost={this.cost}
