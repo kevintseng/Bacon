@@ -21,6 +21,7 @@ export default class BaconRoutesContainer extends Component {
   }
 
   pay = async () => {
+    console.log("this.pay pressed")
     const bonus = parseInt(Object.keys(this.ControlStore.bonus).find(key => this.ControlStore.bonus[key] === true))
     if (Platform.OS === "android") {
       if (bonus === 1200) {
@@ -43,19 +44,20 @@ export default class BaconRoutesContainer extends Component {
         if (this.ControlStore.bonus[200]) {
           bonus = 200
         }
-        if (this.ControlStore.bonus[500]) {
+        if (this.ControlStore.bonus[600]) {
           bonus = 600
         }
-        if (this.ControlStore.bonus[1000]) {
+        if (this.ControlStore.bonus[1200]) {
           bonus = 1200
         }
-
-        this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + bonus)
         this.SubjectStore.addBonus(bonus)
+        await this.firebase.database()
+        .ref(`users/${this.SubjectStore.uid}/bonus`)
+        .set(this.SubjectStore.bonus + bonus).then(() => {
+          Actions.AboutMe({type: 'reset'})
+        })
       } catch (err) {
         console.log(err)
-      } finally {
-        Actions.AboutMe({type: 'reset'})
       }
     }
   }
@@ -83,14 +85,14 @@ export default class BaconRoutesContainer extends Component {
       } else {
         await InAppBilling.close()
       }
-    }    
+    }
   }
 
   render() {
     return (
       <BaconRoutes
         routesText="儲值"
-        routesOnPress={this.pay}
+        routesOnPress={() => this.pay()}
       />
     )
   }

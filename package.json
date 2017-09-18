@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "ipad": "react-native run-ios --simulator 'iPad Air'",
     "reset": "sh ./reset.sh",
     "test": "jest"
   },
@@ -16,8 +17,8 @@
     "@ptomasroos/react-native-multi-slider": "0.0.8",
     "crypto-js": "^3.1.9-1",
     "geofire": "^4.1.2",
-    "iap-receipt-validator": "^1.0.6",
     "geolib": "^2.0.23",
+    "iap-receipt-validator": "^1.0.6",
     "lodash": "^4.17.4",
     "mkp-react-native-image-view": "kaymingmobile/react-native-image-view#master",
     "mobx": "^3.2.2",

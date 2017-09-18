@@ -10,13 +10,13 @@ import RuleModalContainer from '../SettingAboutScene/RuleModalContainer'
 const styles = {
   link: {
     fontFamily: 'NotoSans',
-    flexWrap: "wrap",
-    color: "#D63768",
+    flexWrap: 'wrap',
+    color: '#D63768',
     fontSize: 14,
   },
   text: {
     fontFamily: 'NotoSans',
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
   },
 }
 
@@ -50,7 +50,7 @@ export default class UpgradeContainer extends Component {
 
   render() {
     return (
-      <View style={{ alignItems: "center" }}>
+      <View style={{ alignItems: 'center', marginTop: 10, }}>
         <PolicyModalContainer/>
         <RuleModalContainer/>
         <Upgrade
@@ -59,11 +59,11 @@ export default class UpgradeContainer extends Component {
           topCheckOnPress={this.topCheckOnPress}
           upperCheckOnPress={this.upperCheckOnPress}
         />
-        <View style={{ width: 250, marginTop: 15, alignItems: "center" }}>
+        <View style={{ width: 250, marginTop: 15, alignItems: 'center' }}>
           <Text style={ styles.text }>
             若您於高級會員服務訂閱期滿前未取消訂閱，將會於訂閱期滿自動續訂。
           </Text>
-          <View style={{ width: 160, flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 20}}>
+          <View style={{ width: 160, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20}}>
             <TouchableOpacity style={{ marginRight: 5 }} onPress={this.ControlStore.setSettingPolicyModal}>
               <Text style={styles.link}>
                 服務條款
