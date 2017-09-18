@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, Dimensions, TouchableOpacity, Platform } from 'react-native'
+import { ScrollView, View, Text, Image, Dimensions, TouchableOpacity, Platform } from 'react-native'
 import { Avatar, Badge } from 'react-native-elements'
 
 import ListItem from '../ListItem'
@@ -35,7 +35,7 @@ const styles = {
 const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, settingOnPress, articleOnPress, masterOnPress }) => {
 
   return(
-    <View style = { styles.scrollView } >
+    <ScrollView showsVerticalScrollIndicator={false} style = { styles.scrollView } >
       <View style={{marginLeft:5, marginRight:5, marginTop: Platform.OS === 'ios' ? 25 : 10}}>
 
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -101,7 +101,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
 
       </View>
 
-    </View>
+    </ScrollView>
   )
  }
 

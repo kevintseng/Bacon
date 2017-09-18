@@ -27,7 +27,7 @@ const styles = {
     fontSize: 20,
     fontWeight: '500',
     color: '#606060',
-    textAlign: 'center'    
+    textAlign: 'center'
   },
   text: {
     backgroundColor: 'transparent',
@@ -35,7 +35,7 @@ const styles = {
     fontFamily: 'NotoSans',
     fontSize: 14,
     //fontWeight: '500',
-    color: '#606060',    
+    color: '#606060',
   }
 }
 @inject('firebase','SubjectStore','MeetCuteStore','ControlStore') @observer
@@ -55,7 +55,7 @@ export default class MeetCuteCourtScene extends Component {
 
   componentDidMount = async () => {
     await this.sleep(250)
-    this.MeetCuteStore.setPreyList()  
+    this.MeetCuteStore.setPreyList()
   }
 
   sleep = ms => {
@@ -68,13 +68,13 @@ export default class MeetCuteCourtScene extends Component {
           <MateModalContainer/>
           <ScrollView style={{flex: 1}}>
             <CourtContainer/>
-            <View style={{alignSelf: 'center',paddingTop: 40}}>
-              <InfosContainer/> 
+            <View style={{alignSelf: 'center', marginTop: 10, paddingTop: 40}}>
+              <InfosContainer/>
             </View>
             <View style={{paddingTop: 10}}>
-              <BadgeWallContainer/> 
+              <BadgeWallContainer/>
             </View>
-            { this.MeetCuteStore.meetCuteRadar && 
+            { this.MeetCuteStore.meetCuteRadar &&
               <View style={{paddingTop: 10}}>
                 <BaconRadar/>
               </View>
@@ -88,15 +88,15 @@ export default class MeetCuteCourtScene extends Component {
 }
 /*
 !this.MeetCuteStore.haveNewPreys || this.MeetCuteStore.firstLoading
-<SearchModalContainer/> 
-           <SearchModalContainer/>   
+<SearchModalContainer/>
+           <SearchModalContainer/>
             <LoadingModalContainer/>
-            
+
 */
 
 /*
         { this.MeetCuteStore.haveNewPreys && this.MeetCuteStore.loading &&
-          this.indicator() 
+          this.indicator()
         }
 */
 
@@ -106,14 +106,13 @@ export default class MeetCuteCourtScene extends Component {
             <View>
               <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={styles.animation} >搜尋邂逅名單中</Animatable.Text>
               <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>❤️</Animatable.Text>
-            </View> 
+            </View>
 
             <TouchableOpacity onPress={ this.cleanHistory } >
               <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>
                 <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
                   <Text style={ styles.text }>重新來場美麗的邂逅</Text>
                 </View>
-              </LinearGradient>  
-            </TouchableOpacity> 
+              </LinearGradient>
+            </TouchableOpacity>
           */
-

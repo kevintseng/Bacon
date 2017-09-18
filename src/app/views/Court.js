@@ -102,11 +102,11 @@ export default class Court extends Component {
           { album.length > 0 ? this.renderAlbum(album) : this.renderOnePhoto() }
         </Carousel>
 
-        <TouchableOpacity style={{position: 'absolute',top: 320, right: 60}} onPress={ onPressRightIcon }>
+        <TouchableOpacity style={{position: 'absolute',top: height == 480 ? 260 : 320, right: 60}} onPress={ onPressRightIcon }>
           <Image source={ rightIcon }/>
         </TouchableOpacity>
 
-        <TouchableOpacity style={{position: 'absolute',top: 320, left: 60}} onPress={ onPressLeftIcon }>
+        <TouchableOpacity style={{position: 'absolute',top:  height == 480 ? 260 : 320, left: 60}} onPress={ onPressLeftIcon }>
           <Image source={ leftIcon } />
         </TouchableOpacity>
 

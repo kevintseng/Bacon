@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
+import { Button } from 'react-native-elements'
 
 import Wave from '../Wave/Wave'
 
@@ -13,10 +14,10 @@ const styles = {
   routesText: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
-    fontFamily: 'NotoSans', 
+    fontFamily: 'NotoSans',
     textAlign: 'center',
     fontWeight: '500',
-    color: 'white',  
+    color: 'white',
     fontSize: 20
   },
   warningView: {
@@ -25,8 +26,8 @@ const styles = {
   warningText: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
-    fontFamily: 'NotoSans',  
-    textAlign: 'center', 
+    fontFamily: 'NotoSans',
+    textAlign: 'center',
     fontWeight: '500',
     color: '#606060',
     fontSize: 10
@@ -36,14 +37,13 @@ const styles = {
 const BaconRoutes = ({ routesText, routesOnPress, warningText, warningOnPress }) => {
   return(
     <View style={ styles.view }>
-
-      <TouchableOpacity onPress={ routesOnPress }> 
+      <TouchableOpacity onPress={ routesOnPress }>
         <Image style={ styles.routesImage } source={require('./img/btn_gredient.png')}>
           <Text style={ styles.routesText }>{ routesText }</Text>
         </Image>
       </TouchableOpacity>
 
-      <TouchableOpacity style={ styles.warningView }onPress={ warningOnPress }> 
+      <TouchableOpacity style={ styles.warningView }onPress={ warningOnPress }>
         <Text style={ styles.warningText }>{ warningText }</Text>
       </TouchableOpacity>
 

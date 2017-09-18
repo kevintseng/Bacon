@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Platform, BackHandler, ToastAndroid } from 'react-native'
+import { View, Platform, BackHandler, ToastAndroid, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
 import BaconArrow from '../../views/BaconArrow/BaconArrow'
@@ -10,30 +10,43 @@ import PasswordContainer from '../../containers/SignInScene/PasswordContainer'
 
 import FailureConatiner from '../../containers/SignInScene/FailureConatiner'
 
+const { width, height } = Dimensions.get('window')
+
 const styles = {
   view: {
     flex: 1
   },
   middle: {
     alignItems: 'center',
-    position: 'absolute', 
-    top: 110
+    position: 'absolute',
+    top: height == 480 ? 80 : 110,
   },
   form: {
-    ...Platform.select({ 
-      ios: { 
+    ...Platform.select({
+      ios: {
         marginTop: 10
-      }, 
-      android: { 
+      },
+      android: {
         marginTop: 5
-      } 
+      }
     })
   },
   bottom: {
-    position: 'absolute', 
-    bottom: 0,
-    alignItems: 'center',
-    alignSelf: 'center'
+    ...Platform.select({
+      ios: {
+        height: 200,
+        position: 'absolute',
+        bottom: 0,
+        alignItems: 'center',
+        alignSelf: 'center',
+      },
+      android: {
+        position: 'absolute',
+        bottom: 0,
+        alignItems: 'center',
+        alignSelf: 'center',
+      },
+    }),
   }
 }
 

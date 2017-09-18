@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Button, Platform, BackHandler, ToastAndroid } from 'react-native'
+import { ScrollView, View, Text, Button, Platform, BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
@@ -11,20 +11,35 @@ const styles = {
   view: {
     flex: 1
   },
-  top: {
-    position: 'absolute', 
-    top: 30,
-    alignSelf: 'center',
-  },
-  middle: {
-    position: 'absolute', 
-    top: 200,
-    alignSelf: 'center',
-  },
-  bottom: {
-    position: 'absolute', 
-    bottom: 0
-  }
+  ...Platform.select({
+    ios: {
+      top: {
+        height: 110
+      },
+      middle: {
+        marginTop: 10,
+      },
+      bottom: {
+        marginTop: 10,
+      }
+    },
+    android: {
+      top: {
+        position: 'absolute',
+        top: 30,
+        alignSelf: 'center',
+      },
+      middle: {
+        position: 'absolute',
+        top: 200,
+        alignSelf: 'center',
+      },
+      bottom: {
+        position: 'absolute',
+        bottom: 0
+      }
+    }
+  })
 }
 
 @inject('SubjectStore') @observer
@@ -50,8 +65,7 @@ export default class UpgradeOneScene extends Component {
 
   render() {
     return(
-      <View style={ styles.view }>
-
+      <ScrollView style={ styles.view }>
         <View style={ styles.top }>
           <UpgradeTitleContainer/>
         </View>
@@ -63,8 +77,7 @@ export default class UpgradeOneScene extends Component {
         <View style={ styles.bottom }>
           <BaconRoutesContainer/>
         </View>
-
-      </View>
+      </ScrollView>
     )
   }
 }
