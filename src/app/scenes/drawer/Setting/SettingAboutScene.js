@@ -47,6 +47,15 @@ const styles = {
       },
     })
   },
+  bottomContainer: {
+    ...Platform.select({
+      ios: {
+      },
+      android: {
+        position: 'absolute',bottom: 0
+      },
+    })
+  },
   text: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
@@ -113,7 +122,7 @@ export default class SettingAboutScene extends Component {
             onPress={ this.ControlStore.setSettingRuleModal }
           />
         </View>
-        <View style={{position: 'absolute',bottom: 0}}>
+        <View style={styles.bottomContainer}>
           <Knife/>
         </View>
       </ScrollView>
