@@ -1,9 +1,28 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { ScrollView, View, Platform } from 'react-native'
 import { inject, observer } from 'mobx-react'
 
 import BaconRoutesContainer from './BaconRoutesContainer'
 import LangListContainer from './LangListContainer'
+
+const styles = {
+  container: {
+    ...Platform.select({
+      ios: {},
+      android: {
+        flex: 1
+      },
+    })
+  },
+  bottom: {
+    ...Platform.select({
+      ios: {},
+      android: {
+        position: 'absolute', bottom: 0
+      }
+    })
+  }
+}
 
 @inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class LangsContainer extends Component {
@@ -12,7 +31,7 @@ export default class LangsContainer extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectEditStore = this.props.SubjectEditStore
-    this.SubjectStore = this.props.SubjectStore  
+    this.SubjectStore = this.props.SubjectStore
   }
 
   componentWillMount() {
@@ -21,14 +40,14 @@ export default class LangsContainer extends Component {
 
   render() {
     return(
-      <View style={{flex: 1}}>
-        <View style={{height: 390}}>
+      <ScrollView style={styles.container}>
+        <View>
           <LangListContainer/>
         </View>
-        <View style={{ position: 'absolute', bottom: 0}}>
+        <View style={styles.bottom}>
           <BaconRoutesContainer/>
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
