@@ -34,9 +34,9 @@ export default class MeetChanceWaterFallScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.MeetChanceStore = this.props.MeetChanceStore
-    this.state = {
-      notFound: false
-    }
+    //this.state = {
+    //  notFound: false
+    //}
   }
 
   componentWillMount() {
@@ -113,31 +113,3 @@ export default class MeetChanceWaterFallScene extends Component {
     )
   }
 }
-
-/*
-
-      {
-        !this.MeetChanceStore.notFound &&
-        <FlatList
-          removeClippedSubviews
-          data={ this.MeetChanceStore.preysToFlatList }
-          numColumns={3}
-          renderItem={({item}) =>
-          <Cookie
-            name={ item.nickname }
-            avatar={ item.avatar }
-            onPress={ () => { this.onPress(item.key) } }
-          /> }
-          ListHeaderComponent={ this.header }
-          getItemLayout={(data, index) => (
-            {length: itemHight, offset: itemHight * index, index}
-          )}
-        />
-      }
-      {
-        this.MeetChanceStore.notFound &&
-        <View style={{ width: 250, marginTop: 200 }}>
-          <Text style={styles.text}>抱歉, 您所在的位置搜尋不到任何對象</Text>
-        </View>
-      }
-*/
