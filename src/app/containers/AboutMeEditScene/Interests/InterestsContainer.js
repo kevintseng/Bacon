@@ -42,7 +42,8 @@ const styles = {
   },
   sec4: {
     ...Platform.select({
-      ios: {},
+      ios: {
+      },
       android: {
         position: 'absolute', bottom: 0
       }
