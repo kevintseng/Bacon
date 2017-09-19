@@ -37,24 +37,11 @@ export default class LineModalContainer extends Component {
     this.ControlStore = this.props.ControlStore
     this.useBtnLabel = '使用Q點'
     this.cancelBtnLabel = '取消'
-
-    this.state = {
-      dispMsg: '您今天的來訪留言次數已經用完或是使用Q點來增加留言次數'
-    }
-  }
-
-  componentDidLoad() {
-    if (this.ControlStore.LineModalCode == 'tooManyUnhandled') {
-      this.setState({
-        dispMsg: '抱歉，對方的未讀留言過多，請稍後再試試或是使用Q點特權留言'
-      })
-    }
   }
 
   goToBonusFilter = async () => {
     await this.ControlStore.setLineModal()
     // UseBonusScene 吃的props: nickname, avatarUrl, code, callback
-    // console.log("this.props.ControlStore: ", this.ControlStore.LineModalUid)
     Actions.UseBonus({
       nickname: this.ControlStore.LineModalNickname,
       avatarUrl: this.ControlStore.LineModalAvatar,
@@ -79,6 +66,14 @@ export default class LineModalContainer extends Component {
   }
 
   render() {
+    let dispMsg = ''
+    // console.log("this.props.code: ", this.props.code)
+    if (this.props.code == 'tooManyUnhandled') {
+      dispMsg = '抱歉，對方的未讀留言過多，請稍後再試試或是使用Q點特權留言'
+    }
+    if (this.props.code == 'sentTooManyVisitorMsg') {
+      dispMsg = '您今天的來訪留言次數已經用完或是使用Q點來增加留言次數'
+    }
     return (
       <Modal animationType={"fade"} transparent visible={this.ControlStore.lineModal} onRequestClose={this.ControlStore.setLineModal} >
         <TouchableOpacity
@@ -106,7 +101,7 @@ export default class LineModalContainer extends Component {
           >
             <View style={{justifyContent: 'space-between'}}>
               <View>
-                <Text style={styles.text}>{this.state.dispMsg}</Text>
+                <Text style={styles.text}>{dispMsg}</Text>
               </View>
               <View>
                 <Text style={styles.title} onPress={this.goToBonusFilter}>{this.useBtnLabel}</Text>
