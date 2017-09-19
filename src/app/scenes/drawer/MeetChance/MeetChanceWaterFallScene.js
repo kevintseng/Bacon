@@ -34,9 +34,9 @@ export default class MeetChanceWaterFallScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.MeetChanceStore = this.props.MeetChanceStore
-    this.state = {
-      notFound: false
-    }
+    //this.state = {
+    //  notFound: false
+    //}
   }
 
   componentWillMount() {
@@ -48,10 +48,10 @@ export default class MeetChanceWaterFallScene extends Component {
   componentDidMount = async () => {
     await this.sleep(250)
     this.MeetChanceStore.setRealPreys()
-    await this.sleep(250)
-    if (this.MeetChanceStore.preysToFlatList.length == 0) {
-      this.setState({ notFound: true })
-    }
+    //await this.sleep(250)
+    //if (this.MeetChanceStore.preysToFlatList.length == 0) {
+    //  this.setState({ notFound: true })
+    //}
   }
 
   goToAboutMeTab = () => {
@@ -86,7 +86,7 @@ export default class MeetChanceWaterFallScene extends Component {
     return(
     <View style={{flex:1, justifyContent: "flex-start", alignItems: "center"}}>
       {
-        !this.state.notFound &&
+        !this.MeetChanceStore.notFound &&
         <FlatList
           removeClippedSubviews
           data={ this.MeetChanceStore.preysToFlatList }
@@ -104,7 +104,7 @@ export default class MeetChanceWaterFallScene extends Component {
         />
       }
       {
-        this.state.notFound &&
+        this.MeetChanceStore.notFound &&
         <View style={{ width: 250, marginTop: 200 }}>
           <Text style={styles.text}>抱歉, 您所在的位置搜尋不到任何對象</Text>
         </View>

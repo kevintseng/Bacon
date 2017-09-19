@@ -22,6 +22,8 @@ export default class MeetChanceStore {
   @observable distance
   @observable emailVerified
   @observable photoVerified
+  //
+  @observable notFound
 
   constructor(firebase) {
     this.firebase = firebase
@@ -81,6 +83,8 @@ export default class MeetChanceStore {
     this.meetChanceRadar = false
     //
     this.fetchPreyQuery
+    // 
+    this.notFound = false
   }
 
   @action setLatitude = latitude => {
@@ -109,6 +113,7 @@ export default class MeetChanceStore {
   }
 
   @action setPreyList = () => {
+    this.notFound = false
     this.preyList = toJS(this.pool)
     this.preyList.sort((a, b) => {
       return a.distance > b.distance ? 1 : -1
@@ -140,9 +145,16 @@ export default class MeetChanceStore {
 
     Promise.all(preysPromises)
     .then(preys => {
-      runInAction(() => {
-        this.preys = preys
-      })
+      if (preys.length == 0) {
+        runInAction(() => {
+          this.notFound = true
+          this.preys = preys
+        })
+      } else {
+        runInAction(() => {
+          this.preys = preys
+        })        
+      }
     })
     .catch(err => {
       console.log(err)
