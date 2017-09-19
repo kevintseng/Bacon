@@ -182,7 +182,6 @@ export default class Chat extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("prevState.minToolBarHeight: ", prevState.minToolBarHeight, ", this.state.minToolBarHeight: ", this.state.minToolBarHeight)
     if (prevState.minToolBarHeight != this.state.minToolBarHeight) {
       this.chat.resetInputToolbar()
     }
