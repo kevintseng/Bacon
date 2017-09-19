@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text } from 'react-native'
 
 export default class MasterContainer extends Component {
   constructor(props) {
@@ -15,10 +15,11 @@ export default class MasterContainer extends Component {
   }
  
   render() {
+
     return(
       <View>
         <Text>MasterContainer</Text>
-      </View>
+      </View> 
     )
   }
 }
