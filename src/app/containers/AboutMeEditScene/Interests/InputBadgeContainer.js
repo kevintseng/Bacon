@@ -9,7 +9,9 @@ const { width, height } = Dimensions.get('window')
 
 const styles = {
   textInput: {
-    width: width - 25
+    width: width - 25,
+    padding: 8,
+    alignSelf: 'center',
   }
 }
 

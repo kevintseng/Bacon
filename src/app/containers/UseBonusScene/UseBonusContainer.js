@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-// import { View, TouchableOpacity, Text, Button } from 'react-native'
+import { View } from 'react-native'
 // import { inject, observer } from 'mobx-react'
 
 import UseBonus from '../../views/UseBonus'
+import BaconRoutesContainer from './BaconRoutesContainer'
 
 export default class UseBonusContainer extends Component {
 
@@ -16,16 +17,27 @@ export default class UseBonusContainer extends Component {
     this.postStr = this.props.postStr
   }
 
+  handleConfirmUse = () => {
+    this.props.handleUseConfirmed()
+  }
+
   render() {
     return (
-      <UseBonus
-        balance={this.balance}
-        cost={this.cost}
-        avatarUrl={this.avatarUrl}
-        reasonStr={this.reasonStr}
-        preStr={this.preStr}
-        postStr={this.postStr}
-      />
+      <View>
+        <UseBonus
+          balance={this.balance}
+          cost={this.cost}
+          avatarUrl={this.avatarUrl}
+          reasonStr={this.reasonStr}
+          preStr={this.preStr}
+          postStr={this.postStr}
+        />
+        <BaconRoutesContainer
+          balance={this.balance}
+          cost={this.cost}
+          confirmUse={this.handleConfirmUse}
+        />
+      </View>
     )
   }
 }
