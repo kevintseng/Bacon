@@ -85,29 +85,6 @@ export default class CourtContainer extends Component {
     Actions.Line({uid: this.Store.uid, name: this.Store.nickname})
   }
 
-  unhandledVisitorConv = uid => {
-    let counter = 0
-    this.firebase.database()
-    .ref(`users/${uid}/conversations/`)
-    .orderByChild('visit').equalTo(true)
-    .once('value')
-    .then(ss => {
-      if (ss.exists()) {
-        counter = ss.numChildren()
-        console.log('unhandledVisitorConv (original): ', counter)
-        ss.forEach(child => {
-          if (child.val().prey != uid) {
-            counter -= 1
-          }
-        })
-        console.log('unhandledVisitorConv (filtered): ', counter)
-        return counter
-      }
-      console.log('unhandledVisitorConv (none): ', counter)
-      return 0
-    })
-  }
-
   startConv = () => {
     // 先檢查是否已經有存在對話
     this.firebase.database().ref(`users/${this.SubjectStore.uid}/conversations/${this.Store.uid}`).once('value').then(async snap => {
