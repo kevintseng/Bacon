@@ -33,6 +33,8 @@ export default class ControlStore {
   @observable LineModalCode
   @observable LineModalNickname
   @observable LineModalAvatar
+  //
+  @observable langAdvanced
 
   constructor() {
     this.initialize()
@@ -71,6 +73,8 @@ export default class ControlStore {
     this.LineModalCode = null
     this.LineModalNickname = null
     this.LineModalAvatar = null
+    // 
+    this.langAdvanced = false
   }
 
   @action setLineModalUid = str => {
@@ -199,5 +203,9 @@ export default class ControlStore {
 
   @action setMeetChanceOfflineMember = boolean => {
     this.meetChanceOfflineMember = boolean
+  }
+
+  @action setlangAdvanced = () => {
+    this.langAdvanced = !this.langAdvanced
   }
 }

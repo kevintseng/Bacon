@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react'
 
 import BaconRoutesContainer from './BaconRoutesContainer'
 import LangListContainer from './LangListContainer'
+import MasterModalContainer from './MasterModalContainer'
 
 @inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class LangsContainer extends Component {
@@ -22,6 +23,7 @@ export default class LangsContainer extends Component {
   render() {
     return(
       <View style={{flex: 1}}>
+        <MasterModalContainer/>
         <View style={{height: 390}}>
           <LangListContainer/>
         </View>
