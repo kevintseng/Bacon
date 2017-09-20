@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 
 import MasterContainer from '../../../containers/MasterTabScene/MasterContainer'
 import ReservationContainer from '../../../containers/MasterTabScene/ReservationContainer'
@@ -21,7 +21,7 @@ export default class MasterTabScene extends Component {
       <ScrollableTabView
         initialPage = { this.props.initialPage || 0 }
         tabBarPosition='top'
-        renderTabBar={() => <ScrollableTabBar />}
+        renderTabBar={() => <DefaultTabBar />}
         tabBarUnderlineStyle={{ backgroundColor: '#d63768' }}
         tabBarBackgroundColor='white'
         tabBarActiveTextColor='#d63768'
