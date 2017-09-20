@@ -92,7 +92,7 @@ export default class SubjectStore {
   @computed get tasksToFlatList() {
     const tasks_title = ['電子郵件認證獎勵','上傳三張照片獎勵','完成自我介紹獎勵','完成興趣愛好獎勵']
     const tasks_bonus = [20,20,20,20]
-    return Object.keys(this.tasks).map((key, index) => ({ key, task: tasks_title[index], bonus: tasks_bonus[index], taken: this.tasks[key] }))
+    return Object.keys(this.tasks).map((key, index) => ({ key, task: tasks_title[index], bonus: tasks_bonus[index], taken: this.tasks[key] })).filter( ele => !ele.taken)
   }
 
   // action
