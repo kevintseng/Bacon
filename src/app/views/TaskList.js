@@ -33,10 +33,10 @@ const TaskList = ({taken,task,bonus,onPress}) => {
 
   return(
     <TouchableOpacity style={styles.task} onPress={onPress}>
-      <Text style={styles.taskText}>{task}</Text>
       <View style={styles.bottom}>
-        <Text style={styles.bonus}>{bonus}</Text>
-        <BaconBadgeYes text={taken ? '已領取' : '未領取'}/>
+        <Text style={styles.taskText}>{task}</Text>
+        <Text style={styles.bonus}>{bonus}點</Text>
+        <BaconBadgeYes text={taken ? '已領取' : '尚未領取'}/>
       </View>
     </TouchableOpacity>
   )
