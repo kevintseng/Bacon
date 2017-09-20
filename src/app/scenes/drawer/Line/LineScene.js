@@ -39,7 +39,6 @@ const LABEL_ALBUM = "相簿"
 const LABEL_CAMERA = "拍照"
 const LABEL_USE_BONUS = "使用Q點"
 const LABEL_CANCEL = "取消"
-const PLACEHOLDER = "請輸入..."
 const MSG_TOO_MANY_SENT = "超過訪客留言次數限制：請等待對方回覆或是使用Q點繼續留言"
 const MSG_PRIORITY = "訊息優先被看到：您可以使用Q點讓您的訊息優先顯示在對方的訊息中心！"
 
@@ -152,6 +151,7 @@ export default class Chat extends Component {
       visitorMsgLimit: false,
       typingText: null,
       inputText: '',
+      placeholder: `你今天還剩${10 - this.SubjectStore.visitConvSentToday}次招呼`,
       lines: 1,
       inputOffset: DEFAULT_INPUT_OFFSET,
       inputHeight: 55,
@@ -869,7 +869,7 @@ export default class Chat extends Component {
           >
             <TextInput
               placeholderTextColor="#E0E0E0"
-              placeholder={PLACEHOLDER}
+              placeholder={this.state.placeholder}
               value={this.state.inputText.toString()}
               style={{
                 marginTop: 3,
@@ -1067,7 +1067,7 @@ export default class Chat extends Component {
           }}
           onInputTextChanged={() => this.meetMsgLimit()}
           minInputToolbarHeight={this.state.minToolBarHeight}
-          placeholder={PLACEHOLDER}
+          placeholder={this.state.placeholder}
           renderComposer={this.renderComposer}
           renderActions={this.renderActions}
           renderFooter={this.renderFooter}

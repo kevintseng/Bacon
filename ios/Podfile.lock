@@ -87,9 +87,9 @@ PODS:
   - React/RCTWebSocket (0.48.2):
     - React/Core
     - React/RCTBlob
-  - RNFirebase (2.2.0):
+  - RNFirebase (2.2.1):
     - React
-  - RNVectorIcons (4.3.0):
+  - RNVectorIcons (4.4.0):
     - React
   - Yoga (0.48.2.React)
 
@@ -113,15 +113,15 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   BVLinearGradient:
-    :path: "../node_modules/react-native-linear-gradient"
+    :path: ../node_modules/react-native-linear-gradient
   React:
-    :path: "../node_modules/react-native"
+    :path: ../node_modules/react-native
   RNFirebase:
-    :path: "../node_modules/react-native-firebase"
+    :path: ../node_modules/react-native-firebase
   RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
+    :path: ../node_modules/react-native-vector-icons
   Yoga:
-    :path: "../node_modules/react-native/ReactCommon/yoga"
+    :path: ../node_modules/react-native/ReactCommon/yoga
 
 SPEC CHECKSUMS:
   BVLinearGradient: e5b57d7ae2011487190ad11ed2e73edccdfc25fa
@@ -138,13 +138,13 @@ SPEC CHECKSUMS:
   GooglePlaces: 4a7b22debfa1af65017b82943431822607e45201
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
-  nanopb: 22bc080fa3955e2116b6ff3ee6c2cb3c15ab97cb
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   React: 9ed466c0074c63cb4912a6e0c509bc24870497b8
-  RNFirebase: 67cf507f625e4584b630804fe1254ca34e0e8958
-  RNVectorIcons: a58392f365a38ffd3a070bf7449c0145bd0814e1
+  RNFirebase: 69d2379c0268426b3be8d7359773196930974cef
+  RNVectorIcons: 208e7e1507e3bc800619caf1c2748ad6b6b68188
   Yoga: 15a7ea18cce3efdfd8d218bc8b94273bec0a4dda
 
 PODFILE CHECKSUM: fb2043f24a749b5bc5d0b985dd945cf7b1736633
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1
