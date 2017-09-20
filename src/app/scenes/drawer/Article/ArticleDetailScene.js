@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, Button, Platform, Dimensions, BackHandler, ToastAndroid, Image, ScrollView } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
+import StarRating from 'react-native-star-rating';
 
 
 const { width, height } = Dimensions.get('window')
@@ -33,6 +34,15 @@ export default class ArticleDetailScene extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    this.state = {
+      starCount: 3.5
+    }
+  }
+
+  onStarRatingPress(rating) {
+    this.setState({
+      starCount: rating
+    });
   }
 
   componentWillMount() {
@@ -48,6 +58,15 @@ export default class ArticleDetailScene extends Component {
         <Text style={styles.titile}>{articleAitle}</Text>
         <Image resizeMode={'cover'} style={{width,height: width}} source={uri}/>
         <Text style={styles.text}>{ content }</Text>
+        <View style={{alignSelf: 'center'}}>
+          <StarRating
+            disabled={false}
+            maxStars={5}
+            rating={this.state.starCount}
+            selectedStar={(rating) => this.onStarRatingPress(rating)}
+            starColor={'#d63768'}
+          />
+        </View>
       </ScrollView>
     )
   }
