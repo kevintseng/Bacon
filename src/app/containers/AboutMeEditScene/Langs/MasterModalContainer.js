@@ -128,7 +128,7 @@ export default class MasterModalContainer extends Component {
               containerStyle={{backgroundColor: 'transparent',borderWidth: 0}}
               textStyle={styles.option}
               center
-              title='中等'
+              title='普通'
               checked={this.state.b}
               onPress={ this.onPressB }
             />
