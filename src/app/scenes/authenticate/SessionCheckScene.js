@@ -266,12 +266,12 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setAllArticlesStars(snap.val().stars || { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 })
           // meetCute config
           this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)
-          this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 99)
+          this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 50)
           this.MeetCuteStore.setMeetCuteRadar(snap.val().meetCuteRadar)
           this.MeetCuteStore.setMeetCuteThreePhotos(snap.val().meetCuteThreePhotos)
           // meetChance config
           this.MeetChanceStore.setMeetChanceMinAge(snap.val().meetChanceMinAge || 18)
-          this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 99)
+          this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 50)
           this.MeetChanceStore.setMeetChanceRadar(snap.val().meetChanceRadar)
           this.MeetChanceStore.setMeetChanceOfflineMember(snap.val().meetCuteOfflineMember)
         } else {
