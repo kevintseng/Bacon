@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@expo/react-native-action-sheet@cribspot/react-native-action-sheet#b422c54f26d30b9e85eb14a882ea9cec38600730":
+"@expo/react-native-action-sheet@github:cribspot/react-native-action-sheet#b422c54f26d30b9e85eb14a882ea9cec38600730":
   version "1.0.0"
   resolved "https://codeload.github.com/cribspot/react-native-action-sheet/tar.gz/b422c54f26d30b9e85eb14a882ea9cec38600730"
   dependencies:
@@ -3811,8 +3811,8 @@ react-native-fast-image@1.0.0:
     prop-types "^15.5.10"
 
 react-native-firebase@^2.0.4:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-2.2.1.tgz#7f22245eba951cce4b72e4653170d59004c9b561"
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-2.2.2.tgz#9a21129601950dfcd5b90650011a5add8a54b958"
   dependencies:
     bows "^1.6.0"
     prop-types "^15.5.10"
@@ -3870,7 +3870,7 @@ react-native-invertible-scroll-view@1.0.0:
     react-clone-referenced-element "^1.0.1"
     react-native-scrollable-mixin "^1.0.1"
 
-react-native-lightbox@oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875:
+"react-native-lightbox@github:oblador/react-native-lightbox#c84a8543d4511fe6a44c3d7820747c9c1bddd875":
   version "0.6.0"
   resolved "https://codeload.github.com/oblador/react-native-lightbox/tar.gz/c84a8543d4511fe6a44c3d7820747c9c1bddd875"
   dependencies:
