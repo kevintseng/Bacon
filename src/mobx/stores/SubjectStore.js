@@ -35,6 +35,7 @@ export default class SubjectStore {
   @observable radar
   @observable latitude
   @observable longitude
+  @observable stars
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -139,6 +140,8 @@ export default class SubjectStore {
       3: false,
       4: false
     }
+    //
+    this.stars = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
   }
 
   @action setUid = uid => {
@@ -337,6 +340,14 @@ export default class SubjectStore {
 
   @action setConvVisit = (uid, boolean) => {
     this.conversations[uid].visit = boolean
+  }
+
+  @action setAllArticlesStars = stars => {
+    this.stars = stars
+  }
+
+  @action setStars = (id,rating) => {
+    this.stars[id] = rating
   }
 
   // task

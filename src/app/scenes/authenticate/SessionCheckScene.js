@@ -262,6 +262,8 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
           this.SubjectStore.setHideVister(snap.val().hideVister || false)
           this.SubjectStore.setHideMessage(snap.val().hideMessage || false)
+          // stars
+          this.SubjectStore.setAllArticlesStars(snap.val().stars || { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 })
           // meetCute config
           this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)
           this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 99)
