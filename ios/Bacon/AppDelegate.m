@@ -11,6 +11,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @import GooglePlaces;
 @import GoogleMaps;

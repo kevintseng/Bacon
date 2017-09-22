@@ -6,7 +6,6 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "ipad": "react-native run-ios --simulator 'iPad Air'",
     "reset": "sh ./reset.sh",
-    "android-linux": "react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
     "test": "jest"
   },
   "rnpm": {
@@ -70,8 +69,7 @@
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.0.1",
-    "eslint-plugin-react": "^7.1.0",
-    "react-devtools": "^2.5.0"
+    "eslint-plugin-react": "^7.1.0"
   },
   "jest": {
     "preset": "react-native"
