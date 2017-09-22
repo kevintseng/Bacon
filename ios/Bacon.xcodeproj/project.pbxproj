@@ -496,7 +496,7 @@
 		CADB26B750C34D99A8281901 /* NotoSansUI-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansUI-Regular.ttf"; path = "../src/fonts/NotoSansUI-Regular.ttf"; sourceTree = "<group>"; };
 		D336612299704A0D9AA2EC14 /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSans-Regular.ttf"; path = "../src/fonts/NotoSans-Regular.ttf"; sourceTree = "<group>"; };
 		D47F9EEA9D8B4F5DA6AB1383 /* NotoSansUI-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansUI-BoldItalic.ttf"; path = "../src/fonts/NotoSansUI-BoldItalic.ttf"; sourceTree = "<group>"; };
-		D9B953B90FC345CE8E29FEF4 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		D9B953B90FC345CE8E29FEF4 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		D9E3688B73FBF4A9E88353A9 /* Pods-BaconTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaconTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BaconTests/Pods-BaconTests.release.xcconfig"; sourceTree = "<group>"; };
 		DEED7BFC00F2423992655486 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		E1CFCDE1A01840FF8F7EB227 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
@@ -813,6 +813,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		81E5776C1F74DA42005635EE /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				E1CFCDE1A01840FF8F7EB227 /* libRNImagePicker.a */,
+				B2EE3BE87F0F4C3699CD218E /* libRCTImageResizer.a */,
+				27A3E4ED64BB41A4BB1BF0E6 /* libRNFirebase.a */,
+				022C87AE48D94844A55BA216 /* libBVLinearGradient.a */,
+				1ACB35D3544D4420B7554AAF /* libRNVectorIcons.a */,
+				C35C57CC1B194418ADBD90AB /* libRNGooglePlaces.a */,
+				FC8BE2FE299548E2A699868C /* libFastImage.a */,
+				5C8BE199B88F4BA3AC0FCADE /* libRNSVG.a */,
+				F14FE4A701C047DAB00DDB41 /* libRNExitApp.a */,
+				B478BF3FC30E4929B32CCF04 /* libRNFS.a */,
+				5818299020DF408DB9C68A3D /* libInAppUtils.a */,
+				1385B4197050463991BFEE40 /* libRCTOrientation.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -863,6 +882,7 @@
 				FFF1DAE248BA42CC908EBE34 /* Resources */,
 				C419994BFCB1504C39F1B073 /* Frameworks */,
 				97FC427789385D74512A5C4B /* Pods */,
+				81E5776C1F74DA42005635EE /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
