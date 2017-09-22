@@ -10,8 +10,7 @@ target 'Bacon' do
   project 'Bacon.xcodeproj'
 
   platform :ios, '8.0'
-  pod 'SDWebImage', '~> 4.0'
-  pod 'SDWebImage/WebP'
+
   pod 'Yoga', path: '../node_modules/react-native/ReactCommon/yoga'
   pod 'React', path: '../node_modules/react-native', subspecs: [
     'BatchedBridge', # Required For React Native 0.45.0+
@@ -20,9 +19,11 @@ target 'Bacon' do
     'DevSupport'
   ]
 
+  pod 'SDWebImage', '~> 4.0'
+  pod 'SDWebImage/WebP'
+
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-  # pod 'RNVectorIcons'
 
   pod 'GooglePlaces'
   pod 'GoogleMaps'
@@ -38,7 +39,6 @@ target 'Bacon' do
   pod 'Firebase/Storage'
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
-  # pod 'RNFirebase'
 
   target 'Bacon-tvOSTests' do
     inherit! :search_paths
