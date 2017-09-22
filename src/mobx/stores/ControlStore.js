@@ -35,6 +35,8 @@ export default class ControlStore {
   @observable LineModalAvatar
   //
   @observable langAdvanced
+  //
+  @observable lang
 
   constructor() {
     this.initialize()
@@ -75,6 +77,8 @@ export default class ControlStore {
     this.LineModalAvatar = null
     // 
     this.langAdvanced = false
+    //
+    this.lang = null
   }
 
   @action setLineModalUid = str => {
@@ -207,5 +211,9 @@ export default class ControlStore {
 
   @action setlangAdvanced = () => {
     this.langAdvanced = !this.langAdvanced
+  }
+
+  @action setlang = lang => {
+    this.lang = lang 
   }
 }

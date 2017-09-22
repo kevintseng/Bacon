@@ -64,7 +64,7 @@ export default class SubjectStore {
   // Object to String
 
   @computed get languagesToString() {
-    return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
+    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join()
     // { 中文: true, 英文: true } -> 中文,英文
   }
 
@@ -355,6 +355,25 @@ export default class SubjectStore {
 
   @action setTask4 = boolean => {
     this.tasks[4] = boolean
+  }
+
+  masterLevel = (check) => {
+    switch(check) {
+        case 0:
+            return ''
+            break;
+        case 1:
+            return '(一般)'
+            break;
+        case 2:
+            return '(普通)'
+            break;
+        case 3:
+            return '(精通)'
+            break;
+        default:
+            return ''
+    }     
   }
 
 }

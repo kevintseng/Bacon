@@ -15,8 +15,9 @@ export default class LangListContainer extends Component {
   }
 
   onPressCheckBox = item => {
+    this.ControlStore.setlang(item.key)
     this.ControlStore.setlangAdvanced()
-    this.SubjectEditStore.switchLanguages(item.key)  
+    //this.SubjectEditStore.switchLanguages(item.key)  
   }
 
   render() {

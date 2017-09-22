@@ -20,8 +20,8 @@ export default class SubjectEditStore {
 
 
   @computed get languagesToFlatList() {
-    return Object.keys(this.languages).map((key,index) => ({ key: key, check: this.languages[key] }))
-    // { 中文: true } -> [{key: 中文, check: true}]
+    return Object.keys(this.languages).map((key,index) => ({ key: key, check: this.languages[key], master: '精通' }))
+    // { 中文: true } -> [{key: 中文, check: 0/1/2/3}]
   }
 
   @computed get hobbiesToFlatList() {
@@ -51,6 +51,23 @@ export default class SubjectEditStore {
 
   @action switchLanguages = key => {
     this.languages[key] = !this.languages[key]
+  }
+
+
+  @action disableLanguages = key => {
+    this.languages[key] = 0
+  }
+  
+  @action oneLevelLanguages = key => {
+    this.languages[key] = 1
+  }
+
+  @action twoLevelLanguages = key => {
+    this.languages[key] = 2
+  }
+
+  @action threeLevelLanguages = key => {
+    this.languages[key] = 3
   }
 
   @action setHobbies = object => {
