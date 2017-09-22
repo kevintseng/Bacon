@@ -34,15 +34,11 @@ export default class ArticleDetailScene extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
-    this.state = {
-      starCount: 3.5
-    }
   }
 
-  onStarRatingPress(rating) {
-    this.setState({
-      starCount: rating
-    });
+  onStarRatingPress(id,rating) {
+    this.SubjectStore.setStars(id,rating)
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/stars').set(this.SubjectStore.stars)
   }
 
   componentWillMount() {
@@ -51,7 +47,7 @@ export default class ArticleDetailScene extends Component {
 
   render() {
 
-    const { articleAitle, uri, content } = this.props
+    const { id, articleAitle, uri, content } = this.props
 
     return (
       <ScrollView>
@@ -62,8 +58,8 @@ export default class ArticleDetailScene extends Component {
           <StarRating
             disabled={false}
             maxStars={5}
-            rating={this.state.starCount}
-            selectedStar={(rating) => this.onStarRatingPress(rating)}
+            rating={this.SubjectStore.stars[id]}
+            selectedStar={ rating => this.onStarRatingPress(id,rating) }
             starColor={'#d63768'}
           />
         </View>
