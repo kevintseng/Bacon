@@ -74,7 +74,7 @@ export default class MeetCuteStore {
     this.longitude = null
     // config
     this.meetCuteMinAge = 18
-    this.meetCuteMaxAge = 99
+    this.meetCuteMaxAge = 50
     this.meetCuteRadar = false
     this.meetCuteThreePhotos = false
     this.imageLoadingCount = 0
@@ -119,7 +119,7 @@ export default class MeetCuteStore {
         this.clean = false
         //this.preyList = this.pool.map(ele => ({}))
         this.preyList = this.preyList.filter(ele => 
-          ( !(preyListHistory.includes(ele.uid)) && !(matchList.includes(ele.uid)) && ele.birthday && ((calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= this.meetCuteMaxAge)) )
+          ( !(preyListHistory.includes(ele.uid)) && !(matchList.includes(ele.uid)) && ele.birthday && ((calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= (this.meetCuteMaxAge === 50 ? 99 : this.meetCuteMaxAge) )) )
         ) // 排除 45 天 // 過濾年紀
         this.shuffle(this.preyList)
         if (this.preyList.length > 0) {
@@ -326,10 +326,10 @@ export default class MeetCuteStore {
 
   getDistance = (latitude,longitude) => {
     if (this.latitude && this.longitude && latitude && longitude) {
-      return geolib.getDistance(
+      return (geolib.getDistance(
         {latitude: this.latitude, longitude: this.longitude},
         {latitude: latitude, longitude: longitude}
-      )/1000
+      )/1000).toFixed(1)
     } else {
       return '?'
     }  

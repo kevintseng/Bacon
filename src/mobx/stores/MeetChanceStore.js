@@ -79,7 +79,7 @@ export default class MeetChanceStore {
     this.longitude = null
     // config
     this.meetChanceMinAge = 18
-    this.meetChanceMaxAge = 99
+    this.meetChanceMaxAge = 50
     this.meetChanceRadar = false
     //
     this.fetchPreyQuery
@@ -128,7 +128,7 @@ export default class MeetChanceStore {
   @action setRealPreys = () => {
     const preysPromises = this.preyList.map((ele,index) => (
       this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
-        if (snap.val() && !(snap.val().hideMeetChance) && !(snap.val().deleted) && snap.val().birthday && ((calculateAge(snap.val().birthday) >= this.meetChanceMinAge) && (calculateAge(snap.val().birthday) <= this.meetChanceMaxAge)) && this.checkOnline(snap.val().online)) {
+        if (snap.val() && !(snap.val().hideMeetChance) && !(snap.val().deleted) && snap.val().birthday && ((calculateAge(snap.val().birthday) >= this.meetChanceMinAge) && (calculateAge(snap.val().birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(snap.val().online)) {
           const popularityDen = snap.val().popularityDen || 0
           this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(popularityDen + 1)
           return({
@@ -255,10 +255,10 @@ export default class MeetChanceStore {
 
   getDistance = (latitude,longitude) => {
     if (this.latitude && this.longitude && latitude && longitude) {
-      return geolib.getDistance(
+      return (geolib.getDistance(
         {latitude: this.latitude, longitude: this.longitude},
         {latitude: latitude, longitude: longitude}
-      )/1000
+      )/1000).toFixed(1)
     } else {
       return '?'
     }  
