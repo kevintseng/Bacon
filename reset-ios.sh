@@ -5,6 +5,9 @@ rm -rf node_modules/
 rm -rf package-lock.json
 rm -rf yarn.lock
 npm cache clean --force
-yarn cache clean
-yarn install
-npm start -- --reset-cache
+rm -rf ios/build/* && rm -rf ~/.rncache/*
+npm install
+react-native run-ios
+#yarn cache clean
+#yarn install
+#npm start -- --reset-cache

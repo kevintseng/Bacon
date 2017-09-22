@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -45,7 +46,6 @@
 		346BF99F1F27ACB400C7E22D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 346BF99E1F27ACB400C7E22D /* GoogleService-Info.plist */; };
 		3BB69BC08AA44609A4803F19 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2EE3BE87F0F4C3699CD218E /* libRCTImageResizer.a */; };
 		3ECD7006242D4CC1A52F27FE /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ACB35D3544D4420B7554AAF /* libRNVectorIcons.a */; };
-		459C11C81F558597001A66BF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB61A68108700A75B9A /* Info.plist */; };
 		459C11C91F558598001A66BF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB61A68108700A75B9A /* Info.plist */; };
 		459C11CD1F558F34001A66BF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 459C11CC1F558F34001A66BF /* StoreKit.framework */; };
 		47B935412EB84C40919D0839 /* libInAppUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5818299020DF408DB9C68A3D /* libInAppUtils.a */; };
@@ -67,7 +67,6 @@
 		81E5779C1F74DCD1005635EE /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8647EE78E6F946F79A480485 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8940794891684D83BC275067 /* Ionicons.ttf */; };
-		8743DEEF22644E92B36586AE /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC8BE2FE299548E2A699868C /* libFastImage.a */; };
 		9B1108669315435F8DA027F6 /* NotoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CFE469465A54439833C82CA /* NotoSans-Bold.ttf */; };
 		9EC53051B16343B282A5E5BF /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 022C87AE48D94844A55BA216 /* libBVLinearGradient.a */; };
 		A34793E286C04E1D9C2EFF96 /* NotoSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6CFAE5D21C74C5D86C7A5E1 /* NotoSans-Italic.ttf */; };
@@ -538,7 +537,6 @@
 				9EC53051B16343B282A5E5BF /* libBVLinearGradient.a in Frameworks */,
 				3ECD7006242D4CC1A52F27FE /* libRNVectorIcons.a in Frameworks */,
 				773BCF9F597342C2BFCE888F /* libRNGooglePlaces.a in Frameworks */,
-				8743DEEF22644E92B36586AE /* libFastImage.a in Frameworks */,
 				CDA805390F524CB5B28E46ED /* libRNSVG.a in Frameworks */,
 				03294771D5B644F5A58DB2C5 /* libRNExitApp.a in Frameworks */,
 				6774D4A084F041F48BE2D40B /* libRNFS.a in Frameworks */,
@@ -1039,7 +1037,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -1552,7 +1550,6 @@
 				20321FB6F1264BD4A2C5AFD4 /* NotoSans-Regular.ttf in Resources */,
 				619C05EAF3E940B3B2C2FBB9 /* NotoSansUI-Bold.ttf in Resources */,
 				4D398B3B15294019A39CC1CB /* NotoSansUI-BoldItalic.ttf in Resources */,
-				459C11C81F558597001A66BF /* Info.plist in Resources */,
 				346BF99F1F27ACB400C7E22D /* GoogleService-Info.plist in Resources */,
 				D75B9A4F1FF643178BA6A3B9 /* NotoSansUI-Italic.ttf in Resources */,
 				6E04C7E022344183B79597CB /* NotoSansUI-Regular.ttf in Resources */,
@@ -1879,6 +1876,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bacon.app/Bacon";
 			};
@@ -1919,6 +1917,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bacon.app/Bacon";
 			};
@@ -1954,6 +1953,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kayming.ios.bacon;
 				PRODUCT_NAME = Bacon;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1988,6 +1988,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kayming.ios.bacon;
 				PRODUCT_NAME = Bacon;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2155,13 +2156,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2170,6 +2179,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -2197,13 +2207,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2211,6 +2229,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
