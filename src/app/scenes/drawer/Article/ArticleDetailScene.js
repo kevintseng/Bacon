@@ -24,6 +24,9 @@ const styles = {
     fontFamily: 'NotoSans', 
     backgroundColor: 'transparent',
     padding: 10
+  },
+  articleSource: {
+    alignItems: 'flex-end'    
   }
 }
 
@@ -44,23 +47,25 @@ export default class ArticleDetailScene extends Component {
   componentWillMount() {
   }
 
-  goToLink = () => {
-    Linking.openURL('https://github.com/').catch(err => console.error('An error occurred', err));
+  goToArticleSource = () => {
+    Linking.openURL(this.props.articleSource).catch(err => console.error('An error occurred', err))
   }
 
 
   render() {
 
-    const { id, articleAitle, uri, content } = this.props
+    const { id, articleAitle, uri, content, articleSource } = this.props
 
     return (
       <ScrollView>
         <Text style={styles.titile}>{articleAitle}</Text>
         <Image resizeMode={'cover'} style={{width,height: width}} source={uri}/>
         <Text style={styles.text}>{ content }</Text>
-        <TouchableOpacity onPress={this.goToLink}>
-          <Text>連結</Text>
-        </TouchableOpacity>
+        { articleSource &&
+          <TouchableOpacity style={styles.articleSource} onPress={this.goToArticleSource}>
+            <Text style={styles.text}>查看原始文章</Text>
+          </TouchableOpacity>
+        }
         <Text style={{textAlign: 'center'}}>我對這篇文章的評價</Text>
         <View style={{alignSelf: 'center'}}>
           <StarRating
