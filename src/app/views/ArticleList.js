@@ -40,10 +40,20 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingRight: 5
+  },
+  tags: {
+    flexDirection: 'row'
   }
 }
 
-const ArticleList = ({source,title,onPress,avatar}) => {
+const ArticleList = ({source,title,onPress,avatar,tags}) => {
+
+  const showTags = () => ( 
+    tags.map( tag => (
+      <BaconBadgeYes key={tag} text={tag}/>
+    ))
+  )
+
 
   return(
     <TouchableOpacity style={styles.article} onPress={ onPress }>
@@ -51,7 +61,11 @@ const ArticleList = ({source,title,onPress,avatar}) => {
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.bottom}>
-          <BaconBadgeYes text='熱門'/>
+          <View style={styles.tags}>
+          {
+            showTags()
+          }
+          </View>
           <Cookie local size={30} avatar={avatar} name={'艾姬'}/>
         </View>
       </View>
