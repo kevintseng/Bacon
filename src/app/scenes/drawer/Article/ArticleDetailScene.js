@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Button, Platform, Dimensions, BackHandler, ToastAndroid, Image, ScrollView } from 'react-native'
+import { View, Text, Button, Platform, Dimensions, BackHandler, ToastAndroid, Image, ScrollView, Linking, TouchableOpacity } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import StarRating from 'react-native-star-rating';
@@ -44,6 +44,10 @@ export default class ArticleDetailScene extends Component {
   componentWillMount() {
   }
 
+  goToLink = () => {
+    Linking.openURL('https://github.com/').catch(err => console.error('An error occurred', err));
+  }
+
 
   render() {
 
@@ -54,6 +58,10 @@ export default class ArticleDetailScene extends Component {
         <Text style={styles.titile}>{articleAitle}</Text>
         <Image resizeMode={'cover'} style={{width,height: width}} source={uri}/>
         <Text style={styles.text}>{ content }</Text>
+        <TouchableOpacity onPress={this.goToLink}>
+          <Text>連結</Text>
+        </TouchableOpacity>
+        <Text style={{textAlign: 'center'}}>我對這篇文章的評價</Text>
         <View style={{alignSelf: 'center'}}>
           <StarRating
             disabled={false}
