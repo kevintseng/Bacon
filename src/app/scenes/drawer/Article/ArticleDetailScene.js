@@ -51,10 +51,18 @@ export default class ArticleDetailScene extends Component {
     Linking.openURL(this.props.articleSource).catch(err => console.error('An error occurred', err))
   }
 
+  goToStageSource = () => {
+    Linking.openURL(this.props.stageSource).catch(err => console.error('An error occurred', err))
+  }
+
+  goToLink = () => {
+    Linking.openURL('http://www.pcstore.com.tw/pchome24h/M16656421.html').catch(err => console.error('An error occurred', err))
+  }
+
 
   render() {
 
-    const { id, articleAitle, uri, content, articleSource } = this.props
+    const { id, articleAitle, uri, content, articleSource, stageSource, stageName, stageTag } = this.props
 
     return (
       <ScrollView>
@@ -62,11 +70,21 @@ export default class ArticleDetailScene extends Component {
         <Image resizeMode={'cover'} style={{width,height: width}} source={uri}/>
         <Text style={styles.text}>{ content }</Text>
         { articleSource &&
-          <TouchableOpacity style={styles.articleSource} onPress={this.goToArticleSource}>
-            <Text style={styles.text}>查看原始文章</Text>
+          <TouchableOpacity onPress={this.goToArticleSource}>
+            <Text style={[styles.text,{textAlign: 'right'}]}>查看原始文章</Text>
           </TouchableOpacity>
         }
-        <Text style={{textAlign: 'center'}}>我對這篇文章的評價</Text>
+        <Text style={[styles.text,{textAlign: 'right'}]}>{ stageTag }</Text>
+        { stageSource &&
+          <TouchableOpacity onPress={this.goToStageSource}>
+            <Text style={[styles.text,{textAlign: 'right'}]}>{ stageName }</Text>
+          </TouchableOpacity>
+        }
+        <Text style={[styles.text,{textAlign: 'right'}]}>PChome 24小時購物</Text>
+        <TouchableOpacity onPress={this.goToLink}>
+          <Text style={[styles.text,{textAlign: 'right'}]}>越做越愛：男女必修性愛學分 (限)</Text>
+        </TouchableOpacity>
+        <Text style={[styles.text,{textAlign: 'center'}]}>我對這篇文章的評價</Text>
         <View style={{alignSelf: 'center'}}>
           <StarRating
             disabled={false}
