@@ -37,8 +37,8 @@ export default class ArticleListScene extends Component {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
-  goToArticleDetail = (key,title,uri,content,source) => {
-    Actions.ArticleDetail({id: key, articleAitle: title, uri: uri, content: content, articleSource: source})
+  goToArticleDetail = (key,title,uri,content,source,stageSource,stageName,stageTag) => {
+    Actions.ArticleDetail({id: key, articleAitle: title, uri: uri, content: content, articleSource: source, stageSource: stageSource, stageName: stageName, stageTag: stageTag})
   }
 
   render() {
@@ -54,7 +54,7 @@ export default class ArticleListScene extends Component {
               source={item.uri}
               title={item.title}
               tags={item.tags}
-              onPress={ () => { this.goToArticleDetail(item.key, item.title, item.uri, item.content,item.source) } }
+              onPress={ () => { this.goToArticleDetail(item.key, item.title, item.uri, item.content,item.source,item.stageSource,item.stageName,item.stageTag) } }
               />
 
            }
