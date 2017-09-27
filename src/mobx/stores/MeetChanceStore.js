@@ -130,7 +130,9 @@ export default class MeetChanceStore {
       this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
         if (snap.val() && !(snap.val().hideMeetChance) && !(snap.val().deleted) && snap.val().birthday && ((calculateAge(snap.val().birthday) >= this.meetChanceMinAge) && (calculateAge(snap.val().birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(snap.val().online)) {
           const popularityDen = snap.val().popularityDen || 0
+          const popularityNum = snap.val().popularityNum || 0
           this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(popularityDen + 1)
+          this.firebase.database().ref('users/' + ele.uid + '/popularity').set(popularityNum/(popularityDen + 1))
           return({
             key: ele.uid,
             nickname: snap.val().nickname,
@@ -185,8 +187,10 @@ export default class MeetChanceStore {
     this.fetchPreyQuery = this.firebase.database().ref('users/' + this.uid)
     this.fetchPreyQuery.once('value').then(snap => {
       if (snap.val()) {
+        const popularityDen = snap.val().popularityDen || 0
         const popularityNum = snap.val().popularityNum || 0
         this.firebase.database().ref('users/' + this.uid + '/popularityNum').set(popularityNum + 1)
+        this.firebase.database().ref('users/' + this.uid + '/popularity').set((popularityNum + 1)/popularityDen)
         runInAction(() => {
           this.uid = this.uid
           this.avatar = snap.val().avatar
