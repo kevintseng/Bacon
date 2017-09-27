@@ -476,7 +476,16 @@ export default class SessionCheckScene extends Component {
 
   setOffline() {
     this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(false)
-    this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove().catch(err => { console.log(err) })
+    // 計算上線時間
+    this.firebase.database().ref('/users/' + this.SubjectStore.uid).once('value',snap => {
+      const lastOnlineTime = snap.val().onlineTime || 0
+      this.firebase.database().ref('/online/' + this.SubjectStore.uid).once('value',snap => {
+        const lastOnline = snap.val().lastOnline || 0
+        const onlineTime = Math.floor(Date.now() / 1000) - lastOnline
+        this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineTime').set(lastOnlineTime + onlineTime)
+        this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove().catch(err => { console.log(err) })
+      })
+    })
   }
 
   genderToString = () => (

@@ -17,8 +17,16 @@ export default class LoginOutContainer extends Component {
     this.firebase.database().ref('/online/' + this.SubjectStore.uid).once('value',snap => {
       const lastOnline = snap.val().lastOnline
       const location = snap.val().location
-      this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove()
       this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(false)
+      this.firebase.database().ref('/users/' + this.SubjectStore.uid).once('value',snap => {
+        const lastOnlineTime = snap.val().onlineTime || 0
+        this.firebase.database().ref('/online/' + this.SubjectStore.uid).once('value',snap => {
+          const lastOnline = snap.val().lastOnline || 0
+          const onlineTime = Math.floor(Date.now() / 1000) - lastOnline
+          this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineTime').set(lastOnlineTime + onlineTime)
+          this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove().catch(err => { console.log(err) })
+        })
+      })
       .then(() => {
         this.firebase.auth().signOut().catch( err => {
           this.firebase.database().ref('/online/' + this.SubjectStore.uid).set({
@@ -26,6 +34,10 @@ export default class LoginOutContainer extends Component {
             location: location
           })
           this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(true)
+          this.firebase.database().ref('/users/' + this.SubjectStore.uid).once('value',snap => {
+            const lastOnlineTime = snap.val().onlineTime || 0
+            this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineTime').set(lastOnlineTime - 1000)
+          })
           console.log(err)
           alert('登出發生錯誤')
         })
