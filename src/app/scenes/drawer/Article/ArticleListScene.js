@@ -50,6 +50,7 @@ export default class ArticleListScene extends Component {
           numColumns={1}
           renderItem={({item}) =>
             <ArticleList 
+              author={item.author}
               avatar={item.avatar}
               source={item.uri}
               title={item.title}

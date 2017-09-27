@@ -46,7 +46,7 @@ const styles = {
   }
 }
 
-const ArticleList = ({source,title,onPress,avatar,tags}) => {
+const ArticleList = ({source,title,onPress,avatar,tags,author}) => {
 
   const showTags = () => ( 
     tags.map( tag => (
@@ -66,7 +66,7 @@ const ArticleList = ({source,title,onPress,avatar,tags}) => {
             showTags()
           }
           </View>
-          <Cookie local size={30} avatar={avatar} name={'艾姬'}/>
+          <Cookie local size={30} avatar={avatar} name={author}/>
         </View>
       </View>
     </TouchableOpacity>

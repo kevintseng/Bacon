@@ -97,7 +97,7 @@ export default class ArticleDetailScene extends Component {
           </TouchableOpacity>
         </View>
         <Text style={[styles.text,{textAlign: 'center'}]}>我對這篇文章的評價</Text>
-        <View style={{alignSelf: 'center'}}>
+        <View style={{alignSelf: 'center',paddingBottom: 10}}>
           <StarRating
             disabled={false}
             maxStars={5}
