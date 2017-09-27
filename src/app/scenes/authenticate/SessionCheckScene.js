@@ -407,7 +407,7 @@ export default class SessionCheckScene extends Component {
   reverseString = str => {
     return str.split("").reverse().join("")
   }
-
+/*
   seekMeetQs = sexualOrientation => {
     switch (sexualOrientation) {
       case 'msf':
@@ -424,7 +424,7 @@ export default class SessionCheckScene extends Component {
         break
     }
   }
-
+*/
   seekMeetQs = sexualOrientation => {
     switch (sexualOrientation) {
       case 'msf':

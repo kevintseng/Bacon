@@ -14,6 +14,8 @@ export default class RadarContainer extends Component {
   }
 
   componentWillMount() {
+    // 把所有的直拉出來做PR Rank
+    /*
     this.fetchRadar = this.firebase.database().ref('users/' + this.SubjectStore.uid)
     this.fetchRadar.once('value').then(snap => {
       if (snap.val()) {
@@ -38,16 +40,30 @@ export default class RadarContainer extends Component {
         alert('錯誤')
       }
     })
+    */
   }
 
   render() {
     return(
       <BaconRadar
-        data={this.SubjectStore.radar}/>
+        activitynessPR={0.53}
+        friendlinessPR={0.67}
+        favorabilityPR={0.77}
+        popularityPR={0.91}
+        attractivePR={0.82}
+        //data={this.SubjectStore.radar}
+      />
     )
   }
 }
 
 /*
+
+
+//const activityness = 0.53
+//const friendliness = 0.67
+//const favorability = 0.77
+//const popularity = 0.91
+//const attractive = 0.82
 
     */
