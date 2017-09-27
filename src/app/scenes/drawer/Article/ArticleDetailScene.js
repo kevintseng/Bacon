@@ -27,6 +27,14 @@ const styles = {
   },
   articleSource: {
     alignItems: 'flex-end'    
+  },
+  subtitle: {
+    color: '#606060',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans', 
+    backgroundColor: 'transparent',
+    padding: 10,
+    fontWeight: '500'   
   }
 }
 
@@ -74,16 +82,20 @@ export default class ArticleDetailScene extends Component {
             <Text style={[styles.text,{textAlign: 'right'}]}>查看原始文章</Text>
           </TouchableOpacity>
         }
-        <Text style={[styles.text,{textAlign: 'right'}]}>{ stageTag }</Text>
         { stageSource &&
-          <TouchableOpacity onPress={this.goToStageSource}>
-            <Text style={[styles.text,{textAlign: 'right'}]}>{ stageName }</Text>
-          </TouchableOpacity>
+          <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
+            <Text style={[styles.subtitle]}>{ stageTag }</Text>
+            <TouchableOpacity onPress={this.goToStageSource}>
+              <Text style={[styles.text]}>{ stageName }</Text>
+            </TouchableOpacity>
+          </View>
         }
-        <Text style={[styles.text,{textAlign: 'right'}]}>PChome 24小時購物</Text>
-        <TouchableOpacity onPress={this.goToLink}>
-          <Text style={[styles.text,{textAlign: 'right'}]}>越做越愛：男女必修性愛學分 (限)</Text>
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
+          <Text style={[styles.subtitle]}>PChome</Text>
+          <TouchableOpacity onPress={this.goToLink}>
+            <Text style={[styles.text]}>醉愛深夜食堂 (限)</Text>
+          </TouchableOpacity>
+        </View>
         <Text style={[styles.text,{textAlign: 'center'}]}>我對這篇文章的評價</Text>
         <View style={{alignSelf: 'center'}}>
           <StarRating
