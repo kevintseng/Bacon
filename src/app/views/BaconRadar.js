@@ -9,11 +9,11 @@ const radius = width/4
 
 const radius_inner = width/8
 
-const activityness = 0.53
-const friendliness = 0.67
-const favorability = 0.77
-const popularity = 0.91
-const attractive = 0.82
+//const activitynessPR = 0.53
+//const friendlinessPR = 0.67
+//const favorabilityPR = 0.77
+//const popularityPR = 0.91
+//const attractivePR = 0.82
 
 const linearGradient = new ART.LinearGradient({
   "0": "#f4a764",
@@ -31,14 +31,14 @@ const circle_inner = ART.Path()
   .arc(0, radius_inner * -2, radius_inner)
 
 
-const BaconRadar = ({ data }) => {
+const BaconRadar = ({ activitynessPR, friendlinessPR, favorabilityPR, popularityPR, attractivePR}) => {
 
 const star = new Path()
-  .moveTo(width/2 - radius*activityness,width/3.8)
-  .lineTo(width/2,width/3.8 + radius*friendliness)
-  .lineTo(width/2 + radius*favorability,width/3.8)
-  .lineTo(width/2 + radius*popularity*0.52532198881,width/3.8 - radius*popularity*0.85090352453)
-  .lineTo(width/2 - radius*attractive*0.52532198881,width/3.8 - radius*attractive*0.85090352453)
+  .moveTo(width/2 - radius*activitynessPR,width/3.8)
+  .lineTo(width/2,width/3.8 + radius*friendlinessPR)
+  .lineTo(width/2 + radius*favorabilityPR,width/3.8)
+  .lineTo(width/2 + radius*popularityPR*0.52532198881,width/3.8 - radius*popularityPR*0.85090352453)
+  .lineTo(width/2 - radius*attractivePR*0.52532198881,width/3.8 - radius*attractivePR*0.85090352453)
   .close()
 
   return(
