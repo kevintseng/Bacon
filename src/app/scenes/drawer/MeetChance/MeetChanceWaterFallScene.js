@@ -85,8 +85,7 @@ export default class MeetChanceWaterFallScene extends Component {
   render() {
     return(
     <View style={{flex:1, justifyContent: "flex-start", alignItems: "center"}}>
-      {
-        !this.MeetChanceStore.notFound &&
+
         <FlatList
           removeClippedSubviews
           data={ this.MeetChanceStore.preysToFlatList }
@@ -102,14 +101,19 @@ export default class MeetChanceWaterFallScene extends Component {
             {length: itemHight, offset: itemHight * index, index}
           )}
         />
-      }
+
+    </View>
+    )
+  }
+}
+
+/*
+      {
+        !this.MeetChanceStore.notFound &&
       {
         this.MeetChanceStore.notFound &&
         <View style={{ width: 250, marginTop: 200 }}>
           <Text style={styles.text}>抱歉, 您所在的位置搜尋不到任何對象</Text>
         </View>
       }
-    </View>
-    )
-  }
-}
+*/

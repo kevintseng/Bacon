@@ -34,11 +34,11 @@ const circle_inner = ART.Path()
 const BaconRadar = ({ activitynessPR, friendlinessPR, favorabilityPR, popularityPR, attractivePR}) => {
 
 const star = new Path()
-  .moveTo(width/2 - radius*activitynessPR,width/3.8)
-  .lineTo(width/2,width/3.8 + radius*friendlinessPR)
-  .lineTo(width/2 + radius*favorabilityPR,width/3.8)
-  .lineTo(width/2 + radius*popularityPR*0.52532198881,width/3.8 - radius*popularityPR*0.85090352453)
-  .lineTo(width/2 - radius*attractivePR*0.52532198881,width/3.8 - radius*attractivePR*0.85090352453)
+  .moveTo(width/2 - radius*(activitynessPR || 0),width/3.8)
+  .lineTo(width/2,width/3.8 + radius*(friendlinessPR || 0))
+  .lineTo(width/2 + radius*(favorabilityPR || 0 ),width/3.8)
+  .lineTo(width/2 + radius*(popularityPR || 0)*0.52532198881,width/3.8 - radius*(popularityPR || 0)*0.85090352453)
+  .lineTo(width/2 - radius*(attractivePR || 0)*0.52532198881,width/3.8 - radius*(attractivePR || 0)*0.85090352453)
   .close()
 
   return(
