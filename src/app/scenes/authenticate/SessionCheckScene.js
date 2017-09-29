@@ -258,6 +258,8 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setTask3(snap.val().task3)
           this.SubjectStore.setTask4(snap.val().task4)
           this.SubjectStore.setTask5(snap.val().task5)
+          this.SubjectStore.setTask6(snap.val().task6)
+          this.SubjectStore.setTask7(snap.val().task7)
           // hide
           this.SubjectStore.setHideMeetCute(snap.val().hideMeetCute || false)
           this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
@@ -472,6 +474,22 @@ export default class SessionCheckScene extends Component {
     this.firebase.database().ref('/online/' + this.SubjectStore.uid).set({
       lastOnline: Math.floor(Date.now() / 1000),
       location: 'Taipei, Taiwan'
+    }) 
+    // onlineDaysMonth
+    this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineDaysMonth').once('value',snap => {
+      const onlineDaysMonth = snap.val() || new Object
+      const time_now = new Date()
+      const this_month = time_now.getMonth() + 1 // getMonth 都會少一個月 時區問題？
+      const today = time_now.getFullYear() + '-' + this_month + '-' + time_now.getDate()
+      Object.keys(onlineDaysMonth).forEach(key => {
+        if (parseInt(key.split('-')[1]) !== this_month) {
+          delete onlineDaysMonth[key] // 清除不屬於這個月份的登入日期
+        }
+      })
+      onlineDaysMonth[today] = true
+      this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineDaysMonth').set(onlineDaysMonth)
+      this.SubjectStore.setOnlineDaysMonth(onlineDaysMonth)
+      //console.log(onlineDaysMonth)
     })
   }
 
