@@ -31,7 +31,7 @@ export default class TaskContainer extends Component {
     //Actions.AboutMeTab({type: 'reset'})
   }
 
-  takeEmailBonus = (taken) => {
+  takeEmailBonus = taken => {
     if (SubjectStore.emailVerified && !taken) {
       // 完成任務 並且沒領過
       this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + 20)
@@ -58,6 +58,15 @@ export default class TaskContainer extends Component {
         )
       }
     }
+  }
+
+  checkEmailBonus = taken => {
+    if (SubjectStore.emailVerified && !taken) {
+      // 完成任務 並且沒領過 符合條件可領
+      return true
+    } else {
+      return false
+    }   
   }
 
   takePhotoBonus = taken => {
@@ -89,6 +98,15 @@ export default class TaskContainer extends Component {
     }
   }
 
+  checkPhotoBonus = taken => {
+    if (SubjectStore.albumToFlatList.length >= 3 && !taken) {
+      // 完成任務 並且沒領過 符合條件可領
+      return true
+    } else {
+      return false
+    } 
+  }
+
   takeIntroduceBonus = (taken) => {
     if (SubjectStore.bio && !taken) {
       // 完成任務 並且沒領過
@@ -118,7 +136,16 @@ export default class TaskContainer extends Component {
     }
   }
 
-  takeHobitBonus = (taken) => {
+  checkIntroduceBonus = taken => {
+    if (SubjectStore.bio && !taken) {
+      // 完成任務 並且沒領過 符合條件可領
+      return true
+    } else {
+      return false
+    }     
+  }
+
+  takeHobitBonus = taken => {
     if (SubjectStore.hobbiesToFlatList.length > 0 && !taken) {
       // 完成任務 並且沒領過
       this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + 20)
@@ -147,6 +174,15 @@ export default class TaskContainer extends Component {
     }
   }
 
+  checkHobitBonus = taken => {
+    if (SubjectStore.hobbiesToFlatList.length > 0 && !taken) {
+      // 完成任務 並且沒領過 符合條件可領
+      return true
+    } else {
+      return false
+    }     
+  }
+
   takeBonus = (key,taken) => {
     switch (key)
     {
@@ -162,6 +198,28 @@ export default class TaskContainer extends Component {
     case '4':
       this.takeHobitBonus(taken)
       break
+    default:
+      alert('領取錯誤')
+      console.log(key)
+      break
+    }
+  }
+
+  conform = (key,taken) => {
+    switch (key)
+    {
+    case '1':
+      return this.checkEmailBonus(taken)
+      //break
+    case '2':
+      return this.checkPhotoBonus(taken)
+      //break
+    case '3':
+      return this.checkIntroduceBonus(taken)
+      //break
+    case '4':
+      return this.checkHobitBonus(taken)
+      //break
     default:
       alert('領取錯誤')
       console.log(key)
@@ -187,7 +245,8 @@ export default class TaskContainer extends Component {
           numColumns={1}
           renderItem={({item}) =>
             <TaskList  
-              taken={item.taken}
+              //taken={item.taken}
+              conform={ this.conform(item.key,item.taken) }
               task={item.task}
               bonus={item.bonus}
               onPress={ () => { this.bonusWarning(item.key,item.task,item.bonus,item.taken) } }
