@@ -257,6 +257,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setTask2(snap.val().task2)
           this.SubjectStore.setTask3(snap.val().task3)
           this.SubjectStore.setTask4(snap.val().task4)
+          this.SubjectStore.setTask5(snap.val().task5)
           // hide
           this.SubjectStore.setHideMeetCute(snap.val().hideMeetCute || false)
           this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
