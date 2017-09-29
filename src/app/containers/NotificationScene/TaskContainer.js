@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, Alert } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
+import Moment from 'moment'
 
 import TaskList from '../../views/TaskList'
 
@@ -22,6 +23,8 @@ export default class TaskContainer extends Component {
   }
 
   componentWillMount() {
+    //const time_now = new Date()
+    //this.today = time_now.getFullYear() + '-' + (time_now.getMonth() + 1) + '-' + time_now.getDate()
   }
 
   componentDidMount() {
@@ -64,9 +67,9 @@ export default class TaskContainer extends Component {
   checkEmailBonus = taken => {
     if (SubjectStore.emailVerified && !taken) {
       // 完成任務 並且沒領過 符合條件可領
-      return true
+      return 0 // 可領取
     } else {
-      return false
+      return 2 // 未達成
     }   
   }
 
@@ -102,9 +105,9 @@ export default class TaskContainer extends Component {
   checkPhotoBonus = taken => {
     if (SubjectStore.albumToFlatList.length >= 3 && !taken) {
       // 完成任務 並且沒領過 符合條件可領
-      return true
+      return 0 // 可領取
     } else {
-      return false
+      return 2 // 未達成
     } 
   }
 
@@ -140,9 +143,9 @@ export default class TaskContainer extends Component {
   checkIntroduceBonus = taken => {
     if (SubjectStore.bio && !taken) {
       // 完成任務 並且沒領過 符合條件可領
-      return true
+      return 0 // 可領取
     } else {
-      return false
+      return 2 // 未達成
     }     
   }
 
@@ -178,16 +181,16 @@ export default class TaskContainer extends Component {
   checkHobitBonus = taken => {
     if (SubjectStore.hobbiesToFlatList.length > 0 && !taken) {
       // 完成任務 並且沒領過 符合條件可領
-      return true
+      return 0 // 可領取
     } else {
-      return false
+      return 2 // 未達成
     }     
   }
 
   takeEverydayBonus = async taken => {
     await this.firebase.database().ref('users/' + this.SubjectStore.uid + '/lastEverydayBonusDate').once('value', snap => {
       const time_now = new Date()
-      const today = time_now.getFullYear() + '-' + time_now.getMonth() + '-' + time_now.getDate()
+      const today = time_now.getFullYear() + '-' + (time_now.getMonth() + 1) + '-' + time_now.getDate()
       if (snap.val() === today) {
         Alert.alert( 
           '管理員提示', '已領取過，無法重新領取', [ 
@@ -212,21 +215,82 @@ export default class TaskContainer extends Component {
   checkEverydayBonus = async taken => {
     await this.firebase.database().ref('users/' + this.SubjectStore.uid + '/lastEverydayBonusDate').once('value', snap => {
       const time_now = new Date()
-      const today = time_now.getFullYear() + '-' + time_now.getMonth() + '-' + time_now.getDate()
+      const today = time_now.getFullYear() + '-' + (time_now.getMonth() + 1) + '-' + time_now.getDate()
       if (snap.val() === today) {
         //console.warn('已領取當日獎勵')
         this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task5').set(true)
         this.SubjectStore.setTask5(true)
-        return false
+        return 2 // 未達成
       } else {
         this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task5').set(false)
         this.SubjectStore.setTask5(false)
-        return true
-        //console.warn('未領取當日獎勵')
+        return 0 // 可領取
       }
     })
   }
 
+  checkEverydayMonthBonus = taken => {
+    const time_now = new Date()
+    const today = Moment().format().substr(0,10)
+    const days = this.getDaysInMonth(time_now.getMonth(),time_now.getFullYear())
+    const days_length = time_now.getDate()
+    const lsat_day = days[days.length - 1].toISOString().substr(0,10)
+    if (SubjectStore.onlineDaysMonthLength === days_length && !taken) {
+      if (today === lsat_day) {
+        return 0 // 可領取
+      } else {
+        return 1 // 持續中
+      }
+    } else {
+      return 2 // 未達成
+    }      
+  }
+
+  checkEverydayWeekBonus = () => {
+    return 2 // 未達成
+  }
+/*
+  takeEverydayMonthBonus = () => {
+    const time_now = new Date()
+    const today = Moment().format().substr(0,10)
+    const days = this.getDaysInMonth(time_now.getMonth(),time_now.getFullYear())
+    const days_length = days.length
+    const lsat_day = days[days_length - 1].toISOString().substr(0,10)
+    if (SubjectStore.onlineDaysMonthLength === days_length && !taken) {
+      if (today === lsat_day) {
+        this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + 200)
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task6').set(true)
+        this.SubjectStore.addBonus(200)
+        this.SubjectStore.setTask6(true)
+        Alert.alert( 
+          '管理員提示', '領取成功', [ 
+            {text: '確認', onPress: () => { this.goToAboutMeTab() } }, 
+          ], { cancelable: false } 
+        )
+      } else {
+        Alert.alert( 
+          '管理員提示', '領取失敗', [ 
+            {text: '確認', onPress: () => { this.goToAboutMeTab() } }, 
+          ], { cancelable: false } 
+        )
+      }
+    } else {
+      if (taken) {
+        Alert.alert( 
+          '管理員提示', '已領取過，無法重新領取', [ 
+            {text: '確認', onPress: () => { this.goToAboutMeTab() } }, 
+          ], { cancelable: false } 
+        )
+      } else {
+        Alert.alert( 
+          '管理員提示', '領取失敗', [ 
+            {text: '確認', onPress: () => { this.goToAboutMeTab() } }, 
+          ], { cancelable: false } 
+        )
+      }
+    } 
+  }
+*/
   takeBonus = (key,taken) => {
     switch (key)
     {
@@ -245,6 +309,11 @@ export default class TaskContainer extends Component {
     case '5':
       this.takeEverydayBonus(taken)
       break
+    //case '6':
+      //this.takeEverydayWeekBonus(taken)
+    //case '7':
+      //this.takeEverydayMonthBonus(taken)
+      //break
     default:
       alert('領取錯誤')
       console.log(key)
@@ -268,6 +337,10 @@ export default class TaskContainer extends Component {
       return this.checkHobitBonus(taken)
     case '5':
       return this.checkEverydayBonus(taken)
+    case '6':
+      return this.checkEverydayWeekBonus(taken)
+    case '7':
+      return this.checkEverydayMonthBonus(taken)
       //break
     default:
       alert('領取錯誤')
@@ -283,6 +356,17 @@ export default class TaskContainer extends Component {
         {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
       ], { cancelable: true } 
     )
+  }
+
+  getDaysInMonth = (month, year) => {
+    let date = new Date(year, month, 1);
+    let days = []
+    while (date.getMonth() === month) {
+      days.push(date)
+      date.setDate(date.getDate() + 1)
+      date = new Date(date)
+    }
+    return days
   }
   
   render() {

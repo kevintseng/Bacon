@@ -29,6 +29,18 @@ const styles = {
   }
 }
 
+//conform ? '領取' : '未達成'
+
+const showConform = (conform) => {
+  if (conform === 0) {
+    return '領取'
+  } else if (conform === 1) {
+    return '持續中'
+  } else {
+    return '未達成'
+  }
+}
+
 const TaskList = ({taken,task,bonus,onPress,conform}) => {
 
   return(
@@ -36,7 +48,9 @@ const TaskList = ({taken,task,bonus,onPress,conform}) => {
       <View style={styles.bottom}>
         <Text style={styles.taskText}>{task}</Text>
         <Text style={styles.bonus}>{bonus}點</Text>
-        <BaconBadgeYes text={conform ? '領取' : '未達成'}/>
+        <BaconBadgeYes text={
+          showConform(conform)
+        }/>
       </View>
     </TouchableOpacity>
   )
