@@ -29,14 +29,14 @@ const styles = {
   }
 }
 
-const TaskList = ({taken,task,bonus,onPress}) => {
+const TaskList = ({taken,task,bonus,onPress,conform}) => {
 
   return(
     <TouchableOpacity style={styles.task} onPress={onPress}>
       <View style={styles.bottom}>
         <Text style={styles.taskText}>{task}</Text>
         <Text style={styles.bonus}>{bonus}點</Text>
-        <BaconBadgeYes text={taken ? '已領取' : '尚未領取'}/>
+        <BaconBadgeYes text={conform ? '領取' : '未達成'}/>
       </View>
     </TouchableOpacity>
   )
