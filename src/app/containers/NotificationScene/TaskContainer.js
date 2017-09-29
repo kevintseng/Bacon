@@ -16,7 +16,8 @@ export default class TaskContainer extends Component {
       {key: 1, task: 'Email認證獎勵', bonus: '20點', taken: this.SubjectStore.task1},
       {key: 2, task: '上傳三張照片獎勵', bonus: '20點', taken: this.SubjectStore.task2},
       {key: 3, task: '完成自我介紹獎勵', bonus: '20點', taken: this.SubjectStore.task3},
-      {key: 4, task: '完成興趣愛好獎勵', bonus: '20點', taken: this.SubjectStore.task4}
+      {key: 4, task: '完成興趣愛好獎勵', bonus: '20點', taken: this.SubjectStore.task4},
+      {key: 5, task: '每日上線獎勵', bonus: '5點', taken: this.SubjectStore.task5}
     ]
   }
 
@@ -183,6 +184,49 @@ export default class TaskContainer extends Component {
     }     
   }
 
+  takeEverydayBonus = async taken => {
+    await this.firebase.database().ref('users/' + this.SubjectStore.uid + '/lastEverydayBonusDate').once('value', snap => {
+      const time_now = new Date()
+      const today = time_now.getFullYear() + '-' + time_now.getMonth() + '-' + time_now.getDate()
+      if (snap.val() === today) {
+        Alert.alert( 
+          '管理員提示', '已領取過，無法重新領取', [ 
+            {text: '確認', onPress: () => { this.goToAboutMeTab() } }, 
+          ], { cancelable: false } 
+        )
+      } else {
+        this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + 5)
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task5').set(true)
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/lastEverydayBonusDate').set(today)
+        this.SubjectStore.addBonus(5)
+        this.SubjectStore.setTask5(true)
+        Alert.alert( 
+          '管理員提示', '領取成功', [ 
+            {text: '確認', onPress: () => { this.goToAboutMeTab() } }, 
+          ], { cancelable: false } 
+        )
+      }
+    })   
+  }
+
+  checkEverydayBonus = async taken => {
+    await this.firebase.database().ref('users/' + this.SubjectStore.uid + '/lastEverydayBonusDate').once('value', snap => {
+      const time_now = new Date()
+      const today = time_now.getFullYear() + '-' + time_now.getMonth() + '-' + time_now.getDate()
+      if (snap.val() === today) {
+        //console.warn('已領取當日獎勵')
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task5').set(true)
+        this.SubjectStore.setTask5(true)
+        return false
+      } else {
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task5').set(false)
+        this.SubjectStore.setTask5(false)
+        return true
+        //console.warn('未領取當日獎勵')
+      }
+    })
+  }
+
   takeBonus = (key,taken) => {
     switch (key)
     {
@@ -197,6 +241,9 @@ export default class TaskContainer extends Component {
       break
     case '4':
       this.takeHobitBonus(taken)
+      break
+    case '5':
+      this.takeEverydayBonus(taken)
       break
     default:
       alert('領取錯誤')
@@ -219,6 +266,8 @@ export default class TaskContainer extends Component {
       //break
     case '4':
       return this.checkHobitBonus(taken)
+    case '5':
+      return this.checkEverydayBonus(taken)
       //break
     default:
       alert('領取錯誤')
@@ -245,7 +294,7 @@ export default class TaskContainer extends Component {
           numColumns={1}
           renderItem={({item}) =>
             <TaskList  
-              //taken={item.taken}
+              taken={item.taken}
               conform={ this.conform(item.key,item.taken) }
               task={item.task}
               bonus={item.bonus}
