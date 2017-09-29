@@ -6,6 +6,48 @@ import { Button } from 'react-native-elements'
 import Modal from 'react-native-modal'
 import Infos from '../../views/Infos/Infos'
 
+const styles = {
+  modalWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    paddingVertical: 30,
+    alignSelf: 'center',
+    width: 260,
+  },
+  modalTitle: {
+    backgroundColor: 'transparent',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    textAlign: 'center',
+    fontWeight: '500',
+    color: '#606060',
+    fontSize: 18,
+  },
+  TouchStyle: {
+    marginTop: 20,
+    borderRadius: 20,
+    borderColor: '#606060',
+    borderWidth: 1,
+    paddingVertical: 5,
+  },
+  buttonLabel: {
+    fontFamily: 'NotoSans',
+    color: '#606060',
+  },
+  routesText: {
+    backgroundColor: 'transparent',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    textAlign: 'center',
+    color: '#606060',
+    fontWeight: '500',
+    fontSize: 18,
+  },
+}
+
 @inject('FateStore', 'firebase', 'SubjectStore') @observer
 export default class InfosContainer extends Component {
 
