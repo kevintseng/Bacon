@@ -107,8 +107,8 @@ android {
         applicationId "com.kayming.android.bacon"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 32
-        versionName "Beta-2.0.0"
+        versionCode 33
+        versionName "Beta-2.1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
