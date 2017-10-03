@@ -57,7 +57,7 @@ export default class MeetChanceStore {
   }
 
   @action initialize = () => {
-    this.pool = new Array
+    this.pool = new Object
     this.preyList = new Array
     this.preys = new Array
     // court
@@ -97,34 +97,54 @@ export default class MeetChanceStore {
 
   // pool
 
-  @action addPreyToPool = prey => {
-    this.pool.push(prey)
+  @action addPreyToPool = (uid,distance,nickname,avatar,birthday,hideMeetChance,deleted,online,popularityDen,popularityNum) => {
+    this.pool[uid] = { key: uid, distance: distance, nickname: nickname, avatar: avatar, birthday: birthday, hideMeetChance: hideMeetChance, deleted: deleted, online: online, popularityDen: popularityDen, popularityNum: popularityNum }
   }
 
   @action updatePreyToPool = (uid,distance) => {
-    const ele = this.pool.find(ele => ele.uid === uid)
-    if (ele) {
-      ele.distance = distance
-    }
+    this.pool[uid].distance = distance
   }
 
   @action removePreyToPool = uid => {
-    this.pool = this.pool.filter(ele => !(ele.uid === uid))
+    delete this.pool[uid]
   }
 
+  // preyList
+
   @action setPreyList = () => {
-    this.notFound = false
-    this.preyList = toJS(this.pool)
+    // 過濾名單
+    this.preyList = Object.keys(this.pool).filter( 
+      key => {
+        const value = this.pool[key]
+        if (!(value.hideMeetChance) && !(value.deleted) && value.birthday && ((calculateAge(value.birthday) >= this.meetChanceMinAge) && (calculateAge(value.birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(value.online)) {
+          const popularityDen = value.popularityDen || 0
+          const popularityNum = value.popularityNum || 0
+          this.firebase.database().ref('users/' + value.uid + '/popularityDen').set(popularityDen + 1)
+          this.firebase.database().ref('users/' + value.uid + '/popularity').set(popularityNum/(popularityDen + 1))
+          return true
+        } else {
+          return null
+        }
+      }
+    ).map( key => this.pool[key] )
+    // 排距離
     this.preyList.sort((a, b) => {
       return a.distance > b.distance ? 1 : -1
     })
+
   }
 
-  @action setFakePreys = () => {
-    //this.preys = this.preyList.map((ele,index)=>({ key: ele.uid, nickname: null, avatar: null }))
-    this.preys = new Array
+  @action setRealPreys = () => {
+    //while (this.preyList.length === 0) {
+    //  await this.sleep(300)
+    //  this.setPreyList()
+    //  if (this.preyList.length > 0) {
+    //    break
+    //  }
+    //}
+    this.preys = toJS(this.preyList)
   }
-
+/*
   @action setRealPreys = () => {
     const preysPromises = this.preyList.map((ele,index) => (
       this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
@@ -148,10 +168,9 @@ export default class MeetChanceStore {
     Promise.all(preysPromises)
     .then(preys => {
       if (preys.length == 0) {
-        runInAction(() => {
-          this.notFound = true
-          this.preys = preys
-        })
+        //runInAction(() => {
+        //  this.preys = preys
+        //})
       } else {
         runInAction(() => {
           this.preys = preys
@@ -162,21 +181,8 @@ export default class MeetChanceStore {
       console.log(err)
     })
   }
-
-/*
-          if (snap.val().hideMeetChance || snap.val().deleted ||  calculateAge(snap.val().birthday) < this.meetChanceMinAge || calculateAge(snap.val().birthday) > this.meetChanceMaxAge) {
-            return null
-          } else {
-            const popularityDen = snap.val().popularityDen || 0
-            this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(popularityDen + 1)
-            return({
-              key: ele.uid,
-              nickname: snap.val().nickname,
-              avatar: snap.val().avatar,
-              birthday: snap.val().birthday
-            })
-          }
-      */
+*/
+  // LineCollection
 
   @action setCourtInitialize = uid => {
     this.loading = true

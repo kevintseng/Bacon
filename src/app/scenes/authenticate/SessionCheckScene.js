@@ -42,7 +42,7 @@ export default class SessionCheckScene extends Component {
   }
 
   componentWillMount() {
-    this.firebase.auth().onAuthStateChanged( user => {
+    this.firebase.auth().onAuthStateChanged( async user => {
       if (user) {
         // 入口點
         // 使用者登入 -> 只要登入成功一定有 uid email
@@ -56,7 +56,7 @@ export default class SessionCheckScene extends Component {
           ///////// 非同步 /////////
           this.uploadAvatar() // 非同步上傳相簿
           this.uploadSignUpData() // 非同步上傳註冊資料
-          this.uploadLocation() // 上傳GPS資料 巧遇監聽
+          await this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
@@ -72,7 +72,7 @@ export default class SessionCheckScene extends Component {
           ///////// 非同步 /////////
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
           this.setVip()
-          this.uploadLocation() // 上傳GPS資料 巧遇監聽
+          await this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
@@ -320,21 +320,25 @@ export default class SessionCheckScene extends Component {
 
   meetChanceListener = (geoQuery) => {
     geoQuery.on('key_entered', (uid, location, distance) => {
-      if (!(uid === this.SubjectStore.uid)) {
-        this.firebase.database().ref('users/' + uid + '/sexualOrientation').once('value').then((snap)=>{
-          if (snap.val() === this.reverseString(this.SubjectStore.sexualOrientation)) {
-            this.MeetChanceStore.addPreyToPool({uid: uid, distance: distance})
+      if (uid !== this.SubjectStore.uid) {
+        this.firebase.database().ref('users/' + uid).once('value').then( snap => {
+          if (snap.val().sexualOrientation === this.reverseString(this.SubjectStore.sexualOrientation)) {
+            this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online,snap.val().popularityDen,snap.val().popularityNum)
           }
         })
       }
     })
 
     geoQuery.on('key_moved', (uid, location, distance) => {
-      this.MeetChanceStore.updatePreyToPool(uid,distance)
+      if (uid !== this.SubjectStore.uid) {
+        this.MeetChanceStore.updatePreyToPool(uid,distance)
+      }
     })
 
     geoQuery.on('key_exited', (uid, location, distance) => {
-      this.MeetChanceStore.removePreyToPool(uid)
+      if (uid !== this.SubjectStore.uid) {
+        this.MeetChanceStore.removePreyToPool(uid)
+      }
     })
   }
 
