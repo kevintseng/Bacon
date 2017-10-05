@@ -63,8 +63,6 @@
 		78AB4C0F20F045C4AC4266A3 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A3E4ED64BB41A4BB1BF0E6 /* libRNFirebase.a */; };
 		7D6F77FBDBF34D45A3E8943B /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1CFCDE1A01840FF8F7EB227 /* libRNImagePicker.a */; };
 		80BEA7894CB74EA4AF5F60AA /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17499E13931F44CA93AA25C4 /* FontAwesome.ttf */; };
-		8128665B1F723E1A00438C9F /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8128662A1F723BB900438C9F /* libART.a */; };
-		81E5779C1F74DCD1005635EE /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8647EE78E6F946F79A480485 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8940794891684D83BC275067 /* Ionicons.ttf */; };
 		9B1108669315435F8DA027F6 /* NotoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CFE469465A54439833C82CA /* NotoSans-Bold.ttf */; };
@@ -518,10 +516,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81E5779C1F74DCD1005635EE /* libRCTWebSocket.a in Frameworks */,
 				459C11CD1F558F34001A66BF /* StoreKit.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
-				8128665B1F723E1A00438C9F /* libART.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
