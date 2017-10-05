@@ -878,7 +878,7 @@ export default class Chat extends Component {
                 fontSize: 16,
                 fontFamily: 'NotoSans',
                 color: '#606060',
-                width: width - this.state.inputOffset,
+                width: width - this.state.inputOffset - 20,
                 padding: 5,
               }}
               onChangeText={(text) => {
