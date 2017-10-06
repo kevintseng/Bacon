@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Platform, BackHandler, ToastAndroid, Modal, Text, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Platform, BackHandler, ToastAndroid, Modal, Text, TouchableOpacity, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
 
@@ -19,17 +19,15 @@ import FailureContainer from '../../containers/SignUpThreeScene/FailureContainer
 
 import BaconRoutesContainer from '../../containers/SignUpThreeScene/BaconRoutesContainer'
 
+
+const { width, height } = Dimensions.get('window')
+
 const styles = {
   view: {
     flex: 1
   },
-  middle: {
-    position: 'absolute', 
-    top: 150
-  },
   bottom: {
-    position: 'absolute', 
-    bottom: 0
+    marginTop: 10,
   }
 }
 
@@ -56,33 +54,45 @@ export default class SignUpThreeScene extends Component {
 
   render() {
     return(
-       <View style={ styles.view }>
+       <ScrollView style={ styles.view }>
 
-        <View style={{flex: 1, marginTop: 20}}>
-          <EmailContainer/>
-          <PasswordContainer/>
-          <NickNameContainer/>
-          <BirthdayContainer/>
-          <PolicyModalContainer/>
-          <RuleModalContainer/>
+        <View style={{marginTop: 20}}>
+          <View style={{marginTop: 10}}>
+            <EmailContainer/>
+          </View>
+          <View style={{marginTop: 10}}>
+            <PasswordContainer/>
+          </View>
+          <View style={{marginTop: 10}}>
+            <NickNameContainer/>
+          </View>
+          <View style={{marginTop: 10}}>
+            <BirthdayContainer/>
+          </View>
+          <View style={{marginTop: 10}}>
+            <PolicyModalContainer/>
+          </View>
+          <View style={{marginTop: 10}}>
+            <RuleModalContainer/>
+          </View>
 
           <View style={{marginTop: 40}}>
             <PolicyContainer/>
           </View>
 
-          <View style={{position: 'absolute', top: 2, left: 20}}>
+          <View style={{marginTop: 10, left: 20}}>
             <EmailStatesContainer/>
           </View>
 
-          <View style={{position: 'absolute', top: 70, left: 20}}>
+          <View style={{marginTop: 10, left: 20}}>
             <PasswordStatesContainer/>
           </View>
 
-          <View style={{position: 'absolute', top: 140, left: 20}}>
+          <View style={{marginTop: 10, left: 20}}>
             <NickNameStatesContainer/>
           </View>
 
-          <View style={{position: 'absolute', bottom: 90, alignSelf: 'center',alignItems: 'center'}}>
+          <View style={{marginTop:10, alignSelf: 'center',alignItems: 'center'}}>
             <FailureContainer/>
           </View>
 
@@ -92,7 +102,7 @@ export default class SignUpThreeScene extends Component {
           <BaconRoutesContainer/>
         </View>
 
-      </View>
+      </ScrollView>
     )
   }
 }
