@@ -104,15 +104,30 @@ const styles = StyleSheet.create({
   },
 })
 
+// const ImagePickerOptions = {
+//   title: "請選擇照片",
+//   // customButtons: [{ name: "fb", title: "Choose Photo from Facebook" }],
+//   storageOptions: {
+//     skipBackup: true,
+//     path: "images",
+//   },
+// }
+
 const ImagePickerOptions = {
-  title: "請選擇照片",
-  // customButtons: [{ name: "fb", title: "Choose Photo from Facebook" }],
+  title: '上傳照片',
+  takePhotoButtonTitle: '使用相機拍照',
+  chooseFromLibraryButtonTitle: '從相簿中選擇',
+  cancelButtonTitle: '取消',
+  mediaType: 'photo',
+  maxWidth: 800,
+  maxHeight: 800,
+  quality: 1.0,
+  noData: false,
   storageOptions: {
     skipBackup: true,
-    path: "images",
+    path: 'images'
   },
 }
-
 
 @inject("firebase", "SubjectStore")
 @observer
