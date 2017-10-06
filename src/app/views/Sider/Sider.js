@@ -50,15 +50,16 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
           </View>
         </View>
 
-        <View>
+        <TouchableOpacity activeOpacity={1} onPress={ displayNameOnPress }>
           <View style={{alignItems: 'center',marginTop: 10}}>
             <Cookie
+              disabled
               size={picWidth}
               avatar={avatar}
               borderColor='rgba(255, 255, 255, 1)'
             />
           </View>
-          <TouchableOpacity style={{alignItems: 'flex-start',flexDirection: 'row', justifyContent: 'space-between',height: 45}} onPress={ displayNameOnPress }>
+          <View style={{alignItems: 'flex-start',flexDirection: 'row', justifyContent: 'space-between',height: 45}}>
             <View style={ styles.badge }>
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
             </View>
@@ -68,8 +69,8 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
             <View style={styles.badge}>
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
             </View>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
 
         <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
@@ -92,11 +93,11 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </View>
 
         <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
-        </View>
-
-        <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_column.png')} listTitle='達人聊天室' listOnPress={ masterOnPress }/>
+        </View>
+        
+        <View style={{marginTop: 7}}>
+          <ListItem listPicSource={require('./img/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
         </View>
 
       </View>

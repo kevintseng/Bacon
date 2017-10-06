@@ -18,18 +18,23 @@ const styles = {
     width: 90,
     height: 90
   },
+  titleView: {
+    paddingLeft: 10,
+    justifyContent: 'center'
+  },
   title: {
     width: 240,
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     fontSize: 18,
-    fontWeight: '500',
+    fontWeight: '400',
     color: '#606060',
     backgroundColor: 'transparent'
   },
   content: {
+    flexDirection: 'row',
     paddingLeft: 10,
-    justifyContent: 'space-between'
+    justifyContent: 'center'
   },
   avatar: {
     width: 30,
@@ -43,10 +48,14 @@ const styles = {
   },
   tags: {
     flexDirection: 'row'
+  },
+  button: {
+    justifyContent: 'center'
+   // flexDirection: 'row'
   }
 }
 
-const ArticleList = ({source,title,onPress,avatar,tags,author}) => {
+const ReservationList = ({title,time}) => {
 
   const showTags = () => ( 
     tags.map( tag => (
@@ -56,21 +65,19 @@ const ArticleList = ({source,title,onPress,avatar,tags,author}) => {
 
 
   return(
-    <TouchableOpacity style={styles.article} onPress={ onPress }>
-      <Image style={styles.image} source={source} />
+    <View style={styles.article}>
       <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
-        <View style={styles.bottom}>
-          <View style={styles.tags}>
-          {
-            showTags()
-          }
-          </View>
-          <Cookie local size={30} avatar={avatar} name={author}/>
+        <View style={styles.titleView}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{time}</Text>
+        </View>
+        <View style={styles.button}>
+          <BaconBadgeYes key={'請進'} text={'請進'}/>
+          <BaconBadgeYes key={'取消'} text={'取消'}/>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 
-export default ArticleList
+export default ReservationList

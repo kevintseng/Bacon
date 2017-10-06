@@ -12,7 +12,7 @@ import BaconRadar from '../../../views/BaconRadar'
 
 const { width, height } = Dimensions.get('window')
 
-@inject('firebase','SubjectStore','FateStore','ControlStore') @observer
+@inject('firebase','SubjectStore','FateStore','ControlStore','MeetChanceStore') @observer
 export default class LineCollectCourtScene extends Component {
 
   constructor(props) {
@@ -24,6 +24,7 @@ export default class LineCollectCourtScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.FateStore = this.props.FateStore
     this.ControlStore = this.props.ControlStore
+    this.MeetChanceStore = this.props.MeetChanceStore
   }
 
   componentWillMount() {
@@ -76,7 +77,7 @@ export default class LineCollectCourtScene extends Component {
               <View style={{paddingTop: 10}}>
                 <BadgeWallContainer Store={this.Store}/>
               </View>
-              { this.SubjectStore.vip && 
+              { this.MeetChanceStore.meetChanceRadar && 
                 <View style={{paddingTop: 10}}>
                   <BaconRadar/>
                 </View>

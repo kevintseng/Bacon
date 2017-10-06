@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 //import Perf from 'react-addons-perf'
 
 import ProfileContainer from '../../../containers/AboutMeTabScene/ProfileContainer' 
@@ -26,7 +26,7 @@ export default class AboutMeTabScene extends Component {
       <ScrollableTabView
         initialPage = {0}
         tabBarPosition='top'
-        renderTabBar={() => <ScrollableTabBar />}
+        renderTabBar={() => <DefaultTabBar />}
         tabBarUnderlineStyle={{ backgroundColor: '#d63768' }}
         tabBarBackgroundColor='white'
         tabBarActiveTextColor='#d63768'
