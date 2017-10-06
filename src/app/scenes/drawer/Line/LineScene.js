@@ -18,6 +18,7 @@ import { Actions } from "react-native-router-flux"
 import { observer, inject } from "mobx-react"
 import { GiftedChat, Bubble, MessageImage } from "react-native-gifted-chat"
 import ImagePicker from "react-native-image-picker"
+import ImageResizer from 'react-native-image-resizer'
 import Moment from "moment"
 import { Icon, Button } from "react-native-elements"
 import Modal from "react-native-modal"
@@ -513,12 +514,7 @@ export default class Chat extends Component {
           <Icon
             size={30}
             name="add"
-            onPress={() => {
-              this.setState({
-                action: "plus",
-                minToolBarHeight: PLUS_TOOLBAR_HEIGHT,
-              })
-            }}
+            onPress={this.handleImagePicker}
           />
           <Icon
             size={30}
@@ -535,137 +531,68 @@ export default class Chat extends Component {
     }
   }
 
-  handleCameraPicker = () => {
+  handleImagePicker = () => {
     if (!this.meetMsgLimit()) {
       const msgRef = this.firebase
         .database()
         .ref(`conversations/${this.convKey}/messages`)
       // console.log("handleCameraPicker called")
-      ImagePicker.launchCamera(ImagePickerOptions, response => {
+      ImagePicker.showImagePicker(ImagePickerOptions, res => {
         // console.log("Response = ", response)
 
-        if (response.didCancel) {
-          console.log("User cancelled image picker")
-        } else if (response.error) {
-          console.log("ImagePicker Error: ", response.error)
-        } else if (response.customButton) {
-          console.log("User tapped custom button: ", response.customButton)
+        if (res.didCancel) {
+          //
+        } else if (res.error) {
+          console.log("ImagePicker Error: ", res.error)
+        } else if (res.customButton) {
+          console.log("User tapped custom button: ", res.customButton)
         } else {
           this.setState({ action: "uploading" })
           // console.log("camera response: ", response)
           const _id = this.genID()
           const filename = _id + ".jpg"
           // const imgType = filename.split('.').pop()
+          ImageResizer.createResizedImage(res.uri, 800, 800, 'JPEG', 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
+          .then((image) => {
+              const uri = Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri.replace('file:/', '')
+              console.log("image.uri: ", image.uri, " uri: ", uri, " filename: ", filename)
+              this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, jpgmetadata)
+              .then(uploadedFile => {
+                console.log("downloadUrl: ", uploadedFile.downloadUrl)
+                const msgObj = {
+                  _id,
+                  text: "",
+                  createdAt: Moment().format(),
+                  user: {
+                    _id: this.uid,
+                    name: this.SubjectStore.nickname,
+                    avatar: this.SubjectStore.avatar,
+                  },
+                  image: uploadedFile.downloadUrl,
+                }
 
-          const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
-          this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, jpgmetadata)
-          .then(uploadedFile => {
-            // console.log("downloadUrl: ", uploadedFile.downloadUrl)
-            const msgObj = {
-              _id,
-              text: "",
-              createdAt: Moment().format(),
-              user: {
-                _id: this.uid,
-                name: this.SubjectStore.nickname,
-                avatar: this.SubjectStore.avatar,
-              },
-              image: uploadedFile.downloadUrl,
-            }
+                this.syncMsgToFirebase(msgObj)
+                // adds 1 to conversation
+                this.unreadAddOne(this.convKey, this.otherUid)
+                if (this.state.visitorMsgLimit > 0) {
+                  this.visitorMsgLimitDeductOne(this.convKey, this.uid)
+                }
 
-            this.syncMsgToFirebase(msgObj)
-            // adds 1 to conversation
-            this.unreadAddOne(this.convKey, this.otherUid)
-            if (this.state.visitorMsgLimit > 0) {
-              this.visitorMsgLimitDeductOne(this.convKey, this.uid)
-            }
-
-            // 有發言回應後就取消 priority
-            this.updatePriority(this.uid, this.otherUid, false)
-          }, err => {
-            console.error('上傳失敗')
-          })
-          .then(() => {
-            if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
-              this.msgSent = this.msgSent + 1
-              setTimeout(() => {
-                this.setState({ showPriorityModal: true })
-              }, 1000)
-            }
-          })
-        }
-      })
-    } else {
-      this.setState({ showMsgLimitModal: true })
-    }
-  }
-
-  handlePhotoPicker = () => {
-    if (!this.meetMsgLimit()) {
-      const msgRef = this.firebase
-        .database()
-        .ref(`conversations/${this.convKey}/messages`)
-      // console.log("handlePhotoPicker called")
-      ImagePicker.launchImageLibrary(ImagePickerOptions, response => {
-        // console.log("Response = ", response)
-
-        if (response.didCancel) {
-          console.log("User cancelled image picker")
-        } else if (response.error) {
-          console.log("ImagePicker Error: ", response.error)
-        } else if (response.customButton) {
-          console.log("User tapped custom button: ", response.customButton)
-        } else {
-          this.setState({ action: "uploading" })
-          let meta
-          const filename = response.fileName
-          const imgType = filename.split('.').pop()
-          if (imgType == 'PNG' || imgType == 'png') {
-            meta = pngmetadata
-          }
-          if (imgType == 'JPG' || imgType == 'jpg' || imgType == 'jpeg' || imgType == 'JPEG') {
-            meta = jpgmetadata
-          }
-          // console.log("response: ", response)
-          // console.log("meta: ", meta)
-
-          const uri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : response.uri.replace('file:/')
-
-          this.firebase.storage().ref(`chat/${this.convKey}/${this.uid}/${filename}`).putFile(uri, meta)
-          .then(uploadedFile => {
-            // console.log("downloadUrl: ", uploadedFile.downloadUrl)
-            const _id = this.genID()
-            const msgObj = {
-              _id,
-              text: "",
-              createdAt: Moment().format(),
-              user: {
-                _id: this.uid,
-                name: this.SubjectStore.nickname,
-                avatar: this.SubjectStore.avatar,
-              },
-              image: uploadedFile.downloadUrl,
-            }
-
-            this.syncMsgToFirebase(msgObj)
-            // adds 1 to conversation
-            this.unreadAddOne(this.convKey, this.otherUid)
-            if (this.state.visitorMsgLimit > 0) {
-              this.visitorMsgLimitDeductOne(this.convKey, this.uid)
-            }
-            // 有發言回應後就取消 priority
-            this.updatePriority(this.uid, this.otherUid, false)
-          }, err => {
-            console.error('上傳失敗')
-            this.setState({ action: false })
-          })
-          .then(() => {
-            if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
-              this.msgSent = this.msgSent + 1
-              setTimeout(() => {
-                this.setState({ showPriorityModal: true })
-              }, 1000)
-            }
+                // 有發言回應後就取消 priority
+                this.updatePriority(this.uid, this.otherUid, false)
+            }).catch(err => {
+              console.error('上傳失敗: ')
+              console.error(err)
+            }).then(() => {
+              if (!this.state.dontAskPriorityAgain && this.msgSent >= 1) {
+                this.msgSent = this.msgSent + 1
+                setTimeout(() => {
+                  this.setState({ showPriorityModal: true })
+                }, 1000)
+              }
+            })
+          }).catch((err) => {
+            console.log(err)
           })
         }
       })
@@ -796,75 +723,14 @@ export default class Chat extends Component {
             <Text>照片壓縮處理中...</Text>
           </View>
         )
-      case "plus":
+      default:
         return (
           <View
             style={{
-              width,
-              height: STICKER_TOOLBAR_HEIGHT,
-              borderTopWidth: 0.5,
-              borderColor: "#E0E0E0",
-            }}
-          >
-            <View
-              style={{
-                width,
-                marginVertical: 5,
-                alignSelf: "center",
-                backgroundColor: "white",
-              }}
-            >
-              <Icon
-                name="keyboard-hide"
-                size={30}
-                onPress={() => {
-                  this.setState({
-                    action: false,
-                    minToolBarHeight: DEFAULT_MIN_INPUT_TOOLBAR_HEIGHT,
-                  })
-                }}
-              />
-            </View>
-            <View
-              style={{
-                width,
-                height: 120,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <View style={{ flex: 1, backgroundColor: "#FDFDFD", alignItems: "center", paddingLeft: 20 }}>
-                <TouchableOpacity onPress={this.handlePhotoPicker}>
-                  <Image
-                    style={{ width: 51, height: 39.5 }}
-                    source={require('../../../../images/btn_chat_album.png')}
-                  />
-                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>{LABEL_ALBUM}</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{ flex: 1, backgroundColor: "#FDFDFD", alignItems: "center", paddingRight: 20 }}>
-                <TouchableOpacity onPress={this.handleCameraPicker}>
-                  <Image
-                    style={{ width: 51, height: 39.5}}
-                    source={require('../../../../images/btn_chat_shot.png')}
-                  />
-                  <Text style={{ marginTop: 3, alignSelf: 'center'}}>{LABEL_CAMERA}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        )
-      default:
-        return (
-          // 這裡用 ScrollView 是因為這樣可以讓user在鍵盤出現的時候只要點擊任何一個非鍵盤區域就會收起鍵盤
-          <ScrollView
-            scrollEnabled={false}
-            contentContainerStyle={{
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
-              width: width - this.state.inputOffset
+              width: width - this.state.inputOffset + 30,
             }}
           >
             <TextInput
@@ -878,20 +744,20 @@ export default class Chat extends Component {
                 fontSize: 16,
                 fontFamily: 'NotoSans',
                 color: '#606060',
-                width: width - this.state.inputOffset - 20,
+                width: width - this.state.inputOffset - 10,
                 padding: 5,
               }}
               onChangeText={(text) => {
                 this.setState({inputText: text})
               }}
             />
-            <TouchableOpacity onPress={this.onSend}>
-              <Image
-                style={{ width: 30, height: 30}}
-                source={require('../../../../images/btn_chat_send.png')}
-              />
-            </TouchableOpacity>
-          </ScrollView>
+            <Icon
+              name='send'
+              color='#D63768'
+              onPress={this.onSend}
+              // containerStyle={{ marginLeft: 15 }}
+            />
+          </View>
         )
     }
   }
