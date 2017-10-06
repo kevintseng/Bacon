@@ -54,7 +54,6 @@ export default class SignUpThreeScene extends Component {
   render() {
     return(
        <ScrollView style={ styles.view }>
-
         <View style={{marginTop: 20}}>
           <View style={{marginTop: 10}}>
             <EmailContainer/>
@@ -94,18 +93,10 @@ export default class SignUpThreeScene extends Component {
           <View style={{marginTop:10, alignSelf: 'center',alignItems: 'center'}}>
             <FailureContainer/>
           </View>
-
-        <View style={{position: 'absolute', top: 140, left: 20}}>
-          <NickNameStatesContainer/>
-        </View>
-
-        <View style={{position: 'absolute', bottom: 90, alignSelf: 'center',alignItems: 'center'}}>
-          <FailureContainer/>
         </View>
         <View style={ styles.bottom }>
           <BaconRoutesContainer/>
         </View>
-
       </ScrollView>
     )
   }
