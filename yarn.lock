@@ -3772,6 +3772,13 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-addons-update@^15.6.0:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react-addons-update/-/react-addons-update-15.6.2.tgz#e53753c5b34887974510c882d7fb075851d5e504"
+  dependencies:
+    fbjs "^0.8.9"
+    object-assign "^4.1.0"
+
 react-clone-referenced-element@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-clone-referenced-element/-/react-clone-referenced-element-1.0.1.tgz#2bba8c69404c5e4a944398600bcc4c941f860682"
@@ -3796,6 +3803,12 @@ react-native-animatable@^1.2.3:
 react-native-billing@^2.3.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-native-billing/-/react-native-billing-2.4.0.tgz#956065bf8e9e639486315923360fd7f94589ce12"
+
+react-native-button@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-button/-/react-native-button-2.1.0.tgz#a39e23292922afeea4f7be141dd43e18f1b51876"
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-communications@2.2.1:
   version "2.2.1"
@@ -3992,6 +4005,15 @@ react-native-side-menu@^0.20.1:
   version "0.20.3"
   resolved "https://registry.yarnpkg.com/react-native-side-menu/-/react-native-side-menu-0.20.3.tgz#5dffe3e237018360ed081433d505ea454cba9ca4"
 
+react-native-star-rating@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-star-rating/-/react-native-star-rating-1.0.8.tgz#6e47d5335ddcc7920a5d92e6cc6478f8655a92a3"
+  dependencies:
+    prop-types "^15.5.10"
+    react-addons-update "^15.6.0"
+    react-native-button "^2.1.0"
+    react-native-vector-icons "^4.2.0"
+
 react-native-storage@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/react-native-storage/-/react-native-storage-0.2.2.tgz#4449197f122b2da0650e3704e1f050260ed58d9f"
@@ -4021,7 +4043,7 @@ react-native-tabs@^1.0.9:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/react-native-tabs/-/react-native-tabs-1.0.9.tgz#75d3c35e8b5b6970869eab282372cb32e2a782cd"
 
-react-native-vector-icons@^4.3.0:
+react-native-vector-icons@^4.2.0, react-native-vector-icons@^4.3.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-4.4.0.tgz#cdfc1cd86ab495b2a4926bcec8f08c155475cbf1"
   dependencies:
