@@ -18,18 +18,21 @@ const styles = {
     width: 90,
     height: 90
   },
+  titleView: {
+    paddingLeft: 10
+  },
   title: {
     width: 240,
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     fontSize: 18,
-    fontWeight: '500',
+    fontWeight: '400',
     color: '#606060',
     backgroundColor: 'transparent'
   },
   content: {
     paddingLeft: 10,
-    justifyContent: 'space-between'
+    justifyContent: 'center'
   },
   avatar: {
     width: 30,
@@ -46,7 +49,7 @@ const styles = {
   }
 }
 
-const ArticleList = ({source,title,onPress,avatar,tags,author}) => {
+const MasterList = ({title,onPress,avatar,tags,author}) => {
 
   const showTags = () => ( 
     tags.map( tag => (
@@ -57,20 +60,21 @@ const ArticleList = ({source,title,onPress,avatar,tags,author}) => {
 
   return(
     <TouchableOpacity style={styles.article} onPress={ onPress }>
-      <Image style={styles.image} source={source} />
+      <Cookie local size={90} avatar={avatar} name={author}/>
       <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
+        <View style={styles.titleView}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
         <View style={styles.bottom}>
           <View style={styles.tags}>
           {
             showTags()
           }
-          </View>
-          <Cookie local size={30} avatar={avatar} name={author}/>
+          </View>      
         </View>
       </View>
     </TouchableOpacity>
   )
 }
 
-export default ArticleList
+export default MasterList

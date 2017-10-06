@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react'
 
 import BaconRoutesContainer from './BaconRoutesContainer'
 import LangListContainer from './LangListContainer'
+import MasterModalContainer from './MasterModalContainer'
 
 const styles = {
   container: {

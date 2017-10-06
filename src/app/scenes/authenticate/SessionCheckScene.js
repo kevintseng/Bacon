@@ -257,19 +257,24 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setTask2(snap.val().task2)
           this.SubjectStore.setTask3(snap.val().task3)
           this.SubjectStore.setTask4(snap.val().task4)
+          this.SubjectStore.setTask5(snap.val().task5)
+          this.SubjectStore.setTask6(snap.val().task6)
+          this.SubjectStore.setTask7(snap.val().task7)
           // hide
           this.SubjectStore.setHideMeetCute(snap.val().hideMeetCute || false)
           this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
           this.SubjectStore.setHideVister(snap.val().hideVister || false)
           this.SubjectStore.setHideMessage(snap.val().hideMessage || false)
+          // stars
+          this.SubjectStore.setAllArticlesStars(snap.val().stars || { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 })
           // meetCute config
           this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)
-          this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 99)
+          this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 50)
           this.MeetCuteStore.setMeetCuteRadar(snap.val().meetCuteRadar)
           this.MeetCuteStore.setMeetCuteThreePhotos(snap.val().meetCuteThreePhotos)
           // meetChance config
           this.MeetChanceStore.setMeetChanceMinAge(snap.val().meetChanceMinAge || 18)
-          this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 99)
+          this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 50)
           this.MeetChanceStore.setMeetChanceRadar(snap.val().meetChanceRadar)
           this.MeetChanceStore.setMeetChanceOfflineMember(snap.val().meetCuteOfflineMember)
         } else {
@@ -315,21 +320,25 @@ export default class SessionCheckScene extends Component {
 
   meetChanceListener = (geoQuery) => {
     geoQuery.on('key_entered', (uid, location, distance) => {
-      if (!(uid === this.SubjectStore.uid)) {
-        this.firebase.database().ref('users/' + uid + '/sexualOrientation').once('value').then((snap)=>{
-          if (snap.val() === this.reverseString(this.SubjectStore.sexualOrientation)) {
-            this.MeetChanceStore.addPreyToPool({uid: uid, distance: distance})
+      if (uid !== this.SubjectStore.uid) {
+        this.firebase.database().ref('users/' + uid).once('value').then( snap => {
+          if (snap.val().sexualOrientation === this.reverseString(this.SubjectStore.sexualOrientation)) {
+            this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online,snap.val().popularityDen,snap.val().popularityNum)
           }
         })
       }
     })
 
     geoQuery.on('key_moved', (uid, location, distance) => {
-      this.MeetChanceStore.updatePreyToPool(uid,distance)
+      if (uid !== this.SubjectStore.uid) {
+        this.MeetChanceStore.updatePreyToPool(uid,distance)
+      }
     })
 
     geoQuery.on('key_exited', (uid, location, distance) => {
-      this.MeetChanceStore.removePreyToPool(uid)
+      if (uid !== this.SubjectStore.uid) {
+        this.MeetChanceStore.removePreyToPool(uid)
+      }
     })
   }
 
@@ -405,7 +414,7 @@ export default class SessionCheckScene extends Component {
   reverseString = str => {
     return str.split("").reverse().join("")
   }
-
+/*
   seekMeetQs = sexualOrientation => {
     switch (sexualOrientation) {
       case 'msf':
@@ -422,7 +431,7 @@ export default class SessionCheckScene extends Component {
         break
     }
   }
-
+*/
   seekMeetQs = sexualOrientation => {
     switch (sexualOrientation) {
       case 'msf':
@@ -469,12 +478,37 @@ export default class SessionCheckScene extends Component {
     this.firebase.database().ref('/online/' + this.SubjectStore.uid).set({
       lastOnline: Math.floor(Date.now() / 1000),
       location: 'Taipei, Taiwan'
+    }) 
+    // onlineDaysMonth
+    this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineDaysMonth').once('value',snap => {
+      const onlineDaysMonth = snap.val() || new Object
+      const time_now = new Date()
+      const this_month = time_now.getMonth() + 1 // getMonth 都會少一個月 時區問題？
+      const today = time_now.getFullYear() + '-' + this_month + '-' + time_now.getDate()
+      Object.keys(onlineDaysMonth).forEach(key => {
+        if (parseInt(key.split('-')[1]) !== this_month) {
+          delete onlineDaysMonth[key] // 清除不屬於這個月份的登入日期
+        }
+      })
+      onlineDaysMonth[today] = true
+      this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineDaysMonth').set(onlineDaysMonth)
+      this.SubjectStore.setOnlineDaysMonth(onlineDaysMonth)
+      //console.log(onlineDaysMonth)
     })
   }
 
   setOffline() {
     this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(false)
-    this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove().catch(err => { console.log(err) })
+    // 計算上線時間
+    this.firebase.database().ref('/users/' + this.SubjectStore.uid).once('value',snap => {
+      const lastOnlineTime = snap.val().onlineTime || 0
+      this.firebase.database().ref('/online/' + this.SubjectStore.uid).once('value',snap => {
+        const lastOnline = snap.val().lastOnline || 0
+        const onlineTime = Math.floor(Date.now() / 1000) - lastOnline
+        this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineTime').set(lastOnlineTime + onlineTime)
+        this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove().catch(err => { console.log(err) })
+      })
+    })
   }
 
   genderToString = () => (

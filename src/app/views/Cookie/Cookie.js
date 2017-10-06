@@ -13,7 +13,7 @@ const picWidth = (width - 4 * x)/3
 
 const DEFAULT_IMAGE = require('./img/ico_qy_head_preload.png')
 
-const Cookie = ({ name, size, avatar, onPress, borderColor, local }) => {
+const Cookie = ({ name, size, avatar, onPress, borderColor, local, disabled }) => {
 
 const circleSize = size || picWidth
 
@@ -72,7 +72,7 @@ const styles = {
   }
 }
   return(
-    <TouchableOpacity activeOpacity={1} style={styles.view} onPress={ onPress }>
+    <TouchableOpacity disabled={ disabled } activeOpacity={1} style={styles.view} onPress={ onPress }>
       <View style={styles.circle} >
         { local ? 
           <MKPLoadImageView style={ styles.image } source={ avatar ? avatar : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />

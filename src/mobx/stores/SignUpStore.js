@@ -97,6 +97,7 @@ export default class SignUpStore {
   }
 
   @action setAlbum = (key,url) => {
+    this.album = new Object
     this.album[key] = url
     //this.album = Object.assign({},this.album)
   }

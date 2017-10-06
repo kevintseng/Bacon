@@ -46,9 +46,9 @@ export default class SliderContainer extends Component {
         <View style={{flexDirection: 'row', justifyContent: 'center',paddingBottom: 10}}>
           <Text style={styles.text}>{this.ControlStore.meetChanceMinAge}</Text>
           <Text style={styles.text}> - </Text>
-          <Text style={styles.text}>{this.ControlStore.meetChanceMaxAge}</Text>
+          <Text style={styles.text}>{this.ControlStore.meetChanceMaxAge === 50 ? '50+' : this.ControlStore.meetChanceMaxAge}</Text>
         </View>
-        <MultiSlider step={1} min={18} max={99} values={[this.ControlStore.meetChanceMinAge,this.ControlStore.meetChanceMaxAge]} sliderLength={280} onValuesChange={ this.sliderOneValuesChange }/>
+        <MultiSlider step={1} min={18} max={50} values={[this.ControlStore.meetChanceMinAge,this.ControlStore.meetChanceMaxAge]} sliderLength={280} onValuesChange={ this.sliderOneValuesChange }/>
       </View>
     )
   }

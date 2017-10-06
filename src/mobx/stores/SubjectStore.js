@@ -35,6 +35,7 @@ export default class SubjectStore {
   @observable radar
   @observable latitude
   @observable longitude
+  @observable stars
   // hide function
   @observable hideMeetCute
   @observable hideMeetChance
@@ -64,7 +65,7 @@ export default class SubjectStore {
   // Object to String
 
   @computed get languagesToString() {
-    return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
+    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join()
     // { 中文: true, 英文: true } -> 中文,英文
   }
 
@@ -90,9 +91,13 @@ export default class SubjectStore {
   }
 
   @computed get tasksToFlatList() {
-    const tasks_title = ['電子郵件認證獎勵','上傳三張照片獎勵','完成自我介紹獎勵','完成興趣愛好獎勵']
-    const tasks_bonus = [20,20,20,20]
-    return Object.keys(this.tasks).map((key, index) => ({ key, task: tasks_title[index], bonus: tasks_bonus[index], taken: this.tasks[key] }))
+    const tasks_title = ['電子郵件認證獎勵','上傳三張照片獎勵','完成自我介紹獎勵','完成興趣愛好獎勵','每日上線獎勵','本週全勤獎勵','本月全勤獎勵']
+    const tasks_bonus = [20,20,20,20,5,50,200]
+    return Object.keys(this.tasks).map((key, index) => ({ key, task: tasks_title[index], bonus: tasks_bonus[index], taken: this.tasks[key] })).filter( ele => !ele.taken)
+  }
+
+  @computed get onlineDaysMonthLength() {
+    return Object.keys(this.onlineDaysMonth).length
   }
 
   // action
@@ -137,8 +142,14 @@ export default class SubjectStore {
       1: false,
       2: false,
       3: false,
-      4: false
+      4: false,
+      5: false,
+      6: false,
+      7: false
     }
+    //
+    this.stars = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+    this.onlineDaysMonth = new Object
   }
 
   @action setUid = uid => {
@@ -339,6 +350,14 @@ export default class SubjectStore {
     this.conversations[uid].visit = boolean
   }
 
+  @action setAllArticlesStars = stars => {
+    this.stars = stars
+  }
+
+  @action setStars = (id,rating) => {
+    this.stars[id] = rating
+  }
+
   // task
 
   @action setTask1 = boolean => {
@@ -355,6 +374,41 @@ export default class SubjectStore {
 
   @action setTask4 = boolean => {
     this.tasks[4] = boolean
+  }
+
+  @action setTask5 = boolean => {
+    this.tasks[5] = boolean
+  }
+
+  @action setTask6 = boolean => {
+    this.tasks[6] = boolean
+  }
+
+  @action setTask7 = boolean => {
+    this.tasks[7] = boolean
+  }
+
+  @action setOnlineDaysMonth = onlineDaysMonth => {
+    this.onlineDaysMonth = onlineDaysMonth
+  }
+
+  masterLevel = (check) => {
+    switch(check) {
+        case 0:
+            return ''
+            break;
+        case 1:
+            return '(一般)'
+            break;
+        case 2:
+            return '(普通)'
+            break;
+        case 3:
+            return '(精通)'
+            break;
+        default:
+            return ''
+    }     
   }
 
 }

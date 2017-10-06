@@ -42,8 +42,10 @@ export default class CourtContainer extends Component {
 
     await this.firebase.database().ref('users/' +  this.MeetCuteStore.uid).once('value').then(snap => {
       if (snap.val()) {
+        const favorabilityDen = snap.val().favorabilityDen || 0
         const favorabilityNum = snap.val().favorabilityNum || 0
         this.firebase.database().ref('users/' + this.MeetCuteStore.uid + '/favorabilityNum').set(favorabilityNum + 1)
+        this.firebase.database().ref('users/' + this.MeetCuteStore.uid + '/favorability').set((favorabilityNum + 1)/favorabilityDen)
       } else {
         //
       }

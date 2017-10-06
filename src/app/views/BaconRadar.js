@@ -9,6 +9,12 @@ const radius = width/4
 
 const radius_inner = width/8
 
+//const activitynessPR = 0.53
+//const friendlinessPR = 0.67
+//const favorabilityPR = 0.77
+//const popularityPR = 0.91
+//const attractivePR = 0.82
+
 const linearGradient = new ART.LinearGradient({
   "0": "#f4a764",
   "1": "#d63768"
@@ -20,19 +26,20 @@ const circle = ART.Path()
   .arc(0, radius * -2, radius)
 
 const circle_inner = ART.Path()
-  .move(width/2, width/8)
+  .move(width/2, width/7)
   .arc(0, radius_inner * 2, radius_inner)
   .arc(0, radius_inner * -2, radius_inner)
 
-const star = new Path()
-  .moveTo(121,31)
-  .lineTo(90,100)
-  .lineTo(179,190)
-  .lineTo(225,100)
-  .lineTo(239,31)
-  .close()
 
-const BaconRadar = ({ data }) => {
+const BaconRadar = ({ activitynessPR, friendlinessPR, favorabilityPR, popularityPR, attractivePR}) => {
+
+const star = new Path()
+  .moveTo(width/2 - radius*(activitynessPR || 0),width/3.8)
+  .lineTo(width/2,width/3.8 + radius*(friendlinessPR || 0))
+  .lineTo(width/2 + radius*(favorabilityPR || 0 ),width/3.8)
+  .lineTo(width/2 + radius*(popularityPR || 0)*0.52532198881,width/3.8 - radius*(popularityPR || 0)*0.85090352453)
+  .lineTo(width/2 - radius*(attractivePR || 0)*0.52532198881,width/3.8 - radius*(attractivePR || 0)*0.85090352453)
+  .close()
 
   return(
     <View>
@@ -43,10 +50,10 @@ const BaconRadar = ({ data }) => {
           <Shape d={circle_inner} stroke="#b3b3b3" strokeWidth={1} strokeDash={[10,5]}/>
         </Group>
       </Surface>
-      <View style={{position: 'absolute',left: 75}}>
+      <View style={{position: 'absolute',left: 85}}>
         <Text>魅力值</Text>
       </View>
-      <View style={{position: 'absolute',right: 75}}>
+      <View style={{position: 'absolute',right: 85}}>
         <Text>熱門度</Text>
       </View>
       <View style={{position: 'absolute',left: 40,top: 80}}>
@@ -55,7 +62,7 @@ const BaconRadar = ({ data }) => {
       <View style={{position: 'absolute',right: 40,top: 80}}>
         <Text>好感度</Text>
       </View>
-      <View style={{alignSelf: 'center', paddingLeft: 0, position: 'absolute',top: width/2 + 5}}>
+      <View style={{alignSelf: 'center', paddingLeft: 0, position: 'absolute',top: width/2 + 15}}>
         <Text>友好度</Text>
       </View>
     </View> 
@@ -63,3 +70,12 @@ const BaconRadar = ({ data }) => {
 }
 
 export default BaconRadar
+
+/*
+
+  .moveTo(121,31)
+  .lineTo(90,100)
+  .lineTo(179,190)
+  .lineTo(225,100)
+  .lineTo(239,31)
+*/

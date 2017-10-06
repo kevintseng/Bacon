@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View,Text, BackHandler, ToastAndroid } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 
 import TaskContainer from '../../../containers/NotificationScene/TaskContainer'
 import BulletinContainer from '../../../containers/NotificationScene/BulletinContainer'
@@ -38,7 +38,7 @@ export default class AboutMeBoardScene extends Component {
       <ScrollableTabView
         initialPage = {0}
         tabBarPosition='top'
-        renderTabBar={() => <ScrollableTabBar />}
+        renderTabBar={() => <DefaultTabBar />}
         tabBarUnderlineStyle={{ backgroundColor: '#d63768' }}
         tabBarBackgroundColor='white'
         tabBarActiveTextColor='#d63768'

@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
-import {Platform, View} from 'react-native'
-import {Router, Scene, Actions} from 'react-native-router-flux'
+import React, { Component } from 'react'
+import { Platform, View } from 'react-native'
+import { Router, Scene, Actions } from 'react-native-router-flux'
 
 // ###############authenticate################ //
 import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
@@ -37,6 +37,7 @@ import FateTabScene from './scenes/drawer/Fate/FateTabScene'
 import FateCourtScene from './scenes/drawer/Fate/FateCourtScene'
 // Master
 import MasterTabScene from './scenes/drawer/Master/MasterTabScene'
+import MasterOneScene from './scenes/drawer/Master/MasterOneScene'
 // Setting
 import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
 import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
@@ -277,6 +278,7 @@ export default class Routes extends Component {
 
               <Scene key="Master" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="MasterTab" title="達人聊天室" renderLeftButton={this.baconMenu} component={MasterTabScene} />
+                <Scene key='MasterOne' title="達人簡介" renderBackButton={this.baconArrow} component={MasterOneScene} />
               </Scene>
 
             </Scene>

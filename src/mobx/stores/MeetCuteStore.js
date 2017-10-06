@@ -74,7 +74,7 @@ export default class MeetCuteStore {
     this.longitude = null
     // config
     this.meetCuteMinAge = 18
-    this.meetCuteMaxAge = 99
+    this.meetCuteMaxAge = 50
     this.meetCuteRadar = false
     this.meetCuteThreePhotos = false
     this.imageLoadingCount = 0
@@ -119,7 +119,7 @@ export default class MeetCuteStore {
         this.clean = false
         //this.preyList = this.pool.map(ele => ({}))
         this.preyList = this.preyList.filter(ele => 
-          ( !(preyListHistory.includes(ele.uid)) && !(matchList.includes(ele.uid)) && ele.birthday && ((calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= this.meetCuteMaxAge)) )
+          ( !(preyListHistory.includes(ele.uid)) && !(matchList.includes(ele.uid)) && ele.birthday && ((calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= (this.meetCuteMaxAge === 50 ? 99 : this.meetCuteMaxAge) )) )
         ) // 排除 45 天 // 過濾年紀
         this.shuffle(this.preyList)
         if (this.preyList.length > 0) {
@@ -155,14 +155,16 @@ export default class MeetCuteStore {
     await this.firebase.database().ref('users/' + this.uid).once('value', async snap => {
       if (snap.val() && !(snap.val().hideMeetCute) && !(snap.val().deleted) && this.checkPhoto(snap.val().album)) {
         const favorabilityDen = snap.val().favorabilityDen || 0
+        const favorabilityNum = snap.val().favorabilityNum || 0
         this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
+        this.firebase.database().ref('users/' + this.uid + '/favorability').set(favorabilityNum/(favorabilityDen + 1))
         runInAction(() => {
           this.nickname = snap.val().nickname
           this.bio = snap.val().bio
           this.birthday = snap.val().birthday
           this.languages = snap.val().languages || new Object
           this.hobbies = snap.val().hobbies || new Object
-          this.album = snap.val().album || new Object
+          this.album = this.handleNewAlbum(snap.val().album,snap.val().avatar)
           this.vip = Boolean(snap.val().vip)
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
@@ -207,14 +209,16 @@ export default class MeetCuteStore {
       if (snap.val() && !(snap.val().hideMeetCute) && !(snap.val().deleted) && this.checkPhoto(snap.val().album) ) {
         // 過濾隱藏
         const favorabilityDen = snap.val().favorabilityDen || 0
+        const favorabilityNum = snap.val().favorabilityNum || 0
         this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
+        this.firebase.database().ref('users/' + this.uid + '/favorability').set(favorabilityNum/(favorabilityDen + 1))
         runInAction(() => {
           this.nickname = snap.val().nickname
           this.bio = snap.val().bio
           this.birthday = snap.val().birthday
           this.languages = snap.val().languages || new Object
           this.hobbies = snap.val().hobbies || new Object
-          this.album = snap.val().album || new Object
+          this.album = this.handleNewAlbum(snap.val().album,snap.val().avatar)//snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
@@ -326,10 +330,10 @@ export default class MeetCuteStore {
 
   getDistance = (latitude,longitude) => {
     if (this.latitude && this.longitude && latitude && longitude) {
-      return geolib.getDistance(
+      return (geolib.getDistance(
         {latitude: this.latitude, longitude: this.longitude},
         {latitude: latitude, longitude: longitude}
-      )/1000
+      )/1000).toFixed(1)
     } else {
       return '?'
     }  
@@ -346,6 +350,20 @@ export default class MeetCuteStore {
     } else {
       return false
     }
+  }
+
+  handleNewAlbum = (album,avatar) => {
+    const key = this.getKeyByValue(album, avatar)
+    delete album[key]
+    album[0] = avatar
+    console.log(album)
+    //console.log(avatar)
+    //console.log(key)
+    return album || new Object
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value)
   }
 
 }

@@ -25,10 +25,8 @@ const styles = {
   view: {
     flex: 1
   },
-  middle: {
-
-  },
   bottom: {
+    marginTop: 10,
   }
 }
 
@@ -55,25 +53,47 @@ export default class SignUpThreeScene extends Component {
 
   render() {
     return(
-      <ScrollView style={{flex: 1, marginTop: 20}}>
-        <EmailContainer/>
-        <PasswordContainer/>
-        <NickNameContainer/>
-        <BirthdayContainer/>
-        <PolicyModalContainer/>
-        <RuleModalContainer/>
+       <ScrollView style={ styles.view }>
 
-        <View style={{marginTop: 40}}>
-          <PolicyContainer/>
-        </View>
+        <View style={{marginTop: 20}}>
+          <View style={{marginTop: 10}}>
+            <EmailContainer/>
+          </View>
+          <View style={{marginTop: 10}}>
+            <PasswordContainer/>
+          </View>
+          <View style={{marginTop: 10}}>
+            <NickNameContainer/>
+          </View>
+          <View style={{marginTop: 10}}>
+            <BirthdayContainer/>
+          </View>
+          <View style={{marginTop: 10}}>
+            <PolicyModalContainer/>
+          </View>
+          <View style={{marginTop: 10}}>
+            <RuleModalContainer/>
+          </View>
 
-        <View style={{position: 'absolute', top: 2, left: 20}}>
-          <EmailStatesContainer/>
-        </View>
+          <View style={{marginTop: 40}}>
+            <PolicyContainer/>
+          </View>
 
-        <View style={{position: 'absolute', top: 70, left: 20}}>
-          <PasswordStatesContainer/>
-        </View>
+          <View style={{marginTop: 10, left: 20}}>
+            <EmailStatesContainer/>
+          </View>
+
+          <View style={{marginTop: 10, left: 20}}>
+            <PasswordStatesContainer/>
+          </View>
+
+          <View style={{marginTop: 10, left: 20}}>
+            <NickNameStatesContainer/>
+          </View>
+
+          <View style={{marginTop:10, alignSelf: 'center',alignItems: 'center'}}>
+            <FailureContainer/>
+          </View>
 
         <View style={{position: 'absolute', top: 140, left: 20}}>
           <NickNameStatesContainer/>
@@ -87,7 +107,6 @@ export default class SignUpThreeScene extends Component {
         </View>
 
       </ScrollView>
-
     )
   }
 }
