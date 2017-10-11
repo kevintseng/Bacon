@@ -5,6 +5,7 @@
 # Xcode
 #
 build/
+Index/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -21,6 +22,9 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+*.xcodeproj
+main.jsbundle
+main.jsbundle.meta
 
 # Android/IntelliJ
 #
