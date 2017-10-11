@@ -41,16 +41,19 @@ const styles = {
   },
 }
 
-@inject("firebase", "SubjectStore")
+@inject("firebase", "SubjectStore", "LineStore")
 @observer
 export default class LineListScene extends Component {
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    // this.store = this.props.LineStore
+    //
+    // console.log("THIS STORE: ", this.store)
 
     this.uid = this.SubjectStore.uid
-    console.log("this.uid")
+
     this.convNum = 0
     this.state = {
       size: {
@@ -99,19 +102,6 @@ export default class LineListScene extends Component {
     // console.log("onlineListener off: ", userId)
     return ref.off("value", listen)
   }
-
-  // sortConv = () => {
-  //   const newC = this.state.convs
-  //   newC.sort(this.compare())
-  // }
-
-  // compare(a, b) {
-  //   if (a.sortKey < b.sortKey)
-  //     return -1;
-  //   if (a.sortKey > b.sortKey)
-  //     return 1;
-  //   return 0;
-  // }
 
   getUserData = uid => {
     const ref = this.firebase.database().ref(`users/${uid}`)

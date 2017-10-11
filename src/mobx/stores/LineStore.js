@@ -1,5 +1,6 @@
 import { useStrict, observable, action, computed } from 'mobx'
 import { calculateAge } from '../../app/Utils'
+import localdb from '../../configs/localdb'
 
 export default class LineStore {
   // user data
@@ -37,6 +38,7 @@ export default class LineStore {
     this.vip = false
     this.conversations = null
     this.chatStatus = null
+    this.fetchConvQuery = null
   }
 
   @action setChatStatus = status => {
@@ -55,6 +57,10 @@ export default class LineStore {
   @action deleteConv = (key) => {
     delete this.conversations[key]
     this.conversations = Object.assign({}, this.conversations)
+  }
+
+  @action fetchConv = () => {
+    this.fetchConvQuery = this.firebase.database().ref('users/' + this.uid + '/conversations')
   }
 
 }
