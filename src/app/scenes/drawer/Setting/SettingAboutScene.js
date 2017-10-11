@@ -53,11 +53,21 @@ export default class SettingAboutScene extends Component {
       <View style={{flex: 1, alignItems: 'center'}}>
         <PolicyModalContainer/>
         <RuleModalContainer/>
-        <View style={{flex: 1,paddingTop: 20, paddingLeft: 40, paddingRight: 30}}>
+        <View style={{flex: 1,paddingTop: 5, paddingLeft: 40, paddingRight: 30}}>
           <Text style={styles.text}>
-            我相信網路是讓我擴大交友圈最好的方式我很重視隱私，我不要交友軟體跟FB或手機通訊錄有任何關聯我對於要付錢才能打個招呼或是付錢才能看對方資料非常反感我討厭主動跟我打招呼或示好的是假賬號或是機器人賬號如果你跟我們一樣，歡迎加入BACON！
+            {
+`我相信網路是讓我擴大交友圈最好的方式
+
+我很重視隱私，我不要交友軟體跟FB或手機通訊錄有任何關聯
+
+我對於要付錢才能打個招呼或是付錢才能看對方資料非常反感
+
+我討厭主動跟我打招呼或示好的是假賬號或是機器人賬號
+
+如果你跟我們一樣，歡迎加入BACON！`
+              }
           </Text>
-          <Text style={{textAlign: 'right',paddingTop: 20, paddingRight: 7}}>
+          <Text style={{textAlign: 'right',paddingTop: 5, paddingRight: 7}}>
             BACON團隊
           </Text>
         </View>
