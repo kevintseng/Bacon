@@ -55,6 +55,10 @@ export default class DrawerScene extends Component {
     Actions.LineList({type: 'replace'})
   }
 
+  goToConvs = () => {
+    Actions.Convs({type: 'replace'})
+  }
+
   goToMeetCute = () => {
     Actions.MeetCute({type: 'replace'})
   }
@@ -97,6 +101,7 @@ export default class DrawerScene extends Component {
             meetchanceOnPress={ this.goToMeetChance }
             meetcueOnPress={ this.goToMeetCute }
             messageOnPress={ this.goToLine }
+            lineOnPress={ this.goToConvs }
             fateOnPress={ this.goToFate }
             articleOnPress={ this.goToArticle }
             settingOnPress={ this.goToSetting }
