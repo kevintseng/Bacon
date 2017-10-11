@@ -8,9 +8,11 @@ import LinearGradient from 'react-native-linear-gradient'
 import CourtContainer from '../../../containers/MeetCuteCourtScene/CourtContainer'
 import InfosContainer from '../../../containers/MeetCuteCourtScene/InfosContainer'
 import BadgeWallContainer from '../../../containers/MeetCuteCourtScene/BadgeWallContainer'
-import MateModalContainer from '../../../containers/MeetCuteCourtScene/MateModalContainer'
+
 import SearchModalContainer from '../../../containers/MeetCuteCourtScene/SearchModalContainer'
 import LoadingModalContainer from '../../../containers/MeetCuteCourtScene/LoadingModalContainer'
+
+import MateModalContainer from '../../../containers/MeetCuteCourtScene/MateModalContainer'
 
 import BaconRadar from '../../../views/BaconRadar'
 
@@ -86,34 +88,3 @@ export default class MeetCuteCourtScene extends Component {
     )
   }
 }
-/*
-!this.MeetCuteStore.haveNewPreys || this.MeetCuteStore.firstLoading
-<SearchModalContainer/> 
-           <SearchModalContainer/>   
-            <LoadingModalContainer/>
-            
-*/
-
-/*
-        { this.MeetCuteStore.haveNewPreys && this.MeetCuteStore.loading &&
-          this.indicator() 
-        }
-*/
-
-/*
-
-            <View></View>
-            <View>
-              <Animatable.Text animation="swing" iterationCount="infinite" direction="alternate" style={styles.animation} >搜尋邂逅名單中</Animatable.Text>
-              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>❤️</Animatable.Text>
-            </View> 
-
-            <TouchableOpacity onPress={ this.cleanHistory } >
-              <LinearGradient start={{x: 0.0, y: 0.0}} end={{x: 1.5, y: 0.0}} colors={colors}>
-                <View style={{flexDirection: 'row',justifyContent: 'space-around',alignItems: 'center',paddingTop: 10, paddingBottom: 10}}>
-                  <Text style={ styles.text }>重新來場美麗的邂逅</Text>
-                </View>
-              </LinearGradient>  
-            </TouchableOpacity> 
-          */
-
