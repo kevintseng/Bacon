@@ -76,9 +76,7 @@ export default class MasterModalContainer extends Component {
 
   onPrsss = () => {
     this.ControlStore.setlangAdvanced()
-    if (this.state.d == true) {
-      this.SubjectEditStore.disableLanguages(this.ControlStore.lang)
-    } else if (this.state.c == true) {
+    if (this.state.c == true) {
       this.SubjectEditStore.oneLevelLanguages(this.ControlStore.lang)
     } else if (this.state.b == true) {
       this.SubjectEditStore.twoLevelLanguages(this.ControlStore.lang)
@@ -92,7 +90,7 @@ export default class MasterModalContainer extends Component {
       <Modal animationType={"fade"} transparent={true} visible={this.ControlStore.langAdvanced} onRequestClose={ this.ControlStore.setlangAdvanced } >
           <TouchableOpacity
             activeOpacity={1}
-            //onPress={ this.ControlStore.setlangAdvanced }
+            onPress={ this.ControlStore.setlangAdvanced }
             style={{
               backgroundColor: 'rgba(52, 52, 52, 0.8)',
               flex: 1,
@@ -141,15 +139,6 @@ export default class MasterModalContainer extends Component {
               checked={this.state.c}
               onPress={ this.onPressC }
             />
-            <CheckBox
-              fontFamily='NotoSans'
-              containerStyle={{backgroundColor: 'transparent',borderWidth: 0}}
-              textStyle={styles.option}
-              center
-              title='不會'
-              checked={this.state.d}
-              onPress={ this.onPressD }
-            />
             <TouchableOpacity onPress={ this.onPrsss }>
               <Text style={[styles.title,{color: '#d63768',fontWeight: '400'}]}>確認</Text>
             </TouchableOpacity>
@@ -160,3 +149,16 @@ export default class MasterModalContainer extends Component {
     )
   }
 }
+
+/*
+
+            <CheckBox
+              fontFamily='NotoSans'
+              containerStyle={{backgroundColor: 'transparent',borderWidth: 0}}
+              textStyle={styles.option}
+              center
+              title='不會'
+              checked={this.state.d}
+              onPress={ this.onPressD }
+            />
+*/
