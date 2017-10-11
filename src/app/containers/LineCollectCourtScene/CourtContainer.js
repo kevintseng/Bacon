@@ -30,7 +30,7 @@ export default class CourtContainer extends Component {
   }
 
   componentWillUnmount = async () => {
-    if (this.state.collection === true) {
+    if (this.state.collection === true && this.props.collection === false) {
       // 收集此人 加入local db
       await localdb.save({
         key: 'collection' + this.SubjectStore.uid,
@@ -40,12 +40,14 @@ export default class CourtContainer extends Component {
         },
         expires: null,
       })
-    } else {
+    } else if (this.state.collection === false) {
       // 將此人移出local db
       await localdb.remove({
         key: 'collection' + this.SubjectStore.uid,
         id: this.Store.uid
       })
+    } else {
+      //
     }
     this.Store.cleanFetch()
     this.handleCollection()
