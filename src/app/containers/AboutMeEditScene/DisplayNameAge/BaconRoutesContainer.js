@@ -38,7 +38,7 @@ export default class BaconRoutesContainer extends Component {
   }
 
   nicknameChecker = () => {
-    if (/^[^null]{2,20}$/.test(this.SubjectEditStore.nickname)) {
+    if (/^[^null]{2,20}/.test(this.SubjectEditStore.nickname)) {
       return true
     }
     return false
