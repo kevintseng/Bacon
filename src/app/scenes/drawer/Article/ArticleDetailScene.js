@@ -74,7 +74,7 @@ export default class ArticleDetailScene extends Component {
   }
 
   goToLink = () => {
-    Linking.openURL('http://www.pcstore.com.tw/pchome24h/M16656421.html').catch(err => console.error('An error occurred', err))
+    Linking.openURL('http://24h.pchome.com.tw/books/prod/DJAM05-A9007EKBG').catch(err => console.error('An error occurred', err))
   }
 
 
