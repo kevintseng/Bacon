@@ -24,6 +24,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1919F0C41AFC432899F12E59 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1385B4197050463991BFEE40 /* libRCTOrientation.a */; };
 		1EF7C079737849C8A9C5F404 /* NotoSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2F57C13FF944DB4A2965488 /* NotoSans-BoldItalic.ttf */; };
 		20321FB6F1264BD4A2C5AFD4 /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D336612299704A0D9AA2EC14 /* NotoSans-Regular.ttf */; };
@@ -49,7 +50,6 @@
 		459C11CD1F558F34001A66BF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 459C11CC1F558F34001A66BF /* StoreKit.framework */; };
 		47B935412EB84C40919D0839 /* libInAppUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5818299020DF408DB9C68A3D /* libInAppUtils.a */; };
 		4D398B3B15294019A39CC1CB /* NotoSansUI-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D47F9EEA9D8B4F5DA6AB1383 /* NotoSansUI-BoldItalic.ttf */; };
-		505156D41F8E1C490049729C /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		506AC5ADD6C3452599C67CF9 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0A02AFDFFBA4D8BAE118667 /* Octicons.ttf */; };
 		5AB6017A717886262F1ED6DB /* libPods-Bacon-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 128E1D809D19E46964B466F9 /* libPods-Bacon-tvOSTests.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -516,8 +516,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				505156D41F8E1C490049729C /* libRCTWebSocket.a in Frameworks */,
 				459C11CD1F558F34001A66BF /* StoreKit.framework in Frameworks */,
+				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -1033,7 +1033,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 900;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {

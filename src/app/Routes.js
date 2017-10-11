@@ -55,9 +55,6 @@ import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
 import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
 import LineScene from './scenes/drawer/Line/LineScene'
 //
-import LineTabScene from './scenes/drawer/Line/LineTabScene'
-import LineChatScene from './scenes/drawer/Line/LineChatScene'
-//
 import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
 //
 import ArticleListScene from './scenes/drawer/Article/ArticleListScene'
@@ -276,10 +273,7 @@ export default class Routes extends Component {
               <Scene key="Bonus" title="Q點儲值" renderBackButton={this.baconArrow} component={BonusOneScene} />
 
               <Scene key="Line" title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
-              <Scene key="Convs" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
-                <Scene key="Conversation" title="訊息" renderBackButton={this.baconMenu} renderRightButton={this.baconToolLine} component={LineTabScene} />
-                <Scene key="ChatRoom" title="聊天室" renderBackButton={this.baconArrow} component={LineChatScene}  />
-              </Scene>
+
               <Scene key="UseBonus" title="使用Q點" renderBackButton={this.baconArrow} component={UseBonusScene} />
 
               <Scene key="Master" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
