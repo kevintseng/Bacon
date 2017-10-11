@@ -28,7 +28,7 @@ export default class ArticleListScene extends Component {
   }
 
   goToArticleDetail = (key,title,uri,content,source,stageSource,stageName,stageTag) => {
-    Actions.ArticleDetail({id: key, articleAitle: title, uri: uri, content: content, articleSource: source, stageSource: stageSource, stageName: stageName, stageTag: stageTag})
+    Actions.ArticleDetail({id: key, articleTitle: title, uri: uri, content: content, articleSource: source, stageSource: stageSource, stageName: stageName, stageTag: stageTag})
   }
 
   render() {
