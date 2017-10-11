@@ -94,19 +94,28 @@ export default class InfosContainer extends Component {
     this.setState({ showModal: false})
   }
 
+  onPrssBlockade = async () => {
+    // 上傳封鎖紀錄
+    await this.firebase.database().ref('blockade/' + this.SubjectStore.uid + this.FateStore.uid ).set({ wooer: this.SubjectStore.uid , prey: this.FateStore.uid, time: Date.now() })
+    Actions.pop()
+  }
+
   render() {
     return(
       <View>
         <Infos
+          showBlockade
           showReportUser
+          showDistance
           verityEmail={ this.FateStore.emailVerified }
           verityPhoto={ this.FateStore.photoVerified }
           displayName={ this.FateStore.nickname }
           bio={ this.FateStore.bio }
           age={ this.FateStore.age }
           langs={ this.FateStore.languagesToString }
-          distance='35'
+          distance={ this.FateStore.distance }
           onReportUserPressed= { this.reportPressed }
+          onPrssBlockade={ this.onPrssBlockade }
         />
         <Modal
           isVisible={this.state.showModal}
