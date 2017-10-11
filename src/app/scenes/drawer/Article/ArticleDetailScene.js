@@ -23,7 +23,8 @@ const styles = {
     letterSpacing: 3,
     fontFamily: 'NotoSans', 
     backgroundColor: 'transparent',
-    padding: 10
+    padding: 10,
+    lineHeight: 30
   },
   articleSource: {
     alignItems: 'flex-end'    
@@ -34,7 +35,8 @@ const styles = {
     fontFamily: 'NotoSans', 
     backgroundColor: 'transparent',
     padding: 10,
-    fontWeight: '500'   
+    fontWeight: '500',
+    lineHeight: 30  
   }
 }
 
@@ -80,11 +82,11 @@ export default class ArticleDetailScene extends Component {
 
   render() {
 
-    const { id, articleAitle, uri, content, articleSource, stageSource, stageName, stageTag } = this.props
+    const { id, articleTitle, uri, content, articleSource, stageSource, stageName, stageTag } = this.props
 
     return (
       <ScrollView>
-        <Text style={styles.titile}>{articleAitle}</Text>
+        <Text style={styles.titile}>{articleTitle}</Text>
         <Image resizeMode={'cover'} style={{width,height: width}} source={uri}/>
         <Text style={styles.text}>{ content }</Text>
         { articleSource &&
