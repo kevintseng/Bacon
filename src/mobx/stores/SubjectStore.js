@@ -66,7 +66,7 @@ export default class SubjectStore {
 
   @computed get languagesToString() {
     return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join()
-    // { 中文: true, 英文: true } -> 中文,英文
+    // { 中文: 1, 英文: 2 } -> 中文(一般),英文(普通)
   }
 
   // Object to Array FlatList
@@ -406,6 +406,9 @@ export default class SubjectStore {
         case 3:
             return '(精通)'
             break;
+        case true: // 相容性
+            return '(一般)'
+            break;        
         default:
             return ''
     }     
