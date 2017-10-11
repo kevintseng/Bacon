@@ -58,7 +58,7 @@ const styles = {
   }
 }
 
-const Infos = ({verityEmail, verityPhoto, displayName, bio, age, address, langs, distance, showDistance, showBlockade, showReportUser, onReportUserPressed}) => (
+const Infos = ({verityEmail, verityPhoto, displayName, bio, age, address, langs, distance, showDistance, showBlockade, showReportUser, onReportUserPressed, onPrssBlockade}) => (
   <View style={{width: width*0.8}}>
     <View style={styles.top}>
       <Image style={{marginRight: 5}} source={verityEmail ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
@@ -95,7 +95,7 @@ const Infos = ({verityEmail, verityPhoto, displayName, bio, age, address, langs,
 
 
     { showBlockade &&
-      <TouchableOpacity style={styles.blockadeView}>
+      <TouchableOpacity style={styles.blockadeView} onPress={onPrssBlockade}>
         <Image style={styles.icon} source={require('./img/btn_meet_block.png')}/>
         <Text style={styles.text}>封鎖此人</Text>
       </TouchableOpacity>
