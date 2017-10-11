@@ -55,7 +55,7 @@ export default class InfosContainer extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.MeetCuteStore = this.props.MeetCuteStore
-    this.Store = this.props.SubjectStore
+    this.SubjectStore = this.props.SubjectStore
     this.state = {
       showModal: false,
       reportSubmitted: false,
@@ -85,7 +85,7 @@ export default class InfosContainer extends Component {
     }
     const timestamp = Math.floor(Date.now() / 1000);
     console.log('reported: ', reason)
-    this.firebase.database().ref(`reportUser/${this.MeetCuteStore.uid}/${timestamp}`).set({reporter: this.Store.uid, reason})
+    this.firebase.database().ref(`reportUser/${this.MeetCuteStore.uid}/${timestamp}`).set({reporter: this.SubjectStore.uid, reason})
     this.setState({ reportSubmitted: true})
   }
 
@@ -93,11 +93,23 @@ export default class InfosContainer extends Component {
     this.setState({ showModal: false})
   }
 
+  onPrssBlockade = async () => {
+    //console.warn('封鎖此人')
+    // 上傳封鎖紀錄
+    await this.firebase.database().ref('blockade/' + this.SubjectStore.uid + this.MeetCuteStore.uid ).set({ wooer: this.SubjectStore.uid , prey: this.MeetCuteStore.uid, time: Date.now() })
+    this.goToNext()
+  }
+
+  goToNext = () => {
+    this.MeetCuteStore.setfirstLoad(false)
+    this.MeetCuteStore.pickNextPrey()
+  }
+
   render() {
     return(
       <View>
         <Infos
-          //showBlockade
+          showBlockade
           showReportUser
           showDistance
           verityEmail={ this.MeetCuteStore.emailVerified }
@@ -108,7 +120,8 @@ export default class InfosContainer extends Component {
           langs={ this.MeetCuteStore.languagesToString }
           distance={ this.MeetCuteStore.distance }
           onReportUserPressed= { this.reportPressed }
-          address= { this.MeetCuteStore.address }
+          address={ this.MeetCuteStore.address }
+          onPrssBlockade={ this.onPrssBlockade }
         />
         <Modal
           isVisible={this.state.showModal}

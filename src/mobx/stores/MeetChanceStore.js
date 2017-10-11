@@ -86,6 +86,9 @@ export default class MeetChanceStore {
     this.fetchPreyQuery
     // 
     this.notFound = false
+    // blockade
+    this.blockadePool = new Object
+    this.blockadeList = null
   }
 
   @action setLatitude = latitude => {
@@ -110,14 +113,19 @@ export default class MeetChanceStore {
     delete this.pool[uid]
   }
 
+  @action addPreyToblockadePool = (uid,time) => {
+    this.blockadePool[uid] = time
+  }
+
   // preyList
 
   @action setPreyList = () => {
     // 過濾名單
+    this.blockadeList = this.filterBlockadeList()
     this.preyList = Object.keys(this.pool).filter( 
       key => {
         const value = this.pool[key]
-        if (!(value.hideMeetChance) && !(value.deleted) && value.birthday && ((calculateAge(value.birthday) >= this.meetChanceMinAge) && (calculateAge(value.birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(value.online)) {
+        if (!(value.hideMeetChance) && !(value.deleted) && !(this.blockadeList.includes(key)) && value.birthday && ((calculateAge(value.birthday) >= this.meetChanceMinAge) && (calculateAge(value.birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(value.online)) {
           const popularityDen = value.popularityDen || 0
           const popularityNum = value.popularityNum || 0
           this.firebase.database().ref('users/' + value.uid + '/popularityDen').set(popularityDen + 1)
@@ -132,7 +140,11 @@ export default class MeetChanceStore {
     this.preyList.sort((a, b) => {
       return a.distance > b.distance ? 1 : -1
     })
+    // !(blockadeList.includes(key)) &&
+  }
 
+  @action filterBlockadeList = () => {
+    return Object.keys(this.blockadePool)
   }
 
   @action setRealPreys = () => {
