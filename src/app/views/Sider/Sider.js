@@ -32,7 +32,7 @@ const styles = {
   }
 }
 
-const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, lineOnPress, settingOnPress, articleOnPress, masterOnPress }) => {
+const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, settingOnPress, articleOnPress, masterOnPress }) => {
 
   return(
     <ScrollView showsVerticalScrollIndicator={false} style = { styles.scrollView } >
@@ -85,10 +85,6 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </View>
 
         <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='新訊息' showBadge={false} badgeCount={6} listOnPress={ lineOnPress }/>
-        </View>
-
-        <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_yf.png')} listTitle='緣分' showBadge={false} badgeCount={9} listOnPress={ fateOnPress }/>
         </View>
 
@@ -99,7 +95,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_column.png')} listTitle='達人聊天室' listOnPress={ masterOnPress }/>
         </View>
-
+        
         <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
         </View>
