@@ -108,6 +108,7 @@ export default class InfosContainer extends Component {
           langs={ this.MeetCuteStore.languagesToString }
           distance={ this.MeetCuteStore.distance }
           onReportUserPressed= { this.reportPressed }
+          address= { this.MeetCuteStore.address }
         />
         <Modal
           isVisible={this.state.showModal}

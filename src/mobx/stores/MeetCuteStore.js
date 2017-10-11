@@ -24,6 +24,7 @@ export default class MeetCuteStore {
   @observable photoVerified
   @observable latitude
   @observable longitude
+  @observable address
 
   constructor(firebase) {
     this.firebase = firebase
@@ -72,6 +73,7 @@ export default class MeetCuteStore {
     this.photoVerified = false
     this.latitude = null
     this.longitude = null
+    this.address = null
     // config
     this.meetCuteMinAge = 18
     this.meetCuteMaxAge = 50
@@ -169,6 +171,7 @@ export default class MeetCuteStore {
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
+          this.address = snap.val().address
         })
         runInAction(() => {
           this.haveNewPreys = true
@@ -223,6 +226,7 @@ export default class MeetCuteStore {
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
+          this.address = snap.val().address
         })
         runInAction(() => {
           this.haveNewPreys = true
