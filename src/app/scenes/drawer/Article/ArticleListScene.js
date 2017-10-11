@@ -17,20 +17,10 @@ export default class ArticleListScene extends Component {
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
-    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
   componentDidMount = async () => {
     await this.sleep(260)
-  }
-
-  componentWillUnmount(){
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-  }
-
-  onBackAndroid = () => {
-    Actions.pop()
-    return true
   }
 
   sleep = ms => {
