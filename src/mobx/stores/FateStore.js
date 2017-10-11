@@ -337,7 +337,7 @@ export default class FateStore {
           this.birthday = snap.val().birthday
           this.languages = snap.val().languages || new Object
           this.hobbies = snap.val().hobbies || new Object
-          this.album = snap.val().album || new Object
+          this.album = this.handleNewAlbum(snap.val().album,snap.val().avatar)//snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
@@ -367,6 +367,17 @@ export default class FateStore {
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  handleNewAlbum = (album,avatar) => {
+    const key = this.getKeyByValue(album, avatar)
+    delete album[key]
+    album[0] = avatar
+    return album || new Object
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value)
   }
 
   getDistance = (latitude,longitude) => {

@@ -346,7 +346,6 @@ export default class MeetCuteStore {
   checkPhoto = album => {
     const _album = new Object(album)
     const length = Object.keys(_album).length
-    //console.warn(length)
     if (!this.meetCuteThreePhotos) {
       return true
     } else if (this.meetCuteThreePhotos && length >= 3) {
@@ -360,9 +359,6 @@ export default class MeetCuteStore {
     const key = this.getKeyByValue(album, avatar)
     delete album[key]
     album[0] = avatar
-    console.log(album)
-    //console.log(avatar)
-    //console.log(key)
     return album || new Object
   }
 
