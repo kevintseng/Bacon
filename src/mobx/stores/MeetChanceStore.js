@@ -144,44 +144,7 @@ export default class MeetChanceStore {
     //}
     this.preys = toJS(this.preyList)
   }
-/*
-  @action setRealPreys = () => {
-    const preysPromises = this.preyList.map((ele,index) => (
-      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
-        if (snap.val() && !(snap.val().hideMeetChance) && !(snap.val().deleted) && snap.val().birthday && ((calculateAge(snap.val().birthday) >= this.meetChanceMinAge) && (calculateAge(snap.val().birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(snap.val().online)) {
-          const popularityDen = snap.val().popularityDen || 0
-          const popularityNum = snap.val().popularityNum || 0
-          this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(popularityDen + 1)
-          this.firebase.database().ref('users/' + ele.uid + '/popularity').set(popularityNum/(popularityDen + 1))
-          return({
-            key: ele.uid,
-            nickname: snap.val().nickname,
-            avatar: snap.val().avatar,
-            birthday: snap.val().birthday
-          })
-        } else {
-          return null
-        }
-      }).catch(err => console.log(err))
-    ))
 
-    Promise.all(preysPromises)
-    .then(preys => {
-      if (preys.length == 0) {
-        //runInAction(() => {
-        //  this.preys = preys
-        //})
-      } else {
-        runInAction(() => {
-          this.preys = preys
-        })        
-      }
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
-*/
   // LineCollection
 
   @action setCourtInitialize = uid => {
@@ -205,7 +168,7 @@ export default class MeetChanceStore {
           this.birthday = snap.val().birthday
           this.languages = snap.val().languages || new Object
           this.hobbies = snap.val().hobbies || new Object
-          this.album = snap.val().album || new Object
+          this.album = this.handleNewAlbum(snap.val().album,snap.val().avatar)//snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
@@ -261,6 +224,17 @@ export default class MeetChanceStore {
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  handleNewAlbum = (album,avatar) => {
+    const key = this.getKeyByValue(album, avatar)
+    delete album[key]
+    album[0] = avatar
+    return album || new Object
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value)
   }
 
   getDistance = (latitude,longitude) => {
