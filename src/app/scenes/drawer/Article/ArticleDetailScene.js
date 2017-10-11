@@ -53,6 +53,16 @@ export default class ArticleDetailScene extends Component {
   }
 
   componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.pop()
+    return true
   }
 
   goToArticleSource = () => {
