@@ -41,8 +41,8 @@ export default class MateModalContainer extends Component {
 
   goToLine = async () => { 
     await this.ControlStore.setMateModal()
+    await Actions.Line({uid: this.MeetCuteStore.uid, name: this.MeetCuteStore.nickname})
     this.goToNext()
-    Actions.Line({uid: this.MeetCuteStore.uid, name: this.MeetCuteStore.nickname})
   }
 
   keepMeetCute = async () => {
