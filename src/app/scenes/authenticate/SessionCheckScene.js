@@ -155,6 +155,7 @@ export default class SessionCheckScene extends Component {
   uploadLocation = () => {
     Geolocation.getCurrentPosition(
       location => {
+        this.uploadFirebaseLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
         this.setLocation(location.coords.latitude,location.coords.longitude)
       },
       error => {
