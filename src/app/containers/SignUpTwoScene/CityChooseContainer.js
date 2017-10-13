@@ -20,7 +20,7 @@ export default class CityChooseContainer extends Component {
     })
     .then((place) => {
     //console.log(place)
-      this.SignUpStore.setAddress(place.address)
+      this.SignUpStore.setAddress(place.name)
       this.SignUpStore.setLatitude(place.latitude)
       this.SignUpStore.setLongitude(place.longitude)
     }).catch(error => console.log(error.message))
@@ -32,7 +32,7 @@ export default class CityChooseContainer extends Component {
       country: 'TW'
     })
     .then((results) => {
-      this.SignUpStore.setAddress(results[0].address)
+      this.SignUpStore.setAddress(results[0].name)
       console.log(results)
     })
     .catch(error => Alert.alert( 
