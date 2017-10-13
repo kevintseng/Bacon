@@ -328,7 +328,7 @@ export default class SessionCheckScene extends Component {
     geoQuery.on('key_entered', (uid, location, distance) => {
       if (uid !== this.SubjectStore.uid) {
         this.firebase.database().ref('users/' + uid).once('value').then( snap => {
-          if (snap.val().sexualOrientation === this.reverseString(this.SubjectStore.sexualOrientation)) {
+          if (snap.val().sexualOrientation === this.reverseString(this.SubjectStore.sexualOrientation) && snap.val().album) {
             this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online,snap.val().popularityDen,snap.val().popularityNum)
           }
         })
