@@ -1,19 +1,30 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
+import { observer, inject } from 'mobx-react'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 
 import AllContainer from '../../../containers/LineTabScene/AllContainer'
 import UnreadContainer from '../../../containers/LineTabScene/UnreadContainer'
 import VisitorContainer from '../../../containers/LineTabScene/VisitorContainer'
 
+
+@inject('firebase','SubjectStore','LineStore') @observer
 export default class LineTabScene extends Component {
 
   constructor(props) {
     super(props)
+    this.firebase = this.props.firebase
+    this.SubjectStore = this.props.SubjectStore
+    this.LineStore = this.props.LineStore
   }
 
   componentWillMount () {
     Actions.refresh({ key: 'Drawer', open: false })
+    console.log("ConvList: ", this.LineStore.conversations)
+  }
+
+  componentDidMount () {
+
   }
 
   render() {

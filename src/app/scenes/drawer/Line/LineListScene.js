@@ -48,10 +48,8 @@ export default class LineListScene extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
-    // this.store = this.props.LineStore
-    //
-    // console.log("THIS STORE: ", this.store)
-
+    this.LineStore = this.props.LineStore
+    // console.log("convs: ", this.LineStore.conversations)
     this.uid = this.SubjectStore.uid
 
     this.convNum = 0
@@ -60,8 +58,8 @@ export default class LineListScene extends Component {
         width,
         height,
       },
-      convs: [],
-      isLoading: true,
+      convs: this.LineStore.conversations,
+      isLoading: false,
       listFilter: "all",
       noData: false,
     }
@@ -72,7 +70,9 @@ export default class LineListScene extends Component {
   }
 
   componentDidMount() {
-    this.getUserConvs(true)
+    setTimeout(() => {
+      this.startListener()
+    }, 2500)
   }
 
   componentWillUnmount() {
@@ -112,71 +112,8 @@ export default class LineListScene extends Component {
     })
   }
 
-  getUserConvs = on => {
-    const myConvListRef = this.firebase
-      .database()
-      .ref(`users/${this.uid}/conversations`)
-      .orderByChild("priority")
-
-    const listen = convSnap => {
-      this.setState({ isLoading: true })
-      const convs = []
-      // console.log('CHECK: ', convSnap.val())
-      if (convSnap.exists()) {
-        this.convNum = convSnap.numChildren()
-        convSnap.forEach(childConv => {
-          // console.log("priority: ", childConv.val().priority)
-          const convKey = childConv.val().convKey
-          const theOtherUid = childConv.key
-          const priority = childConv.val().priority
-          const visit = childConv.val().visit ? childConv.val().visit : false
-          const convRef = this.firebase
-            .database()
-            .ref(`conversations/${convKey}`)
-
-          let convData = {}
-
-          convRef.once("value").then(snap => {
-            if (snap.exists()) {
-              const myUid = this.uid
-              console.log("myData: ", snap.val().users[myUid])
-              const myData = snap.val().users[myUid]
-              const theOtherData = snap.val().users[theOtherUid]
-              convData = {
-                convKey,
-                unread: myData.unread,
-                lastRead: myData.lastRead,
-                visit,
-                uid: theOtherUid,
-                chatStatus: 0,
-                priority,
-                name: theOtherData.name,
-                avatar: theOtherData.avatar,
-                birthday: theOtherData.birthday,
-                online: false,
-                subtitle: null,
-              }
-
-              convs.push(convData)
-              // console.log("CHECK convs: ", this.state.convs)
-              this.setState({ noData: false, isLoading: false, convs })
-              this.startListener()
-            }
-          })
-        })
-      } else {
-        this.setState({ convs: [], noData: true, isLoading: false })
-      }
-    }
-
-    if (on) {
-      return myConvListRef.on("value", listen)
-    }
-    return myConvListRef.off("value", listen)
-  }
-
   startListener() {
-    // console.log("startListener: ", this.state.convs[0])
+    // console.log("startListener: ", this.state.convs)
     this.state.convs.map((conv, key) => {
       this.unreadListener(conv.convKey, this.uid, key, true)
       this.chatStatusListener(conv.uid, key, true)
@@ -346,7 +283,6 @@ export default class LineListScene extends Component {
   }
 
   render() {
-    const convs = this.state.convs
     const indicator = (
       <ActivityIndicator
         style={{
@@ -372,24 +308,24 @@ export default class LineListScene extends Component {
             handler={(selection, row) =>
               this.handleFilterChange(menuData[selection][row], selection, row)}
           >
-            {this.state.isLoading && indicator}
-            {!this.state.noData &&
-              !this.state.isLoading &&
-              <List containerStyle={{ marginBottom: 20, marginTop: -2 }}>
-                {convs.map((conv, key) =>
-                  <Conversation conv={conv} key={conv.convKey} />,
-                )}
-              </List>}
-            {this.state.noData &&
-              !this.state.isLoading &&
-              <Text
-                style={{
-                  alignSelf: "center",
-                  marginTop: 100,
-                }}
-              >
-                {noMsg}
-              </Text>}
+          {this.state.isLoading && indicator}
+          {!this.state.noData &&
+            !this.state.isLoading &&
+            <List containerStyle={{ marginBottom: 20, marginTop: -2 }}>
+              {this.state.convs.map((conv, key) =>
+                <Conversation conv={conv} key={conv.convKey} />,
+              )}
+            </List>}
+          {this.state.noData &&
+            !this.state.isLoading &&
+            <Text
+              style={{
+                alignSelf: "center",
+                marginTop: 100,
+              }}
+            >
+              {noMsg}
+            </Text>}
           </DropdownMenu>
         </ScrollView>
       </View>
