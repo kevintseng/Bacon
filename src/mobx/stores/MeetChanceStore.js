@@ -36,7 +36,8 @@ export default class MeetChanceStore {
   }
 
   @computed get languagesToString() {
-    return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
+    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join()
+    //return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
   }
 
   @computed get albumToArray() {
@@ -85,6 +86,9 @@ export default class MeetChanceStore {
     this.fetchPreyQuery
     // 
     this.notFound = false
+    // blockade
+    this.blockadePool = new Object
+    this.blockadeList = null
   }
 
   @action setLatitude = latitude => {
@@ -109,14 +113,19 @@ export default class MeetChanceStore {
     delete this.pool[uid]
   }
 
+  @action addPreyToblockadePool = (uid,time) => {
+    this.blockadePool[uid] = time
+  }
+
   // preyList
 
   @action setPreyList = () => {
     // 過濾名單
+    this.blockadeList = this.filterBlockadeList()
     this.preyList = Object.keys(this.pool).filter( 
       key => {
         const value = this.pool[key]
-        if (!(value.hideMeetChance) && !(value.deleted) && value.birthday && ((calculateAge(value.birthday) >= this.meetChanceMinAge) && (calculateAge(value.birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(value.online)) {
+        if (!(value.hideMeetChance) && !(value.deleted) && !(this.blockadeList.includes(key)) && value.birthday && ((calculateAge(value.birthday) >= this.meetChanceMinAge) && (calculateAge(value.birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(value.online)) {
           const popularityDen = value.popularityDen || 0
           const popularityNum = value.popularityNum || 0
           this.firebase.database().ref('users/' + value.uid + '/popularityDen').set(popularityDen + 1)
@@ -131,7 +140,11 @@ export default class MeetChanceStore {
     this.preyList.sort((a, b) => {
       return a.distance > b.distance ? 1 : -1
     })
+    // !(blockadeList.includes(key)) &&
+  }
 
+  @action filterBlockadeList = () => {
+    return Object.keys(this.blockadePool)
   }
 
   @action setRealPreys = () => {
@@ -144,44 +157,7 @@ export default class MeetChanceStore {
     //}
     this.preys = toJS(this.preyList)
   }
-/*
-  @action setRealPreys = () => {
-    const preysPromises = this.preyList.map((ele,index) => (
-      this.firebase.database().ref('users/' + ele.uid).once('value').then( snap => {
-        if (snap.val() && !(snap.val().hideMeetChance) && !(snap.val().deleted) && snap.val().birthday && ((calculateAge(snap.val().birthday) >= this.meetChanceMinAge) && (calculateAge(snap.val().birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(snap.val().online)) {
-          const popularityDen = snap.val().popularityDen || 0
-          const popularityNum = snap.val().popularityNum || 0
-          this.firebase.database().ref('users/' + ele.uid + '/popularityDen').set(popularityDen + 1)
-          this.firebase.database().ref('users/' + ele.uid + '/popularity').set(popularityNum/(popularityDen + 1))
-          return({
-            key: ele.uid,
-            nickname: snap.val().nickname,
-            avatar: snap.val().avatar,
-            birthday: snap.val().birthday
-          })
-        } else {
-          return null
-        }
-      }).catch(err => console.log(err))
-    ))
 
-    Promise.all(preysPromises)
-    .then(preys => {
-      if (preys.length == 0) {
-        //runInAction(() => {
-        //  this.preys = preys
-        //})
-      } else {
-        runInAction(() => {
-          this.preys = preys
-        })        
-      }
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
-*/
   // LineCollection
 
   @action setCourtInitialize = uid => {
@@ -205,7 +181,7 @@ export default class MeetChanceStore {
           this.birthday = snap.val().birthday
           this.languages = snap.val().languages || new Object
           this.hobbies = snap.val().hobbies || new Object
-          this.album = snap.val().album || new Object
+          this.album = this.handleNewAlbum(snap.val().album,snap.val().avatar)//snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
@@ -263,6 +239,17 @@ export default class MeetChanceStore {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
+  handleNewAlbum = (album,avatar) => {
+    const key = this.getKeyByValue(album, avatar)
+    delete album[key]
+    album[0] = avatar
+    return album || new Object
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value)
+  }
+
   getDistance = (latitude,longitude) => {
     if (this.latitude && this.longitude && latitude && longitude) {
       return (geolib.getDistance(
@@ -272,6 +259,28 @@ export default class MeetChanceStore {
     } else {
       return '?'
     }  
+  }
+
+  masterLevel = (check) => {
+    switch(check) {
+        case 0:
+            return ''
+            break;
+        case 1:
+            return '(一般)'
+            break;
+        case 2:
+            return '(普通)'
+            break;
+        case 3:
+            return '(精通)'
+            break;
+        case true: // 相容性
+            return '(一般)'
+            break;        
+        default:
+            return ''
+    }     
   }
 
 }

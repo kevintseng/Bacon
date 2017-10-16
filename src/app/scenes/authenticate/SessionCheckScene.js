@@ -39,6 +39,8 @@ export default class SessionCheckScene extends Component {
     this.goodImpressionQuery = null
     //this.collectionQuery = null
     this.matchQuery = null
+    this.blockadeQuery_A = null
+    this.blockadeQuery_B = null
   }
 
   componentWillMount() {
@@ -60,6 +62,7 @@ export default class SessionCheckScene extends Component {
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
+          this.blockadeListener() // 封鎖
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           ///////// 同步 /////////
@@ -76,6 +79,7 @@ export default class SessionCheckScene extends Component {
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
+          this.blockadeListener() // 封鎖
           //this.collectionDB() // 從LocalDB抓配對資料
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
@@ -103,6 +107,7 @@ export default class SessionCheckScene extends Component {
     this.removeVisitorsListener() // 移除邂逅監聽
     this.removeGoodImpressionListener() // 移除好感監聽
     this.removeMatchListener() // 配對
+    this.removeBlockadeListener() // 封鎖
     this.SignUpStore.initialize() // 初始註冊入狀態
     this.SignInStore.initialize() // 初始化登入狀態
     this.SubjectStore.initialize() // 初始主體入狀態
@@ -155,6 +160,7 @@ export default class SessionCheckScene extends Component {
   uploadLocation = () => {
     Geolocation.getCurrentPosition(
       location => {
+        this.uploadFirebaseLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
         this.setLocation(location.coords.latitude,location.coords.longitude)
       },
       error => {
@@ -373,6 +379,20 @@ export default class SessionCheckScene extends Component {
     })
   }
 
+  blockadeListener = () => {
+    this.blockadeQuery_A = this.firebase.database().ref('blockade').orderByChild('wooer').equalTo(this.SubjectStore.uid)
+    this.blockadeQuery_B = this.firebase.database().ref('blockade').orderByChild('prey').equalTo(this.SubjectStore.uid)
+    this.blockadeQuery_A.on('child_added', child => {
+      this.MeetCuteStore.addPreyToblockadePool(child.val().prey,child.val().time)
+      this.MeetChanceStore.addPreyToblockadePool(child.val().prey,child.val().time)
+
+    })
+    this.blockadeQuery_B.on('child_added', child => {
+      this.MeetCuteStore.addPreyToblockadePool(child.val().wooer,child.val().time)
+      this.MeetChanceStore.addPreyToblockadePool(child.val().prey,child.val().time)
+    })
+  }
+
   removeMeetCuteListener = () => {
     if (this.meetCuteQuery) {
       this.meetCuteQuery.off()
@@ -409,29 +429,23 @@ export default class SessionCheckScene extends Component {
     }
   }
 
+  removeBlockadeListener = () => {
+    if (this.blockadeQuery_A) {
+      this.blockadeQuery_A.off()
+      this.blockadeQuery_A = null
+    } 
+    if (this.blockadeQuery_B) {
+      this.blockadeQuery_B.off()
+      this.blockadeQuery_B = null
+    }    
+  }
+
   //////********************//////
 
   reverseString = str => {
     return str.split("").reverse().join("")
   }
-/*
-  seekMeetQs = sexualOrientation => {
-    switch (sexualOrientation) {
-      case 'msf':
-        'fsm'
-        break
-      case 'msm':
-        'msm'
-        break
-      case 'fsm':
-        'msf'
-        break
-      case 'fsf':
-        'fsf'
-        break
-    }
-  }
-*/
+
   seekMeetQs = sexualOrientation => {
     switch (sexualOrientation) {
       case 'msf':

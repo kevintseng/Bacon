@@ -45,10 +45,10 @@ export default class CityChooseContainer extends Component {
     return(
       <View>
         <View>
-          <BlankButton text='輸入位置' onPress={ this.openSearchModal } /> 
+          <BlankButton text='輸入常在城市' onPress={ this.openSearchModal } /> 
         </View>
         <View style={{marginTop: 20}}> 
-          <BlankButton text='現在位置' onPress={ this.current } /> 
+          <BlankButton text='現在所在城市' onPress={ this.current } /> 
         </View>
         <View style={{marginTop: 20, alignItems: 'center'}}>
           <Text>{this.SignUpStore.address || '請輸入您的所在位置'}</Text>
