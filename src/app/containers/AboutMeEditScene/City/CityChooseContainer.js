@@ -48,6 +48,8 @@ export default class CityChooseContainer extends Component {
       const length = results[0].name.length
       this.address_without_code = address.slice(5,address.length - length)
       this.SubjectEditStore.setAddress(this.address_without_code)
+      this.SubjectEditStore.setLatitude(results[0].latitude)
+      this.SubjectEditStore.setLongitude(results[0].longitude)
     })
     .catch((error) => console.log(error))    
   }
