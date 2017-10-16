@@ -19,12 +19,8 @@ export default class ArticleListScene extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  componentDidMount = async () => {
-    await this.sleep(260)
-  }
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
+  componentDidMount() {
+    //
   }
 
   goToArticleDetail = (key,title,uri,content,source,stageSource,stageName,stageTag) => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ActivityIndicator, Button, ScrollView, Dimensions, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, ActivityIndicator, Button, ScrollView, Dimensions, TouchableOpacity, Modal, InteractionManager } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import * as Animatable from 'react-native-animatable'
@@ -29,7 +29,7 @@ const styles = {
     fontSize: 20,
     fontWeight: '500',
     color: '#606060',
-    textAlign: 'center'
+    textAlign: 'center'    
   },
   text: {
     backgroundColor: 'transparent',
@@ -37,7 +37,7 @@ const styles = {
     fontFamily: 'NotoSans',
     fontSize: 14,
     //fontWeight: '500',
-    color: '#606060',
+    color: '#606060',    
   }
 }
 @inject('firebase','SubjectStore','MeetCuteStore','ControlStore') @observer
@@ -55,13 +55,12 @@ export default class MeetCuteCourtScene extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  componentDidMount = async () => {
-    await this.sleep(250)
-    this.MeetCuteStore.setPreyList()
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(this.task)
   }
 
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
+  task = () => {
+    this.MeetCuteStore.setPreyList()  
   }
 
   render() {
@@ -70,13 +69,13 @@ export default class MeetCuteCourtScene extends Component {
           <MateModalContainer/>
           <ScrollView style={{flex: 1}}>
             <CourtContainer/>
-            <View style={{alignSelf: 'center', marginTop: 10, paddingTop: 40}}>
-              <InfosContainer/>
+            <View style={{alignSelf: 'center',paddingTop: 40}}>
+              <InfosContainer/> 
             </View>
             <View style={{paddingTop: 10}}>
-              <BadgeWallContainer/>
+              <BadgeWallContainer/> 
             </View>
-            { this.MeetCuteStore.meetCuteRadar &&
+            { this.MeetCuteStore.meetCuteRadar && 
               <View style={{paddingTop: 10}}>
                 <BaconRadar/>
               </View>

@@ -38,7 +38,8 @@ export default class SubjectEditStore {
   }
 
   @action setAddress = str => {
-    this.address = str.substring(0,11)
+    this.address = str
+    //.substring(0,11)
   }
 
   @action setBio = str => {

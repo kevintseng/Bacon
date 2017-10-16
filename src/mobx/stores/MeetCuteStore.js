@@ -164,7 +164,7 @@ export default class MeetCuteStore {
       this.imageLoadingCount = 0
     })
     await this.firebase.database().ref('users/' + this.uid).once('value', async snap => {
-      if (snap.val() && !(snap.val().hideMeetCute) && !(snap.val().deleted) && this.checkPhoto(snap.val().album)) {
+      if (snap.val() && snap.val().album && !(snap.val().hideMeetCute) && !(snap.val().deleted) && this.checkPhoto(snap.val().album)) {
         const favorabilityDen = snap.val().favorabilityDen || 0
         const favorabilityNum = snap.val().favorabilityNum || 0
         this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
@@ -205,6 +205,7 @@ export default class MeetCuteStore {
     this.index = this.index + 1
     if (this.index === this.preyList.length) {
       this.haveNewPreys = false // 沒人了
+      this.loading = false
       this.setPreyList()
     } else {
       this.uid = this.preyList[this.index].uid
@@ -218,7 +219,7 @@ export default class MeetCuteStore {
       this.imageLoadingCount = 0
     })
     await this.firebase.database().ref('users/' + this.uid).once('value', async snap => {
-      if (snap.val() && !(snap.val().hideMeetCute) && !(snap.val().deleted) && this.checkPhoto(snap.val().album) ) {
+      if (snap.val() && snap.val().album && !(snap.val().hideMeetCute) && !(snap.val().deleted) && this.checkPhoto(snap.val().album) ) {
         // 過濾隱藏
         const favorabilityDen = snap.val().favorabilityDen || 0
         const favorabilityNum = snap.val().favorabilityNum || 0
@@ -353,6 +354,7 @@ export default class MeetCuteStore {
   }
 
   checkPhoto = album => {
+    // 高級會員三張以上照片
     const _album = new Object(album)
     const length = Object.keys(_album).length
     if (!this.meetCuteThreePhotos) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
-import { View, FlatList, Dimensions, Text } from 'react-native'
+import { View, FlatList, Dimensions, Text, InteractionManager } from 'react-native'
 
 import Wave from '../../../views/Wave/Wave'
 import Cookie from '../../../views/Cookie/Cookie'
@@ -45,8 +45,11 @@ export default class MeetChanceWaterFallScene extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  componentDidMount = async () => {
-    await this.sleep(250)
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(this.task)
+  }
+
+  task = () => {
     this.MeetChanceStore.setPreyList()
     this.MeetChanceStore.setRealPreys()
   }
@@ -59,7 +62,6 @@ export default class MeetChanceWaterFallScene extends Component {
     // 來訪記錄
     this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
     await this.MeetChanceStore.setCourtInitialize(uid)
-    //await this.sleep(200)
     await localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
       if (ids.includes(uid)) {
         Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇', collection: true})
@@ -74,10 +76,6 @@ export default class MeetChanceWaterFallScene extends Component {
       <Cookie size={150} name={this.SubjectStore.nickname} avatar={this.SubjectStore.avatar} onPress={ this.goToAboutMeTab } />
     </View>
   )
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
 
   fakeOnPress = () => {
 
