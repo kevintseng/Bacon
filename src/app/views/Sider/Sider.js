@@ -97,10 +97,6 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </View>
 
         <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_column.png')} listTitle='達人聊天室' listOnPress={ masterOnPress }/>
-        </View>
-
-        <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
         </View>
 
@@ -111,6 +107,12 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
  }
 
 export default Drawer
+
+/*
+        <View style={{marginTop: 7}}>
+          <ListItem listPicSource={require('./img/ico_menu_column.png')} listTitle='達人聊天室' listOnPress={ masterOnPress }/>
+        </View>
+*/
 
 /*
 
