@@ -11,10 +11,17 @@ const { width, height } = Dimensions.get('window')
 
 const DEFAULT_IMAGE = require('../../images/Loading_icon.gif')
 
+const styles = {
+  view: {
+    flex: 1
+  }
+}
+
 export default class Court extends Component {
 
   constructor(props) {
     super(props)
+    this.currentPage = 0
   }
 
   nextphoto = () => {
@@ -47,8 +54,8 @@ export default class Court extends Component {
   )
 
   renderAlbum = (album) => (
-    album.map( photo => (
-      <TouchableWithoutFeedback key={photo} onPress={this.props.openAlbum}>
+    album.map( (photo,index) => (
+      <TouchableWithoutFeedback key={photo} onPress={ () => { this.openAlbum(index) } }>
         <Image onLoad={ this.props.onLoadEnd } style={{height: width, width}}  source={{uri: photo}} />
       </TouchableWithoutFeedback>
     ))
@@ -61,18 +68,24 @@ export default class Court extends Component {
     </TouchableWithoutFeedback>
   )
 
+  openAlbum = index => {
+    this.currentPage = index
+    this.props.openAlbum()
+  }
+
   render() {
 
     const { album, rightIcon, leftIcon, visible, closeAlbum, openAlbum, onPressRightIcon, onPressLeftIcon, onRequestClose } = this.props
 
     return (
-      <View style={{flex: 1}}>
+      <View style={styles.view}>
 
         <Modal hardwareAccelerated animationType={'none'} onRequestClose={onRequestClose} visible={ visible || false } transparent={false}>
           <Carousel
             ref={(carousel) => { this.carousel = carousel }}
             swipe
             //delay={0}
+            currentPage={this.currentPage}
             style={{flex:1,backgroundColor: 'transparent'}}
             bullets
             autoplay={false}

@@ -11,6 +11,7 @@ export default class CityChooseContainer extends Component {
   constructor(props) {
     super(props)
     this.SubjectEditStore = this.props.SubjectEditStore
+    this.address_without_code = null
   }
 
   openSearchModal = () => {
@@ -19,7 +20,18 @@ export default class CityChooseContainer extends Component {
       country: 'TW'
     })
     .then((place) => {
-      this.SubjectEditStore.setAddress(place.address)
+      const address = place.address
+      const postal_code = address.slice(0,3)
+      if (Number.isInteger(parseInt(postal_code))) {
+        this.address_without_code = address.slice(5,address.length)
+      } else {
+        this.address_without_code = address.slice(2,address.length)
+      }
+      if (this.address_without_code.length > 6) {
+        const length = this.address_without_code.length - place.name.length
+        this.address_without_code = this.address_without_code.slice(0,length)
+      }
+      this.SubjectEditStore.setAddress(this.address_without_code)
       this.SubjectEditStore.setLatitude(place.latitude)
       this.SubjectEditStore.setLongitude(place.longitude)
     })
@@ -32,11 +44,12 @@ export default class CityChooseContainer extends Component {
       country: 'TW'
     })
     .then((results) => {
-      this.SubjectEditStore.setAddress(results[0].address)
-      console.log(results)
-    }
-      )
-    .catch((error) => console.log(error));    
+      const address = results[0].address
+      const length = results[0].name.length
+      this.address_without_code = address.slice(5,address.length - length)
+      this.SubjectEditStore.setAddress(this.address_without_code)
+    })
+    .catch((error) => console.log(error))    
   }
 
   render() {
@@ -49,7 +62,7 @@ export default class CityChooseContainer extends Component {
           <BlankButton text='現在所在城市' onPress={ this.current } /> 
         </View>
         <View style={{marginTop: 20, alignItems: 'center'}}>
-          <Text>{this.SubjectEditStore.address || '請輸入您的所在位置'}</Text>
+          <Text>{this.SubjectEditStore.address || '請輸入您的所在城市'}</Text>
         </View>
       </View>
     )

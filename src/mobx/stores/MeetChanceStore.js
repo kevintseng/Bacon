@@ -168,7 +168,7 @@ export default class MeetChanceStore {
   @action fetchPrey = () => {
     this.fetchPreyQuery = this.firebase.database().ref('users/' + this.uid)
     this.fetchPreyQuery.once('value').then(snap => {
-      if (snap.val()) {
+      if (snap.val() && snap.val().album && snap.val().avatar) {
         const popularityDen = snap.val().popularityDen || 0
         const popularityNum = snap.val().popularityNum || 0
         this.firebase.database().ref('users/' + this.uid + '/popularityNum').set(popularityNum + 1)
@@ -189,7 +189,7 @@ export default class MeetChanceStore {
           this.loading = false
         })
       } else {
-        alert('錯誤')
+        alert('資料出現錯誤')
         //runInAction(() => {
         //  this.loading = false
         //})
