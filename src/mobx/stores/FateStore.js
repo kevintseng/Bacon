@@ -42,7 +42,8 @@ export default class FateStore {
   }
 
   @computed get languagesToString() {
-    return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
+    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join()
+    //return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
   }
 
   @computed get albumToArray() {
@@ -337,7 +338,7 @@ export default class FateStore {
           this.birthday = snap.val().birthday
           this.languages = snap.val().languages || new Object
           this.hobbies = snap.val().hobbies || new Object
-          this.album = snap.val().album || new Object
+          this.album = this.handleNewAlbum(snap.val().album,snap.val().avatar)//snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
@@ -369,6 +370,17 @@ export default class FateStore {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
+  handleNewAlbum = (album,avatar) => {
+    const key = this.getKeyByValue(album, avatar)
+    delete album[key]
+    album[0] = avatar
+    return album || new Object
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value)
+  }
+
   getDistance = (latitude,longitude) => {
     if (this.latitude && this.longitude && latitude && longitude) {
       return geolib.getDistance(
@@ -378,6 +390,28 @@ export default class FateStore {
     } else {
       return '?'
     }  
+  }
+
+  masterLevel = (check) => {
+    switch(check) {
+        case 0:
+            return ''
+            break;
+        case 1:
+            return '(一般)'
+            break;
+        case 2:
+            return '(普通)'
+            break;
+        case 3:
+            return '(精通)'
+            break;
+        case true: // 相容性
+            return '(一般)'
+            break;        
+        default:
+            return ''
+    }     
   }
 
 }

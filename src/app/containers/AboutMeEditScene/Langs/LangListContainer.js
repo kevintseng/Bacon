@@ -15,8 +15,13 @@ export default class LangListContainer extends Component {
   }
 
   onPressCheckBox = item => {
-    this.ControlStore.setlang(item.key)
-    this.ControlStore.setlangAdvanced()
+    if (this.SubjectEditStore.languages[item.key] !== 0) {
+      this.SubjectEditStore.disableLanguages(item.key)
+      //console.warn('取消')
+    } else {
+      this.ControlStore.setlang(item.key)
+      this.ControlStore.setlangAdvanced()
+    }
     //this.SubjectEditStore.switchLanguages(item.key)  
   }
 

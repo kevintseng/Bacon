@@ -24,6 +24,7 @@ export default class MeetCuteStore {
   @observable photoVerified
   @observable latitude
   @observable longitude
+  @observable address
 
   constructor(firebase) {
     this.firebase = firebase
@@ -35,7 +36,8 @@ export default class MeetCuteStore {
   }
 
   @computed get languagesToString() {
-    return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
+    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join()
+    //return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
   }
 
   @computed get albumToArray() {
@@ -72,6 +74,7 @@ export default class MeetCuteStore {
     this.photoVerified = false
     this.latitude = null
     this.longitude = null
+    this.address = null
     // config
     this.meetCuteMinAge = 18
     this.meetCuteMaxAge = 50
@@ -81,6 +84,8 @@ export default class MeetCuteStore {
     // mate
     this.goodImpressionPool = new Object
     this.matchPool = new Object
+    // blockade
+    this.blockadePool = new Object
   }
 
   @action addPreyToGoodImpressionPool = (uid,time) => {
@@ -95,32 +100,34 @@ export default class MeetCuteStore {
     this.matchPool[uid] = time
   }
 
+  @action addPreyToblockadePool = (uid,time) => {
+    this.blockadePool[uid] = time
+  }
+
   @action removePreyToMatchPool = uid => {
     delete this.matchPool[uid]
   }
 
   @action addPreyToPool = (uid,birthday) => {
-    //this.pool.push({uid: uid, birthday: birthday})
     this.pool[uid] = birthday
   }
 
   @action setPreyList = () => {
     localdb.getIdsForKey('preyListHistory').then(preyListHistory => {
-      this.serachLoop(preyListHistory,this.filterMatchList())
+      this.serachLoop(preyListHistory,this.filterMatchList(),this.filterBlockadeList())
     })
   }
 
-  @action serachLoop = async (preyListHistory,matchList) => {
+  @action serachLoop = async (preyListHistory,matchList,blockadeList) => {
     while (this.haveNewPreys === false) {
       this.preyList = Object.keys(this.pool).map(uid => ({uid: uid, birthday: this.pool[uid]}))
       this.poolLength = this.preyList.length
       if ( (this.poolLength > this.poolLastLenght) || (this.clean === true) ) {
         this.poolLastLenght = this.poolLength
         this.clean = false
-        //this.preyList = this.pool.map(ele => ({}))
         this.preyList = this.preyList.filter(ele => 
-          ( !(preyListHistory.includes(ele.uid)) && !(matchList.includes(ele.uid)) && ele.birthday && ((calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= (this.meetCuteMaxAge === 50 ? 99 : this.meetCuteMaxAge) )) )
-        ) // 排除 45 天 // 過濾年紀
+          ( !(preyListHistory.includes(ele.uid)) && !(matchList.includes(ele.uid)) && !(blockadeList.includes(ele.uid)) && ele.birthday && ((calculateAge(ele.birthday) >= this.meetCuteMinAge) && (calculateAge(ele.birthday) <= (this.meetCuteMaxAge === 50 ? 99 : this.meetCuteMaxAge) )) )
+        ) // 排除 45 天 // 排除配對 // 排除封鎖 // 過濾年紀
         this.shuffle(this.preyList)
         if (this.preyList.length > 0) {
           this.setFirstPrey()
@@ -143,6 +150,10 @@ export default class MeetCuteStore {
     })
     this.matchPreylist = this.matchPreylist.filter(ele => ele)
     return this.matchPreylist
+  }
+
+  @action filterBlockadeList = () => {
+    return Object.keys(this.blockadePool)
   }
 
   @action setFirstPrey = async () => {
@@ -169,6 +180,7 @@ export default class MeetCuteStore {
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
+          this.address = snap.val().address
         })
         runInAction(() => {
           this.haveNewPreys = true
@@ -223,6 +235,7 @@ export default class MeetCuteStore {
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
+          this.address = snap.val().address
         })
         runInAction(() => {
           this.haveNewPreys = true
@@ -342,7 +355,6 @@ export default class MeetCuteStore {
   checkPhoto = album => {
     const _album = new Object(album)
     const length = Object.keys(_album).length
-    //console.warn(length)
     if (!this.meetCuteThreePhotos) {
       return true
     } else if (this.meetCuteThreePhotos && length >= 3) {
@@ -356,14 +368,33 @@ export default class MeetCuteStore {
     const key = this.getKeyByValue(album, avatar)
     delete album[key]
     album[0] = avatar
-    console.log(album)
-    //console.log(avatar)
-    //console.log(key)
     return album || new Object
   }
 
   getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value)
+  }
+
+  masterLevel = (check) => {
+    switch(check) {
+        case 0:
+            return ''
+            break;
+        case 1:
+            return '(一般)'
+            break;
+        case 2:
+            return '(普通)'
+            break;
+        case 3:
+            return '(精通)'
+            break;
+        case true: // 相容性
+            return '(一般)'
+            break;        
+        default:
+            return ''
+    }     
   }
 
 }

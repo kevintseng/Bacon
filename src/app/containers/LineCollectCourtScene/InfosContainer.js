@@ -94,11 +94,17 @@ export default class InfosContainer extends Component {
     this.setState({ showModal: false})
   }
 
+  onPrssBlockade = async () => {
+    // 上傳封鎖紀錄
+    await this.firebase.database().ref('blockade/' + this.SubjectStore.uid + this.Store.uid ).set({ wooer: this.SubjectStore.uid , prey: this.Store.uid, time: Date.now() })
+    Actions.pop()
+  }
+
   render() {
     return(
       <View>
         <Infos
-          //showBlockade
+          showBlockade
           showReportUser
           showDistance
           verityEmail={ this.Store.emailVerified }
@@ -109,6 +115,7 @@ export default class InfosContainer extends Component {
           langs={ this.Store.languagesToString }
           distance={ this.Store.distance }
           onReportUserPressed= { this.reportPressed }
+          onPrssBlockade={ this.onPrssBlockade }
         />
         <Modal
           isVisible={this.state.showModal}
