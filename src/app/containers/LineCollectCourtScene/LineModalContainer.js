@@ -67,7 +67,7 @@ export default class LineModalContainer extends Component {
 
   render() {
     let dispMsg = ''
-    console.log("this.props.code: ", this.props.code)
+    // console.log("this.props.code: ", this.props.code)
     if (this.props.code == 'tooManyUnhandled') {
       dispMsg = '抱歉，對方的未讀留言過多，請稍後再試試或是使用Q點特權留言'
     }

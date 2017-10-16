@@ -19,7 +19,6 @@ import FailureContainer from '../../containers/SignUpThreeScene/FailureContainer
 
 import BaconRoutesContainer from '../../containers/SignUpThreeScene/BaconRoutesContainer'
 
-
 const { width, height } = Dimensions.get('window')
 
 const styles = {
@@ -55,7 +54,6 @@ export default class SignUpThreeScene extends Component {
   render() {
     return(
        <ScrollView style={ styles.view }>
-
         <View style={{marginTop: 20}}>
           <View style={{marginTop: 10}}>
             <EmailContainer/>
@@ -95,13 +93,10 @@ export default class SignUpThreeScene extends Component {
           <View style={{marginTop:10, alignSelf: 'center',alignItems: 'center'}}>
             <FailureContainer/>
           </View>
-
         </View>
-
         <View style={ styles.bottom }>
           <BaconRoutesContainer/>
         </View>
-
       </ScrollView>
     )
   }
