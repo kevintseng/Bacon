@@ -47,6 +47,8 @@ export default class CityChooseContainer extends Component {
       const length = results[0].name.length
       this.address_without_code = address.slice(5,address.length - length)
       this.SignUpStore.setAddress(this.address_without_code)
+      this.SignUpStore.setLatitude(results[0].latitude)
+      this.SignUpStore.setLongitude(results[0].longitude)
     })
     .catch(error => Alert.alert( 
     '定位錯誤', error.message, [ 

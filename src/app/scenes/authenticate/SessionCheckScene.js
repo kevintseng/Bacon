@@ -162,7 +162,7 @@ export default class SessionCheckScene extends Component {
   uploadLocation = () => {
     Geolocation.getCurrentPosition(
       location => {
-        this.uploadFirebaseLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
+        this.uploadFirebaseLocation(location.coords.latitude,location.coords.longitude)
         this.setLocation(location.coords.latitude,location.coords.longitude)
       },
       error => {
@@ -177,10 +177,10 @@ export default class SessionCheckScene extends Component {
         } else {
           this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value', snap => {
             if (snap.val() && snap.val().latitude && snap.val().longitude) {
-              console.log('從firebase獲取位置成功:' + [snap.val().latitude,snap.val().longitude])
+              //console.log('從firebase獲取位置成功:' + [snap.val().latitude,snap.val().longitude])
               this.setLocation(snap.val().latitude,snap.val().longitude)
             } else {
-              console.log('從firebase獲取位置失敗')
+              //console.log('從firebase獲取位置失敗')
             }
           })
         }
