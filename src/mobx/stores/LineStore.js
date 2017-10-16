@@ -63,7 +63,7 @@ export default class LineStore {
     this.fetchConvQuery = this.firebase.database().ref('users/' + this.uid + '/conversations')
     this.fetchConvQuery.once('value').then(snap => {
       if(snap.val()) {
-        //TODO
+        console.log("Conversations: ", snap.val())
       }
     })
   }
