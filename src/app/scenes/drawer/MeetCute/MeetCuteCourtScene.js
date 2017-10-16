@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ActivityIndicator, Button, ScrollView, Dimensions, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, ActivityIndicator, Button, ScrollView, Dimensions, TouchableOpacity, Modal, InteractionManager } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import * as Animatable from 'react-native-animatable'
@@ -55,13 +55,12 @@ export default class MeetCuteCourtScene extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
-  componentDidMount = async () => {
-    await this.sleep(250)
-    this.MeetCuteStore.setPreyList()  
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(this.task)
   }
 
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
+  task = () => {
+    this.MeetCuteStore.setPreyList()  
   }
 
   render() {
