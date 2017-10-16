@@ -3875,7 +3875,7 @@ react-native-extended-stylesheet@^0.6.0:
     css-mediaquery "^0.1.2"
     object-resolve-path "^1.1.0"
 
-react-native-fast-image@1.0.0:
+react-native-fast-image@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-1.0.0.tgz#a88337efa18fd34d530bab9ee05680374f3e2a2d"
   dependencies:
