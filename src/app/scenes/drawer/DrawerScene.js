@@ -16,7 +16,7 @@ const drawerStyles = {
   },
 }
 
-@inject('firebase', 'ControlStore', 'SubjectStore') @observer
+@inject('firebase', 'ControlStore', 'SubjectStore', 'LineStore') @observer
 export default class DrawerScene extends Component {
 
   constructor(props) {
@@ -24,11 +24,17 @@ export default class DrawerScene extends Component {
     this.firebase = this.props.firebase
     this.ControlStore = this.props.ControlStore
     this.SubjectStore = this.props.SubjectStore
+    this.LineStore = this.props.LineStore
   }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+    this.LineStore.setUid(this.SubjectStore.uid)
   }
+
+  // componentDidMount() {
+  //   this.LineStore.setUid(this.SubjectStore.uid)
+  // }
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
