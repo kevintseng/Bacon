@@ -84,9 +84,10 @@ export default class DrawerScene extends Component {
         ref='navigation'
         type='overlay'
         styles={ drawerStyles }
-        onOpen={() => Actions.refresh({ key: state.key, open: true })}
-        onClose={() => Actions.refresh({ key: state.key, open: false })}
+        //onOpen={() => Actions.refresh({ key: state.key, open: true })}
+        //onClose={() => Actions.refresh({ key: state.key, open: false })}
         open={ state.open }
+        useInteractionManager={true}
         content={
           <Sider
             warningTop={ this.ControlStore.signUpDataUploadIndicator }

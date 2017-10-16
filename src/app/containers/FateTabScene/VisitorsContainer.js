@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, InteractionManager } from 'react-native'
 import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import Moment from 'moment'
@@ -29,22 +29,20 @@ export default class VisitorsContainer extends Component {
   }
 
   componentWillMount() {
-    //this.FateStore.setVisitorsFakePreys()
+    //
+  }
+
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(this.task)
+  }
+
+  task = () => {
     this.FateStore.setVisitorsPreylist()
-  }
-
-  componentDidMount = async () => {
-    await this.sleep(260)
     this.FateStore.setVisitorsRealPreys()
-  }
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   onPress = async uid => {
     await this.FateStore.setCourtInitialize(uid)
-    //await this.sleep(200)
     await localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
       if (ids.includes(uid)) {
         Actions.LineCollect({ Store: this.FateStore, title: '緣分', collection: true })
