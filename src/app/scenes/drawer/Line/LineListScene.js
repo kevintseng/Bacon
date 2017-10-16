@@ -188,10 +188,10 @@ export default class LineListScene extends Component {
   startListener() {
     // console.log("startListener: ", this.state.convs[0])
     this.state.convs.map((conv, key) => {
-      this.unreadListener(conv.convKey, this.uid, key, true)
-      this.chatStatusListener(conv.uid, key, true)
+      // this.unreadListener(conv.convKey, this.uid, key, true)
+      // this.chatStatusListener(conv.uid, key, true)
       this.onlineListener(conv.uid, key, true)
-      this.lastSentenceListener(conv.convKey, key, true)
+      // this.lastSentenceListener(conv.convKey, key, true)
       return 0
     })
   }
@@ -199,10 +199,10 @@ export default class LineListScene extends Component {
   stopListener() {
     // console.log("stopListener: ", this.state.convs[0])
     this.state.convs.map((conv, key) => {
-      this.unreadListener(conv.convKey, this.uid, key, false)
-      this.chatStatusListener(conv.uid, key, false)
+      // this.unreadListener(conv.convKey, this.uid, key, false)
+      // this.chatStatusListener(conv.uid, key, false)
       this.onlineListener(conv.uid, key, false)
-      this.lastSentenceListener(conv.convKey, key, false)
+      // this.lastSentenceListener(conv.convKey, key, false)
       return false
     })
   }
