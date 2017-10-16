@@ -9,7 +9,7 @@ export default class ReservationContainer extends Component {
     super(props)
   }
 
-  
+
   render() {
     return(
       <View>
@@ -17,7 +17,7 @@ export default class ReservationContainer extends Component {
           title={'情傷療癒系作家 艾姬'}
           time={'2017-09-15 10:30~11:00'}
         />
-      </View> 
+      </View>
       )
   }
 }

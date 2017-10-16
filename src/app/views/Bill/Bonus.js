@@ -26,10 +26,10 @@ const Bonus = ({topCheck, middleCheck, upperCheck, topCheckOnPress, middleCheckO
     <View style={{flex: 1,width}}>
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 15, marginRight: 40}}>
         <View style={{flexDirection: 'row', alignItems: 'center',justifyContent: 'center'}}>
-        <TouchableOpacity onPress={ topCheckOnPress }>
+        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={ topCheckOnPress }>
           <Image style={styles.image} source={topCheck ? require('./img/btn_radio_1.png') : require('./img/btn_radio_0.png')} />
-        </TouchableOpacity>
           <Text style={styles.text}>Q點 200點</Text>
+        </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.text}>$100</Text>
@@ -38,10 +38,10 @@ const Bonus = ({topCheck, middleCheck, upperCheck, topCheckOnPress, middleCheckO
 
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 15, marginRight: 40, marginTop: 20}}>
         <View style={{flexDirection: 'row', alignItems: 'center',justifyContent: 'center'}}>
-        <TouchableOpacity onPress={ middleCheckOnPress }>
+        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={ middleCheckOnPress }>
           <Image style={styles.image} source={middleCheck ? require('./img/btn_radio_1.png') : require('./img/btn_radio_0.png')} />
-        </TouchableOpacity>
           <Text style={styles.text}>Q點 600點</Text>
+        </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.text}>$270</Text>
@@ -50,10 +50,10 @@ const Bonus = ({topCheck, middleCheck, upperCheck, topCheckOnPress, middleCheckO
 
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 15, marginRight: 40,marginTop: 20}}>
         <View style={{flexDirection: 'row', alignItems: 'center',justifyContent: 'center'}}>
-        <TouchableOpacity onPress={ upperCheckOnPress }>
+        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={ upperCheckOnPress }>
           <Image style={styles.image} source={upperCheck ? require('./img/btn_radio_1.png') : require('./img/btn_radio_0.png')} />
-        </TouchableOpacity>
           <Text style={styles.text}>Q點 1200點</Text>
+        </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.text}>$510</Text>

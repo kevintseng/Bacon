@@ -26,7 +26,7 @@ const styles = {
     color: '#606060',
     fontSize: 18,
   },
-  TouchStyle: {
+  touchStyle: {
     marginTop: 20,
     borderRadius: 20,
     borderColor: '#606060',
@@ -136,7 +136,7 @@ export default class InfosContainer extends Component {
                   <Button backgroundColor={'white'} textStyle={styles.buttonLabel} title='其他原因' onPress={() => this.handleReportUser(0)} />
                 </View>
 
-                <TouchableOpacity style={styles.TouchStyle} onPress={this.handleCancel}>
+                <TouchableOpacity style={styles.touchStyle} onPress={this.handleCancel}>
                   <Text style={styles.routesText}>取消</Text>
                 </TouchableOpacity>
               </View>
@@ -146,7 +146,7 @@ export default class InfosContainer extends Component {
                 <Text style={styles.modalTitle}>
                   成功送出
                 </Text>
-                <TouchableOpacity style={styles.TouchStyle} onPress={this.handleCancel}>
+                <TouchableOpacity style={styles.touchStyle} onPress={this.handleCancel}>
                   <Text style={styles.routesText}>好的</Text>
                 </TouchableOpacity>
               </View>

@@ -1,21 +1,23 @@
 import React, { Component } from 'react'
-import { View, Platform, BackHandler, ToastAndroid } from 'react-native'
+import { View, Platform, BackHandler, ToastAndroid, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
 import BaconRoutesContainer from '../../containers/SignUpTwoScene/BaconRoutesContainer'
 import CityChooseContainer from '../../containers/SignUpTwoScene/CityChooseContainer'
+
+const { width, height } = Dimensions.get('window')
 
 const styles = {
   view: {
     flex: 1
   },
   middle: {
-    position: 'absolute', 
-    top: 150,
+    position: 'absolute',
+    top: height == 480 ? 20 : 150,
     alignSelf: 'center'
   },
   bottom: {
-    position: 'absolute', 
+    position: 'absolute',
     bottom: 0
   }
 }
@@ -34,7 +36,7 @@ export default class SignUpOneScene extends Component {
     Actions.SignUpOne({type: 'reset', direction: 'leftToRight'})
     return true
   }
-  
+
   render() {
     return(
       <View style={ styles.view }>

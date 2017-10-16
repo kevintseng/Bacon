@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Alert } from 'react-native'
+import { ScrollView, Text, Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
@@ -73,7 +73,7 @@ export default class ProfileContainer extends Component {
 
   render() {
     return(
-      <View style={{flex: 1}}>
+      <ScrollView style={{flex: 1}}>
         <Profile
           source={ this.SubjectStore.avatar }
           vip={ this.SubjectStore.vip }
@@ -98,7 +98,7 @@ export default class ProfileContainer extends Component {
         <ProfileBadgeWallContainer
           onPressInterests={ this.goToEditInterests }
         />
-      </View>
+      </ScrollView>
     )
   }
 }

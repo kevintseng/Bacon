@@ -5,17 +5,16 @@ const { width, height } = Dimensions.get('window')
 
 const styles = {
   welcomeView: {
-    flex: 1, 
-    alignItems: 'center', 
+    alignSelf: 'center',
+    flex: 1,
+    alignItems: 'center',
     //justifyContent: 'space-between'
   },
   logView: {
-    position: 'absolute',
-    top: 90
+    marginTop: height == 480 ? 30 : 90
   },
   titleView: {
-    position: 'absolute',
-    top: 240
+    marginTop: 5,
   },
   titleText: {
     backgroundColor: 'transparent',
@@ -27,8 +26,7 @@ const styles = {
     textAlign: 'center'
   },
   buttonView: {
-    position: 'absolute', 
-    bottom: 190,
+    marginTop: 5,
     alignItems: 'center',
   },
   topButtonText: {
@@ -61,20 +59,20 @@ const styles = {
     flexDirection: 'row'
   },
   warningView:{
-    position: 'absolute', 
-    bottom: 160
+    marginTop: 5,
   },
   warningText: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
-    fontFamily: 'NotoSans',  
-    textAlign: 'center', 
+    fontFamily: 'NotoSans',
+    textAlign: 'center',
     fontWeight: '500',
     color: '#606060',
     fontSize: 10
   },
   bottomView: {
-    position: 'absolute', 
+    width,
+    position: 'absolute',
     bottom: 0,
     //width,
     //backgroundColor: 'blue',
@@ -86,7 +84,6 @@ const styles = {
 }
 
 const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bottomButtonOnPress, warningText, warningOnPress }) => {
-
   return(
     <View style={ styles.welcomeView }>
 
@@ -99,12 +96,12 @@ const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bot
       </View>
 
       <View style={ styles.buttonView }>
-        <TouchableOpacity style={ styles.topButtonTouchable } onPress={ topButtonOnPress }> 
+        <TouchableOpacity style={ styles.topButtonTouchable } onPress={ topButtonOnPress }>
           <Image style={ styles.topButtonPic } source={require('./img/btn_index_join.png')} >
             <Text style={ styles.topButtonText }>{ topButtonText }</Text>
           </Image>
         </TouchableOpacity>
-        <TouchableOpacity onPress={ bottomButtonOnPress }> 
+        <TouchableOpacity onPress={ bottomButtonOnPress }>
           <Image style={ styles.bottomButtonPic } source={require('./img/btn_gredient.png')} >
             <Image style={{marginRight: 10}}source={require('./img/btn_index_login.png')}/>
             <Text style={ styles.bottomButtonText }>{ bottomButtonText }</Text>
@@ -113,7 +110,7 @@ const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bot
       </View>
 
       <View style={ styles.warningView }>
-        <TouchableOpacity onPress={ warningOnPress }> 
+        <TouchableOpacity onPress={ warningOnPress }>
           <Text style={ styles.warningText }>{ warningText }</Text>
         </TouchableOpacity>
       </View>

@@ -1,30 +1,13 @@
 import React, { Component } from 'react'
-import { View, Text, Button, Platform, BackHandler, ToastAndroid } from 'react-native'
+import { ScrollView, View, Text, Button, Platform, BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
-import BaconRoutesContainer from '../../../containers/UseBonusScene/BaconRoutesContainer'
 import UseBonusContainer from '../../../containers/UseBonusScene/UseBonusContainer'
 
 
 const styles = {
   view: {
-    flex: 1,
-    marginBottom: 40,
-  },
-  top: {
-    position: 'absolute',
-    top: 30,
-    alignSelf: 'center',
-  },
-  middle: {
-    position: 'absolute',
-    top: 200,
-    alignSelf: 'center',
-  },
-  bottom: {
-    position: 'absolute',
-    bottom: 0,
   },
 }
 
@@ -101,31 +84,15 @@ export default class UseBonusScene extends Component {
 
   render() {
     return (
-      <View style={styles.view}>
-
-        <View style={styles.top}>
-          <UseBonusContainer
-            balance={this.balance}
-            cost={this.cost}
-            avatarUrl={this.avatarUrl}
-            reasonStr={this.reasonStr}
-            preStr={this.preStr}
-            postStr={this.postStr}
-          />
-        </View>
-        <View style={styles.middle}>
-          <Text> </Text>
-        </View>
-
-        <View style={styles.bottom}>
-          <BaconRoutesContainer
-            balance={this.balance}
-            cost={this.cost}
-            confirmUse={this.handleUseConfirmed}
-          />
-        </View>
-
-      </View>
+      <UseBonusContainer
+        balance={this.balance}
+        cost={this.cost}
+        avatarUrl={this.avatarUrl}
+        reasonStr={this.reasonStr}
+        preStr={this.preStr}
+        postStr={this.postStr}
+        handleUseConfirmed={this.handleUseConfirmed}
+      />
     )
   }
 }
