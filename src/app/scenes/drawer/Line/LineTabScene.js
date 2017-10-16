@@ -20,7 +20,7 @@ export default class LineTabScene extends Component {
 
   componentWillMount () {
     Actions.refresh({ key: 'Drawer', open: false })
-    console.log("ConvList: ", this.LineStore.conversations)
+    // console.log("ConvList: ", this.LineStore.conversations)
   }
 
   componentDidMount () {
