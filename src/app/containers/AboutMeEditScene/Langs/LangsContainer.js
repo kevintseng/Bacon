@@ -7,22 +7,23 @@ import LangListContainer from './LangListContainer'
 import MasterModalContainer from './MasterModalContainer'
 
 const styles = {
-  container: {
-    ...Platform.select({
-      ios: {},
-      android: {
-        flex: 1
+  ...Platform.select({
+      ios: {
+        //
       },
-    })
-  },
-  bottom: {
-    ...Platform.select({
-      ios: {},
       android: {
-        position: 'absolute', bottom: 0
+        container: {
+          flex: 1
+        },
+        bottom: { 
+          position: 'absolute', 
+          bottom: 0
+        },
+        languages: {
+          height: 390
+        }
       }
-    })
-  }
+  })
 }
 
 @inject('firebase','SubjectEditStore','SubjectStore') @observer
@@ -41,14 +42,14 @@ export default class LangsContainer extends Component {
 
   render() {
     return(
-      <ScrollView style={styles.container}>
-        <View>
+      <View style={styles.container}>
+        <View style={styles.languages}>
           <LangListContainer/>
         </View>
         <View style={styles.bottom}>
           <BaconRoutesContainer/>
         </View>
-      </ScrollView>
+      </View>
     )
   }
 }

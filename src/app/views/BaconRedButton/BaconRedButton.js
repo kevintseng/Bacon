@@ -34,7 +34,7 @@ const styles = {
   }
 }
 
-const BaconRoutes = ({ routesText, routesOnPress, warningText, warningOnPress }) => {
+const BaconRedButton = ({ routesText, routesOnPress, warningText, warningOnPress }) => {
   return(
     <View style={ styles.view }>
       <TouchableOpacity onPress={ routesOnPress }>
@@ -51,4 +51,4 @@ const BaconRoutes = ({ routesText, routesOnPress, warningText, warningOnPress })
   )
 }
 
-export default BaconRoutes
+export default BaconRedButton
