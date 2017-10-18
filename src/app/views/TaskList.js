@@ -33,11 +33,14 @@ const styles = {
 
 const showConform = (conform) => {
   if (conform === 0) {
-    return '領取'
+    return '待領取'
   } else if (conform === 1) {
-    return '持續中'
-  } else {
+    return '未完成'
+  } else if (conform === 2) {
     return '未達成'
+  } else {
+    //console.warn(conform)
+    return '錯誤'
   }
 }
 
