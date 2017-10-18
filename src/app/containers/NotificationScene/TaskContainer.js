@@ -35,6 +35,86 @@ export default class TaskContainer extends Component {
     //Actions.AboutMeTab({type: 'reset'})
   }
 
+  checkEmailBonus = taken => {
+    if (SubjectStore.emailVerified && !taken) {
+      // 完成任務 並且沒領過 符合條件可領
+      return 0 // 待領取
+    } else {
+      return 2 // 未達成
+    }   
+  }
+
+  checkPhotoBonus = taken => {
+    if (SubjectStore.albumToFlatList.length >= 3 && !taken) {
+      // 完成任務 並且沒領過 符合條件可領
+      return 0 // 可領取
+    } else {
+      return 2 // 未達成
+    } 
+  }
+
+  checkIntroduceBonus = taken => {
+    if (SubjectStore.bio && !taken) {
+      // 完成任務 並且沒領過 符合條件可領
+      return 0 // 可領取
+    } else {
+      return 2 // 未達成
+    }     
+  }
+
+  checkHobitBonus = taken => {
+    if (SubjectStore.hobbiesToFlatList.length > 0 && !taken) {
+      // 完成任務 並且沒領過 符合條件可領
+      return 0 // 待領取
+    } else {
+      return 2 // 未達成
+    }     
+  }
+
+  checkEverydayBonus = taken => {
+    /*
+    await this.firebase.database().ref('users/' + this.SubjectStore.uid + '/lastEverydayBonusDate').once('value', snap => {
+      const time_now = new Date()
+      const today = time_now.getFullYear() + '-' + (time_now.getMonth() + 1) + '-' + time_now.getDate()
+      if (snap.val() === today) {
+        //console.warn('已領取當日獎勵')
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task5').set(true)
+        this.SubjectStore.setTask5(true)
+        return 2 // 未達成
+      } else {
+        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task5').set(false)
+        this.SubjectStore.setTask5(false)
+        return 0 // 待領取
+      }
+    })
+    */
+    return 1 // 未完成
+  }
+
+  checkEveryMonthBonus = taken => {
+    /*
+    const time_now = new Date()
+    const today = Moment().format().substr(0,10)
+    const days = this.getDaysInMonth(time_now.getMonth(),time_now.getFullYear())
+    const days_length = time_now.getDate()
+    const lsat_day = days[days.length - 1].toISOString().substr(0,10)
+    if (SubjectStore.onlineDaysMonthLength === days_length && !taken) {
+      if (today === lsat_day) {
+        return 0 // 待領取
+      } else {
+        return 1 // 持續中
+      }
+    } else {
+      return 2 // 未達成
+    }  
+    */
+    return 1 // 未完成 
+  }
+
+  checkEveryWeekBonus = () => {
+    return 1 // 未完成
+  }
+
   takeEmailBonus = taken => {
     if (SubjectStore.emailVerified && !taken) {
       // 完成任務 並且沒領過
@@ -62,15 +142,6 @@ export default class TaskContainer extends Component {
         )
       }
     }
-  }
-
-  checkEmailBonus = taken => {
-    if (SubjectStore.emailVerified && !taken) {
-      // 完成任務 並且沒領過 符合條件可領
-      return 0 // 可領取
-    } else {
-      return 2 // 未達成
-    }   
   }
 
   takePhotoBonus = taken => {
@@ -102,15 +173,6 @@ export default class TaskContainer extends Component {
     }
   }
 
-  checkPhotoBonus = taken => {
-    if (SubjectStore.albumToFlatList.length >= 3 && !taken) {
-      // 完成任務 並且沒領過 符合條件可領
-      return 0 // 可領取
-    } else {
-      return 2 // 未達成
-    } 
-  }
-
   takeIntroduceBonus = (taken) => {
     if (SubjectStore.bio && !taken) {
       // 完成任務 並且沒領過
@@ -138,15 +200,6 @@ export default class TaskContainer extends Component {
         )
       }
     }
-  }
-
-  checkIntroduceBonus = taken => {
-    if (SubjectStore.bio && !taken) {
-      // 完成任務 並且沒領過 符合條件可領
-      return 0 // 可領取
-    } else {
-      return 2 // 未達成
-    }     
   }
 
   takeHobitBonus = taken => {
@@ -178,16 +231,8 @@ export default class TaskContainer extends Component {
     }
   }
 
-  checkHobitBonus = taken => {
-    if (SubjectStore.hobbiesToFlatList.length > 0 && !taken) {
-      // 完成任務 並且沒領過 符合條件可領
-      return 0 // 可領取
-    } else {
-      return 2 // 未達成
-    }     
-  }
-
-  takeEverydayBonus = async taken => {
+  takeEverydayBonus = taken => {
+    /*
     await this.firebase.database().ref('users/' + this.SubjectStore.uid + '/lastEverydayBonusDate').once('value', snap => {
       const time_now = new Date()
       const today = time_now.getFullYear() + '-' + (time_now.getMonth() + 1) + '-' + time_now.getDate()
@@ -209,116 +254,32 @@ export default class TaskContainer extends Component {
           ], { cancelable: false } 
         )
       }
-    })   
-  }
-
-  checkEverydayBonus = async taken => {
-    await this.firebase.database().ref('users/' + this.SubjectStore.uid + '/lastEverydayBonusDate').once('value', snap => {
-      const time_now = new Date()
-      const today = time_now.getFullYear() + '-' + (time_now.getMonth() + 1) + '-' + time_now.getDate()
-      if (snap.val() === today) {
-        //console.warn('已領取當日獎勵')
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task5').set(true)
-        this.SubjectStore.setTask5(true)
-        return 2 // 未達成
-      } else {
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task5').set(false)
-        this.SubjectStore.setTask5(false)
-        return 0 // 可領取
-      }
     })
-  }
-
-  checkEverydayMonthBonus = taken => {
-    const time_now = new Date()
-    const today = Moment().format().substr(0,10)
-    const days = this.getDaysInMonth(time_now.getMonth(),time_now.getFullYear())
-    const days_length = time_now.getDate()
-    const lsat_day = days[days.length - 1].toISOString().substr(0,10)
-    if (SubjectStore.onlineDaysMonthLength === days_length && !taken) {
-      if (today === lsat_day) {
-        return 0 // 可領取
-      } else {
-        return 1 // 持續中
-      }
-    } else {
-      return 2 // 未達成
-    }      
-  }
-
-  checkEverydayWeekBonus = () => {
-    return 2 // 未達成
-  }
-/*
-  takeEverydayMonthBonus = () => {
-    const time_now = new Date()
-    const today = Moment().format().substr(0,10)
-    const days = this.getDaysInMonth(time_now.getMonth(),time_now.getFullYear())
-    const days_length = days.length
-    const lsat_day = days[days_length - 1].toISOString().substr(0,10)
-    if (SubjectStore.onlineDaysMonthLength === days_length && !taken) {
-      if (today === lsat_day) {
-        this.firebase.database().ref(`users/${this.SubjectStore.uid}/bonus`).set(this.SubjectStore.bonus + 200)
-        this.firebase.database().ref('users/' + this.SubjectStore.uid + '/task6').set(true)
-        this.SubjectStore.addBonus(200)
-        this.SubjectStore.setTask6(true)
+    */
+    // 
         Alert.alert( 
-          '管理員提示', '領取成功', [ 
+          '管理員提示', '領取失敗', [ 
             {text: '確認', onPress: () => { this.goToAboutMeTab() } }, 
           ], { cancelable: false } 
-        )
-      } else {
+        )  
+  }
+
+  takeEveryWeekBonus = () => {
+    //
         Alert.alert( 
           '管理員提示', '領取失敗', [ 
             {text: '確認', onPress: () => { this.goToAboutMeTab() } }, 
           ], { cancelable: false } 
         )
-      }
-    } else {
-      if (taken) {
-        Alert.alert( 
-          '管理員提示', '已領取過，無法重新領取', [ 
-            {text: '確認', onPress: () => { this.goToAboutMeTab() } }, 
-          ], { cancelable: false } 
-        )
-      } else {
+  }
+
+  takeEveryMonthBonus = () => {
+    //
         Alert.alert( 
           '管理員提示', '領取失敗', [ 
             {text: '確認', onPress: () => { this.goToAboutMeTab() } }, 
           ], { cancelable: false } 
         )
-      }
-    } 
-  }
-*/
-  takeBonus = (key,taken) => {
-    switch (key)
-    {
-    case '1':
-      this.takeEmailBonus(taken)
-      break
-    case '2':
-      this.takePhotoBonus(taken)
-      break
-    case '3':
-      this.takeIntroduceBonus(taken)
-      break
-    case '4':
-      this.takeHobitBonus(taken)
-      break
-    case '5':
-      this.takeEverydayBonus(taken)
-      break
-    //case '6':
-      //this.takeEverydayWeekBonus(taken)
-    //case '7':
-      //this.takeEverydayMonthBonus(taken)
-      //break
-    default:
-      alert('領取錯誤')
-      console.log(key)
-      break
-    }
   }
 
   conform = (key,taken) => {
@@ -338,9 +299,9 @@ export default class TaskContainer extends Component {
     case '5':
       return this.checkEverydayBonus(taken)
     case '6':
-      return this.checkEverydayWeekBonus(taken)
+      return this.checkEveryWeekBonus(taken)
     case '7':
-      return this.checkEverydayMonthBonus(taken)
+      return this.checkEveryMonthBonus(taken)
       //break
     default:
       alert('領取錯誤')
@@ -349,13 +310,45 @@ export default class TaskContainer extends Component {
     }
   }
 
+  takeBonus = (key,taken) => {
+    switch (key)
+    {
+    case '1':
+      this.takeEmailBonus(taken)
+      break
+    case '2':
+      this.takePhotoBonus(taken)
+      break
+    case '3':
+      this.takeIntroduceBonus(taken)
+      break
+    case '4':
+      this.takeHobitBonus(taken)
+      break
+    case '5':
+      this.takeEverydayBonus(taken)
+      break
+    case '6':
+      this.takeEveryWeekBonus(taken)
+      break
+    case '7':
+      this.takeEveryMonthBonus(taken)
+      break
+    default:
+      alert('領取錯誤')
+      console.log(key)
+      break
+    }
+  }
+
   bonusWarning = (key,task,bonus,taken) => {
-    Alert.alert( 
-      task, '確認領取Q點' + bonus + '點？', [ 
-        {text: '確認', onPress: () => { this.takeBonus(key,taken) } }, 
-        {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
-      ], { cancelable: true } 
-    )
+    this.takeBonus(key,taken)
+    //Alert.alert( 
+    //  task, '確認領取Q點' + bonus + '點？', [ 
+    //    {text: '確認', onPress: () => { this.takeBonus(key,taken) } }, 
+    //    {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+    //  ], { cancelable: true } 
+    //)
   }
 
   getDaysInMonth = (month, year) => {
@@ -368,13 +361,15 @@ export default class TaskContainer extends Component {
     }
     return days
   }
+
+  filterTask = () => (this.SubjectStore.tasksToFlatList.filter(ele =>(this.conform(ele.key,ele.taken) !== 2)))
   
   render() {
     return(
       <View>
         <FlatList
           removeClippedSubviews
-          data={ this.SubjectStore.tasksToFlatList }
+          data={ this.filterTask() }
           numColumns={1}
           renderItem={({item}) =>
             <TaskList  
