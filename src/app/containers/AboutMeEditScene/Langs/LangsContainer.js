@@ -43,6 +43,7 @@ export default class LangsContainer extends Component {
   render() {
     return(
       <View style={styles.container}>
+        <MasterModalContainer/>
         <View style={styles.languages}>
           <LangListContainer/>
         </View>
