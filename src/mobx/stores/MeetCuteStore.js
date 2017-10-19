@@ -165,10 +165,10 @@ export default class MeetCuteStore {
     })
     await this.firebase.database().ref('users/' + this.uid).once('value', async snap => {
       if (snap.val() && snap.val().album && !(snap.val().hideMeetCute) && !(snap.val().deleted) && this.checkPhoto(snap.val().album)) {
-        const favorabilityDen = snap.val().favorabilityDen || 0
-        const favorabilityNum = snap.val().favorabilityNum || 0
-        this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
-        this.firebase.database().ref('users/' + this.uid + '/favorability').set(favorabilityNum/(favorabilityDen + 1))
+        //const favorabilityDen = snap.val().favorabilityDen || 0
+        //const favorabilityNum = snap.val().favorabilityNum || 0
+        //this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
+        //this.firebase.database().ref('users/' + this.uid + '/favorability').set(favorabilityNum/(favorabilityDen + 1))
         runInAction(() => {
           this.nickname = snap.val().nickname
           this.bio = snap.val().bio
@@ -221,10 +221,10 @@ export default class MeetCuteStore {
     await this.firebase.database().ref('users/' + this.uid).once('value', async snap => {
       if (snap.val() && snap.val().album && !(snap.val().hideMeetCute) && !(snap.val().deleted) && this.checkPhoto(snap.val().album) ) {
         // 過濾隱藏
-        const favorabilityDen = snap.val().favorabilityDen || 0
-        const favorabilityNum = snap.val().favorabilityNum || 0
-        this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
-        this.firebase.database().ref('users/' + this.uid + '/favorability').set(favorabilityNum/(favorabilityDen + 1))
+        //const favorabilityDen = snap.val().favorabilityDen || 0
+        //const favorabilityNum = snap.val().favorabilityNum || 0
+        //this.firebase.database().ref('users/' + this.uid + '/favorabilityDen').set(favorabilityDen + 1)
+        //this.firebase.database().ref('users/' + this.uid + '/favorability').set(favorabilityNum/(favorabilityDen + 1))
         runInAction(() => {
           this.nickname = snap.val().nickname
           this.bio = snap.val().bio
@@ -344,10 +344,15 @@ export default class MeetCuteStore {
 
   getDistance = (latitude,longitude) => {
     if (this.latitude && this.longitude && latitude && longitude) {
-      return (geolib.getDistance(
+      const distance = (geolib.getDistance(
         {latitude: this.latitude, longitude: this.longitude},
         {latitude: latitude, longitude: longitude}
       )/1000).toFixed(1)
+      if (distance === '0.0') {
+        return '0.1'
+      } else {
+        return distance
+      }
     } else {
       return '?'
     }  
