@@ -64,7 +64,7 @@ export default class CityChooseContainer extends Component {
           <BlankButton text='現在所在城市' onPress={ this.current } /> 
         </View>
         <View style={{marginTop: 20, alignItems: 'center'}}>
-          <Text>{this.SubjectEditStore.address || '請輸入您的所在城市'}</Text>
+          <Text>{this.SubjectEditStore.address || '我的常在城市'}</Text>
         </View>
       </View>
     )
