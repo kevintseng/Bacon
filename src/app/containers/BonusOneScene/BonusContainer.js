@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Text,Button } from 'react-native'
+import { View, TouchableOpacity, Text, Button, Platform, NativeModules } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import RNGooglePlaces from 'react-native-google-places'
 
@@ -7,11 +7,12 @@ import Bonus from '../../views/Bill/Bonus'
 import PolicyModalContainer from '../SettingAboutScene/PolicyModalContainer'
 import RuleModalContainer from '../SettingAboutScene/RuleModalContainer'
 
+const { InAppUtils } = NativeModules
+
 const styles = {
   link: {
     fontFamily: 'NotoSans',
     flexWrap: "wrap",
-    color: "#D63768",
     fontSize: 14,
   },
   text: {
@@ -28,6 +29,21 @@ export default class BonusContainer extends Component {
     this.ControlStore = this.props.ControlStore
   }
 
+  componentWillMount() {
+    if (Platform.OS === 'ios') {
+      const products = [
+        'com.kayming.bacon.q_points_200',
+        'com.kayming.bacon.q_points_600',
+        'com.kayming.bacon.q_points_1200'
+      ]
+      InAppUtils.loadProducts(products, (error, products) => {
+        //update store here.
+        console.log('Products: ', products)
+        console.log('Error: ', error)
+      })
+    }
+  }
+
   render() {
     return(
       <View style={{ alignItems: "center" }}>
@@ -41,18 +57,6 @@ export default class BonusContainer extends Component {
           middleCheckOnPress={ this.ControlStore.pickFiveHundredBonus }
           upperCheckOnPress={ this.ControlStore.pickOneThousandBonus }
         />
-        <View style={{ width: 160, flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 30 }}>
-          <TouchableOpacity style={{ marginRight: 5 }} onPress={this.ControlStore.setSettingPolicyModal}>
-            <Text style={styles.link}>
-              服務條款
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ marginLeft: 5 }} onPress={this.ControlStore.setSettingRuleModal}>
-            <Text style={styles.link}>
-              個資保護政策
-            </Text>
-          </TouchableOpacity>
-        </View>
       </View>
     )
   }
