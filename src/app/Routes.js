@@ -44,8 +44,10 @@ import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
 import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
 import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
 import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
-// Line
+// 訊息列表
 import LineListScene from './scenes/drawer/Line/LineListScene'
+//新訊息列表
+import LineTabScene from './scenes/drawer/Line/LineTabScene'
 // ======共用====== //
 // LineCollect
 import LineCollectCourtScene from './scenes/drawer/LineCollect/LineCollectCourtScene'
@@ -53,9 +55,9 @@ import LineCollectRoutesScene from './scenes/drawer/LineCollect/LineCollectRoute
 //
 import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
 import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
+//舊的聊天室
 import LineScene from './scenes/drawer/Line/LineScene'
-//
-import LineTabScene from './scenes/drawer/Line/LineTabScene'
+//新聊天室
 import LineChatScene from './scenes/drawer/Line/LineChatScene'
 //
 import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
@@ -70,7 +72,6 @@ import BaconMenu from './views/BaconMenu/BaconMenu'
 import BaconTool from './views/BaconTool/BaconTool'
 import BaconArrow from './views/BaconArrow/BaconArrow'
 import BaconNotice from './views/BaconNotice'
-// import ChatStatus from './views/ChatStatus'
 import ChatStatusContainer from './containers/LineListScene/ChatStatusContainer'
 // ###############header components################ //
 
@@ -261,7 +262,7 @@ export default class Routes extends Component {
               </Scene>
 
               <Scene key="LineList" title="訊息" renderLeftButton={this.baconMenu} renderRightButton={this.baconToolLine} component={LineListScene} />
-
+              <Scene key="Line" title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               <Scene key="LineCollect" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="LineCollectCourt" title="LineCollect" renderBackButton={this.baconArrow} component={LineCollectCourtScene} />
               </Scene>
@@ -275,7 +276,6 @@ export default class Routes extends Component {
 
               <Scene key="Bonus" title="Q點儲值" renderBackButton={this.baconArrow} component={BonusOneScene} />
 
-              <Scene key="Line" title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               <Scene key="Convs" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="Conversation" title="訊息" renderBackButton={this.baconMenu} renderRightButton={this.baconToolLine} component={LineTabScene} />
                 <Scene key="ChatRoom" title="聊天室" renderBackButton={this.baconArrow} component={LineChatScene}  />
