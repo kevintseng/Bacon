@@ -8,6 +8,10 @@ import PolicyModalContainer from '../SettingAboutScene/PolicyModalContainer'
 import RuleModalContainer from '../SettingAboutScene/RuleModalContainer'
 
 const styles = {
+  view: { 
+    alignItems: 'center', 
+    //marginTop: 10
+  },
   link: {
     fontFamily: 'NotoSans',
     flexWrap: 'wrap',
@@ -17,7 +21,21 @@ const styles = {
   text: {
     fontFamily: 'NotoSans',
     flexWrap: 'wrap',
+    textAlign: 'center' 
   },
+  warning : { 
+    alignSelf: 'center',
+    position: 'absolute',
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    bottom: -55
+  },
+  textView : { 
+    width: 250, 
+    marginTop: 50, 
+    alignItems: 'center'
+  }
 }
 
 
@@ -50,7 +68,7 @@ export default class UpgradeContainer extends Component {
 
   render() {
     return (
-      <View style={{ alignItems: 'center', marginTop: 10, }}>
+      <View style={ styles.view }>
         <PolicyModalContainer/>
         <RuleModalContainer/>
         <Upgrade
@@ -59,20 +77,16 @@ export default class UpgradeContainer extends Component {
           topCheckOnPress={this.topCheckOnPress}
           upperCheckOnPress={this.upperCheckOnPress}
         />
-        <View style={{ width: 250, marginTop: 15, alignItems: 'center' }}>
+        <View style={ styles.textView }>
           <Text style={ styles.text }>
             若您於高級會員服務訂閱期滿前未取消訂閱，將會於訂閱期滿自動續訂。
           </Text>
-          <View style={{ width: 160, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20}}>
-            <TouchableOpacity style={{ marginRight: 5 }} onPress={this.ControlStore.setSettingPolicyModal}>
-              <Text style={styles.link}>
-                服務條款
-              </Text>
+          <View style={ styles.warning }>
+            <TouchableOpacity onPress={this.ControlStore.setSettingPolicyModal}>
+              <Text style={styles.link}>服務條款  </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginLeft: 5 }} onPress={this.ControlStore.setSettingRuleModal}>
-              <Text style={styles.link}>
-                個資保護政策
-              </Text>
+            <TouchableOpacity onPress={this.ControlStore.setSettingRuleModal}>
+              <Text style={styles.link}>  個資保護政策</Text>
             </TouchableOpacity>
           </View>
         </View>
