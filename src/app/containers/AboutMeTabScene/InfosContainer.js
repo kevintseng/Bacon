@@ -18,6 +18,7 @@ export default class InfosContainer extends Component {
         verityEmail={this.SubjectStore.emailVerified}
         verityPhoto={this.SubjectStore.photoVerified}
         displayName={this.SubjectStore.nickname}
+        address={ this.SubjectStore.address }
         bio={this.SubjectStore.bio}
         age={this.SubjectStore.age}
         langs={this.SubjectStore.languagesToString}
