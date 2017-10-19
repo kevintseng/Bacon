@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, View, Text, Button, Platform, BackHandler, ToastAndroid } from 'react-native'
+import { ScrollView, View, Text, Button, Platform, BackHandler, ToastAndroid, TouchableOpacity } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
@@ -21,7 +21,7 @@ const styles = {
         height: 150,
       },
       textView: {
-        marginTop: 5,
+        marginTop: 10,
         alignSelf: 'center',
         height: 40,
       },
@@ -52,9 +52,23 @@ const styles = {
         position: 'absolute',
         bottom: 0
       },
-        text: {
-        //
+      text: {
+        fontFamily: 'NotoSans',
+        flexWrap: 'wrap',
+        color: '#D63768',
+        fontSize: 14,
       },
+      warning: { 
+        alignSelf: 'center',
+        position: 'absolute',
+        flexDirection: 'row', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        bottom: 185
+      },
+      warningToch : { 
+        //marginRight: 5 
+      }
     },
   })
 }
@@ -93,19 +107,15 @@ export default class BonusOneScene extends Component {
           <BonusContainer/>
         </View>
 
-        <View style={ styles.textView }>
-          <Text style={ styles.text } onPress={ this.ControlStore.setBonusPolicyModal }>條款細則</Text>
-        </View>
-        { Platform.OS === 'ios' &&
-          <View>
-            <View style={ styles.textView }>
-              <Text style={ styles.text } onPress={ this.ControlStore.setSettingPolicyModal }>服務條款</Text>
-            </View>
-            <View style={ styles.textView }>
-              <Text style={ styles.text } onPress={ this.ControlStore.setSettingRuleModal }>個資保護政策</Text>
-            </View>
+          <View style={ styles.warning }>
+            <TouchableOpacity style={ styles.warningToch } onPress={this.ControlStore.setSettingPolicyModal}>
+              <Text style={ styles.text } onPress={ this.ControlStore.setSettingPolicyModal }>使用條款  </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={ styles.warningToch } onPress={this.ControlStore.setSettingRuleModal}>
+              <Text style={ styles.text } onPress={ this.ControlStore.setSettingRuleModal }>  隱私權政策</Text>
+            </TouchableOpacity>
           </View>
-        }
+
 
         <View style={ styles.bottom }>
           <BaconRoutesContainer/>
@@ -115,3 +125,17 @@ export default class BonusOneScene extends Component {
     )
   }
 }
+
+/*
+
+        <View style={ styles.textView }>
+          <Text style={ styles.text } onPress={ this.ControlStore.setSettingPolicyModal }>使用條款</Text>
+        </View>
+        <View style={ styles.textView }>
+          <Text style={ styles.text } onPress={ this.ControlStore.setSettingRuleModal }>隱私權政策</Text>
+        </View>
+
+        <View style={ styles.textView }>
+          <Text style={ styles.text } onPress={ this.ControlStore.setBonusPolicyModal }>條款細則</Text>
+        </View>
+*/

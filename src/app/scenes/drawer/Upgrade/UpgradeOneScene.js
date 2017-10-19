@@ -77,7 +77,7 @@ export default class UpgradeOneScene extends Component {
 
   render() {
     return(
-      <ScrollView style={ styles.view }>
+      <View style={ styles.view }>
         <View style={ styles.top }>
           <UpgradeTitleContainer/>
         </View>
@@ -89,7 +89,7 @@ export default class UpgradeOneScene extends Component {
         <View style={ styles.bottom }>
           <BaconRoutesContainer/>
         </View>
-      </ScrollView>
+      </View>
     )
   }
 }
