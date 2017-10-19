@@ -383,10 +383,15 @@ export default class FateStore {
 
   getDistance = (latitude,longitude) => {
     if (this.latitude && this.longitude && latitude && longitude) {
-      return geolib.getDistance(
+      const distance = (geolib.getDistance(
         {latitude: this.latitude, longitude: this.longitude},
         {latitude: latitude, longitude: longitude}
-      )/1000
+      )/1000).toFixed(1)
+      if (distance === '0.0') {
+        return '0.1'
+      } else {
+        return distance
+      }
     } else {
       return '?'
     }  
