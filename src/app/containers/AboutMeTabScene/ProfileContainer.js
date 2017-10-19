@@ -44,7 +44,7 @@ export default class ProfileContainer extends Component {
   }
 
   goToMemberUpgrade = () => {
-    if (this.SubjectStore.vip) {
+    if (!this.SubjectStore.vip) {
       // console.log("this.SubjectStore.vip: ", this.SubjectStore.vip)
       Alert.alert(
         '管理員提示', '您已是高級會員', [

@@ -21,7 +21,7 @@ const styles = {
         height: 150,
       },
       textView: {
-        marginTop: 10,
+        marginTop: 5,
         alignSelf: 'center',
         height: 40,
       },
@@ -96,6 +96,16 @@ export default class BonusOneScene extends Component {
         <View style={ styles.textView }>
           <Text style={ styles.text } onPress={ this.ControlStore.setBonusPolicyModal }>條款細則</Text>
         </View>
+        { Platform.OS === 'ios' &&
+          <View>
+            <View style={ styles.textView }>
+              <Text style={ styles.text } onPress={ this.ControlStore.setSettingPolicyModal }>服務條款</Text>
+            </View>
+            <View style={ styles.textView }>
+              <Text style={ styles.text } onPress={ this.ControlStore.setSettingRuleModal }>個資保護政策</Text>
+            </View>
+          </View>
+        }
 
         <View style={ styles.bottom }>
           <BaconRoutesContainer/>
@@ -105,13 +115,3 @@ export default class BonusOneScene extends Component {
     )
   }
 }
-
-/*
-
-        <View style={ styles.textView }>
-          <Text style={ styles.text } onPress={ this.ControlStore.setSettingPolicyModal }>使用條款</Text>
-        </View>
-        <View style={ styles.textView }>
-          <Text style={ styles.text } onPress={ this.ControlStore.setSettingRuleModal }>隱私權政策</Text>
-        </View>
-*/

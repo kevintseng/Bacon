@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Text, Button } from 'react-native'
+import { View, TouchableOpacity, Text, Button, Platform } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import RNGooglePlaces from 'react-native-google-places'
 
@@ -18,7 +18,8 @@ const styles = {
     fontFamily: 'NotoSans',
     flexWrap: 'wrap',
     color: '#606060',
-    fontSize: 14,
+    fontSize: 11,
+    alignItems: 'center',
   },
 }
 
@@ -62,8 +63,6 @@ export default class UpgradeContainer extends Component {
           upperCheckOnPress={this.upperCheckOnPress}
         />
         <View style={{ width: 250, marginTop: 15, alignItems: 'center' }}>
-          <Text style={styles.text}>若需要取消訂閱或自動續訂, 請直接在您的iTunes帳號取消或變更您的訂閱設定。</Text>
-          <Text style={styles.text}>所有自動續訂將在有效期滿前24小時之內續訂並將從您的iTunes帳號扣取訂閱費用。</Text>
           <View style={{ width: 160, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20}}>
             <TouchableOpacity style={{ marginRight: 5 }} onPress={this.ControlStore.setSettingPolicyModal}>
               <Text style={styles.link}>
@@ -75,9 +74,15 @@ export default class UpgradeContainer extends Component {
                 個資保護政策
               </Text>
             </TouchableOpacity>
-            <Text style={styles.text}>確認要升級為高級會員並立即使用您的iTunes帳號來完成訂閱付費？</Text>
           </View>
         </View>
+        { Platform.OS === 'ios' &&
+          <View style={{ marginTop: 10, width: 320}}>
+            <Text style={styles.text}>當您按下「升級」並使用確認付費升級為高級會員後將從您的iTunes帳號收費。</Text>
+            <Text style={styles.text}>您的高級會員資格將於訂閱效期滿前24小時內自動續訂並將從您的iTunes帳號扣取費用。</Text>
+            <Text style={styles.text}>若需取消自動續訂，請在您的iTunes帳號變更您的訂閱設定。</Text>
+          </View>
+        }
       </View>
     )
   }
