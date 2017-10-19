@@ -21,7 +21,6 @@ export default class BaconRoutesContainer extends Component {
   }
 
   pay = async () => {
-    console.log("this.pay pressed")
     const bonus = parseInt(Object.keys(this.ControlStore.bonus).find(key => this.ControlStore.bonus[key] === true))
     if (Platform.OS === "android") {
       if (bonus === 1200) {
@@ -37,17 +36,33 @@ export default class BaconRoutesContainer extends Component {
         alert('錯誤')
       }
     } else {
-      console.log("iOS IAP Bonus")
+      console.log("iOS IAP Bonus #################")
+      const products = [
+         'com.kayming.bacon.q_points_200',
+         'com.kayming.bacon.q_points_600',
+      ]
+      InAppUtils.loadProducts(products, (error, products) => {
+         //update store here.
+         console.log("Products: ", products)
+         console.log("Error: ", error)
+      })
+
       try {
         console.log(this.ControlStore)
         let bonus = 0
         if (this.ControlStore.bonus[200]) {
+          const productIdentifier = 'com.kayming.bacon.q_points_200'
+          this.iOSPay(productIdentifier)
           bonus = 200
         }
         if (this.ControlStore.bonus[600]) {
+          const productIdentifier = 'com.kayming.bacon.q_points_600'
+          this.iOSPay(productIdentifier)
           bonus = 600
         }
         if (this.ControlStore.bonus[1200]) {
+          const productIdentifier = 'com.kayming.bacon.q_points_1200'
+          this.iOSPay(productIdentifier)
           bonus = 1200
         }
         this.SubjectStore.addBonus(bonus)
@@ -85,6 +100,22 @@ export default class BaconRoutesContainer extends Component {
       } else {
         await InAppBilling.close()
       }
+    }
+  }
+
+  iOSPay = async (productId) => {
+    console.log("Purchasing iOS product: ", productId)
+    try {
+      await InAppUtils.purchaseProduct(productId, (error, response) => {
+        console.log("response: ", response)
+         // NOTE for v3.0: User can cancel the payment which will be available as error object here.
+         if(response && response.productIdentifier) {
+            console.log('Purchase Successful', 'Your Transaction ID is ' + response.transactionIdentifier);
+            //unlock store here.
+         }
+      })
+    } catch (err) {
+      alert('錯誤')
     }
   }
 
