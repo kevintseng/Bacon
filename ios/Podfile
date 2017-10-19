@@ -13,6 +13,7 @@ target 'Bacon' do
 
   pod 'Yoga', path: '../node_modules/react-native/ReactCommon/yoga'
   pod 'React', path: '../node_modules/react-native', subspecs: [
+    'Core',
     'BatchedBridge', # Required For React Native 0.45.0+
     'DevSupport'
   ]
