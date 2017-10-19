@@ -30,57 +30,34 @@ export default class MasterModalContainer extends Component {
     super(props)
     this.ControlStore = this.props.ControlStore
     this.SubjectEditStore = this.props.SubjectEditStore
-    this.state = {
-      a: true,
-      b: false,
-      c: false,
-      d: false
-    }
+  }
+
+  componentWillMount() {
+    this.ControlStore.initMaster()
   }
 
   onPressA = () => {
-    this.setState({
-      a: true,
-      b: false,
-      c: false,
-      d: false
-    })
+    this.ControlStore.setMaster()
+    this.onPrsss()
   }
 
   onPressB = () => {
-    this.setState({
-      a: false,
-      b: true,
-      c: false,
-      d: false
-    })
+    this.ControlStore.setCommon()
+    this.onPrsss()
   }
 
   onPressC = () => {
-    this.setState({
-      a: false,
-      b: false,
-      c: true,
-      d: false
-    })
-  }
-
-  onPressD = () => {
-    this.setState({
-      a: false,
-      b: false,
-      c: false,
-      d: true
-    })
+    this.ControlStore.setGeneral()
+    this.onPrsss()
   }
 
   onPrsss = () => {
     this.ControlStore.setlangAdvanced()
-    if (this.state.c == true) {
+    if (this.ControlStore.general == true) {
       this.SubjectEditStore.oneLevelLanguages(this.ControlStore.lang)
-    } else if (this.state.b == true) {
+    } else if (this.ControlStore.common == true) {
       this.SubjectEditStore.twoLevelLanguages(this.ControlStore.lang)
-    } else if (this.state.a == true) {
+    } else if (this.ControlStore.master == true) {
       this.SubjectEditStore.threeLevelLanguages(this.ControlStore.lang)
     }
   }
@@ -118,7 +95,7 @@ export default class MasterModalContainer extends Component {
               textStyle={styles.option}
               center
               title='精通'
-              checked={this.state.a}
+              checked={this.ControlStore.master}
               onPress={ this.onPressA }
             />
             <CheckBox
@@ -127,7 +104,7 @@ export default class MasterModalContainer extends Component {
               textStyle={styles.option}
               center
               title='普通'
-              checked={this.state.b}
+              checked={this.ControlStore.common}
               onPress={ this.onPressB }
             />
             <CheckBox
@@ -136,12 +113,9 @@ export default class MasterModalContainer extends Component {
               textStyle={styles.option}
               center
               title='一般'
-              checked={this.state.c}
+              checked={this.ControlStore.general}
               onPress={ this.onPressC }
             />
-            <TouchableOpacity onPress={ this.onPrsss }>
-              <Text style={[styles.title,{color: '#d63768',fontWeight: '400'}]}>確認</Text>
-            </TouchableOpacity>
           </TouchableOpacity>
         </TouchableOpacity>
 
