@@ -51,14 +51,15 @@ export default class LineListScene extends Component {
     this.LineStore = this.props.LineStore
     // console.log("convs: ", this.LineStore.conversations)
     this.uid = this.SubjectStore.uid
-
+    const convs = this.LineStore.convListToArray
+    console.log("convs: ", convs)
     this.convNum = 0
     this.state = {
       size: {
         width,
         height,
       },
-      convs: this.LineStore.conversations,
+      convs,
       isLoading: false,
       listFilter: "all",
       noData: false,
@@ -66,17 +67,18 @@ export default class LineListScene extends Component {
   }
 
   componentWillMount() {
+    // console.log("LineList will mount!!!")
     Actions.refresh({ key: 'Drawer', open: false })
+    this.startListener(this.state.convs)
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.startListener()
-    }, 2500)
+    // this.stopListener()
   }
 
   componentWillUnmount() {
     this.stopListener()
+    // console.log("LineList will unmount!!!")
   }
 
   onlineListener(userId, key, on) {
@@ -112,24 +114,28 @@ export default class LineListScene extends Component {
     })
   }
 
-  startListener() {
+  startListener(convs) {
     // console.log("startListener: ", this.state.convs)
-    this.state.convs.map((conv, key) => {
-      // this.unreadListener(conv.convKey, this.uid, key, true)
-      // this.chatStatusListener(conv.uid, key, true)
-      this.onlineListener(conv.uid, key, true)
-      // this.lastSentenceListener(conv.convKey, key, true)
-      return 0
-    })
+
+    setTimeout(() => {
+      convs.map((conv, key) => {
+        this.unreadListener(conv.convKey, this.uid, key, true)
+        this.chatStatusListener(conv.uid, key, true)
+        this.onlineListener(conv.uid, key, true)
+        this.lastSentenceListener(conv.convKey, key, true)
+        return true
+      })
+    }, 1000)
+
   }
 
   stopListener() {
     // console.log("stopListener: ", this.state.convs[0])
     this.state.convs.map((conv, key) => {
-      // this.unreadListener(conv.convKey, this.uid, key, false)
-      // this.chatStatusListener(conv.uid, key, false)
+      this.unreadListener(conv.convKey, this.uid, key, false)
+      this.chatStatusListener(conv.uid, key, false)
       this.onlineListener(conv.uid, key, false)
-      // this.lastSentenceListener(conv.convKey, key, false)
+      this.lastSentenceListener(conv.convKey, key, false)
       return false
     })
   }
@@ -247,23 +253,27 @@ export default class LineListScene extends Component {
   }
 
   handleFilterChange = (val, selection, row) => {
+    this.stopListener()
+    this.LineStore.fetchConvList()
     let convs = this.state.convs
     if (selection === 0) {
       switch (row) {
         // all
         case 0:
-          this.getUserConvs(false)
-          this.getUserConvs(true)
+          convs = this.LineStore.convListToArray
+          this.setState({ convs, noData: false })
+          this.startListener(convs)
           break
         // unread
         case 1:
           convs = convs.filter(conv => {
-            return conv.unread > 0
+            return conv.unread
           })
           if (convs.length == 0) {
             this.setState({ convs, noData: true })
           } else {
-            this.setState({ convs })
+            this.setState({ convs, noData: false })
+            this.startListener(convs)
           }
           break
         // visitor
@@ -274,7 +284,8 @@ export default class LineListScene extends Component {
           if (convs.length == 0) {
             this.setState({ convs, noData: true })
           } else {
-            this.setState({ convs })
+            this.setState({ convs, noData: false })
+            this.startListener(convs)
           }
           break
         default:
