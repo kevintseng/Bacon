@@ -55,7 +55,6 @@ const styles = {
     },
   }),
   text: {
-    //
   },
 }
 
@@ -95,6 +94,12 @@ export default class BonusOneScene extends Component {
 
         <View style={ styles.textView }>
           <Text style={ styles.text } onPress={ this.ControlStore.setBonusPolicyModal }>條款細則</Text>
+        </View>
+        <View style={ styles.textView }>
+          <Text style={ styles.text } onPress={ this.ControlStore.setSettingPolicyModal }>使用條款</Text>
+        </View>
+        <View style={ styles.textView }>
+          <Text style={ styles.text } onPress={ this.ControlStore.setSettingRuleModal }>隱私權政策</Text>
         </View>
 
         <View style={ styles.bottom }>
