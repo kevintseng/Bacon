@@ -35,17 +35,19 @@ export default class BaconRoutesContainer extends Component {
   }
 
   componentDidMount() {
-    InAppUtils.restorePurchases((error, products) => {
-      if (error) {
-        console.log('itunes Error', 'Could not connect to itunes store.')
-      } else {
-        console.log(
-          'Restore Successful',
-          'Successfully restores all your purchases.'
-        )
-        //unlock store here again.
-      }
-    })
+    if (Platform.OS === 'ios') {
+      InAppUtils.restorePurchases((error, products) => {
+        if (error) {
+          console.log('itunes Error', 'Could not connect to itunes store.')
+        } else {
+          console.log(
+            'Restore Successful',
+            'Successfully restores all your purchases.'
+          )
+          //unlock store here again.
+        }
+      })
+    }
   }
 
   pay = async () => {

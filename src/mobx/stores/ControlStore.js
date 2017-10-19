@@ -37,6 +37,10 @@ export default class ControlStore {
   @observable langAdvanced
   //
   @observable lang
+  //
+  @observable master
+  @observable common
+  @observable general
 
   constructor() {
     this.initialize()
@@ -79,6 +83,10 @@ export default class ControlStore {
     this.langAdvanced = false
     //
     this.lang = null
+    //
+    this.master = true,
+    this.common = false,
+    this.general = false
   }
 
   @action setLineModalUid = str => {
@@ -215,5 +223,29 @@ export default class ControlStore {
 
   @action setlang = lang => {
     this.lang = lang 
+  }
+
+  @action initMaster = () => {
+    this.master = true,
+    this.common = false,
+    this.general = false
+  }
+
+  @action setMaster = () => {
+    this.master = true,
+    this.common = false,
+    this.general = false    
+  }
+
+  @action setCommon = () => {
+    this.master = false,
+    this.common = true,
+    this.general = false     
+  }
+
+  @action setGeneral = () => {
+    this.master = false,
+    this.common = false,
+    this.general = true     
   }
 }
