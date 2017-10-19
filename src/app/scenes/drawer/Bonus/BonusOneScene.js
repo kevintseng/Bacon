@@ -9,9 +9,6 @@ import BonusTitleContainer from  '../../../containers/BonusOneScene/BonusTitleCo
 import PolicyModalContainer from '../../../containers/BonusOneScene/PolicyModalContainer'
 
 const styles = {
-  view: {
-    flex: 1
-  },
   ...Platform.select({
     ios: {
       top: {
@@ -33,6 +30,9 @@ const styles = {
       },
     },
     android: {
+      view: {
+        flex: 1
+      },
       top: {
         position: 'absolute',
         top: 30,
@@ -52,10 +52,11 @@ const styles = {
         position: 'absolute',
         bottom: 0
       },
+        text: {
+        //
+      },
     },
-  }),
-  text: {
-  },
+  })
 }
 
 @inject('ControlStore') @observer
@@ -82,7 +83,7 @@ export default class BonusOneScene extends Component {
 
   render() {
     return(
-      <ScrollView style={ styles.view }>
+      <View style={ styles.view }>
         <PolicyModalContainer/>
         <View style={ styles.top }>
           <BonusTitleContainer/>
@@ -95,18 +96,22 @@ export default class BonusOneScene extends Component {
         <View style={ styles.textView }>
           <Text style={ styles.text } onPress={ this.ControlStore.setBonusPolicyModal }>條款細則</Text>
         </View>
+
+        <View style={ styles.bottom }>
+          <BaconRoutesContainer/>
+        </View>
+
+      </View>
+    )
+  }
+}
+
+/*
+
         <View style={ styles.textView }>
           <Text style={ styles.text } onPress={ this.ControlStore.setSettingPolicyModal }>使用條款</Text>
         </View>
         <View style={ styles.textView }>
           <Text style={ styles.text } onPress={ this.ControlStore.setSettingRuleModal }>隱私權政策</Text>
         </View>
-
-        <View style={ styles.bottom }>
-          <BaconRoutesContainer/>
-        </View>
-
-      </ScrollView>
-    )
-  }
-}
+*/
