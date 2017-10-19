@@ -19,6 +19,7 @@ export default class MeetChanceStore {
   @observable hobbies
   @observable album
   @observable vip
+  @observable address
   @observable distance
   @observable emailVerified
   @observable photoVerified
@@ -73,6 +74,7 @@ export default class MeetChanceStore {
     this.hobbies = new Object
     this.album = new Object
     this.vip = false
+    this.address = null
     this.distance = null
     this.emailVerified = false
     this.photoVerified = false
@@ -183,6 +185,7 @@ export default class MeetChanceStore {
           this.hobbies = snap.val().hobbies || new Object
           this.album = this.handleNewAlbum(snap.val().album,snap.val().avatar)//snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
+          this.address = snap.val().address
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)

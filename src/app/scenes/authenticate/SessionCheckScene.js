@@ -59,7 +59,6 @@ export default class SessionCheckScene extends Component {
           ///////// 非同步 /////////
           this.uploadAvatar() // 非同步上傳相簿
           this.uploadSignUpData() // 非同步上傳註冊資料
-          this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
@@ -76,7 +75,6 @@ export default class SessionCheckScene extends Component {
           ///////// 非同步 /////////
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
           this.setVip()
-          this.uploadLocation() // 上傳GPS資料 巧遇監聽
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
@@ -86,6 +84,7 @@ export default class SessionCheckScene extends Component {
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           ///////// 同步 /////////
           this.uploadEmailVerity()
+
         }
         Actions.Drawer({type: 'reset'}) // 進入 Drawer
       } else {
@@ -162,27 +161,25 @@ export default class SessionCheckScene extends Component {
   uploadLocation = () => {
     Geolocation.getCurrentPosition(
       location => {
+        // 抓到手機地理位置
         this.uploadFirebaseLocation(location.coords.latitude,location.coords.longitude)
+        this.initMeetChanceListener(location.coords.latitude,location.coords.longitude)
         this.setLocation(location.coords.latitude,location.coords.longitude)
       },
       error => {
-        console.log('獲取位置失敗：' + error)
+        //console.log('獲取手機地理位置失敗：' + error)
         if (this.ControlStore.authenticateIndicator == '註冊') {
           if (this.SignUpStore.latitude && this.SignUpStore.longitude) {
             this.uploadFirebaseLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
+            this.initMeetChanceListener(this.SignUpStore.latitude,this.SignUpStore.longitude)
             this.setLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
           } else {
-            console.log('從firebase獲取位置失敗')
+            //console.log('從註冊獲得地理位置失敗')
           }
         } else {
-          this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value', snap => {
-            if (snap.val() && snap.val().latitude && snap.val().longitude) {
-              //console.log('從firebase獲取位置成功:' + [snap.val().latitude,snap.val().longitude])
-              this.setLocation(snap.val().latitude,snap.val().longitude)
-            } else {
-              //console.log('從firebase獲取位置失敗')
-            }
-          })
+          // 登入
+          this.initMeetChanceListener(this.SubjectStore.latitude,this.SubjectStore.longitude)
+          this.setLocation(this.SubjectStore.latitude,this.SubjectStore.longitude)
         }
       }
     )
@@ -193,7 +190,7 @@ export default class SessionCheckScene extends Component {
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/longitude').set(longitude)
   }
 
-  setLocation = (latitude,longitude) => {
+  initMeetChanceListener = (latitude,longitude) => {
     this.geoFire = new GeoFire(this.firebase.database().ref('/user_locations/'))
     this.geoQuery = this.geoFire.query({
         center: [latitude,longitude],
@@ -207,6 +204,9 @@ export default class SessionCheckScene extends Component {
         console.log('上傳位置失敗：' + error)
       }
     )
+  }
+
+  setLocation = (latitude,longitude) => {
     this.SubjectStore.setLatitude(latitude)
     this.SubjectStore.setLongitude(longitude)
     this.MeetCuteStore.setLatitude(latitude)
@@ -238,11 +238,12 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
     this.ControlStore.setSyncDetector(true) // 同步完成
     this.meetCuteListener() // 非同步邂逅監聽
+    this.uploadLocation() // 上傳GPS資料 巧遇監聽
     this.uxSignIn() // 讓登入頁留住帳號密碼
   }
 
-  initSubjectStoreFromFirebase = async () => {
-    await this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
+  initSubjectStoreFromFirebase = () => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid).once('value',
       (snap) => {
         if (snap.val()) {
           this.SubjectStore.setNickname(snap.val().nickname) // null(placeholder) String
@@ -288,6 +289,18 @@ export default class SessionCheckScene extends Component {
           // LineStore
           this.LineStore.setUid(this.SubjectStore.uid)
           this.LineStore.fetchConvList()
+          //
+          this.SubjectStore.setLatitude(snap.val().latitude || 25.028031)
+          this.SubjectStore.setLongitude(snap.val().longitude || 121.516815)
+          this.MeetCuteStore.setLatitude(snap.val().latitude || 25.028031)
+          this.MeetCuteStore.setLongitude(snap.val().longitude || 121.516815)
+          this.MeetChanceStore.setLatitude(snap.val().latitude || 25.028031)
+          this.MeetChanceStore.setLongitude(snap.val().longitude || 121.516815)
+          this.FateStore.setLatitude(snap.val().latitude || 25.028031)
+          this.FateStore.setLongitude(snap.val().longitude || 121.516815)
+          //
+          this.meetCuteListener() // 非同步邂逅
+          this.uploadLocation() // 上傳GPS資料 巧遇監聽
         } else {
           //
         }
@@ -298,7 +311,6 @@ export default class SessionCheckScene extends Component {
         console.log(error)
       })
     this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
-    this.meetCuteListener() // 非同步邂逅
   }
 
   setVip = () => {
