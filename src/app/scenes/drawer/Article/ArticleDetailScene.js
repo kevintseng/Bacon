@@ -76,13 +76,13 @@ export default class ArticleDetailScene extends Component {
   }
 
   goToLink = () => {
-    Linking.openURL('http://24h.pchome.com.tw/books/prod/DJAM05-A9007EKBG').catch(err => console.error('An error occurred', err))
+    Linking.openURL(this.props.promoteLink).catch(err => console.error('An error occurred', err))
   }
 
 
   render() {
 
-    const { id, articleTitle, uri, content, articleSource, stageSource, stageName, stageTag } = this.props
+    const { id, articleTitle, uri, content, articleSource, stageSource, stageName, stageTag, promoteStore, promoteTitle, promoteLink } = this.props
 
     return (
       <ScrollView>
@@ -103,9 +103,9 @@ export default class ArticleDetailScene extends Component {
           </View>
         }
         <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
-          <Text style={[styles.subtitle]}>PChome</Text>
+          <Text style={[styles.subtitle]}>{ promoteStore }</Text>
           <TouchableOpacity onPress={this.goToLink}>
-            <Text style={[styles.text]}>醉愛深夜食堂 (限)</Text>
+            <Text style={[styles.text]}>{ promoteTitle }</Text>
           </TouchableOpacity>
         </View>
         <Text style={[styles.text,{textAlign: 'center'}]}>我對這篇文章的評價</Text>

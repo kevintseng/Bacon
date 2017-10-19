@@ -114,6 +114,7 @@ export default class InfosContainer extends Component {
           age={ this.FateStore.age }
           langs={ this.FateStore.languagesToString }
           distance={ this.FateStore.distance }
+          address={ this.FateStore.address }
           onReportUserPressed= { this.reportPressed }
           onPrssBlockade={ this.onPrssBlockade }
         />
