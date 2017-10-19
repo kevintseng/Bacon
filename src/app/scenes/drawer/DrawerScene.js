@@ -29,12 +29,7 @@ export default class DrawerScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    this.LineStore.setUid(this.SubjectStore.uid)
   }
-
-  // componentDidMount() {
-  //   this.LineStore.setUid(this.SubjectStore.uid)
-  // }
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)

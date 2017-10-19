@@ -4,12 +4,7 @@ import localdb from '../../configs/localdb'
 
 export default class LineStore {
   // user data
-  @observable avatar
-  @observable nickname
-  @observable birthday
-  @observable vip
   @observable conversations
-  @observable chatStatus
 
   constructor(firebase) {
     this.firebase = firebase
@@ -33,18 +28,11 @@ export default class LineStore {
   @action initialize = () => {
     // user data
     this.uid = null
-    this.nickname = null
-    this.birthday = null
-    this.avatar = null
-    this.vip = false
     this.conversations = []
-    this.chatStatus = null
-    this.fetchList= null
   }
 
   @action setUid = uid => {
     this.uid = uid
-    this.fetchConvList()
   }
 
   @action setChatStatus = status => {
@@ -58,12 +46,15 @@ export default class LineStore {
   @action addConv = (key, data) => {
     this.conversations[key] = data
     this.conversations = Object.assign({}, this.conversations)
-    console.log("this.conversations: ", this.conversations)
   }
 
   @action deleteConv = (key) => {
     delete this.conversations[key]
     this.conversations = Object.assign({}, this.conversations)
+  }
+
+  @computed get convListToArray() {
+    return Object.keys(this.conversations).map((key) => (this.conversations[key]))
   }
 
   @action fetchConvList = () => {
@@ -106,8 +97,8 @@ export default class LineStore {
                   online: false,
                   subtitle: null,
                 }
-
-                this.conversations.push(convData)
+                this.addConv(convKey, convData)
+                // this.conversations.push(convData)
               })
             }
           })
@@ -115,5 +106,29 @@ export default class LineStore {
       }
     })
   }
+
+  // @action onlineListener(userId, key, on) {
+  //   const ref = this.firebase.database().ref(`online/${userId}`)
+  //   const listen = snap => {
+  //     const newConvs = this.state.convs
+  //     if (snap.exists()) {
+  //       // console.log(newConvs[key].name, " is online")
+  //       newConvs[key].online = true
+  //       this.setState({ convs: newConvs })
+  //     } else {
+  //       // console.log(newConvs[key].name, " is offline")
+  //       newConvs[key].online = false
+  //       this.setState({ convs: newConvs })
+  //     }
+  //     return newConvs
+  //   }
+  //
+  //   if (on) {
+  //     // console.log("onlineListener on: ", userId)
+  //     return ref.on("value", listen)
+  //   }
+  //   // console.log("onlineListener off: ", userId)
+  //   return ref.off("value", listen)
+  // }
 
 }

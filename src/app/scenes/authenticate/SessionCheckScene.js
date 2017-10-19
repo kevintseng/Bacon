@@ -16,7 +16,7 @@ const metadata = {
   contentType: 'image/jpeg'
 }
 
-@inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','MeetCuteStore','FateStore','firebase',) @observer
+@inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','MeetCuteStore','FateStore','LineStore','firebase',) @observer
 export default class SessionCheckScene extends Component {
 
   constructor(props) {
@@ -28,6 +28,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectEditStore = this.props.SubjectEditStore
     this.MeetChanceStore = this.props.MeetChanceStore
     this.MeetCuteStore = this.props.MeetCuteStore
+    this.LineStore = this.props.LineStore
     this.FateStore = this.props.FateStore
     this.firebase = this.props.firebase
     this.lastAppState = AppState.currentState
@@ -114,6 +115,7 @@ export default class SessionCheckScene extends Component {
     this.MeetChanceStore.initialize()
     this.MeetCuteStore.initialize()
     this.FateStore.initialize()
+    this.LineStore.initialize()
   }
 
   uploadAvatar = () => {
@@ -283,6 +285,9 @@ export default class SessionCheckScene extends Component {
           this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 50)
           this.MeetChanceStore.setMeetChanceRadar(snap.val().meetChanceRadar)
           this.MeetChanceStore.setMeetChanceOfflineMember(snap.val().meetCuteOfflineMember)
+          // LineStore
+          this.LineStore.setUid(this.SubjectStore.uid)
+          this.LineStore.fetchConvList()
         } else {
           //
         }
@@ -435,11 +440,11 @@ export default class SessionCheckScene extends Component {
     if (this.blockadeQuery_A) {
       this.blockadeQuery_A.off()
       this.blockadeQuery_A = null
-    } 
+    }
     if (this.blockadeQuery_B) {
       this.blockadeQuery_B.off()
       this.blockadeQuery_B = null
-    }    
+    }
   }
 
   //////********************//////
@@ -494,7 +499,7 @@ export default class SessionCheckScene extends Component {
     this.firebase.database().ref('/online/' + this.SubjectStore.uid).set({
       lastOnline: Math.floor(Date.now() / 1000),
       location: 'Taipei, Taiwan'
-    }) 
+    })
     // onlineDaysMonth
     this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineDaysMonth').once('value',snap => {
       const onlineDaysMonth = snap.val() || new Object
