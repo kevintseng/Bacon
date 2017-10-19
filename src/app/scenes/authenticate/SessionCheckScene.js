@@ -393,6 +393,8 @@ export default class SessionCheckScene extends Component {
     })
   }
 
+  // removeListener
+
   removeMeetCuteListener = () => {
     if (this.meetCuteQuery) {
       this.meetCuteQuery.off()
