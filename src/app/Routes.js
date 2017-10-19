@@ -102,7 +102,6 @@ const styles = {
   },
   baconTool: {
     position: 'absolute',
-    // top: Platform.OS === 'ios' ? 4 : 0,
     bottom: -1,
     right: 5,
   },
@@ -296,4 +295,3 @@ export default class Routes extends Component {
     )
   }
 }
-// renderRightButton={this.baconToolAboutMe}
