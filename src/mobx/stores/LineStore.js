@@ -107,28 +107,4 @@ export default class LineStore {
     })
   }
 
-  // @action onlineListener(userId, key, on) {
-  //   const ref = this.firebase.database().ref(`online/${userId}`)
-  //   const listen = snap => {
-  //     const newConvs = this.state.convs
-  //     if (snap.exists()) {
-  //       // console.log(newConvs[key].name, " is online")
-  //       newConvs[key].online = true
-  //       this.setState({ convs: newConvs })
-  //     } else {
-  //       // console.log(newConvs[key].name, " is offline")
-  //       newConvs[key].online = false
-  //       this.setState({ convs: newConvs })
-  //     }
-  //     return newConvs
-  //   }
-  //
-  //   if (on) {
-  //     // console.log("onlineListener on: ", userId)
-  //     return ref.on("value", listen)
-  //   }
-  //   // console.log("onlineListener off: ", userId)
-  //   return ref.off("value", listen)
-  // }
-
 }
