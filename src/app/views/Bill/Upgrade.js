@@ -38,7 +38,7 @@ const Upgrade = ({topCheck, upperCheck, topCheckOnPress, upperCheckOnPress}) => 
         <TouchableOpacity onPress={ topCheckOnPress }>
           <Image style={styles.image} source={topCheck ? require('./img/btn_radio_1.png') : require('./img/btn_radio_0.png')} />
         </TouchableOpacity>
-          <Text style={styles.text}>升級為高級會員（三個月效期）</Text>
+          <Text style={styles.text}>高級會員（三個月期）</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.text}>$350</Text>
@@ -51,7 +51,7 @@ const Upgrade = ({topCheck, upperCheck, topCheckOnPress, upperCheckOnPress}) => 
         <TouchableOpacity onPress={ upperCheckOnPress }>
           <Image style={styles.image} source={upperCheck ? require('./img/btn_radio_1.png') : require('./img/btn_radio_0.png')} />
         </TouchableOpacity>
-          <Text style={styles.text}>升級為高級會員（一年效期）</Text>
+          <Text style={styles.text}>高級會員（一年期）</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.text}>$930</Text>
