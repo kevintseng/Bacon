@@ -44,7 +44,7 @@ const Bonus = ({topCheck, middleCheck, upperCheck, topCheckOnPress, middleCheckO
         </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}>$350</Text>
+          <Text style={styles.text}>$330</Text>
         </View>
       </View>
 
