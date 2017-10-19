@@ -11,6 +11,8 @@ const styles = {
   view: {
     flex: 1
   },
+  text: {
+  },
   ...Platform.select({
     ios: {
       top: {
@@ -21,7 +23,12 @@ const styles = {
       },
       bottom: {
         marginTop: 10,
-      }
+      },
+      textView: {
+        marginTop: 10,
+        alignSelf: 'center',
+        height: 40,
+      },
     },
     android: {
       top: {
@@ -37,7 +44,12 @@ const styles = {
       bottom: {
         position: 'absolute',
         bottom: 0
-      }
+      },
+      textView: {
+        position: 'absolute',
+        bottom: 200,
+        alignSelf: 'center',
+      },
     }
   })
 }
