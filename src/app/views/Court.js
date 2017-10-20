@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Dimensions, Image, Modal, View, Text, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
+import { Dimensions, Image, Modal, View, Text, TouchableWithoutFeedback, TouchableOpacity, Platform } from 'react-native'
 import Carousel from 'react-native-looped-carousel'
 import ImageZoom from 'react-native-image-pan-zoom'
 import FastImage from 'react-native-fast-image'
@@ -14,6 +14,25 @@ const DEFAULT_IMAGE = require('../../images/Loading_icon.gif')
 const styles = {
   view: {
     flex: 1
+  },
+  toolView: {
+    width, 
+    position: 'absolute', 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    padding: 20
+  },
+  chooseView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between', 
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 370 : 320
+    //top: height == 480 ? 260 : 320, right: 60
+  },
+  choose: {
+    flex: 1,
+    alignItems: 'center'
   }
 }
 
@@ -95,7 +114,7 @@ export default class Court extends Component {
             >
             { album.length > 0 ? this.renderAlbumZoom(album) : this.renderOnePhotoZoom() }
           </Carousel>
-          <View style={{width, position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
+          <View style={styles.toolView}>
             <View><Icon name='heart' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ closeAlbum } /></View>
             <View><Icon name='arrow-right' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ this.nextphoto }/></View>
           </View>
@@ -115,13 +134,15 @@ export default class Court extends Component {
           { album.length > 0 ? this.renderAlbum(album) : this.renderOnePhoto() }
         </Carousel>
 
-        <TouchableOpacity style={{position: 'absolute',top: height == 480 ? 260 : 320, right: 60}} onPress={ onPressRightIcon }>
-          <Image source={ rightIcon }/>
-        </TouchableOpacity>
+        <View style={styles.chooseView}>
+          <TouchableOpacity style={styles.choose} onPress={ onPressRightIcon }>
+            <Image source={ rightIcon }/>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={{position: 'absolute',top:  height == 480 ? 260 : 320, left: 60}} onPress={ onPressLeftIcon }>
-          <Image source={ leftIcon } />
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.choose} onPress={ onPressLeftIcon }>
+            <Image source={ leftIcon } />
+          </TouchableOpacity>
+        </View>
 
     </View>
   )}
