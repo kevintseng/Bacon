@@ -52,13 +52,17 @@ export default class DrawerScene extends Component {
     Actions.MeetChance({type: 'replace'})
   }
 
-  goToLine = () => {
-    Actions.LineList({type: 'replace'})
+  goToChat = () => {
+    Actions.ChatTab({type: 'replace'})
   }
 
-  goToConvs = () => {
-    Actions.Convs({type: 'replace'})
-  }
+  //goToLine = () => {
+  //  Actions.LineList({type: 'replace'})
+  //}
+
+  //goToConvs = () => {
+  //  Actions.Convs({type: 'replace'})
+  //}
 
   goToMeetCute = () => {
     Actions.MeetCute({type: 'replace'})
@@ -102,8 +106,7 @@ export default class DrawerScene extends Component {
             displayNameOnPress={ this.goToAboutMe }
             meetchanceOnPress={ this.goToMeetChance }
             meetcueOnPress={ this.goToMeetCute }
-            messageOnPress={ this.goToLine }
-            lineOnPress={ this.goToConvs }
+            chatOnPress={ this.goToChat }
             fateOnPress={ this.goToFate }
             articleOnPress={ this.goToArticle }
             settingOnPress={ this.goToSetting }
