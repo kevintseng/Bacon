@@ -42,7 +42,7 @@ const styles = {
     textAlign: 'center',
     color: '#606060',
     //fontWeight: '400', 
-    fontSize: 18
+    fontSize: 16
   },
   _container: {
     backgroundColor: 'red'    

@@ -43,7 +43,7 @@ export default class FateStore {
   }
 
   @computed get languagesToString() {
-    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join()
+    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join('，')
     //return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
   }
 

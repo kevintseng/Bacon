@@ -71,7 +71,7 @@ const Profile = ({source, vip, bonus, verityEmail, verityPhoto, displayName, age
             }
           </View>
           <TouchableOpacity onPress={ onPressDisplayName }>
-            <ListItem subtitle={ (displayName || '') + ', ' + (age || '') } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
+            <ListItem subtitle={ (displayName || '') + '，' + (age || '') } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
           </TouchableOpacity>
           <TouchableOpacity onPress={ onPressCity }>
             <ListItem subtitle={ city || '' } subtitleStyle={styles.subtitleTextStyle} subtitleContainerStyle={styles.subtitleStyle} hideChevron />
