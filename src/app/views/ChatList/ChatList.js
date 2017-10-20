@@ -20,13 +20,13 @@ const styles = {
   content: {
     flex: 1,
     flexDirection: 'row',
-    paddingBottom: 20
+    paddingBottom: 10
   },
   contentView: {
     flex: 2,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    paddingLeft: 20,
+    paddingLeft: 30,
     //backgroundColor: 'red'
   },
   tagView: {
@@ -48,32 +48,54 @@ const styles = {
   lastChatContent: {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
-    //fontSize: 18,
-    //fontWeight: '500',
     color: '#B3B3B3',
-    backgroundColor: 'transparent'    
+    backgroundColor: 'transparent',
+    paddingTop: 5,
+    fontSize: 13   
   },
   image: {
-    paddingTop: 5,
+    paddingTop: 10,
     height: 25,
-    width: 40,
+    width: 38,
     alignItems: 'center',
     //backgroundColor: 'blue'
   },
   nonHandleChat: {
     backgroundColor: 'red',
     height: 17,
-    width: 40
+    width: 38
+  },
+  nonHandleChatText: {
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    backgroundColor: 'transparent',
+    fontSize: 11, 
   },
   showBadge: {
     //
   },
   hidenBadge: {
     opacity: 0,
+  },
+  userState: {
+    position: 'absolute',
+    right: -12,
+    bottom: 15 
+  },
+  userStateBadge: {
+    backgroundColor: 'blue',
+    height: 17,
+    width: 58    
+  },
+  userStateBadgeText: {
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    backgroundColor: 'transparent',
+    fontSize: 11,
   }
 }
 
-const ChatList = ({name, avatar, onPress, lastChatContent,nonHandleChatCount,showBadge,showTag }) => {
+const ChatList = ({name, avatar, onPress, online, lastChatContent,nonHandleChatCount,showBadge,showTag,userState,userStateColor }) => {
 
   return(
     <TouchableOpacity style={styles.chat} activeOpacity={1} onPress={ onPress }>
@@ -83,9 +105,12 @@ const ChatList = ({name, avatar, onPress, lastChatContent,nonHandleChatCount,sho
           local 
           size={90} 
           avatar={avatar} 
-          circleBorderWidth={2}
+          circleBorderWidth={online ? 2 : 0}
           circleColor={'rgba(41, 255, 41,1)'}
         />
+        <View style={styles.userState}>
+          <Badge value={userState || '無狀態'} containerStyle={ [styles.userStateBadge,{ backgroundColor: userStateColor || 'blue'}] } textStyle={styles.userStateBadgeText}/>
+        </View>
       </View>
       <View style={styles.content}>
         <View style={styles.contentView}>
@@ -94,7 +119,7 @@ const ChatList = ({name, avatar, onPress, lastChatContent,nonHandleChatCount,sho
         </View>
         <View style={styles.tagView}>
           <View style={showBadge ? styles.showBadge : styles.hidenBadge}>
-            <Badge value={nonHandleChatCount} containerStyle={ styles.nonHandleChat }/>
+            <Badge value={nonHandleChatCount} containerStyle={ styles.nonHandleChat } textStyle={styles.nonHandleChatText}/>
           </View>
           <View style={styles.image}>
             { showTag && <Image source={require('./img/ico_chat_flag.png')}/> }

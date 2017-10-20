@@ -72,7 +72,8 @@ import BaconMenu from './views/BaconMenu/BaconMenu'
 import BaconTool from './views/BaconTool/BaconTool'
 import BaconArrow from './views/BaconArrow/BaconArrow'
 import BaconNotice from './views/BaconNotice'
-//import ChatStatusContainer from './containers/LineListScene/ChatStatusContainer'
+// 待修正
+import ChatStatusContainer from './containers/LineListScene/ChatStatusContainer'
 // ###############header components################ //
 
 const styles = {
@@ -260,7 +261,7 @@ export default class Routes extends Component {
                 <Scene key="FateCourt" title="緣分" renderBackButton={this.baconArrow} component={FateCourtScene} />
               </Scene>
 
-              <Scene key="ChatTab" title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} />
+              <Scene key="ChatTab" title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolLine}/>
               <Scene key="Line" title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               
               <Scene key="LineCollect" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
