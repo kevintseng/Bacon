@@ -58,7 +58,7 @@ import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
 //舊的聊天室
 import LineScene from './scenes/drawer/Line/LineScene'
 //新聊天室
-import LineChatScene from './scenes/drawer/Line/LineChatScene'
+import ChatTabScene from './scenes/drawer/Chat/ChatTabScene'
 //
 import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
 //
@@ -72,7 +72,7 @@ import BaconMenu from './views/BaconMenu/BaconMenu'
 import BaconTool from './views/BaconTool/BaconTool'
 import BaconArrow from './views/BaconArrow/BaconArrow'
 import BaconNotice from './views/BaconNotice'
-import ChatStatusContainer from './containers/LineListScene/ChatStatusContainer'
+//import ChatStatusContainer from './containers/LineListScene/ChatStatusContainer'
 // ###############header components################ //
 
 const styles = {
@@ -260,8 +260,9 @@ export default class Routes extends Component {
                 <Scene key="FateCourt" title="緣分" renderBackButton={this.baconArrow} component={FateCourtScene} />
               </Scene>
 
-              <Scene key="LineList" title="訊息" renderLeftButton={this.baconMenu} renderRightButton={this.baconToolLine} component={LineListScene} />
+              <Scene key="ChatTab" title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} />
               <Scene key="Line" title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
+              
               <Scene key="LineCollect" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="LineCollectCourt" title="LineCollect" renderBackButton={this.baconArrow} component={LineCollectCourtScene} />
               </Scene>
@@ -275,10 +276,6 @@ export default class Routes extends Component {
 
               <Scene key="Bonus" title="Q點儲值" renderBackButton={this.baconArrow} component={BonusOneScene} />
 
-              <Scene key="Convs" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
-                <Scene key="Conversation" title="訊息" renderBackButton={this.baconMenu} renderRightButton={this.baconToolLine} component={LineTabScene} />
-                <Scene key="ChatRoom" title="聊天室" renderBackButton={this.baconArrow} component={LineChatScene}  />
-              </Scene>
               <Scene key="UseBonus" title="使用Q點" renderBackButton={this.baconArrow} component={UseBonusScene} />
 
               <Scene key="Master" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
