@@ -3,6 +3,8 @@ import { View, Text, FlatList, TouchableOpacity, InteractionManager } from 'reac
 import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
+import ChatList from '../../views/ChatList'
+
 @inject('firebase','FateStore','SubjectStore') @observer
 export default class AllChatContainer extends Component {
 
@@ -20,12 +22,17 @@ export default class AllChatContainer extends Component {
   componentDidMount() {
   }
 
-
+  onPress = () => {
+    alert('轉到聊天室')
+  }
 
   render() {
     return(
       <View>
-        <Text>AllChatContainer</Text>
+        <ChatList
+          avatar={{uri: 'http://img.appledaily.com.tw/images/ReNews/20170115/640_86387ec286267a13d6d6d0e82606b39d.jpg'}}
+          onPress={ this.onPress }
+        />
       </View>
     )
   }
