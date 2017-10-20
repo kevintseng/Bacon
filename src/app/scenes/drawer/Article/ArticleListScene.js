@@ -6,6 +6,12 @@ import { Actions } from 'react-native-router-flux'
 import ArticleList from '../../../views/ArticleList'
 import Articles from '../../../../configs/Articles'
 
+const styles = {
+  view: {
+    marginTop: 10
+  }
+}
+
 @inject('firebase', 'SubjectStore') @observer 
 export default class ArticleListScene extends Component {
 
@@ -29,7 +35,7 @@ export default class ArticleListScene extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.view}>
         <FlatList
           removeClippedSubviews
           data={ Articles }
