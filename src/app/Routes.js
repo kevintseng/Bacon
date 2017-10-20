@@ -86,7 +86,7 @@ const styles = {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     color: '#606060',
-    fontWeight: '400',
+    fontSize: 18,
   },
   baconArrow: {
     position: 'absolute',
