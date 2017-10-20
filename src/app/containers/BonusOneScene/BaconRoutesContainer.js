@@ -19,21 +19,6 @@ export default class BaconRoutesContainer extends Component {
     this.purchaseState = null
   }
 
-  componentWillMount() {
-    // if (Platform.OS === 'ios') {
-    //   const products = [
-    //     'com.kayming.bacon.q_points_200',
-    //     'com.kayming.bacon.q_points_600',
-    //     'com.kayming.bacon.q_points_1200'
-    //   ]
-    //   InAppUtils.loadProducts(products, (error, products) => {
-    //     //update store here.
-    //     console.log('Products: ', products)
-    //     console.log('Error: ', error)
-    //   })
-    // }
-  }
-
   componentDidMount() {
     if (Platform.OS === 'ios') {
       InAppUtils.restorePurchases((error, products) => {
