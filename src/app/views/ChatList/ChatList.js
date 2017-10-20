@@ -9,10 +9,12 @@ import Cookie from '../Cookie/Cookie'
 const styles = {
   chat: {
     flexDirection: 'row',
-    margin: 10,
-    height: 105,
-    borderBottomWidth: 1,
-    borderColor: '#b3b3b3'
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    //height: 105,
+    //borderBottomWidth: 1,
+    //borderColor: '#b3b3b3'
   },
   cookie: {
     justifyContent: 'center'
@@ -20,7 +22,9 @@ const styles = {
   content: {
     flex: 1,
     flexDirection: 'row',
-    paddingBottom: 10
+    alignItems: 'flex-end',
+    paddingBottom: 10,
+    //backgroundColor: 'blue'
   },
   contentView: {
     flex: 2,
@@ -79,8 +83,8 @@ const styles = {
   },
   userState: {
     position: 'absolute',
-    right: -12,
-    bottom: 15 
+    right: -13,
+    bottom: 4 
   },
   userStateBadge: {
     backgroundColor: 'blue',
@@ -103,7 +107,7 @@ const ChatList = ({name, avatar, onPress, online, lastChatContent,nonHandleChatC
         <Cookie 
           disabled 
           local 
-          size={90} 
+          size={80} 
           avatar={avatar} 
           circleBorderWidth={online ? 2 : 0}
           circleColor={'rgba(41, 255, 41,1)'}

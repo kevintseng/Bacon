@@ -9,22 +9,25 @@ import CookieList from '../../views/CookieList'
 import localdb from '../../../configs/localdb'
 
 const styles = {
-  view: {
+  content: {
     flexDirection: 'row'
+  },
+  view: {
+    marginTop: 10
   },
   text: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',  
     color: '#b3b3b3',
-    fontSize: 15
+    fontSize: 13
   },
   middleText: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',  
     color: '#f4a764',
-    fontSize: 15    
+    fontSize: 13  
   }
 }
 
@@ -70,7 +73,7 @@ export default class MateContainer extends Component {
 
   render() {
     return(
-      <View>
+      <View style={styles.view}>
         <FlatList
           data={ this.FateStore.matchPreysToFlatList } 
           numColumns={1}
@@ -82,7 +85,7 @@ export default class MateContainer extends Component {
                 age={ calculateAge(item.birthday) }
                 onPress={()=>this.onPress(item.key)}
               >
-                <View style={styles.view}>
+                <View style={styles.content}>
                   <Text style={styles.text}>你們在</Text>
                   <Text style={styles.middleText}>{ Moment(item.time).format('LL') }</Text>
                   <Text style={styles.text}>互有好感</Text>

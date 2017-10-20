@@ -25,7 +25,7 @@ const styles = {
   view: {
     alignItems: 'center', 
     marginLeft: size ? 0 : x, 
-    marginBottom: 10,
+    //marginBottom: 10,
   },
   image: {
     width: circleSize,
@@ -73,7 +73,8 @@ const styles = {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     color: '#606060',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    fontSize: 13
   }
 }
   return(

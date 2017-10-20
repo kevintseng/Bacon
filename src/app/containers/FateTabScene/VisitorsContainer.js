@@ -9,12 +9,15 @@ import CookieList from '../../views/CookieList'
 import localdb from '../../../configs/localdb'
 
 const styles = {
+  view: {
+    marginTop: 10
+  },
   child: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',  
     color: '#b3b3b3',
-    fontSize: 15
+    fontSize: 13
   }
 }
 
@@ -62,7 +65,7 @@ export default class VisitorsContainer extends Component {
 
   render() {
     return(
-      <View>
+      <View style={styles.view}>
         <FlatList
           data={ this.FateStore.visitorsPreysToFlatList } 
           numColumns={1}

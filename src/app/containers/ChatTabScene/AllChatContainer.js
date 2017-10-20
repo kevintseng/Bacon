@@ -5,6 +5,12 @@ import { Actions } from 'react-native-router-flux'
 
 import ChatList from '../../views/ChatList/ChatList'
 
+const styles = {
+  view: {
+    marginTop: 10
+  }
+}
+
 @inject('firebase','FateStore','SubjectStore') @observer
 export default class AllChatContainer extends Component {
 
@@ -28,7 +34,7 @@ export default class AllChatContainer extends Component {
 
   render() {
     return(
-      <View>
+      <View style={styles.view}>
         <ChatList
           name={'Dora Li'}
           avatar={{uri: 'http://img.appledaily.com.tw/images/ReNews/20170115/640_86387ec286267a13d6d6d0e82606b39d.jpg'}}

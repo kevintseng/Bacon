@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
-import { BaconBadgeYes, BaconBadgeNo } from './BaconBadge/BaconBadge'
+//import { BaconBadgeYes, BaconBadgeNo } from './BaconBadge/BaconBadge'
+import { Badge } from 'react-native-elements'
 
 import Cookie from './Cookie/Cookie'
 
@@ -9,7 +10,9 @@ const DEFAULT_IMAGE = require('./Cookie/img/ico_qy_head_preload.png')
 const styles = {
   article: {
     flexDirection: 'row',
-    margin: 10,
+    marginBottom: 10,
+    marginLeft: 10, 
+    marginRight: 10,
     height: 100,
     borderBottomWidth: 1,
     borderColor: '#b3b3b3'
@@ -19,7 +22,7 @@ const styles = {
     height: 90
   },
   title: {
-    width: 240,
+    width: 250,
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     fontSize: 18,
@@ -39,10 +42,31 @@ const styles = {
   bottom: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingRight: 5
+    paddingRight: 5,
+    //backgroundColor: 'red',
+    alignItems: 'center'
   },
   tags: {
+    //backgroundColor: 'blue',
     flexDirection: 'row'
+  },
+  badgeView: {
+    marginRight: 3
+  },
+  badge: {
+    backgroundColor: '#D63768',
+    //height: 17,
+    //width: 58 
+  },
+  badgeText: {
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    backgroundColor: 'transparent',
+    //fontSize: 11,
+  },
+  cookie: {
+    paddingBottom: 5,
+    paddingRight: 5
   }
 }
 
@@ -50,10 +74,12 @@ const ArticleList = ({source,title,onPress,avatar,tags,author}) => {
 
   const showTags = () => ( 
     tags.map( tag => (
-      <BaconBadgeYes key={tag} text={tag}/>
+      //<BaconBadgeYes key={tag} text={tag}/>
+      <View key={tag} style={styles.badgeView}>
+        <Badge value={tag} containerStyle={ styles.badge } textStyle={styles.badgeText}/>
+      </View>
     ))
   )
-
 
   return(
     <TouchableOpacity style={styles.article} onPress={ onPress }>
@@ -66,7 +92,9 @@ const ArticleList = ({source,title,onPress,avatar,tags,author}) => {
             showTags()
           }
           </View>
-          <Cookie local size={30} avatar={avatar} name={author}/>
+          <View style={styles.cookie}>
+            <Cookie local size={30} avatar={avatar} name={author}/>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
