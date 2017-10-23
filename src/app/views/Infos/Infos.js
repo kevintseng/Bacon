@@ -9,7 +9,8 @@ const styles = {
   top: {
     flexDirection: 'row', 
     alignSelf: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 5
   },
   bioView: {
     marginTop: 10, 
@@ -51,10 +52,17 @@ const styles = {
   text: {
     fontSize: 13,
     color: '#606060',
-    fontFamily: 'NotoSans'
+    fontFamily: 'NotoSans',
+    textAlign: 'center'
   },
   icon: {
     marginRight: 5
+  },
+  nameAge: {
+    fontSize: 18,
+    color: '#606060',
+    fontFamily: 'NotoSans',
+    fontWeight: '500',
   }
 }
 
@@ -62,9 +70,9 @@ const Infos = ({verityEmail, verityPhoto, displayName, bio, age, address, langs,
   <View style={{width: width*0.8}}>
     <View style={styles.top}>
       <Image style={{marginRight: 5}} source={verityEmail ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
-      <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>{ displayName }</Text>
-      <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>, </Text>
-      <Text style={{fontSize: 20,color: '#606060',fontFamily: 'NotoSans'}}>{ age }</Text>
+      <Text style={styles.nameAge}>{ displayName }</Text>
+      <Text style={styles.nameAge}>，</Text>
+      <Text style={styles.nameAge}>{ age }</Text>
     </View>
 
     <View style={styles.bioView}><Text style={styles.text}>{ bio || '?' }</Text></View>

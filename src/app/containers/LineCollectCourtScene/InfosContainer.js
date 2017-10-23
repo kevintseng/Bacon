@@ -114,6 +114,7 @@ export default class InfosContainer extends Component {
           age={ this.Store.age }
           langs={ this.Store.languagesToString }
           distance={ this.Store.distance }
+          address={ this.Store.address }
           onReportUserPressed= { this.reportPressed }
           onPrssBlockade={ this.onPrssBlockade }
         />

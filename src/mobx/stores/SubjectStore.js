@@ -65,7 +65,7 @@ export default class SubjectStore {
   // Object to String
 
   @computed get languagesToString() {
-    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join()
+    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join('，')
     // { 中文: 1, 英文: 2 } -> 中文(一般),英文(普通)
   }
 

@@ -15,7 +15,8 @@ const itemHight = ((width - 4 * x)/3) + 30
 
 const styles = {
   self: {
-    alignSelf:'center'
+    alignSelf:'center',
+    marginBottom: 10
   },
   text: {
     fontFamily: 'NotoSans',
@@ -28,6 +29,9 @@ const styles = {
     flex:1, 
     justifyContent: "flex-start", 
     alignItems: "center"
+  },
+  cookie: {
+    marginTop: 10
   }
 }
 
@@ -89,11 +93,14 @@ export default class MeetChanceWaterFallScene extends Component {
           data={ this.MeetChanceStore.preysToFlatList }
           numColumns={3}
           renderItem={({item}) =>
-            <Cookie
-              name={ item.nickname }
-              avatar={ item.avatar }
-              onPress={ () => { this.onPress(item.key) } }
-            /> }
+              <View style={styles.cookie}>
+                <Cookie
+                  name={ item.nickname }
+                  avatar={ item.avatar }
+                  onPress={ () => { this.onPress(item.key) } }
+                /> 
+              </View>
+            }
             ListHeaderComponent={ this.header }
             getItemLayout={(data, index) => (
             {length: itemHight, offset: itemHight * index, index}

@@ -25,6 +25,7 @@ export default class FateStore {
   @observable album
   @observable vip
   @observable distance
+  @observable address
   @observable emailVerified
   @observable photoVerified
   @observable latitude
@@ -42,7 +43,7 @@ export default class FateStore {
   }
 
   @computed get languagesToString() {
-    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join()
+    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join('，')
     //return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
   }
 
@@ -92,6 +93,7 @@ export default class FateStore {
     this.hobbies = new Object
     this.album = new Object
     this.vip = false
+    this.address = null
     this.distance = null
     this.emailVerified = false
     this.photoVerified = false
@@ -340,6 +342,7 @@ export default class FateStore {
           this.hobbies = snap.val().hobbies || new Object
           this.album = this.handleNewAlbum(snap.val().album,snap.val().avatar)//snap.val().album || new Object
           this.vip = Boolean(snap.val().vip)
+          this.address = snap.val().address
           this.distance = this.getDistance(snap.val().latitude,snap.val().longitude)
           this.emailVerified = Boolean(snap.val().emailVerified)
           this.photoVerified = Boolean(snap.val().photoVerified)
@@ -383,10 +386,15 @@ export default class FateStore {
 
   getDistance = (latitude,longitude) => {
     if (this.latitude && this.longitude && latitude && longitude) {
-      return geolib.getDistance(
+      const distance = (geolib.getDistance(
         {latitude: this.latitude, longitude: this.longitude},
         {latitude: latitude, longitude: longitude}
-      )/1000
+      )/1000).toFixed(1)
+      if (distance === '0.0') {
+        return '0.1'
+      } else {
+        return distance
+      }
     } else {
       return '?'
     }  

@@ -1,61 +1,49 @@
 import React from 'react'
 import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
-import MKPLoadImageView from 'mkp-react-native-image-view'
 
-const DEFAULT_IMAGE = require('./Cookie/img/ico_qy_head_preload.png')
-
-const { width } = Dimensions.get('window')
-
-const circleSize = 80
-
-const circleFixBorder = circleSize/2
+import Cookie from './Cookie/Cookie'
 
 const styles = {
-  image: {
-    width: circleSize,
-    height: circleSize,
-    marginBottom: 5
+  view: { 
+    flexDirection: 'row', 
+    marginBottom: 10,
+    marginLeft: 10, 
+    marginRight: 10
   },
-  circle: {
-    width: circleSize,
-    height: circleSize,
-    borderRadius: circleFixBorder,
-    overflow: 'hidden',
+  cookie: {
+    justifyContent: 'center'
   },
-  fixCircleClipping: {
-    position: 'absolute',
-    top: -circleFixBorder,
-    bottom: -circleFixBorder,
-    right: -circleFixBorder,
-    left: -circleFixBorder,
-    borderRadius: circleFixBorder + circleFixBorder / 2,
-    borderWidth: circleFixBorder,
-    borderColor: 'white',
-    //backgroundColor: 'red'
-  },
-    title: {
+  title: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',  
     fontWeight: '500',
     color: '#606060',
-    fontSize: 15
+    fontSize: 18
+  },
+  content: {
+    flex: 1,
+    marginLeft:20,
+    justifyContent: 'flex-end',
+    paddingBottom: 10,
+    //backgroundColor: 'red'
   }
 }
-
-//const onPressButton = () => { console.warn("點擊頭像")}
 
 const CookieList = ({ name, age, avatar, children, onPress }) => {
 
   return(
-    <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', margin: 10}} activeOpacity={1} onPress={ onPress }>
-      <View style={styles.circle} >
-        <MKPLoadImageView style={ styles.image } source={ avatar ? { uri: avatar } : require('./Cookie/img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
-        <View style={styles.fixCircleClipping} />
+    <TouchableOpacity style={styles.view} activeOpacity={1} onPress={ onPress }>
+      <View style={styles.cookie}>
+        <Cookie 
+          disabled 
+          size={80} 
+          avatar={avatar} 
+        />
       </View>
-      <View style={{marginLeft:20}}>
+      <View style={styles.content}>
         <View>
-          <Text style={{color: '#000000'}}>{ name }, { age }</Text>
+          <Text style={styles.title}>{ name }，{ age }</Text>
         </View>
         <View>
           { children }

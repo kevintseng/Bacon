@@ -22,17 +22,21 @@ const styles = {
     textAlign: 'center',
     color: '#606060',
     fontWeight: '500',
-    fontSize: 20,
+    fontSize: 18,
     //width: 130,
     flexWrap: "wrap",
   },
   badge: {
     width: 40,
     opacity: 0
+  },
+  topBlock: {
+    //backgroundColor: 'red',
+    marginBottom: 7
   }
 }
 
-const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, messageOnPress, lineOnPress, settingOnPress, articleOnPress, masterOnPress }) => {
+const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, chatOnPress, settingOnPress, articleOnPress, masterOnPress }) => {
 
   return(
     <ScrollView showsVerticalScrollIndicator={false} style = { styles.scrollView } >
@@ -50,21 +54,21 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
           </View>
         </View>
 
-        <TouchableOpacity activeOpacity={1} onPress={ displayNameOnPress }>
+        <TouchableOpacity activeOpacity={1} style={styles.topBlock} onPress={ displayNameOnPress }>
           <View style={{alignItems: 'center',marginTop: 10}}>
             <Cookie
               disabled
-              size={picWidth}
+              size={150}
               avatar={avatar}
               borderColor='rgba(255, 255, 255, 1)'
             />
           </View>
-          <View style={{alignItems: 'flex-start',flexDirection: 'row', justifyContent: 'space-between',height: 45}}>
+          <View style={{alignItems: 'flex-start',flexDirection: 'row', justifyContent: 'space-between',marginTop: 7}}>
             <View style={ styles.badge }>
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={styles.displayName}>{ (displayName || '') + ' '}</Text>
+              <Text style={styles.displayName}>{displayName || '載入中'}</Text>
             </View>
             <View style={styles.badge}>
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
@@ -81,11 +85,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </View>
 
         <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='訊息' showBadge={false} badgeCount={6} listOnPress={ messageOnPress }/>
-        </View>
-
-        <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='新訊息' showBadge={false} badgeCount={6} listOnPress={ lineOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='訊息' showBadge={false} badgeCount={6} listOnPress={ chatOnPress }/>
         </View>
 
         <View style={{marginTop: 7}}>
