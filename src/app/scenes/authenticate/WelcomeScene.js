@@ -17,7 +17,7 @@ export default class WelcomeScene extends Component {
   }
 
   componentWillMount() {
-    //console.warn(width)
+    //console.warn(height)
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
@@ -54,8 +54,8 @@ export default class WelcomeScene extends Component {
     return(
       <Welcome
         title='遇見更多的她/他'
-        topButtonText='+ 免費加入'
-        bottomButtonText='登入'
+        topButtonText=' 免費加入'
+        bottomButtonText=' 登入'
         warningText='忘記密碼？申請密碼重設'
         topButtonOnPress={ this.goToSignUp }
         bottomButtonOnPress={ this.goToSignIn }

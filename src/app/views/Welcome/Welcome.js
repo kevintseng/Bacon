@@ -7,28 +7,68 @@ const styles = {
   welcomeView: {
     flex: 1, 
     alignItems: 'center', 
-    //justifyContent: 'space-between'
   },
   logView: {
-    position: 'absolute',
-    top: 90
+    flex: 8,
+    //backgroundColor: 'red',
+    justifyContent: 'center'
+    //position: 'absolute',
+    //top: 90
   },
   titleView: {
-    position: 'absolute',
-    top: 240
-  },
-  titleText: {
-    backgroundColor: 'transparent',
-    letterSpacing: 3,
-    fontFamily: 'NotoSans',
-    fontSize: 20,
-    fontWeight: '500',
-    color: '#606060',
-    textAlign: 'center'
+    //backgroundColor: 'blue',
+    flex: 2,
+    //justifyContent: 'center'
+    //position: 'absolute',
+    //top: 240
   },
   buttonView: {
+    //backgroundColor: 'green',
+    flex: 13,
+    //position: 'absolute', 
+    //bottom: 190,
+    alignItems: 'center',
+  },
+  topButtonTouchable : {
+    flex: 5
+    //paddingBottom: 15
+  },
+  topButtonPic : {
+    justifyContent: 'center'
+  },
+  buttonPic: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  imageView: {
+    //flex: 1,
+    //zIndex: 10,
+    position: 'absolute',
+    left: 100,
+    //flex: 1,
+    //backgroundColor: 'green'
+  },
+  textView: {
+    //zIndex: 0,
+    //flex: 1,
+    //alignSelf: 'center',
+    //justifyContent: 'center',
+    //alignItems: 'center',
+    //backgroundColor: 'red'
+  },
+  warningView:{
+    flex: 9
+    //position: 'absolute', 
+    //bottom: 160
+  },
+  bottomView: {
     position: 'absolute', 
-    bottom: 190,
+    bottom: 0,
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   topButtonText: {
@@ -36,7 +76,6 @@ const styles = {
     letterSpacing: 3,
     fontFamily: 'NotoSans',
     fontSize: 20,
-    //fontWeight: '500',
     color: '#606060',
     textAlign: 'center',
   },
@@ -49,21 +88,6 @@ const styles = {
     textAlign: 'center',
     backgroundColor: 'transparent'
   },
-  topButtonTouchable : {
-    paddingBottom: 15
-  },
-  topButtonPic : {
-    justifyContent: 'center'
-  },
-  bottomButtonPic: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row'
-  },
-  warningView:{
-    position: 'absolute', 
-    bottom: 160
-  },
   warningText: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
@@ -73,18 +97,14 @@ const styles = {
     color: '#606060',
     fontSize: 10
   },
-  bottomView: {
-    position: 'absolute', 
-    bottom: 0,
-    //width,
-    //backgroundColor: 'blue',
-    //alignSelf: 'center',
-    //alignItems: 'center',
-    //padding: 0,
-    //margin: 0
-  },
-  styles: { 
-    marginRight: 10
+  titleText: {
+    backgroundColor: 'transparent',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans',
+    fontSize: 20,
+    fontWeight: '500',
+    color: '#606060',
+    textAlign: 'center'
   }
 }
 
@@ -102,23 +122,29 @@ const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bot
       </View>
 
       <View style={ styles.buttonView }>
-        <TouchableOpacity style={ styles.topButtonTouchable } onPress={ topButtonOnPress }> 
-          <Image style={ styles.topButtonPic } source={require('./img/btn_index_join.png')} >
-            <Text style={ styles.topButtonText }>{ topButtonText }</Text>
-          </Image>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={ bottomButtonOnPress }> 
-          <Image style={ styles.bottomButtonPic } source={require('./img/btn_gredient.png')} >
-            <Image style={ styles.image } source={require('./img/btn_index_login.png')}/>
-            <Text style={ styles.bottomButtonText }>{ bottomButtonText }</Text>
-          </Image>
-        </TouchableOpacity>
-      </View>
 
-      <View style={ styles.warningView }>
-        <TouchableOpacity onPress={ warningOnPress }> 
+        <TouchableOpacity style={ styles.topButtonTouchable } onPress={ topButtonOnPress }> 
+          <Image style={ styles.buttonPic } source={require('./img/btn_index_join.png')} >
+            <View style={ styles.buttonContent }>
+              <Image source={require('./img/ico_reg_plus.png')}/>
+              <Text style={ styles.topButtonText }>{ topButtonText }</Text>
+            </View>
+          </Image>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={ styles.topButtonTouchable } onPress={ bottomButtonOnPress }> 
+          <Image style={ styles.buttonPic } source={require('./img/btn_gredient.png')} >
+            <View style={ styles.buttonContent }>
+              <Image source={require('./img/btn_index_login.png')}/>
+              <Text style={ styles.bottomButtonText }>{ bottomButtonText }</Text>
+            </View>
+          </Image>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={ styles.warningView } onPress={ warningOnPress }> 
           <Text style={ styles.warningText }>{ warningText }</Text>
         </TouchableOpacity>
+
       </View>
 
       <View style={ styles.bottomView }>

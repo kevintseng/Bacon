@@ -33,6 +33,7 @@ const styles = {
   },
   bottom: {
     alignSelf: 'center',
+    //justifyContent: 'center', 
     marginLeft: 5
   },
   title: {
@@ -40,7 +41,7 @@ const styles = {
     fontFamily: 'NotoSans',
     textAlign: 'center',
     color: '#606060',
-    fontWeight: '400', 
+    //fontWeight: '400', 
     fontSize: 16
   },
   _container: {

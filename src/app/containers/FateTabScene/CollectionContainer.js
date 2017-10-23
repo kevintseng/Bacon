@@ -10,18 +10,22 @@ import { BaconBadgeYes } from '../../views/BaconBadge/BaconBadge'
 import localdb from '../../../configs/localdb'
 
 const styles = {
+  view: {
+    //marginTop: 10
+  },
   child: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',  
     color: '#b3b3b3',
-    fontSize: 15
+    fontSize: 13
   },
   headView: {
     alignItems: 'flex-end',
-    paddingTop: 20,
-    paddingBottom: 20,
-    borderBottomWidth: 0.5
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 0.5,
+    marginBottom: 10
   },
   count: {
     paddingRight: 20,
@@ -98,7 +102,7 @@ export default class CollectionContainer extends Component {
   
   render() {
     return(
-      <View>
+      <View style={styles.view}>
         <FlatList
           removeClippedSubviews
           data={ this._collections() } // local 

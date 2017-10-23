@@ -13,7 +13,7 @@ const picWidth = (width - 4 * x)/3
 
 const DEFAULT_IMAGE = require('./img/ico_qy_head_preload.png')
 
-const Cookie = ({ name, size, avatar, onPress, borderColor, local, disabled }) => {
+const Cookie = ({ name, size, avatar, onPress, borderColor, local, disabled, circleBorderWidth, circleColor }) => {
 
 const circleSize = size || picWidth
 
@@ -25,19 +25,27 @@ const styles = {
   view: {
     alignItems: 'center', 
     marginLeft: size ? 0 : x, 
-    marginBottom: 10,
-    //backgroundColor: 'blue'
+    //marginBottom: 10,
   },
   image: {
     width: circleSize,
     height: circleSize,
-    //backgroundColor: 'rgba(255, 255, 255, 0.8)'
+  },
+  border: {
+    position: 'absolute',
+    width: circleSize,
+    height: circleSize,
+    borderRadius: circleFixBorder,
+    borderWidth: circleBorderWidth || 0 ,
+    borderColor: circleColor || 'transparent',
   },
   circle: {
     width: circleSize,
     height: circleSize,
     borderRadius: circleFixBorder,
     overflow: 'hidden',
+    //borderWidth: 1,
+    //borderColor: 'green',
   },
   fixCircleClipping: {
     position: 'absolute',
@@ -48,7 +56,6 @@ const styles = {
     borderRadius: circleFixBorder + circleFixBorder / 2,
     borderWidth: circleFixBorder,
     borderColor: borderColor || 'white',
-    //backgroundColor: 'red'
   },
   indicatorProps: {
     color:'red',
@@ -65,10 +72,9 @@ const styles = {
     lineHeight: 20,
     letterSpacing: 3,
     fontFamily: 'NotoSans',
-    //fontSize: 18,
-    //fontWeight: '500',
     color: '#606060',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    fontSize: 13
   }
 }
   return(
@@ -77,8 +83,9 @@ const styles = {
         { local ? 
           <MKPLoadImageView style={ styles.image } source={ avatar ? avatar : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
         : <MKPLoadImageView style={ styles.image } source={ avatar ? { uri: avatar } : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
-        }
+        } 
         <View style={styles.fixCircleClipping} />
+        <View style={styles.border} /> 
       </View>
       <Text style={ styles.text } lineBreakMode={ lineBreakMode } numberOfLines={1} >{ name }</Text>
     </TouchableOpacity>
@@ -86,3 +93,8 @@ const styles = {
 }
 
 export default Cookie
+
+/*
+
+<View style={styles.fixCircleClipping} />
+*/
