@@ -11,6 +11,9 @@ import PolicyModalContainer from '../../../containers/BonusOneScene/PolicyModalC
 const styles = {
   ...Platform.select({
     ios: {
+      view: {
+        flex: 1,
+      },
       top: {
         marginTop: 10,
         height: 120
@@ -58,16 +61,16 @@ const styles = {
         color: '#D63768',
         fontSize: 14,
       },
-      warning: { 
+      warning: {
         alignSelf: 'center',
         position: 'absolute',
-        flexDirection: 'row', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        bottom: 185
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        bottom: 185,
       },
-      warningToch : { 
-        //marginRight: 5 
+      warningToch : {
+        //marginRight: 5
       }
     },
   })
@@ -125,17 +128,3 @@ export default class BonusOneScene extends Component {
     )
   }
 }
-
-/*
-
-        <View style={ styles.textView }>
-          <Text style={ styles.text } onPress={ this.ControlStore.setSettingPolicyModal }>使用條款</Text>
-        </View>
-        <View style={ styles.textView }>
-          <Text style={ styles.text } onPress={ this.ControlStore.setSettingRuleModal }>隱私權政策</Text>
-        </View>
-
-        <View style={ styles.textView }>
-          <Text style={ styles.text } onPress={ this.ControlStore.setBonusPolicyModal }>條款細則</Text>
-        </View>
-*/
