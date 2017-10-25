@@ -65,6 +65,8 @@ const styles = {
   bottomView: {
     position: 'absolute', 
     bottom: 0,
+    //marginBottom: 320,
+    //backgroundColor: 'red'
   },
   buttonContent: {
     flexDirection: 'row',
