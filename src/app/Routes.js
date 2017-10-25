@@ -59,6 +59,7 @@ import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
 import LineScene from './scenes/drawer/Line/LineScene'
 //新聊天室
 import ChatTabScene from './scenes/drawer/Chat/ChatTabScene'
+import ChatRoomScene from './scenes/drawer/Chat/ChatRoomScene'
 //
 import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
 //
@@ -262,6 +263,8 @@ export default class Routes extends Component {
               </Scene>
 
               <Scene key="ChatTab" title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolLine}/>
+              <Scene key="ChatRoom" title="訊息" renderLeftButton={this.baconMenu} component={ChatRoomScene} />
+
               <Scene key="Line" title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               
               <Scene key="LineCollect" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
