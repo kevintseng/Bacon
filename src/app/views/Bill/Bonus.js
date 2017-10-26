@@ -32,7 +32,7 @@ const Bonus = ({topCheck, middleCheck, upperCheck, topCheckOnPress, middleCheckO
           <Text style={styles.text}>Q點 200點</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}>$100</Text>
+          <Text style={styles.text}>$120</Text>
         </View>
       </View>
 
@@ -56,7 +56,7 @@ const Bonus = ({topCheck, middleCheck, upperCheck, topCheckOnPress, middleCheckO
           <Text style={styles.text}>Q點 1200點</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}>$510</Text>
+          <Text style={styles.text}>$630</Text>
         </View>
       </View>
     </View>

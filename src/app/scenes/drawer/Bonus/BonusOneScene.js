@@ -29,7 +29,22 @@ const styles = {
         height: 40,
       },
       bottom: {
-        marginBottom: 0,
+        position: 'absolute',
+        bottom: 0
+      },
+      text: {
+        fontFamily: 'NotoSans',
+        flexWrap: 'wrap',
+        color: '#D63768',
+        fontSize: 14,
+      },
+      warning: {
+        alignSelf: 'center',
+        position: 'absolute',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        bottom: 300,
       },
     },
     android: {
@@ -69,7 +84,7 @@ const styles = {
         alignItems: 'center',
         bottom: 185,
       },
-      warningToch : {
+      warningTouch : {
         //marginRight: 5
       }
     },
