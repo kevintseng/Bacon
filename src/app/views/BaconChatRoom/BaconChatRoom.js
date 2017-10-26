@@ -19,10 +19,10 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
         }}
       >
       <TouchableOpacity onPress={onPressLeftIcon}>
-        <Image style={{height: 44,width: 44}} source={require('./btn_chat_add.png')} resizeMode={'center'} />
+        <Image style={{height: 44,width: 44}} source={require('./img/btn_chat_add.png')} resizeMode={'center'} />
       </TouchableOpacity>
       <TouchableOpacity onPress={onPressRightIcon}>
-        <Image style={{height: 44,width: 44}} source={require('./btn_chat_emoji.png')} resizeMode={'center'} />
+        <Image style={{height: 44,width: 44}} source={require('./img/btn_chat_emoji.png')} resizeMode={'center'} />
       </TouchableOpacity>
       </View>
     )
@@ -42,7 +42,7 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
       <Send
          {...props}
          >
-          <Image style={{height: 44,width: 44}} source={require('./btn_chat_send.png')} resizeMode={'center'}/>
+          <Image style={{height: 44,width: 44}} source={require('./img/btn_chat_send.png')} resizeMode={'center'}/>
       </Send>
     )    
   }
