@@ -262,10 +262,10 @@ export default class Routes extends Component {
                 <Scene key="FateCourt" title="緣分" renderBackButton={this.baconArrow} component={FateCourtScene} />
               </Scene>
 
-              <Scene key="ChatTab" title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolLine}/>
-              <Scene key="ChatRoom" title="訊息" renderBackButton={this.baconArrow} component={ChatRoomScene} />
+              <Scene key="ChatTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolLine}/>
+              <Scene key="ChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={ChatRoomScene} />
 
-              <Scene key="Line" title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
+              <Scene key="Line" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               
               <Scene key="LineCollect" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="LineCollectCourt" title="LineCollect" renderBackButton={this.baconArrow} component={LineCollectCourtScene} />
@@ -276,11 +276,11 @@ export default class Routes extends Component {
                 <Scene key="ArticleDetail" title="專欄" renderBackButton={this.baconArrow} component={ArticleDetailScene} />
               </Scene>
 
-              <Scene key="Upgrade" title="會員升級" renderBackButton={this.baconArrow} component={UpgradeOneScene} />
+              <Scene key="Upgrade" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="會員升級" renderBackButton={this.baconArrow} component={UpgradeOneScene} />
 
-              <Scene key="Bonus" title="Q點儲值" renderBackButton={this.baconArrow} component={BonusOneScene} />
+              <Scene key="Bonus" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="Q點儲值" renderBackButton={this.baconArrow} component={BonusOneScene} />
 
-              <Scene key="UseBonus" title="使用Q點" renderBackButton={this.baconArrow} component={UseBonusScene} />
+              <Scene key="UseBonus" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="使用Q點" renderBackButton={this.baconArrow} component={UseBonusScene} />
 
               <Scene key="Master" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="MasterTab" title="達人聊天室" renderLeftButton={this.baconMenu} component={MasterTabScene} />
