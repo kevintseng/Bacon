@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { View, Text, FlatList, TouchableOpacity, InteractionManager } from 'react-native'
 import { observer, inject } from 'mobx-react'
-import { GiftedChat } from 'react-native-gifted-chat';
+//import { GiftedChat } from 'react-native-gifted-chat';
 import Moment from 'moment'
+//import { Icon, Button } from "react-native-elements"
+import BaconChatRoom from '../../../views/BaconChatRoom'
 
 @inject('firebase','FateStore','SubjectStore') @observer
 export default class ChatRoomScene extends Component {
@@ -118,16 +120,30 @@ export default class ChatRoomScene extends Component {
     //console.log(messages)
   }
 
+  onPressLeftIcon = () => {
+    alert('要上傳照片')
+  }
+
+  onPressRightIcon = () => {
+    alert('要上傳貼圖')
+  }
+
+  onPressAvatar = () => {
+    alert('點了大頭照')
+  }
+
   render() {
     return (
-      <GiftedChat
-        //showUserAvatar
+      <BaconChatRoom
         messages={this.state.messages}
         onSend={(messages) => this.onSend(messages)}
         user={{
           _id: this.SubjectStore.uid, // this.SubjectStore.uid
           //avatar: "http://www.teepr.com/wp-content/uploads/2016/12/14909941_1106661159387826_1701114055237368977_n.jpg"
         }}
+        onPressLeftIcon={this.onPressLeftIcon}
+        onPressRightIcon={this.onPressRightIcon}
+        onPressAvatar={this.onPressAvatar}
       />
     );
   }
