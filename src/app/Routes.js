@@ -263,7 +263,7 @@ export default class Routes extends Component {
               </Scene>
 
               <Scene key="ChatTab" title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolLine}/>
-              <Scene key="ChatRoom" title="訊息" renderLeftButton={this.baconMenu} component={ChatRoomScene} />
+              <Scene key="ChatRoom" title="訊息" renderBackButton={this.baconArrow} component={ChatRoomScene} />
 
               <Scene key="Line" title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               

@@ -48,22 +48,24 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
   }
 
   return(
-    <GiftedChat
-      renderActions={renderActions}
-      //renderComposer={renderComposer}
-      renderSend={renderSend}
-      messages={messages}
-      onSend={onSend}
-      user={user}
-      placeholder={'請在此輸入您的訊息'}
-      isAnimated // Animates the view when the keyboard appears
-      //loadEarlier // Enables the "Load earlier messages" button
-      onPressAvatar={onPressAvatar}
-      renderAvatarOnTop
-      label={'送出'}
-      multiline={false}
-      //composerHeight={30}
-    />
+    <View style={{backgroundColor: '#F0F0F0',flex: 1 }}>
+      <GiftedChat
+        renderActions={renderActions}
+        //renderComposer={renderComposer}
+        renderSend={renderSend}
+        messages={messages}
+        onSend={onSend}
+        user={user}
+        placeholder={'請在此輸入您的訊息'}
+        isAnimated // Animates the view when the keyboard appears
+        //loadEarlier // Enables the "Load earlier messages" button
+        onPressAvatar={onPressAvatar}
+        renderAvatarOnTop
+        label={'送出'}
+        multiline={false}
+        //composerHeight={30}
+      />
+    </View>
   )
 }
 
