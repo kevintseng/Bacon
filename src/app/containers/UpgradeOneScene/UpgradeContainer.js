@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Text, Button, Platform } from 'react-native'
+import { View, TouchableOpacity, Text, Button, Platform, NativeModules } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import RNGooglePlaces from 'react-native-google-places'
 
@@ -7,9 +7,11 @@ import Upgrade from '../../views/Bill/Upgrade'
 import PolicyModalContainer from '../SettingAboutScene/PolicyModalContainer'
 import RuleModalContainer from '../SettingAboutScene/RuleModalContainer'
 
+const { InAppUtils } = NativeModules
+
 const styles = {
-  view: { 
-    alignItems: 'center', 
+  view: {
+    alignItems: 'center',
     //marginTop: 10
   },
   link: {
@@ -23,19 +25,19 @@ const styles = {
     flexWrap: 'wrap',
     color: '#606060',
     fontSize: 11,
-    textAlign: 'center' 
+    textAlign: 'center'
   },
-  warning : { 
+  warning : {
     alignSelf: 'center',
     position: 'absolute',
-    flexDirection: 'row', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     bottom: -55
   },
-  textView : { 
-    width: 250, 
-    marginTop: 50, 
+  textView : {
+    width: 250,
+    marginTop: 50,
     alignItems: 'center'
   }
 }
@@ -50,6 +52,20 @@ export default class UpgradeContainer extends Component {
     //  topCheck: true,
     //  upperCheck: false,
     //}
+  }
+
+  componentWillMount() {
+    if (Platform.OS === 'ios') {
+      const products = [
+        'com.kayming.bacon.premium_1y',
+        'com.kayming.bacon.premium_3m'
+      ]
+      InAppUtils.loadProducts(products, (error, products) => {
+        //update store here.
+        console.log('Products: ', products)
+        console.log('Error: ', error)
+      })
+    }
   }
 
   topCheckOnPress = () => {
@@ -79,7 +95,7 @@ export default class UpgradeContainer extends Component {
           topCheckOnPress={this.topCheckOnPress}
           upperCheckOnPress={this.upperCheckOnPress}
         />
-        <View style={{ width: 250, marginTop: 15, alignItems: 'center' }}>
+        <View style={{ width: 300, marginTop: 15, alignItems: 'center' }}>
           <View style={{ width: 160, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20}}>
             <TouchableOpacity style={{ marginRight: 5 }} onPress={this.ControlStore.setSettingPolicyModal}>
               <Text style={styles.link}>
@@ -92,10 +108,12 @@ export default class UpgradeContainer extends Component {
           </View>
         </View>
         { Platform.OS === 'ios' &&
-          <View style={{ marginTop: 10, width: 320}}>
-            <Text style={styles.text}>當您按下「升級」並使用確認付費升級為高級會員後將從您的iTunes帳號收費。</Text>
+          <View style={{ marginTop: 10, width: 300}}>
+            <Text style={styles.text}>當您按下「升級」並透過您的iTunes帳號購買會員升級服務, 我們將經由您的iTunes帳號收費。</Text>
+            <Text />
             <Text style={styles.text}>您的高級會員資格將於訂閱效期滿前24小時內自動續訂並將從您的iTunes帳號扣取費用。</Text>
-            <Text style={styles.text}>若需取消自動續訂，請在您的iTunes帳號變更您的訂閱設定。</Text>
+            <Text />
+            <Text style={styles.text}>若需取消自動續訂您可以直接在您的iTunes帳號取消自動續訂。</Text>
           </View>
         }
       </View>

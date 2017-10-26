@@ -24,6 +24,22 @@ export default class BaconRoutesContainer extends Component {
     this.firebase = this.props.firebase
   }
 
+  componentDidMount() {
+    if (Platform.OS === 'ios') {
+      InAppUtils.restorePurchases((error, products) => {
+        if (error) {
+          console.log('itunes Error', 'Could not connect to itunes store.')
+        } else {
+          console.log(
+            'Restore Successful',
+            'Successfully restores all your purchases.'
+          )
+          //unlock store here again.
+        }
+      })
+    }
+  }
+
   async validate(receiptData) {
     try {
       const validationData = await validateReceipt(receiptData);
@@ -39,26 +55,35 @@ export default class BaconRoutesContainer extends Component {
     if (Platform.OS === "android") {
       const upgrade_way = Object.keys(this.ControlStore.upgrade).find(key => this.ControlStore.upgrade[key] === true)
       if (upgrade_way === '3_month') {
-        const productId = 'premium_3m' // 'android.test.purchased'
+        const productId = 'com.kayming.bacon.premium_3m' // 'android.test.purchased'
         this.androidPay(productId)
       } else if (upgrade_way === '1_year') {
-        const productId = 'premium_1y' // 'android.test.purchased'
+        const productId = 'com.kayming.bacon.premium_1y' // 'android.test.purchased'
         this.androidPay(productId)
       } else {
         alert('錯誤')
-      }      
+      }
     } else {
-      console.log("iOS IAP Membership Upgrade")
+      console.log('iOS IAP Upgrade #################')
+      InAppUtils.canMakePayments(enabled => {
+        if (enabled) {
+          console.log('IAP enabled')
+        } else {
+          console.log('IAP disabled')
+        }
+      })
+
       try {
-        // InAppUtils.loadProducts(products, (error, products) => {
-        //   console.log("loadProducts: ", products, " error: ", error)
-        //   InAppUtils.receiptData((err, receiptData) => {
-        //     console.log("receiptData: ", receiptData)
-        //     this.validate(receiptData)
-        //   })
-        // })
-        
-        console.log("iOS IAP Bonus")
+        console.log(this.ControlStore)
+        let bonus = 0
+        if (this.ControlStore.upgrade['3_months']) {
+          const productIdentifier = 'com.kayming.bacon.q_points_200'
+          this.iOSPay(productIdentifier)
+        }
+        if (this.ControlStore.bonus['1_year']) {
+          const productIdentifier = 'com.kayming.bacon.q_points_600'
+          this.iOSPay(productIdentifier)
+        }
         this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
         this.SubjectStore.setVip(true)
       } catch (err) {
@@ -92,7 +117,28 @@ export default class BaconRoutesContainer extends Component {
       } else {
         await InAppBilling.close()
       }
-    }    
+    }
+  }
+
+  iOSPay = async productId => {
+    console.log('Purchasing iOS product: ', productId)
+    try {
+      await InAppUtils.purchaseProduct(productId, (error, response) => {
+        console.log('response: ', response)
+        // NOTE for v3.0: User can cancel the payment which will be available as error object here.
+        if (response && response.productIdentifier) {
+          console.log(
+            'Purchase Successful',
+            'Your Transaction ID is ' + response.transactionIdentifier
+          )
+          //unlock store here.
+        } else {
+          console.log('IAP error: ', error)
+        }
+      })
+    } catch (err) {
+      alert('錯誤')
+    }
   }
 
   render() {

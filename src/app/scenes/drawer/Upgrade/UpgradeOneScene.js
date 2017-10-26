@@ -16,18 +16,23 @@ const styles = {
   ...Platform.select({
     ios: {
       top: {
-        height: 110
+        position: 'absolute',
+        top: 30,
+        alignSelf: 'center',
       },
       middle: {
-        marginTop: 10,
+        position: 'absolute',
+        top: 200,
+        alignSelf: 'center',
       },
       bottom: {
-        marginTop: 10,
+        position: 'absolute',
+        bottom: 0
       },
       textView: {
-        marginTop: 10,
+        position: 'absolute',
+        bottom: 200,
         alignSelf: 'center',
-        height: 40,
       },
     },
     android: {
