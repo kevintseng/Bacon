@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react'
 //import { GiftedChat } from 'react-native-gifted-chat';
 import Moment from 'moment'
 //import { Icon, Button } from "react-native-elements"
-import BaconChatRoom from '../../../views/BaconChatRoom'
+import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
 
 @inject('firebase','FateStore','SubjectStore') @observer
 export default class ChatRoomScene extends Component {
