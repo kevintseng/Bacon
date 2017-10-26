@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, TouchableOpacity, InteractionManager } from 'react-native'
-import { observer, inject } from 'mobx-react'
-//import { GiftedChat } from 'react-native-gifted-chat';
-import Moment from 'moment'
-//import { Icon, Button } from "react-native-elements"
+import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid } from 'react-native'
+import { inject, observer } from 'mobx-react'
+import { Actions } from 'react-native-router-flux'
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
 
 @inject('firebase','FateStore','SubjectStore') @observer
@@ -20,6 +18,7 @@ export default class ChatRoomScene extends Component {
   }
 
   componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     this.firebase.database().ref('chats/' + 'room_key' + '/messages').on('value', child => {
       this.setMessages(child.val())
     })
@@ -71,6 +70,15 @@ export default class ChatRoomScene extends Component {
 */
   }
 
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  onBackAndroid = () => {
+    Actions.pop()
+    return true
+  }
+
   setMessages = async messages => {
     //console.log(messages)//整理成陣列
     this.preyID = Object.keys(messages).find(key => key !== this.SubjectStore.uid)
@@ -116,7 +124,10 @@ export default class ChatRoomScene extends Component {
     //this.setState((previousState) => ({
     //  messages: GiftedChat.append(previousState.messages, messages),
     //}));
-    this.firebase.database().ref('chats/' + 'room_key' + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
+    const messages_no_blank = messages[0].text.trim()
+    if (messages_no_blank.length > 0) {
+      this.firebase.database().ref('chats/' + 'room_key' + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
+    }
     //console.log(messages)
   }
 
