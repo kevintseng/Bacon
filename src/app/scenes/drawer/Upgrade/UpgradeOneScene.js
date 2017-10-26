@@ -22,7 +22,7 @@ const styles = {
       },
       middle: {
         position: 'absolute',
-        top: 200,
+        top: 150,
         alignSelf: 'center',
       },
       bottom: {
