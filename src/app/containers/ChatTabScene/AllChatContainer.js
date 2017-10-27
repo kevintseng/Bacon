@@ -29,7 +29,7 @@ export default class AllChatContainer extends Component {
   }
 
   onPress = () => {
-    alert('轉到聊天室')
+    Actions.ChatRoom()
   }
 
   render() {
