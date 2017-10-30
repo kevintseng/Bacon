@@ -6,5 +6,5 @@ rm -rf package-lock.json
 rm -rf yarn.lock
 npm cache clean --force
 yarn cache clean
-yarn install
+npm install
 npm start -- --reset-cache

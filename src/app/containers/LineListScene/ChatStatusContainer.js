@@ -148,8 +148,8 @@ export default class ChatStatusContainer extends Component {
               textStyle={styles.chatStatusStyles.textStyle}
               buttonStyle={styles.chatStatusStyles.buttonStyle}
               style={styles.chatStatusStyles.containerStyle}
-              iconRight
-              icon={{ name: "edit", color: "#D63768" }}
+              iconRight={{ name: "edit", color: "#D63768" }}
+              //icon={{ name: "edit", color: "#D63768" }}
             />
             <Button
               title="取消狀態"
