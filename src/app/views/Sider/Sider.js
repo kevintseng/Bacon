@@ -63,7 +63,7 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
               borderColor='rgba(255, 255, 255, 1)'
             />
           </View>
-          <View style={{alignItems: 'flex-start',flexDirection: 'row', justifyContent: 'space-between',marginTop: 7}}>
+          <View style={{alignItems: 'flex-start',flexDirection: 'row', justifyContent: 'space-between',marginTop: 14, marginBottom: 7}}>
             <View style={ styles.badge }>
               <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
             </View>

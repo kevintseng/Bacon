@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, Button, Platform, Dimensions, BackHandler, ToastAndroid, Image, ScrollView, Linking, TouchableOpacity } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
-import StarRating from 'react-native-star-rating';
+import StarRating from 'react-native-star-rating'
 
 
 const { width, height } = Dimensions.get('window')

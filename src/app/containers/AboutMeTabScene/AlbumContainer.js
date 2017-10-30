@@ -4,7 +4,6 @@ import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
-//import UUIDGenerator from 'react-native-uuid-generator'
 
 import Album from '../../views/Album/Album'
 

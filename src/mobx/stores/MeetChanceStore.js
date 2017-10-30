@@ -1,5 +1,4 @@
 import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx'
-import _ from 'lodash'
 import geolib from 'geolib'
 import { calculateAge } from '../../app/Utils'
 

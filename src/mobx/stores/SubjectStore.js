@@ -1,5 +1,4 @@
 import { useStrict, observable, action, computed } from 'mobx'
-import _ from 'lodash'
 import { calculateAge } from '../../app/Utils'
 
 useStrict(true)

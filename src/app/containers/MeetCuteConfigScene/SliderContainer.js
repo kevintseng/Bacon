@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text,Button } from 'react-native'
 import { inject, observer } from 'mobx-react'
-import MultiSlider from '@ptomasroos/react-native-multi-slider'
+import MultiSlider from 'react-native-multi-slider'
 
 const styles = {
   title: {

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import ImagePicker from "react-native-image-picker";
 import ImageResizer from "react-native-image-resizer";
-//import UUIDGenerator from 'react-native-uuid-generator'
 
 import BigAvatar from "../../views/BigAvatar/BigAvatar";
 

@@ -9,16 +9,16 @@ const styles = {
     alignItems: 'center', 
   },
   logView: {
-    flex: 8,
+    flex: 9,
     //backgroundColor: 'red',
-    justifyContent: 'center'
+    justifyContent: 'flex-end'
     //position: 'absolute',
     //top: 90
   },
   titleView: {
     //backgroundColor: 'blue',
-    flex: 2,
-    //justifyContent: 'center'
+    flex: 3,
+    justifyContent: 'center'
     //position: 'absolute',
     //top: 240
   },
@@ -58,7 +58,7 @@ const styles = {
     //backgroundColor: 'red'
   },
   warningView:{
-    flex: 9
+    flex: 11
     //position: 'absolute', 
     //bottom: 160
   },
@@ -95,7 +95,7 @@ const styles = {
     letterSpacing: 3,
     fontFamily: 'NotoSans',  
     textAlign: 'center', 
-    fontWeight: '500',
+    //fontWeight: '500',
     color: '#606060',
     fontSize: 10
   },

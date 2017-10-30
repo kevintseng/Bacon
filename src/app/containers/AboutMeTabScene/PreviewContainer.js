@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Dimensions, ScrollView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
-//import { Radar } from 'react-native-pathjs-charts'
 
 import CourtContainer from './CourtContainer'
 import InfosContainer from './InfosContainer'
