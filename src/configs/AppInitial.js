@@ -13,6 +13,7 @@ import MeetCuteStore from '../mobx/stores/MeetCuteStore'
 import MeetChanceStore from '../mobx/stores/MeetChanceStore'
 import FateStore from '../mobx/stores/FateStore'
 import LineStore from '../mobx/stores/LineStore'
+import ChatStore from '../mobx/stores/ChatStore'
 // import SignUpInStore from '../mobx/stores/SignUpInStore'
 
 const FirebaseConfig = {
@@ -36,6 +37,7 @@ const AppInitial = {
     this.MeetChanceStore = new MeetChanceStore(this.firebase)
     this.FateStore = new FateStore(this.firebase)
     this.LineStore = new LineStore(this.firebase)
+    this.ChatStore = new ChatStore(this.firebase)
     return this
   },
 }.init()

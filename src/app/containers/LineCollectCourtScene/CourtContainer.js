@@ -5,11 +5,10 @@ import { Actions } from 'react-native-router-flux'
 import Moment from 'moment'
 import LineModalContainer from './LineModalContainer'
 
-
 import localdb from '../../../configs/localdb'
 import Court from '../../views/Court'
 
-@inject('firebase', 'SubjectStore', 'ControlStore', 'FateStore')
+@inject('firebase', 'SubjectStore', 'ControlStore', 'FateStore','ChatStore')
 @observer
 export default class CourtContainer extends Component {
 
@@ -20,6 +19,7 @@ export default class CourtContainer extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.ControlStore = this.props.ControlStore
     this.FateStore = this.props.FateStore
+    this.ChatStore = this.props.ChatStore
     this.title = this.props.title
     this.state = {
       visible: false,
@@ -161,7 +161,9 @@ export default class CourtContainer extends Component {
       snap => {
         if (snap.val()) {
           // 拿到聊天室Key
-          console.warn(Object.keys(snap.val())[0])
+          //console.warn(Object.keys(snap.val())[0])
+          // 設置聊天室
+          this.ChatStore.setChatRoomKey(Object.keys(snap.val())[0])
           // 轉到聊天室
           this.goToChatRoom()
         } else {
@@ -169,7 +171,9 @@ export default class CourtContainer extends Component {
           this.firebase.database().ref('chat_rooms/' + this.SubjectStore.uid + '/' + this.SubjectStore.uid + this.Store.uid + '/prey').set(this.Store.uid)
           this.firebase.database().ref('chat_rooms/' + this.Store.uid + '/' + this.SubjectStore.uid + this.Store.uid + '/prey').set(this.SubjectStore.uid)
           // 拿到聊天室Key
-          console.warn(Object.keys(snap.val())[0])
+          //console.warn(Object.keys(snap.val())[0])
+          // 設置聊天室
+          this.ChatStore.setChatRoomKey(this.SubjectStore.uid + this.Store.uid)
           // 轉到聊天室
           this.goToChatRoom()
         }  
@@ -177,7 +181,7 @@ export default class CourtContainer extends Component {
   }
 
   goToChatRoom = () => {
-    Actions.ChatRoom()
+    Actions.ChatRoom({title: this.Store.nickname + '，' + this.Store.age})
   }
 
   render() {

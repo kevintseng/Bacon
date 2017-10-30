@@ -29,7 +29,8 @@ export default class AllChatContainer extends Component {
   }
 
   onPress = () => {
-    Actions.ChatRoom()
+    alert('施工中')
+    //Actions.ChatRoom()
   }
 
   render() {

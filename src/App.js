@@ -27,6 +27,7 @@ export default class App extends Component {
         MeetCuteStore={AppInitial.MeetCuteStore}
         FateStore={AppInitial.FateStore}
         LineStore={AppInitial.LineStore}
+        ChatStore={AppInitial.ChatStore}
       >
         <Routes />
       </Provider>

@@ -73,6 +73,7 @@ import BaconMenu from './views/BaconMenu/BaconMenu'
 import BaconTool from './views/BaconTool/BaconTool'
 import BaconArrow from './views/BaconArrow/BaconArrow'
 import BaconNotice from './views/BaconNotice'
+import BaconPreview from './views/BaconPreview/BaconPreview'
 // 待修正
 import ChatStatusContainer from './containers/LineListScene/ChatStatusContainer'
 // ###############header components################ //
@@ -156,6 +157,10 @@ export default class Routes extends Component {
     Actions.AboutMeBoard()
   }
 
+  goToPreview = () => {
+    alert('預覽')
+  }
+
   // reason 就是text string 點數使用說明文字
   // goToUseBonus = (balance, cost, reason, avatarUrl, callbackFunc) => {
   //   // balance, cost, avatarUrl, reason
@@ -198,6 +203,10 @@ export default class Routes extends Component {
 
   baconToolAboutMe = () => (
     <View style={styles.baconTool}><BaconNotice onPress={this.goToNotification} /></View>
+  )
+
+  baconToolChatRoom = () => (
+    <View style={styles.baconTool}><BaconTool onPress={this.goToPreview} /></View>
   )
 
   baconToolLine = () => (
@@ -263,7 +272,7 @@ export default class Routes extends Component {
               </Scene>
 
               <Scene key="ChatTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolLine}/>
-              <Scene key="ChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={ChatRoomScene} />
+              <Scene key="ChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={ChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
 
               <Scene key="Line" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               
