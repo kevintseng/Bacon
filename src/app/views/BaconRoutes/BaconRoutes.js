@@ -40,13 +40,6 @@ const styles = {
 }
 
 const BaconRoutes = ({ routesText, routesOnPress, warningText, warningOnPress }) => {
-  //console.log("height: ", height)
-  //let bmt = 0
-  //if(height == 480) {
-  //  bmt = 10
-  //} else {
-  //  bmt = 50
-  //}
   return(
     <View style={ styles.view }>
 

@@ -34,7 +34,9 @@ export default class BonusContainer extends Component {
       const products = [
         'com.kayming.bacon.q_points_200',
         'com.kayming.bacon.q_points_600',
-        'com.kayming.bacon.q_points_1200'
+        'com.kayming.bacon.q_points_1200',
+        'com.kayming.bacon.premium_1y',
+        'com.kayming.bacon.premium_3m'
       ]
       InAppUtils.loadProducts(products, (error, products) => {
         //update store here.
