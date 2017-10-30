@@ -135,12 +135,11 @@ export default class Court extends Component {
         </Carousel>
 
         <View style={styles.chooseView}>
-          <TouchableOpacity style={styles.choose} onPress={ onPressRightIcon }>
-            <Image source={ rightIcon }/>
-          </TouchableOpacity>
-
           <TouchableOpacity style={styles.choose} onPress={ onPressLeftIcon }>
             <Image source={ leftIcon } />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.choose} onPress={ onPressRightIcon }>
+            <Image source={ rightIcon }/>
           </TouchableOpacity>
         </View>
 
