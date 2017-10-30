@@ -9,19 +9,24 @@ import UpgradeTitleContainer from  '../../../containers/UpgradeOneScene/UpgradeT
 
 const styles = {
   view: {
-    flex: 1
+    flex: 1,
+    height: 400,
   },
   ...Platform.select({
     ios: {
       top: {
-        height: 110
+        marginTop: 30,
+        height: 40,
+        alignSelf: 'center',
       },
       middle: {
-        marginTop: 10,
+        marginTop: 80,
+        alignSelf: 'center',
       },
       bottom: {
-        marginTop: 10,
-      }
+        marginTop: 0,
+        alignSelf: 'center',
+      },
     },
     android: {
       top: {
@@ -37,7 +42,7 @@ const styles = {
       bottom: {
         position: 'absolute',
         bottom: 0
-      }
+      },
     }
   })
 }
@@ -65,7 +70,7 @@ export default class UpgradeOneScene extends Component {
 
   render() {
     return(
-      <View style={ styles.view }>
+      <ScrollView style={ styles.view }>
         <View style={ styles.top }>
           <UpgradeTitleContainer/>
         </View>
@@ -77,7 +82,7 @@ export default class UpgradeOneScene extends Component {
         <View style={ styles.bottom }>
           <BaconRoutesContainer/>
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }

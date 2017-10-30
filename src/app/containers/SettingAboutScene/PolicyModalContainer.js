@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { View, Modal, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
+
 import Policy from '../../../configs/Policy'
 
 const { width, height } = Dimensions.get('window')
@@ -63,7 +64,7 @@ export default class PolicyModalContainer extends Component {
                   <Text style={ styles.title }>服務條款</Text>
                 </View>
                 <ScrollView>
-                  <Policy/>
+                  <Policy />
                 </ScrollView>
                 <View style={{ height: 50, justifyContent: "center" }}>
                   <Text style={ styles.title } onPress={ this.ControlStore.setSettingPolicyModal }>我知道了</Text>
