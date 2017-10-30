@@ -16,7 +16,7 @@ const metadata = {
   contentType: 'image/jpeg'
 }
 
-@inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','MeetCuteStore','FateStore','LineStore','firebase',) @observer
+@inject('ControlStore','SignUpStore','SignInStore','SubjectStore','SubjectEditStore','MeetChanceStore','MeetCuteStore','FateStore','LineStore','firebase','ChatStore') @observer
 export default class SessionCheckScene extends Component {
 
   constructor(props) {
@@ -30,6 +30,7 @@ export default class SessionCheckScene extends Component {
     this.MeetCuteStore = this.props.MeetCuteStore
     this.LineStore = this.props.LineStore
     this.FateStore = this.props.FateStore
+    this.ChatStore = this.props.ChatStore
     this.firebase = this.props.firebase
     this.lastAppState = AppState.currentState
     // 監聽函數
@@ -53,6 +54,7 @@ export default class SessionCheckScene extends Component {
         this.SubjectStore.setUid(user.uid) // 設置 uid
         this.SubjectStore.setEmail(user.email) // 設置 email
         this.FateStore.setSelfUid(user.uid) // 設置 uid
+        this.ChatStore.setUid(user.uid) // 設置 uid
         //////////////////////////////////////////////////////////
         if (this.ControlStore.authenticateIndicator == '註冊') {
           // 從註冊來的
@@ -114,6 +116,7 @@ export default class SessionCheckScene extends Component {
     this.MeetChanceStore.initialize()
     this.MeetCuteStore.initialize()
     this.FateStore.initialize()
+    this.ChatStore.initialize()
     this.LineStore.initialize()
   }
 

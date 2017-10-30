@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
 
-@inject('firebase','FateStore','SubjectStore') @observer
+@inject('firebase','FateStore','SubjectStore','ChatStore') @observer
 export default class ChatRoomScene extends Component {
 
   constructor(props) {
@@ -12,16 +12,56 @@ export default class ChatRoomScene extends Component {
     this.firebase = this.props.firebase
     this.FateStore = this.props.FateStore
     this.SubjectStore = this.props.SubjectStore
+    this.ChatStore = this.props.ChatStore
     this.state = {
-      messages: [],
-    };
+      messages: []
+    }
   }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    this.firebase.database().ref('chats/' + 'room_key' + '/messages').on('value', child => {
-      this.setMessages(child.val())
-    })
+    this.ChatStore.fetchMessages()
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+    this.ChatStore.removeMessagesListener()
+  }
+
+  onBackAndroid = () => {
+    Actions.pop()
+    return true
+  }
+
+  onPressLeftIcon = () => {
+    alert('要上傳照片')
+  }
+
+  onPressRightIcon = () => {
+    alert('要上傳貼圖')
+  }
+
+  onPressAvatar = () => {
+    alert('點了大頭照')
+  }
+
+  render() {
+    return (
+      <BaconChatRoom
+        messages={this.ChatStore.messages}
+        onSend={messages => this.ChatStore.onSend(messages)}
+        user={{
+          _id: this.SubjectStore.uid, // this.SubjectStore.uid
+        }}
+        onPressLeftIcon={this.onPressLeftIcon}
+        onPressRightIcon={this.onPressRightIcon}
+        onPressAvatar={this.onPressAvatar}
+      />
+    )
+  }
+}
+
+
 /*
     this.setState({
       messages: [
@@ -68,16 +108,8 @@ export default class ChatRoomScene extends Component {
       ],
     });
 */
-  }
 
-  componentWillUnmount(){
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-  }
-
-  onBackAndroid = () => {
-    Actions.pop()
-    return true
-  }
+/*
 
   setMessages = async messages => {
     //console.log(messages)//整理成陣列
@@ -119,43 +151,4 @@ export default class ChatRoomScene extends Component {
     //console.log(allMessages)
     this.setState({messages: allMessages})
   }
-
-  onSend(messages = []) {
-    //this.setState((previousState) => ({
-    //  messages: GiftedChat.append(previousState.messages, messages),
-    //}));
-    const messages_no_blank = messages[0].text.trim()
-    if (messages_no_blank.length > 0) {
-      this.firebase.database().ref('chats/' + 'room_key' + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
-    }
-    //console.log(messages)
-  }
-
-  onPressLeftIcon = () => {
-    alert('要上傳照片')
-  }
-
-  onPressRightIcon = () => {
-    alert('要上傳貼圖')
-  }
-
-  onPressAvatar = () => {
-    alert('點了大頭照')
-  }
-
-  render() {
-    return (
-      <BaconChatRoom
-        messages={this.state.messages}
-        onSend={(messages) => this.onSend(messages)}
-        user={{
-          _id: this.SubjectStore.uid, // this.SubjectStore.uid
-          //avatar: "http://www.teepr.com/wp-content/uploads/2016/12/14909941_1106661159387826_1701114055237368977_n.jpg"
-        }}
-        onPressLeftIcon={this.onPressLeftIcon}
-        onPressRightIcon={this.onPressRightIcon}
-        onPressAvatar={this.onPressAvatar}
-      />
-    );
-  }
-}
+*/
