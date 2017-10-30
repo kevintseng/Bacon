@@ -155,6 +155,31 @@ export default class CourtContainer extends Component {
     })
   }
 
+  startChat = () => {
+    //console.warn(this.Store.uid)
+    this.firebase.database().ref('chat_rooms/' + this.SubjectStore.uid).orderByChild('prey').equalTo(this.Store.uid).once('value',
+      snap => {
+        if (snap.val()) {
+          // 拿到聊天室Key
+          console.warn(Object.keys(snap.val())[0])
+          // 轉到聊天室
+          this.goToChatRoom()
+        } else {
+          // 上傳聊天室Key
+          this.firebase.database().ref('chat_rooms/' + this.SubjectStore.uid + '/' + this.SubjectStore.uid + this.Store.uid + '/prey').set(this.Store.uid)
+          this.firebase.database().ref('chat_rooms/' + this.Store.uid + '/' + this.SubjectStore.uid + this.Store.uid + '/prey').set(this.SubjectStore.uid)
+          // 拿到聊天室Key
+          console.warn(Object.keys(snap.val())[0])
+          // 轉到聊天室
+          this.goToChatRoom()
+        }  
+      })
+  }
+
+  goToChatRoom = () => {
+    Actions.ChatRoom()
+  }
+
   render() {
     return (
       <View>
@@ -166,11 +191,16 @@ export default class CourtContainer extends Component {
           closeAlbum={this.closeAlbum}
           openAlbum={this.openAlbum}
           onPressRightIcon={this.collection}
-          onPressLeftIcon={this.startConv}
+          onPressLeftIcon={this.startChat}
           onRequestClose={this.closeAlbum}
         />
-        <LineModalContainer code={this.state.code}/>
       </View>
     )
   }
 }
+
+/*
+
+<LineModalContainer code={this.state.code}/>
+
+*/
