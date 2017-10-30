@@ -3,7 +3,6 @@ import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { Avatar, Badge } from 'react-native-elements'
 import MKPLoadImageView from 'mkp-react-native-image-view'
-import ImageLoad from 'react-native-image-placeholder'
 
 const { width } = Dimensions.get('window')
 
