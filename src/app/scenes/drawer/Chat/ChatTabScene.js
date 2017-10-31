@@ -29,9 +29,9 @@ export default class ChatTabScene extends Component {
         //onChangeTab={}
         ref={ (tabView) => { this.tabView = tabView } }
         >
-        <AllChatContainer label='AllChat' tabLabel='所有訊息' />
+        <AllChatContainer label='AllChat' tabLabel='好友訊息' />
         <VisitorsChatContainer label='VisitorsChat' tabLabel='來訪訊息' />
-        <NonHandleChatContainer label='NonHandleChat' tabLabel='未讀訊息' />
+        <NonHandleChatContainer label='NonHandleChat' tabLabel='已發招呼' />
       </ScrollableTabView>
     )
   }
