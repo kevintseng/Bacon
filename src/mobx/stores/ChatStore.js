@@ -14,8 +14,10 @@ export default class ChatStore {
   @action initialize = () => {
     this.preyID = null
     this.messagesQuery = null
+    this.hunterQuery = null
     this.chatRoomKey = null
     this.messages = new Array
+    this.hunter = null
   }
 
   @action setUid = uid => {
@@ -26,11 +28,19 @@ export default class ChatStore {
     this.chatRoomKey = key
   }
 
+  @action listenHunter = () => {
+    this.hunterQuery = this.firebase.database().ref('chats/' + this.chatRoomKey + '/hunter')
+    this.hunterQuery.on('value', child => {
+      //console.warn(child.val())
+      this.setHunter(child.val())
+    })
+  }
+
   @action fetchMessages = () => {
     this.initMessages()
     this.messagesQuery = this.firebase.database().ref('chats/' + this.chatRoomKey + '/messages')
     this.messagesQuery.on('value', child => {
-      this.setMessages(child.val())
+      this.setMessages(child.val()) // 改成child_added
     })
   }
 
@@ -45,6 +55,13 @@ export default class ChatStore {
     if (this.messagesQuery) {
       this.messagesQuery.off()
       this.messagesQuery = null
+    }
+  }
+
+  @action removeHunterListener = () => {
+    if (this.hunterQuery) {
+      this.hunterQuery.off()
+      this.hunterQuery = null
     }
   }
 
@@ -103,7 +120,18 @@ export default class ChatStore {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
       this.firebase.database().ref('chats/' + this.chatRoomKey + '/messages/' + this.uid + '/' + Date.now()).set(messages[0].text)
+      .then(()=>{
+        if (!this.hunter) {
+          this.firebase.database().ref('chats/' + this.chatRoomKey + '/hunter').set(this.uid)
+          alert('你成為訊息發送者(兩次發話限制)')
+        }
+      })
     }
+  }
+
+  @action setHunter = val => {
+    this.hunter = val
+    //console.warn(val)
   }
 
 

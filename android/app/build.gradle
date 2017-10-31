@@ -105,7 +105,7 @@ android {
 
     defaultConfig {
         applicationId "com.kayming.android.bacon"
-        minSdkVersion 23
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 47
         versionName "Beta-3.5.0"
