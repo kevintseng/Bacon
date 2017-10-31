@@ -157,27 +157,13 @@ export default class CourtContainer extends Component {
 
   startChat = () => {
     //console.warn(this.Store.uid)
-    this.firebase.database().ref('chat_rooms/' + this.SubjectStore.uid).orderByChild('prey').equalTo(this.Store.uid).once('value',
-      snap => {
-        if (snap.val()) {
-          // 拿到聊天室Key
-          //console.warn(Object.keys(snap.val())[0])
-          // 設置聊天室
-          this.ChatStore.setChatRoomKey(Object.keys(snap.val())[0])
-          // 轉到聊天室
-          this.goToChatRoom()
-        } else {
-          // 上傳聊天室Key
-          this.firebase.database().ref('chat_rooms/' + this.SubjectStore.uid + '/' + this.SubjectStore.uid + this.Store.uid + '/prey').set(this.Store.uid)
-          this.firebase.database().ref('chat_rooms/' + this.Store.uid + '/' + this.SubjectStore.uid + this.Store.uid + '/prey').set(this.SubjectStore.uid)
-          // 拿到聊天室Key
-          //console.warn(Object.keys(snap.val())[0])
-          // 設置聊天室
-          this.ChatStore.setChatRoomKey(this.SubjectStore.uid + this.Store.uid)
-          // 轉到聊天室
-          this.goToChatRoom()
-        }  
-      })
+    if (this.SubjectStore.uid > this.Store.uid) {
+      this.ChatRoomKey = this.SubjectStore.uid + this.Store.uid
+    } else {
+      this.ChatRoomKey = this.Store.uid + this.SubjectStore.uid
+    }
+    this.ChatStore.setChatRoomKey(this.ChatRoomKey)
+    this.goToChatRoom()
   }
 
   goToChatRoom = () => {
