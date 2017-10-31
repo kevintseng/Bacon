@@ -14,6 +14,10 @@ export default class LoginOutContainer extends Component {
   }
 
   _loginOut = () => {
+    this.firebase.auth().signOut().catch( err => {
+      alert('登出發生錯誤 :' + err)
+    })
+    /*
     this.firebase.database().ref('/online/' + this.SubjectStore.uid).once('value',snap => {
       const lastOnline = snap.val().lastOnline
       const location = snap.val().location
@@ -47,6 +51,7 @@ export default class LoginOutContainer extends Component {
         console.log(err) 
       })
     })
+    */
   }
 
   render() {

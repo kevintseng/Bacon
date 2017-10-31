@@ -34,7 +34,7 @@
     "react-native-fast-image": "1.0.0",
     "react-native-firebase": "3.0.5",
     "react-native-fs": "2.8.1",
-    "react-native-gifted-chat": "0.3.0",
+    "react-native-gifted-chat": "tsaohucn/react-native-gifted-chat#master",
     "react-native-google-places": "kaymingmobile/react-native-google-places#patch-1",
     "react-native-image-pan-zoom": "2.0.7",
     "react-native-image-picker": "0.26.7",
