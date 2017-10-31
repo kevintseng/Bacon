@@ -94,25 +94,23 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Protobuf (3.4.0)
-  - React (0.49.3):
-    - React/Core (= 0.49.3)
-  - React/BatchedBridge (0.49.3):
+  - React (0.48.4):
+    - React/Core (= 0.48.4)
+  - React/BatchedBridge (0.48.4):
     - React/Core
     - React/cxxreact_legacy
-  - React/Core (0.49.3):
-    - yoga (= 0.49.3.React)
-  - React/cxxreact_legacy (0.49.3):
+  - React/Core (0.48.4):
+    - Yoga (= 0.48.4.React)
+  - React/cxxreact_legacy (0.48.4):
     - React/jschelpers_legacy
-  - React/DevSupport (0.49.3):
+  - React/DevSupport (0.48.4):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.49.3)
-  - React/jschelpers_legacy (0.49.3)
-  - React/RCTBlob (0.49.3):
+  - React/jschelpers_legacy (0.48.4)
+  - React/RCTBlob (0.48.4):
     - React/Core
-  - React/RCTWebSocket (0.49.3):
+  - React/RCTWebSocket (0.48.4):
     - React/Core
-    - React/fishhook
     - React/RCTBlob
   - RNFirebase (3.0.5):
     - React
@@ -124,7 +122,7 @@ PODS:
   - SDWebImage/WebP (4.2.0):
     - libwebp
     - SDWebImage/Core
-  - yoga (0.49.3.React)
+  - Yoga (0.48.4.React)
 
 DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
@@ -143,7 +141,7 @@ DEPENDENCIES:
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - SDWebImage (~> 4.0)
   - SDWebImage/WebP
-  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+  - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
   BVLinearGradient:
@@ -154,7 +152,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-firebase"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
-  yoga:
+  Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
@@ -176,12 +174,12 @@ SPEC CHECKSUMS:
   libwebp: 1d5a07c2eb97f9c31bd5f154bb82efc0ea67c6a2
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
-  React: 5751f5630c58f7ef31a00cf03044878295bceff0
+  React: 6d68659481a8a56e0f6b3dbecd984d5b9bb2d6c5
   RNFirebase: 7c86b4efd2860700048d927f34db237fbce1d5fc
   RNVectorIcons: c1821d56c775cc5a3bca66c77dfc8cb4a90d27e2
   SDWebImage: b1189fd85365c18434270a11a5cad13a1e848d53
-  yoga: 6e56575501ecea04196f9c9f08b90cf97cd5da24
+  Yoga: ccefa1454b2e9825dce3b2df98088b7f0e3c2675
 
-PODFILE CHECKSUM: 224e2fecff84d5089cb5a5ee382f677164d19aab
+PODFILE CHECKSUM: ab67179469fdc65cd39dd33ecaf2a6bbd4fa5cea
 
 COCOAPODS: 1.2.1
