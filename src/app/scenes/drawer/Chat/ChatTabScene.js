@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 
-import AllChatContainer from '../../../containers/ChatTabScene/AllChatContainer'
+import MatchChatContainer from '../../../containers/ChatTabScene/MatchChatContainer'
 import VisitorsChatContainer from '../../../containers/ChatTabScene/VisitorsChatContainer'
-import NonHandleChatContainer from '../../../containers/ChatTabScene/NonHandleChatContainer'
+import SendChatContainer from '../../../containers/ChatTabScene/SendChatContainer'
 
 export default class ChatTabScene extends Component {
 
@@ -29,9 +29,9 @@ export default class ChatTabScene extends Component {
         //onChangeTab={}
         ref={ (tabView) => { this.tabView = tabView } }
         >
-        <AllChatContainer label='AllChat' tabLabel='好友訊息' />
+        <MatchChatContainer label='MatchChat' tabLabel='好友訊息' />
         <VisitorsChatContainer label='VisitorsChat' tabLabel='來訪訊息' />
-        <NonHandleChatContainer label='NonHandleChat' tabLabel='已發招呼' />
+        <SendChatContainer label='SendChat' tabLabel='已發招呼' />
       </ScrollableTabView>
     )
   }

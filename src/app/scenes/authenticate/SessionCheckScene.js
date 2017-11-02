@@ -39,6 +39,7 @@ export default class SessionCheckScene extends Component {
     this.meetCuteQuery = null
     this.visitorsQuery = null
     this.goodImpressionQuery = null
+    this.chatMatchQuery = null
     //this.collectionQuery = null
     this.matchQuery = null
     this.blockadeQuery_A = null
@@ -64,6 +65,7 @@ export default class SessionCheckScene extends Component {
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
+          this.chatMatchListener() // 聊天室配對
           this.blockadeListener() // 封鎖
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
@@ -80,6 +82,7 @@ export default class SessionCheckScene extends Component {
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
+          this.chatMatchListener() // 聊天室配對
           this.blockadeListener() // 封鎖
           //this.collectionDB() // 從LocalDB抓配對資料
           this.setOnline() // 非同步設置使用者上線
@@ -109,6 +112,7 @@ export default class SessionCheckScene extends Component {
     this.removeVisitorsListener() // 移除邂逅監聽
     this.removeGoodImpressionListener() // 移除好感監聽
     this.removeMatchListener() // 配對
+    this.removeChatMatchListener() // 聊天室配對
     this.removeBlockadeListener() // 封鎖
     this.SignUpStore.initialize() // 初始註冊入狀態
     this.SignInStore.initialize() // 初始化登入狀態
@@ -413,6 +417,19 @@ export default class SessionCheckScene extends Component {
     })
   }
 
+  chatMatchListener = () => {
+    this.chatMatchQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid) // 自己發送的招呼
+    this.chatMatchQuery.on('child_added',child => {
+      this.firebase.database().ref('users/' + child.val().chatRoomRecipient).once('value').then( snap => {
+        if (child.val().interested === 2) {
+          this.ChatStore.addPreyToChatMatchPool(child.key,child.val().chatRoomRecipient,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(child.val().birthday))
+        } else {
+          this.ChatStore.addPreyToChatRoomCreaterPool(child.key,child.val().chatRoomRecipient,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(child.val().birthday))
+        }
+      })
+    })
+  }
+
   // removeListener
 
   removeMeetCuteListener = () => {
@@ -449,6 +466,13 @@ export default class SessionCheckScene extends Component {
       this.matchQuery.off()
       this.matchQuery = null
     }
+  }
+
+  removeChatMatchListener = () => {
+    if (this.chatMatchQuery) {
+      this.chatMatchQuery.off()
+      this.chatMatchQuery = null
+    }    
   }
 
   removeBlockadeListener = () => {

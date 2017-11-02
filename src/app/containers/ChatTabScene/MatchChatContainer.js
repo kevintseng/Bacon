@@ -11,18 +11,16 @@ const styles = {
   }
 }
 
-@inject('firebase','FateStore','SubjectStore') @observer
-export default class AllChatContainer extends Component {
+@inject('ChatStore') @observer
+export default class MatchChatContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.firebase = this.props.firebase
-    this.FateStore = this.props.FateStore
-    this.SubjectStore = this.props.SubjectStore
+    this.ChatStore = this.props.ChatStore
   }
 
   componentWillMount() {
-    //
+    this.ChatStore.setChatMatchRealPrey()
   }
 
   componentDidMount() {
@@ -36,6 +34,33 @@ export default class AllChatContainer extends Component {
   render() {
     return(
       <View style={styles.view}>
+        <FlatList
+          removeClippedSubviews
+          data={ this.ChatStore.chatMatchPrey }
+          numColumns={1}
+          renderItem={({item}) =>
+            <ChatList 
+              name={item.name}
+              avatar={item.avatar}
+              onPress={ this.onPress }
+              lastChatContent={item.lastChatContent}
+              nonHandleChatCount={99}
+              showBadge={item.showBadge}
+              showTag={item.showTag}
+              online={item.online}
+              userState={item.userState}
+              userStateColor={item.userStateColor}
+              />
+           }
+        />
+      </View>
+    )
+  }
+}
+
+
+/*
+
         <ChatList
           name={'Dora Li'}
           avatar={{uri: 'http://img.appledaily.com.tw/images/ReNews/20170115/640_86387ec286267a13d6d6d0e82606b39d.jpg'}}
@@ -59,7 +84,4 @@ export default class AllChatContainer extends Component {
           userState={'忙碌中'}
           userStateColor={'#FF8040'}
         />
-      </View>
-    )
-  }
-}
+*/
