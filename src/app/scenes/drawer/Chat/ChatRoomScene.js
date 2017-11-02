@@ -20,13 +20,13 @@ export default class ChatRoomScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    this.ChatStore.listenHunter()
-    this.ChatStore.fetchMessages()
+    this.ChatStore.listenChatRoomCreater()
+    this.ChatStore.listenMessages()
   }
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-    this.ChatStore.removeHunterListener()
+    this.ChatStore.removeChatRoomCreaterListener()
     this.ChatStore.removeMessagesListener()
   }
 

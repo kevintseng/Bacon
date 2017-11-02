@@ -83,6 +83,43 @@ export default class CourtContainer extends Component {
     }).catch(err => console.log(err))
   }
 
+  startChat = () => {
+    if (this.SubjectStore.uid > this.Store.uid) {
+      this.ChatRoomKey = this.SubjectStore.uid + this.Store.uid
+    } else {
+      this.ChatRoomKey = this.Store.uid + this.SubjectStore.uid
+    }
+    this.ChatStore.setChatRoomKey(this.ChatRoomKey,this.Store.uid)
+    this.goToChatRoom()
+  }
+
+  goToChatRoom = () => {
+    Actions.ChatRoom({title: this.Store.nickname + '，' + this.Store.age})
+  }
+
+  render() {
+    return (
+      <View>
+        <Court
+          rightIcon={this.state.collection ? require('../../../images/btn_qy_fav_1.png') : require('../../../images/btn_qy_fav_0.png')}
+          leftIcon={require('../../../images/btn_qy_chat.png')}
+          album={this.Store.albumToArray}
+          visible={this.state.visible}
+          closeAlbum={this.closeAlbum}
+          openAlbum={this.openAlbum}
+          onPressRightIcon={this.collection}
+          onPressLeftIcon={this.startChat}
+          onRequestClose={this.closeAlbum}
+        />
+      </View>
+    )
+  }
+}
+
+/*
+
+<LineModalContainer code={this.state.code}/>
+
   goToLine = () => {
     Actions.Line({uid: this.Store.uid, name: this.Store.nickname})
   }
@@ -154,43 +191,4 @@ export default class CourtContainer extends Component {
       this.goToLine()
     })
   }
-
-  startChat = () => {
-    //console.warn(this.Store.uid)
-    if (this.SubjectStore.uid > this.Store.uid) {
-      this.ChatRoomKey = this.SubjectStore.uid + this.Store.uid
-    } else {
-      this.ChatRoomKey = this.Store.uid + this.SubjectStore.uid
-    }
-    this.ChatStore.setChatRoomKey(this.ChatRoomKey)
-    this.goToChatRoom()
-  }
-
-  goToChatRoom = () => {
-    Actions.ChatRoom({title: this.Store.nickname + '，' + this.Store.age})
-  }
-
-  render() {
-    return (
-      <View>
-        <Court
-          rightIcon={this.state.collection ? require('../../../images/btn_qy_fav_1.png') : require('../../../images/btn_qy_fav_0.png')}
-          leftIcon={require('../../../images/btn_qy_chat.png')}
-          album={this.Store.albumToArray}
-          visible={this.state.visible}
-          closeAlbum={this.closeAlbum}
-          openAlbum={this.openAlbum}
-          onPressRightIcon={this.collection}
-          onPressLeftIcon={this.startChat}
-          onRequestClose={this.closeAlbum}
-        />
-      </View>
-    )
-  }
-}
-
-/*
-
-<LineModalContainer code={this.state.code}/>
-
 */
