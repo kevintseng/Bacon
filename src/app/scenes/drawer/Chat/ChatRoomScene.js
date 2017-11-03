@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
+
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
+import MatchModalContainer from '../../../containers/ChatRoomScene/MatchModalContainer'
 
 @inject('firebase','FateStore','SubjectStore','ChatStore') @observer
 export default class ChatRoomScene extends Component {
@@ -13,6 +15,7 @@ export default class ChatRoomScene extends Component {
     this.FateStore = this.props.FateStore
     this.SubjectStore = this.props.SubjectStore
     this.ChatStore = this.props.ChatStore
+    this.from = this.props.from
     this.state = {
       messages: []
     }
@@ -49,16 +52,19 @@ export default class ChatRoomScene extends Component {
 
   render() {
     return (
-      <BaconChatRoom
-        messages={this.ChatStore.messages}
-        onSend={messages => this.ChatStore.onSend(messages)}
-        user={{
-          _id: this.SubjectStore.uid, // this.SubjectStore.uid
-        }}
-        onPressLeftIcon={this.onPressLeftIcon}
-        onPressRightIcon={this.onPressRightIcon}
-        onPressAvatar={this.onPressAvatar}
-      />
+      <View style={{flex: 1}}>
+        <MatchModalContainer/>
+        <BaconChatRoom
+          messages={this.ChatStore.messages}
+          onSend={messages => this.ChatStore.onSend(messages)}
+          user={{
+            _id: this.SubjectStore.uid, // this.SubjectStore.uid
+          }}
+          onPressLeftIcon={this.onPressLeftIcon}
+          onPressRightIcon={this.onPressRightIcon}
+          onPressAvatar={this.onPressAvatar}
+        />
+      </View>
     )
   }
 }

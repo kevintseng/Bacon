@@ -41,6 +41,8 @@ export default class ControlStore {
   @observable master
   @observable common
   @observable general
+  //
+  @observable chatMatchModal
 
   constructor() {
     this.initialize()
@@ -87,6 +89,12 @@ export default class ControlStore {
     this.master = true,
     this.common = false,
     this.general = false
+    //
+    this.chatMatchModal = true
+  }
+
+  @action closeChatMatchModal = () => {
+    this.chatMatchModal = false
   }
 
   @action setLineModalUid = str => {
