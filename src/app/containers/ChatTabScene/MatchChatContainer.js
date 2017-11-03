@@ -26,9 +26,13 @@ export default class MatchChatContainer extends Component {
   componentDidMount() {
   }
 
-  onPress = () => {
-    alert('施工中')
-    //Actions.ChatRoom()
+  onPress = (chatRoomKey,preyId,nickname,age) => {
+    this.ChatStore.setChatRoomKey(chatRoomKey,preyId)
+    this.goToChatRoom(nickname,age)
+  }
+
+  goToChatRoom = (nickname,age) => {
+    Actions.ChatRoom({title: nickname + '，' + age})
   }
 
   render() {
@@ -42,7 +46,7 @@ export default class MatchChatContainer extends Component {
             <ChatList 
               name={item.name}
               avatar={item.avatar}
-              onPress={ this.onPress }
+              onPress={ () => { this.onPress(item.key,item.prey,item.name,item.age) } }
               lastChatContent={item.lastChatContent}
               nonHandleChatCount={99}
               showBadge={item.showBadge}

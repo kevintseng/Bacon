@@ -7,6 +7,7 @@ export default class ChatStore {
   @observable messages
   @observable chatMatchPrey
   @observable chatRoomCreaterPrey
+  @observable chatVistorPrey
 
   constructor(firebase) {
     this.firebase = firebase
@@ -15,10 +16,12 @@ export default class ChatStore {
 
   @action initialize = () => {
     /////////chat_rooms////////////
-    this.chatMatchPool = new Object
-    this.chatMatchPrey = new Array
+    //this.chatMatchPool = new Object
     this.chatRoomCreaterPool = new Object
-    this.chatRoomCreaterPrey = new Array
+    this.chatRoomRecipientPool = new Object
+    this.chatSendPrey = new Array
+    this.chatMatchPrey = new Array
+    this.chatVistorPrey = new Array
     /////////chats////////////
     this.chatRoomCreaterQuery = null
     this.messagesQuery = null
@@ -28,12 +31,28 @@ export default class ChatStore {
     this.messages = new Array
   }
 
-  @action addPreyToChatMatchPool = (uid,prey,name,avatar,lastMessage,age) => {
-    this.chatMatchPool[uid] = { prey: prey, name: name, avatar: avatar, lastMessage: lastMessage, age: age }
+  @action addPreyToChatRoomCreaterPool = (uid,interested,prey,name,avatar,lastMessage,age) => {
+    this.chatRoomCreaterPool[uid] = { interested: interested, prey: prey, name: name, avatar: avatar, lastMessage: lastMessage, age: age }
   }
 
-  @action addPreyToChatRoomCreaterPool = (uid,prey,name,avatar,lastMessage,age) => {
-    this.chatRoomCreaterPool[uid] = { prey: prey, name: name, avatar: avatar, lastMessage: lastMessage, age: age }
+  @action changeChatRoomCreaterPoolLastMessage = (uid,message) => {
+    this.chatRoomCreaterPool[uid].lastMessage = message
+  }
+
+  @action changeChatRoomCreaterPoolInterested = (uid,val) => {
+    this.chatRoomCreaterPool[uid].interested = val
+  }
+
+  @action addPreyToChatRoomRecipientPool = (uid,interested,prey,name,avatar,lastMessage,age) => {
+    this.chatRoomRecipientPool[uid] = { interested: interested, prey: prey, name: name, avatar: avatar, lastMessage: lastMessage, age: age }
+  }
+
+  @action changeChatRoomRecipientPoolLastMessage = (uid,message) => {
+    this.chatRoomRecipientPool[uid].lastMessage = message
+  }
+
+  @action changeChatRoomRecipientPoolInterested = (uid,val) => {
+    this.chatRoomRecipientPool[uid].interested = val
   }
 
   @action setUid = uid => {
@@ -126,7 +145,7 @@ export default class ChatStore {
       this.firebase.database().ref('chats/' + this.chatRoomKey + '/chatRoomCreater').set(this.uid)
       this.firebase.database().ref('chat_rooms/' + this.chatRoomKey).set({
         chatRoomCreater: this.uid,
-        interested: 0,
+        interested: 1, //未處理
         lastMessage: text,
         chatRoomRecipient: this.preyID
       })
@@ -137,24 +156,7 @@ export default class ChatStore {
   }
 
   @action setChatMatchRealPrey = () => {
-    this.chatMatchPrey = Object.keys(this.chatMatchPool).map((key)=>{
-      return(
-        {
-          key: key,
-          prey: this.chatMatchPool[key].prey,
-          name: this.chatMatchPool[key].name,
-          avatar: {uri: this.chatMatchPool[key].avatar},
-          age: this.chatMatchPool[key].age,
-          lastChatContent: this.chatMatchPool[key].lastMessage,
-          userState: '平淡中',
-          userStateColor: '#FFD306'          
-        }
-      )
-    })
-  }
-
-  @action setchatRoomCreaterRealPrey = () => {
-    this.chatRoomCreaterPrey = Object.keys(this.chatRoomCreaterPool).map((key)=>{
+    this.chatMatchPrey = Object.keys(this.chatRoomCreaterPool).filter(key => this.chatRoomCreaterPool[key].interested === 2).map((key)=>{
       return(
         {
           key: key,
@@ -163,6 +165,42 @@ export default class ChatStore {
           avatar: {uri: this.chatRoomCreaterPool[key].avatar},
           age: this.chatRoomCreaterPool[key].age,
           lastChatContent: this.chatRoomCreaterPool[key].lastMessage,
+          userState: '平淡中',
+          userStateColor: '#FFD306'          
+        }
+      )
+    })
+
+    // 還要合併另外一個
+  }
+
+  @action setChatSendRealPrey = () => {
+    this.chatSendPrey = Object.keys(this.chatRoomCreaterPool).filter(key => this.chatRoomCreaterPool[key].interested !== 2).map((key)=>{
+      return(
+        {
+          key: key,
+          prey: this.chatRoomCreaterPool[key].prey,
+          name: this.chatRoomCreaterPool[key].name,
+          avatar: {uri: this.chatRoomCreaterPool[key].avatar},
+          age: this.chatRoomCreaterPool[key].age,
+          lastChatContent: this.chatRoomCreaterPool[key].lastMessage,
+          userState: '平淡中',
+          userStateColor: '#FFD306'          
+        }
+      )
+    })
+  }
+
+  @action setChatVistorRealPrey = () => {
+    this.chatVistorPrey = Object.keys(this.chatRoomRecipientPool).filter(key => this.chatRoomRecipientPool[key].interested === 1).map((key)=>{
+      return(
+        {
+          key: key,
+          prey: this.chatRoomRecipientPool[key].prey,
+          name: this.chatRoomRecipientPool[key].name,
+          avatar: {uri: this.chatRoomRecipientPool[key].avatar},
+          age: this.chatRoomRecipientPool[key].age,
+          lastChatContent: this.chatRoomRecipientPool[key].lastMessage,
           userState: '平淡中',
           userStateColor: '#FFD306'          
         }

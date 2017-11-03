@@ -3,29 +3,60 @@ import { View, Text, FlatList, TouchableOpacity, InteractionManager } from 'reac
 import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
-@inject('firebase','FateStore','SubjectStore') @observer
+import ChatList from '../../views/ChatList/ChatList'
+
+const styles = {
+  view: {
+    marginTop: 10
+  }
+}
+
+@inject('ChatStore') @observer
 export default class VisitorsChatContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.firebase = this.props.firebase
-    this.FateStore = this.props.FateStore
-    this.SubjectStore = this.props.SubjectStore
+    this.ChatStore = this.props.ChatStore
   }
 
   componentWillMount() {
-    //
+    this.ChatStore.setChatVistorRealPrey()
   }
 
   componentDidMount() {
   }
 
+  onPress = (chatRoomKey,preyId,nickname,age) => {
+    this.ChatStore.setChatRoomKey(chatRoomKey,preyId)
+    this.goToChatRoom(nickname,age)
+  }
 
+  goToChatRoom = (nickname,age) => {
+    Actions.ChatRoom({title: nickname + '，' + age, from: 'visitors'})
+  }
 
   render() {
     return(
-      <View>
-        <Text>VisitorsChatContainer</Text>
+      <View style={styles.view}>
+        <FlatList
+          removeClippedSubviews
+          data={ this.ChatStore.chatVistorPrey }
+          numColumns={1}
+          renderItem={({item}) =>
+            <ChatList 
+              name={item.name}
+              avatar={item.avatar}
+              onPress={ () => { this.onPress(item.key,item.prey,item.name,item.age) } }
+              lastChatContent={item.lastChatContent}
+              nonHandleChatCount={99}
+              showBadge={item.showBadge}
+              showTag={item.showTag}
+              online={item.online}
+              userState={item.userState}
+              userStateColor={item.userStateColor}
+              />
+           }
+        />
       </View>
     )
   }

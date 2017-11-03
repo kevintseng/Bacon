@@ -20,7 +20,7 @@ export default class SendChatContainer extends Component {
   }
 
   componentWillMount() {
-    this.ChatStore.setchatRoomCreaterRealPrey()
+    this.ChatStore.setChatSendRealPrey()
   }
 
   componentDidMount() {
@@ -29,10 +29,6 @@ export default class SendChatContainer extends Component {
   onPress = (chatRoomKey,preyId,nickname,age) => {
     this.ChatStore.setChatRoomKey(chatRoomKey,preyId)
     this.goToChatRoom(nickname,age)
-    //console.warn(chatRoomKey)
-    //console.warn(preyId)
-    //console.warn(nickname)
-    //console.warn(age)
   }
 
   goToChatRoom = (nickname,age) => {
@@ -44,7 +40,7 @@ export default class SendChatContainer extends Component {
       <View style={styles.view}>
         <FlatList
           removeClippedSubviews
-          data={ this.ChatStore.chatRoomCreaterPrey }
+          data={ this.ChatStore.chatSendPrey }
           numColumns={1}
           renderItem={({item}) =>
             <ChatList 

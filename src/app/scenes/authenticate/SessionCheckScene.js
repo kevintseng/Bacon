@@ -39,7 +39,8 @@ export default class SessionCheckScene extends Component {
     this.meetCuteQuery = null
     this.visitorsQuery = null
     this.goodImpressionQuery = null
-    this.chatMatchQuery = null
+    this.chatRoomCreaterQuery = null
+    this.chatRoomRecipientQuery = null
     //this.collectionQuery = null
     this.matchQuery = null
     this.blockadeQuery_A = null
@@ -65,7 +66,7 @@ export default class SessionCheckScene extends Component {
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
-          this.chatMatchListener() // 聊天室配對
+          this.chatRoomListener() // 聊天室配對
           this.blockadeListener() // 封鎖
           this.setOnline() // 非同步設置使用者上線
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
@@ -82,7 +83,7 @@ export default class SessionCheckScene extends Component {
           this.visitorsListener() // 來訪監聽
           this.goodImpressionListener() // 好感監聽
           this.matchListener() // 配對
-          this.chatMatchListener() // 聊天室配對
+          this.chatRoomListener() // 聊天室配對
           this.blockadeListener() // 封鎖
           //this.collectionDB() // 從LocalDB抓配對資料
           this.setOnline() // 非同步設置使用者上線
@@ -112,7 +113,7 @@ export default class SessionCheckScene extends Component {
     this.removeVisitorsListener() // 移除邂逅監聽
     this.removeGoodImpressionListener() // 移除好感監聽
     this.removeMatchListener() // 配對
-    this.removeChatMatchListener() // 聊天室配對
+    this.removeChatRoomListener() // 聊天室配對
     this.removeBlockadeListener() // 封鎖
     this.SignUpStore.initialize() // 初始註冊入狀態
     this.SignInStore.initialize() // 初始化登入狀態
@@ -241,7 +242,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setCollect(new Object) // Object
     this.SubjectStore.setVip(false) // boolean
     this.SubjectStore.setBonus(0) // Int
-    this.SubjectStore.setVisitConvSentToday(0)
+    //this.SubjectStore.setVisitConvSentToday(0)
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
     this.ControlStore.setSyncDetector(true) // 同步完成
     this.meetCuteListener() // 非同步邂逅監聽
@@ -265,9 +266,9 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation)
           this.SubjectStore.setChatStatus(snap.val().chatStatus)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
-          this.SubjectStore.setConversations(snap.val().conversations)
-          this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
-          this.SubjectStore.setUnhandledPass(new Object(snap.val().unhandledPass) || {})
+          //this.SubjectStore.setConversations(snap.val().conversations)
+          //this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
+          //this.SubjectStore.setUnhandledPass(new Object(snap.val().unhandledPass) || {})
           // tasks
           this.SubjectStore.setTask1(snap.val().task1)
           this.SubjectStore.setTask2(snap.val().task2)
@@ -295,7 +296,7 @@ export default class SessionCheckScene extends Component {
           this.MeetChanceStore.setMeetChanceOfflineMember(snap.val().meetCuteOfflineMember)
           // LineStore
           this.LineStore.setUid(this.SubjectStore.uid)
-          this.LineStore.fetchConvList()
+          //this.LineStore.fetchConvList()
           //
           this.SubjectStore.setLatitude(snap.val().latitude || 25.028031)
           this.SubjectStore.setLongitude(snap.val().longitude || 121.516815)
@@ -317,7 +318,7 @@ export default class SessionCheckScene extends Component {
         this.ControlStore.setSyncDetector(true) // 同步完成
         console.log(error)
       })
-    this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
+    //this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
   }
 
   setVip = () => {
@@ -417,14 +418,36 @@ export default class SessionCheckScene extends Component {
     })
   }
 
-  chatMatchListener = () => {
-    this.chatMatchQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid) // 自己發送的招呼
-    this.chatMatchQuery.on('child_added',child => {
+  chatRoomListener = () => {
+    this.chatRoomCreaterQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid) // 自己發送的招呼
+    this.chatRoomCreaterQuery.on('child_added',child => {
       this.firebase.database().ref('users/' + child.val().chatRoomRecipient).once('value').then( snap => {
-        if (child.val().interested === 2) {
-          this.ChatStore.addPreyToChatMatchPool(child.key,child.val().chatRoomRecipient,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(child.val().birthday))
-        } else {
-          this.ChatStore.addPreyToChatRoomCreaterPool(child.key,child.val().chatRoomRecipient,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(child.val().birthday))
+        this.ChatStore.addPreyToChatRoomCreaterPool(child.key,child.val().interested,child.val().chatRoomRecipient,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(child.val().birthday))
+      })
+      
+      this.firebase.database().ref('chat_rooms/' + child.key).on('child_changed',changed_child => {
+        if (changed_child.key === 'lastMessage') {
+          // 最後一則訊息變了
+          this.ChatStore.changeChatRoomCreaterPoolLastMessage(child.key,changed_child.val())
+        } else if (changed_child.key === 'interested') {
+          // 接受度變了
+          this.ChatStore.changeChatRoomCreaterPoolInterested(child.key,changed_child.val())
+        }
+      })
+    })
+    this.chatRoomRecipientQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomRecipient').equalTo(this.SubjectStore.uid) // 別人發送的招呼
+    this.chatRoomRecipientQuery.on('child_added',child => {
+      this.firebase.database().ref('users/' + child.val().chatRoomCreater).once('value').then( snap => {
+        this.ChatStore.addPreyToChatRoomRecipientPool(child.key,child.val().interested,child.val().chatRoomCreater,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(child.val().birthday))
+      })
+      
+      this.firebase.database().ref('chat_rooms/' + child.key).on('child_changed',changed_child => {
+        if (changed_child.key === 'lastMessage') {
+          // 最後一則訊息變了
+          this.ChatStore.changeChatRoomRecipientPoolLastMessage(child.key,changed_child.val())
+        } else if (changed_child.key === 'interested') {
+          // 接受度變了
+          this.ChatStore.changeChatRoomRecipientPoolInterested(child.key,changed_child.val())
         }
       })
     })
@@ -468,11 +491,15 @@ export default class SessionCheckScene extends Component {
     }
   }
 
-  removeChatMatchListener = () => {
-    if (this.chatMatchQuery) {
-      this.chatMatchQuery.off()
-      this.chatMatchQuery = null
-    }    
+  removeChatRoomListener = () => {
+    if (this.chatRoomCreaterQuery) {
+      this.chatRoomCreaterQuery.off()
+      this.chatRoomCreaterQuery = null
+    } 
+    if (this.chatRoomRecipientQuery) {
+      this.chatRoomRecipientQuery.off()
+      this.chatRoomRecipientQuery = null
+    }        
   }
 
   removeBlockadeListener = () => {
