@@ -156,7 +156,7 @@ export default class ChatStore {
   }
 
   @action setChatMatchRealPrey = () => {
-    this.chatMatchPrey = Object.keys(this.chatRoomCreaterPool).filter(key => this.chatRoomCreaterPool[key].interested === 2).map((key)=>{
+    const chatRoomCreaterMatch = Object.keys(this.chatRoomCreaterPool).filter(key => this.chatRoomCreaterPool[key].interested === 2).map((key)=>{
       return(
         {
           key: key,
@@ -170,6 +170,23 @@ export default class ChatStore {
         }
       )
     })
+
+    const chatRoomRecipientMatch = Object.keys(this.chatRoomRecipientPool).filter(key => this.chatRoomRecipientPool[key].interested === 2).map((key)=>{
+      return(
+        {
+          key: key,
+          prey: this.chatRoomRecipientPool[key].prey,
+          name: this.chatRoomRecipientPool[key].name,
+          avatar: {uri: this.chatRoomRecipientPool[key].avatar},
+          age: this.chatRoomRecipientPool[key].age,
+          lastChatContent: this.chatRoomRecipientPool[key].lastMessage,
+          userState: '平淡中',
+          userStateColor: '#FFD306'          
+        }
+      )
+    })
+
+    this.chatMatchPrey = chatRoomCreaterMatch.concat(chatRoomRecipientMatch)
 
     // 還要合併另外一個
   }

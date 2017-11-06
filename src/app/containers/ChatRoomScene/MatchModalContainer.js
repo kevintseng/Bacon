@@ -23,12 +23,33 @@ const styles = {
   }
 }
 
-@inject('ControlStore') @observer
+@inject('firebase','ControlStore','ChatStore') @observer
 export default class MatchModalContainer extends Component {
 
   constructor(props) {
     super(props)
+    this.firebase = this.props.firebase
     this.ControlStore = this.props.ControlStore
+    this.ChatStore = this.props.ChatStore
+  }
+
+  noMatch = () => {
+    this.firebase.database().ref('chat_rooms/' + this.ChatStore.chatRoomKey + '/interested').set(0).then(
+      () => {
+        this.ChatStore.setChatVistorRealPrey()
+        this.ControlStore.closeChatMatchModal()
+      }
+    )
+  }
+
+  match = () => {
+    this.firebase.database().ref('chat_rooms/' + this.ChatStore.chatRoomKey + '/interested').set(2).then(
+      () => {
+        this.ChatStore.setChatVistorRealPrey()
+        this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+        this.ControlStore.closeChatMatchModal()
+      }
+    )
   }
 
   render() {
@@ -53,14 +74,14 @@ export default class MatchModalContainer extends Component {
                 <View>
                   <BaconRedButton
                     routesText={'與他聊聊'}
-                    routesOnPress={ this.ControlStore.closeChatMatchModal }
+                    routesOnPress={ this.match }
                   />
                 </View>
 
                 <View>
                   <BlankButton
                     text={'不感興趣'}
-                    onPress={ this.ControlStore.closeChatMatchModal }
+                    onPress={ this.noMatch }
                   />
                 </View>
 

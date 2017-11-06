@@ -6,15 +6,16 @@ import { Actions } from 'react-native-router-flux'
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
 import MatchModalContainer from '../../../containers/ChatRoomScene/MatchModalContainer'
 
-@inject('firebase','FateStore','SubjectStore','ChatStore') @observer
+@inject('firebase','SubjectStore','ChatStore','ControlStore') @observer
 export default class ChatRoomScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.FateStore = this.props.FateStore
+    //this.FateStore = this.props.FateStore
     this.SubjectStore = this.props.SubjectStore
     this.ChatStore = this.props.ChatStore
+    this.ControlStore = this.props.ControlStore
     //this.from = this.props.from
     this.state = {
       messages: []
@@ -25,6 +26,9 @@ export default class ChatRoomScene extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     this.ChatStore.listenChatRoomCreater()
     this.ChatStore.listenMessages()
+    if (this.props.from === 'visitors') {
+      this.ControlStore.openChatMatchModal()
+    }
   }
 
   componentWillUnmount(){
