@@ -90,11 +90,15 @@ export default class ControlStore {
     this.common = false,
     this.general = false
     //
-    this.chatMatchModal = true
+    this.chatMatchModal = false
   }
 
   @action closeChatMatchModal = () => {
     this.chatMatchModal = false
+  }
+
+  @action openChatMatchModal = () => {
+    this.chatMatchModal = true
   }
 
   @action setLineModalUid = str => {
