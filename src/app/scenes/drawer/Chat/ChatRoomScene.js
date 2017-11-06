@@ -15,7 +15,7 @@ export default class ChatRoomScene extends Component {
     this.FateStore = this.props.FateStore
     this.SubjectStore = this.props.SubjectStore
     this.ChatStore = this.props.ChatStore
-    this.from = this.props.from
+    //this.from = this.props.from
     this.state = {
       messages: []
     }
