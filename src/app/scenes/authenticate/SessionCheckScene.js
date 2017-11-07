@@ -363,6 +363,7 @@ export default class SessionCheckScene extends Component {
     geoQuery.on('key_moved', (uid, location, distance) => {
       if (uid !== this.SubjectStore.uid) {
         this.MeetChanceStore.updatePreyToPool(uid,distance)
+        // 這裡常常會掛掉
       }
     })
 

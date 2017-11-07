@@ -107,7 +107,10 @@ export default class MeetChanceStore {
   }
 
   @action updatePreyToPool = (uid,distance) => {
-    this.pool[uid].distance = distance
+    if (this.pool[uid]) {
+      // 這裡常常會掛掉 this.pool[uid] = undefinded
+      this.pool[uid].distance = distance
+    }
   }
 
   @action removePreyToPool = uid => {
