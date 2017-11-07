@@ -89,7 +89,7 @@ export default class AlbumContainer extends Component {
             this.SubjectStore.addPhoto(uuid,image.uri)
             this.firebase.storage().ref('userAlbum/' + this.SubjectStore.uid + '/' + uuid + '.jpg').putFile(image.uri.replace('file:/',''), metadata)
             .then(uploadedFile => {
-              this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album/' + uuid).set(uploadedFile.downloadUrl)
+              this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album/' + uuid).set(uploadedFile.downloadURL)
               //console.log(uploadedFile.downloadUrl)
             })
             .catch(err => {

@@ -94,7 +94,8 @@ export default class CourtContainer extends Component {
   }
 
   goToChatRoom = () => {
-    Actions.ChatRoom({title: this.Store.nickname + '，' + this.Store.age})
+    Actions.Line({uid: this.Store.uid, name: this.Store.nickname})
+    //Actions.ChatRoom({title: this.Store.nickname + '，' + this.Store.age})
   }
 
   render() {

@@ -4,7 +4,7 @@ useStrict(true)
 
 export default class ChatStore {
 
-  @observable messages
+  @observable MessagesAndImages
   @observable chatMatchPrey
   @observable chatRoomCreaterPrey
   @observable chatVistorPrey
@@ -25,10 +25,12 @@ export default class ChatStore {
     /////////chats////////////
     this.chatRoomCreaterQuery = null
     this.messagesQuery = null
+    this.imagesQuery = null
     this.chatRoomCreater = null
     this.chatRoomKey = null
     this.preyID = null
-    this.messages = new Array
+    this.MessagesAndImages = new Array
+    this.nickname = null
   }
 
   @action addPreyToChatRoomCreaterPool = (uid,interested,prey,name,avatar,lastMessage,age) => {
@@ -59,6 +61,10 @@ export default class ChatStore {
     this.uid = uid
   }
 
+  @action setNickname = nickname => {
+    this.nickname = nickname
+  }
+
   @action setChatRoomKey = (key,preyID) => {
     this.chatRoomKey = key
     this.preyID = preyID
@@ -74,12 +80,16 @@ export default class ChatStore {
   @action listenMessages = () => {
     this.initMessages()
     this.messagesQuery = this.firebase.database().ref('chats/' + this.chatRoomKey + '/messages')
+    this.imagesQuery = this.firebase.database().ref('chats/' + this.chatRoomKey + '/images')
     this.messagesQuery.on('value', child => {
       this.setMessages(child.val()) // 改成child_added
     })
+    this.imagesQuery.on('value', child => {
+      this.setImages(child.val()) // 改成child_added
+    })
   }
 
-  @action setMessages = messages => {
+  @action setMessages = (messages) => {
     if (messages) {
 
       this.slefMessages = messages[this.uid]
@@ -98,7 +108,6 @@ export default class ChatStore {
         })
       }
 
-      //this.preyID = Object.keys(messages).find(key => key !== this.uid)
       this.preyMessages = messages[this.preyID] // prey
       if (this.preyMessages) {
         this.firebase.database().ref('users/' + this.preyID + '/avatar').once('value',snap => {
@@ -115,19 +124,67 @@ export default class ChatStore {
               }
             )
           })
-          this.combineMessages()
+          this.combineMessagesAndImages()
         })
       } else {
-        this.combineMessages()
+        this.combineMessagesAndImages()
       } 
     }
   }
 
-  @action combineMessages = () => {
-    this.sortMessages = this.slefMessagesArray.concat(this.preyMessagesArray).sort((a, b) => {
+  @action setImages = (images) => {
+    if (images) {
+
+      this.slefImages = images[this.uid]
+      if (this.slefImages) {
+        this.slefImagesArray = Object.keys(this.slefImages).map(time => {
+          return(
+            {
+              _id: time, // 時間越大放越上面
+              text: null,
+              createdAt: new Date(parseInt(time)),
+              user: {
+                _id: this.uid, 
+              },
+              image: this.slefImages[time]
+            }
+          )
+        })
+      }
+
+      this.preyImages = images[this.preyID] // prey
+      if (this.preyImages) {
+        this.firebase.database().ref('users/' + this.preyID + '/avatar').once('value',snap => {
+          this.preyImagesArray = Object.keys(this.preyImages).map(time => {
+            return(
+              {
+                _id: time, // 時間越大放越上面
+                text: null,
+                createdAt: new Date(parseInt(time)),
+                user: {
+                  _id: time,
+                  avatar: snap.val(), // 補上
+                },
+                image: this.preyImages[time]
+              }
+            )
+          })
+          this.combineMessagesAndImages()
+        })
+      } else {
+        this.combineMessagesAndImages()
+      } 
+    }
+  }
+
+  @action combineMessagesAndImages = () => {
+    this.messages = this.slefMessagesArray.concat(this.preyMessagesArray)
+    this.images = this.slefImagesArray.concat(this.preyImagesArray)
+    this.combined = this.messages.concat(this.images)
+    this.sorted = this.combined.sort((a, b) => {
       return a._id < b._id ? 1 : -1
     })
-    this.messages = toJS(this.sortMessages)   
+    this.MessagesAndImages = toJS(this.sorted)   
   }
 
   @action onSend(messages = []) {
@@ -138,6 +195,13 @@ export default class ChatStore {
         this.setChatRoomCreater(messages[0].text)
       )
     }
+  }
+
+  @action onSendImage = imageURL => {
+    this.firebase.database().ref('chats/' + this.chatRoomKey + '/images/' + this.uid + '/' + Date.now()).set(imageURL)
+      .then(
+        this.setChatRoomCreater('傳送了圖片')
+    )
   }
 
   @action setChatRoomCreater = (text) => {
@@ -230,8 +294,13 @@ export default class ChatStore {
   @action initMessages = () => {
     this.slefMessagesArray = new Array
     this.preyMessagesArray = new Array
-    this.sortMessages = new Array
-    this.messages = new Array
+    this.slefImagesArray = new Array
+    this.preyImagesArray = new Array
+    this.messages = null
+    this.images = null
+    this.combined = null
+    this.sorted = null
+    this.MessagesAndImages = new Array
     this.removeMessagesListener()    
   }
 
@@ -239,6 +308,10 @@ export default class ChatStore {
     if (this.messagesQuery) {
       this.messagesQuery.off()
       this.messagesQuery = null
+    }
+    if (this.imagesQuery) {
+      this.imagesQuery.off()
+      this.imagesQuery = null
     }
   }
 

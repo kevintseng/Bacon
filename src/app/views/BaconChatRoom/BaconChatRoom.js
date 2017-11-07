@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Image, Text, TextInput,TouchableOpacity } from 'react-native'
-import { GiftedChat, Send, Composer} from 'react-native-gifted-chat'
+import { GiftedChat, Send, Composer, Bubble} from 'react-native-gifted-chat'
 
 const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,onPressAvatar}) => {
 
@@ -47,10 +47,33 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
     )    
   }
 
+  const renderBubble = (props) => {
+    let leftBgColor = "#FFFFFF"
+    let rightBgColor = "#99DD00"
+    if (props.currentMessage.sticker || props.currentMessage.image) {
+      leftBgColor = "transparent"
+      rightBgColor = "transparent"
+      //console.warn('有圖喔，泡泡要變透明')
+    } 
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          left: {
+            backgroundColor: leftBgColor,
+          },
+          right: {
+            backgroundColor: rightBgColor,
+          } }}
+      />
+    )
+  }
+
   return(
     <View style={{backgroundColor: '#F0F0F0',flex: 1 }}>
       <GiftedChat
         renderActions={renderActions}
+        renderBubble={renderBubble}
         //renderComposer={renderComposer}
         renderSend={renderSend}
         messages={messages}

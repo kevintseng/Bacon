@@ -2,9 +2,28 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
+import ImagePicker from "react-native-image-picker"
+import ImageResizer from "react-native-image-resizer"
 
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
 import MatchModalContainer from '../../../containers/ChatRoomScene/MatchModalContainer'
+
+const options = {
+  title: "傳送照片",
+  takePhotoButtonTitle: "使用相機現場拍一張",
+  chooseFromLibraryButtonTitle: "從相簿中選擇",
+  cancelButtonTitle: "取消",
+  mediaType: "photo",
+  maxWidth: 1200,
+  maxHeight: 1200,
+  quality: 1.0,
+  noData: false,
+  storageOptions: { skipBackup: true, path: "Bacon" }
+}
+
+const metadata = {
+  contentType: 'image/jpeg'
+}
 
 @inject('firebase','SubjectStore','ChatStore','ControlStore') @observer
 export default class ChatRoomScene extends Component {
@@ -12,14 +31,12 @@ export default class ChatRoomScene extends Component {
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    //this.FateStore = this.props.FateStore
     this.SubjectStore = this.props.SubjectStore
     this.ChatStore = this.props.ChatStore
     this.ControlStore = this.props.ControlStore
-    //this.from = this.props.from
-    this.state = {
-      messages: []
-    }
+    //this.state = {
+    //  messages: []
+    //}
   }
 
   componentWillMount() {
@@ -43,7 +60,30 @@ export default class ChatRoomScene extends Component {
   }
 
   onPressLeftIcon = () => {
-    alert('要上傳照片')
+    ImagePicker.showImagePicker(options, res => {
+      if (res.didCancel) {
+        //
+      } else if (res.error) {
+        //console.log(res.error);
+      } else {
+        ImageResizer.createResizedImage(res.uri, 1200, 1200, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
+          .then(image => {
+            //console.log(image.uri)
+            this.firebase.storage().ref('chats/' + this.ChatStore.chatRoomKey + '/' + Date.now() + '.jpg')
+            .putFile(image.uri.replace('file:/',''), metadata)
+            .then(uploadedFile => {
+              //console.warn(uploadedFile.downloadURL)
+              this.ChatStore.onSendImage(uploadedFile.downloadURL)
+            })
+            .catch(err => {
+              alert(err)
+            })
+          })
+          .catch(err => {
+            alert(err)
+          });
+      }
+    })
   }
 
   onPressRightIcon = () => {
@@ -59,7 +99,7 @@ export default class ChatRoomScene extends Component {
       <View style={{flex: 1}}>
         <MatchModalContainer/>
         <BaconChatRoom
-          messages={this.ChatStore.messages}
+          messages={this.ChatStore.MessagesAndImages}
           onSend={messages => this.ChatStore.onSend(messages)}
           user={{
             _id: this.SubjectStore.uid, // this.SubjectStore.uid
