@@ -130,9 +130,9 @@ export default class SessionCheckScene extends Component {
     this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid + '/' + Object.keys(this.SignUpStore.album)[0] + '.jpg')
     .putFile(this.SignUpStore.avatar.replace('file:/',''), metadata)
     .then(uploadedFile => {
-      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/avatar').set(uploadedFile.downloadUrl)
+      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/avatar').set(uploadedFile.downloadURL)
       .then(() => {
-          this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album/' + Object.keys(this.SignUpStore.album)[0]).set(uploadedFile.downloadUrl)
+          this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album/' + Object.keys(this.SignUpStore.album)[0]).set(uploadedFile.downloadURL)
         .then(() => {
             this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳成功')
           })
@@ -244,6 +244,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setBonus(0) // Int
     //this.SubjectStore.setVisitConvSentToday(0)
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
+    //this.ChatStore.setNickname(this.SignUpStore.nickname)
     this.ControlStore.setSyncDetector(true) // 同步完成
     this.meetCuteListener() // 非同步邂逅監聽
     this.uploadLocation() // 上傳GPS資料 巧遇監聽
@@ -306,6 +307,8 @@ export default class SessionCheckScene extends Component {
           this.MeetChanceStore.setLongitude(snap.val().longitude || 121.516815)
           this.FateStore.setLatitude(snap.val().latitude || 25.028031)
           this.FateStore.setLongitude(snap.val().longitude || 121.516815)
+          //
+          //this.ChatStore.setNickname(snap.val().nickname)
           //
           this.meetCuteListener() // 非同步邂逅
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
