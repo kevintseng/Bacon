@@ -6,7 +6,6 @@ import ImagePicker from "react-native-image-picker"
 import ImageResizer from "react-native-image-resizer"
 
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
-import MatchModalContainer from '../../../containers/ChatRoomScene/MatchModalContainer'
 
 const options = {
   title: "傳送照片",
@@ -25,7 +24,7 @@ const metadata = {
   contentType: 'image/jpeg'
 }
 
-@inject('firebase','SubjectStore','ChatStore','ControlStore') @observer
+@inject('firebase','SubjectStore','ChatStore') @observer
 export default class ChatRoomScene extends Component {
 
   constructor(props) {
@@ -33,7 +32,7 @@ export default class ChatRoomScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.ChatStore = this.props.ChatStore
-    this.ControlStore = this.props.ControlStore
+    //this.ControlStore = this.props.ControlStore
     //this.state = {
     //  messages: []
     //}
@@ -43,9 +42,8 @@ export default class ChatRoomScene extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     this.ChatStore.listenChatRoomCreater()
     this.ChatStore.listenMessages()
-    if (this.props.from === 'visitors') {
-      this.ControlStore.openChatMatchModal()
-    }
+    this.ChatStore.setFrom(this.props.from)
+    this.ChatStore.openChatMatchModal()
   }
 
   componentWillUnmount(){
@@ -91,13 +89,33 @@ export default class ChatRoomScene extends Component {
   }
 
   onPressAvatar = () => {
-    alert('點了大頭照')
+    alert('預覽')
+  }
+
+  match = () => {
+    this.firebase.database().ref('chat_rooms/' + this.ChatStore.chatRoomKey + '/interested').set(2).then(
+      () => {
+        this.ChatStore.setChatVistorRealPrey()
+        this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+        this.ChatStore.closeChatMatchModal()
+      }
+    )
+  }
+
+  noMatch = () => {
+    this.firebase.database().ref('chat_rooms/' + this.ChatStore.chatRoomKey + '/interested').set(0).then(
+      () => {
+        this.ChatStore.setChatVistorRealPrey()
+        this.ChatStore.closeChatMatchModal()
+        Actions.pop()
+      }
+    )
   }
 
   render() {
     return (
       <View style={{flex: 1}}>
-        <MatchModalContainer/>
+        
         <BaconChatRoom
           messages={this.ChatStore.MessagesAndImages}
           onSend={messages => this.ChatStore.onSend(messages)}
@@ -107,6 +125,9 @@ export default class ChatRoomScene extends Component {
           onPressLeftIcon={this.onPressLeftIcon}
           onPressRightIcon={this.onPressRightIcon}
           onPressAvatar={this.onPressAvatar}
+          showChoose={this.ChatStore.from === 'visitors' && this.ChatStore.chatMatchModal}
+          chooseTopOnPress={this.match}
+          chooseBottomOnPress={this.noMatch}
         />
       </View>
     )
@@ -115,6 +136,7 @@ export default class ChatRoomScene extends Component {
 
 
 /*
+<MatchModalContainer/>
     this.setState({
       messages: [
         {

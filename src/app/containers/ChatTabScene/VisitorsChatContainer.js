@@ -32,6 +32,7 @@ export default class VisitorsChatContainer extends Component {
   }
 
   goToChatRoom = (nickname,age) => {
+    //this.ChatStore.setFrom('visitors')
     Actions.ChatRoom({title: nickname + '，' + age, from: 'visitors'})
   }
 

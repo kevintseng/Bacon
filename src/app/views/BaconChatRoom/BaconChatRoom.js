@@ -1,8 +1,12 @@
 import React from 'react'
-import { View, Image, Text, TextInput,TouchableOpacity } from 'react-native'
+import { View, Image, Text, TextInput,TouchableOpacity, Dimensions } from 'react-native'
 import { GiftedChat, Send, Composer, Bubble} from 'react-native-gifted-chat'
+import BaconRedButton from '../BaconRedButton/BaconRedButton'
+import BlankButton from '../BlankButton/BlankButton'
 
-const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,onPressAvatar}) => {
+const { width, height } = Dimensions.get("window")
+
+const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,onPressAvatar,showChoose,chooseTopOnPress,chooseBottomOnPress}) => {
 
   const renderActions = () => {
     return (
@@ -28,12 +32,24 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
     )
   }
 
-  const renderComposer = (props) => {
+  const renderChatFooter = (props) => {
     return(
-      <Composer
-         {...props}
-         style={{height:44}}
-      />
+      <View
+        style={{
+          alignItems: 'center',
+          //backgroundColor: 'blue',
+          marginBottom: 10
+        }}
+      >
+        <BaconRedButton
+          routesText={'與他聊聊'} 
+          routesOnPress={ chooseTopOnPress }
+        />
+        <BlankButton
+          text={'不感興趣'} 
+          onPress={ chooseBottomOnPress }
+        />
+      </View>
     )
   }
 
@@ -74,7 +90,7 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
       <GiftedChat
         renderActions={renderActions}
         renderBubble={renderBubble}
-        //renderComposer={renderComposer}
+        renderChatFooter={showChoose ? renderChatFooter : null}
         renderSend={renderSend}
         messages={messages}
         onSend={onSend}
@@ -86,6 +102,7 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
         renderAvatarOnTop
         label={'送出'}
         multiline={false}
+        //minInputToolbarHeight={200}
         //composerHeight={30}
       />
     </View>
