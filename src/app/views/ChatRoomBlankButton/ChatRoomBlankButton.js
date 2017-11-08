@@ -4,26 +4,27 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 const styles = {
   image: {
     justifyContent: 'center',
+    width: 175,
+    height: 40
   },
   buttonText: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans', 
     textAlign: 'center',
-    //fontWeight: '500',
     color: '#606060',  
-    fontSize: 20
+    fontSize: 14
   }
 }
 
-const BlankButton = ({text, onPress}) => {
+const ChatRoomBlankButton = ({text, onPress}) => {
   return(
     <TouchableOpacity onPress={ onPress }>
-      <Image style={ styles.image } source={require('./img/btn_index_join.png')}>
+      <Image style={ styles.image } resizeMode={'contain'} source={require('./img/btn_index_join.png')}>
         <Text style={ styles.buttonText }>{ text }</Text>
       </Image>
     </TouchableOpacity>
   )
 }
 
-export default BlankButton
+export default ChatRoomBlankButton
