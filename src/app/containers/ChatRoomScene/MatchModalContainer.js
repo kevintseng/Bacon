@@ -3,8 +3,8 @@ import { inject, observer } from 'mobx-react'
 import { View, Modal, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { Badge } from 'react-native-elements'
-import BaconRedButton from '../../views/BaconRedButton/BaconRedButton'
-import BlankButton from '../../views/BlankButton/BlankButton'
+import ChatRoomRedButton from '../../views/ChatRoomRedButton/ChatRoomRedButton'
+import ChatRoomBlankButton from '../../views/ChatRoomBlankButton/ChatRoomBlankButton'
 
 const { width, height } = Dimensions.get('window')
 
@@ -89,18 +89,14 @@ export default class MatchModalContainer extends Component {
                 width,
                 height: 45
               }}
-            >
-            <Badge
-              value={'與他聊聊'} 
-              containerStyle={ styles.leftBadge } 
-              textStyle={styles.leftBadgeText}
-              onPress={ this.match }
-            />
-            <Badge
-              value={'不感興趣'} 
-              containerStyle={ styles.rightBadge } 
-              textStyle={styles.rightBadgeText}
+            >     
+            <ChatRoomBlankButton
+              text={'不感興趣'} 
               onPress={ this.noMatch }
+            />
+            <ChatRoomRedButton
+              text={'與他聊聊'} 
+              onPress={ this.match }
             />
           </View>
         </View>
