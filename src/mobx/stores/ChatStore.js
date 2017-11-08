@@ -8,6 +8,7 @@ export default class ChatStore {
   @observable chatMatchPrey
   @observable chatRoomCreaterPrey
   @observable chatVistorPrey
+  @observable chatMatchModal
 
   constructor(firebase) {
     this.firebase = firebase
@@ -31,6 +32,8 @@ export default class ChatStore {
     this.preyID = null
     this.MessagesAndImages = new Array
     this.nickname = null
+    this.from = null
+    this.chatMatchModal = true
   }
 
   @action addPreyToChatRoomCreaterPool = (uid,interested,prey,name,avatar,lastMessage,age) => {
@@ -63,6 +66,10 @@ export default class ChatStore {
 
   @action setNickname = nickname => {
     this.nickname = nickname
+  }
+
+  @action setFrom = str => {
+    this.from = str
   }
 
   @action setChatRoomKey = (key,preyID) => {
@@ -190,18 +197,20 @@ export default class ChatStore {
   @action onSend(messages = []) {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
-      this.firebase.database().ref('chats/' + this.chatRoomKey + '/messages/' + this.uid + '/' + Date.now()).set(messages[0].text)
-      .then(
-        this.setChatRoomCreater(messages[0].text)
-      )
+      if (this.from === 'visitors') {
+        this.matchAndSendMessage(messages)
+      } else {
+        this.sendMessage(messages)
+      }
     }
   }
 
   @action onSendImage = imageURL => {
-    this.firebase.database().ref('chats/' + this.chatRoomKey + '/images/' + this.uid + '/' + Date.now()).set(imageURL)
-      .then(
-        this.setChatRoomCreater('傳送了圖片')
-    )
+    if (this.from === 'visitors') {
+      this.matchAndSendImage(imageURL)
+    } else {
+      this.sendImage(imageURL)
+    }
   }
 
   @action setChatRoomCreater = (text) => {
@@ -322,4 +331,47 @@ export default class ChatStore {
     }
   }
 
+  @action closeChatMatchModal = () => {
+    this.chatMatchModal = false
+  }
+
+  @action openChatMatchModal = () => {
+    this.chatMatchModal = true
+  }
+
+  @action matchAndSendMessage = messages => {
+    this.firebase.database().ref('chat_rooms/' + this.chatRoomKey + '/interested').set(2).then(
+      () => {
+        this.setChatVistorRealPrey()
+        this.setChatMatchRealPrey() // 看能不能調成更快的演算法
+        this.closeChatMatchModal()
+        this.sendMessage(messages)
+      }
+    )    
+  }
+
+  @action matchAndSendImage = imageURL => {
+    this.firebase.database().ref('chat_rooms/' + this.chatRoomKey + '/interested').set(2).then(
+      () => {
+        this.setChatVistorRealPrey()
+        this.setChatMatchRealPrey() // 看能不能調成更快的演算法
+        this.closeChatMatchModal()
+        this.sendImage(imageURL)
+      }
+    )     
+  }
+
+  @action sendMessage = messages => {
+    this.firebase.database().ref('chats/' + this.chatRoomKey + '/messages/' + this.uid + '/' + Date.now()).set(messages[0].text)
+    .then(
+      this.setChatRoomCreater(messages[0].text)
+    )    
+  }
+
+  @action sendImage = imageURL => {
+    this.firebase.database().ref('chats/' + this.chatRoomKey + '/images/' + this.uid + '/' + Date.now()).set(imageURL)
+      .then(
+        this.setChatRoomCreater('傳送了圖片')
+    )    
+  }
 }

@@ -90,7 +90,7 @@ export default class ControlStore {
     this.common = false,
     this.general = false
     //
-    this.chatMatchModal = false
+    this.chatMatchModal = true
   }
 
   @action closeChatMatchModal = () => {

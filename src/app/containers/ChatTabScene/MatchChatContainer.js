@@ -32,6 +32,7 @@ export default class MatchChatContainer extends Component {
   }
 
   goToChatRoom = (nickname,age) => {
+    //this.ChatStore.setFrom('match')
     Actions.ChatRoom({title: nickname + '，' + age})
   }
 
