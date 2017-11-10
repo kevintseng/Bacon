@@ -84,6 +84,10 @@ export default class DrawerScene extends Component {
     Actions.Master({type: 'replace'})
   }
 
+  goToTest = () => {
+    Actions.Swiper({type: 'replace'})
+  }
+
   render() {
     const state = this.props.navigationState
     const children = state.children
@@ -111,6 +115,7 @@ export default class DrawerScene extends Component {
             articleOnPress={ this.goToArticle }
             settingOnPress={ this.goToSetting }
             masterOnPress={ this.gotToMster }
+            testOnPress={ this.goToTest }
           />
         }
         tapToClose

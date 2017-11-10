@@ -69,6 +69,8 @@ import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
 //
 import ArticleListScene from './scenes/drawer/Article/ArticleListScene'
 import ArticleDetailScene from './scenes/drawer/Article/ArticleDetailScene'
+//
+import SwiperScene from './scenes/drawer/Test/SwiperScene'
 // ###############drawer################ //
 
 // ###############header components################ //
@@ -282,6 +284,8 @@ export default class Routes extends Component {
               <Scene key="MatchChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={MatchChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="VisitorChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={VisitorChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="HelloChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={HelloChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
+
+              <Scene key="Swiper" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={SwiperScene} renderRightButton={this.baconToolChatRoom}/>
 
               <Scene key="Line" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               

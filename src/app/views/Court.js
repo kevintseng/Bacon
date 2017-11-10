@@ -75,7 +75,7 @@ export default class Court extends Component {
   renderAlbum = (album) => (
     album.map( (photo,index) => (
       <TouchableWithoutFeedback key={photo} onPress={ () => { this.openAlbum(index) } }>
-        <Image onLoad={ this.props.onLoadEnd } style={{height: width, width}}  source={{uri: photo}} />
+        <Image onLoad={ this.props.onLoadEnd } style={{height: width, width}} source={{uri: photo}} />
       </TouchableWithoutFeedback>
     ))
   )

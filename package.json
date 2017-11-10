@@ -51,7 +51,8 @@
     "react-native-star-rating": "1.0.8",
     "react-native-storage": "0.2.2",
     "react-native-svg": "5.4.2",
-    "react-native-vector-icons": "4.4.2"
+    "react-native-vector-icons": "4.4.2",
+    "react-native-deck-swiper": "1.4.3"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",
