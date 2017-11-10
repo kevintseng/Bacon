@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
-import ImagePicker from "react-native-image-picker"
-import ImageResizer from "react-native-image-resizer"
+import ImagePicker from 'react-native-image-picker'
+import ImageResizer from 'react-native-image-resizer'
 
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
 
@@ -32,24 +32,22 @@ export default class HelloChatRoomScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.chatRoomQuery = null
-    this.messagesQuery = null
     this.imagesQuery = null
     this.messageSendCount = 0
     this.slefMessagesArray = new Array
-    //this.preyMessagesArray = new Array
     this.slefImagesArray = new Array
-    //this.preyImagesArray = new Array
     this.MessagesAndImages = new Array
     this.sortedMessagesAndImages = new Array
     this.state = {
-      chats: []
+      chats: [],
+      showLeftFooter: false,
+      showRightFooter: false 
     }
   }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    this.messageSendCountQuery = this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount')
-    this.messageSendCountQuery.on('value', child => {
+    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').once('value', child => {
       this.messageSendCount = child.val()
     })
     this.chatRoomQuery = this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested')
@@ -73,6 +71,7 @@ export default class HelloChatRoomScene extends Component {
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.messageSendCount)
     this.removeMessagesAndImagesListener()
     this.init()
   }
@@ -137,34 +136,54 @@ export default class HelloChatRoomScene extends Component {
   }
 
   onPressLeftIcon = () => {
-    ImagePicker.showImagePicker(options, res => {
-      if (res.didCancel) {
-        //
-      } else if (res.error) {
-        //console.log(res.error);
-      } else {
-        ImageResizer.createResizedImage(res.uri, 1200, 1200, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
-          .then(image => {
-            //console.log(image.uri)
-            if (this.messageSendCount > 1) {
-              alert('你已超過兩句限制')
-            } else {
-              this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
-              .putFile(image.uri.replace('file:/',''), metadata)
-              .then(uploadedFile => {
-                //console.warn(uploadedFile.downloadURL)
-                this.onSendImage(uploadedFile.downloadURL)
-              })
-              .catch(err => {
-                alert(err)
-              })
-            }
-          })
-          .catch(err => {
-            alert(err)
-          });
-      }
+    this.setState({
+      showLeftFooter: !this.state.showLeftFooter,
+      showRightFooter: false
     })
+  }
+
+  onPressRightIcon = () => {
+    this.setState({
+      showLeftFooter: false,
+      showRightFooter: !this.state.showRightFooter,
+    })
+  }
+
+  openAlbum = () => {
+    ImagePicker.launchImageLibrary(options, this.uploadImage)
+  }
+
+  openCamera = () => {
+    ImagePicker.launchCamera(options, this.uploadImage)
+  }
+
+  uploadImage = res => {
+    if (res.didCancel) {
+      //
+    } else if (res.error) {
+      //console.log(res.error);
+    } else {
+      ImageResizer.createResizedImage(res.uri, 1200, 1200, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
+        .then(image => {
+          //console.log(image.uri)
+          if (this.messageSendCount > 1) {
+            alert('你已超過兩句限制')
+          } else {
+            this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
+            .putFile(image.uri.replace('file:/',''), metadata)
+            .then(uploadedFile => {
+              //console.warn(uploadedFile.downloadURL)
+              this.onSendImage(uploadedFile.downloadURL)
+            })
+            .catch(err => {
+              alert(err)
+            })
+          }
+        })
+        .catch(err => {
+          alert(err)
+      })
+    }
   }
 
   onSendMessage(messages = []) {
@@ -175,7 +194,7 @@ export default class HelloChatRoomScene extends Component {
       } else {
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
         .then(() => {
-          this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.messageSendCount + 1)
+          this.messageSendCount = this.messageSendCount + 1
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
          }
         ) 
@@ -186,14 +205,10 @@ export default class HelloChatRoomScene extends Component {
   onSendImage = imageURL => {
     this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
     .then(() => {
-        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.messageSendCount + 1)
+        this.messageSendCount = this.messageSendCount + 1
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('傳送了圖片')
       }
     ) 
-  }
-
-  onPressRightIcon = () => {
-    alert('要上傳貼圖')
   }
 
   onPressAvatar = () => {
@@ -217,9 +232,7 @@ export default class HelloChatRoomScene extends Component {
 
   init = () => {
     this.slefMessagesArray = new Array
-    //this.preyMessagesArray = new Array
     this.slefImagesArray = new Array
-    //this.preyImagesArray = new Array
     this.MessagesAndImages = new Array
     this.sortedMessagesAndImages = new Array 
     this.messageSendCount = 0   
@@ -227,19 +240,20 @@ export default class HelloChatRoomScene extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <BaconChatRoom
-          messages={this.state.chats}
-          onSend={messages => this.onSendMessage(messages)}
-          user={{
-            _id: this.SubjectStore.uid,
-          }}
-          onPressLeftIcon={this.onPressLeftIcon}
-          onPressRightIcon={this.onPressRightIcon}
-          onPressAvatar={this.onPressAvatar}
-          showChoose={false}
-        />
-      </View>
+      <BaconChatRoom
+        messages={this.state.chats}
+        onSend={messages => this.onSendMessage(messages)}
+        user={{
+          _id: this.SubjectStore.uid,
+        }}
+        onPressLeftIcon={this.onPressLeftIcon}
+        onPressRightIcon={this.onPressRightIcon}
+        onPressAvatar={this.onPressAvatar}
+        showLeftFooter={this.state.showLeftFooter}
+        showRightFooter={this.state.showRightFooter}
+        onPressLeftFooterLeftIcon={this.openAlbum}
+        onPressLeftFooterRightIcon={this.openCamera}
+      />
     )
   }
 }
