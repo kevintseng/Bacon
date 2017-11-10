@@ -127,40 +127,31 @@ export default class ChatRoomScene extends Component {
   onSendMessage(messages = []) {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
-      this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
-      .then(() => {
-        if (!this.interested) {
-          this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
-          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
-            chatRoomCreater: this.SubjectStore.uid,
-            interested: 1, //未處理
-            lastMessage: messages[0].text,
-            chatRoomRecipient: this.props.preyID
-          })
-          //alert('你成為訊息發送者(兩次發話限制)')
-        } else {
-          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
-        }
-      }) 
+      if (!this.interested) {
+        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
+          chatRoomCreater: this.SubjectStore.uid,
+          interested: 1, //未處理
+          lastMessage: messages[0].text,
+          chatRoomRecipient: this.props.preyID,
+        })
+        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
+        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(1)
+        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
+      }
     }
   }
 
   onSendImage = imageURL => {
-    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
-    .then(() => {
-      if (!this.interested) {
-        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
-        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
-          chatRoomCreater: this.SubjectStore.uid,
-          interested: 1, //未處理
-          lastMessage: '送出一張圖片',
-          chatRoomRecipient: this.props.preyID
-        })
-        alert('你成為訊息發送者(兩次發話限制)')
-      } else {
-        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('送出一張圖片')
-      }
-    }) 
+    if (!this.interested) {
+      this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
+        chatRoomCreater: this.SubjectStore.uid,
+        interested: 1, //未處理
+        lastMessage: '送出一張圖片',
+        chatRoomRecipient: this.props.preyID
+      })
+      this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
+      this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
+    }
   }
 
   removeChatRoomListener = () => {

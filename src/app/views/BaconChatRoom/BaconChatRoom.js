@@ -6,7 +6,7 @@ import BlankButton from '../BlankButton/BlankButton'
 
 const { width, height } = Dimensions.get("window")
 
-const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,onPressAvatar,showChoose,chooseTopOnPress,chooseBottomOnPress}) => {
+const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,onPressAvatar,showChoose,chooseTopOnPress,chooseBottomOnPress,showLeftFooter,showRightFooter,onPressLeftFooterLeftIcon,onPressLeftFooterRightIcon}) => {
 
   const renderActions = () => {
     return (
@@ -23,10 +23,10 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
         }}
       >
       <TouchableOpacity onPress={onPressLeftIcon}>
-        <Image style={{height: 44,width: 44}} source={require('./img/btn_chat_add.png')} resizeMode={'center'} />
+        <Image style={{height: 44,width: 44}} source={showLeftFooter ? require('./img/bg_chat_chatbox_orange.png') : require('./img/btn_chat_add.png')} resizeMode={'center'} />
       </TouchableOpacity>
       <TouchableOpacity onPress={onPressRightIcon}>
-        <Image style={{height: 44,width: 44}} source={require('./img/btn_chat_emoji.png')} resizeMode={'center'} />
+        <Image style={{height: 44,width: 44}} source={showRightFooter ? require('./img/bg_chat_chatbox_orange.png') : require('./img/btn_chat_emoji.png')} resizeMode={'center'} />
       </TouchableOpacity>
       </View>
     )
@@ -86,25 +86,41 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
   }
 
   return(
-    <View style={{backgroundColor: '#F0F0F0',flex: 1 }}>
-      <GiftedChat
-        renderActions={renderActions}
-        renderBubble={renderBubble}
-        renderChatFooter={showChoose ? renderChatFooter : null}
-        renderSend={renderSend}
-        messages={messages}
-        onSend={onSend}
-        user={user}
-        placeholder={'請在此輸入您的訊息'}
-        isAnimated // Animates the view when the keyboard appears
-        //loadEarlier // Enables the "Load earlier messages" button
-        onPressAvatar={onPressAvatar}
-        renderAvatarOnTop
-        label={'送出'}
-        multiline={false}
-        //minInputToolbarHeight={200}
-        //composerHeight={30}
-      />
+    <View style={{flex: 1 }}>
+      <View style={{backgroundColor: '#F0F0F0',flex: 5}}>
+        <GiftedChat
+          renderActions={renderActions}
+          renderBubble={renderBubble}
+          renderChatFooter={showChoose ? renderChatFooter : null}
+          renderSend={renderSend}
+          messages={messages}
+          onSend={onSend}
+          user={user}
+          placeholder={'請在此輸入您的訊息'}
+          isAnimated // Animates the view when the keyboard appears
+          //loadEarlier // Enables the "Load earlier messages" button
+          onPressAvatar={onPressAvatar}
+          renderAvatarOnTop
+          label={'送出'}
+          multiline={false}
+          LoadEarlier={true}
+          isLoadingEarlier={true}
+          //bottomOffset={200}
+          //minInputToolbarHeight={200}
+          //composerHeight={30}
+        />
+      </View>
+      <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',justifyContent: 'space-around'}, showLeftFooter ? {} : {display: 'none'}]}> 
+        <TouchableOpacity onPress={onPressLeftFooterLeftIcon}>
+          <Image source={require('./img/btn_chat_album.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onPressLeftFooterRightIcon}>
+          <Image source={require('./img/btn_chat_shot.png')} />
+        </TouchableOpacity>
+      </View>
+      <View style={[{flex: 1}, showRightFooter ? {} : {display: 'none'}]}> 
+        <Text>Bacon的合作貼圖</Text>
+      </View>
     </View>
   )
 }

@@ -40,7 +40,9 @@ export default class MatchChatRoomScene extends Component {
     this.MessagesAndImages = new Array
     this.sortedMessagesAndImages = new Array
     this.state = {
-      chats: []
+      chats: [],
+      showLeftFooter: false,
+      showRightFooter: false 
     }
   }
 
@@ -165,30 +167,50 @@ export default class MatchChatRoomScene extends Component {
   }
 
   onPressLeftIcon = () => {
-    ImagePicker.showImagePicker(options, res => {
-      if (res.didCancel) {
-        //
-      } else if (res.error) {
-        //console.log(res.error);
-      } else {
-        ImageResizer.createResizedImage(res.uri, 1200, 1200, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
-          .then(image => {
-            //console.log(image.uri)
-            this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
-            .putFile(image.uri.replace('file:/',''), metadata)
-            .then(uploadedFile => {
-              //console.warn(uploadedFile.downloadURL)
-              this.onSendImage(uploadedFile.downloadURL)
-            })
-            .catch(err => {
-              alert(err)
-            })
-          })
-          .catch(err => {
-            alert(err)
-          });
-      }
+    this.setState({
+      showLeftFooter: !this.state.showLeftFooter,
+      showRightFooter: false
     })
+  }
+
+  onPressRightIcon = () => {
+    this.setState({
+      showLeftFooter: false,
+      showRightFooter: !this.state.showRightFooter,
+    })
+  }
+
+  openAlbum = () => {
+    ImagePicker.launchImageLibrary(options, this.uploadImage)
+  }
+
+  openCamera = () => {
+    ImagePicker.launchCamera(options, this.uploadImage)
+  }
+
+  uploadImage = res => {
+    if (res.didCancel) {
+        //
+    } else if (res.error) {
+        //console.log(res.error);
+    } else {
+      ImageResizer.createResizedImage(res.uri, 1200, 1200, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
+        .then(image => {
+          //console.log(image.uri)
+        this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
+        .putFile(image.uri.replace('file:/',''), metadata)
+        .then(uploadedFile => {
+          //console.warn(uploadedFile.downloadURL)
+          this.onSendImage(uploadedFile.downloadURL)
+        })
+        .catch(err => {
+          alert(err)
+        })
+        })
+        .catch(err => {
+        alert(err)
+      })
+    }
   }
 
   onSendMessage(messages = []) {
@@ -208,10 +230,6 @@ export default class MatchChatRoomScene extends Component {
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('傳送了圖片')
       }
     ) 
-  }
-
-  onPressRightIcon = () => {
-    alert('要上傳貼圖')
   }
 
   onPressAvatar = () => {
@@ -240,19 +258,20 @@ export default class MatchChatRoomScene extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <BaconChatRoom
-          messages={this.state.chats}
-          onSend={messages => this.onSendMessage(messages)}
-          user={{
-            _id: this.SubjectStore.uid,
-          }}
-          onPressLeftIcon={this.onPressLeftIcon}
-          onPressRightIcon={this.onPressRightIcon}
-          onPressAvatar={this.onPressAvatar}
-          showChoose={false}
-        />
-      </View>
+      <BaconChatRoom
+        messages={this.state.chats}
+        onSend={messages => this.onSendMessage(messages)}
+        user={{
+          _id: this.SubjectStore.uid,
+        }}
+        onPressLeftIcon={this.onPressLeftIcon}
+        onPressRightIcon={this.onPressRightIcon}
+        onPressAvatar={this.onPressAvatar}
+        showLeftFooter={this.state.showLeftFooter}
+        showRightFooter={this.state.showRightFooter}
+        onPressLeftFooterLeftIcon={this.openAlbum}
+        onPressLeftFooterRightIcon={this.openCamera}
+      />
     )
   }
 }
