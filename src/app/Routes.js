@@ -59,7 +59,11 @@ import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
 import LineScene from './scenes/drawer/Line/LineScene'
 //新聊天室
 import ChatTabScene from './scenes/drawer/Chat/ChatTabScene'
+//
 import ChatRoomScene from './scenes/drawer/Chat/ChatRoomScene'
+import MatchChatRoomScene from './scenes/drawer/Chat/MatchChatRoomScene'
+import VisitorChatRoomScene from './scenes/drawer/Chat/VisitorChatRoomScene'
+import HelloChatRoomScene from './scenes/drawer/Chat/HelloChatRoomScene'
 //
 import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
 //
@@ -273,6 +277,11 @@ export default class Routes extends Component {
 
               <Scene key="ChatTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolLine}/>
               <Scene key="ChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={ChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
+              <Scene key="VisitorChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={VisitorChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
+              <Scene key="HelloChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={HelloChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
+              <Scene key="MatchChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={MatchChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
+              <Scene key="VisitorChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={VisitorChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
+              <Scene key="HelloChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={HelloChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
 
               <Scene key="Line" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               

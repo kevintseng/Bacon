@@ -89,13 +89,8 @@ export default class CourtContainer extends Component {
     } else {
       this.ChatRoomKey = this.Store.uid + this.SubjectStore.uid
     }
-    this.ChatStore.setChatRoomKey(this.ChatRoomKey,this.Store.uid)
-    this.goToChatRoom()
-  }
-
-  goToChatRoom = () => {
-    //Actions.Line({uid: this.Store.uid, name: this.Store.nickname})
-    Actions.ChatRoom({title: this.Store.nickname + '，' + this.Store.age})
+    const title = this.Store.nickname + '，' + this.Store.age
+    Actions.ChatRoom({title: title,Title: title,chatRoomKey: this.ChatRoomKey, preyID: this.Store.uid})
   }
 
   render() {

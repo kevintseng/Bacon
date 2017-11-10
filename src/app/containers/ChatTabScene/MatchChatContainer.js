@@ -26,14 +26,8 @@ export default class MatchChatContainer extends Component {
   componentDidMount() {
   }
 
-  onPress = (chatRoomKey,preyId,nickname,age) => {
-    this.ChatStore.setChatRoomKey(chatRoomKey,preyId)
-    this.goToChatRoom(nickname,age)
-  }
-
-  goToChatRoom = (nickname,age) => {
-    //this.ChatStore.setFrom('match')
-    Actions.ChatRoom({title: nickname + '，' + age})
+  onPress = (chatRoomKey,preyID,nickname,age) => {
+    Actions.MatchChatRoom({title: nickname + '，' + age,chatRoomKey: chatRoomKey,preyID: preyID})
   }
 
   render() {

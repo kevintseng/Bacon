@@ -27,13 +27,8 @@ export default class SendChatContainer extends Component {
   }
 
   onPress = (chatRoomKey,preyId,nickname,age) => {
-    //this.ChatStore.setChatRoomKey(chatRoomKey,preyId)
-    this.goToChatRoom(nickname,age)
-  }
+    Actions.HelloChatRoom({title: nickname + '，' + age,chatRoomKey: chatRoomKey,preyID: preyID})
 
-  goToChatRoom = (nickname,age) => {
-    this.ChatStore.setFrom('send')
-    Actions.ChatRoom({title: nickname + '，' + age})
   }
 
   render() {
