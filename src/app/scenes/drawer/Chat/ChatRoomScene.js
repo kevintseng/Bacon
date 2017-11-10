@@ -45,6 +45,7 @@ export default class ChatRoomScene extends Component {
         if (this.interested === 2) {
           // 轉到配對聊天室
           //console.warn('轉到配對聊天室')
+          //this.removeChatRoomListener()
           Actions.MatchChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
         } else {
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/chatRoomCreater').once('value',snap => {
@@ -52,16 +53,19 @@ export default class ChatRoomScene extends Component {
               if (snap.val() === this.SubjectStore.uid) {
                 // 轉到Hello聊天室
                 //console.warn('轉到Hello聊天室')
+                //this.removeChatRoomListener()
                 Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               } else {
                 // 轉到訪客聊天室
                 //console.warn('轉到訪客聊天室')
+                //this.removeChatRoomListener()
                 Actions.VisitorChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               }
             } else if (child.val() === 0){
               if (snap.val() === this.SubjectStore.uid) {
                 // 轉到Hello聊天室
                 //console.warn('轉到Hello聊天室')
+                //this.removeChatRoomListener()
                 Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               } else {
                 alert('你已對此會員不感興趣')

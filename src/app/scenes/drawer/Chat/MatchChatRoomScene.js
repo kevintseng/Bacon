@@ -45,12 +45,10 @@ export default class MatchChatRoomScene extends Component {
   }
 
   componentWillMount() {
-    //console.warn(this.props.preyID)
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     this.messagesQuery = this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages')
     this.messagesQuery.on('value', child => {
-      //this.setMessages(child.val()) // 改成child_added
-      console.warn('dddd')
+      this.setMessages(child.val()) // 改成child_added
     })
     this.imagesQuery = this.firebase.database().ref('chats/' +  this.props.chatRoomKey + '/images')
     this.imagesQuery.on('value', child => {
