@@ -31,11 +31,10 @@ export default class VisitorChatRoomScene extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    this.ChatStore = this.props.ChatStore
     this.messagesQuery = null
     this.imagesQuery = null
-    //this.slefMessagesArray = new Array
     this.preyMessagesArray = new Array
-    //this.slefImagesArray = new Array
     this.preyImagesArray = new Array
     this.MessagesAndImages = new Array
     this.sortedMessagesAndImages = new Array
@@ -163,7 +162,14 @@ export default class VisitorChatRoomScene extends Component {
       this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
       .then(() => {
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
-          Actions.MatchChatRoom({type: 'replace', title: this.props.title,chatRoomKey: this.props.chatRoomKey,preyId: this.props.preyId})
+          this.removeMessagesAndImagesListener()
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2).then(
+            () => {
+              this.ChatStore.setChatVistorRealPrey()
+              this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+              Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+            }
+          )
         }
       ) 
     }
@@ -173,7 +179,14 @@ export default class VisitorChatRoomScene extends Component {
     this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
     .then(() => {
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('傳送了圖片')
-        Actions.MatchChatRoom({type: 'replace', title: this.props.title,chatRoomKey: this.props.chatRoomKey,preyId: this.props.preyId})
+        this.removeMessagesAndImagesListener()
+        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2).then(
+          () => {
+            this.ChatStore.setChatVistorRealPrey()
+            this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+            Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+          }
+        )
       }
     ) 
   }
@@ -186,33 +199,44 @@ export default class VisitorChatRoomScene extends Component {
     alert('預覽')
   }
 
-  removeMessagesAndImagesListener = async () => {
+  removeMessagesAndImagesListener = () => {
     if (this.messagesQuery) {
-      await this.messagesQuery.off()
+      this.messagesQuery.off()
       this.messagesQuery = null
     }
     if (this.imagesQuery) {
-      await this.imagesQuery.off()
+      this.imagesQuery.off()
       this.imagesQuery = null
     }    
   }
 
   init = () => {
-    //this.slefMessagesArray = new Array
     this.preyMessagesArray = new Array
-    //this.slefImagesArray = new Array
     this.preyImagesArray = new Array
     this.MessagesAndImages = new Array
     this.sortedMessagesAndImages = new Array    
   }
 
   match = () => {
-    Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
-    //alert('配對了轉到配對聊天室')
+    this.removeMessagesAndImagesListener()
+    this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2).then(
+      () => {
+        this.ChatStore.setChatVistorRealPrey()
+        this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+        Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+      }
+    )
   }
 
   noMatch = () => {
-    alert('沒配對')
+    this.removeMessagesAndImagesListener()
+    this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(0).then(
+      () => {
+        this.ChatStore.setChatVistorRealPrey()
+        this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+        Actions.pop()
+      }
+    )
   }
 
   render() {
