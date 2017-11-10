@@ -26,14 +26,8 @@ export default class VisitorsChatContainer extends Component {
   componentDidMount() {
   }
 
-  onPress = (chatRoomKey,preyId,nickname,age) => {
-    this.ChatStore.setChatRoomKey(chatRoomKey,preyId)
-    this.goToChatRoom(nickname,age)
-  }
-
-  goToChatRoom = (nickname,age) => {
-    //this.ChatStore.setFrom('visitors')
-    Actions.ChatRoom({title: nickname + '，' + age, from: 'visitors'})
+  onPress = (chatRoomKey,preyID,nickname,age) => {
+    Actions.VisitorChatRoom({ title: nickname + '，' + age, chatRoomKey: chatRoomKey, preyID: preyID })
   }
 
   render() {

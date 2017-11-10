@@ -24,32 +24,60 @@ const metadata = {
   contentType: 'image/jpeg'
 }
 
-@inject('firebase','SubjectStore','ChatStore') @observer
+@inject('firebase','SubjectStore') @observer
 export default class ChatRoomScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
-    this.ChatStore = this.props.ChatStore
-    //this.ControlStore = this.props.ControlStore
-    //this.state = {
-    //  messages: []
-    //}
+    this.chatRoomQuery = null
+    this.interested = null
   }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    this.ChatStore.listenChatRoomCreater()
-    this.ChatStore.listenMessages()
-    this.ChatStore.setFrom(this.props.from)
-    this.ChatStore.openChatMatchModal()
+    this.chatRoomQuery = this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested')
+    this.chatRoomQuery.on('value', child => {
+      this.interested = child.val()
+      //console.warn(child.val())
+      if (this.interested) {
+        if (this.interested === 2) {
+          // 轉到配對聊天室
+          //console.warn('轉到配對聊天室')
+          Actions.MatchChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
+        } else {
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/chatRoomCreater').once('value',snap => {
+            if (this.interested === 1) {
+              if (snap.val() === this.SubjectStore.uid) {
+                // 轉到Hello聊天室
+                //console.warn('轉到Hello聊天室')
+                Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
+              } else {
+                // 轉到訪客聊天室
+                //console.warn('轉到訪客聊天室')
+                Actions.VisitorChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
+              }
+            } else if (child.val() === 0){
+              if (snap.val() === this.SubjectStore.uid) {
+                // 轉到Hello聊天室
+                //console.warn('轉到Hello聊天室')
+                Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
+              } else {
+                alert('你已對此會員不感興趣')
+                //Actions.VisitorChatRoom({title: this.props.tiitle,chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
+              }
+            }
+          })
+        }
+      }
+    })
   }
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-    this.ChatStore.removeChatRoomCreaterListener()
-    this.ChatStore.removeMessagesListener()
+    this.removeChatRoomListener()
+    this.interested = null
   }
 
   onBackAndroid = () => {
@@ -67,11 +95,11 @@ export default class ChatRoomScene extends Component {
         ImageResizer.createResizedImage(res.uri, 1200, 1200, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
           .then(image => {
             //console.log(image.uri)
-            this.firebase.storage().ref('chats/' + this.ChatStore.chatRoomKey + '/' + Date.now() + '.jpg')
+            this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
             .putFile(image.uri.replace('file:/',''), metadata)
             .then(uploadedFile => {
               //console.warn(uploadedFile.downloadURL)
-              this.ChatStore.onSendImage(uploadedFile.downloadURL)
+              this.onSendImage(uploadedFile.downloadURL)
             })
             .catch(err => {
               alert(err)
@@ -92,24 +120,50 @@ export default class ChatRoomScene extends Component {
     alert('預覽')
   }
 
-  match = () => {
-    this.firebase.database().ref('chat_rooms/' + this.ChatStore.chatRoomKey + '/interested').set(2).then(
-      () => {
-        this.ChatStore.setChatVistorRealPrey()
-        this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
-        this.ChatStore.closeChatMatchModal()
-      }
-    )
+  onSendMessage(messages = []) {
+    const messages_no_blank = messages[0].text.trim()
+    if (messages_no_blank.length > 0) {
+      this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
+      .then(() => {
+        if (!this.interested) {
+          this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
+            chatRoomCreater: this.SubjectStore.uid,
+            interested: 1, //未處理
+            lastMessage: messages[0].text,
+            chatRoomRecipient: this.props.preyID
+          })
+          //alert('你成為訊息發送者(兩次發話限制)')
+        } else {
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
+        }
+      }) 
+    }
   }
 
-  noMatch = () => {
-    this.firebase.database().ref('chat_rooms/' + this.ChatStore.chatRoomKey + '/interested').set(0).then(
-      () => {
-        this.ChatStore.setChatVistorRealPrey()
-        this.ChatStore.closeChatMatchModal()
-        Actions.pop()
+  onSendImage = imageURL => {
+    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
+    .then(() => {
+      if (!this.interested) {
+        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
+        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
+          chatRoomCreater: this.SubjectStore.uid,
+          interested: 1, //未處理
+          lastMessage: '送出一張圖片',
+          chatRoomRecipient: this.props.preyID
+        })
+        alert('你成為訊息發送者(兩次發話限制)')
+      } else {
+        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('送出一張圖片')
       }
-    )
+    }) 
+  }
+
+  removeChatRoomListener = () => {
+    if (this.chatRoomQuery) {
+      this.chatRoomQuery.off()
+      this.chatRoomQuery = null      
+    }
   }
 
   render() {
@@ -117,112 +171,17 @@ export default class ChatRoomScene extends Component {
       <View style={{flex: 1}}>
         
         <BaconChatRoom
-          messages={this.ChatStore.MessagesAndImages}
-          onSend={messages => this.ChatStore.onSend(messages)}
+          messages={[]}
+          onSend={messages => this.onSendMessage(messages)}
           user={{
             _id: this.SubjectStore.uid, // this.SubjectStore.uid
           }}
           onPressLeftIcon={this.onPressLeftIcon}
           onPressRightIcon={this.onPressRightIcon}
           onPressAvatar={this.onPressAvatar}
-          showChoose={this.ChatStore.from === 'visitors' && this.ChatStore.chatMatchModal}
-          chooseTopOnPress={this.match}
-          chooseBottomOnPress={this.noMatch}
+          showChoose={false}
         />
       </View>
     )
   }
 }
-
-
-/*
-<MatchModalContainer/>
-    this.setState({
-      messages: [
-        {
-          _id: 4, // 時間越大放越上面
-          text: 'Hello developer',
-          createdAt: new Date(),
-          user: {
-            _id: 4,
-            //name: 'React Native',
-            //avatar: 'http://www.teepr.com/wp-content/uploads/2016/12/14909941_1106661159387826_1701114055237368977_n.jpg', // 補上
-          },
-        },
-        {
-          _id: 3,
-          text: 'Hello',
-          createdAt: new Date(),
-          user: {
-            _id: 'asasas',
-            //name: 'React Native',
-            //avatar: 'http://www.teepr.com/wp-content/uploads/2016/12/14909941_1106661159387826_1701114055237368977_n.jpg', // 補上
-          },
-        },
-        {
-          _id: 2,
-          text: 'Hello',
-          createdAt: new Date(),
-          user: {
-            _id: 3,
-            //name: 'React Native',
-            //avatar: 'http://www.teepr.com/wp-content/uploads/2016/12/14909941_1106661159387826_1701114055237368977_n.jpg', // 補上
-          },
-        },
-        {
-          _id: 1,
-          text: 'Hello',
-          createdAt: new Date(),
-          user: {
-            _id: 'asasas',
-            //name: 'React Native',
-            //avatar: 'http://www.teepr.com/wp-content/uploads/2016/12/14909941_1106661159387826_1701114055237368977_n.jpg', // 補上
-          },
-        }
-      ],
-    });
-*/
-
-/*
-
-  setMessages = async messages => {
-    //console.log(messages)//整理成陣列
-    this.preyID = Object.keys(messages).find(key => key !== this.SubjectStore.uid)
-    const slefMessages = messages[this.SubjectStore.uid] // this.SubjectStore.uid
-    const preyMessages = messages[this.preyID] // prey
-    const slefMessagesArray = Object.keys(slefMessages).map( time => {
-      return(
-        {
-          _id: time, // 時間越大放越上面
-          text: slefMessages[time],
-          createdAt: new Date(parseInt(time)),//.toISOString(),
-          user: {
-            _id: this.SubjectStore.uid, // this.SubjectStore.uid
-            //avatar: 'http://www.teepr.com/wp-content/uploads/2016/12/14909941_1106661159387826_1701114055237368977_n.jpg', // 補上
-          },
-        }
-      )
-    })
-    await this.firebase.database().ref('users/' + this.preyID + '/avatar').once('value',snap => {
-      this.avatar = snap.val()
-    })
-    const preyMessagesArray = Object.keys(preyMessages).map( time => {
-      return(
-        {
-          _id: time, // 時間越大放越上面
-          text: preyMessages[time],
-          createdAt: new Date(parseInt(time)),//.toISOString(),
-          user: {
-            _id: time, // this.SubjectStore.uid
-            avatar: this.avatar, // 補上
-          },
-        }
-      )
-    })
-    const allMessages = slefMessagesArray.concat(preyMessagesArray).sort((a, b) => {
-      return a._id < b._id ? 1 : -1
-    })
-    //console.log(allMessages)
-    this.setState({messages: allMessages})
-  }
-*/
