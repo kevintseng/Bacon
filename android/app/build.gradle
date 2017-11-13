@@ -90,8 +90,8 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.1"
     signingConfigs { 
         release {
             if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
@@ -106,9 +106,9 @@ android {
     defaultConfig {
         applicationId "com.kayming.android.bacon"
         minSdkVersion 16
-        targetSdkVersion 22
-        versionCode 53
-        versionName "Beta-4.1.0"
+        targetSdkVersion 27
+        versionCode 54
+        versionName "Beta-4.2.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -149,19 +149,14 @@ dependencies {
     compile project(':react-native-fs')
     compile project(':react-native-exit-app')
     compile project(':react-native-svg')
-    compile project(':react-native-google-places')
-    compile ('com.google.android.gms:play-services-base:11.4.2') {
-      force = true
+    compile(project(':react-native-google-places')){
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+        exclude group: 'com.google.android.gms', module: 'play-services-places'
+        exclude group: 'com.google.android.gms', module: 'play-services-location'
     }
-    compile ('com.google.android.gms:play-services-maps:11.4.2') {
-      force = true
-    }
-    compile ('com.google.android.gms:play-services-places:11.4.2') {
-      force = true
-    }
-    compile ('com.google.android.gms:play-services-location:11.4.2') {
-      force = true
-    }
+    compile 'com.google.android.gms:play-services-base:11.4.2'
+    compile 'com.google.android.gms:play-services-places:11.4.2'
+    compile 'com.google.android.gms:play-services-location:11.4.2'
     compile project(':react-native-billing')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-image-resizer')
