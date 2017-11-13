@@ -196,6 +196,13 @@ export default class HelloChatRoomScene extends Component {
         .then(() => {
           this.messageSendCount = this.messageSendCount + 1
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
+            if (!current) {
+              return 1
+            } else {
+              return current + 1
+            }
+          })
          }
         ) 
       }
@@ -207,6 +214,13 @@ export default class HelloChatRoomScene extends Component {
     .then(() => {
         this.messageSendCount = this.messageSendCount + 1
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('傳送了圖片')
+        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
+          if (!current) {
+            return 1
+          } else {
+            return current + 1
+          }
+        })
       }
     ) 
   }
