@@ -33,6 +33,11 @@ export default class ChatRoomScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.chatRoomQuery = null
     this.interested = null
+    this.state = {
+      //chats: [],
+      showLeftFooter: false,
+      showRightFooter: false 
+    }
   }
 
   componentWillMount() {
@@ -90,7 +95,28 @@ export default class ChatRoomScene extends Component {
   }
 
   onPressLeftIcon = () => {
-    ImagePicker.showImagePicker(options, res => {
+    this.setState({
+      showLeftFooter: !this.state.showLeftFooter,
+      showRightFooter: false
+    })
+  }
+
+  onPressRightIcon = () => {
+    this.setState({
+      showLeftFooter: false,
+      showRightFooter: !this.state.showRightFooter,
+    })
+  }
+
+  openAlbum = () => {
+    ImagePicker.launchImageLibrary(options, this.uploadImage)
+  }
+
+  openCamera = () => {
+    ImagePicker.launchCamera(options, this.uploadImage)
+  }
+
+  uploadImage = res => {
       if (res.didCancel) {
         //
       } else if (res.error) {
@@ -112,12 +138,7 @@ export default class ChatRoomScene extends Component {
           .catch(err => {
             alert(err)
           });
-      }
-    })
-  }
-
-  onPressRightIcon = () => {
-    alert('要上傳貼圖')
+      }   
   }
 
   onPressAvatar = () => {
@@ -174,7 +195,11 @@ export default class ChatRoomScene extends Component {
           onPressLeftIcon={this.onPressLeftIcon}
           onPressRightIcon={this.onPressRightIcon}
           onPressAvatar={this.onPressAvatar}
-          showChoose={false}
+          //showChoose={false}
+          showLeftFooter={this.state.showLeftFooter}
+          showRightFooter={this.state.showRightFooter}
+          onPressLeftFooterLeftIcon={this.openAlbum}
+          onPressLeftFooterRightIcon={this.openCamera}
         />
       </View>
     )
