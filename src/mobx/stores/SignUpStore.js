@@ -82,7 +82,7 @@ export default class SignUpStore {
   }
 
   @action setNickname = str => {
-    this.nickname = str.trim()
+    this.nickname = str
   }
 
   @action setBirthday = str => {
@@ -186,7 +186,7 @@ export default class SignUpStore {
   }
 
   @action checkNickname = () => {
-    if (/^[^null]{2,20}/.test(this.nickname)) {
+    if (/[^null]{2,20}/.test(this.nickname.trim())) {
       this.setNicknameDetector(true)
       this.setNicknameIndicator('此暱稱可以使用')
     } else {

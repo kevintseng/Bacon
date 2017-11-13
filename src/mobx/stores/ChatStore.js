@@ -36,8 +36,8 @@ export default class ChatStore {
     this.chatMatchModal = true
   }
 
-  @action addPreyToChatRoomCreaterPool = (uid,interested,prey,name,avatar,lastMessage,age) => {
-    this.chatRoomCreaterPool[uid] = { interested: interested, prey: prey, name: name, avatar: avatar, lastMessage: lastMessage, age: age }
+  @action addPreyToChatRoomCreaterPool = (uid,interested,prey,name,avatar,lastMessage,age,nonHandleChatCount) => {
+    this.chatRoomCreaterPool[uid] = { interested: interested, prey: prey, name: name, avatar: avatar, lastMessage: lastMessage, age: age, nonHandleChatCount: nonHandleChatCount }
   }
 
   @action changeChatRoomCreaterPoolLastMessage = (uid,message) => {
@@ -48,8 +48,8 @@ export default class ChatStore {
     this.chatRoomCreaterPool[uid].interested = val
   }
 
-  @action addPreyToChatRoomRecipientPool = (uid,interested,prey,name,avatar,lastMessage,age) => {
-    this.chatRoomRecipientPool[uid] = { interested: interested, prey: prey, name: name, avatar: avatar, lastMessage: lastMessage, age: age }
+  @action addPreyToChatRoomRecipientPool = (uid,interested,prey,name,avatar,lastMessage,age,nonHandleChatCount) => {
+    this.chatRoomRecipientPool[uid] = { interested: interested, prey: prey, name: name, avatar: avatar, lastMessage: lastMessage, age: age, nonHandleChatCount: nonHandleChatCount }
   }
 
   @action changeChatRoomRecipientPoolLastMessage = (uid,message) => {
@@ -239,7 +239,8 @@ export default class ChatStore {
           age: this.chatRoomCreaterPool[key].age,
           lastChatContent: this.chatRoomCreaterPool[key].lastMessage,
           userState: '平淡中',
-          userStateColor: '#FFD306'          
+          userStateColor: '#FFD306',
+          nonHandleChatCount: this.chatRoomCreaterPool[key].nonHandleChatCount
         }
       )
     })
@@ -254,7 +255,8 @@ export default class ChatStore {
           age: this.chatRoomRecipientPool[key].age,
           lastChatContent: this.chatRoomRecipientPool[key].lastMessage,
           userState: '平淡中',
-          userStateColor: '#FFD306'          
+          userStateColor: '#FFD306',
+          nonHandleChatCount: this.chatRoomRecipientPool[key].nonHandleChatCount
         }
       )
     })

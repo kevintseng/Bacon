@@ -219,6 +219,13 @@ export default class MatchChatRoomScene extends Component {
       this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
       .then(() => {
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
+        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
+          if (!current) {
+            return 1
+          } else {
+            return current + 1
+          }
+        })
        }
       ) 
     }
@@ -228,6 +235,13 @@ export default class MatchChatRoomScene extends Component {
     this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
     .then(() => {
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('傳送了圖片')
+        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
+          if (!current) {
+            return 1
+          } else {
+            return current + 1
+          }
+        })
       }
     ) 
   }

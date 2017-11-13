@@ -43,8 +43,8 @@ export default class MatchChatContainer extends Component {
               avatar={item.avatar}
               onPress={ () => { this.onPress(item.key,item.prey,item.name,item.age) } }
               lastChatContent={item.lastChatContent}
-              nonHandleChatCount={99}
-              showBadge={item.showBadge}
+              nonHandleChatCount={item.nonHandleChatCount}
+              showBadge={item.nonHandleChatCount > 0}
               showTag={item.showTag}
               online={item.online}
               userState={item.userState}
