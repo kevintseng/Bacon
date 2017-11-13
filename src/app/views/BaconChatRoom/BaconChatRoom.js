@@ -3,6 +3,7 @@ import { View, Image, Text, TextInput,TouchableOpacity, Dimensions } from 'react
 import { GiftedChat, Send, Composer, Bubble} from 'react-native-gifted-chat'
 import BaconRedButton from '../BaconRedButton/BaconRedButton'
 import BlankButton from '../BlankButton/BlankButton'
+import Sticker from '../Sticker'
 
 const { width, height } = Dimensions.get("window")
 
@@ -119,7 +120,7 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
         </TouchableOpacity>
       </View>
       <View style={[{flex: 1}, showRightFooter ? {} : {display: 'none'}]}> 
-        <Text>Bacon的合作貼圖</Text>
+        <Sticker/>
       </View>
     </View>
   )
