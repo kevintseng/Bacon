@@ -87,8 +87,8 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
   }
 
   return(
-    <View style={{flex: 1 }}>
-      <View style={{backgroundColor: '#F0F0F0',flex: 5}}>
+    <View style={{flex: 1}}>
+      <View style={{backgroundColor: '#F0F0F0',flex: showLeftFooter ? 10 : 2,borderBottomWidth: 0.5,borderColor: '#B3B3B3'}}>
         <GiftedChat
           renderActions={renderActions}
           renderBubble={renderBubble}

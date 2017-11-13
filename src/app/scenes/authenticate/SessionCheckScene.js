@@ -426,7 +426,7 @@ export default class SessionCheckScene extends Component {
     this.chatRoomCreaterQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid) // 自己發送的招呼
     this.chatRoomCreaterQuery.on('child_added',child => {
       this.firebase.database().ref('users/' + child.val().chatRoomRecipient).once('value').then( snap => {
-        this.ChatStore.addPreyToChatRoomCreaterPool(child.key,child.val().interested,child.val().chatRoomRecipient,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(child.val().birthday))
+        this.ChatStore.addPreyToChatRoomCreaterPool(child.key,child.val().interested,child.val().chatRoomRecipient,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(snap.val().birthday))
       })
       
       this.firebase.database().ref('chat_rooms/' + child.key).on('child_changed',changed_child => {
@@ -442,7 +442,7 @@ export default class SessionCheckScene extends Component {
     this.chatRoomRecipientQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomRecipient').equalTo(this.SubjectStore.uid) // 別人發送的招呼
     this.chatRoomRecipientQuery.on('child_added',child => {
       this.firebase.database().ref('users/' + child.val().chatRoomCreater).once('value').then( snap => {
-        this.ChatStore.addPreyToChatRoomRecipientPool(child.key,child.val().interested,child.val().chatRoomCreater,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(child.val().birthday))
+        this.ChatStore.addPreyToChatRoomRecipientPool(child.key,child.val().interested,child.val().chatRoomCreater,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(snap.val().birthday))
       })
       
       this.firebase.database().ref('chat_rooms/' + child.key).on('child_changed',changed_child => {
