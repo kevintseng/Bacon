@@ -376,4 +376,13 @@ export default class ChatStore {
         this.setChatRoomCreater('傳送了圖片')
     )    
   }
+
+  @action setChatMatchPrey = (object) => {
+    //console.warn(object)
+    this.chatMatchPrey.push(object) 
+  }
+
+  @action setAllChatMatchPrey = arr => {
+    this.chatMatchPrey = arr
+  }
 }
