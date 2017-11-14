@@ -425,6 +425,166 @@ export default class SessionCheckScene extends Component {
   chatRoomListener = () => {
     this.chatRoomCreaterQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid) // 自己發送的招呼
     this.chatRoomCreaterQuery.on('child_added',child => {
+
+        // value作法      
+        /*  
+        const chatRoomCreaterPromises = child._childKeys.filter(key => child.val()[key].interested === 2).map( key => (
+          this.firebase.database().ref('users/' + child.val()[key].chatRoomRecipient).once('value').then( snap => {
+            return(
+              {
+                key: key,
+                prey: child.val()[key].chatRoomRecipient,
+                name: snap.val().nickname,
+                avatar: snap.val().avatar,
+                age: calculateAge(snap.val().birthday),
+                lastChatContent: child.val()[key].lastMessage,
+                userState: '平淡中',
+                userStateColor: '#FFD306',
+                nonHandleChatCount: 2
+              }
+            )
+          }).catch(err => {
+            console.log(err)
+          })         
+        ))
+
+        Promise.all(chatRoomCreaterPromises)
+        .then(arr => {
+          console.log(arr)
+          this.ChatStore.setAllChatMatchPrey(arr)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      */
+
+      
+      if (child.val().interested === 2) {
+        this.firebase.database().ref('users/' + child.val().chatRoomRecipient).once('value').then( snap => {
+          this.ChatStore.setChatMatchPrey({
+            key: child.key,
+            prey: child.val().chatRoomRecipient,
+            name: snap.val().nickname,
+            avatar: snap.val().avatar,
+            age: calculateAge(snap.val().birthday),
+            lastChatContent: child.val().lastMessage,
+            userState: '平淡中',
+            userStateColor: '#FFD306',
+            nonHandleChatCount: 0         
+          })
+        })
+      }
+      
+    })
+    this.chatRoomCreaterQuery.on('child_changed',child => {
+      if (child.val().interested === 2) {
+        const chatRoom = this.ChatStore.chatMatchPrey.find(obj => obj.key === child.key)
+        if (chatRoom) {
+          chatRoom.lastChatContent = child.val().lastMessage
+          this.ChatStore.setAllChatMatchPrey(this.ChatStore.chatMatchPrey.slice()) // 能不能不要整個重render list
+        } else {
+          this.firebase.database().ref('users/' + child.val().chatRoomRecipient).once('value').then( snap => {
+            this.ChatStore.setChatMatchPrey({
+              key: child.key,
+              prey: child.val().chatRoomRecipient,
+              name: snap.val().nickname,
+              avatar: snap.val().avatar,
+              age: calculateAge(snap.val().birthday),
+              lastChatContent: child.val().lastMessage,
+              userState: '平淡中',
+              userStateColor: '#FFD306',
+              nonHandleChatCount: 0         
+            })
+          })
+          //this.ChatStore.setChatMatchPrey(child.val())
+          this.ChatStore.setAllChatMatchPrey(this.ChatStore.chatMatchPrey.slice()) // 能不能不要整個重render list
+          // 加入新chatRoom
+        }
+      }
+    })
+    //////
+    this.chatRoomRecipientQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomRecipient').equalTo(this.SubjectStore.uid) // 別人發送的招呼
+    this.chatRoomRecipientQuery.on('child_added',child => {
+
+        // value作法
+        /*
+        const chatRoomRecipientPromises = child._childKeys.filter(key => child.val()[key].interested === 2).map( key => (
+          this.firebase.database().ref('users/' + child.val()[key].chatRoomCreater).once('value').then( snap => {
+            return(
+              {
+                key: key,
+                prey: child.val()[key].chatRoomCreater,
+                name: snap.val().nickname,
+                avatar: snap.val().avatar,
+                age: calculateAge(snap.val().birthday),
+                lastChatContent: child.val()[key].lastMessage,
+                userState: '平淡中',
+                userStateColor: '#FFD306',
+                nonHandleChatCount: 2
+              }
+            )
+          }).catch(err => {
+            console.log(err)
+          })         
+        ))
+
+        Promise.all(chatRoomRecipientPromises)
+        .then(arr => {
+          console.log(arr)
+          this.ChatStore.setAllChatMatchPrey(arr)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        */
+     
+      if (child.val().interested === 2) {
+        this.firebase.database().ref('users/' + child.val().chatRoomCreater).once('value').then( snap => {
+          this.ChatStore.setChatMatchPrey({
+            key: child.key,
+            prey: child.val().chatRoomRecipient,
+            name: snap.val().nickname,
+            avatar: snap.val().avatar,
+            age: calculateAge(snap.val().birthday),
+            lastChatContent: child.val().lastMessage,
+            userState: '平淡中',
+            userStateColor: '#FFD306',
+            nonHandleChatCount: 0          
+          })
+        })
+      }
+     
+    })
+    this.chatRoomRecipientQuery.on('child_changed',child => {
+      if (child.val().interested === 2) {
+        const chatRoom = this.ChatStore.chatMatchPrey.find(obj => obj.key === child.key)
+        if (chatRoom) {
+          chatRoom.lastChatContent = child.val().lastMessage
+          this.ChatStore.setAllChatMatchPrey(this.ChatStore.chatMatchPrey.slice()) // 能不能不要整個重render list
+        } else {
+          this.firebase.database().ref('users/' + child.val().chatRoomCreater).once('value').then( snap => {
+            this.ChatStore.setChatMatchPrey({
+              key: child.key,
+              prey: child.val().chatRoomRecipient,
+              name: snap.val().nickname,
+              avatar: snap.val().avatar,
+              age: calculateAge(snap.val().birthday),
+              lastChatContent: child.val().lastMessage,
+              userState: '平淡中',
+              userStateColor: '#FFD306',
+              nonHandleChatCount: 0          
+            })
+          })
+          //this.ChatStore.setChatMatchPrey(chatRoom)
+          this.ChatStore.setAllChatMatchPrey(this.ChatStore.chatMatchPrey.slice()) // 能不能不要整個重render list
+          // 加入新chatRoom
+        }
+      }
+    })
+
+/*
+    this.chatRoomCreaterQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid) // 自己發送的招呼
+    this.chatRoomCreaterQuery.on('child_added',child => {
       this.firebase.database().ref('users/' + child.val().chatRoomRecipient).once('value').then( snap => {
         this.ChatStore.addPreyToChatRoomCreaterPool(child.key,child.val().interested,child.val().chatRoomRecipient,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(snap.val().birthday),child.val()[child.val().chatRoomRecipient])
       })
@@ -455,6 +615,7 @@ export default class SessionCheckScene extends Component {
         }
       })
     })
+*/
   }
 
   // removeListener

@@ -20,7 +20,7 @@ export default class MatchChatContainer extends Component {
   }
 
   componentWillMount() {
-    this.ChatStore.setChatMatchRealPrey()
+    //this.ChatStore.setChatMatchRealPrey()
   }
 
   componentDidMount() {
@@ -40,7 +40,7 @@ export default class MatchChatContainer extends Component {
           renderItem={({item}) =>
             <ChatList 
               name={item.name}
-              avatar={item.avatar}
+              avatar={{uri: item.avatar}}
               onPress={ () => { this.onPress(item.key,item.prey,item.name,item.age) } }
               lastChatContent={item.lastChatContent}
               nonHandleChatCount={item.nonHandleChatCount}
