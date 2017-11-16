@@ -1,6 +1,6 @@
 import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx'
 
-useStrict(true)
+useStrict(false)
 
 export default class ChatStore {
 
@@ -382,7 +382,25 @@ export default class ChatStore {
     this.chatMatchPrey.push(object) 
   }
 
+  @action setChatSendPrey = (object) => {
+    //console.warn(object)
+    this.chatSendPrey.push(object) 
+  }
+
+  @action setChatVistorPrey = (object) => {
+    //console.warn(object)
+    this.chatVistorPrey.push(object) 
+  }
+
   @action setAllChatMatchPrey = arr => {
     this.chatMatchPrey = arr
+  }
+
+  @action setAllChatSendPrey = arr => {
+    this.chatSendPrey = arr
+  }
+
+  @action addChatMatchPrey = data => {
+    this.chatMatchPrey = this.chatMatchPrey.concat(data)
   }
 }

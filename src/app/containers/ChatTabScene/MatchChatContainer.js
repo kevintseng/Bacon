@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, FlatList, TouchableOpacity, InteractionManager } from 'react-native'
-import { observer, inject } from 'mobx-react'
+import { observer, inject, Observer } from 'mobx-react'
+import { toJS } from 'mobx'
+
 import { Actions } from 'react-native-router-flux'
 
 import ChatList from '../../views/ChatList/ChatList'
@@ -20,10 +22,15 @@ export default class MatchChatContainer extends Component {
   }
 
   componentWillMount() {
+    //console.warn('開始了A')
     //this.ChatStore.setChatMatchRealPrey()
   }
 
   componentDidMount() {
+  }
+
+  componentWillUnmount() {
+    //console.warn('解除了A')
   }
 
   onPress = (chatRoomKey,preyID,nickname,age) => {
@@ -33,12 +40,15 @@ export default class MatchChatContainer extends Component {
   render() {
     return(
       <View style={styles.view}>
+        {console.warn('rn')}
         <FlatList
           removeClippedSubviews
           data={ this.ChatStore.chatMatchPrey }
           numColumns={1}
+          //extraData={toJS(this.ChatStore.chatMatchPrey)}
           renderItem={({item}) =>
-            <ChatList 
+          <Observer>{
+            () => <ChatList 
               name={item.name}
               avatar={{uri: item.avatar}}
               onPress={ () => { this.onPress(item.key,item.prey,item.name,item.age) } }
@@ -50,6 +60,8 @@ export default class MatchChatContainer extends Component {
               userState={item.userState}
               userStateColor={item.userStateColor}
               />
+            }
+            </Observer>
            }
         />
       </View>
