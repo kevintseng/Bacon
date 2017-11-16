@@ -248,17 +248,17 @@ export default class Routes extends Component {
           <Scene key="Drawer" component={DrawerScene} open={false}>
             <Scene key="main" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
 
-              <Scene key="MeetCute" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
-                <Scene key="MeetCuteCourt" title="邂逅" renderBackButton={this.baconMenu} renderLeftButton={this.baconMenu} renderRightButton={this.baconToolMeetCute} component={MeetCuteCourtScene} />
-                <Scene key="MeetCuteConfig" title="邂逅" renderBackButton={this.baconArrow} component={MeetCuteConfigScene} />
-              </Scene>
-
               <Scene key="Setting" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="SettingIndex" title="設定" renderLeftButton={this.baconMenu} component={SettingIndexScene} />
                 <Scene key="SettingAbout" title="設定" renderBackButton={this.baconArrow} component={SettingAboutScene} />
                 <Scene key="SettingAccount" title="設定" renderBackButton={this.baconArrow} component={SettingAccountScene} />
                 <Scene key="SettingRemind" title="設定" renderBackButton={this.baconArrow} component={SettingRemindScene} />
                 <Scene key="SettingHide" title="設定" renderBackButton={this.baconArrow} component={SettingHideScene} />
+              </Scene>
+              
+              <Scene key="MeetCute" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
+                <Scene key="MeetCuteCourt" title="邂逅" renderBackButton={this.baconMenu} renderLeftButton={this.baconMenu} renderRightButton={this.baconToolMeetCute} component={MeetCuteCourtScene} />
+                <Scene key="MeetCuteConfig" title="邂逅" renderBackButton={this.baconArrow} component={MeetCuteConfigScene} />
               </Scene>
 
               <Scene key="MeetChance" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
@@ -285,7 +285,7 @@ export default class Routes extends Component {
               <Scene key="VisitorChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={VisitorChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="HelloChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={HelloChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
 
-              <Scene key="Swiper" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={SwiperScene} renderRightButton={this.baconToolChatRoom}/>
+              <Scene key="Swiper" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconMenu} component={SwiperScene} renderRightButton={this.baconToolChatRoom}/>
 
               <Scene key="Line" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               

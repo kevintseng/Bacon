@@ -54,8 +54,8 @@ export default class HelloChatRoomScene extends Component {
     this.chatRoomQuery.on('value', child => {
       if (child.val() === 2) {
         // 轉到配對聊天室
-        this.ChatStore.setChatSendRealPrey()
-        this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+        //this.ChatStore.setChatSendRealPrey()
+        //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
         Actions.MatchChatRoom({type: 'replace', chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
       }
     })
@@ -69,7 +69,7 @@ export default class HelloChatRoomScene extends Component {
     })
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
     this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.messageSendCount)
     this.removeMessagesAndImagesListener()

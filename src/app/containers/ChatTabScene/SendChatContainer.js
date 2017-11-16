@@ -20,7 +20,7 @@ export default class SendChatContainer extends Component {
   }
 
   componentWillMount() {
-    this.ChatStore.setChatSendRealPrey()
+    //this.ChatStore.setChatSendRealPrey()
   }
 
   componentDidMount() {
@@ -41,7 +41,7 @@ export default class SendChatContainer extends Component {
           renderItem={({item}) =>
             <ChatList 
               name={item.name}
-              avatar={item.avatar}
+              avatar={{uri: item.avatar}}
               onPress={ () => { this.onPress(item.key,item.prey,item.name,item.age) } }
               lastChatContent={item.lastChatContent}
               nonHandleChatCount={99}

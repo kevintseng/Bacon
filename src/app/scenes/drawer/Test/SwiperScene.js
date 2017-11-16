@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, View, Text, ActivityIndicator, ScrollView, Dimensions, BackHandler, ToastAndroid, Button, Image, TouchableWithoutFeedback } from 'react-native'
+import { Modal, View, Text, ActivityIndicator, ScrollView, Dimensions, BackHandler, ToastAndroid, Button, Image, TouchableWithoutFeedback,TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import Swiper from 'react-native-deck-swiper'
 import Carousel from 'react-native-looped-carousel'
@@ -108,7 +108,7 @@ export default class SwiperScene extends Component {
 
         <Swiper
           ref={swiper => { this.swiper = swiper}}
-          cards={[['http://i.imgur.com/EZzLnn9.jpg','http://s2.buzzhand.net/uploads/18/1/1012342/15011382632136.jpg']]}
+          cards={[['http://i.imgur.com/EZzLnn9.jpg','http://s2.buzzhand.net/uploads/18/1/1012342/15011382632136.jpg'],['http://s3.iguang.co/e690bde3/s3/8f29ec62d181e3e514a7348b69baaa37.jpg','http://2.bp.blogspot.com/-18zRTNGZjwM/VmYzaLSn3-I/AAAAAAAAA6s/lAZjzZ_iWAg/s1600/072636zj5qqjow9yt5cw99.jpg']]}
           renderCard={(card) => {
             return (
               <View style={{flex: 1}}>
@@ -117,8 +117,8 @@ export default class SwiperScene extends Component {
                   style={{backgroundColor: 'transparent',width, height: width}}
                   bullets
                   autoplay={false}
-                  pageInfoTextStyle={{color: 'red'}}
-                  onAnimateNextPage={(p) => console.log(p)}
+                  //pageInfoTextStyle={{color: 'red'}}
+                  //onAnimateNextPage={(p) => console.log(p)}
                   bulletsContainerPosition={{ top: 5, left: width/5*4 }}
                   bulletsStyle={{position: 'absolute',top: 10}}
                 >
@@ -130,17 +130,33 @@ export default class SwiperScene extends Component {
           cardIndex={0}
           horizontalSwipe={false}
           verticalSwipe={false}
+          secondCardZoom={1}
+          backgroundColor={'transparent'}
+          cardVerticalMargin={0}
+          cardHorizontalMargin={0}
+          zoomAnimationDuration={0}
+          //childrenOnTop={true}
         >
-          <Button
-            onPress={() => { this.swiper.swipeLeft() }}
-            title="Press me Hate">
-          </Button>
-          <Button
-            onPress={() => { this.swiper.swipeRight() }}
-            title="Press me Like">
-          </Button>
         </Swiper>
+        <View style={{flexDirection: 'row',position: 'absolute', justifyContent: 'space-around',top: height/2, width}}>
+          <TouchableOpacity onPress={ () => { this.swiper.swipeLeft() } }>
+            <Image source={require('../../../../images/btn_meet_dislike.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={ () => { this.swiper.swipeRight() } }>
+            <Image source={require('../../../../images/btn_meet_like.png')}/>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
 }
+/*
+        <View style={{position: 'absolute',flexDirection: 'row'}}>
+          <TouchableOpacity onPress={ () => { this.swiper.swipeLeft() } }>
+            <Image source={require('../../../../images/btn_meet_dislike.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={ () => { this.swiper.swipeRight() } }>
+            <Image source={require('../../../../images/btn_meet_like.png')}/>
+          </TouchableOpacity>
+        </View>
+*/

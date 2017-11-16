@@ -187,8 +187,8 @@ export default class VisitorChatRoomScene extends Component {
           this.removeMessagesAndImagesListener()
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2).then(
             () => {
-              this.ChatStore.setChatVistorRealPrey()
-              this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+              //this.ChatStore.setChatVistorRealPrey()
+              //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
               Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
             }
           )
@@ -204,8 +204,8 @@ export default class VisitorChatRoomScene extends Component {
         this.removeMessagesAndImagesListener()
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2).then(
           () => {
-            this.ChatStore.setChatVistorRealPrey()
-            this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+            //this.ChatStore.setChatVistorRealPrey()
+            //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
             Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
           }
         )
@@ -239,8 +239,8 @@ export default class VisitorChatRoomScene extends Component {
     this.removeMessagesAndImagesListener()
     this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2).then(
       () => {
-        this.ChatStore.setChatVistorRealPrey()
-        this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+        //this.ChatStore.setChatVistorRealPrey()
+        //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
         Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
       }
     )
@@ -250,8 +250,8 @@ export default class VisitorChatRoomScene extends Component {
     this.removeMessagesAndImagesListener()
     this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(0).then(
       () => {
-        this.ChatStore.setChatVistorRealPrey()
-        this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+        //this.ChatStore.setChatVistorRealPrey()
+        //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
         Actions.pop()
       }
     )

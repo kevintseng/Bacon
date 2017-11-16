@@ -16,6 +16,10 @@ export default class ChatTabScene extends Component {
     Actions.refresh({ key: 'Drawer', open: false })
   }
 
+  componentWillUnmount() {
+    console.warn('解除了')
+  }
+
   render() {
     return(
       <ScrollableTabView
