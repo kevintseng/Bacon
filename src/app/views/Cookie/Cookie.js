@@ -3,6 +3,7 @@ import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { Avatar, Badge } from 'react-native-elements'
 import MKPLoadImageView from 'mkp-react-native-image-view'
+import ImageLoad from 'react-native-image-placeholder'
 
 const { width } = Dimensions.get('window')
 
@@ -80,8 +81,8 @@ const styles = {
     <TouchableOpacity disabled={ disabled } activeOpacity={1} style={styles.view} onPress={ onPress }>
       <View style={styles.circle} >
         { local ? 
-          <MKPLoadImageView style={ styles.image } source={ avatar ? avatar : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
-        : <MKPLoadImageView style={ styles.image } source={ avatar ? { uri: avatar } : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
+          <ImageLoad style={ styles.image } placeholderStyle={styles.image} loadingStyle={{ size: 'small', color: '#d63768' }} placeholderSource={require('./img/ico_qy_head_preload.png')} source={ avatar ? avatar : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
+        : <ImageLoad style={ styles.image } placeholderStyle={styles.image} loadingStyle={{ size: 'small', color: '#d63768' }} placeholderSource={require('./img/ico_qy_head_preload.png')} source={ avatar ? { uri: avatar } : require('./img/ico_qy_head_preload.png') } defaultSource={ DEFAULT_IMAGE } />
         } 
         <View style={styles.fixCircleClipping} />
         <View style={styles.border} /> 

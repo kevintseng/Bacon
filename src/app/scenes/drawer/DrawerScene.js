@@ -84,8 +84,12 @@ export default class DrawerScene extends Component {
     Actions.Master({type: 'replace'})
   }
 
-  goToTest = () => {
+  goToSwiper = () => {
     Actions.Swiper({type: 'replace'})
+  }
+
+  goToTest = () => {
+    Actions.Test({type: 'replace'})
   }
 
   render() {
@@ -116,6 +120,7 @@ export default class DrawerScene extends Component {
             settingOnPress={ this.goToSetting }
             masterOnPress={ this.gotToMster }
             testOnPress={ this.goToTest }
+            swiperOnPress={ this.goToSwiper }
           />
         }
         tapToClose

@@ -70,7 +70,9 @@ import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
 import ArticleListScene from './scenes/drawer/Article/ArticleListScene'
 import ArticleDetailScene from './scenes/drawer/Article/ArticleDetailScene'
 //
-import SwiperScene from './scenes/drawer/Test/SwiperScene'
+import SwiperScene from './scenes/drawer/Swiper/SwiperScene'
+//
+import TestScene from './scenes/drawer/Test/TestScene'
 // ###############drawer################ //
 
 // ###############header components################ //
@@ -286,6 +288,8 @@ export default class Routes extends Component {
               <Scene key="HelloChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={HelloChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
 
               <Scene key="Swiper" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconMenu} component={SwiperScene} renderRightButton={this.baconToolChatRoom}/>
+
+              <Scene key="Test" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="測試" renderBackButton={this.baconMenu} component={TestScene} renderRightButton={this.baconToolChatRoom}/>
 
               <Scene key="Line" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={LineScene} />
               
