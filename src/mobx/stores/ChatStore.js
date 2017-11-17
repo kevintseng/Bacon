@@ -403,4 +403,8 @@ export default class ChatStore {
   @action addChatMatchPrey = data => {
     this.chatMatchPrey = this.chatMatchPrey.concat(data)
   }
+
+  @computed get test() {
+    return toJS(this.chatMatchPrey)
+  }
 }

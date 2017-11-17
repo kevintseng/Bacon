@@ -36,7 +36,7 @@ const styles = {
   }
 }
 
-const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, chatOnPress, settingOnPress, articleOnPress, masterOnPress, testOnPress }) => {
+const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, chatOnPress, settingOnPress, articleOnPress, masterOnPress, testOnPress,swiperOnPress }) => {
 
   return(
     <ScrollView showsVerticalScrollIndicator={false} style = { styles.scrollView } >
@@ -97,7 +97,11 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </View>
 
         <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ testOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ swiperOnPress }/>
+        </View>
+
+        <View style={{marginTop: 7}}>
+          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='測試' showBadge={false} listOnPress={ testOnPress }/>
         </View>
 
       </View>
