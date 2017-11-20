@@ -310,7 +310,7 @@ export default class SessionCheckScene extends Component {
           //
           //this.ChatStore.setNickname(snap.val().nickname)
           //
-          //this.meetCuteListener() // 非同步邂逅
+          this.meetCuteListener() // 非同步邂逅
           this.uploadLocation() // 上傳GPS資料 巧遇監聽
         } else {
           //
@@ -742,15 +742,18 @@ export default class SessionCheckScene extends Component {
   }
 
   mq = sexualOrientation => {
-    this.meetCuteQuery = this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation)
-    this.meetCuteQuery.on('child_added', child => {
-      this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
-    })
-    this.meetCuteQuery.on('child_changed', child => {
+    //this.meetCuteQuery = this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation)
+    //this.meetCuteQuery.on('child_added', child => {
+    //  this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
+    //})
+    //this.meetCuteQuery.on('child_changed', child => {
       // birthday changed
-      if (this.MeetCuteStore.pool[child.key] !== child.val().birthday) {
-        this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
-      }
+    //  if (this.MeetCuteStore.pool[child.key] !== child.val().birthday) {
+    //    this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
+    //  }
+    //})
+    this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation).limitToLast(100).once('value',snap => {
+      this.MeetCuteStore.setNewPreys(snap.val())
     })
   }
 

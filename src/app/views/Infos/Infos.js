@@ -53,7 +53,7 @@ const styles = {
     fontSize: 13,
     color: '#606060',
     fontFamily: 'NotoSans',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   icon: {
     marginRight: 5
@@ -67,7 +67,7 @@ const styles = {
 }
 
 const Infos = ({verityEmail, verityPhoto, displayName, bio, age, address, langs, distance, showDistance, showBlockade, showReportUser, onReportUserPressed, onPrssBlockade}) => (
-  <View style={{width: width*0.8}}>
+  <View style={{width: width*0.8,backgroundColor: 'white'}}>
     <View style={styles.top}>
       <Image style={{marginRight: 5}} source={verityEmail ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
       <Text style={styles.nameAge}>{ displayName }</Text>
