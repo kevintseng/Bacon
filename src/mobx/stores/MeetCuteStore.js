@@ -1,4 +1,4 @@
-import { observable, action, computed, useStrict, runInAction } from 'mobx'
+import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx'
 import geolib from 'geolib'
 import { calculateAge } from '../../app/Utils'
 import localdb from '../../configs/localdb'
@@ -24,6 +24,8 @@ export default class MeetCuteStore {
   @observable latitude
   @observable longitude
   @observable address
+  @observable newPreys
+  @observable modal
 
   constructor(firebase) {
     this.firebase = firebase
@@ -85,6 +87,8 @@ export default class MeetCuteStore {
     this.matchPool = new Object
     // blockade
     this.blockadePool = new Object
+    this.newPreys = new Array
+    this.modal = true
   }
 
   @action addPreyToGoodImpressionPool = (uid,time) => {
@@ -254,6 +258,19 @@ export default class MeetCuteStore {
         console.log('隱藏了')
       }
     })
+  }
+
+  @action setNewPreys = (obj) => {
+    this.newPreys = Object.keys(obj).map(key => {
+      const albumObject = this.handleNewAlbum(obj[key].album,obj[key].avatar)
+      return({
+        nickname: obj[key].nickname,
+        album: Object.keys(albumObject).map(key => albumObject[key])
+      })
+    })
+    this.modal = false
+    //this.newPreys = toJS(this.newPreys)
+    //console.log(this.newPreys)
   }
 
   @action setOnLoadEnd = async () => {

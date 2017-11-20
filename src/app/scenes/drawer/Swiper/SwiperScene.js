@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { Modal, View, Text, ActivityIndicator, ScrollView, Dimensions, BackHandler, ToastAndroid, Button, Image, TouchableWithoutFeedback,TouchableOpacity } from 'react-native'
+import { Modal, View, Text, ScrollView, Dimensions, InteractionManager, BackHandler, ToastAndroid, Button, Image, TouchableWithoutFeedback,TouchableOpacity, ActivityIndicator } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import Swiper from 'react-native-deck-swiper'
 import Carousel from 'react-native-looped-carousel'
 import ImageZoom from 'react-native-image-pan-zoom'
 import { Icon } from 'react-native-elements'
+import { inject, observer } from 'mobx-react'
+import { toJS } from 'mobx'
+import Infos from '../../../views/Infos/Infos'
 
 const { width, height } = Dimensions.get('window')
 
@@ -21,11 +24,16 @@ const styles = {
     padding: 20
   }
 }
-//@inject('firebase','SubjectStore','FateStore','ControlStore') @observer
+
+@inject('firebase','SubjectStore','MeetCuteStore') @observer
 export default class SwiperScene extends Component {
 
   constructor(props) {
     super(props)
+    this.firebase = this.props.firebase
+    this.SubjectStore = this.props.SubjectStore
+    this.MeetCuteStore = this.props.MeetCuteStore
+    this.cardIndex = 0
     this.state = {
       albumZoom: false
     }
@@ -37,9 +45,14 @@ export default class SwiperScene extends Component {
   }
 
   componentDidMount() {
+    //InteractionManager.runAfterInteractions(this.task)
   }
 
-  componentWillUnmount(){
+  //task = () => {
+  //  this.MeetCuteStore.setPreyList()  
+  //}
+
+  componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
@@ -85,7 +98,13 @@ export default class SwiperScene extends Component {
   render() {
     return(
       <View style={{flex: 1}}>
-
+        { this.MeetCuteStore.modal ?
+        <View style={{flex: 1,justifyContent: 'center'}}>
+          <ActivityIndicator
+            size={'large'}
+          />
+        </View> :
+        <View style={{flex: 1}}>
         <Modal hardwareAccelerated animationType={'none'} onRequestClose={this.closeAlbum} visible={ this.state.albumZoom } transparent={false}>
           <Carousel
             ref={(carousel) => { this.carousel = carousel }}
@@ -98,17 +117,16 @@ export default class SwiperScene extends Component {
             onAnimateNextPage={(p) => console.log(p)}
             bulletsStyle={{position: 'absolute',bottom: 10}}
             >
-            { this.renderAlbumZoom(['http://i.imgur.com/EZzLnn9.jpg','http://s2.buzzhand.net/uploads/18/1/1012342/15011382632136.jpg']) }
+            { this.renderAlbumZoom(toJS(this.MeetCuteStore.newPreys)[this.cardIndex].album) }
           </Carousel>
           <View style={styles.toolView}>
             <View><Icon name='heart' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ this.closeAlbum } /></View>
             <View><Icon name='arrow-right' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ this.nextphoto }/></View>
           </View>
         </Modal>
-
         <Swiper
           ref={swiper => { this.swiper = swiper}}
-          cards={[['http://i.imgur.com/EZzLnn9.jpg','http://s2.buzzhand.net/uploads/18/1/1012342/15011382632136.jpg'],['http://s3.iguang.co/e690bde3/s3/8f29ec62d181e3e514a7348b69baaa37.jpg','http://2.bp.blogspot.com/-18zRTNGZjwM/VmYzaLSn3-I/AAAAAAAAA6s/lAZjzZ_iWAg/s1600/072636zj5qqjow9yt5cw99.jpg']]}
+          cards={toJS(this.MeetCuteStore.newPreys)}
           renderCard={(card) => {
             return (
               <View style={{flex: 1}}>
@@ -122,12 +140,30 @@ export default class SwiperScene extends Component {
                   bulletsContainerPosition={{ top: 5, left: width/5*4 }}
                   bulletsStyle={{position: 'absolute',top: 10}}
                 >
-                  { this.renderAlbum(card) }
+                  { this.renderAlbum(card.album) }
                 </Carousel>
+                <View style={{alignSelf: 'center',paddingTop: 40}}>
+                  <Infos
+                    showBlockade
+                    showReportUser
+                    showDistance
+                    //verityEmail={ this.MeetCuteStore.emailVerified }
+                    //verityPhoto={ this.MeetCuteStore.photoVerified }
+                    displayName={ card.nickname }
+                    //bio={ this.MeetCuteStore.bio }
+                    //age={ this.MeetCuteStore.age }
+                    //langs={ this.MeetCuteStore.languagesToString }
+                    //distance={ this.MeetCuteStore.distance }
+                    //onReportUserPressed= { this.reportPressed }
+                    //address={ this.MeetCuteStore.address }
+                    //onPrssBlockade={ this.onPrssBlockade }
+                  />
+                </View>
               </View>
               )
             }}
-          cardIndex={0}
+          onSwiped={(cardIndex) => {this.cardIndex = cardIndex + 1}}
+          cardIndex={this.cardIndex}
           horizontalSwipe={false}
           verticalSwipe={false}
           secondCardZoom={1}
@@ -146,6 +182,8 @@ export default class SwiperScene extends Component {
             <Image source={require('../../../../images/btn_meet_like.png')}/>
           </TouchableOpacity>
         </View>
+        </View>
+        }
       </View>
     )
   }
