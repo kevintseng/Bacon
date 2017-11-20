@@ -3,6 +3,7 @@ import { Platform, View } from 'react-native'
 import { Router, Scene, Actions } from 'react-native-router-flux'
 
 // ###############authenticate################ //
+import PermissionsScene from './scenes/authenticate/PermissionsScene'
 import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
 //
 import WelcomeScene from './scenes/authenticate/WelcomeScene'
@@ -225,6 +226,8 @@ export default class Routes extends Component {
     return (
       <Router getSceneStyle={this.getSceneStyle} duration={0}>
         <Scene key="root" hideTabBar hideNavBar navigationBarStyle={styles.navBar} >
+
+          <Scene key="Permissions" component={PermissionsScene} />
 
           <Scene key="SessionCheck" component={SessionCheckScene} />
 

@@ -10,7 +10,7 @@ export default class App extends Component {
 
   componentWillMount() {
     Orientation.lockToPortrait()
-    this.requestCameraPermission()
+    //this.requestCameraPermission()
   }
 
   requestCameraPermission = async () => { 

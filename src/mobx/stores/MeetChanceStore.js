@@ -51,9 +51,9 @@ export default class MeetChanceStore {
 
   @computed get preysToFlatList() {
     const arr = toJS(this.preys).filter(ele => ele !== null)
-    if (arr.length > 9) {
-      arr.length = arr.length - arr.length % 3
-    }
+    //if (arr.length > 9) {
+    //  arr.length = arr.length - arr.length % 3
+    //}
     return arr
   }
 
@@ -90,6 +90,8 @@ export default class MeetChanceStore {
     // blockade
     this.blockadePool = new Object
     this.blockadeList = null
+    this.index = 0
+    this.refreshing = false
   }
 
   @action setLatitude = latitude => {
@@ -159,7 +161,25 @@ export default class MeetChanceStore {
     //    break
     //  }
     //}
-    this.preys = toJS(this.preyList)
+    //this.preys = toJS(this.preyList)
+    //console.warn('end')
+    this.preys = this.preys.concat(this.preyList.slice(0,12))
+  }
+
+  @action addMorePreys = () => {
+    console.warn(this.index)
+    if (this.index > 0) {
+      this.preys = this.preys.concat(this.preyList.slice(0 + 12*this.index,12 + 12*this.index))
+    }
+    this.index = this.index + 1
+  }
+
+  @action setIndex = () => {
+    this.index = 0
+  }
+
+  @action onRefresh = () => {
+    this.MeetChanceStore.refreshing = true
   }
 
   // LineCollection

@@ -47,6 +47,13 @@ export default class MeetChanceWaterFallScene extends Component {
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
+    //InteractionManager.runAfterInteractions(this.task)
+    //this.MeetChanceStore.setPreyList()
+    //this.task()
+  }
+
+  componentWillUnMount() {
+    this.MeetChanceStore.setIndex()
   }
 
   componentDidMount() {
@@ -90,6 +97,11 @@ export default class MeetChanceWaterFallScene extends Component {
       <View style={styles.view}>
         <FlatList
           removeClippedSubviews
+          //refreshing={this.MeetChanceStore.refreshing}
+          //onRefresh={this.MeetChanceStore.onRefresh}
+          //scrollToEnd={()=>{console.warn('scrollToEnd')}}
+          onEndReached={this.MeetChanceStore.addMorePreys}
+          onEndReachedThreshold={0.1}
           data={ this.MeetChanceStore.preysToFlatList }
           numColumns={3}
           renderItem={({item}) =>

@@ -1,9 +1,13 @@
 import React from 'react'
 import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
-import FastImage from 'react-native-fast-image'
-import { Avatar, Badge } from 'react-native-elements'
-import MKPLoadImageView from 'mkp-react-native-image-view'
-import ImageLoad from 'react-native-image-placeholder'
+//import FastImage from 'react-native-fast-image'
+//import { Avatar, Badge } from 'react-native-elements'
+//import MKPLoadImageView from 'mkp-react-native-image-view'
+import CircleImage from 'react-native-bacon-circle-image'
+
+//const DEFAULT_IMAGE = require('./img/ico_qy_head_preload.png')
+
+const Cookie = ({ name, size, avatar, onPress, borderColor, local, disabled, circleBorderWidth, circleColor }) => {
 
 const { width } = Dimensions.get('window')
 
@@ -11,15 +15,31 @@ const x = 5
 
 const picWidth = (width - 4 * x)/3
 
-const DEFAULT_IMAGE = require('./img/ico_qy_head_preload.png')
-
-const Cookie = ({ name, size, avatar, onPress, borderColor, local, disabled, circleBorderWidth, circleColor }) => {
-
 const circleSize = size || picWidth
 
-const circleFixBorder = circleSize/2
+//const circleFixBorder = circleSize/2
 
-const lineBreakMode ='tail'
+//const lineBreakMode ='tail'
+
+  return(
+    <CircleImage
+      radius={ circleSize/2 }
+      //borderColor={borderColor}
+      //circleBorderWidth={circleBorderWidth}
+      //circleColor={circleColor}
+      onPress={onPress}
+      placeholderSource={require('./img/ico_qy_head_preload.png')}
+      loadingStyle={{ size: 'small', color: '#b3b3b3' }}
+      source={{uri:avatar}}
+      disabled={disabled}
+      //isShowActivity={false}
+    />
+  )
+}
+
+export default Cookie
+
+/*
 
 const styles = {
   view: {
@@ -77,7 +97,7 @@ const styles = {
     fontSize: 13
   }
 }
-  return(
+
     <TouchableOpacity disabled={ disabled } activeOpacity={1} style={styles.view} onPress={ onPress }>
       <View style={styles.circle} >
         { local ? 
@@ -89,12 +109,4 @@ const styles = {
       </View>
       <Text style={ styles.text } lineBreakMode={ lineBreakMode } numberOfLines={1} >{ name }</Text>
     </TouchableOpacity>
-  )
-}
-
-export default Cookie
-
-/*
-
-<View style={styles.fixCircleClipping} />
 */
