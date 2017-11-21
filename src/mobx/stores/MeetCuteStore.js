@@ -2,6 +2,8 @@ import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx
 import geolib from 'geolib'
 import { calculateAge } from '../../app/Utils'
 import localdb from '../../configs/localdb'
+import FastImage from 'react-native-fast-image';
+import { Image } from 'react-native'
 
 useStrict(true)
 
@@ -261,14 +263,39 @@ export default class MeetCuteStore {
   }
 
   @action setNewPreys = (obj) => {
+    //var imagePrefetch = []
+    //var allPhotos = []
     this.newPreys = Object.keys(obj).map(key => {
       const albumObject = this.handleNewAlbum(obj[key].album,obj[key].avatar)
+      const album = Object.keys(albumObject).map(key => albumObject[key])
+      //imagePrefetch.push(Image.prefetch(album[0]))
+      //Image.prefetch(album[0],()=>{
+      //  console.warn('5j8')
+      //})
+      //album.forEach(photo => {
+      //  allPhotos.push(photo)
+      //})
       return({
         nickname: obj[key].nickname,
-        album: Object.keys(albumObject).map(key => albumObject[key])
+        album: album
       })
     })
+    //const imagePrefetch = FastImage.preload(allPhotos)
+    //allPhotos.forEach(photo => 
+    //  Image.prefetch(photo,()=>{
+    //    //console.warn('get')
+    //    imagePrefetch.push(true)
+    //    if (imagePrefetch.length === allPhotos.length) {
+    //      this.modal = false 
+    //    }
+    //  })
+    //)
+    //console.log(allPhotos)
     this.modal = false
+    //Promise.all([imagePrefetch]).then(results => {
+    //  console.warn("All images prefetched in parallel");
+    //  this.modal = false
+    //}).catch(err => {console.warn(err)});
     //this.newPreys = toJS(this.newPreys)
     //console.log(this.newPreys)
   }
