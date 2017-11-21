@@ -84,6 +84,10 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
           <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ swiperOnPress }/>
         </View>
 
+        <View style={{marginTop: 7}}>
+          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='測試' showBadge={false} listOnPress={ testOnPress }/>
+        </View>
+
       </View>
 
     </ScrollView>
