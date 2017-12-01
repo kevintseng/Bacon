@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, View, Text, ScrollView, Dimensions, InteractionManager, BackHandler, ToastAndroid, Button, Image, TouchableWithoutFeedback,TouchableOpacity, ActivityIndicator } from 'react-native'
+import { Modal, View, Text, ScrollView, Dimensions, InteractionManager, BackHandler, ToastAndroid, Button, Image, TouchableWithoutFeedback,TouchableOpacity, ActivityIndicator, FlatList } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import Swiper from 'react-native-deck-swiper'
 import Carousel from 'react-native-looped-carousel'
@@ -10,7 +10,6 @@ import { toJS } from 'mobx'
 import SquareImage from 'react-native-bacon-square-image'
 import Infos from '../../../views/Infos/Infos'
 import FastImage from 'react-native-fast-image';
-import ImageLoad from 'react-native-image-placeholder';
 
 const { width, height } = Dimensions.get('window')
 
@@ -28,6 +27,8 @@ const styles = {
   }
 }
 
+const aa = ['http://news.cts.com.tw/photo/cts/201703/20170316-329467_bm.jpg','http://img.chinatimes.com/newsphoto/2016-05-18/656/20160518003819.jpg']
+
 @inject('firebase','SubjectStore','MeetCuteStore') @observer
 export default class SwiperScene extends Component {
 
@@ -44,19 +45,15 @@ export default class SwiperScene extends Component {
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
-    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+    //BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
   componentDidMount() {
     //InteractionManager.runAfterInteractions(this.task)
   }
 
-  //task = () => {
-  //  this.MeetCuteStore.setPreyList()  
-  //}
-
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+    //BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
   renderAlbum = album => (
@@ -87,10 +84,6 @@ export default class SwiperScene extends Component {
     ))
   )
 
-  nextphoto = () => {
-    this.carousel._animateNextPage()
-  }
-
   openAlbum = index => {
     this.currentPage = index
     this.setState({
@@ -102,6 +95,14 @@ export default class SwiperScene extends Component {
     this.setState({
       albumZoom: false
     })
+  }
+
+  onPressLeft = () => {
+    this.swiper.swipeLeft()
+  }
+
+  onPressRight = () => {
+    this.swiper.swipeRight()
   }
 
   render() {
@@ -161,8 +162,8 @@ export default class SwiperScene extends Component {
             cardVerticalMargin={0}
             cardHorizontalMargin={0}
             zoomAnimationDuration={0}
-            showSecondCard={false}
-            swipeBackCard={false}
+            //showSecondCard={false}
+            //swipeBackCard={false}
           />
           <View style={{flexDirection: 'row',position: 'absolute', justifyContent: 'space-around',top: height/2, width}}>
             <TouchableOpacity onPress={ () => { this.swiper.swipeLeft() } }>
@@ -179,7 +180,24 @@ export default class SwiperScene extends Component {
   }
 }
 /*
-
+        { this.MeetCuteStore.modal ?
+        <View style={{flex: 1,justifyContent: 'center'}}>
+          <ActivityIndicator
+            size={'large'}
+          />
+        </View> :
+        <View style={{flex: 1}}>
+               <View style={{flex: 1}}>
+                <PreloadedImage 
+                  //key={photo} 
+                  style={{width, height: width}} 
+                  customImagePlaceholderDefaultStyle={{ width, height: width }}
+                  source={{uri: this.MeetCuteStore.newPreys[this.MeetCuteStore.index].album[0]}} 
+                  name={toJS(this.MeetCuteStore.newPreys[this.MeetCuteStore.index].album)[0].name}
+                  //onPress={() => { this.openAlbum(index) }} 
+                  placeholderSource={require('../../../../images/ico_qy_head_preload.png')}
+                  loadingStyle={{ size: 'large', color: '#b3b3b3' }}
+                />
                 <View style={{alignSelf: 'center',paddingTop: 40}}>
                   <Infos
                     showBlockade
@@ -187,7 +205,7 @@ export default class SwiperScene extends Component {
                     showDistance
                     //verityEmail={ this.MeetCuteStore.emailVerified }
                     //verityPhoto={ this.MeetCuteStore.photoVerified }
-                    displayName={ card.nickname }
+                    displayName={ this.MeetCuteStore.newPreys[this.MeetCuteStore.index].nickname }
                     //bio={ this.MeetCuteStore.bio }
                     //age={ this.MeetCuteStore.age }
                     //langs={ this.MeetCuteStore.languagesToString }
@@ -197,38 +215,15 @@ export default class SwiperScene extends Component {
                     //onPrssBlockade={ this.onPrssBlockade }
                   />
                 </View>
-
-        <Modal hardwareAccelerated animationType={'none'} onRequestClose={this.closeAlbum} visible={ this.state.albumZoom } transparent={false}>
-          <Carousel
-            ref={(carousel) => { this.carousel = carousel }}
-            swipe
-            currentPage={this.currentPage}
-            style={{flex:1,backgroundColor: 'transparent'}}
-            bullets
-            autoplay={false}
-            pageInfoTextStyle={{color: 'red'}}
-            onAnimateNextPage={(p) => console.log(p)}
-            bulletsStyle={{position: 'absolute',bottom: 10}}
-            >
-            { this.renderAlbumZoom(toJS(this.MeetCuteStore.newPreys)[this.cardIndex].album) }
-          </Carousel>
-          <View style={styles.toolView}>
-            <View><Icon name='heart' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ this.closeAlbum } /></View>
-            <View><Icon name='arrow-right' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ this.nextphoto }/></View>
+              </View>
+          <View style={{flexDirection: 'row',position: 'absolute', justifyContent: 'space-around',top: height/2, width}}>
+            <TouchableOpacity onPress={ this.onPressLeft  }>
+              <Image source={require('../../../../images/btn_meet_dislike.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={ this.onPressRight }>
+              <Image source={require('../../../../images/btn_meet_like.png')}/>
+            </TouchableOpacity>
           </View>
-        </Modal>
-
-
-                <Carousel
-                  swipe
-                  style={{backgroundColor: 'white',width, height: width}}
-                  bullets
-                  autoplay={false}
-                  //pageInfoTextStyle={{color: 'red'}}
-                  //onAnimateNextPage={(p) => console.log(p)}
-                  bulletsContainerPosition={{ top: 5, left: width/5*4 }}
-                  bulletsStyle={{position: 'absolute',top: 10}}
-                >
-
-                </Carousel>
+        </View>
+        }
 */

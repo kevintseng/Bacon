@@ -50,46 +50,40 @@ export default class SessionCheckScene extends Component {
   componentWillMount() {
     this.firebase.auth().onAuthStateChanged( user => {
       if (user) {
-        // 入口點
-        // 使用者登入 -> 只要登入成功一定有 uid email
-        //console.warn(user.uid)
         this.SubjectStore.setUid(user.uid) // 設置 uid
         this.SubjectStore.setEmail(user.email) // 設置 email
-        this.FateStore.setSelfUid(user.uid) // 設置 uid
-        this.ChatStore.setUid(user.uid) // 設置 uid
-        //////////////////////////////////////////////////////////
+        //this.FateStore.setSelfUid(user.uid) // 設置 uid
+        //this.ChatStore.setUid(user.uid) // 設置 uid
         if (this.ControlStore.authenticateIndicator == '註冊') {
-          // 從註冊來的
           ///////// 非同步 /////////
-          this.uploadAvatar() // 非同步上傳相簿
-          this.uploadSignUpData() // 非同步上傳註冊資料
-          this.visitorsListener() // 來訪監聽
-          this.goodImpressionListener() // 好感監聽
-          this.matchListener() // 配對
-          this.chatRoomListener() // 聊天室配對
-          this.blockadeListener() // 封鎖
-          this.setOnline() // 非同步設置使用者上線
-          AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
+          this.uploadSignUpData() // 非同步上傳大頭照
+          //this.uploadSignUpProfile() // 非同步上傳註冊資料
+          //this.visitorsListener() // 來訪監聽
+          //this.goodImpressionListener() // 好感監聽
+          //this.matchListener() // 配對
+          //this.chatRoomListener() // 聊天室配對
+          //this.blockadeListener() // 封鎖
+          //this.setOnline() // 非同步設置使用者上線
+          //AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           ///////// 同步 /////////
-          this.uploadEmailVerity()
+          //this.uploadEmailVerity()
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
-        } else {
-          // 從登入來的
+        } else { // 從登入來的
           //移除所有監聽函數 初始化狀態
           this.initialize()
           ///////// 非同步 /////////
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
-          this.setVip()
-          this.visitorsListener() // 來訪監聽
-          this.goodImpressionListener() // 好感監聽
-          this.matchListener() // 配對
-          this.chatRoomListener() // 聊天室配對
-          this.blockadeListener() // 封鎖
+          //this.setVip()
+          //this.visitorsListener() // 來訪監聽
+          //this.goodImpressionListener() // 好感監聽
+          //this.matchListener() // 配對
+          //this.chatRoomListener() // 聊天室配對
+          //this.blockadeListener() // 封鎖
           //this.collectionDB() // 從LocalDB抓配對資料
-          this.setOnline() // 非同步設置使用者上線
-          AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
+          //this.setOnline() // 非同步設置使用者上線
+          //AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           ///////// 同步 /////////
-          this.uploadEmailVerity()
+          //this.uploadEmailVerity()
 
         }
         Actions.Drawer({type: 'reset'}) // 進入 Drawer
@@ -125,31 +119,32 @@ export default class SessionCheckScene extends Component {
     this.LineStore.initialize()
   }
 
-  uploadAvatar = () => {
-    // 非同步上傳大頭照
+  uploadSignUpData = () => {
     this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid + '/' + Object.keys(this.SignUpStore.album)[0] + '.jpg')
     .putFile(this.SignUpStore.avatar.replace('file:/',''), metadata)
     .then(uploadedFile => {
-      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/avatar').set(uploadedFile.downloadURL)
-      .then(() => {
-          this.firebase.database().ref('users/' + this.SubjectStore.uid + '/album/' + Object.keys(this.SignUpStore.album)[0]).set(uploadedFile.downloadURL)
-        .then(() => {
-            this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳成功')
-          })
-        .catch(() => {
-          this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳失敗')
-          })
+      const album = new Object
+      album[Object.keys(this.SignUpStore.album)[0]] = uploadedFile.downloadURL
+      this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
+        avatar: uploadedFile.downloadURL,
+        album: album,
+        sexualOrientation: this.sexualOrientationToString(),
+        address: this.SignUpStore.address,
+        nickname: this.SignUpStore.nickname,
+        birthday: this.SignUpStore.birthday,
+        bonus: 0
+      }).then(() => { 
+        console.log('上傳註冊資料成功')
+        this.firebase.database().ref('meetCuteList/' + this.oppositeSexualOrientationToString() + '/' + this.SubjectStore.uid).set(true)
+      }).catch(() => {
+        console.log('上傳註冊資料失敗')
       })
-      .catch(() => {
-        this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳成功')
-      })
-    })
-    .catch(() => {
-      this.ControlStore.setAvatarUploadIndicator('使用者大頭照上傳失敗')
+    }).catch(() => {
+      console.log('使用者大頭照上傳失敗')
     })
   }
-
-  uploadSignUpData = () => {
+/*
+  uploadSignUpProfile = () => {
     this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
       // 非同步上傳註冊資料
       sexualOrientation: this.sexualOrientationToString(),
@@ -165,7 +160,7 @@ export default class SessionCheckScene extends Component {
         console.log(error)
       })
   }
-
+*/
   uploadLocation = () => {
     Geolocation.getCurrentPosition(
       location => {
@@ -245,7 +240,7 @@ export default class SessionCheckScene extends Component {
     //this.SubjectStore.setVisitConvSentToday(0)
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
     //this.ChatStore.setNickname(this.SignUpStore.nickname)
-    this.ControlStore.setSyncDetector(true) // 同步完成
+    //this.ControlStore.setSyncDetector(true) // 同步完成
     this.meetCuteListener() // 非同步邂逅監聽
     this.uploadLocation() // 上傳GPS資料 巧遇監聽
     this.uxSignIn() // 讓登入頁留住帳號密碼
@@ -752,8 +747,11 @@ export default class SessionCheckScene extends Component {
     //    this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
     //  }
     //})
-    this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation).limitToLast(100).once('value',snap => {
-      this.MeetCuteStore.setNewPreys(snap.val())
+    //this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation).limitToLast(100).once('value',snap => {
+    //  this.MeetCuteStore.setNewPreys(snap.val())
+    //})
+    this.firebase.database().ref('msf/meetCuteList').orderByChild('meetCuteList/aaa').equalTo(null).once('value',snap => {
+      console.log(snap.val())
     })
   }
 
@@ -812,6 +810,10 @@ export default class SessionCheckScene extends Component {
 
   sexualOrientationToString = () => (
     this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : (this.genderToString() + 's' + (this.SignUpStore.gender ? 'f' : 'm'))
+  )
+
+  oppositeSexualOrientationToString = () => (
+    this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : ((this.SignUpStore.gender ? 'f' : 'm') + 's' + this.genderToString())
   )
 
   uxSignIn = () => {

@@ -7,6 +7,7 @@ import VerityEmail from './VerityEmail/VerityEmail'
 import VerityPhoto from './VerityPhoto/VerityPhoto'
 import MemberUpgrade from './MemberUpgrade/MemberUpgrade'
 import QUpgrade from './QUpgrade/QUpgrade'
+import CircleImage from 'react-native-bacon-circle-image' 
 
 const { width } = Dimensions.get('window')
 
@@ -43,12 +44,12 @@ const Profile = ({source, vip, bonus, verityEmail, verityPhoto, displayName, age
     <View>
       <View style={{flexDirection: 'row',padding: 5}}>
         <View style={{justifyContent: 'center',alignItems: 'center'}}>
-          <Avatar
-            width={width*0.3}
-            heigh={width*0.3}
-            rounded
+          <CircleImage
             source={{uri: source}}
-            activeOpacity={0.7}
+            disabled
+            radius={width*0.15}
+            placeholderSource={require('../../images/ico_qy_head_preload.png')}
+            loadingStyle={{ size: 'small', color: '#b3b3b3' }}
           />
         </View>
 

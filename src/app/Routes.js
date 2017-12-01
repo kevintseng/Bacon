@@ -260,22 +260,25 @@ export default class Routes extends Component {
                 <Scene key="SettingRemind" title="設定" renderBackButton={this.baconArrow} component={SettingRemindScene} />
                 <Scene key="SettingHide" title="設定" renderBackButton={this.baconArrow} component={SettingHideScene} />
               </Scene>
-              
-              <Scene key="MeetCute" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
-                <Scene key="MeetCuteCourt" title="邂逅" renderBackButton={this.baconMenu} renderLeftButton={this.baconMenu} renderRightButton={this.baconToolMeetCute} component={MeetCuteCourtScene} />
-                <Scene key="MeetCuteConfig" title="邂逅" renderBackButton={this.baconArrow} component={MeetCuteConfigScene} />
-              </Scene>
-
-              <Scene key="MeetChance" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
-                <Scene key="MeetChanceWaterFall" title="巧遇" renderLeftButton={this.baconMenu} renderRightButton={this.baconToolMeetChance} component={MeetChanceWaterFallScene} />
-                <Scene key="MeetChanceConfig" title="巧遇" renderBackButton={this.baconArrow} component={MeetChanceConfigScene} />
-              </Scene>
 
               <Scene key="AboutMe" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="AboutMeTab" title="關於我" renderRightButton={this.baconToolAboutMe} renderLeftButton={this.baconMenu}  component={AboutMeTabScene} />
                 <Scene key="AboutMeEdit" title="關於我" renderBackButton={this.baconArrow} component={AboutMeEditScene} />
                 <Scene key="AboutMeBoard" title="通知" renderBackButton={this.baconArrow} component={AboutMeBoardScene} />
               </Scene>
+
+
+            </Scene>
+          </Scene>
+
+
+        </Scene>
+      </Router>
+    )
+  }
+}
+
+/*
 
               <Scene key="Fate" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="FateTab" title="緣分" renderLeftButton={this.baconMenu} component={FateTabScene} />
@@ -290,7 +293,7 @@ export default class Routes extends Component {
               <Scene key="VisitorChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={VisitorChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="HelloChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={HelloChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
 
-              <Scene key="Swiper" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconMenu} component={SwiperScene} renderRightButton={this.baconToolChatRoom}/>
+              <Scene key="Swiper" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="邂逅" renderBackButton={this.baconMenu} component={SwiperScene} renderRightButton={this.baconToolChatRoom}/>
 
               <Scene key="Test" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="測試" renderBackButton={this.baconMenu} component={TestScene} renderRightButton={this.baconToolChatRoom}/>
 
@@ -316,12 +319,13 @@ export default class Routes extends Component {
                 <Scene key='MasterOne' title="達人簡介" renderBackButton={this.baconArrow} component={MasterOneScene} />
               </Scene>
 
-            </Scene>
-          </Scene>
+              <Scene key="MeetCute" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
+                <Scene key="MeetCuteCourt" title="邂逅" renderBackButton={this.baconMenu} renderLeftButton={this.baconMenu} renderRightButton={this.baconToolMeetCute} component={MeetCuteCourtScene} />
+                <Scene key="MeetCuteConfig" title="邂逅" renderBackButton={this.baconArrow} component={MeetCuteConfigScene} />
+              </Scene>
 
-
-        </Scene>
-      </Router>
-    )
-  }
-}
+              <Scene key="MeetChance" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
+                <Scene key="MeetChanceWaterFall" title="巧遇" renderLeftButton={this.baconMenu} renderRightButton={this.baconToolMeetChance} component={MeetChanceWaterFallScene} />
+                <Scene key="MeetChanceConfig" title="巧遇" renderBackButton={this.baconArrow} component={MeetChanceConfigScene} />
+              </Scene>
+*/

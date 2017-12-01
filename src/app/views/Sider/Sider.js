@@ -5,7 +5,9 @@ import { Avatar, Badge } from 'react-native-elements'
 import ListItem from '../ListItem'
 import BaconTitle from '../BaconTitle/BaconTitle'
 import BaconMenu from '../BaconMenu/BaconMenu'
-import Cookie from '../Cookie/Cookie'
+//import Cookie from '../Cookie/Cookie'
+import CircleImage from 'react-native-bacon-circle-image'
+
 
 const { width, height } = Dimensions.get('window')
 
@@ -56,11 +58,12 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
 
         <TouchableOpacity activeOpacity={1} style={styles.topBlock} onPress={ displayNameOnPress }>
           <View style={{alignItems: 'center',marginTop: 10}}>
-            <Cookie
+            <CircleImage
               disabled
-              size={150}
-              avatar={avatar}
-              borderColor='rgba(255, 255, 255, 1)'
+              radius={75}
+              source={{uri: avatar}}
+              placeholderSource={require('../../../images/ico_qy_head_preload.png')}
+              loadingStyle={{ size: 'small', color: '#b3b3b3' }}
             />
           </View>
           <View style={{alignItems: 'flex-start',flexDirection: 'row', justifyContent: 'space-between',marginTop: 14, marginBottom: 7}}>
@@ -80,14 +83,6 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
           <ListItem listPicSource={require('./img/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
         </View>
 
-        <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ swiperOnPress }/>
-        </View>
-
-        <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='測試' showBadge={false} listOnPress={ testOnPress }/>
-        </View>
-
       </View>
 
     </ScrollView>
@@ -97,6 +92,17 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
 export default Drawer
 
 /*
+
+
+
+        <View style={{marginTop: 7}}>
+          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ swiperOnPress }/>
+        </View>
+
+        <View style={{marginTop: 7}}>
+          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
+        </View>
+
 
         <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>

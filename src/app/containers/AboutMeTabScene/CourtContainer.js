@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import { Dimensions, Image, View, Text, TouchableOpacity } from 'react-native'
+import { Dimensions, Image, View } from 'react-native'
 import { inject, observer } from 'mobx-react'
-import FastImage from 'react-native-fast-image'
-import ImageZoom from 'react-native-image-pan-zoom'
 
 const { width, height } = Dimensions.get('window')
 

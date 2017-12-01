@@ -3,7 +3,7 @@ import { Dimensions, Image, Modal, View, Text, TouchableWithoutFeedback, Touchab
 import Carousel from 'react-native-looped-carousel'
 import ImageZoom from 'react-native-image-pan-zoom'
 import FastImage from 'react-native-fast-image'
-import MKPLoadImageView from 'mkp-react-native-image-view'
+//import MKPLoadImageView from 'mkp-react-native-image-view'
 import { Icon } from 'react-native-elements'
 // import Infos from './Infos/Infos'
 
