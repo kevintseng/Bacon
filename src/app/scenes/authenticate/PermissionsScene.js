@@ -43,11 +43,17 @@ export default class PermissionsScene extends Component {
       const cameraPermission = await PermissionsAndroid.request( PermissionsAndroid.PERMISSIONS.CAMERA, 
         { 'title': 'Bacon權限提醒', 
           'message': '請開啟拍照及錄影權限讓Bacon提供最佳的用戶體驗' } ) 
-      //const writeExternalStorgePermission = await PermissionsAndroid.request( PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, 
-      //  { 'title': '開啟相機權限', 
-      //    'message': '請開啟地理位置權限讓Bacon提供最佳的用戶體驗' } ) 
-      /////      
-      if ((locationPermission === PermissionsAndroid.RESULTS.GRANTED) && (cameraPermission === PermissionsAndroid.RESULTS.GRANTED)) { 
+      const writeExternalStorgePermission = await PermissionsAndroid.request( PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, 
+        { 'title': '開啟相機權限', 
+          'message': '請開啟檔案儲存權限讓Bacon提供最佳的用戶體驗' } ) 
+      const readExternalStorgePermission = await PermissionsAndroid.request( PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, 
+        { 'title': '開啟相機權限', 
+          'message': '請開啟檔案讀取權限讓Bacon提供最佳的用戶體驗' } ) 
+      ///      
+      if ((locationPermission === PermissionsAndroid.RESULTS.GRANTED) 
+        && (cameraPermission === PermissionsAndroid.RESULTS.GRANTED)
+        && (writeExternalStorgePermission === PermissionsAndroid.RESULTS.GRANTED)
+        && (readExternalStorgePermission === PermissionsAndroid.RESULTS.GRANTED)) { 
         Actions.SessionCheck({type: 'reset'})
       } else { 
         Actions.SessionCheck({type: 'reset'})

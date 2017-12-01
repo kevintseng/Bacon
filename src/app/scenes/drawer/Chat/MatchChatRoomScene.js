@@ -13,8 +13,8 @@ const options = {
   chooseFromLibraryButtonTitle: "從相簿中選擇",
   cancelButtonTitle: "取消",
   mediaType: "photo",
-  maxWidth: 1200,
-  maxHeight: 1200,
+  maxWidth: 600,
+  maxHeight: 600,
   quality: 1.0,
   noData: false,
   storageOptions: { skipBackup: true, path: "Bacon" }
@@ -194,7 +194,7 @@ export default class MatchChatRoomScene extends Component {
     } else if (res.error) {
         //console.log(res.error);
     } else {
-      ImageResizer.createResizedImage(res.uri, 1200, 1200, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
+      ImageResizer.createResizedImage(res.uri, 600, 600, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
         .then(image => {
           //console.log(image.uri)
         this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
