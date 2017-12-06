@@ -29,7 +29,7 @@ const AppInitial = {
     this.SignUpStore = new SignUpStore(this.firebase)
     this.SignInStore = new SignInStore()
     this.PasswordStore = new PasswordStore()
-    this.SubjectStore = new SubjectStore()
+    this.SubjectStore = new SubjectStore(this.firebase)
     this.SubjectEditStore = new SubjectEditStore()
 
     // this.SignUpInStore = new SignUpInStore(this.firebase)

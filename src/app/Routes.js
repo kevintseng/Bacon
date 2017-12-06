@@ -267,6 +267,7 @@ export default class Routes extends Component {
                 <Scene key="AboutMeBoard" title="通知" renderBackButton={this.baconArrow} component={AboutMeBoardScene} />
               </Scene>
 
+              <Scene key="Swiper" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="邂逅" renderBackButton={this.baconMenu} component={SwiperScene} renderRightButton={this.baconToolChatRoom}/>
 
             </Scene>
           </Scene>
@@ -279,6 +280,11 @@ export default class Routes extends Component {
 }
 
 /*
+
+              <Scene key="MeetCute" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
+                <Scene key="MeetCuteCourt" title="邂逅" renderBackButton={this.baconMenu} renderLeftButton={this.baconMenu} renderRightButton={this.baconToolMeetCute} component={MeetCuteCourtScene} />
+                <Scene key="MeetCuteConfig" title="邂逅" renderBackButton={this.baconArrow} component={MeetCuteConfigScene} />
+              </Scene>
 
               <Scene key="Fate" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="FateTab" title="緣分" renderLeftButton={this.baconMenu} component={FateTabScene} />

@@ -46,8 +46,12 @@ export default class SubjectStore {
   @observable unhandledPass
   // task 
   @observable tasks
+  @observable meetCuteModal
+  // meetCute
+  @observable meetCutePreys
 
-  constructor() {
+  constructor(firebase) {
+    this.firebase = firebase
     this.initialize()
   }
 
@@ -149,6 +153,8 @@ export default class SubjectStore {
     //
     this.stars = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
     this.onlineDaysMonth = new Object
+    this.meetCuteModal = true
+    this.meetCutePreys = new Array
   }
 
   @action setUid = uid => {
@@ -411,6 +417,84 @@ export default class SubjectStore {
         default:
             return ''
     }     
+  }
+
+  // meetCute
+
+  @action setMeetCutePreys = () => {
+    // 先不隨機
+    this.firebase.database().ref('meetCuteList/' + this.sexualOrientation).limitToLast(100).once('value',snap => {
+      if (snap.val()) {
+        const newPreys = Object.keys(snap.val()).map(uid => 
+          this.firebase.database().ref('users/' + uid).once('value',snap => snap.val())
+        )
+   /*     
+        this.newPreys = Object.keys(snap.val()).map(key => {
+          const albumObject = this.handleNewAlbum(obj[key].album,obj[key].avatar)
+          const album = Object.keys(albumObject).map(key => albumObject[key] ) 
+          return({
+            key: key,
+            nickname: obj[key].nickname,
+            album: album
+          })
+        })
+    */   
+
+    Promise.all(newPreys)
+    .then(results => {
+      this.meetCutePreys = results.map(snap => 
+        {
+          const albumObject = this.sortedAlbum(snap.val().album,snap.val().avatar)
+          const album = Object.keys(albumObject).map(key => albumObject[key] ) 
+          return({
+            key: snap.key,
+            nickname: snap.val().nickname,
+            album: album
+          })          
+        }
+      )
+      this.meetCuteModal = false
+    }) 
+        
+      } else {
+        console.log('no data')
+      }
+    })
+
+    // block 0r hiden
+    //console.warn(this.uid)
+    
+    
+  
+
+
+    //const subPhotos = _allPhotos.slice(0, 50)  
+
+    //const imagePrefetch = subPhotos.map(photo => Image.prefetch(photo))
+
+    //const otherPhotos = allPhotos.slice(29, allPhotos.length)
+
+    //Promise.all(imagePrefetch)
+    //.then(results => {
+      //console.warn("All images prefetched in parallel");
+    //  this.modal = false
+      //otherPhotos.forEach(photo => Image.prefetch(photo))
+    //})
+    //this.newPreys = toJS(this.newPreys)
+    //console.log(this.newPreys)
+  }
+
+  // 演算法
+
+  sortedAlbum = (album,avatar) => {
+    const key = this.getKeyByValue(album, avatar)
+    delete album[key]
+    album[0] = avatar
+    return album || new Object
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value)
   }
 
 }

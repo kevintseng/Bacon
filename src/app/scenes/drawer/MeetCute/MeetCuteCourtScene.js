@@ -60,7 +60,7 @@ export default class MeetCuteCourtScene extends Component {
   }
 
   task = () => {
-    this.MeetCuteStore.setPreyList()  
+    //this.MeetCuteStore.setPreyList()  
   }
 
   render() {
