@@ -12,6 +12,7 @@ export default class MeetCuteStore {
   @observable haveNewPreys
   @observable loading
   @observable firstLoading
+  @observable sexualOrientation
   // user data
   @observable nickname
   @observable bio
@@ -66,7 +67,7 @@ export default class MeetCuteStore {
     this.clean = false
     this.index = 0
     // user data
-    this.uid = null
+    //this.uid = null
     this.nickname = null
     this.bio = null
     this.birthday = null
@@ -94,6 +95,7 @@ export default class MeetCuteStore {
     this.newPreys = new Array
     this.modal = true
     this.allPhotos = new Array
+    this.sexualOrientation = null
   }
 
   @action addPreyToGoodImpressionPool = (uid,time) => {
@@ -265,90 +267,8 @@ export default class MeetCuteStore {
     })
   }
 
-  @action setNewPreys = (obj) => {
-    //var imagePrefetch = []
-    //var _allPhotos = []
-    this.newPreys = Object.keys(obj).map(key => {
-      const albumObject = this.handleNewAlbum(obj[key].album,obj[key].avatar)
-
-    const album = [
-      'https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/images%2Favatars%2FmNri0IuVS2XLty9rDMFKgyH0A1u2%2F1511861114312.jpg?alt=media&token=686b1e30-da76-44d1-9667-eb1b234fe875',
-      'https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/userAlbum%2FmNri0IuVS2XLty9rDMFKgyH0A1u2%2F1511861494387.jpg?alt=media&token=8a3a8728-86ba-4ec0-9fa9-89fb465a225e',
-      'https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/userAlbum%2FmNri0IuVS2XLty9rDMFKgyH0A1u2%2F1511861507173.jpg?alt=media&token=37719ec9-6033-403b-8a11-08012274dc0d'
-      ]
-      //const album = Object.keys(albumObject).map(key => albumObject[key] ) 
-            //imagePrefetch.push(Image.prefetch(album[0]))
-      //Image.prefetch(album[0],()=>{
-      //  console.warn('5j8')
-      //})
-      //album.forEach(photo => {
-      //  Image.prefetch(photo)
-      //  _allPhotos.push(photo)
-      //})
-      //allPhotos = allPhotos.concat(album)
-      //FastImage.preload()
-      //FastImage.preload(album.map(photo => ({
-      //  uri: photo
-      //})))
-
-      return({
-        key: key,
-        nickname: obj[key].nickname,
-        album: album
-      })
-    })
-
-    //const subPhotos = _allPhotos.slice(0, 50)
-/*    
-    const subPhotos = 
-    ['https://bingfeng.tw/data/attachment/forum/201510/31/004858m22l2q0ay4vt00q0.jpg',
-      'http://img.chinatimes.com/newsphoto/2016-05-18/656/20160518003819.jpg',
-      'http://5.blog.xuite.net/5/5/6/8/24301628/blog_2126869/txt/37281583/4.jpg',
-      'https://pic.pimg.tw/zaep/364f1de4245b8299ea439a1181a154a9.jpg',
-      'http://attach.sogi.com.tw/upload/201307/20130705154827902.jpg',
-      'https://attach.setn.com/newsimages/2016/09/01/635065-XXL.jpg',
-      'https://attach.setn.com/newsimages/2016/11/23/720085-XXL.jpg',
-      'https://www.playsport.cc/upload/forum/13567165761709.jpg',
-      'http://img.ltn.com.tw/Upload/liveNews/BigPic/600_phpFasVji.jpg',
-      'http://d.blog.xuite.net/d/8/4/1/24075001/blog_2321935/txt/63821034/5.jpg',
-      'http://img.ltn.com.tw/Upload/liveNews/BigPic/600_php4x9nzW.jpg',
-      'http://i4.funpeer.com/ZmFpuuJzjKT9.jpg',
-      'https://cdn2.ettoday.net/images/187/d187814.jpg',
-      'http://img.ltn.com.tw/Upload/liveNews/BigPic/600_php2YSwAa.jpg',
-      'http://video.nextmag.com.tw/photo/2016/05/13/640_72f27ea3f4713631efdd73417d82aca2_1463116067624_569257_ver1.0.jpg',
-      'https://dvblobcdnea.azureedge.net//Content/Upload/Popular/Images/2017-04/8088dc5b-a54b-4f1c-bda4-8f201a456515_m.jpg',
-      'http://s3.iguang.co/e690bde3/s3/99ca2a86c6ac3b34ef7aa2c9fa1183b9.jpg',
-      'https://static.juksy.com/files/articles/57913/57ec81c6ab97b.jpg?m=widen&i=600&q=75',
-      'http://img02.tooopen.com/images/20151229/tooopen_sy_153057917287.jpg',
-      'http://imgs3.iaweg.com/pic/HTTP2ltZzEuM2xpYW4uY29tLzIwMTUvYTEvMTI1L2QvMjEuanBn.jpg',
-      'https://lh3.googleusercontent.com/-FXVkPn_PONw/U667RU_pfwI/AAAAAAAABaE/fjM9sxpZWDo/w769-h577-no/6923960_1.jpg',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjexaxGt-b7wXfZ3ZK7SWxapKmb_aedrb1mZ1J6Ja_XyOuAXCZ',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_xKmMtomuaDuqC4KpOGZPi6worhCHKXDYPDE_gSUPhLMw8i6c',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSczOrHGRYOSmZSZDG1hxVgYpwbjl3cGECEIvtlmYD0GpQbbka4',
-      'http://p3.pstatp.com/origin/28860003306f8f101e1c',
-      'http://s35.youtaker.com/other/2012/4-8/oth1141229908ab24c12a1f2486db603504d429e98e50014.jpg',
-      'http://img5.dwstatic.com/wuxia/1702/350848167147/350848540231.png'
-    ]
-*/
-
-    const subPhotos = [
-      'https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/images%2Favatars%2FmNri0IuVS2XLty9rDMFKgyH0A1u2%2F1511861114312.jpg?alt=media&token=686b1e30-da76-44d1-9667-eb1b234fe875',
-      'https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/userAlbum%2FmNri0IuVS2XLty9rDMFKgyH0A1u2%2F1511861494387.jpg?alt=media&token=8a3a8728-86ba-4ec0-9fa9-89fb465a225e',
-      'https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/userAlbum%2FmNri0IuVS2XLty9rDMFKgyH0A1u2%2F1511861507173.jpg?alt=media&token=37719ec9-6033-403b-8a11-08012274dc0d'
-      ]   
-
-    const imagePrefetch = subPhotos.map(photo => Image.prefetch(photo))
-
-    //const otherPhotos = allPhotos.slice(29, allPhotos.length)
-
-    Promise.all(imagePrefetch)
-    .then(results => {
-      //console.warn("All images prefetched in parallel");
-      this.modal = false
-      //otherPhotos.forEach(photo => Image.prefetch(photo))
-    })
-    //this.newPreys = toJS(this.newPreys)
-    //console.log(this.newPreys)
+  @action setSexualOrientation = sexualOrientation => {
+    this.sexualOrientation = sexualOrientation
   }
 
   @action setOnLoadEnd = async () => {
@@ -500,6 +420,10 @@ export default class MeetCuteStore {
 
   @action addIndex = () => {
     this.index = this.index + 1
+  }
+
+  @action setUid = uid => {
+    this.uid = uid
   }
 
 }

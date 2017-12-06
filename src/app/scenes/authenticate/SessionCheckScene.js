@@ -51,6 +51,7 @@ export default class SessionCheckScene extends Component {
     this.firebase.auth().onAuthStateChanged( user => {
       if (user) {
         this.SubjectStore.setUid(user.uid) // 設置 uid
+        //this.MeetCuteStore.setUid(user.uid)
         this.SubjectStore.setEmail(user.email) // 設置 email
         //this.FateStore.setSelfUid(user.uid) // 設置 uid
         //this.ChatStore.setUid(user.uid) // 設置 uid
@@ -239,11 +240,12 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setBonus(0) // Int
     //this.SubjectStore.setVisitConvSentToday(0)
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
+    //this.MeetCuteStore.setSexualOrientation(this.sexualOrientationToString())
     //this.ChatStore.setNickname(this.SignUpStore.nickname)
     //this.ControlStore.setSyncDetector(true) // 同步完成
-    this.meetCuteListener() // 非同步邂逅監聽
-    this.uploadLocation() // 上傳GPS資料 巧遇監聽
-    this.uxSignIn() // 讓登入頁留住帳號密碼
+    //this.meetCuteListener() // 非同步邂逅監聽
+    //this.uploadLocation() // 上傳GPS資料 巧遇監聽
+    //this.uxSignIn() // 讓登入頁留住帳號密碼
   }
 
   initSubjectStoreFromFirebase = () => {
@@ -262,6 +264,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation)
           this.SubjectStore.setChatStatus(snap.val().chatStatus)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
+          //this.MeetCuteStore.setSexualOrientation(snap.val().sexualOrientation)
           //this.SubjectStore.setConversations(snap.val().conversations)
           //this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
           //this.SubjectStore.setUnhandledPass(new Object(snap.val().unhandledPass) || {})
@@ -281,32 +284,32 @@ export default class SessionCheckScene extends Component {
           // stars
           this.SubjectStore.setAllArticlesStars(snap.val().stars || { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 })
           // meetCute config
-          this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)
-          this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 50)
-          this.MeetCuteStore.setMeetCuteRadar(snap.val().meetCuteRadar)
-          this.MeetCuteStore.setMeetCuteThreePhotos(snap.val().meetCuteThreePhotos)
+          //this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)
+          //this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 50)
+          //this.MeetCuteStore.setMeetCuteRadar(snap.val().meetCuteRadar)
+          //this.MeetCuteStore.setMeetCuteThreePhotos(snap.val().meetCuteThreePhotos)
           // meetChance config
-          this.MeetChanceStore.setMeetChanceMinAge(snap.val().meetChanceMinAge || 18)
-          this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 50)
-          this.MeetChanceStore.setMeetChanceRadar(snap.val().meetChanceRadar)
-          this.MeetChanceStore.setMeetChanceOfflineMember(snap.val().meetCuteOfflineMember)
+          //this.MeetChanceStore.setMeetChanceMinAge(snap.val().meetChanceMinAge || 18)
+          //this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 50)
+          //this.MeetChanceStore.setMeetChanceRadar(snap.val().meetChanceRadar)
+          //this.MeetChanceStore.setMeetChanceOfflineMember(snap.val().meetCuteOfflineMember)
           // LineStore
-          this.LineStore.setUid(this.SubjectStore.uid)
+          //this.LineStore.setUid(this.SubjectStore.uid)
           //this.LineStore.fetchConvList()
           //
-          this.SubjectStore.setLatitude(snap.val().latitude || 25.028031)
-          this.SubjectStore.setLongitude(snap.val().longitude || 121.516815)
-          this.MeetCuteStore.setLatitude(snap.val().latitude || 25.028031)
-          this.MeetCuteStore.setLongitude(snap.val().longitude || 121.516815)
-          this.MeetChanceStore.setLatitude(snap.val().latitude || 25.028031)
-          this.MeetChanceStore.setLongitude(snap.val().longitude || 121.516815)
-          this.FateStore.setLatitude(snap.val().latitude || 25.028031)
-          this.FateStore.setLongitude(snap.val().longitude || 121.516815)
+          //this.SubjectStore.setLatitude(snap.val().latitude || 25.028031)
+          //this.SubjectStore.setLongitude(snap.val().longitude || 121.516815)
+          //this.MeetCuteStore.setLatitude(snap.val().latitude || 25.028031)
+          //this.MeetCuteStore.setLongitude(snap.val().longitude || 121.516815)
+          //this.MeetChanceStore.setLatitude(snap.val().latitude || 25.028031)
+          //this.MeetChanceStore.setLongitude(snap.val().longitude || 121.516815)
+          //this.FateStore.setLatitude(snap.val().latitude || 25.028031)
+          //this.FateStore.setLongitude(snap.val().longitude || 121.516815)
           //
           //this.ChatStore.setNickname(snap.val().nickname)
           //
-          this.meetCuteListener() // 非同步邂逅
-          this.uploadLocation() // 上傳GPS資料 巧遇監聽
+          //this.meetCuteListener() // 非同步邂逅
+          //this.uploadLocation() // 上傳GPS資料 巧遇監聽
         } else {
           //
         }
@@ -809,6 +812,7 @@ export default class SessionCheckScene extends Component {
   )
 
   sexualOrientationToString = () => (
+    //this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : ((this.SignUpStore.gender ? 'f' : 'm') + 's' + this.genderToString())
     this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : (this.genderToString() + 's' + (this.SignUpStore.gender ? 'f' : 'm'))
   )
 
