@@ -80,6 +80,10 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </TouchableOpacity>
 
         <View style={{marginTop: 7}}>
+          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
+        </View>
+        
+        <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ swiperOnPress }/>
         </View>
         
