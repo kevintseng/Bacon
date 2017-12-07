@@ -36,11 +36,13 @@ export default class SwiperScene extends Component {
     this.state = {
       albumZoom: false
     }
+    this.cardIndex = 0
   }
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
     this.SubjectStore.setMeetCutePreys()
+    //console.log(toJS(this.SubjectStore.meetCutePreys))
     //BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
@@ -117,13 +119,30 @@ export default class SwiperScene extends Component {
           />
         </View> :
         <View style={{flex: 1}}>
+                <Modal hardwareAccelerated animationType={'none'} onRequestClose={this.closeAlbum} visible={ this.state.albumZoom || false } transparent={false}>
+                  <Carousel
+                    //ref={(carousel) => { this.carousel = carousel }}
+                    swipe
+                    currentPage={this.currentPage}
+                    style={{flex:1,backgroundColor: 'transparent'}}
+                    bullets
+                    autoplay={false}
+                    pageInfoTextStyle={{color: 'red'}}
+                    bulletsStyle={{position: 'absolute',bottom: 10}}
+                    >
+                    { this.renderAlbumZoom( this.SubjectStore.meetCutePreys[this.cardIndex].album ) }
+                  </Carousel>
+                  <View style={styles.toolView}>
+                    <View><Icon name='heart' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ this.closeAlbum } /></View>
+                    <View><Icon name='arrow-right' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ this.nextphoto }/></View>
+                  </View>
+                </Modal>
           <Swiper
             ref={swiper => { this.swiper = swiper}}
             cards={toJS(this.SubjectStore.meetCutePreys)}
             renderCard={(card) => {
             return(
               <View style={{flex: 1}}>
-                { console.log(card) }
                 <Carousel
                   swipe
                   style={{backgroundColor: 'white',width, height: width}}
@@ -194,7 +213,7 @@ export default class SwiperScene extends Component {
                     pageInfoTextStyle={{color: 'red'}}
                     bulletsStyle={{position: 'absolute',bottom: 10}}
                     >
-                    { this.renderAlbumZoom( card.album ) }
+                    { this.renderAlbumZoom( this.SubjectStore.meetCutePreys[this.cardIndex].album ) }
                   </Carousel>
                   <View style={styles.toolView}>
                     <View><Icon name='heart' color='#d63768' size={50} type='evilicon' underlayColor='transparent' onPress={ this.closeAlbum } /></View>
