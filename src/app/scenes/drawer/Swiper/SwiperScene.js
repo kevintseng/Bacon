@@ -103,6 +103,11 @@ export default class SwiperScene extends Component {
     this.swiper.swipeRight()
   }
 
+  onSwipedAll = () => {
+    this.cardIndex = 0
+    this.SubjectStore.setMeetCuteModal()
+  }
+
   //block = () => {
     //console.warn(this.SubjectStore.uid)
   //  this.firebase.database().ref('meetCuteList/' + this.SubjectStore.sexualOrientation + '/K1wBpaqDOyXpaxIQ93Nwx3VlDbk2/' +this.SubjectStore.uid).remove()
@@ -174,7 +179,7 @@ export default class SwiperScene extends Component {
               )
             }}
             onSwiped={(cardIndex) => {this.cardIndex = cardIndex + 1}}
-            onSwipedAll={() => {alert('沒了')}}
+            onSwipedAll={this.onSwipedAll}
             cardIndex={this.cardIndex}
             horizontalSwipe={false}
             verticalSwipe={false}
@@ -184,7 +189,8 @@ export default class SwiperScene extends Component {
             cardHorizontalMargin={0}
             zoomAnimationDuration={0}
             //showSecondCard={false}
-            //swipeBackCard={false}
+            swipeBackCard={false}
+            //infinite={true}
           />
           <View style={{flexDirection: 'row',position: 'absolute', justifyContent: 'space-around',top: height/2, width}}>
             <TouchableOpacity onPress={ () => { this.swiper.swipeLeft() } }>
