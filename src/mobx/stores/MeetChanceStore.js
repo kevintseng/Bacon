@@ -104,23 +104,8 @@ export default class MeetChanceStore {
 
   // pool
 
-  @action addPreyToPool = (uid,distance,nickname,avatar,birthday,hideMeetChance,deleted,online,popularityDen,popularityNum) => {
-    this.pool[uid] = { key: uid, distance: distance, nickname: nickname, avatar: avatar, birthday: birthday, hideMeetChance: hideMeetChance, deleted: deleted, online: online, popularityDen: popularityDen, popularityNum: popularityNum }
-  }
-
-  @action updatePreyToPool = (uid,distance) => {
-    if (this.pool[uid]) {
-      // 這裡常常會掛掉 this.pool[uid] = undefinded
-      this.pool[uid].distance = distance
-    }
-  }
-
-  @action removePreyToPool = uid => {
-    delete this.pool[uid]
-  }
-
-  @action addPreyToblockadePool = (uid,time) => {
-    this.blockadePool[uid] = time
+  @action addPreyToPool = (uid,distance,nickname,avatar,birthday,hideMeetChance,deleted,online) => {
+    this.pool[uid] = { key: uid, distance: distance, nickname: nickname, avatar: avatar, birthday: birthday, hideMeetChance: hideMeetChance, deleted: deleted, online: online }
   }
 
   // preyList
@@ -132,10 +117,6 @@ export default class MeetChanceStore {
       key => {
         const value = this.pool[key]
         if (!(value.hideMeetChance) && !(value.deleted) && !(this.blockadeList.includes(key)) && value.birthday && ((calculateAge(value.birthday) >= this.meetChanceMinAge) && (calculateAge(value.birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(value.online)) {
-          //const popularityDen = value.popularityDen || 0
-          //const popularityNum = value.popularityNum || 0
-          //this.firebase.database().ref('users/' + value.uid + '/popularityDen').set(popularityDen + 1)
-          //this.firebase.database().ref('users/' + value.uid + '/popularity').set(popularityNum/(popularityDen + 1))
           return true
         } else {
           return null
@@ -146,28 +127,18 @@ export default class MeetChanceStore {
     this.preyList.sort((a, b) => {
       return a.distance > b.distance ? 1 : -1
     })
-    // !(blockadeList.includes(key)) &&
   }
 
   @action filterBlockadeList = () => {
-    return Object.keys(this.blockadePool)
+    return [] // 放在local
   }
 
   @action setRealPreys = () => {
-    //while (this.preyList.length === 0) {
-    //  await this.sleep(300)
-    //  this.setPreyList()
-    //  if (this.preyList.length > 0) {
-    //    break
-    //  }
-    //}
-    //this.preys = toJS(this.preyList)
-    //console.warn('end')
     this.preys = this.preys.concat(this.preyList.slice(0,12))
   }
 
   @action addMorePreys = () => {
-    console.warn(this.index)
+    //console.warn(this.index)
     if (this.index > 0) {
       this.preys = this.preys.concat(this.preyList.slice(0 + 12*this.index,12 + 12*this.index))
     }
@@ -314,3 +285,20 @@ export default class MeetChanceStore {
   }
 
 }
+
+/*
+  @action updatePreyToPool = (uid,distance) => {
+    if (this.pool[uid]) {
+      // 這裡常常會掛掉 this.pool[uid] = undefinded
+      this.pool[uid].distance = distance
+    }
+  }
+
+  @action removePreyToPool = uid => {
+    delete this.pool[uid]
+  }
+
+  @action addPreyToblockadePool = (uid,time) => {
+    this.blockadePool[uid] = time
+  }
+*/
