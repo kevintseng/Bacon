@@ -19,7 +19,7 @@ export default class SubjectStore {
   @observable avatar
   @observable album
   @observable nickname
-  @observable sexualOrientation
+  @observable preySexualOrientation
   @observable address
   @observable birthday
   @observable bio
@@ -119,7 +119,7 @@ export default class SubjectStore {
     this.album = new Object
     this.avatar = null
     this.vip = false
-    this.sexualOrientation = null // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
+    this.preySexualOrientation = null // 有可能 null -> 萬一上傳失敗拿不到就永遠都是null了 -> 邂逅那邊先做特別處理
     this.emailVerified = false
     this.photoVerified = false
     // hide function
@@ -181,8 +181,8 @@ export default class SubjectStore {
     this.avatar = url
   }
 
-  @action setSexualOrientation = str => {
-    this.sexualOrientation = str
+  @action setPreySexualOrientation = str => {
+    this.preySexualOrientation = str
   }
 
   @action setBio = str => {
@@ -423,7 +423,7 @@ export default class SubjectStore {
 
   @action setMeetCutePreys = () => {
     // 先不隨機
-    this.firebase.database().ref('meetCuteList/' + this.sexualOrientation).limitToLast(100).once('value',snap => {
+    this.firebase.database().ref('meetCuteList/' + this.preySexualOrientation).limitToLast(100).once('value',snap => {
       if (snap.val()) {
         const newPreys = Object.keys(snap.val()).map(uid => 
           this.firebase.database().ref('users/' + uid).once('value',snap => snap.val())
@@ -495,6 +495,11 @@ export default class SubjectStore {
 
   getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value)
+  }
+
+  setMeetCuteModal = () => {
+    this.meetCuteModal = true
+    this.setMeetCutePreys()
   }
 
 }

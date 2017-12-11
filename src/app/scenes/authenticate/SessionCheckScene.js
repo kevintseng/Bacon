@@ -136,16 +136,16 @@ export default class SessionCheckScene extends Component {
       this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
         avatar: uploadedFile.downloadURL,
         album: album,
-        sexualOrientation: this.sexualOrientationToString(),
+        preySexualOrientation: this.oppositeSexualOrientationToString(),
         address: this.SignUpStore.address,
         nickname: this.SignUpStore.nickname,
         birthday: this.SignUpStore.birthday,
         bonus: 0
       }).then(() => { 
         console.log('上傳註冊資料成功')
-        this.firebase.database().ref('meetCuteList/' + this.oppositeSexualOrientationToString() + '/' + this.SubjectStore.uid).set(true)
-        this.geoUploadFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.oppositeSexualOrientationToString()))
-        this.geoQueryFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.sexualOrientationToString()))
+        this.firebase.database().ref('meetCuteList/' + this.sexualOrientationToString() + '/' + this.SubjectStore.uid).set(true)
+        this.geoUploadFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.sexualOrientationToString()))
+        this.geoQueryFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.oppositeSexualOrientationToString()))
         this.uploadLocationWhenSignUp()
       }).catch(() => {
         console.log('上傳註冊資料失敗')
@@ -242,7 +242,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setCollect(new Object) // Object
     this.SubjectStore.setVip(false) // boolean
     this.SubjectStore.setBonus(0) // Int
-    this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
+    this.SubjectStore.setPreySexualOrientation(this.oppositeSexualOrientationToString())
     //
     //this.SubjectStore.setVisitConvSentToday(0)
     //this.geoFire = new GeoFire(this.firebase.database().ref('/user_locations/' + this.sexualOrientationToString()))
@@ -267,7 +267,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setLanguages(Object.assign({}, DefaultLanguages, snap.val().languages)) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
-          this.SubjectStore.setSexualOrientation(snap.val().sexualOrientation)
+          this.SubjectStore.setPreySexualOrientation(snap.val().preySexualOrientation)
           this.SubjectStore.setChatStatus(snap.val().chatStatus)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
           //this.MeetCuteStore.setSexualOrientation(snap.val().sexualOrientation)
@@ -275,10 +275,10 @@ export default class SessionCheckScene extends Component {
           //this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
           //this.SubjectStore.setUnhandledPass(new Object(snap.val().unhandledPass) || {})
           // tasks
-          if (snap.val().sexualOrientation) {
+          if (snap.val().preySexualOrientation) {
             // 如果有性別
-            this.geoUploadFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.reverseString(snap.val().sexualOrientation)))
-            this.geoQueryFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + snap.val().sexualOrientation))
+            this.geoUploadFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.reverseString(snap.val().preySexualOrientation)))
+            this.geoQueryFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + snap.val().preySexualOrientation))
             this.uploadLocationWhenSignIn(snap.val().latitude,snap.val().longitude)
           }
           //
