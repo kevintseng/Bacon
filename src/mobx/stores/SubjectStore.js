@@ -444,7 +444,7 @@ export default class SubjectStore {
     .then(results => {
       this.meetCutePreys = results.map(snap => 
         {
-          const albumObject = this.sortedAlbum(snap.val().album,snap.val().avatar)
+          const albumObject = this.sortedAlbum(snap.val().album || new Object,snap.val().avatar)
           const album = Object.keys(albumObject).map(key => albumObject[key] ) 
           return({
             key: snap.key,
