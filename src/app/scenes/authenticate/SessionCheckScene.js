@@ -8,8 +8,11 @@ import Moment from 'moment'
 import MomentLocale from 'moment/locale/zh-tw'
 import InAppBilling from 'react-native-billing'
 
+// 演算法
 import { calculateAge } from '../../../app/Utils'
+// 頁面
 import Loading from '../../views/Loading/Loading'
+// 設定
 import DefaultLanguages from '../../../configs/DefaultLanguages'
 
 const metadata = {
@@ -33,11 +36,12 @@ export default class SessionCheckScene extends Component {
     this.ChatStore = this.props.ChatStore
     this.firebase = this.props.firebase
     this.lastAppState = AppState.currentState
-    // 監聽函數
+    // 巧遇
     this.geoQuery = null
-    this.uploadGeoFire = null
-    this.meetChanceGeoFire = null
-    this.meetCuteQuery = null
+    this.geoUploadFire = null
+    this.geoQueryFire = null
+
+    ////////
     this.visitorsQuery = null
     this.goodImpressionQuery = null
     this.chatRoomCreaterQuery = null
@@ -70,7 +74,9 @@ export default class SessionCheckScene extends Component {
           ///////// 同步 /////////
           //this.uploadEmailVerity()
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
-        } else { // 從登入來的
+          this.uxSignIn(this.SignUpStore.email,this.SignUpStore.password)
+        } else { 
+          // 從登入來的
           //移除所有監聽函數 初始化狀態
           this.initialize()
           ///////// 非同步 /////////
@@ -86,7 +92,6 @@ export default class SessionCheckScene extends Component {
           //AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           ///////// 同步 /////////
           //this.uploadEmailVerity()
-
         }
         Actions.Drawer({type: 'reset'}) // 進入 Drawer
       } else {
@@ -103,9 +108,9 @@ export default class SessionCheckScene extends Component {
   }
 
   initialize = () => {
-    AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
+    //AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
     this.removeMeetChanceListener() // 非同步移除地理監聽
-    this.removeMeetCuteListener() // 移除邂逅監聽
+    //this.removeMeetCuteListener() // 移除邂逅監聽
     this.removeVisitorsListener() // 移除邂逅監聽
     this.removeGoodImpressionListener() // 移除好感監聽
     this.removeMatchListener() // 配對
@@ -122,6 +127,7 @@ export default class SessionCheckScene extends Component {
   }
 
   uploadSignUpData = () => {
+    // 上傳註冊資料
     this.firebase.storage().ref('images/avatars/' + this.SubjectStore.uid + '/' + Object.keys(this.SignUpStore.album)[0] + '.jpg')
     .putFile(this.SignUpStore.avatar.replace('file:/',''), metadata)
     .then(uploadedFile => {
@@ -138,8 +144,8 @@ export default class SessionCheckScene extends Component {
       }).then(() => { 
         console.log('上傳註冊資料成功')
         this.firebase.database().ref('meetCuteList/' + this.oppositeSexualOrientationToString() + '/' + this.SubjectStore.uid).set(true)
-        this.uploadGeoFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.oppositeSexualOrientationToString()))
-        this.meetChanceGeoFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.sexualOrientationToString()))
+        this.geoUploadFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.oppositeSexualOrientationToString()))
+        this.geoQueryFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.sexualOrientationToString()))
         this.uploadLocationWhenSignUp()
       }).catch(() => {
         console.log('上傳註冊資料失敗')
@@ -148,42 +154,24 @@ export default class SessionCheckScene extends Component {
       console.log('使用者大頭照上傳失敗')
     })
   }
-/*
-  uploadSignUpProfile = () => {
-    this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
-      // 非同步上傳註冊資料
-      sexualOrientation: this.sexualOrientationToString(),
-      address: this.SignUpStore.address,
-      nickname: this.SignUpStore.nickname,
-      birthday: this.SignUpStore.birthday,
-      //vip: false,
-      bonus: 0
-    }).then(() => {
-        this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳成功')
-      }).catch((error) => {
-        this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳失敗')
-        console.log(error)
-      })
-  }
-*/
 
   uploadLocationWhenSignUp = () => {
     Geolocation.getCurrentPosition(
       location => {
         // 抓到手機地理位置
         this.uploadLocationToProfile(location.coords.latitude,location.coords.longitude)
-        this.uploadLocationToUserLocation(location.coords.latitude,location.coords.longitude)
-        this.setMeetChanceListener(location.coords.latitude,location.coords.longitude)
+        this.uploadLocationToMeetChanceList(location.coords.latitude,location.coords.longitude)
+        this.setGeoQuery(location.coords.latitude,location.coords.longitude)
         //this.setLocation(location.coords.latitude,location.coords.longitude)
       },
       error => {
         if (this.SignUpStore.latitude && this.SignUpStore.longitude) {
           this.uploadLocationToProfile(this.SignUpStore.latitude,this.SignUpStore.longitude)
-          this.uploadLocationToUserLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
-          this.setMeetChanceListener(this.SignUpStore.latitude,this.SignUpStore.longitude)
+          this.uploadLocationToMeetChanceList(this.SignUpStore.latitude,this.SignUpStore.longitude)
+          this.setGeoQuery(this.SignUpStore.latitude,this.SignUpStore.longitude)
           //this.setLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
         } else {
-          //console.log('從註冊獲得地理位置失敗')
+          console.log('獲取地理位置失敗')
         }
       }
     )    
@@ -194,13 +182,20 @@ export default class SessionCheckScene extends Component {
       location => {
         // 抓手機地理位置成功
         this.uploadLocationToProfile(location.coords.latitude,location.coords.longitude)
-        this.uploadLocationToUserLocation(location.coords.latitude,location.coords.longitude)
-        this.setMeetChanceListener(location.coords.latitude,location.coords.longitude)
+        this.uploadLocationToMeetChanceList(location.coords.latitude,location.coords.longitude)
+        this.setGeoQuery(location.coords.latitude,location.coords.longitude)
         //this.setLocation(location.coords.latitude,location.coords.longitude)
       },
       error => {
         //獲取手機地理位置失敗，拿上次資料
-        console.warn('獲取手機地理位置失敗，拿上次資料')
+        if (latitude && longitude) {
+          this.uploadLocationToProfile(latitude,longitude)
+          this.uploadLocationToMeetChanceList(latitude,longitude)
+          this.setGeoQuery(latitude,longitude)
+          //this.setLocation(latitude,longitude)
+        } else {
+          console.log('獲取地理位置失敗')
+        }
       }
     )    
   }
@@ -210,8 +205,8 @@ export default class SessionCheckScene extends Component {
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/longitude').set(longitude)
   }
 
-  uploadLocationToUserLocation = (latitude,longitude) => {
-    this.uploadGeoFire.set(this.SubjectStore.uid,[latitude,longitude])
+  uploadLocationToMeetChanceList = (latitude,longitude) => {
+    this.geoUploadFire.set(this.SubjectStore.uid,[latitude,longitude])
       .then(() => {
         console.log('獲取位置成功'+[latitude,longitude])
       }, error => {
@@ -220,56 +215,19 @@ export default class SessionCheckScene extends Component {
     )    
   }
 
-  setMeetChanceListener = (latitude,longitude) => {
-    this.geoQuery = this.meetChanceGeoFire.query({
+  setGeoQuery = (latitude,longitude) => {
+    this.geoQuery = this.geoQueryFire.query({
       center: [latitude,longitude],
       radius: 394 // 台灣從北到南394公里
     })
-    this.meetChanceListener(this.geoQuery)
-  }
-
-  meetChanceListener = (geoQuery) => {
-    geoQuery.on('key_entered', (uid, location, distance) => {
-      console.warn(uid)
-      //if (uid !== this.SubjectStore.uid) {
-      //  this.firebase.database().ref('users/' + uid).once('value').then( snap => {
-      //    if (snap.val().sexualOrientation === this.reverseString(this.SubjectStore.sexualOrientation) && snap.val().album) {
-      //      this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online,snap.val().popularityDen,snap.val().popularityNum)
-      //    }
-      //  })
-      //}
+    this.geoQuery.on('key_entered', (uid, location, distance) => {
+      console.log(uid)
+      // ToDo: 同性戀要另外演算法
+      // 丟到meetChancePool裡
+      this.firebase.database().ref('users/' + uid).once('value').then( snap => {
+        this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online)
+      })
     })
-
-    geoQuery.on('key_moved', (uid, location, distance) => {
-      console.warn(uid)
-      //if (uid !== this.SubjectStore.uid) {
-        //this.MeetChanceStore.updatePreyToPool(uid,distance)
-        // 這裡常常會掛掉
-      //}
-    })
-
-    geoQuery.on('key_exited', (uid, location, distance) => {
-      console.warn(uid)
-      //if (uid !== this.SubjectStore.uid) {
-      //  this.MeetChanceStore.removePreyToPool(uid)
-      //}
-    })
-  }
-
-  setLocation = (latitude,longitude) => {
-    this.SubjectStore.setLatitude(latitude)
-    this.SubjectStore.setLongitude(longitude)
-    this.MeetCuteStore.setLatitude(latitude)
-    this.MeetCuteStore.setLongitude(longitude)
-    this.MeetChanceStore.setLatitude(latitude)
-    this.MeetChanceStore.setLongitude(longitude)
-    this.FateStore.setLatitude(latitude)
-    this.FateStore.setLongitude(longitude)
-  }
-
-  uploadEmailVerity = () => {
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/emailVerified').set(this.firebase.auth().currentUser.emailVerified)
-    this.SubjectStore.setEmailVerified(this.firebase.auth().currentUser.emailVerified)
   }
 
   initSubjectStoreFromSignUpStore = () => {
@@ -284,9 +242,9 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setCollect(new Object) // Object
     this.SubjectStore.setVip(false) // boolean
     this.SubjectStore.setBonus(0) // Int
-    //this.SubjectStore.setVisitConvSentToday(0)
     this.SubjectStore.setSexualOrientation(this.sexualOrientationToString())
     //
+    //this.SubjectStore.setVisitConvSentToday(0)
     //this.geoFire = new GeoFire(this.firebase.database().ref('/user_locations/' + this.sexualOrientationToString()))
     //this.MeetCuteStore.setSexualOrientation(this.sexualOrientationToString())
     //this.ChatStore.setNickname(this.SignUpStore.nickname)
@@ -319,8 +277,8 @@ export default class SessionCheckScene extends Component {
           // tasks
           if (snap.val().sexualOrientation) {
             // 如果有性別
-            this.uploadGeoFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.reverseString(snap.val().sexualOrientation)))
-            this.meetChanceGeoFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + snap.val().sexualOrientation))
+            this.geoUploadFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.reverseString(snap.val().sexualOrientation)))
+            this.geoQueryFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + snap.val().sexualOrientation))
             this.uploadLocationWhenSignIn(snap.val().latitude,snap.val().longitude)
           }
           //
@@ -363,93 +321,23 @@ export default class SessionCheckScene extends Component {
           //
           //this.ChatStore.setNickname(snap.val().nickname)
           //
-          //this.meetCuteListener() // 非同步邂逅
-          //this.uploadLocation() // 上傳GPS資料 巧遇監聽
         } else {
           //
         }
-        this.ControlStore.setSyncDetector(true) // 同步完成
+        //this.ControlStore.setSyncDetector(true) // 同步完成
       }, error => {
-        //
-        this.ControlStore.setSyncDetector(true) // 同步完成
+        //this.ControlStore.setSyncDetector(true) // 同步完成
         console.log(error)
       })
-    //this.updateVisitConvInvites() // 非同步重設當日發出來訪留言數
+
   }
 
-  setVip = () => {
-    if (Platform.OS === "android") {
-      InAppBilling.open()
-      .then(() => InAppBilling.getSubscriptionDetailsArray(['3_month', 'premium_3m']).then( productDetailsArray => {
-        if (productDetailsArray.length > 0) {
-          this.SubjectStore.setVip(true)
-        } else {
-          this.SubjectStore.setVip(false)
-        }
-      }).catch(err => console.log(err)))
-      .catch(err => console.log(err))
-    } else { // iOS
-      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/vip').once('value').then((snap)=> {
-        if (snap.exists()) {
-          if (snap.val()) {
-            this.SubjectStore.setVip(true)
-          } else {
-            this.SubjectStore.setVip(false)
-          }
-        }
-      })
-    }
+  uxSignIn = (email,password) => {
+    this.SignInStore.setEmail(email)
+    this.SignInStore.setPassword(password)
   }
 
-  meetCuteListener = () => {
-    this.seekMeetQs(this.SubjectStore.sexualOrientation)
-  }
-
-
-  visitorsListener = () => {
-    this.visitorsQuery = this.firebase.database().ref('visitors').orderByChild('prey').equalTo(this.SubjectStore.uid)
-    this.visitorsQuery.on('child_added', child => {
-      this.FateStore.addPreyToVisitorsPool(child.val().wooer,child.val().time)
-    })
-  }
-
-  goodImpressionListener = () => {
-    this.goodImpressionQuery = this.firebase.database().ref('goodImpression').orderByChild('prey').equalTo(this.SubjectStore.uid)
-    this.goodImpressionQuery.on('child_added', child => {
-      this.FateStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
-      this.MeetCuteStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
-    })
-    this.goodImpressionQuery.on('child_removed', child => {
-      this.FateStore.removePreyToGoodImpressionPool(child.val().wooer)
-      this.MeetCuteStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
-    })
-  }
-
-  matchListener = () => {
-    this.matchQuery = this.firebase.database().ref('goodImpression').orderByChild('wooer').equalTo(this.SubjectStore.uid)
-    this.matchQuery.on('child_added', child => {
-      this.FateStore.addPreyToMatchPool(child.val().prey,child.val().time)
-      this.MeetCuteStore.addPreyToMatchPool(child.val().prey,child.val().time)
-    })
-    this.matchQuery.on('child_removed', child => {
-      this.FateStore.removePreyToMatchPool(child.val().prey)
-      this.MeetCuteStore.removePreyToMatchPool(child.val().prey)
-    })
-  }
-
-  blockadeListener = () => {
-    this.blockadeQuery_A = this.firebase.database().ref('blockade').orderByChild('wooer').equalTo(this.SubjectStore.uid)
-    this.blockadeQuery_B = this.firebase.database().ref('blockade').orderByChild('prey').equalTo(this.SubjectStore.uid)
-    this.blockadeQuery_A.on('child_added', child => {
-      this.MeetCuteStore.addPreyToblockadePool(child.val().prey,child.val().time)
-      this.MeetChanceStore.addPreyToblockadePool(child.val().prey,child.val().time)
-
-    })
-    this.blockadeQuery_B.on('child_added', child => {
-      this.MeetCuteStore.addPreyToblockadePool(child.val().wooer,child.val().time)
-      this.MeetChanceStore.addPreyToblockadePool(child.val().prey,child.val().time)
-    })
-  }
+  // 聊天室
 
   chatRoomListener = () => {
     this.chatRoomCreaterQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid) // 自己發送的招呼
@@ -689,24 +577,18 @@ export default class SessionCheckScene extends Component {
 
   // removeListener
 
-  removeMeetCuteListener = () => {
-    if (this.meetCuteQuery) {
-      this.meetCuteQuery.off()
-      this.meetCuteQuery = null
-    }
-  }
 
   removeMeetChanceListener = () => {
-    if (this.uploadGeoFire) {
-      //console.warn(this.uploadGeoFire)
-      //this.uploadGeoFire.cancel()
-      this.uploadGeoFire = null
+    if (this.geoUploadFire) {
+      //console.warn(this.geoUploadFire)
+      //this.geoUploadFire.cancel()
+      this.geoUploadFire = null
       this.geoQuery = null
     }
-    if (this.meetChanceGeoFire) {
-      //console.warn(this.meetChanceGeoFire)
-      //this.meetChanceGeoFire.cancel()
-      this.meetChanceGeoFire = null
+    if (this.geoQueryFire) {
+      //console.warn(this.geoQueryFire)
+      //this.geoQueryFire.cancel()
+      this.geoQueryFire = null
       this.geoQuery = null
     }
   }
@@ -754,10 +636,61 @@ export default class SessionCheckScene extends Component {
     }
   }
 
-  //////********************//////
+  //////演算法//////
 
   reverseString = str => {
     return str.split("").reverse().join("")
+  }
+
+  genderToString = () => (
+    this.SignUpStore.gender ? 'm' : 'f'
+  )
+
+  sexualOrientationToString = () => (
+    this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : (this.genderToString() + 's' + (this.SignUpStore.gender ? 'f' : 'm'))
+  )
+
+  oppositeSexualOrientationToString = () => (
+    this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : ((this.SignUpStore.gender ? 'f' : 'm') + 's' + this.genderToString())
+  )
+
+  render() {
+    return (
+      <Loading />
+    )
+  }
+}
+
+
+  /*
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  updateVisitConvInvites = () => {
+    const start = Moment().startOf("day").unix()
+    const end = Moment().endOf("day").unix()
+    let sent = 0
+    this.firebase.database().ref(`users/${this.SubjectStore.uid}/conversations/`)
+    .orderByChild("createTime")
+    .startAt(start)
+    .endAt(end)
+    .once("value")
+    .then(snap => {
+      sent = snap.numChildren()
+      snap.forEach(child => {
+        if (child.val().wooer != this.SubjectStore.uid) {
+          sent -= 1
+        }
+      })
+      return sent
+    })
+    .then(() => {
+      console.log("Total new convs today: ", sent)
+      this.SubjectStore.setVisitConvSentToday(sent)
+      this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday/`).set(sent)
+    })
   }
 
   seekMeetQs = sexualOrientation => {
@@ -793,6 +726,126 @@ export default class SessionCheckScene extends Component {
     //})
     this.firebase.database().ref('msf/meetCuteList').orderByChild('meetCuteList/aaa').equalTo(null).once('value',snap => {
       console.log(snap.val())
+    })
+  }
+
+  removeMeetCuteListener = () => {
+    if (this.meetCuteQuery) {
+      this.meetCuteQuery.off()
+      this.meetCuteQuery = null
+    }
+  }
+
+/*
+  meetChanceListener = (geoQuery) => {
+    geoQuery.on('key_entered', (uid, location, distance) => {
+      console.warn(uid)
+      //if (uid !== this.SubjectStore.uid) {
+      //  this.firebase.database().ref('users/' + uid).once('value').then( snap => {
+      //    if (snap.val().sexualOrientation === this.reverseString(this.SubjectStore.sexualOrientation) && snap.val().album) {
+      //      this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online,snap.val().popularityDen,snap.val().popularityNum)
+      //    }
+      //  })
+      //}
+    })
+
+    geoQuery.on('key_moved', (uid, location, distance) => {
+      console.warn(uid)
+      //if (uid !== this.SubjectStore.uid) {
+        //this.MeetChanceStore.updatePreyToPool(uid,distance)
+        // 這裡常常會掛掉
+      //}
+    })
+
+    geoQuery.on('key_exited', (uid, location, distance) => {
+      console.warn(uid)
+      //if (uid !== this.SubjectStore.uid) {
+      //  this.MeetChanceStore.removePreyToPool(uid)
+      //}
+    })
+
+  setLocation = (latitude,longitude) => {
+    this.SubjectStore.setLatitude(latitude)
+    this.SubjectStore.setLongitude(longitude)
+    this.MeetCuteStore.setLatitude(latitude)
+    this.MeetCuteStore.setLongitude(longitude)
+    this.MeetChanceStore.setLatitude(latitude)
+    this.MeetChanceStore.setLongitude(longitude)
+    this.FateStore.setLatitude(latitude)
+    this.FateStore.setLongitude(longitude)
+  }
+  }
+
+  uploadSignUpProfile = () => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
+      // 非同步上傳註冊資料
+      sexualOrientation: this.sexualOrientationToString(),
+      address: this.SignUpStore.address,
+      nickname: this.SignUpStore.nickname,
+      birthday: this.SignUpStore.birthday,
+      //vip: false,
+      bonus: 0
+    }).then(() => {
+        this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳成功')
+      }).catch((error) => {
+        this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳失敗')
+        console.log(error)
+      })
+  }
+
+  uploadEmailVerity = () => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/emailVerified').set(this.firebase.auth().currentUser.emailVerified)
+    this.SubjectStore.setEmailVerified(this.firebase.auth().currentUser.emailVerified)
+  }
+
+
+  meetCuteListener = () => {
+    this.seekMeetQs(this.SubjectStore.sexualOrientation)
+  }
+
+
+  visitorsListener = () => {
+    this.visitorsQuery = this.firebase.database().ref('visitors').orderByChild('prey').equalTo(this.SubjectStore.uid)
+    this.visitorsQuery.on('child_added', child => {
+      this.FateStore.addPreyToVisitorsPool(child.val().wooer,child.val().time)
+    })
+  }
+
+  goodImpressionListener = () => {
+    this.goodImpressionQuery = this.firebase.database().ref('goodImpression').orderByChild('prey').equalTo(this.SubjectStore.uid)
+    this.goodImpressionQuery.on('child_added', child => {
+      this.FateStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
+      this.MeetCuteStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
+    })
+    this.goodImpressionQuery.on('child_removed', child => {
+      this.FateStore.removePreyToGoodImpressionPool(child.val().wooer)
+      this.MeetCuteStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
+    })
+  }
+
+  matchListener = () => {
+    this.matchQuery = this.firebase.database().ref('goodImpression').orderByChild('wooer').equalTo(this.SubjectStore.uid)
+    this.matchQuery.on('child_added', child => {
+      this.FateStore.addPreyToMatchPool(child.val().prey,child.val().time)
+      this.MeetCuteStore.addPreyToMatchPool(child.val().prey,child.val().time)
+    })
+    this.matchQuery.on('child_removed', child => {
+      this.FateStore.removePreyToMatchPool(child.val().prey)
+      this.MeetCuteStore.removePreyToMatchPool(child.val().prey)
+    })
+  }
+
+  blockadeListener = () => {
+    this.blockadeQuery_A = this.firebase.database().ref('blockade').orderByChild('wooer').equalTo(this.SubjectStore.uid)
+    this.blockadeQuery_B = this.firebase.database().ref('blockade').orderByChild('prey').equalTo(this.SubjectStore.uid)
+    this.blockadeQuery_A.on('child_added', child => {
+      this.MeetCuteStore.addPreyToblockadePool(child.val().prey,child.val().time)
+      this.MeetChanceStore.addPreyToblockadePool(child.val().prey,child.val().time)
+
+    })
+    this.blockadeQuery_B.on('child_added', child => {
+      this.MeetCuteStore.addPreyToblockadePool(child.val().wooer,child.val().time)
+      this.MeetChanceStore.addPreyToblockadePool(child.val().prey,child.val().time)
     })
   }
 
@@ -845,57 +898,28 @@ export default class SessionCheckScene extends Component {
     })
   }
 
-  genderToString = () => (
-    this.SignUpStore.gender ? 'm' : 'f'
-  )
-
-  sexualOrientationToString = () => (
-    //this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : ((this.SignUpStore.gender ? 'f' : 'm') + 's' + this.genderToString())
-    this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : (this.genderToString() + 's' + (this.SignUpStore.gender ? 'f' : 'm'))
-  )
-
-  oppositeSexualOrientationToString = () => (
-    this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : ((this.SignUpStore.gender ? 'f' : 'm') + 's' + this.genderToString())
-  )
-
-  uxSignIn = () => {
-    this.SignInStore.setEmail(this.SignUpStore.email)
-    this.SignInStore.setPassword(this.SignUpStore.password)
-  }
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-  /*
-  updateVisitConvInvites = () => {
-    const start = Moment().startOf("day").unix()
-    const end = Moment().endOf("day").unix()
-    let sent = 0
-    this.firebase.database().ref(`users/${this.SubjectStore.uid}/conversations/`)
-    .orderByChild("createTime")
-    .startAt(start)
-    .endAt(end)
-    .once("value")
-    .then(snap => {
-      sent = snap.numChildren()
-      snap.forEach(child => {
-        if (child.val().wooer != this.SubjectStore.uid) {
-          sent -= 1
+  setVip = () => {
+    if (Platform.OS === "android") {
+      InAppBilling.open()
+      .then(() => InAppBilling.getSubscriptionDetailsArray(['3_month', 'premium_3m']).then( productDetailsArray => {
+        if (productDetailsArray.length > 0) {
+          this.SubjectStore.setVip(true)
+        } else {
+          this.SubjectStore.setVip(false)
+        }
+      }).catch(err => console.log(err)))
+      .catch(err => console.log(err))
+    } else { // iOS
+      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/vip').once('value').then((snap)=> {
+        if (snap.exists()) {
+          if (snap.val()) {
+            this.SubjectStore.setVip(true)
+          } else {
+            this.SubjectStore.setVip(false)
+          }
         }
       })
-      return sent
-    })
-    .then(() => {
-      console.log("Total new convs today: ", sent)
-      this.SubjectStore.setVisitConvSentToday(sent)
-      this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday/`).set(sent)
-    })
+    }
   }
-  */
-
-  render() {
-    return (
-      <Loading />
-    )
-  }
-}
+*/
+  

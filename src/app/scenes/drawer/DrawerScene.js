@@ -112,15 +112,15 @@ export default class DrawerScene extends Component {
             avatar={ this.SubjectStore.avatar }
             displayName={ this.SubjectStore.nickname }
             displayNameOnPress={ this.goToAboutMe }
-            meetchanceOnPress={ this.goToMeetChance }
-            meetcueOnPress={ this.goToMeetCute }
+            meetChanceOnPress={ this.goToMeetChance }
+            meetCuteOnPress={ this.goToMeetCute }
             chatOnPress={ this.goToChat }
             fateOnPress={ this.goToFate }
             articleOnPress={ this.goToArticle }
             settingOnPress={ this.goToSetting }
             masterOnPress={ this.gotToMster }
             testOnPress={ this.goToTest }
-            swiperOnPress={ this.goToSwiper }
+            //swiperOnPress={ this.goToSwiper }
           />
         }
         tapToClose

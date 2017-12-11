@@ -38,7 +38,7 @@ const styles = {
   }
 }
 
-const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetchanceOnPress, meetcueOnPress, fateOnPress, chatOnPress, settingOnPress, articleOnPress, masterOnPress, testOnPress,swiperOnPress }) => {
+const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetChanceOnPress, meetCuteOnPress, fateOnPress, chatOnPress, settingOnPress, articleOnPress, masterOnPress, testOnPress,swiperOnPress }) => {
 
   return(
     <ScrollView showsVerticalScrollIndicator={false} style = { styles.scrollView } >
@@ -80,11 +80,11 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         </TouchableOpacity>
 
         <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetChanceOnPress }/>
         </View>
         
         <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ swiperOnPress }/>
+          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ meetCuteOnPress }/>
         </View>
         
         <View style={{marginTop: 7}}>
@@ -147,6 +147,10 @@ export default Drawer
 */
 
 /*
+
+        <View style={{marginTop: 7}}>
+          <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ swiperOnPress }/>
+        </View>
 
         <View style={{marginTop: 7,alignSelf: 'center'}}>
           <Text style={{color: 'red'}}>{ warningTop }</Text>
