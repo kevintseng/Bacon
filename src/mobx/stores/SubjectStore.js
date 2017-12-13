@@ -484,6 +484,10 @@ export default class SubjectStore {
     //console.log(this.newPreys)
   }
 
+  @action cleanMeetCuteModal = () => {
+    this.meetCuteModal = true
+  }
+
   // 演算法
 
   sortedAlbum = (album,avatar) => {
