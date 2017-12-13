@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
-import { View, FlatList, Dimensions, Text, InteractionManager } from 'react-native'
+import { View, FlatList, Dimensions, Text, InteractionManager, ActivityIndicator } from 'react-native'
 import CircleImage from 'react-native-bacon-circle-image'
 
 import Wave from '../../../views/Wave/Wave'
@@ -48,16 +48,19 @@ export default class MeetChanceWaterFallScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.MeetChanceStore = this.props.MeetChanceStore
+    //console.warn('初始化')
   }
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
+    this.MeetChanceStore.cleanMeetChanceLoading()
     //InteractionManager.runAfterInteractions(this.task)
     //this.MeetChanceStore.setPreyList()
     //this.task()
   }
 
   componentWillUnMount() {
+    //console.warn('解掉了')
     this.MeetChanceStore.setIndex()
   }
 
@@ -65,7 +68,9 @@ export default class MeetChanceWaterFallScene extends Component {
     InteractionManager.runAfterInteractions(this.task)
   }
 
-  task = () => {
+  task = async () => {
+    //console.warn('重抓一次')
+    await this.sleep(260)
     this.MeetChanceStore.setPreyList()
     this.MeetChanceStore.setRealPreys()
   }
@@ -102,8 +107,27 @@ export default class MeetChanceWaterFallScene extends Component {
 
   }
 
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
   render() {
     return(
+      <View style={{flex: 1}}>
+    { this.MeetChanceStore.meetChanceloading ?
+      <View style={{flex: 1,justifyContent: 'center'}}>
+        <ActivityIndicator
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf: 'center',
+            paddingBottom: 110
+          }}
+          size="large"
+          color='#d63768'
+        />
+      </View> :
       <View style={styles.view}>
         <FlatList
           removeClippedSubviews
@@ -130,6 +154,8 @@ export default class MeetChanceWaterFallScene extends Component {
           )}
         />
       </View>
+    }
+    </View>
     )
   }
 }

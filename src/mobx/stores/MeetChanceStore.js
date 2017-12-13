@@ -24,6 +24,7 @@ export default class MeetChanceStore {
   @observable photoVerified
   //
   @observable notFound
+  @observable meetChanceloading
 
   constructor(firebase) {
     this.firebase = firebase
@@ -92,6 +93,7 @@ export default class MeetChanceStore {
     this.blockadeList = null
     this.index = 0
     this.refreshing = false
+    this.meetChanceloading = true
   }
 
   @action setLatitude = latitude => {
@@ -135,6 +137,7 @@ export default class MeetChanceStore {
 
   @action setRealPreys = () => {
     this.preys = this.preys.concat(this.preyList.slice(0,12))
+    this.meetChanceloading = false
   }
 
   @action addMorePreys = () => {
@@ -219,6 +222,10 @@ export default class MeetChanceStore {
 
   @action cleanLoading = () => {
     this.loading = false
+  }
+
+  @action cleanMeetChanceLoading = () => {
+    this.meetChanceloading = true
   }
 
   checkOnline = online => {

@@ -41,17 +41,28 @@ export default class SwiperScene extends Component {
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
-    this.SubjectStore.setMeetCutePreys()
+    this.SubjectStore.cleanMeetCuteModal()
     //console.log(toJS(this.SubjectStore.meetCutePreys))
     //BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
   componentDidMount() {
-    //InteractionManager.runAfterInteractions(this.task)
+    //this.SubjectStore.setMeetCutePreys()
+    InteractionManager.runAfterInteractions(this.task)
   }
 
   componentWillUnmount() {
     //BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+  }
+
+  task = async () => {
+    //console.warn('重抓一次')
+    await this.sleep(260)
+    this.SubjectStore.setMeetCutePreys()
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   renderAlbum = album => (

@@ -86,6 +86,10 @@ const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnP
         <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ meetCuteOnPress }/>
         </View>
+
+        <View style={{marginTop: 7}}>
+          <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='訊息' showBadge={false} badgeCount={6} listOnPress={ chatOnPress }/>
+        </View>
         
         <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
@@ -114,10 +118,6 @@ export default Drawer
 
         <View style={{marginTop: 7}}>
           <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetchanceOnPress }/>
-        </View>
-
-        <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='訊息' showBadge={false} badgeCount={6} listOnPress={ chatOnPress }/>
         </View>
 
         <View style={{marginTop: 7}}>
