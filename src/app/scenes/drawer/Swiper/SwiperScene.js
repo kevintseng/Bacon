@@ -120,7 +120,15 @@ export default class SwiperScene extends Component {
         { this.SubjectStore.meetCuteModal ?
         <View style={{flex: 1,justifyContent: 'center'}}>
           <ActivityIndicator
-            size={'large'}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              alignSelf: 'center',
+              paddingBottom: 110
+            }}
+            size="large"
+            color='#d63768'
           />
         </View> :
         <View style={{flex: 1}}>

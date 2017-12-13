@@ -19,9 +19,9 @@ export default class SexChooseContainer extends Component {
         genderButtonOnPress={ this.SignUpStore.switchGender }
         sexOrientationButtonLeftText='喜歡同性'
         sexOrientationButtonRightText='喜歡異性'
-        sexOrientationButtonOnPress={ this.SignUpStore.switchSexualOrientation }
+        //sexOrientationButtonOnPress={ this.SignUpStore.switchSexualOrientation }
         gender={ this.SignUpStore.gender }
-        sexOrientation={ this.SignUpStore.sexualOrientation }
+        sexOrientation={ false } // this.SignUpStore.sexualOrientation
         warningText='提醒：請注意性別與性向是不能更改的'
       />
     )
