@@ -74,11 +74,12 @@ export default class MeetChanceWaterFallScene extends Component {
     Actions.AboutMe({type: 'replace'})
   }
 
-  onPress = uid => {
-    alert(uid)
+  onPress = async uid => {
+    //console.log(uid)
+    //alert('轉向聊天收藏頁面')
     // 來訪記錄
-    /*
-    this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
+    
+    //this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
     await this.MeetChanceStore.setCourtInitialize(uid)
     await localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
       if (ids.includes(uid)) {
@@ -87,7 +88,7 @@ export default class MeetChanceWaterFallScene extends Component {
         Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇', collection: false})
       }
     }).catch(err => console.log(err))
-    */
+    
   }
 
   header = () => (
