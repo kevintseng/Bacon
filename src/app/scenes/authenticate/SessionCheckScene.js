@@ -592,12 +592,16 @@ export default class SessionCheckScene extends Component {
       //console.warn(this.geoUploadFire)
       //this.geoUploadFire.cancel()
       this.geoUploadFire = null
-      this.geoQuery = null
+      //this.geoQuery = null
     }
     if (this.geoQueryFire) {
       //console.warn(this.geoQueryFire)
       //this.geoQueryFire.cancel()
       this.geoQueryFire = null
+      //this.geoQuery = null
+    }
+    if (this.geoQuery) {
+      this.geoQuery.cancel()
       this.geoQuery = null
     }
   }

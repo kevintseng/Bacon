@@ -33,7 +33,7 @@ export default class SignUpStore {
 
   @action initialize = () => {
     this.gender = true // { true: man, false: female }
-    this.sexualOrientation = true // { true : 同性, false: 異性 }
+    this.sexualOrientation = false // { true : 同性, false: 異性 }
     this.address = null
     this.email = null
     this.password = null
