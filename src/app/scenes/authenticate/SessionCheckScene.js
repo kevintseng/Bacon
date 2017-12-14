@@ -53,7 +53,7 @@ export default class SessionCheckScene extends Component {
   }
 
   componentWillMount() {
-    this.firebase.auth().onAuthStateChanged( user => {
+    this.firebase.auth().onAuthStateChanged( async user => {
       if (user) {
         this.SubjectStore.setUid(user.uid) // 設置 uid
         //this.MeetCuteStore.setUid(user.uid)
@@ -81,6 +81,7 @@ export default class SessionCheckScene extends Component {
           this.initialize()
           ///////// 非同步 /////////
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
+          await this.initPreySexualOrientation()
           //this.setVip()
           //this.visitorsListener() // 來訪監聽
           //this.goodImpressionListener() // 好感監聽
@@ -267,7 +268,6 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setLanguages(Object.assign({}, DefaultLanguages, snap.val().languages)) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
-          this.SubjectStore.setPreySexualOrientation(snap.val().preySexualOrientation)
           this.SubjectStore.setChatStatus(snap.val().chatStatus)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
           //this.MeetCuteStore.setSexualOrientation(snap.val().sexualOrientation)
@@ -330,6 +330,14 @@ export default class SessionCheckScene extends Component {
         console.log(error)
       })
 
+  }
+
+  initPreySexualOrientation = () => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/preySexualOrientation').once('value',
+      (snap) => {
+        //console.warn(snap.val())
+        this.SubjectStore.setPreySexualOrientation(snap.val())
+      })
   }
 
   uxSignIn = (email,password) => {
