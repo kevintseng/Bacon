@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native'
 import { Badge } from 'react-native-elements'
+import CircleImage from 'react-native-bacon-circle-image'
 
 //import { BaconBadgeYes, BaconBadgeNo } from '../BaconBadge/BaconBadge'
 
@@ -104,11 +105,11 @@ const ChatList = ({name, avatar, onPress, online, lastChatContent,nonHandleChatC
   return(
     <TouchableOpacity style={styles.chat} activeOpacity={1} onPress={ onPress }>
       <View style={styles.cookie}>
-        <Cookie 
+        <CircleImage 
           disabled 
-          local 
-          size={80} 
-          avatar={avatar} 
+          //local 
+          radius={40} 
+          source={avatar}
           circleBorderWidth={online ? 2 : 0}
           circleColor={'rgba(41, 255, 41,1)'}
         />
