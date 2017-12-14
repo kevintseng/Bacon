@@ -142,7 +142,7 @@ export default class MeetChanceStore {
 
   @action addMorePreys = () => {
     //console.warn(this.index)
-    this.setPreyList()
+    //this.setPreyList()
     if (this.index > 0) {
       this.preys = this.preys.concat(this.preyList.slice(0 + 12*this.index,12 + 12*this.index))
     }
@@ -226,6 +226,9 @@ export default class MeetChanceStore {
   }
 
   @action cleanMeetChanceLoading = () => {
+    this.preyList = new Array
+    this.preys = new Array
+    this.index = 0
     this.meetChanceloading = true
   }
 
