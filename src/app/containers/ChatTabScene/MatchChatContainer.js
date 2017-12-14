@@ -40,7 +40,6 @@ export default class MatchChatContainer extends Component {
   render() {
     return(
       <View style={styles.view}>
-        {console.warn('rn')}
         <FlatList
           removeClippedSubviews
           data={ this.ChatStore.chatMatchPrey }
