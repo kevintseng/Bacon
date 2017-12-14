@@ -49,6 +49,8 @@ export default class SubjectStore {
   @observable meetCuteModal
   // meetCute
   @observable meetCutePreys
+  @observable profileModal
+  @observable settingModal
 
   constructor(firebase) {
     this.firebase = firebase
@@ -155,6 +157,8 @@ export default class SubjectStore {
     this.onlineDaysMonth = new Object
     this.meetCuteModal = true
     this.meetCutePreys = new Array
+    this.profileModal = true
+    this.settingModal = true
   }
 
   @action setUid = uid => {
@@ -423,6 +427,7 @@ export default class SubjectStore {
 
   @action setMeetCutePreys = () => {
     // 先不隨機
+    //alert('重抓一次')
     this.firebase.database().ref('meetCuteList/' + this.preySexualOrientation).limitToLast(100).once('value',snap => {
       if (snap.val()) {
         const newPreys = Object.keys(snap.val()).map(uid => 
@@ -454,10 +459,14 @@ export default class SubjectStore {
         }
       )
       this.meetCuteModal = false
-    }) 
+    }).cacth(err => {
+      console.log('錯誤')
+      //console.warn(err)
+    })
         
       } else {
-        console.log('no data')
+        console.log('沒資料')
+        //console.log('no data')
       }
     })
 
@@ -488,6 +497,22 @@ export default class SubjectStore {
     this.meetCuteModal = true
   }
 
+  @action cleanProfileModal = () => {
+    this.profileModal = true
+  }
+
+  @action openProfileModal = () => {
+    this.profileModal = false
+  }
+
+  @action cleanSettingModal = () => {
+    this.settingModal = true
+  }
+
+  @action openSettingModal = () => {
+    this.settingModal = false
+  }
+
   // 演算法
 
   sortedAlbum = (album,avatar) => {
@@ -505,5 +530,7 @@ export default class SubjectStore {
     this.meetCuteModal = true
     this.setMeetCutePreys()
   }
+
+
 
 }

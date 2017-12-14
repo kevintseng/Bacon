@@ -56,7 +56,6 @@ export default class SwiperScene extends Component {
   }
 
   task = async () => {
-    //console.warn('重抓一次')
     await this.sleep(260)
     this.SubjectStore.setMeetCutePreys()
   }

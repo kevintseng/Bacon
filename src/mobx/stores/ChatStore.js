@@ -9,6 +9,7 @@ export default class ChatStore {
   @observable chatRoomCreaterPrey
   @observable chatVistorPrey
   @observable chatMatchModal
+  @observable chatModal
 
   constructor(firebase) {
     this.firebase = firebase
@@ -34,6 +35,7 @@ export default class ChatStore {
     this.nickname = null
     this.from = null
     this.chatMatchModal = true
+    this.chatModal = true
   }
 
   @action addPreyToChatRoomCreaterPool = (uid,interested,prey,name,avatar,lastMessage,age,nonHandleChatCount) => {
@@ -402,6 +404,14 @@ export default class ChatStore {
 
   @action addChatMatchPrey = data => {
     this.chatMatchPrey = this.chatMatchPrey.concat(data)
+  }
+
+  @action cleanChatModal = () => {
+    this.chatModal = true
+  }
+
+  @action openChatModal = () => {
+    this.chatModal = false
   }
 
   @computed get test() {
