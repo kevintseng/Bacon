@@ -118,6 +118,10 @@ export default class SwiperScene extends Component {
     this.SubjectStore.setMeetCuteModal()
   }
 
+  nextphoto = () => {
+    this.carousel._animateNextPage()
+  }
+
   //block = () => {
     //console.warn(this.SubjectStore.uid)
   //  this.firebase.database().ref('meetCuteList/' + this.SubjectStore.sexualOrientation + '/K1wBpaqDOyXpaxIQ93Nwx3VlDbk2/' +this.SubjectStore.uid).remove()
@@ -144,7 +148,7 @@ export default class SwiperScene extends Component {
         <View style={{flex: 1}}>
                 <Modal hardwareAccelerated animationType={'none'} onRequestClose={this.closeAlbum} visible={ this.state.albumZoom || false } transparent={false}>
                   <Carousel
-                    //ref={(carousel) => { this.carousel = carousel }}
+                    ref={(carousel) => { this.carousel = carousel }}
                     swipe
                     currentPage={this.currentPage}
                     style={{flex:1,backgroundColor: 'transparent'}}
