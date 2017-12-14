@@ -55,8 +55,8 @@ export default class SwiperScene extends Component {
     //BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
-  task = async () => {
-    await this.sleep(260)
+  task = () => {
+    //await this.sleep(260)
     this.SubjectStore.setMeetCutePreys()
   }
 

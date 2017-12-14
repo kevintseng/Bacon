@@ -30,8 +30,8 @@ export default class AboutMeTabScene extends Component {
     //console.warn('解除了')
   }
 
-  task = async () => {
-    await this.sleep(260)
+  task = () => {
+    //await this.sleep(260)
     this.SubjectStore.openProfileModal()
   }
 

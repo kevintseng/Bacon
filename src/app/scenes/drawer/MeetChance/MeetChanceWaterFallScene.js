@@ -68,9 +68,9 @@ export default class MeetChanceWaterFallScene extends Component {
     InteractionManager.runAfterInteractions(this.task)
   }
 
-  task = async () => {
+  task = () => {
     //console.warn('重抓一次')
-    await this.sleep(260)
+    //await this.sleep(260)
     this.MeetChanceStore.setPreyList()
     this.MeetChanceStore.setRealPreys()
   }
