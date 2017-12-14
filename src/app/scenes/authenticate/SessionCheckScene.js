@@ -332,13 +332,13 @@ export default class SessionCheckScene extends Component {
 
   }
 
-  initPreySexualOrientation = () => {
+  initPreySexualOrientation = () => (
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/preySexualOrientation').once('value',
       (snap) => {
         //console.warn(snap.val())
         this.SubjectStore.setPreySexualOrientation(snap.val())
       })
-  }
+  )
 
   uxSignIn = (email,password) => {
     this.SignInStore.setEmail(email)

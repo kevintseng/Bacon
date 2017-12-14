@@ -427,7 +427,7 @@ export default class SubjectStore {
 
   @action setMeetCutePreys = () => {
     // 先不隨機
-    //alert('重抓一次')
+    //alert(this.preySexualOrientation)
     this.firebase.database().ref('meetCuteList/' + this.preySexualOrientation).limitToLast(100).once('value',snap => {
       if (snap.val()) {
         const newPreys = Object.keys(snap.val()).map(uid => 
