@@ -91,7 +91,7 @@ export default class MeetChanceStore {
     // blockade
     this.blockadePool = new Object
     this.blockadeList = null
-    this.index = 0
+    this.index = 1
     this.refreshing = false
     this.meetChanceloading = true
   }
@@ -141,16 +141,17 @@ export default class MeetChanceStore {
   }
 
   @action addMorePreys = () => {
+    // 沒到12個會出發兩次
     //console.warn(this.index)
     //this.setPreyList()
-    if (this.index > 0) {
-      this.preys = this.preys.concat(this.preyList.slice(0 + 12*this.index,12 + 12*this.index))
-    }
+    //if (this.index > 0) {
+    this.preys = this.preys.concat(this.preyList.slice(0 + 12*this.index,12 + 12*this.index))
+    //}
     this.index = this.index + 1
   }
 
   @action setIndex = () => {
-    this.index = 0
+    this.index = 1
   }
 
   @action onRefresh = () => {
@@ -228,7 +229,7 @@ export default class MeetChanceStore {
   @action cleanMeetChanceLoading = () => {
     this.preyList = new Array
     this.preys = new Array
-    this.index = 0
+    this.index = 1
     this.meetChanceloading = true
   }
 
