@@ -67,7 +67,7 @@ export default class SessionCheckScene extends Component {
           //this.visitorsListener() // 來訪監聽
           //this.goodImpressionListener() // 好感監聽
           //this.matchListener() // 配對
-          this.initChatRoomListener() // 聊天室配對
+          //this.initChatRoomListener() // 聊天室配對
           //this.blockadeListener() // 封鎖
           //this.setOnline() // 非同步設置使用者上線
           //AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
@@ -81,7 +81,7 @@ export default class SessionCheckScene extends Component {
           this.initialize()
           ///////// 非同步 /////////
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
-          this.initChatRoomListener() // 聊天室配對
+          //this.initChatRoomListener() // 聊天室配對
           await this.initPreySexualOrientation()
           //this.setVip()
           //this.visitorsListener() // 來訪監聽
