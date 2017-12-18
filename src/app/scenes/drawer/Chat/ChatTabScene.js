@@ -8,12 +8,14 @@ import MatchChatContainer from '../../../containers/ChatTabScene/MatchChatContai
 import VisitorsChatContainer from '../../../containers/ChatTabScene/VisitorsChatContainer'
 import SendChatContainer from '../../../containers/ChatTabScene/SendChatContainer'
 
-@inject('ChatStore') @observer
+@inject('ChatStore','SubjectStore','firebase') @observer
 export default class ChatTabScene extends Component {
 
   constructor(props) {
     super(props)
     this.ChatStore = this.props.ChatStore
+    this.SubjectStore = this.props.SubjectStore
+    this.firebase = this.props.firebase
   }
 
   componentWillMount () {
@@ -36,6 +38,29 @@ export default class ChatTabScene extends Component {
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  fetchChatRoom = (index) => {
+    switch(index) {
+      case 0:
+        //console.warn('抓配對聊天室')
+        this.firebase.database().ref('chat_rooms').orderByChild('interested').equalTo(2).once('value',snap => {
+          const matchs = Object.keys(snap.val()).filter(key => 
+            snap.val()[key].chatRoomCreater === this.SubjectStore.uid || snap.val()[key].chatRoomRecipient === this.SubjectStore.uid
+          )
+          
+          //console.log(matchs)
+        })
+        break;
+      case 1:
+        //console.warn('抓來訪聊天室')
+        break;
+      case 2:
+        //console.warn('抓打招呼聊天室')
+        break;
+      default:
+      //
+    }
   }
 
   render() {
@@ -63,7 +88,9 @@ export default class ChatTabScene extends Component {
         tabBarBackgroundColor='white'
         tabBarActiveTextColor='#d63768'
         tabBarInactiveTextColor='#606060'
-        //onChangeTab={}
+        onChangeTab={tab => {
+          this.fetchChatRoom(tab.i)
+        }}
         ref={ (tabView) => { this.tabView = tabView } }
         >
         <MatchChatContainer label='MatchChat' tabLabel='好友訊息' />

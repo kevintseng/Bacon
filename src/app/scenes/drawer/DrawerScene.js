@@ -127,6 +127,8 @@ export default class DrawerScene extends Component {
         openDrawerOffset={0.4}
         panCloseMask={0.2}
         negotiatePan
+        tweenEasing={'linear'}
+        tweenDuration={250}
         //tweenHandler={(ratio) => ({
         // main: { opacity: Math.max(0.54, 1 - ratio) }
         //})}
