@@ -46,6 +46,28 @@ export default class MatchChatContainer extends Component {
           numColumns={1}
           //extraData={toJS(this.ChatStore.chatMatchPrey)}
           renderItem={({item}) =>
+          <ChatList 
+              name={item.name}
+              avatar={{uri: item.avatar}}
+              onPress={ () => { this.onPress(item.key,item.prey,item.name,item.age) } }
+              lastChatContent={item.lastChatContent}
+              nonHandleChatCount={item.nonHandleChatCount}
+              showBadge={item.nonHandleChatCount > 0}
+              showTag={item.showTag}
+              online={item.online}
+              userState={item.userState}
+              userStateColor={item.userStateColor}
+              />
+           }
+        />
+      </View>
+    )
+  }
+}
+
+
+/*
+
           <Observer>{
             () => <ChatList 
               name={item.name}
@@ -61,37 +83,4 @@ export default class MatchChatContainer extends Component {
               />
             }
             </Observer>
-           }
-        />
-      </View>
-    )
-  }
-}
-
-
-/*
-
-        <ChatList
-          name={'Dora Li'}
-          avatar={{uri: 'http://img.appledaily.com.tw/images/ReNews/20170115/640_86387ec286267a13d6d6d0e82606b39d.jpg'}}
-          onPress={ this.onPress }
-          lastChatContent={'誰答腔我就罵誰'}
-          nonHandleChatCount={99}
-          showBadge
-          showTag
-          online
-          userState={'平淡中'}
-          userStateColor={'#FFD306'}
-        />
-        <ChatList
-          name={'大笨蛋'}
-          avatar={{uri: 'https://cdn2.ettoday.net/images/2322/2322944.jpg'}}
-          onPress={ this.onPress }
-          lastChatContent={'真的很想很想你'}
-          nonHandleChatCount={2}
-          showBadge
-          showTag
-          userState={'忙碌中'}
-          userStateColor={'#FF8040'}
-        />
 */

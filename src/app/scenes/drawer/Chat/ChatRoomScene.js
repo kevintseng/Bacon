@@ -45,11 +45,9 @@ export default class ChatRoomScene extends Component {
     this.chatRoomQuery = this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested')
     this.chatRoomQuery.on('value', child => {
       this.interested = child.val()
-      //console.warn(child.val())
       if (this.interested) {
         if (this.interested === 2) {
           // 轉到配對聊天室
-          //console.warn('轉到配對聊天室')
           //this.removeChatRoomListener()
           Actions.MatchChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
         } else {
@@ -57,19 +55,16 @@ export default class ChatRoomScene extends Component {
             if (this.interested === 1) {
               if (snap.val() === this.SubjectStore.uid) {
                 // 轉到Hello聊天室
-                //console.warn('轉到Hello聊天室')
                 //this.removeChatRoomListener()
                 Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               } else {
                 // 轉到訪客聊天室
-                //console.warn('轉到訪客聊天室')
                 //this.removeChatRoomListener()
                 Actions.VisitorChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               }
             } else if (child.val() === 0){
               if (snap.val() === this.SubjectStore.uid) {
                 // 轉到Hello聊天室
-                //console.warn('轉到Hello聊天室')
                 //this.removeChatRoomListener()
                 Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               } else {
@@ -128,7 +123,6 @@ export default class ChatRoomScene extends Component {
             this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
             .putFile(image.uri.replace('file:/',''), metadata)
             .then(uploadedFile => {
-              //console.warn(uploadedFile.downloadURL)
               this.onSendImage(uploadedFile.downloadURL)
             })
             .catch(err => {
@@ -155,6 +149,11 @@ export default class ChatRoomScene extends Component {
           lastMessage: messages[0].text,
           chatRoomRecipient: this.props.preyID,
         })
+        this.firebase.database().ref('sendChatRooms/' + this.props.chatRoomKey).set({
+          chatRoomCreater: this.SubjectStore.uid,
+          lastMessage: messages[0].text,
+          chatRoomRecipient: this.props.preyID,
+        })
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(1)
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
@@ -167,6 +166,11 @@ export default class ChatRoomScene extends Component {
       this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
         chatRoomCreater: this.SubjectStore.uid,
         interested: 1, //未處理
+        lastMessage: '送出一張圖片',
+        chatRoomRecipient: this.props.preyID
+      })
+      this.firebase.database().ref('sendChatRooms/' + this.props.chatRoomKey).set({
+        chatRoomCreater: this.SubjectStore.uid,
         lastMessage: '送出一張圖片',
         chatRoomRecipient: this.props.preyID
       })

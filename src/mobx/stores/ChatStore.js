@@ -6,8 +6,9 @@ export default class ChatStore {
 
   @observable MessagesAndImages
   @observable chatMatchPrey
-  @observable chatRoomCreaterPrey
+  @observable chatSendPrey
   @observable chatVistorPrey
+  @observable chatRoomCreaterPrey
   @observable chatMatchModal
   @observable chatModal
 
@@ -379,6 +380,19 @@ export default class ChatStore {
     )    
   }
 
+  @action setMatchChatRooms = arr => {
+    this.chatMatchPrey = arr
+  }
+
+  @action setVistorChatRooms = arr => {
+    this.chatVistorPrey = arr
+  }
+
+  @action setSendChatRooms = arr => {
+    //console.warn(arr)
+    this.chatSendPrey = arr
+  }
+
   @action setChatMatchPrey = (object) => {
     //console.warn(object)
     this.chatMatchPrey.push(object) 
@@ -398,9 +412,9 @@ export default class ChatStore {
     this.chatMatchPrey = arr
   }
 
-  @action setAllChatSendPrey = arr => {
-    this.chatSendPrey = arr
-  }
+  //@action setAllChatSendPrey = arr => {
+  //  this.chatSendPrey = arr
+  //}
 
   @action addChatMatchPrey = data => {
     this.chatMatchPrey = this.chatMatchPrey.concat(data)
