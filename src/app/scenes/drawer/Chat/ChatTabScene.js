@@ -28,39 +28,104 @@ export default class ChatTabScene extends Component {
   }
 
   componentWillUnmount() {
-    //console.warn('解除了')
   }
 
-  task = () => {
-    //await this.sleep(260)
+  task = async () => {
+    await this.fetchChatRooms('matchChatRooms',0)
     this.ChatStore.openChatModal()
   }
 
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
-  fetchChatRoom = (index) => {
+  onChangeTab = (index) => {
     switch(index) {
       case 0:
-        //console.warn('抓配對聊天室')
-        this.firebase.database().ref('chat_rooms').orderByChild('interested').equalTo(2).once('value',snap => {
-          const matchs = Object.keys(snap.val()).filter(key => 
-            snap.val()[key].chatRoomCreater === this.SubjectStore.uid || snap.val()[key].chatRoomRecipient === this.SubjectStore.uid
-          )
-          
-          //console.log(matchs)
-        })
+        this.fetchChatRooms('matchChatRooms',0)
         break;
       case 1:
-        //console.warn('抓來訪聊天室')
+        this.fetchChatRooms('vistorChatRooms',1)
         break;
       case 2:
-        //console.warn('抓打招呼聊天室')
+        this.fetchChatRooms('sendChatRooms',2)
         break;
       default:
       //
     }
+  }
+
+  fetchChatRooms = (chatRoomType,index) => {
+    let chatRooms = new Array
+    Promise.all([
+      this.firebase.database().ref(chatRoomType).orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid).once('value'), 
+      this.firebase.database().ref(chatRoomType).orderByChild('chatRoomRecipient').equalTo(this.SubjectStore.uid).once('value')
+    ])
+    .then(snap => { 
+      const chatRoomCreater = snap[0]._value || new Object
+      const chatRoomRecipient = snap[1]._value || new Object
+      const chatRoomCreaterKeys = Object.keys(chatRoomCreater)
+      const chatRoomRecipientKeys = Object.keys(chatRoomRecipient)
+      const chatRoomCreaterPromise = chatRoomCreaterKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomCreater[chatRoomKey].chatRoomRecipient).once('value'))
+      const chatRoomRecipientPromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomRecipient[chatRoomKey].chatRoomCreater).once('value'))
+          
+      const chatRoomsPromise = chatRoomCreaterPromise.concat(chatRoomRecipientPromise)
+          
+      Promise.all(chatRoomsPromise)
+      .then(data => {
+        chatRoomCreaterKeys.map((chatRoomKey,index) => {
+          chatRooms.push({
+            key: chatRoomKey,
+            prey: chatRoomCreater[chatRoomKey].chatRoomRecipient,
+            name: data[index].val().nickname,
+            avatar: data[index].val().avatar,
+            age: 18,
+            lastChatContent: chatRoomCreater[chatRoomKey].lastMessage,
+            userState: '平淡中',
+            userStateColor: '#FFD306',
+            nonHandleChatCount: 0 
+            })              
+          })
+
+        const chatRoomCreaterKeysSize = chatRoomCreaterKeys.length
+
+        chatRoomRecipientKeys.map((chatRoomKey,index) => {
+        chatRooms.push({
+          key: chatRoomKey,
+          prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
+          name: data[chatRoomCreaterKeysSize + index].val().nickname,
+          avatar: data[chatRoomCreaterKeysSize + index].val().avatar,
+          age: 18,
+          lastChatContent: chatRoomRecipient[chatRoomKey].lastMessage,
+          userState: '平淡中',
+          userStateColor: '#FFD306',
+          nonHandleChatCount: 0 
+          })              
+        })
+
+        switch(index) {
+          case 0:
+            this.ChatStore.setMatchChatRooms(chatRooms)
+            break;
+          case 1:
+            this.ChatStore.setVistorChatRooms(chatRooms)
+            break;
+          case 2:
+            this.ChatStore.setSendChatRooms(chatRooms)
+            break;
+          default:
+          //
+        }
+
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      })    
+  }
+
+  fetchVistorChatRooms = () => {
+
+  }
+
+  fetchHelloChatRooms = () => {
+
   }
 
   render() {
@@ -89,7 +154,7 @@ export default class ChatTabScene extends Component {
         tabBarActiveTextColor='#d63768'
         tabBarInactiveTextColor='#606060'
         onChangeTab={tab => {
-          this.fetchChatRoom(tab.i)
+          this.onChangeTab(tab.i)
         }}
         ref={ (tabView) => { this.tabView = tabView } }
         >
