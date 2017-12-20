@@ -235,26 +235,26 @@ export default class VisitorChatRoomScene extends Component {
     this.sortedMessagesAndImages = new Array    
   }
 
-  match = () => {
-    this.removeMessagesAndImagesListener()
-    this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2).then(
-      () => {
-        //this.ChatStore.setChatVistorRealPrey()
-        //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
-        Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
-      }
-    )
+  match = async () => {
+    await this.removeMessagesAndImagesListener()
+    await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2)
+    await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
+      this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set(snap.val())
+    })
+    await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
+    this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
+    Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
   }
 
-  noMatch = () => {
-    this.removeMessagesAndImagesListener()
-    this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(0).then(
-      () => {
-        //this.ChatStore.setChatVistorRealPrey()
-        //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
-        Actions.pop()
-      }
-    )
+  noMatch = async () => {
+    await this.removeMessagesAndImagesListener()
+    await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(0)
+    await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
+      this.firebase.database().ref('nonMatchChatRooms/' + this.props.chatRoomKey).set(snap.val())
+    })
+    await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
+    this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
+    Actions.pop()
   }
 
   render() {
