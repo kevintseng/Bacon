@@ -393,6 +393,10 @@ export default class ChatStore {
     this.chatSendPrey = arr
   }
 
+ @action removeVistorChatRooms = chatRoomKey => {
+   this.chatVistorPrey = this.chatVistorPrey.filter(ele => ele.key !== chatRoomKey)
+  }
+
   @action setChatMatchPrey = (object) => {
     //console.warn(object)
     this.chatMatchPrey.push(object) 
