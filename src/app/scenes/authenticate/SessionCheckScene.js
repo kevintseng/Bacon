@@ -141,7 +141,7 @@ export default class SessionCheckScene extends Component {
         birthday: this.SignUpStore.birthday,
         bonus: 0,
         online: true,
-        chatStatus: 2
+        chatStatus: 0
       }).then(() => { 
         console.log('上傳註冊資料成功')
         this.firebase.database().ref('meetCuteList/' + this.sexualOrientationToString() + '/' + this.SubjectStore.uid).set(true)
@@ -269,7 +269,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setLanguages(Object.assign({}, DefaultLanguages, snap.val().languages)) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
-          this.SubjectStore.setChatStatus(snap.val().chatStatus || 2)
+          this.SubjectStore.setChatStatus(snap.val().chatStatus || 0)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
           //this.MeetCuteStore.setSexualOrientation(snap.val().sexualOrientation)
           //this.SubjectStore.setConversations(snap.val().conversations)
