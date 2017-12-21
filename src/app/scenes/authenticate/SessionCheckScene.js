@@ -140,7 +140,8 @@ export default class SessionCheckScene extends Component {
         nickname: this.SignUpStore.nickname,
         birthday: this.SignUpStore.birthday,
         bonus: 0,
-        online: true
+        online: true,
+        chatStatus: 2
       }).then(() => { 
         console.log('上傳註冊資料成功')
         this.firebase.database().ref('meetCuteList/' + this.sexualOrientationToString() + '/' + this.SubjectStore.uid).set(true)
