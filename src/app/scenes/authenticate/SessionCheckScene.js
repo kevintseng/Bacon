@@ -56,21 +56,18 @@ export default class SessionCheckScene extends Component {
     this.firebase.auth().onAuthStateChanged( async user => {
       if (user) {
         this.SubjectStore.setUid(user.uid) // 設置 uid
-        //this.MeetCuteStore.setUid(user.uid)
         this.SubjectStore.setEmail(user.email) // 設置 email
-        //this.FateStore.setSelfUid(user.uid) // 設置 uid
-        //this.ChatStore.setUid(user.uid) // 設置 uid
         if (this.ControlStore.authenticateIndicator == '註冊') {
           ///////// 非同步 /////////
           this.uploadSignUpData() // 非同步上傳大頭照
+          AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           //this.uploadSignUpProfile() // 非同步上傳註冊資料
           //this.visitorsListener() // 來訪監聽
           //this.goodImpressionListener() // 好感監聽
           //this.matchListener() // 配對
           //this.initChatRoomListener() // 聊天室配對
           //this.blockadeListener() // 封鎖
-          //this.setOnline() // 非同步設置使用者上線
-          //AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
+          
           ///////// 同步 /////////
           //this.uploadEmailVerity()
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
@@ -80,6 +77,8 @@ export default class SessionCheckScene extends Component {
           //移除所有監聽函數 初始化狀態
           this.initialize()
           ///////// 非同步 /////////
+          this.setOnline(true) // 非同步設置使用者上線
+          AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
           //this.initChatRoomListener() // 聊天室配對
           await this.initPreySexualOrientation()
@@ -90,8 +89,6 @@ export default class SessionCheckScene extends Component {
           //this.chatRoomListener() // 聊天室配對
           //this.blockadeListener() // 封鎖
           //this.collectionDB() // 從LocalDB抓配對資料
-          //this.setOnline() // 非同步設置使用者上線
-          //AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           ///////// 同步 /////////
           //this.uploadEmailVerity()
         }
@@ -99,7 +96,7 @@ export default class SessionCheckScene extends Component {
       } else {
         // 入口點
         // 下線
-        //this.setOffline()
+        this.setOnline(false)
         //移除所有監聽函數 初始化狀態
         this.initialize()
         // 沒有使用者登入 user = null
@@ -110,14 +107,14 @@ export default class SessionCheckScene extends Component {
   }
 
   initialize = () => {
-    //AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
+    AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
     this.removeMeetChanceListener() // 非同步移除地理監聽
     //this.removeMeetCuteListener() // 移除邂逅監聽
-    this.removeVisitorsListener() // 移除邂逅監聽
-    this.removeGoodImpressionListener() // 移除好感監聽
-    this.removeMatchListener() // 配對
-    this.removeChatRoomListener() // 聊天室配對
-    this.removeBlockadeListener() // 封鎖
+    //this.removeVisitorsListener() // 移除邂逅監聽
+    //this.removeGoodImpressionListener() // 移除好感監聽
+    //this.removeMatchListener() // 配對
+    //this.removeChatRoomListener() // 聊天室配對
+    //this.removeBlockadeListener() // 封鎖
     this.SignUpStore.initialize() // 初始註冊入狀態
     this.SignInStore.initialize() // 初始化登入狀態
     this.SubjectStore.initialize() // 初始主體入狀態
@@ -142,7 +139,8 @@ export default class SessionCheckScene extends Component {
         address: this.SignUpStore.address,
         nickname: this.SignUpStore.nickname,
         birthday: this.SignUpStore.birthday,
-        bonus: 0
+        bonus: 0,
+        online: true
       }).then(() => { 
         console.log('上傳註冊資料成功')
         this.firebase.database().ref('meetCuteList/' + this.sexualOrientationToString() + '/' + this.SubjectStore.uid).set(true)
@@ -245,6 +243,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setVip(false) // boolean
     this.SubjectStore.setBonus(0) // Int
     this.SubjectStore.setPreySexualOrientation(this.oppositeSexualOrientationToString())
+    this.SubjectStore.setChatStatus(2)
     //
     //this.SubjectStore.setVisitConvSentToday(0)
     //this.geoFire = new GeoFire(this.firebase.database().ref('/user_locations/' + this.sexualOrientationToString()))
@@ -269,7 +268,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setLanguages(Object.assign({}, DefaultLanguages, snap.val().languages)) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
-          this.SubjectStore.setChatStatus(snap.val().chatStatus)
+          this.SubjectStore.setChatStatus(snap.val().chatStatus || 2)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
           //this.MeetCuteStore.setSexualOrientation(snap.val().sexualOrientation)
           //this.SubjectStore.setConversations(snap.val().conversations)
@@ -336,7 +335,6 @@ export default class SessionCheckScene extends Component {
   initPreySexualOrientation = () => (
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/preySexualOrientation').once('value',
       (snap) => {
-        //console.warn(snap.val())
         this.SubjectStore.setPreySexualOrientation(snap.val())
       })
   )
@@ -346,256 +344,27 @@ export default class SessionCheckScene extends Component {
     this.SignInStore.setPassword(password)
   }
 
-  // 聊天室
+  setOnline = bollean => {
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/online').set(bollean)
+  }
 
-  initChatRoomListener = () => {
-    this.chatRoomCreaterQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid) // 自己發送的招呼
-    this.chatRoomRecipientQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomRecipient').equalTo(this.SubjectStore.uid) // 別人發送的招呼
-    /// add
-    this.chatRoomCreaterQuery.on('child_added',child => {
-
-        // value作法      
-        /*  
-        const chatRoomCreaterPromises = child._childKeys.filter(key => child.val()[key].interested === 2).map( key => (
-          this.firebase.database().ref('users/' + child.val()[key].chatRoomRecipient).once('value').then( snap => {
-            return(
-              {
-                key: key,
-                prey: child.val()[key].chatRoomRecipient,
-                name: snap.val().nickname,
-                avatar: snap.val().avatar,
-                age: calculateAge(snap.val().birthday),
-                lastChatContent: child.val()[key].lastMessage,
-                userState: '平淡中',
-                userStateColor: '#FFD306',
-                nonHandleChatCount: 2
-              }
-            )
-          }).catch(err => {
-            console.log(err)
-          })         
-        ))
-
-        Promise.all(chatRoomCreaterPromises)
-        .then(arr => {
-          console.log(arr)
-          this.ChatStore.setAllChatMatchPrey(arr)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-      */
-
-      
-      if (child.val().interested === 2) {
-        this.firebase.database().ref('users/' + child.val().chatRoomRecipient).once('value').then( snap => {
-          this.ChatStore.setChatMatchPrey({
-            key: child.key,
-            prey: child.val().chatRoomRecipient,
-            name: snap.val().nickname,
-            avatar: snap.val().avatar,
-            age: calculateAge(snap.val().birthday),
-            lastChatContent: child.val().lastMessage,
-            userState: '平淡中',
-            userStateColor: '#FFD306',
-            nonHandleChatCount: 0         
-          })
-        })
-      } else {
-        this.firebase.database().ref('users/' + child.val().chatRoomRecipient).once('value').then( snap => {
-          this.ChatStore.setChatSendPrey({
-            key: child.key,
-            prey: child.val().chatRoomRecipient,
-            name: snap.val().nickname,
-            avatar: snap.val().avatar,
-            age: calculateAge(snap.val().birthday),
-            lastChatContent: child.val().lastMessage,
-            userState: '平淡中',
-            userStateColor: '#FFD306',
-            nonHandleChatCount: 0         
-          })
-        })
-      }
-      
-    })
-
-    this.chatRoomRecipientQuery.on('child_added',child => {
-
-        // value作法
-        /*
-        const chatRoomRecipientPromises = child._childKeys.filter(key => child.val()[key].interested === 2).map( key => (
-          this.firebase.database().ref('users/' + child.val()[key].chatRoomCreater).once('value').then( snap => {
-            return(
-              {
-                key: key,
-                prey: child.val()[key].chatRoomCreater,
-                name: snap.val().nickname,
-                avatar: snap.val().avatar,
-                age: calculateAge(snap.val().birthday),
-                lastChatContent: child.val()[key].lastMessage,
-                userState: '平淡中',
-                userStateColor: '#FFD306',
-                nonHandleChatCount: 2
-              }
-            )
-          }).catch(err => {
-            console.log(err)
-          })         
-        ))
-
-        Promise.all(chatRoomRecipientPromises)
-        .then(arr => {
-          console.log(arr)
-          this.ChatStore.setAllChatMatchPrey(arr)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-        */
-     
-      if (child.val().interested === 2) {
-        this.firebase.database().ref('users/' + child.val().chatRoomCreater).once('value').then( snap => {
-          this.ChatStore.setChatMatchPrey({
-            key: child.key,
-            prey: child.val().chatRoomCreater,
-            name: snap.val().nickname,
-            avatar: snap.val().avatar,
-            age: calculateAge(snap.val().birthday),
-            lastChatContent: child.val().lastMessage,
-            userState: '平淡中',
-            userStateColor: '#FFD306',
-            nonHandleChatCount: 0          
-          })
-        })
-      } else if (child.val().interested === 1) {
-        this.firebase.database().ref('users/' + child.val().chatRoomCreater).once('value').then( snap => {
-          this.ChatStore.setChatVistorPrey({
-            key: child.key,
-            prey: child.val().chatRoomCreater,
-            name: snap.val().nickname,
-            avatar: snap.val().avatar,
-            age: calculateAge(snap.val().birthday),
-            lastChatContent: child.val().lastMessage,
-            userState: '平淡中',
-            userStateColor: '#FFD306',
-            nonHandleChatCount: 0          
-          })
-        })
-      }
-     
-    })
-    /// changed
-    
-    this.chatRoomCreaterQuery.on('child_changed',child => {
-      //console.log(child)
-      if (child.val().interested === 2) {
-        const chatRoom = this.ChatStore.chatMatchPrey.find(obj => obj.key === child.key)
-        if (chatRoom) {
-          chatRoom.lastChatContent = child.val().lastMessage
-          //this.ChatStore.setAllChatMatchPrey(this.ChatStore.chatMatchPrey.slice()) // 能不能不要整個重render list
-        } else {
-          this.firebase.database().ref('users/' + child.val().chatRoomRecipient).once('value').then( snap => {
-            this.ChatStore.addChatMatchPrey({
-              key: child.key,
-              prey: child.val().chatRoomRecipient,
-              name: snap.val().nickname,
-              avatar: snap.val().avatar,
-              age: calculateAge(snap.val().birthday),
-              lastChatContent: child.val().lastMessage,
-              userState: '平淡中',
-              userStateColor: '#FFD306',
-              nonHandleChatCount: 0         
-            })
-            //this.ChatStore.setAllChatMatchPrey(this.ChatStore.chatMatchPrey.slice()) // 能不能不要整個重render list
-          })
-          //this.ChatStore.setChatMatchPrey(child.val())
-          // 加入新chatRoom
-        }
-      } else {
-        const chatRoom = this.ChatStore.chatSendPrey.find(obj => obj.key === child.key)
-        //console.warn(chatRoom)
-        chatRoom.lastChatContent = child.val().lastMessage
-        this.ChatStore.setAllChatSendPrey(this.ChatStore.chatSendPrey.slice()) // 能不能不要整個重render list
-      }
-    })
-
-    this.chatRoomRecipientQuery.on('child_changed',child => {
-      console.log(child)
-      if (child.val().interested === 2) {
-        const chatRoom = this.ChatStore.chatMatchPrey.find(obj => obj.key === child.key)
-        if (chatRoom) {
-          chatRoom.lastChatContent = child.val().lastMessage
-          //this.ChatStore.setAllChatMatchPrey(this.ChatStore.chatMatchPrey.slice()) // 能不能不要整個重render list
-        } else {
-          this.firebase.database().ref('users/' + child.val().chatRoomCreater).once('value').then( snap => {
-            this.ChatStore.addChatMatchPrey({
-              key: child.key,
-              prey: child.val().chatRoomRecipient,
-              name: snap.val().nickname,
-              avatar: snap.val().avatar,
-              age: calculateAge(snap.val().birthday),
-              lastChatContent: child.val().lastMessage,
-              userState: '平淡中',
-              userStateColor: '#FFD306',
-              nonHandleChatCount: 0          
-            })
-            //this.ChatStore.setAllChatMatchPrey(this.ChatStore.chatMatchPrey.slice()) // 能不能不要整個重render list
-          })
-          //this.ChatStore.setChatMatchPrey(chatRoom)
-          // 加入新chatRoom
-        }
-      }
-    })
-    
-
-/*
-    this.chatRoomCreaterQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid) // 自己發送的招呼
-    this.chatRoomCreaterQuery.on('child_added',child => {
-      this.firebase.database().ref('users/' + child.val().chatRoomRecipient).once('value').then( snap => {
-        this.ChatStore.addPreyToChatRoomCreaterPool(child.key,child.val().interested,child.val().chatRoomRecipient,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(snap.val().birthday),child.val()[child.val().chatRoomRecipient])
-      })
-      
-      this.firebase.database().ref('chat_rooms/' + child.key).on('child_changed',changed_child => {
-        if (changed_child.key === 'lastMessage') {
-          // 最後一則訊息變了
-          this.ChatStore.changeChatRoomCreaterPoolLastMessage(child.key,changed_child.val())
-        } else if (changed_child.key === 'interested') {
-          // 接受度變了
-          this.ChatStore.changeChatRoomCreaterPoolInterested(child.key,changed_child.val())
-        }
-      })
-    })
-    this.chatRoomRecipientQuery = this.firebase.database().ref('chat_rooms').orderByChild('chatRoomRecipient').equalTo(this.SubjectStore.uid) // 別人發送的招呼
-    this.chatRoomRecipientQuery.on('child_added',child => {
-      this.firebase.database().ref('users/' + child.val().chatRoomCreater).once('value').then( snap => {
-        this.ChatStore.addPreyToChatRoomRecipientPool(child.key,child.val().interested,child.val().chatRoomCreater,snap.val().nickname,snap.val().avatar,child.val().lastMessage,calculateAge(snap.val().birthday),child.val()[child.val().chatRoomCreater])
-      })
-      
-      this.firebase.database().ref('chat_rooms/' + child.key).on('child_changed',changed_child => {
-        if (changed_child.key === 'lastMessage') {
-          // 最後一則訊息變了
-          this.ChatStore.changeChatRoomRecipientPoolLastMessage(child.key,changed_child.val())
-        } else if (changed_child.key === 'interested') {
-          // 接受度變了
-          this.ChatStore.changeChatRoomRecipientPoolInterested(child.key,changed_child.val())
-        }
-      })
-    })
-*/
+  handleAppStateChange = nextAppState => {
+    if (AppState.currentState === 'active') {
+      this.setOnline(true) // 設置使用者上線
+    } else if (this.lastAppState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
+      this.setOnline(false) // 設置使用者下線
+    }
+    this.lastAppState = nextAppState
   }
 
   // removeListener
-
-
   removeMeetChanceListener = () => {
     if (this.geoUploadFire) {
-      //console.warn(this.geoUploadFire)
       //this.geoUploadFire.cancel()
       this.geoUploadFire = null
       //this.geoQuery = null
     }
     if (this.geoQueryFire) {
-      //console.warn(this.geoQueryFire)
       //this.geoQueryFire.cancel()
       this.geoQueryFire = null
       //this.geoQuery = null
@@ -606,47 +375,10 @@ export default class SessionCheckScene extends Component {
     }
   }
 
-  removeVisitorsListener = () => {
-    if (this.visitorsQuery) {
-      this.visitorsQuery.off()
-      this.visitorsQuery = null
-    }
-  }
-
-  removeGoodImpressionListener = () => {
-    if (this.goodImpressionQuery) {
-      this.goodImpressionQuery.off()
-      this.goodImpressionQuery = null
-    }
-  }
-
-  removeMatchListener = () => {
-    if (this.matchQuery) {
-      this.matchQuery.off()
-      this.matchQuery = null
-    }
-  }
-
-  removeChatRoomListener = () => {
-    if (this.chatRoomCreaterQuery) {
-      this.chatRoomCreaterQuery.off()
-      this.chatRoomCreaterQuery = null
-    } 
-    if (this.chatRoomRecipientQuery) {
-      this.chatRoomRecipientQuery.off()
-      this.chatRoomRecipientQuery = null
-    }        
-  }
-
-  removeBlockadeListener = () => {
-    if (this.blockadeQuery_A) {
-      this.blockadeQuery_A.off()
-      this.blockadeQuery_A = null
-    }
-    if (this.blockadeQuery_B) {
-      this.blockadeQuery_B.off()
-      this.blockadeQuery_B = null
-    }
+  render() {
+    return (
+      <Loading />
+    )
   }
 
   //////演算法//////
@@ -667,272 +399,4 @@ export default class SessionCheckScene extends Component {
     this.SignUpStore.sexualOrientation ? (this.genderToString() + 's' + this.genderToString()) : ((this.SignUpStore.gender ? 'f' : 'm') + 's' + this.genderToString())
   )
 
-  render() {
-    return (
-      <Loading />
-    )
-  }
 }
-
-
-  /*
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
-  updateVisitConvInvites = () => {
-    const start = Moment().startOf("day").unix()
-    const end = Moment().endOf("day").unix()
-    let sent = 0
-    this.firebase.database().ref(`users/${this.SubjectStore.uid}/conversations/`)
-    .orderByChild("createTime")
-    .startAt(start)
-    .endAt(end)
-    .once("value")
-    .then(snap => {
-      sent = snap.numChildren()
-      snap.forEach(child => {
-        if (child.val().wooer != this.SubjectStore.uid) {
-          sent -= 1
-        }
-      })
-      return sent
-    })
-    .then(() => {
-      console.log("Total new convs today: ", sent)
-      this.SubjectStore.setVisitConvSentToday(sent)
-      this.firebase.database().ref(`users/${this.SubjectStore.uid}/visitConvSentToday/`).set(sent)
-    })
-  }
-
-  seekMeetQs = sexualOrientation => {
-    switch (sexualOrientation) {
-      case 'msf':
-        this.mq('fsm')
-        break
-      case 'msm':
-        this.mq('msm')
-        break
-      case 'fsm':
-        this.mq('msf')
-        break
-      case 'fsf':
-        this.mq('fsf')
-        break
-    }
-  }
-
-  mq = sexualOrientation => {
-    //this.meetCuteQuery = this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation)
-    //this.meetCuteQuery.on('child_added', child => {
-    //  this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
-    //})
-    //this.meetCuteQuery.on('child_changed', child => {
-      // birthday changed
-    //  if (this.MeetCuteStore.pool[child.key] !== child.val().birthday) {
-    //    this.MeetCuteStore.addPreyToPool(child.key,child.val().birthday)
-    //  }
-    //})
-    //this.firebase.database().ref('users').orderByChild('sexualOrientation').equalTo(sexualOrientation).limitToLast(100).once('value',snap => {
-    //  this.MeetCuteStore.setNewPreys(snap.val())
-    //})
-    this.firebase.database().ref('msf/meetCuteList').orderByChild('meetCuteList/aaa').equalTo(null).once('value',snap => {
-      console.log(snap.val())
-    })
-  }
-
-  removeMeetCuteListener = () => {
-    if (this.meetCuteQuery) {
-      this.meetCuteQuery.off()
-      this.meetCuteQuery = null
-    }
-  }
-
-/*
-  meetChanceListener = (geoQuery) => {
-    geoQuery.on('key_entered', (uid, location, distance) => {
-      console.warn(uid)
-      //if (uid !== this.SubjectStore.uid) {
-      //  this.firebase.database().ref('users/' + uid).once('value').then( snap => {
-      //    if (snap.val().sexualOrientation === this.reverseString(this.SubjectStore.sexualOrientation) && snap.val().album) {
-      //      this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online,snap.val().popularityDen,snap.val().popularityNum)
-      //    }
-      //  })
-      //}
-    })
-
-    geoQuery.on('key_moved', (uid, location, distance) => {
-      console.warn(uid)
-      //if (uid !== this.SubjectStore.uid) {
-        //this.MeetChanceStore.updatePreyToPool(uid,distance)
-        // 這裡常常會掛掉
-      //}
-    })
-
-    geoQuery.on('key_exited', (uid, location, distance) => {
-      console.warn(uid)
-      //if (uid !== this.SubjectStore.uid) {
-      //  this.MeetChanceStore.removePreyToPool(uid)
-      //}
-    })
-
-  setLocation = (latitude,longitude) => {
-    this.SubjectStore.setLatitude(latitude)
-    this.SubjectStore.setLongitude(longitude)
-    this.MeetCuteStore.setLatitude(latitude)
-    this.MeetCuteStore.setLongitude(longitude)
-    this.MeetChanceStore.setLatitude(latitude)
-    this.MeetChanceStore.setLongitude(longitude)
-    this.FateStore.setLatitude(latitude)
-    this.FateStore.setLongitude(longitude)
-  }
-  }
-
-  uploadSignUpProfile = () => {
-    this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
-      // 非同步上傳註冊資料
-      sexualOrientation: this.sexualOrientationToString(),
-      address: this.SignUpStore.address,
-      nickname: this.SignUpStore.nickname,
-      birthday: this.SignUpStore.birthday,
-      //vip: false,
-      bonus: 0
-    }).then(() => {
-        this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳成功')
-      }).catch((error) => {
-        this.ControlStore.setSignUpDataUploadIndicator('使用者資料上傳失敗')
-        console.log(error)
-      })
-  }
-
-  uploadEmailVerity = () => {
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/emailVerified').set(this.firebase.auth().currentUser.emailVerified)
-    this.SubjectStore.setEmailVerified(this.firebase.auth().currentUser.emailVerified)
-  }
-
-
-  meetCuteListener = () => {
-    this.seekMeetQs(this.SubjectStore.sexualOrientation)
-  }
-
-
-  visitorsListener = () => {
-    this.visitorsQuery = this.firebase.database().ref('visitors').orderByChild('prey').equalTo(this.SubjectStore.uid)
-    this.visitorsQuery.on('child_added', child => {
-      this.FateStore.addPreyToVisitorsPool(child.val().wooer,child.val().time)
-    })
-  }
-
-  goodImpressionListener = () => {
-    this.goodImpressionQuery = this.firebase.database().ref('goodImpression').orderByChild('prey').equalTo(this.SubjectStore.uid)
-    this.goodImpressionQuery.on('child_added', child => {
-      this.FateStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
-      this.MeetCuteStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
-    })
-    this.goodImpressionQuery.on('child_removed', child => {
-      this.FateStore.removePreyToGoodImpressionPool(child.val().wooer)
-      this.MeetCuteStore.addPreyToGoodImpressionPool(child.val().wooer,child.val().time)
-    })
-  }
-
-  matchListener = () => {
-    this.matchQuery = this.firebase.database().ref('goodImpression').orderByChild('wooer').equalTo(this.SubjectStore.uid)
-    this.matchQuery.on('child_added', child => {
-      this.FateStore.addPreyToMatchPool(child.val().prey,child.val().time)
-      this.MeetCuteStore.addPreyToMatchPool(child.val().prey,child.val().time)
-    })
-    this.matchQuery.on('child_removed', child => {
-      this.FateStore.removePreyToMatchPool(child.val().prey)
-      this.MeetCuteStore.removePreyToMatchPool(child.val().prey)
-    })
-  }
-
-  blockadeListener = () => {
-    this.blockadeQuery_A = this.firebase.database().ref('blockade').orderByChild('wooer').equalTo(this.SubjectStore.uid)
-    this.blockadeQuery_B = this.firebase.database().ref('blockade').orderByChild('prey').equalTo(this.SubjectStore.uid)
-    this.blockadeQuery_A.on('child_added', child => {
-      this.MeetCuteStore.addPreyToblockadePool(child.val().prey,child.val().time)
-      this.MeetChanceStore.addPreyToblockadePool(child.val().prey,child.val().time)
-
-    })
-    this.blockadeQuery_B.on('child_added', child => {
-      this.MeetCuteStore.addPreyToblockadePool(child.val().wooer,child.val().time)
-      this.MeetChanceStore.addPreyToblockadePool(child.val().prey,child.val().time)
-    })
-  }
-
-  handleAppStateChange = nextAppState => {
-    if (AppState.currentState === 'active') {
-      this.setOnline()
-      // 設置使用者上線
-    } else if (this.lastAppState.match('active') && (nextAppState === 'inactive' || nextAppState === 'background')) {
-      this.setOffline()
-      // 設置使用者下線
-    }
-    this.lastAppState = nextAppState
-  }
-
-  setOnline = () => {
-    this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(true)
-    this.firebase.database().ref('/online/' + this.SubjectStore.uid).set({
-      lastOnline: Math.floor(Date.now() / 1000),
-      location: 'Taipei, Taiwan'
-    })
-    // onlineDaysMonth
-    this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineDaysMonth').once('value',snap => {
-      const onlineDaysMonth = snap.val() || new Object
-      const time_now = new Date()
-      const this_month = time_now.getMonth() + 1 // getMonth 都會少一個月 時區問題？
-      const today = time_now.getFullYear() + '-' + this_month + '-' + time_now.getDate()
-      Object.keys(onlineDaysMonth).forEach(key => {
-        if (parseInt(key.split('-')[1]) !== this_month) {
-          delete onlineDaysMonth[key] // 清除不屬於這個月份的登入日期
-        }
-      })
-      onlineDaysMonth[today] = true
-      this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineDaysMonth').set(onlineDaysMonth)
-      this.SubjectStore.setOnlineDaysMonth(onlineDaysMonth)
-      //console.log(onlineDaysMonth)
-    })
-  }
-
-  setOffline() {
-    this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/online').set(false)
-    // 計算上線時間
-    this.firebase.database().ref('/users/' + this.SubjectStore.uid).once('value',snap => {
-      const lastOnlineTime = snap.val().onlineTime || 0
-      this.firebase.database().ref('/online/' + this.SubjectStore.uid).once('value',snap => {
-        const lastOnline = snap.val().lastOnline || 0
-        const onlineTime = Math.floor(Date.now() / 1000) - lastOnline
-        this.firebase.database().ref('/users/' + this.SubjectStore.uid + '/onlineTime').set(lastOnlineTime + onlineTime)
-        this.firebase.database().ref('/online/' + this.SubjectStore.uid).remove().catch(err => { console.log(err) })
-      })
-    })
-  }
-
-  setVip = () => {
-    if (Platform.OS === "android") {
-      InAppBilling.open()
-      .then(() => InAppBilling.getSubscriptionDetailsArray(['3_month', 'premium_3m']).then( productDetailsArray => {
-        if (productDetailsArray.length > 0) {
-          this.SubjectStore.setVip(true)
-        } else {
-          this.SubjectStore.setVip(false)
-        }
-      }).catch(err => console.log(err)))
-      .catch(err => console.log(err))
-    } else { // iOS
-      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/vip').once('value').then((snap)=> {
-        if (snap.exists()) {
-          if (snap.val()) {
-            this.SubjectStore.setVip(true)
-          } else {
-            this.SubjectStore.setVip(false)
-          }
-        }
-      })
-    }
-  }
-*/
-  

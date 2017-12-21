@@ -100,7 +100,37 @@ const styles = {
   }
 }
 
-const ChatList = ({name, avatar, onPress, online, lastChatContent,nonHandleChatCount,showBadge,showTag,userState,userStateColor }) => {
+const getUserState = statusCode => {
+  switch (statusCode) {
+    case 0:
+      return ""
+    case 1:
+      return "放空中"
+    case 2:
+      return "忙碌中"
+    case 3:
+      return "低潮中"
+    default:
+      return ""
+  } 
+}
+
+const getUserStateColor = statusCode => {
+  switch (statusCode) {
+    case 0:
+      return "transparent"
+    case 1:
+      return "#FFD306"
+    case 2:
+      return "#ff7f50"
+    case 3:
+      return "#4682b4"
+    default:
+      return "transparent"
+  } 
+}
+
+const ChatList = ({name, avatar, onPress, online, lastChatContent,nonHandleChatCount,showBadge,showTag,userState,userStateColor, chatStatus }) => {
 
   return(
     <TouchableOpacity style={styles.chat} activeOpacity={1} onPress={ onPress }>
@@ -114,7 +144,7 @@ const ChatList = ({name, avatar, onPress, online, lastChatContent,nonHandleChatC
           circleColor={'rgba(41, 255, 41,1)'}
         />
         <View style={styles.userState}>
-          <Badge value={userState || '無狀態'} containerStyle={ [styles.userStateBadge,{ backgroundColor: userStateColor || 'blue'}] } textStyle={styles.userStateBadgeText}/>
+          <Badge value={getUserState(chatStatus)} containerStyle={ [styles.userStateBadge,{ backgroundColor: getUserStateColor(chatStatus) || 'blue'}] } textStyle={styles.userStateBadgeText}/>
         </View>
       </View>
       <View style={styles.content}>

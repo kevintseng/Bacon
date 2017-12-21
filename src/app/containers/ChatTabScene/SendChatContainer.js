@@ -48,8 +48,9 @@ export default class SendChatContainer extends Component {
               showBadge={item.showBadge}
               showTag={item.showTag}
               online={item.online}
-              userState={item.userState}
-              userStateColor={item.userStateColor}
+              chatStatus={item.chatStatus}
+              //userState={item.userState}
+              //userStateColor={item.userStateColor}
               />
            }
         />
