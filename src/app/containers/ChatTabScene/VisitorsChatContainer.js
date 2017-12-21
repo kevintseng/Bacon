@@ -48,8 +48,9 @@ export default class VisitorsChatContainer extends Component {
               showBadge={item.nonHandleChatCount > 0}
               showTag={item.showTag}
               online={item.online}
-              userState={item.userState}
-              userStateColor={item.userStateColor}
+              chatStatus={item.chatStatus}
+              //userState={item.userState}
+              //userStateColor={item.userStateColor}
               />
            }
         />

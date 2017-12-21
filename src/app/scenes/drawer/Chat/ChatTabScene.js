@@ -21,7 +21,6 @@ export default class ChatTabScene extends Component {
   componentWillMount () {
     Actions.refresh({ key: 'Drawer', open: false })
     this.ChatStore.cleanChatModal()
-    //console.warn('aaaa')
   }
 
   componentDidMount() {
@@ -65,89 +64,94 @@ export default class ChatTabScene extends Component {
       const chatRoomRecipientKeys = Object.keys(chatRoomRecipient)
       const chatRoomCreaterPromise = chatRoomCreaterKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomCreater[chatRoomKey].chatRoomRecipient).once('value'))
       const chatRoomRecipientPromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomRecipient[chatRoomKey].chatRoomCreater).once('value'))
-          
+      
+      const chatRoomCreaterLastMessagePromise = chatRoomCreaterKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/lastMessage').once('value'))
+      const chatRoomRecipientLastMessagePromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/lastMessage').once('value'))
+
       const chatRoomsPromise = chatRoomCreaterPromise.concat(chatRoomRecipientPromise)
-          
-      Promise.all(chatRoomsPromise)
-      .then(data => {
-        chatRoomCreaterKeys.map((chatRoomKey,index) => {
+      const chatRoomLastMessagePromise = chatRoomCreaterLastMessagePromise.concat(chatRoomRecipientLastMessagePromise)
+        
+      Promise.all (chatRoomLastMessagePromise)  
+      .then(lastMessages => {
+        Promise.all(chatRoomsPromise)
+        .then(data => {
+          chatRoomCreaterKeys.map((chatRoomKey,index) => {
+            chatRooms.push({
+              key: chatRoomKey,
+              prey: chatRoomCreater[chatRoomKey].chatRoomRecipient,
+              name: data[index].val().nickname,
+              avatar: data[index].val().avatar,
+              age: 18,
+              lastChatContent: lastMessages[index].val(),
+              chatStatus: data[index].val().chatStatus,
+              online: data[index].val().online,
+              nonHandleChatCount: 0 
+              })              
+            })
+
+          const chatRoomCreaterKeysSize = chatRoomCreaterKeys.length
+
+          chatRoomRecipientKeys.map((chatRoomKey,index) => {
           chatRooms.push({
             key: chatRoomKey,
-            prey: chatRoomCreater[chatRoomKey].chatRoomRecipient,
-            name: data[index].val().nickname,
-            avatar: data[index].val().avatar,
+            prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
+            name: data[chatRoomCreaterKeysSize + index].val().nickname,
+            avatar: data[chatRoomCreaterKeysSize + index].val().avatar,
             age: 18,
-            lastChatContent: chatRoomCreater[chatRoomKey].lastMessage,
-            userState: '平淡中',
-            userStateColor: '#FFD306',
+            lastChatContent: lastMessages[chatRoomCreaterKeysSize + index].val(),
+            chatStatus: data[index].val().chatStatus,
+            online: data[index].val().online,
             nonHandleChatCount: 0 
             })              
           })
 
-        const chatRoomCreaterKeysSize = chatRoomCreaterKeys.length
+          this.ChatStore.setMatchChatRooms(chatRooms)
 
-        chatRoomRecipientKeys.map((chatRoomKey,index) => {
-        chatRooms.push({
-          key: chatRoomKey,
-          prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
-          name: data[chatRoomCreaterKeysSize + index].val().nickname,
-          avatar: data[chatRoomCreaterKeysSize + index].val().avatar,
-          age: 18,
-          lastChatContent: chatRoomRecipient[chatRoomKey].lastMessage,
-          userState: '平淡中',
-          userStateColor: '#FFD306',
-          nonHandleChatCount: 0 
-          })              
-        })
-
-        this.ChatStore.setMatchChatRooms(chatRooms)
-
-        })
-        .catch(err => {
-          console.log(err)
-        })
-      })    
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        }) 
+      })   
   }
 
   fetchVistorChatRooms = () => {
     let chatRooms = new Array
     Promise.all([
-      //this.firebase.database().ref('nonHandleChatRooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid).once('value'), 
       this.firebase.database().ref('nonHandleChatRooms').orderByChild('chatRoomRecipient').equalTo(this.SubjectStore.uid).once('value')
     ])
     .then(snap => { 
-      //const chatRoomCreater = snap[0]._value || new Object
       const chatRoomRecipient = snap[0]._value || new Object
-      //const chatRoomCreaterKeys = Object.keys(chatRoomCreater)
       const chatRoomRecipientKeys = Object.keys(chatRoomRecipient)
-      //const chatRoomCreaterPromise = chatRoomCreaterKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomCreater[chatRoomKey].chatRoomRecipient).once('value'))
       const chatRoomRecipientPromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomRecipient[chatRoomKey].chatRoomCreater).once('value'))
+      const chatRoomRecipientLastMessagePromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/lastMessage').once('value'))
           
-      //const chatRoomsPromise = chatRoomCreaterPromise.concat(chatRoomRecipientPromise)
-          
-      Promise.all(chatRoomRecipientPromise)
-      .then(data => {
-        chatRoomRecipientKeys.map((chatRoomKey,index) => {
-          chatRooms.push({
-            key: chatRoomKey,
-            prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
-            name: data[index].val().nickname,
-            avatar: data[index].val().avatar,
-            age: 18,
-            lastChatContent: chatRoomRecipient[chatRoomKey].lastMessage,
-            userState: '平淡中',
-            userStateColor: '#FFD306',
-            nonHandleChatCount: 0 
-            })              
+      Promise.all(chatRoomRecipientLastMessagePromise) 
+      .then(lastMessages => {
+        Promise.all(chatRoomRecipientPromise)
+        .then(data => {
+          chatRoomRecipientKeys.map((chatRoomKey,index) => {
+            chatRooms.push({
+              key: chatRoomKey,
+              prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
+              name: data[index].val().nickname,
+              avatar: data[index].val().avatar,
+              age: 18,
+              lastChatContent: lastMessages[index].val(),
+              chatStatus: data[index].val().chatStatus,
+              online: data[index].val().online,
+              nonHandleChatCount: 0 
+              })              
+            })
+
+          this.ChatStore.setVistorChatRooms(chatRooms)
+
           })
-
-        this.ChatStore.setVistorChatRooms(chatRooms)
-
-        })
-        .catch(err => {
-          console.log(err)
-        })
-      }) 
+          .catch(err => {
+            console.log(err)
+          })
+        }) 
+      })         
   }
 
   fetchChatSendRooms = () => {
@@ -163,46 +167,52 @@ export default class ChatTabScene extends Component {
       const chatRoomRecipientKeys = Object.keys(chatRoomRecipient)
       const chatRoomCreaterPromise = chatRoomCreaterKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomCreater[chatRoomKey].chatRoomRecipient).once('value'))
       const chatRoomRecipientPromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomRecipient[chatRoomKey].chatRoomCreater).once('value'))
-          
+      const chatRoomCreaterLastMessagePromise = chatRoomCreaterKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/lastMessage').once('value'))
+      const chatRoomRecipientLastMessagePromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/lastMessage').once('value'))
+
       const chatRoomsPromise = chatRoomCreaterPromise.concat(chatRoomRecipientPromise)
+      const chatRoomLastMessagePromise = chatRoomCreaterLastMessagePromise.concat(chatRoomRecipientLastMessagePromise)
           
-      Promise.all(chatRoomsPromise)
-      .then(data => {
-        chatRoomCreaterKeys.map((chatRoomKey,index) => {
+      Promise.all(chatRoomLastMessagePromise)
+      .then(lastMessages => {
+        Promise.all(chatRoomsPromise)
+        .then(data => {
+          chatRoomCreaterKeys.map((chatRoomKey,index) => {
+            chatRooms.push({
+              key: chatRoomKey,
+              prey: chatRoomCreater[chatRoomKey].chatRoomRecipient,
+              name: data[index].val().nickname,
+              avatar: data[index].val().avatar,
+              age: 18,
+              lastChatContent: lastMessages[index].val(),
+              chatStatus: data[index].val().chatStatus,
+              online: data[index].val().online,
+              nonHandleChatCount: 0 
+              })              
+            })
+
+          const chatRoomCreaterKeysSize = chatRoomCreaterKeys.length
+
+          chatRoomRecipientKeys.map((chatRoomKey,index) => {
           chatRooms.push({
             key: chatRoomKey,
-            prey: chatRoomCreater[chatRoomKey].chatRoomRecipient,
-            name: data[index].val().nickname,
-            avatar: data[index].val().avatar,
+            prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
+            name: data[chatRoomCreaterKeysSize + index].val().nickname,
+            avatar: data[chatRoomCreaterKeysSize + index].val().avatar,
             age: 18,
-            lastChatContent: chatRoomCreater[chatRoomKey].lastMessage,
-            userState: '平淡中',
-            userStateColor: '#FFD306',
+            lastChatContent: lastMessages[chatRoomCreaterKeysSize + index].val(),
+            chatStatus: data[index].val().chatStatus,
+            online: data[index].val().online,
             nonHandleChatCount: 0 
             })              
           })
 
-        const chatRoomCreaterKeysSize = chatRoomCreaterKeys.length
+          this.ChatStore.setSendChatRooms(chatRooms)
 
-        chatRoomRecipientKeys.map((chatRoomKey,index) => {
-        chatRooms.push({
-          key: chatRoomKey,
-          prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
-          name: data[chatRoomCreaterKeysSize + index].val().nickname,
-          avatar: data[chatRoomCreaterKeysSize + index].val().avatar,
-          age: 18,
-          lastChatContent: chatRoomRecipient[chatRoomKey].lastMessage,
-          userState: '平淡中',
-          userStateColor: '#FFD306',
-          nonHandleChatCount: 0 
-          })              
-        })
-
-        this.ChatStore.setSendChatRooms(chatRooms)
-
-        })
-        .catch(err => {
-          console.log(err)
+          })
+          .catch(err => {
+            console.log(err)
+          })
         })
       }) 
   }

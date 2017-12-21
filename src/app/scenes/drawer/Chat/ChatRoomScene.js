@@ -151,7 +151,7 @@ export default class ChatRoomScene extends Component {
         })
         this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).set({
           chatRoomCreater: this.SubjectStore.uid,
-          lastMessage: messages[0].text,
+          //lastMessage: messages[0].text,
           chatRoomRecipient: this.props.preyID,
         })
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
@@ -171,7 +171,7 @@ export default class ChatRoomScene extends Component {
       })
       this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).set({
         chatRoomCreater: this.SubjectStore.uid,
-        lastMessage: '送出一張圖片',
+        //lastMessage: '送出一張圖片',
         chatRoomRecipient: this.props.preyID
       })
       this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)

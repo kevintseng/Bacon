@@ -24,8 +24,9 @@ import AuthScene from './scenes/authenticate/AuthScene'
 // Drawer
 import DrawerScene from './scenes/drawer/DrawerScene'
 // MeetCute
-import MeetCuteCourtScene from './scenes/drawer/MeetCute/MeetCuteCourtScene'
+//import MeetCuteCourtScene from './scenes/drawer/MeetCute/MeetCuteCourtScene'
 import MeetCuteConfigScene from './scenes/drawer/MeetCute/MeetCuteConfigScene'
+import SwiperScene from './scenes/drawer/Swiper/SwiperScene'
 // AboutMe
 import AboutMeTabScene from './scenes/drawer/AboutMe/AboutMeTabScene'
 import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
@@ -37,45 +38,28 @@ import MeetChanceConfigScene from './scenes/drawer/MeetChance/MeetChanceConfigSc
 import FateTabScene from './scenes/drawer/Fate/FateTabScene'
 import FateCourtScene from './scenes/drawer/Fate/FateCourtScene'
 // Master
-import MasterTabScene from './scenes/drawer/Master/MasterTabScene'
-import MasterOneScene from './scenes/drawer/Master/MasterOneScene'
+//import MasterTabScene from './scenes/drawer/Master/MasterTabScene'
+//import MasterOneScene from './scenes/drawer/Master/MasterOneScene'
 // Setting
 import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
 import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
 import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
 import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
 import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
-// 訊息列表
-import LineListScene from './scenes/drawer/Line/LineListScene'
-//新訊息列表
-import LineTabScene from './scenes/drawer/Line/LineTabScene'
-// ======共用====== //
-// LineCollect
+//
 import LineCollectCourtScene from './scenes/drawer/LineCollect/LineCollectCourtScene'
 import LineCollectRoutesScene from './scenes/drawer/LineCollect/LineCollectRoutesScene'
-//
 import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
 import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
-//舊的聊天室
-import LineScene from './scenes/drawer/Line/LineScene'
-//新聊天室
 import ChatTabScene from './scenes/drawer/Chat/ChatTabScene'
-//
 import ChatRoomScene from './scenes/drawer/Chat/ChatRoomScene'
 import MatchChatRoomScene from './scenes/drawer/Chat/MatchChatRoomScene'
 import VisitorChatRoomScene from './scenes/drawer/Chat/VisitorChatRoomScene'
 import HelloChatRoomScene from './scenes/drawer/Chat/HelloChatRoomScene'
-//
 import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
-//
-import ArticleListScene from './scenes/drawer/Article/ArticleListScene'
-import ArticleDetailScene from './scenes/drawer/Article/ArticleDetailScene'
-//
-import SwiperScene from './scenes/drawer/Swiper/SwiperScene'
-//
-import TestScene from './scenes/drawer/Test/TestScene'
-// ###############drawer################ //
-
+//import ArticleListScene from './scenes/drawer/Article/ArticleListScene'
+//import ArticleDetailScene from './scenes/drawer/Article/ArticleDetailScene'
+//import TestScene from './scenes/drawer/Test/TestScene'
 // ###############header components################ //
 import BaconTitle from './views/BaconTitle/BaconTitle'
 import BaconMenu from './views/BaconMenu/BaconMenu'
@@ -83,9 +67,7 @@ import BaconTool from './views/BaconTool/BaconTool'
 import BaconArrow from './views/BaconArrow/BaconArrow'
 import BaconNotice from './views/BaconNotice'
 import BaconPreview from './views/BaconPreview/BaconPreview'
-// 待修正
-import ChatStatusContainer from './containers/LineListScene/ChatStatusContainer'
-// ###############header components################ //
+import BaconChatStatus from './views/BaconChatStatus'
 
 const styles = {
   navBar: {
@@ -170,57 +152,31 @@ export default class Routes extends Component {
     alert('預覽')
   }
 
-  // reason 就是text string 點數使用說明文字
-  // goToUseBonus = (balance, cost, reason, avatarUrl, callbackFunc) => {
-  //   // balance, cost, avatarUrl, reason
-  //   Actions.UseBonus({balance, cost, reason, avatarUrl, callBackFunc})
-  // }
+  baconMenu = () => <View style={styles.baconMenu}><BaconMenu /></View>
 
-  baconMenu = () => (<View style={styles.baconMenu}><BaconMenu /></View>)
+  baconTitle = () => <View style={styles.baconTitle}><BaconTitle /></View>
 
-  baconTitle = () => (<View style={styles.baconTitle}><BaconTitle /></View>)
+  baconArrow = () => <View style={styles.baconArrow}><BaconArrow onPress={this.goback} /></View>
 
-  baconArrow = () => (<View style={styles.baconArrow}><BaconArrow onPress={this.goback} /></View>)
+  baconArrowSignUpOne = () => <View style={styles.baconArrow}><BaconArrow onPress={this.goToWelcome} /></View>
 
-  baconArrowSignUpOne = () => (
-    <View style={styles.baconArrow}><BaconArrow onPress={this.goToWelcome} /></View>
-  )
+  baconArrowSignUpTwo = () => <View style={styles.baconArrow}><BaconArrow onPress={this.goToSignUpOne} /></View>
 
-  baconArrowSignUpTwo = () => (
-    <View style={styles.baconArrow}><BaconArrow onPress={this.goToSignUpOne} /></View>
-  )
+  baconArrowSignUpThree = () => <View style={styles.baconArrow}><BaconArrow onPress={this.goToSignUpTwo} /></View>
 
-  baconArrowSignUpThree = () => (
-    <View style={styles.baconArrow}><BaconArrow onPress={this.goToSignUpTwo} /></View>
-  )
+  baconArrowSignUpFour = () => <View style={styles.baconArrow}><BaconArrow onPress={this.goToSignUpThree} /></View>
 
-  baconArrowSignUpFour = () => (
-    <View style={styles.baconArrow}><BaconArrow onPress={this.goToSignUpThree} /></View>
-  )
+  baconArrowSignIn = () => <View style={styles.baconArrow}><BaconArrow onPress={this.goToWelcome} /></View>
 
-  baconArrowSignIn = () => (
-    <View style={styles.baconArrow}><BaconArrow onPress={this.goToWelcome} /></View>
-  )
+  baconToolMeetCute = () => <View style={styles.baconTool}><BaconTool onPress={this.goToMeetCuteConfig} /></View>
 
-  baconToolMeetCute = () => (
-    <View style={styles.baconTool}><BaconTool onPress={this.goToMeetCuteConfig} /></View>
-  )
+  baconToolMeetChance = () => <View style={styles.baconTool}><BaconTool onPress={this.goToMeetChanceConfig} /></View>
 
-  baconToolMeetChance = () => (
-    <View style={styles.baconTool}><BaconTool onPress={this.goToMeetChanceConfig} /></View>
-  )
+  baconToolAboutMe = () => <View style={styles.baconTool}><BaconNotice onPress={this.goToNotification} /></View>
 
-  baconToolAboutMe = () => (
-    <View style={styles.baconTool}><BaconNotice onPress={this.goToNotification} /></View>
-  )
+  baconToolChatRoom = () => <View style={styles.baconTool}><BaconTool onPress={this.goToPreview} /></View>
 
-  baconToolChatRoom = () => (
-    <View style={styles.baconTool}><BaconTool onPress={this.goToPreview} /></View>
-  )
-
-  baconToolLine = () => (
-    <View style={styles.baconTool}><ChatStatusContainer /></View>
-  )
+  baconToolChatTab = () => <View style={styles.baconTool}><BaconChatStatus /></View>
 
   render() {
     return (
@@ -281,7 +237,7 @@ export default class Routes extends Component {
                 <Scene key="LineCollectCourt" title="LineCollect" renderBackButton={this.baconArrow} component={LineCollectCourtScene} />
               </Scene>
 
-              <Scene key="ChatTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolLine}/>
+              <Scene key="ChatTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolChatTab}/>
               <Scene key="ChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={ChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="VisitorChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={VisitorChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="HelloChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={HelloChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
