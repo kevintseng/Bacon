@@ -76,8 +76,8 @@ export default class SessionCheckScene extends Component {
           // 從登入來的
           //移除所有監聽函數 初始化狀態
           this.initialize()
-          ///////// 非同步 /////////
           this.setOnline(true) // 非同步設置使用者上線
+          ///////// 非同步 /////////
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
           //this.initChatRoomListener() // 聊天室配對
@@ -96,7 +96,7 @@ export default class SessionCheckScene extends Component {
       } else {
         // 入口點
         // 下線
-        this.setOnline(false)
+        await this.setOnline(false)
         //移除所有監聽函數 初始化狀態
         this.initialize()
         // 沒有使用者登入 user = null
@@ -346,7 +346,9 @@ export default class SessionCheckScene extends Component {
   }
 
   setOnline = bollean => {
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/online').set(bollean)
+    if (this.SubjectStore.uid) {
+      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/online').set(bollean)
+    }
   }
 
   handleAppStateChange = nextAppState => {
