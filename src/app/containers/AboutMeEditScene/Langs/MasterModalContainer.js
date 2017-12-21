@@ -82,8 +82,8 @@ export default class MasterModalContainer extends Component {
                 alignSelf: 'center',
                 alignItems: 'center',
                 aspectRatio: 1.5,
-                width: width*0.6,
-                height: height*0.45,
+                width: width*0.5,
+                height: height*0.3,
                 position: 'absolute',
                 borderRadius: 15
               }}
