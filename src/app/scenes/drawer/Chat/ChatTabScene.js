@@ -99,8 +99,8 @@ export default class ChatTabScene extends Component {
             avatar: data[chatRoomCreaterKeysSize + index].val().avatar,
             age: 18,
             lastChatContent: lastMessages[chatRoomCreaterKeysSize + index].val(),
-            chatStatus: data[index].val().chatStatus,
-            online: data[index].val().online,
+            chatStatus: data[chatRoomCreaterKeysSize + index].val().chatStatus,
+            online: data[chatRoomCreaterKeysSize + index].val().online,
             nonHandleChatCount: 0 
             })              
           })
@@ -201,8 +201,8 @@ export default class ChatTabScene extends Component {
             avatar: data[chatRoomCreaterKeysSize + index].val().avatar,
             age: 18,
             lastChatContent: lastMessages[chatRoomCreaterKeysSize + index].val(),
-            chatStatus: data[index].val().chatStatus,
-            online: data[index].val().online,
+            chatStatus: data[chatRoomCreaterKeysSize + index].val().chatStatus,
+            online: data[chatRoomCreaterKeysSize + index].val().online,
             nonHandleChatCount: 0 
             })              
           })
