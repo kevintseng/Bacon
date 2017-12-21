@@ -62,34 +62,40 @@ export default class BaconChatStatus extends Component {
     })
   }
 
-  onRequestClose = () => {
-    this.setState({
+  onRequestClose = async () => {
+    await this.setState({
       visible: false
     })
+    this.updateChatStatue()
   }
 
-  onPressOne = () => {
-    this.setState({
-      chatStatus: 1,
+  onPressOne = async () => {
+    await this.setState({
+      visible: false,
+      chatStatus: 1
     })
+    this.updateChatStatue()
   }
 
-  onPressTwo = () => {
-    this.setState({
-      chatStatus: 2,
+  onPressTwo = async () => {
+    await this.setState({
+      visible: false,
+      chatStatus: 2
     })
+    this.updateChatStatue()
   }
 
-  onPressThree = () => {
-    this.setState({
-      chatStatus: 3,
+  onPressThree = async () => {
+    await this.setState({
+      visible: false,
+      chatStatus: 3
     })
+    this.updateChatStatue()
   }
 
-  ensure = () => {
-    this.onRequestClose()
+  updateChatStatue = () => {
     this.firebase.database().ref('users/' + this.SubjectStore.uid + '/chatStatus').set(this.state.chatStatus)
-    this.SubjectStore.setChatStatus(this.state.chatStatus)
+    this.SubjectStore.setChatStatus(this.state.chatStatus)    
   }
 
   render() {
@@ -113,7 +119,7 @@ export default class BaconChatStatus extends Component {
                 alignSelf: 'center',
                 alignItems: 'center',
                 aspectRatio: 1.5,
-                width: width*0.6,
+                width: width*0.5,
                 height: height*0.35,
                 position: 'absolute',
                 borderRadius: 15
@@ -146,7 +152,6 @@ export default class BaconChatStatus extends Component {
                 checked={ this.state.chatStatus === 3 }
                 onPress={ this.onPressThree }
               />
-              <Text style={styles.text} onPress={this.ensure}>確認</Text>
             </TouchableOpacity>
           </TouchableOpacity>
         </Modal>
