@@ -222,7 +222,7 @@ export default class SessionCheckScene extends Component {
       radius: 394 // 台灣從北到南394公里
     })
     this.geoQuery.on('key_entered', (uid, location, distance) => {
-      console.log(uid)
+      //console.log(uid)
       // ToDo: 同性戀要另外演算法
       // 丟到meetChancePool裡
       this.firebase.database().ref('users/' + uid).once('value').then( snap => {
