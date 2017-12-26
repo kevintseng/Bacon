@@ -28,6 +28,8 @@ export default class ChatTabScene extends Component {
   }
 
   componentWillUnmount() {
+    // ToDo 怎移除掉所有最後訊息監聽
+    //this.firebase.database().ref('chat_rooms/').child('vsdBF24n2WNMokMsEzu8HeP9BLs10re4ywtOJVMT2tlDWKn1pDfQrVl1' + '/lastMessage').off() // vsdBF24n2WNMokMsEzu8HeP9BLs10re4ywtOJVMT2tlDWKn1pDfQrVl1
   }
 
   task = async () => {
@@ -107,6 +109,16 @@ export default class ChatTabScene extends Component {
 
           this.ChatStore.setMatchChatRooms(chatRooms)
 
+          })
+          .then(() => {
+            chatRoomCreaterKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/lastMessage').on('value',snap => {
+                this.ChatStore.setMatchChatRoomsLastMessage(chatRoomKey,snap.val())
+              })
+            )
+            chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/lastMessage').on('value',snap => {
+                this.ChatStore.setMatchChatRoomsLastMessage(chatRoomKey,snap.val())
+              })
+            )
           })
           .catch(err => {
             console.log(err)

@@ -46,6 +46,8 @@ export default class MatchChatContainer extends Component {
           numColumns={1}
           //extraData={toJS(this.ChatStore.chatMatchPrey)}
           renderItem={({item}) =>
+          <Observer>{
+            () =>
           <ChatList 
               name={item.name}
               avatar={{uri: item.avatar}}
@@ -59,6 +61,8 @@ export default class MatchChatContainer extends Component {
               //userState={item.userState}
               //userStateColor={item.userStateColor}
               />
+            }
+            </Observer>
            }
         />
       </View>
