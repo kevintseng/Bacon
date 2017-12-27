@@ -17,6 +17,8 @@ export default class ChatTabScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.firebase = this.props.firebase
     this.matchChatRoomsLastMessageListener = new Array
+    this.vistorChatRoomsLastMessageListener = new Array
+    this.sendChatRoomsLastMessageListener = new Array
   }
 
   componentWillMount () {
@@ -31,6 +33,8 @@ export default class ChatTabScene extends Component {
   componentWillUnmount() {
     // ToDo 怎移除掉所有最後訊息監聽
     this.matchChatRoomsLastMessageListener.map(ref => ref.off())
+    this.vistorChatRoomsLastMessageListener.map(ref => ref.off())
+    this.sendChatRoomsLastMessageListener.map(ref => ref.off())
   }
 
   task = async () => {
@@ -75,8 +79,6 @@ export default class ChatTabScene extends Component {
       const chatRoomRecipientPromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomRecipient[chatRoomKey].chatRoomCreater).once('value'))
 
       const chatRoomsPromise = chatRoomCreaterPromise.concat(chatRoomRecipientPromise)
-
-      //const chatRoomLastMessagePromise = chatRoomCreaterLastMessagePromise.concat(chatRoomRecipientLastMessagePromise)
         
       Promise.all (chatRoomLastMessagePromise)  
       .then(lastMessages => {
@@ -119,7 +121,6 @@ export default class ChatTabScene extends Component {
             this.matchChatRoomsLastMessageListener = chatRoomAllKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/lastMessage'))
             this.matchChatRoomsLastMessageListener.map((ref,index) => ref.on('value',snap => {
                 this.ChatStore.setMatchChatRoomsLastMessage(chatRoomAllKeys[index],snap.val())
-                //alert(snap.val())
               })
             )
           })
@@ -162,6 +163,13 @@ export default class ChatTabScene extends Component {
           this.ChatStore.setVistorChatRooms(chatRooms)
 
           })
+          .then(() => {
+            this.vistorChatRoomsLastMessageListener = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/lastMessage'))
+            this.vistorChatRoomsLastMessageListener.map((ref,index) => ref.on('value',snap => {
+                this.ChatStore.setVistorChatRoomsLastMessage(chatRoomAllKeys[index],snap.val())
+              })
+            )
+          })
           .catch(err => {
             console.log(err)
           })
@@ -178,15 +186,18 @@ export default class ChatTabScene extends Component {
     .then(snap => { 
       const chatRoomCreater = snap[0]._value || new Object
       const chatRoomRecipient = snap[1]._value || new Object
+
       const chatRoomCreaterKeys = Object.keys(chatRoomCreater)
       const chatRoomRecipientKeys = Object.keys(chatRoomRecipient)
+
+      const chatRoomAllKeys = chatRoomCreaterKeys.concat(chatRoomRecipientKeys)
+
+      const chatRoomLastMessagePromise = chatRoomAllKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/lastMessage').once('value'))
+
       const chatRoomCreaterPromise = chatRoomCreaterKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomCreater[chatRoomKey].chatRoomRecipient).once('value'))
       const chatRoomRecipientPromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('users/' + chatRoomRecipient[chatRoomKey].chatRoomCreater).once('value'))
-      const chatRoomCreaterLastMessagePromise = chatRoomCreaterKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/lastMessage').once('value'))
-      const chatRoomRecipientLastMessagePromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/lastMessage').once('value'))
 
       const chatRoomsPromise = chatRoomCreaterPromise.concat(chatRoomRecipientPromise)
-      const chatRoomLastMessagePromise = chatRoomCreaterLastMessagePromise.concat(chatRoomRecipientLastMessagePromise)
           
       Promise.all(chatRoomLastMessagePromise)
       .then(lastMessages => {
@@ -224,6 +235,13 @@ export default class ChatTabScene extends Component {
 
           this.ChatStore.setSendChatRooms(chatRooms)
 
+          })
+          .then(() => {
+            this.sendChatRoomsLastMessageListener = chatRoomAllKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/lastMessage'))
+            this.sendChatRoomsLastMessageListener.map((ref,index) => ref.on('value',snap => {
+                this.ChatStore.setSendChatRoomsLastMessage(chatRoomAllKeys[index],snap.val())
+              })
+            )
           })
           .catch(err => {
             console.log(err)

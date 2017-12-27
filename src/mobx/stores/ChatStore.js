@@ -388,6 +388,14 @@ export default class ChatStore {
     this.chatMatchPrey.find(ele => ele.key === chatRoomKey).lastChatContent = str
   }
 
+  @action setVistorChatRoomsLastMessage = (chatRoomKey,str) => {
+    this.chatVistorPrey.find(ele => ele.key === chatRoomKey).lastChatContent = str
+  }
+
+  @action setSendChatRoomsLastMessage = (chatRoomKey,str) => {
+    this.chatSendPrey.find(ele => ele.key === chatRoomKey).lastChatContent = str
+  }
+
   @action setVistorChatRooms = arr => {
     this.chatVistorPrey = arr
   }

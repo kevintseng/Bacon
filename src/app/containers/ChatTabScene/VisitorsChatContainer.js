@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, FlatList, TouchableOpacity, InteractionManager } from 'react-native'
-import { observer, inject } from 'mobx-react'
+import { observer, inject, Observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
 import ChatList from '../../views/ChatList/ChatList'
@@ -39,6 +39,8 @@ export default class VisitorsChatContainer extends Component {
           data={ this.ChatStore.chatVistorPrey }
           numColumns={1}
           renderItem={({item}) =>
+          <Observer>{
+            () =>
             <ChatList 
               name={item.name}
               avatar={{uri: item.avatar}}
@@ -52,6 +54,8 @@ export default class VisitorsChatContainer extends Component {
               //userState={item.userState}
               //userStateColor={item.userStateColor}
               />
+            }
+            </Observer>
            }
         />
       </View>
