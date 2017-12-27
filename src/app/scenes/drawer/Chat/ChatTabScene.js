@@ -193,15 +193,15 @@ export default class ChatTabScene extends Component {
             this.vistorChatRoomsOlineListener = chatRoomRecipientUids.map(uid => this.firebase.database().ref('users/').child(uid + '/online'))
             this.vistorChatRoomsChatStatusListener = chatRoomRecipientUids.map(uid => this.firebase.database().ref('users/').child(uid + '/chatStatus'))
             this.vistorChatRoomsLastMessageListener.map((ref,index) => ref.on('value',snap => {
-                this.ChatStore.setVistorChatRoomsLastMessage(chatRoomAllKeys[index],snap.val())
+                this.ChatStore.setVistorChatRoomsLastMessage(chatRoomRecipientKeys[index],snap.val())
               })
             )
             this.vistorChatRoomsOlineListener.map((ref,index) => ref.on('value',snap => {
-                this.ChatStore.setVistorChatRoomsOnline(chatRoomAllKeys[index],snap.val())
+                this.ChatStore.setVistorChatRoomsOnline(chatRoomRecipientKeys[index],snap.val())
               })
             )
             this.vistorChatRoomsChatStatusListener.map((ref,index) => ref.on('value',snap => {
-                this.ChatStore.setVistorChatRoomsChatStatus(chatRoomAllKeys[index],snap.val())
+                this.ChatStore.setVistorChatRoomsChatStatus(chatRoomRecipientKeys[index],snap.val())
               })
             )
           })

@@ -33,7 +33,7 @@ export default class BaconChatStatus extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.state = {
       visible: false,
-      chatStatus: 0,
+      chatStatus: this.SubjectStore.chatStatus,
     }
   }
 
