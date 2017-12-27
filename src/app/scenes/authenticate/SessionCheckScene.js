@@ -244,7 +244,7 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setVip(false) // boolean
     this.SubjectStore.setBonus(0) // Int
     this.SubjectStore.setPreySexualOrientation(this.oppositeSexualOrientationToString())
-    this.SubjectStore.setChatStatus(2)
+    this.SubjectStore.setChatStatus(0)
     //
     //this.SubjectStore.setVisitConvSentToday(0)
     //this.geoFire = new GeoFire(this.firebase.database().ref('/user_locations/' + this.sexualOrientationToString()))

@@ -130,7 +130,7 @@ export default class SubjectStore {
     this.hideVister = false
     this.hideMessage = false
     this.conversations = null
-    this.chatStatus = null
+    this.chatStatus = 0
     this.bonus = null
     this.radar = [{
       "熱門度": 0,
