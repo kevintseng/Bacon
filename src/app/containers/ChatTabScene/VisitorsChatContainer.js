@@ -21,7 +21,7 @@ export default class VisitorsChatContainer extends Component {
 
   componentWillMount() {
     //console.warn('開始了B')
-    this.ChatStore.setChatVistorRealPrey()
+    //this.ChatStore.setChatVistorRealPrey()
   }
 
   componentDidMount() {

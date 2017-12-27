@@ -4,11 +4,11 @@ useStrict(false)
 
 export default class ChatStore {
 
-  @observable MessagesAndImages
   @observable chatMatchPrey
   @observable chatSendPrey
   @observable chatVistorPrey
-  @observable chatRoomCreaterPrey
+
+  @observable MessagesAndImages
   @observable chatMatchModal
   @observable chatModal
 
@@ -18,14 +18,11 @@ export default class ChatStore {
   }
 
   @action initialize = () => {
-    /////////chat_rooms////////////
-    //this.chatMatchPool = new Object
-    this.chatRoomCreaterPool = new Object
-    this.chatRoomRecipientPool = new Object
+    /////////chatList////////////
     this.chatSendPrey = new Array
     this.chatMatchPrey = new Array
     this.chatVistorPrey = new Array
-    /////////chats////////////
+    /////////chatRoom////////////
     this.chatRoomCreaterQuery = null
     this.messagesQuery = null
     this.imagesQuery = null
@@ -37,30 +34,6 @@ export default class ChatStore {
     this.from = null
     this.chatMatchModal = true
     this.chatModal = true
-  }
-
-  @action addPreyToChatRoomCreaterPool = (uid,interested,prey,name,avatar,lastMessage,age,nonHandleChatCount) => {
-    this.chatRoomCreaterPool[uid] = { interested: interested, prey: prey, name: name, avatar: avatar, lastMessage: lastMessage, age: age, nonHandleChatCount: nonHandleChatCount }
-  }
-
-  @action changeChatRoomCreaterPoolLastMessage = (uid,message) => {
-    this.chatRoomCreaterPool[uid].lastMessage = message
-  }
-
-  @action changeChatRoomCreaterPoolInterested = (uid,val) => {
-    this.chatRoomCreaterPool[uid].interested = val
-  }
-
-  @action addPreyToChatRoomRecipientPool = (uid,interested,prey,name,avatar,lastMessage,age,nonHandleChatCount) => {
-    this.chatRoomRecipientPool[uid] = { interested: interested, prey: prey, name: name, avatar: avatar, lastMessage: lastMessage, age: age, nonHandleChatCount: nonHandleChatCount }
-  }
-
-  @action changeChatRoomRecipientPoolLastMessage = (uid,message) => {
-    this.chatRoomRecipientPool[uid].lastMessage = message
-  }
-
-  @action changeChatRoomRecipientPoolInterested = (uid,val) => {
-    this.chatRoomRecipientPool[uid].interested = val
   }
 
   @action setUid = uid => {
@@ -231,78 +204,6 @@ export default class ChatStore {
     }  
   }
 
-  @action setChatMatchRealPrey = () => {
-    const chatRoomCreaterMatch = Object.keys(this.chatRoomCreaterPool).filter(key => this.chatRoomCreaterPool[key].interested === 2).map((key)=>{
-      return(
-        {
-          key: key,
-          prey: this.chatRoomCreaterPool[key].prey,
-          name: this.chatRoomCreaterPool[key].name,
-          avatar: {uri: this.chatRoomCreaterPool[key].avatar},
-          age: this.chatRoomCreaterPool[key].age,
-          lastChatContent: this.chatRoomCreaterPool[key].lastMessage,
-          userState: '平淡中',
-          userStateColor: '#FFD306',
-          nonHandleChatCount: this.chatRoomCreaterPool[key].nonHandleChatCount
-        }
-      )
-    })
-
-    const chatRoomRecipientMatch = Object.keys(this.chatRoomRecipientPool).filter(key => this.chatRoomRecipientPool[key].interested === 2).map((key)=>{
-      return(
-        {
-          key: key,
-          prey: this.chatRoomRecipientPool[key].prey,
-          name: this.chatRoomRecipientPool[key].name,
-          avatar: {uri: this.chatRoomRecipientPool[key].avatar},
-          age: this.chatRoomRecipientPool[key].age,
-          lastChatContent: this.chatRoomRecipientPool[key].lastMessage,
-          userState: '平淡中',
-          userStateColor: '#FFD306',
-          nonHandleChatCount: this.chatRoomRecipientPool[key].nonHandleChatCount
-        }
-      )
-    })
-
-    this.chatMatchPrey = chatRoomCreaterMatch.concat(chatRoomRecipientMatch)
-
-    // 還要合併另外一個
-  }
-
-  @action setChatSendRealPrey = () => {
-    this.chatSendPrey = Object.keys(this.chatRoomCreaterPool).filter(key => this.chatRoomCreaterPool[key].interested !== 2).map((key)=>{
-      return(
-        {
-          key: key,
-          prey: this.chatRoomCreaterPool[key].prey,
-          name: this.chatRoomCreaterPool[key].name,
-          avatar: {uri: this.chatRoomCreaterPool[key].avatar},
-          age: this.chatRoomCreaterPool[key].age,
-          lastChatContent: this.chatRoomCreaterPool[key].lastMessage,
-          userState: '平淡中',
-          userStateColor: '#FFD306'          
-        }
-      )
-    })
-  }
-
-  @action setChatVistorRealPrey = () => {
-    this.chatVistorPrey = Object.keys(this.chatRoomRecipientPool).filter(key => this.chatRoomRecipientPool[key].interested === 1).map((key)=>{
-      return(
-        {
-          key: key,
-          prey: this.chatRoomRecipientPool[key].prey,
-          name: this.chatRoomRecipientPool[key].name,
-          avatar: {uri: this.chatRoomRecipientPool[key].avatar},
-          age: this.chatRoomRecipientPool[key].age,
-          lastChatContent: this.chatRoomRecipientPool[key].lastMessage,
-          userState: '平淡中',
-          userStateColor: '#FFD306'          
-        }
-      )
-    })
-  }
-
   //// 初始化
 
   @action initMessages = () => {
@@ -379,61 +280,89 @@ export default class ChatStore {
         this.setChatRoomCreater('傳送了圖片')
     )    
   }
-
+  // Chat Lists
+  // Match
   @action setMatchChatRooms = arr => {
     this.chatMatchPrey = arr
   }
 
   @action setMatchChatRoomsLastMessage = (chatRoomKey,str) => {
-    this.chatMatchPrey.find(ele => ele.key === chatRoomKey).lastChatContent = str
+    const obj = this.chatMatchPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.lastChatContent = str
+    }
   }
 
-  @action setVistorChatRoomsLastMessage = (chatRoomKey,str) => {
-    this.chatVistorPrey.find(ele => ele.key === chatRoomKey).lastChatContent = str
+  @action setMatchChatRoomsOnline = (chatRoomKey,boolean) => {
+    const obj = this.chatMatchPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.online = boolean
+    }
   }
 
-  @action setSendChatRoomsLastMessage = (chatRoomKey,str) => {
-    this.chatSendPrey.find(ele => ele.key === chatRoomKey).lastChatContent = str
+  @action setMatchChatRoomsChatStatus = (chatRoomKey,chatStatus) => {
+    const obj = this.chatMatchPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.chatStatus = chatStatus
+    }
   }
 
+  // Vistor
   @action setVistorChatRooms = arr => {
     this.chatVistorPrey = arr
   }
 
+  @action setVistorChatRoomsLastMessage = (chatRoomKey,str) => {
+    const obj = this.chatVistorPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.lastChatContent = str
+    }
+  }
+
+  @action setVistorChatRoomsOnline = (chatRoomKey,boolean) => {
+    const obj = this.chatSendPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.online = boolean
+    }  
+  }
+
+  @action setVistorChatRoomsChatStatus = (chatRoomKey,chatStatus) => {
+    const obj = this.chatSendPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.chatStatus = chatStatus
+    }  
+  }
+
+  // Send
   @action setSendChatRooms = arr => {
-    //console.warn(arr)
     this.chatSendPrey = arr
   }
 
- @action removeVistorChatRooms = chatRoomKey => {
-   this.chatVistorPrey = this.chatVistorPrey.filter(ele => ele.key !== chatRoomKey)
+  @action setSendChatRoomsLastMessage = (chatRoomKey,str) => {
+    const obj = this.chatSendPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.lastChatContent = str
+    }
   }
 
-  @action setChatMatchPrey = (object) => {
-    //console.warn(object)
-    this.chatMatchPrey.push(object) 
+  @action setSendChatRoomsOnline = (chatRoomKey,boolean) => {
+    const obj = this.chatSendPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.online = boolean
+    }
   }
 
-  @action setChatSendPrey = (object) => {
-    //console.warn(object)
-    this.chatSendPrey.push(object) 
+  @action setSendChatRoomsChatStatus = (chatRoomKey,chatStatus) => {
+    const obj = this.chatSendPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.chatStatus = chatStatus
+    }
   }
 
-  @action setChatVistorPrey = (object) => {
-    //console.warn(object)
-    this.chatVistorPrey.push(object) 
-  }
+  // 配對機制
 
-  @action setAllChatMatchPrey = arr => {
-    this.chatMatchPrey = arr
-  }
-
-  //@action setAllChatSendPrey = arr => {
-  //  this.chatSendPrey = arr
-  //}
-
-  @action addChatMatchPrey = data => {
-    this.chatMatchPrey = this.chatMatchPrey.concat(data)
+  @action removeVistorChatRooms = chatRoomKey => {
+    this.chatVistorPrey = this.chatVistorPrey.filter(ele => ele.key !== chatRoomKey)
   }
 
   @action cleanChatModal = () => {
@@ -444,7 +373,4 @@ export default class ChatStore {
     this.chatModal = false
   }
 
-  @computed get test() {
-    return toJS(this.chatMatchPrey)
-  }
 }
