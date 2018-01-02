@@ -20,6 +20,7 @@ export default class ChatTabScene extends Component {
     this.matchChatRoomsOlineListener = new Array
     this.matchChatRoomsChatStatusListener = new Array
     this.vistorChatRoomsLastMessageListener = new Array
+    this.vistorChatRoomsNonHandleChatCountListener = new Array
     this.vistorChatRoomsOlineListener = new Array
     this.vistorChatRoomsChatStatusListener = new Array
     this.sendChatRoomsLastMessageListener = new Array
@@ -42,6 +43,7 @@ export default class ChatTabScene extends Component {
     this.matchChatRoomsOlineListener.map(ref => ref.off())
     this.matchChatRoomsChatStatusListener.map(ref => ref.off())
     this.vistorChatRoomsLastMessageListener.map(ref => ref.off())
+    this.vistorChatRoomsNonHandleChatCountListener.map(ref => ref.off())
     this.vistorChatRoomsOlineListener.map(ref => ref.off())
     this.vistorChatRoomsChatStatusListener.map(ref => ref.off())
     this.sendChatRoomsLastMessageListener.map(ref => ref.off())
@@ -108,7 +110,7 @@ export default class ChatTabScene extends Component {
               lastChatContent: lastMessages[index].val(),
               chatStatus: data[index].val().chatStatus,
               online: data[index].val().online,
-              nonHandleChatCount: 0 
+              nonHandleChatCount: 2
               })              
             })
 
@@ -124,7 +126,7 @@ export default class ChatTabScene extends Component {
             lastChatContent: lastMessages[chatRoomCreaterKeysSize + index].val(),
             chatStatus: data[chatRoomCreaterKeysSize + index].val().chatStatus,
             online: data[chatRoomCreaterKeysSize + index].val().online,
-            nonHandleChatCount: 0 
+            nonHandleChatCount: 0
             })              
           })
 
@@ -164,52 +166,64 @@ export default class ChatTabScene extends Component {
       const chatRoomRecipient = snap[0]._value || new Object
       const chatRoomRecipientKeys = Object.keys(chatRoomRecipient)
       const chatRoomRecipientUids = chatRoomRecipientKeys.map(chatRoomKey => chatRoomRecipient[chatRoomKey].chatRoomCreater)
+      // Promise
       const chatRoomRecipientPromise = chatRoomRecipientUids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
       const chatRoomRecipientLastMessagePromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/lastMessage').once('value'))
-          
-      Promise.all(chatRoomRecipientLastMessagePromise) 
-      .then(lastMessages => {
-        Promise.all(chatRoomRecipientPromise)
-        .then(data => {
-          chatRoomRecipientKeys.map((chatRoomKey,index) => {
-            chatRooms.push({
-              key: chatRoomKey,
-              prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
-              name: data[index].val().nickname,
-              avatar: data[index].val().avatar,
-              age: 18,
-              lastChatContent: lastMessages[index].val(),
-              chatStatus: data[index].val().chatStatus,
-              online: data[index].val().online,
-              nonHandleChatCount: 0 
-              })              
-            })
+      const chatRoomRecipientNonHandleChatCountPromise = chatRoomRecipientKeys.map((chatRoomKey,index) => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/' + chatRoomRecipientUids[index]).once('value'))
 
-          this.ChatStore.setVistorChatRooms(chatRooms)
+      Promise.all(chatRoomRecipientNonHandleChatCountPromise).then(
+        nonHandleChatCounts => {
+          Promise.all(chatRoomRecipientLastMessagePromise) 
+          .then(lastMessages => {
+            Promise.all(chatRoomRecipientPromise)
+            .then(data => {
+              chatRoomRecipientKeys.map((chatRoomKey,index) => {
+                chatRooms.push({
+                  key: chatRoomKey,
+                  prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
+                  name: data[index].val().nickname,
+                  avatar: data[index].val().avatar,
+                  age: 18,
+                  lastChatContent: lastMessages[index].val(),
+                  chatStatus: data[index].val().chatStatus,
+                  online: data[index].val().online,
+                  nonHandleChatCount: nonHandleChatCounts[index].val()
+                  })              
+                })
 
-          })
-          .then(() => {
-            this.vistorChatRoomsLastMessageListener = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/lastMessage'))
-            this.vistorChatRoomsOlineListener = chatRoomRecipientUids.map(uid => this.firebase.database().ref('users/').child(uid + '/online'))
-            this.vistorChatRoomsChatStatusListener = chatRoomRecipientUids.map(uid => this.firebase.database().ref('users/').child(uid + '/chatStatus'))
-            this.vistorChatRoomsLastMessageListener.map((ref,index) => ref.on('value',snap => {
-                this.ChatStore.setVistorChatRoomsLastMessage(chatRoomRecipientKeys[index],snap.val())
+              this.ChatStore.setVistorChatRooms(chatRooms)
+
               })
-            )
-            this.vistorChatRoomsOlineListener.map((ref,index) => ref.on('value',snap => {
-                this.ChatStore.setVistorChatRoomsOnline(chatRoomRecipientKeys[index],snap.val())
+              .then(() => {
+                this.vistorChatRoomsLastMessageListener = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/lastMessage'))
+                this.vistorChatRoomsNonHandleChatCountListener = chatRoomRecipientKeys.map((chatRoomKey,index) => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/' + chatRoomRecipientUids[index]))
+                this.vistorChatRoomsOlineListener = chatRoomRecipientUids.map(uid => this.firebase.database().ref('users/').child(uid + '/online'))
+                this.vistorChatRoomsChatStatusListener = chatRoomRecipientUids.map(uid => this.firebase.database().ref('users/').child(uid + '/chatStatus'))
+
+                this.vistorChatRoomsLastMessageListener.map((ref,index) => ref.on('value',snap => {
+                    this.ChatStore.setVistorChatRoomsLastMessage(chatRoomRecipientKeys[index],snap.val())
+                  })
+                )
+                this.vistorChatRoomsOlineListener.map((ref,index) => ref.on('value',snap => {
+                    this.ChatStore.setVistorChatRoomsOnline(chatRoomRecipientKeys[index],snap.val())
+                  })
+                )
+                this.vistorChatRoomsChatStatusListener.map((ref,index) => ref.on('value',snap => {
+                    this.ChatStore.setVistorChatRoomsChatStatus(chatRoomRecipientKeys[index],snap.val())
+                  })
+                )
+                this.vistorChatRoomsNonHandleChatCountListener.map((ref,index) => ref.on('value',snap => {
+                    this.ChatStore.setVistorChatRoomsNonHandleChatCount(chatRoomRecipientKeys[index],snap.val())
+                  })
+                )
               })
-            )
-            this.vistorChatRoomsChatStatusListener.map((ref,index) => ref.on('value',snap => {
-                this.ChatStore.setVistorChatRoomsChatStatus(chatRoomRecipientKeys[index],snap.val())
+              .catch(err => {
+                console.log(err)
               })
-            )
-          })
-          .catch(err => {
-            console.log(err)
-          })
-        }) 
-      })         
+            }) 
+          })           
+        }
+      )        
   }
 
   fetchChatSendRooms = () => {
