@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid, ActivityIndicator } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import ImagePicker from "react-native-image-picker"
@@ -36,7 +36,8 @@ export default class ChatRoomScene extends Component {
     this.state = {
       //chats: [],
       showLeftFooter: false,
-      showRightFooter: false 
+      showRightFooter: false ,
+      loading: true 
     }
   }
 
@@ -74,6 +75,8 @@ export default class ChatRoomScene extends Component {
             }
           })
         }
+      } else {
+        this.setState({loading: false})
       }
     })
   }
@@ -203,7 +206,20 @@ export default class ChatRoomScene extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        
+        { this.state.loading ?
+        <View style={{flex: 1,justifyContent: 'center'}}>
+          <ActivityIndicator
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              alignSelf: 'center',
+              paddingBottom: 110
+            }}
+            size="large"
+            color='#d63768'
+          />
+        </View> :
         <BaconChatRoom
           messages={[]}
           onSend={messages => this.onSendMessage(messages)}
@@ -219,6 +235,7 @@ export default class ChatRoomScene extends Component {
           onPressLeftFooterLeftIcon={this.openAlbum}
           onPressLeftFooterRightIcon={this.openCamera}
         />
+        }
       </View>
     )
   }
