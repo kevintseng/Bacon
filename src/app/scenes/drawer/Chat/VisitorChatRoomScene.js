@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid, ActivityIndicator } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import ImagePicker from "react-native-image-picker"
@@ -41,7 +41,8 @@ export default class VisitorChatRoomScene extends Component {
     this.state = {
       chats: [],
       showLeftFooter: false,
-      showRightFooter: false 
+      showRightFooter: false,
+      loading: true  
     }
   }
 
@@ -125,7 +126,7 @@ export default class VisitorChatRoomScene extends Component {
     this.sortedMessagesAndImages = this.MessagesAndImages.sort((a, b) => {
       return a._id < b._id ? 1 : -1
     })
-    this.setState({chats: this.sortedMessagesAndImages})
+    this.setState({chats: this.sortedMessagesAndImages, loading: false})
   }
 
   onBackAndroid = () => {
@@ -261,23 +262,40 @@ export default class VisitorChatRoomScene extends Component {
 
   render() {
     return (
-      <BaconChatRoom
-        messages={this.state.chats}
-        onSend={messages => this.onSendMessage(messages)}
-        user={{
-          _id: this.SubjectStore.uid,
-        }}
-        onPressLeftIcon={this.onPressLeftIcon}
-        onPressRightIcon={this.onPressRightIcon}
-        onPressAvatar={this.onPressAvatar}
-        showChoose
-        chooseTopOnPress={this.match}
-        chooseBottomOnPress={this.noMatch}
-        showLeftFooter={this.state.showLeftFooter}
-        showRightFooter={this.state.showRightFooter}
-        onPressLeftFooterLeftIcon={this.openAlbum}
-        onPressLeftFooterRightIcon={this.openCamera}
-      />
+      <View style={{flex: 1}}>
+        { this.state.loading ?
+        <View style={{flex: 1,justifyContent: 'center'}}>
+          <ActivityIndicator
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              alignSelf: 'center',
+              paddingBottom: 110
+            }}
+            size="large"
+            color='#d63768'
+          />
+        </View> :
+        <BaconChatRoom
+          messages={this.state.chats}
+          onSend={messages => this.onSendMessage(messages)}
+          user={{
+            _id: this.SubjectStore.uid,
+          }}
+          onPressLeftIcon={this.onPressLeftIcon}
+          onPressRightIcon={this.onPressRightIcon}
+          onPressAvatar={this.onPressAvatar}
+          showChoose
+          chooseTopOnPress={this.match}
+          chooseBottomOnPress={this.noMatch}
+          showLeftFooter={this.state.showLeftFooter}
+          showRightFooter={this.state.showRightFooter}
+          onPressLeftFooterLeftIcon={this.openAlbum}
+          onPressLeftFooterRightIcon={this.openCamera}
+        />
+        }
+      </View>
     )
   }
 }
