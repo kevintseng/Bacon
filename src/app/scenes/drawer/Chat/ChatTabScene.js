@@ -17,6 +17,7 @@ export default class ChatTabScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.firebase = this.props.firebase
     this.matchChatRoomsLastMessageListener = new Array
+    this.matchChatRoomsNonHandleChatCountListener = new Array
     this.matchChatRoomsOlineListener = new Array
     this.matchChatRoomsChatStatusListener = new Array
     this.vistorChatRoomsLastMessageListener = new Array
@@ -40,6 +41,7 @@ export default class ChatTabScene extends Component {
   componentWillUnmount() {
     // ToDo 怎移除掉所有最後訊息監聽
     this.matchChatRoomsLastMessageListener.map(ref => ref.off())
+    this.matchChatRoomsNonHandleChatCountListener.map(ref => ref.off())
     this.matchChatRoomsOlineListener.map(ref => ref.off())
     this.matchChatRoomsChatStatusListener.map(ref => ref.off())
     this.vistorChatRoomsLastMessageListener.map(ref => ref.off())
@@ -95,66 +97,76 @@ export default class ChatTabScene extends Component {
       const chatRoomAllUids = chatRoomCreaterUids.concat(chatRoomRecipientUids)
 
       const chatRoomsPromise = chatRoomAllUids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
-        
-      Promise.all (chatRoomLastMessagePromise)  
-      .then(lastMessages => {
-        Promise.all(chatRoomsPromise)
-        .then(data => {
-          chatRoomCreaterKeys.map((chatRoomKey,index) => {
+
+      const chatRoomNonHandleChatCountPromise = chatRoomAllKeys.map((chatRoomKey,index) => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/' + chatRoomAllUids[index]).once('value'))
+
+      Promise.all(chatRoomNonHandleChatCountPromise)
+      .then(nonHandleChatCounts => {
+        Promise.all(chatRoomLastMessagePromise)  
+        .then(lastMessages => {
+          Promise.all(chatRoomsPromise)
+          .then(data => {
+            chatRoomCreaterKeys.map((chatRoomKey,index) => {
+              chatRooms.push({
+                key: chatRoomKey,
+                prey: chatRoomCreater[chatRoomKey].chatRoomRecipient,
+                name: data[index].val().nickname,
+                avatar: data[index].val().avatar,
+                age: 18,
+                lastChatContent: lastMessages[index].val(),
+                chatStatus: data[index].val().chatStatus,
+                online: data[index].val().online,
+                nonHandleChatCount: nonHandleChatCounts[index].val()
+                })              
+              })
+
+            const chatRoomCreaterKeysSize = chatRoomCreaterKeys.length
+
+            chatRoomRecipientKeys.map((chatRoomKey,index) => {
             chatRooms.push({
               key: chatRoomKey,
-              prey: chatRoomCreater[chatRoomKey].chatRoomRecipient,
-              name: data[index].val().nickname,
-              avatar: data[index].val().avatar,
+              prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
+              name: data[chatRoomCreaterKeysSize + index].val().nickname,
+              avatar: data[chatRoomCreaterKeysSize + index].val().avatar,
               age: 18,
-              lastChatContent: lastMessages[index].val(),
-              chatStatus: data[index].val().chatStatus,
-              online: data[index].val().online,
-              nonHandleChatCount: 2
+              lastChatContent: lastMessages[chatRoomCreaterKeysSize + index].val(),
+              chatStatus: data[chatRoomCreaterKeysSize + index].val().chatStatus,
+              online: data[chatRoomCreaterKeysSize + index].val().online,
+              nonHandleChatCount: nonHandleChatCounts[chatRoomCreaterKeysSize + index].val()
               })              
             })
 
-          const chatRoomCreaterKeysSize = chatRoomCreaterKeys.length
+            this.ChatStore.setMatchChatRooms(chatRooms)
 
-          chatRoomRecipientKeys.map((chatRoomKey,index) => {
-          chatRooms.push({
-            key: chatRoomKey,
-            prey: chatRoomRecipient[chatRoomKey].chatRoomCreater,
-            name: data[chatRoomCreaterKeysSize + index].val().nickname,
-            avatar: data[chatRoomCreaterKeysSize + index].val().avatar,
-            age: 18,
-            lastChatContent: lastMessages[chatRoomCreaterKeysSize + index].val(),
-            chatStatus: data[chatRoomCreaterKeysSize + index].val().chatStatus,
-            online: data[chatRoomCreaterKeysSize + index].val().online,
-            nonHandleChatCount: 0
-            })              
-          })
-
-          this.ChatStore.setMatchChatRooms(chatRooms)
-
-          })
-          .then(() => {
-            this.matchChatRoomsLastMessageListener = chatRoomAllKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/lastMessage'))
-            this.matchChatRoomsOlineListener = chatRoomAllUids.map(uid => this.firebase.database().ref('users/').child(uid + '/online'))
-            this.matchChatRoomsChatStatusListener = chatRoomAllUids.map(uid => this.firebase.database().ref('users/').child(uid + '/chatStatus'))
-            this.matchChatRoomsLastMessageListener.map((ref,index) => ref.on('value',snap => {
-                this.ChatStore.setMatchChatRoomsLastMessage(chatRoomAllKeys[index],snap.val())
-              })
-            )
-            this.matchChatRoomsOlineListener.map((ref,index) => ref.on('value',snap => {
-                this.ChatStore.setMatchChatRoomsOnline(chatRoomAllKeys[index],snap.val())
-              })
-            )
-            this.matchChatRoomsChatStatusListener.map((ref,index) => ref.on('value',snap => {
-                this.ChatStore.setMatchChatRoomsChatStatus(chatRoomAllKeys[index],snap.val())
-              })
-            )
-          })
-          .catch(err => {
-            console.log(err)
-          })
+            })
+            .then(() => {
+              this.matchChatRoomsLastMessageListener = chatRoomAllKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/lastMessage'))
+              this.matchChatRoomsNonHandleChatCountListener = chatRoomAllKeys.map((chatRoomKey,index) => this.firebase.database().ref('chat_rooms/').child(chatRoomKey + '/' + chatRoomAllUids[index]))
+              this.matchChatRoomsOlineListener = chatRoomAllUids.map(uid => this.firebase.database().ref('users/').child(uid + '/online'))
+              this.matchChatRoomsChatStatusListener = chatRoomAllUids.map(uid => this.firebase.database().ref('users/').child(uid + '/chatStatus'))
+              this.matchChatRoomsLastMessageListener.map((ref,index) => ref.on('value',snap => {
+                  this.ChatStore.setMatchChatRoomsLastMessage(chatRoomAllKeys[index],snap.val())
+                })
+              )
+              this.matchChatRoomsOlineListener.map((ref,index) => ref.on('value',snap => {
+                  this.ChatStore.setMatchChatRoomsOnline(chatRoomAllKeys[index],snap.val())
+                })
+              )
+              this.matchChatRoomsChatStatusListener.map((ref,index) => ref.on('value',snap => {
+                  this.ChatStore.setMatchChatRoomsChatStatus(chatRoomAllKeys[index],snap.val())
+                })
+              )
+              this.matchChatRoomsNonHandleChatCountListener.map((ref,index) => ref.on('value',snap => {
+                  this.ChatStore.setMatchChatRoomsNonHandleChatCounts(chatRoomAllKeys[index],snap.val())
+                })
+              )
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          }) 
         }) 
-      })   
+      })  
   }
 
   fetchVistorChatRooms = () => {

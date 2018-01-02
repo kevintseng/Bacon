@@ -59,6 +59,7 @@ export default class VisitorChatRoomScene extends Component {
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+    this.ChatStore.setVistorChatRoomsNonHandleChatCount(this.props.chatRoomKey,0)
     this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.props.preyID).set(0)
     this.removeMessagesAndImagesListener()
     this.init()
