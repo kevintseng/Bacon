@@ -31,6 +31,7 @@ export default class MatchChatRoomScene extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    this.ChatStore = this.props.ChatStore
     this.messagesQuery = null
     this.imagesQuery = null
     this.slefMessagesArray = new Array
@@ -58,8 +59,10 @@ export default class MatchChatRoomScene extends Component {
     })
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+    this.ChatStore.setMatchChatRoomsNonHandleChatCounts(this.props.chatRoomKey,0)
+    this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.props.preyID).set(0)
     this.removeMessagesAndImagesListener()
     this.init()
   }

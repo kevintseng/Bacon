@@ -307,6 +307,13 @@ export default class ChatStore {
     }
   }
 
+  @action setMatchChatRoomsNonHandleChatCounts = (chatRoomKey,nonHandleChatCount) => {
+    const obj = this.chatMatchPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.nonHandleChatCount = nonHandleChatCount
+    }     
+  }
+
   // Vistor
   @action setVistorChatRooms = arr => {
     this.chatVistorPrey = arr
