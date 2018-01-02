@@ -96,8 +96,8 @@ export default class SubjectStore {
   }
 
   @computed get tasksToFlatList() {
-    const tasks_title = ['電子郵件認證獎勵','上傳三張照片獎勵','完成自我介紹獎勵','完成興趣愛好獎勵','每日上線獎勵','本週全勤獎勵','本月全勤獎勵']
-    const tasks_bonus = [20,20,20,20,5,50,200]
+    const tasks_title = ['電子郵件認證獎勵','上傳三張照片獎勵','完成自我介紹獎勵','完成興趣愛好獎勵']
+    const tasks_bonus = [20,20,20,20]
     return Object.keys(this.tasks).map((key, index) => ({ key, task: tasks_title[index], bonus: tasks_bonus[index], taken: this.tasks[key] })).filter( ele => !ele.taken)
   }
 
@@ -147,10 +147,7 @@ export default class SubjectStore {
       1: false,
       2: false,
       3: false,
-      4: false,
-      5: false,
-      6: false,
-      7: false
+      4: false
     }
     //
     this.stars = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
