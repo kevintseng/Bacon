@@ -56,7 +56,8 @@ export default class ProfileContainer extends Component {
   }
 
   goToQUpgrade = () => {
-    Actions.Bonus()
+    //Actions.Bonus()
+    alert('轉到Ｑ點儲值頁')
   }
 
   verificationEmail = () => {

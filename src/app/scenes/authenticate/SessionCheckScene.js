@@ -222,9 +222,7 @@ export default class SessionCheckScene extends Component {
       radius: 394 // 台灣從北到南394公里
     })
     this.geoQuery.on('key_entered', (uid, location, distance) => {
-      //console.log(uid)
       // ToDo: 同性戀要另外演算法
-      // 丟到meetChancePool裡
       this.firebase.database().ref('users/' + uid).once('value').then( snap => {
         this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online)
       })
@@ -245,15 +243,6 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setBonus(0) // Int
     this.SubjectStore.setPreySexualOrientation(this.oppositeSexualOrientationToString())
     this.SubjectStore.setChatStatus(0)
-    //
-    //this.SubjectStore.setVisitConvSentToday(0)
-    //this.geoFire = new GeoFire(this.firebase.database().ref('/user_locations/' + this.sexualOrientationToString()))
-    //this.MeetCuteStore.setSexualOrientation(this.sexualOrientationToString())
-    //this.ChatStore.setNickname(this.SignUpStore.nickname)
-    //this.ControlStore.setSyncDetector(true) // 同步完成
-    //this.meetCuteListener() // 非同步邂逅監聽
-    //this.uploadLocation() // 上傳GPS資料 巧遇監聽
-    //this.uxSignIn() // 讓登入頁留住帳號密碼
   }
 
   initSubjectStoreFromFirebase = () => {
@@ -271,32 +260,24 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
           this.SubjectStore.setChatStatus(snap.val().chatStatus || 0)
           this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
-          //this.MeetCuteStore.setSexualOrientation(snap.val().sexualOrientation)
-          //this.SubjectStore.setConversations(snap.val().conversations)
-          //this.SubjectStore.setVisitConvSentToday(snap.val().visitConvSentToday || 0)
-          //this.SubjectStore.setUnhandledPass(new Object(snap.val().unhandledPass) || {})
-          // tasks
           if (snap.val().preySexualOrientation) {
             // 如果有性別
             this.geoUploadFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.reverseString(snap.val().preySexualOrientation)))
             this.geoQueryFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + snap.val().preySexualOrientation))
             this.uploadLocationWhenSignIn(snap.val().latitude,snap.val().longitude)
           }
-          //
+          // Tasks
           this.SubjectStore.setTask1(snap.val().task1)
           this.SubjectStore.setTask2(snap.val().task2)
           this.SubjectStore.setTask3(snap.val().task3)
           this.SubjectStore.setTask4(snap.val().task4)
-          this.SubjectStore.setTask5(snap.val().task5)
-          this.SubjectStore.setTask6(snap.val().task6)
-          this.SubjectStore.setTask7(snap.val().task7)
           // hide
-          this.SubjectStore.setHideMeetCute(snap.val().hideMeetCute || false)
-          this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
-          this.SubjectStore.setHideVister(snap.val().hideVister || false)
-          this.SubjectStore.setHideMessage(snap.val().hideMessage || false)
+          //this.SubjectStore.setHideMeetCute(snap.val().hideMeetCute || false)
+          //this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
+          //this.SubjectStore.setHideVister(snap.val().hideVister || false)
+          //this.SubjectStore.setHideMessage(snap.val().hideMessage || false)
           // stars
-          this.SubjectStore.setAllArticlesStars(snap.val().stars || { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 })
+          //this.SubjectStore.setAllArticlesStars(snap.val().stars || { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 })
           // meetCute config
           //this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)
           //this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 50)
@@ -363,14 +344,10 @@ export default class SessionCheckScene extends Component {
   // removeListener
   removeMeetChanceListener = () => {
     if (this.geoUploadFire) {
-      //this.geoUploadFire.cancel()
       this.geoUploadFire = null
-      //this.geoQuery = null
     }
     if (this.geoQueryFire) {
-      //this.geoQueryFire.cancel()
       this.geoQueryFire = null
-      //this.geoQuery = null
     }
     if (this.geoQuery) {
       this.geoQuery.cancel()
