@@ -320,17 +320,24 @@ export default class ChatStore {
   }
 
   @action setVistorChatRoomsOnline = (chatRoomKey,boolean) => {
-    const obj = this.chatSendPrey.find(ele => ele.key === chatRoomKey)
+    const obj = this.chatVistorPrey.find(ele => ele.key === chatRoomKey)
     if (obj) {
       obj.online = boolean
     }  
   }
 
   @action setVistorChatRoomsChatStatus = (chatRoomKey,chatStatus) => {
-    const obj = this.chatSendPrey.find(ele => ele.key === chatRoomKey)
+    const obj = this.chatVistorPrey.find(ele => ele.key === chatRoomKey)
     if (obj) {
       obj.chatStatus = chatStatus
     }  
+  }
+
+  @action setVistorChatRoomsNonHandleChatCount = (chatRoomKey,nonHandleChatCount) => {
+    const obj = this.chatVistorPrey.find(ele => ele.key === chatRoomKey)
+    if (obj) {
+      obj.nonHandleChatCount = nonHandleChatCount
+    }     
   }
 
   // Send
