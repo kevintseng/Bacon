@@ -29,6 +29,7 @@ export default class FateStore {
   @observable photoVerified
   @observable latitude
   @observable longitude
+  @observable modal
 
   constructor(firebase) {
     this.firebase = firebase
@@ -98,6 +99,7 @@ export default class FateStore {
     this.photoVerified = false
     this.latitude = null
     this.longitude = null
+    this.modal = true
     //
     this.fetchPreyQuery = null
   }
@@ -108,6 +110,14 @@ export default class FateStore {
 
   @action setLongitude = longitude => {
     this.longitude = longitude
+  }
+
+  @action cleanModal = () => {
+    this.modal = true
+  }
+
+  @action setModal = () => {
+    this.modal = false
   }
 
   // visitors 
@@ -155,6 +165,10 @@ export default class FateStore {
     .catch(err => {
       console.log(err)
     })
+  }
+
+  @action setVisitorsPreys = preys => {
+    this.visitorsPreys = preys
   }
 
   // goodImpression 
@@ -206,6 +220,10 @@ export default class FateStore {
     .catch(err => {
       console.log(err)
     })
+  }
+
+  @action setGoodImpressionsPreys = preys => {
+    this.goodImpressionPreys = preys
   }
 
 

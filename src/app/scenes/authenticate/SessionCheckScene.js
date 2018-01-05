@@ -163,14 +163,14 @@ export default class SessionCheckScene extends Component {
         this.uploadLocationToProfile(location.coords.latitude,location.coords.longitude)
         this.uploadLocationToMeetChanceList(location.coords.latitude,location.coords.longitude)
         this.setGeoQuery(location.coords.latitude,location.coords.longitude)
-        //this.setLocation(location.coords.latitude,location.coords.longitude)
+        this.setLocation(location.coords.latitude,location.coords.longitude)
       },
       error => {
         if (this.SignUpStore.latitude && this.SignUpStore.longitude) {
           this.uploadLocationToProfile(this.SignUpStore.latitude,this.SignUpStore.longitude)
           this.uploadLocationToMeetChanceList(this.SignUpStore.latitude,this.SignUpStore.longitude)
           this.setGeoQuery(this.SignUpStore.latitude,this.SignUpStore.longitude)
-          //this.setLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
+          this.setLocation(this.SignUpStore.latitude,this.SignUpStore.longitude)
         } else {
           console.log('獲取地理位置失敗')
         }
@@ -185,7 +185,7 @@ export default class SessionCheckScene extends Component {
         this.uploadLocationToProfile(location.coords.latitude,location.coords.longitude)
         this.uploadLocationToMeetChanceList(location.coords.latitude,location.coords.longitude)
         this.setGeoQuery(location.coords.latitude,location.coords.longitude)
-        //this.setLocation(location.coords.latitude,location.coords.longitude)
+        this.setLocation(location.coords.latitude,location.coords.longitude)
       },
       error => {
         //獲取手機地理位置失敗，拿上次資料
@@ -193,7 +193,7 @@ export default class SessionCheckScene extends Component {
           this.uploadLocationToProfile(latitude,longitude)
           this.uploadLocationToMeetChanceList(latitude,longitude)
           this.setGeoQuery(latitude,longitude)
-          //this.setLocation(latitude,longitude)
+          this.setLocation(latitude,longitude)
         } else {
           console.log('獲取地理位置失敗')
         }
@@ -339,6 +339,11 @@ export default class SessionCheckScene extends Component {
       this.setOnline(false) // 設置使用者下線
     }
     this.lastAppState = nextAppState
+  }
+
+  setLocation = (latitude,longitude) => {
+    this.SubjectStore.setLatitude(latitude)
+    this.SubjectStore.setLongitude(longitude)
   }
 
   // removeListener

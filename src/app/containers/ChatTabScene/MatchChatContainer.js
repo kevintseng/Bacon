@@ -46,24 +46,24 @@ export default class MatchChatContainer extends Component {
           numColumns={1}
           //extraData={toJS(this.ChatStore.chatMatchPrey)}
           renderItem={({item}) =>
-          <Observer>{
-            () =>
-          <ChatList 
-              name={item.name}
-              avatar={{uri: item.avatar}}
-              onPress={ () => { this.onPress(item.key,item.prey,item.name,item.age) } }
-              lastChatContent={item.lastChatContent}
-              nonHandleChatCount={item.nonHandleChatCount}
-              showBadge={item.nonHandleChatCount > 0}
-              showTag={item.showTag}
-              online={item.online}
-              chatStatus={item.chatStatus}
-              //userState={item.userState}
-              //userStateColor={item.userStateColor}
-              />
-            }
+            <Observer>{
+              () =>
+              <ChatList 
+                name={item.name}
+                avatar={{uri: item.avatar}}
+                onPress={ () => { this.onPress(item.key,item.prey,item.name,item.age) } }
+                lastChatContent={item.lastChatContent}
+                nonHandleChatCount={item.nonHandleChatCount}
+                showBadge={item.nonHandleChatCount > 0}
+                showTag={item.showTag}
+                online={item.online}
+                chatStatus={item.chatStatus}
+                //userState={item.userState}
+                //userStateColor={item.userStateColor}
+                />
+              }
             </Observer>
-           }
+          }
         />
       </View>
     )

@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
-import { calculateAge } from '../../Utils'
+import { calculateAge, getDistance } from '../../Utils'
 import CookieList from '../../views/CookieList'
 
 const styles = {
@@ -19,18 +19,23 @@ const styles = {
   }
 }
 
-@inject('firebase','FateStore') @observer
+@inject('firebase','FateStore','SubjectStore') @observer
 export default class GoodImpressionContainer extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.FateStore = this.props.FateStore
+    this.SubjectStore = this.props.SubjectStore
   }
 
   componentWillMount() {
     //this.FateStore.setGoodImpressionFakePreys()
     this.FateStore.setGoodImpressionPreylist()
+  }
+
+  componentWillUnmount() {
+    console.warn('leave')
   }
 
   componentDidMount = async () => {
@@ -63,7 +68,7 @@ export default class GoodImpressionContainer extends Component {
                 age={ calculateAge(item.birthday) }
                 onPress={()=>this.onPress(item.key)}
               >
-                <Text style={styles.child}>{'你們距離大約' + item.distance + '公里'}</Text>
+                <Text style={styles.child}>{'你們距離大約' + getDistance(item.latitude,item.longitude,this.SubjectStore.latitude,this.SubjectStore.longitude) + '公里'}</Text>
               </CookieList>
            ) 
           } 

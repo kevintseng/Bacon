@@ -39,7 +39,6 @@ export default class ChatTabScene extends Component {
   }
 
   componentWillUnmount() {
-    // ToDo 怎移除掉所有最後訊息監聽
     this.matchChatRoomsLastMessageListener.map(ref => ref.off())
     this.matchChatRoomsNonHandleChatCountListener.map(ref => ref.off())
     this.matchChatRoomsOlineListener.map(ref => ref.off())
@@ -76,7 +75,7 @@ export default class ChatTabScene extends Component {
 
   fetchChatMatchRooms = () => {
     let chatRooms = new Array
-    Promise.all([
+    return Promise.all([
       this.firebase.database().ref('matchChatRooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid).once('value'), 
       this.firebase.database().ref('matchChatRooms').orderByChild('chatRoomRecipient').equalTo(this.SubjectStore.uid).once('value')
     ])
@@ -171,7 +170,7 @@ export default class ChatTabScene extends Component {
 
   fetchVistorChatRooms = () => {
     let chatRooms = new Array
-    Promise.all([
+    return Promise.all([
       this.firebase.database().ref('nonHandleChatRooms').orderByChild('chatRoomRecipient').equalTo(this.SubjectStore.uid).once('value')
     ])
     .then(snap => { 
@@ -240,7 +239,7 @@ export default class ChatTabScene extends Component {
 
   fetchChatSendRooms = () => {
     let chatRooms = new Array
-    Promise.all([
+    return Promise.all([
       this.firebase.database().ref('nonHandleChatRooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid).once('value'), 
       this.firebase.database().ref('nonMatchChatRooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid).once('value')
     ])

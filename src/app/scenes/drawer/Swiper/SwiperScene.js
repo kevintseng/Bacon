@@ -110,6 +110,7 @@ export default class SwiperScene extends Component {
   }
 
   onPressRight = () => {
+    this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.meetCutePreys[this.cardIndex].key + '/' + this.SubjectStore.uid).set(Date.now())
     this.swiper.swipeRight()
   }
 
@@ -215,10 +216,10 @@ export default class SwiperScene extends Component {
             //infinite={true}
           />
           <View style={{flexDirection: 'row',position: 'absolute', justifyContent: 'space-around',top: height/2, width}}>
-            <TouchableOpacity onPress={ () => { this.swiper.swipeLeft() } }>
+            <TouchableOpacity onPress={ this.onPressLeft }>
               <Image source={require('../../../../images/btn_meet_dislike.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={ () => { this.swiper.swipeRight() } }>
+            <TouchableOpacity onPress={ this.onPressRight }>
               <Image source={require('../../../../images/btn_meet_like.png')}/>
             </TouchableOpacity>
           </View>
