@@ -290,6 +290,10 @@ export default class FateStore {
     })    
   }
 
+  @action setMatchPreys = preys => {
+     this.matchPreys = preys
+  }
+
   @action realTimeSetMatch = () => {
     this.matchPreys = this.matchPreys.push(this.goodImpressionPreys.find(ele => ele.uid === this.uid))
     this.goodImpressionPreys = this.goodImpressionPreys.filter(ele => !ele.uid === this.uid)
