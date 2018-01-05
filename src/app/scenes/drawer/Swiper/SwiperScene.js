@@ -110,7 +110,7 @@ export default class SwiperScene extends Component {
   }
 
   onPressRight = () => {
-    this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.meetCutePreys[this.cardIndex].key + '/' + this.SubjectStore.uid).set(Date.now())
+    this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.SubjectStore.meetCutePreys[this.cardIndex].key).set({wooner: this.SubjectStore.uid, prey: this.SubjectStore.meetCutePreys[this.cardIndex].key, time: Date.now()})
     this.swiper.swipeRight()
   }
 
