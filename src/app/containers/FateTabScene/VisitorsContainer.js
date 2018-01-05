@@ -36,7 +36,8 @@ export default class VisitorsContainer extends Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(this.task)
+    //console.warn('aaa')
+    //InteractionManager.runAfterInteractions(this.task)
   }
 
   task = () => {

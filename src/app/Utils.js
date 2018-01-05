@@ -1,4 +1,5 @@
 import Moment from "moment"
+import geolib from "geolib"
 
 export function getAge(birthday) {
   if (!birthday) {
@@ -62,3 +63,19 @@ export function presenceMonitor(user, fb) {
       });
     });
 }
+
+export function getDistance(latitude_A,longitude_A,latitude_B,longitude_B) {
+    if (latitude_B && longitude_B && latitude_A && longitude_A) {
+      const distance = (geolib.getDistance(
+        {latitude: latitude_B, longitude: longitude_B},
+        {latitude: latitude_A, longitude: longitude_A}
+      )/1000).toFixed(1)
+      if (distance === '0.0') {
+        return '0.1'
+      } else {
+        return distance
+      }
+    } else {
+      return '?'
+    }  
+  }

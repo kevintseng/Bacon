@@ -84,7 +84,7 @@ export default class MeetChanceWaterFallScene extends Component {
     //alert('轉向聊天收藏頁面')
     // 來訪記錄
     
-    //this.firebase.database().ref('visitors/' + this.SubjectStore.uid + uid ).set({ wooer: this.SubjectStore.uid , prey: uid, time: Date.now() })
+    this.firebase.database().ref('visitorList/'  + uid + '/' + this.SubjectStore.uid).set(Date.now())
     await this.MeetChanceStore.setCourtInitialize(uid)
     await localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
       if (ids.includes(uid)) {
