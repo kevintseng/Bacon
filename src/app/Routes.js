@@ -5,9 +5,9 @@ import { Router, Scene, Actions } from 'react-native-router-flux'
 // ###############authenticate################ //
 import PermissionsScene from './scenes/authenticate/PermissionsScene'
 import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
-//
+// welcome
 import WelcomeScene from './scenes/authenticate/WelcomeScene'
-// SignUp
+// signup
 import SignUpOneScene from './scenes/authenticate/SignUpOneScene'
 import SignUpTwoScene from './scenes/authenticate/SignUpTwoScene'
 import SignUpThreeScene from './scenes/authenticate/SignUpThreeScene'
@@ -16,50 +16,43 @@ import SignUpFourScene from './scenes/authenticate/SignUpFourScene'
 import SignInScene from './scenes/authenticate/SignInScene'
 // password
 import PasswordScene from './scenes/authenticate/PasswordScene'
-//
+// auth
 import AuthScene from './scenes/authenticate/AuthScene'
 // ###############authenticate################ //
 
-// ###############drawer################ //
-// Drawer
+// ##################drawer################### //
+// drawer
 import DrawerScene from './scenes/drawer/DrawerScene'
-// MeetCute
-//import MeetCuteCourtScene from './scenes/drawer/MeetCute/MeetCuteCourtScene'
-import MeetCuteConfigScene from './scenes/drawer/MeetCute/MeetCuteConfigScene'
-import SwiperScene from './scenes/drawer/Swiper/SwiperScene'
-// AboutMe
-import AboutMeTabScene from './scenes/drawer/AboutMe/AboutMeTabScene'
-import AboutMeEditScene from './scenes/drawer/AboutMe/AboutMeEditScene'
-import AboutMeBoardScene from './scenes/drawer/AboutMe/AboutMeBoardScene'
-// MeetChance
-import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFallScene'
-import MeetChanceConfigScene from './scenes/drawer/MeetChance/MeetChanceConfigScene'
-// Fate
-import FateTabScene from './scenes/drawer/Fate/FateTabScene'
-import FateCourtScene from './scenes/drawer/Fate/FateCourtScene'
-// Master
-//import MasterTabScene from './scenes/drawer/Master/MasterTabScene'
-//import MasterOneScene from './scenes/drawer/Master/MasterOneScene'
-// Setting
-import SettingIndexScene from './scenes/drawer/Setting/SettingIndexScene'
-import SettingAboutScene from './scenes/drawer/Setting/SettingAboutScene'
-import SettingAccountScene from './scenes/drawer/Setting/SettingAccountScene'
-import SettingRemindScene from './scenes/drawer/Setting/SettingRemindScene'
-import SettingHideScene from './scenes/drawer/Setting/SettingHideScene'
-//
-import LineCollectCourtScene from './scenes/drawer/LineCollect/LineCollectCourtScene'
-import LineCollectRoutesScene from './scenes/drawer/LineCollect/LineCollectRoutesScene'
-import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
-import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
+// aboutme
+import AboutMeTabScene from './scenes/drawer/AboutMeTab/AboutMeTabScene'
+import AboutMeEditScene from './scenes/drawer/AboutMeEdit/AboutMeEditScene'
+import AboutMeBoardScene from './scenes/drawer/AboutMeBoard/AboutMeBoardScene'
+// meetchance
+import MeetChanceWaterFallScene from './scenes/drawer/MeetChanceWaterFall/MeetChanceWaterFallScene'
+import MeetChanceConfigScene from './scenes/drawer/MeetChanceConfig/MeetChanceConfigScene'
+// meetcute
+import MeetCuteSwiperScene from './scenes/drawer/MeetCuteSwiper/MeetCuteSwiperScene'
+import MeetCuteConfigScene from './scenes/drawer/MeetCuteConfig/MeetCuteConfigScene'
+// chat
 import ChatTabScene from './scenes/drawer/Chat/ChatTabScene'
 import ChatRoomScene from './scenes/drawer/Chat/ChatRoomScene'
 import MatchChatRoomScene from './scenes/drawer/Chat/MatchChatRoomScene'
 import VisitorChatRoomScene from './scenes/drawer/Chat/VisitorChatRoomScene'
 import HelloChatRoomScene from './scenes/drawer/Chat/HelloChatRoomScene'
-import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
-//import ArticleListScene from './scenes/drawer/Article/ArticleListScene'
-//import ArticleDetailScene from './scenes/drawer/Article/ArticleDetailScene'
-//import TestScene from './scenes/drawer/Test/TestScene'
+// fate
+import FateTabScene from './scenes/drawer/Fate/FateTabScene'
+import FateCourtScene from './scenes/drawer/Fate/FateCourtScene'
+// setting
+import SettingIndexScene from './scenes/drawer/SettingIndex/SettingIndexScene'
+import SettingEditScene from './scenes/drawer/SettingEdit/SettingEditScene'
+// linecollect
+import LineCollectCourtScene from './scenes/drawer/LineCollect/LineCollectCourtScene'
+import LineCollectRoutesScene from './scenes/drawer/LineCollect/LineCollectRoutesScene'
+
+//import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
+//import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
+//import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
+
 // ###############header components################ //
 import BaconTitle from './views/BaconTitle/BaconTitle'
 import BaconMenu from './views/BaconMenu/BaconMenu'
@@ -210,7 +203,7 @@ export default class Routes extends Component {
             <Scene key="main" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
 
               <Scene key="MeetCute" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
-                <Scene key="MeetCuteSwiper" title="邂逅" renderBackButton={this.baconMenu} renderLeftButton={this.baconMenu} renderRightButton={this.baconToolMeetCute} component={SwiperScene} />
+                <Scene key="MeetCuteSwiper" title="邂逅" renderBackButton={this.baconMenu} renderLeftButton={this.baconMenu} renderRightButton={this.baconToolMeetCute} component={MeetCuteSwiperScene} />
                 <Scene key="MeetCuteConfig" title="邂逅" renderBackButton={this.baconArrow} component={MeetCuteConfigScene} />
               </Scene>
               
@@ -222,10 +215,7 @@ export default class Routes extends Component {
 
               <Scene key="Setting" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="SettingIndex" title="設定" renderLeftButton={this.baconMenu} component={SettingIndexScene} />
-                <Scene key="SettingAbout" title="設定" renderBackButton={this.baconArrow} component={SettingAboutScene} />
-                <Scene key="SettingAccount" title="設定" renderBackButton={this.baconArrow} component={SettingAccountScene} />
-                <Scene key="SettingRemind" title="設定" renderBackButton={this.baconArrow} component={SettingRemindScene} />
-                <Scene key="SettingHide" title="設定" renderBackButton={this.baconArrow} component={SettingHideScene} />
+                <Scene key="SettingEdit" title="設定" renderBackButton={this.baconArrow} component={SettingEditScene} />
               </Scene>
 
               <Scene key="MeetChance" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
