@@ -8,14 +8,14 @@ import SessionCheckScene from './scenes/authenticate/SessionCheckScene'
 // welcome
 import WelcomeScene from './scenes/authenticate/WelcomeScene'
 // signup
-import SignUpOneScene from './scenes/authenticate/SignUpOneScene'
-import SignUpTwoScene from './scenes/authenticate/SignUpTwoScene'
-import SignUpThreeScene from './scenes/authenticate/SignUpThreeScene'
-import SignUpFourScene from './scenes/authenticate/SignUpFourScene'
+import SignUpOneScene from './scenes/authenticate/SignUpOne/SignUpOneScene'
+import SignUpTwoScene from './scenes/authenticate/SignUpTwo/SignUpTwoScene'
+import SignUpThreeScene from './scenes/authenticate/SignUpThree/SignUpThreeScene'
+import SignUpFourScene from './scenes/authenticate/SignUpFour/SignUpFourScene'
 // signin
-import SignInScene from './scenes/authenticate/SignInScene'
+import SignInScene from './scenes/authenticate/SignIn/SignInScene'
 // password
-import PasswordScene from './scenes/authenticate/PasswordScene'
+import PasswordScene from './scenes/authenticate/Password/PasswordScene'
 // auth
 import AuthScene from './scenes/authenticate/AuthScene'
 // ###############authenticate################ //
@@ -34,24 +34,20 @@ import MeetChanceConfigScene from './scenes/drawer/MeetChanceConfig/MeetChanceCo
 import MeetCuteSwiperScene from './scenes/drawer/MeetCuteSwiper/MeetCuteSwiperScene'
 import MeetCuteConfigScene from './scenes/drawer/MeetCuteConfig/MeetCuteConfigScene'
 // chat
-import ChatTabScene from './scenes/drawer/Chat/ChatTabScene'
-import ChatRoomScene from './scenes/drawer/Chat/ChatRoomScene'
-import MatchChatRoomScene from './scenes/drawer/Chat/MatchChatRoomScene'
-import VisitorChatRoomScene from './scenes/drawer/Chat/VisitorChatRoomScene'
-import HelloChatRoomScene from './scenes/drawer/Chat/HelloChatRoomScene'
+import ChatTabScene from './scenes/drawer/ChatTab/ChatTabScene'
+import ChatRoomScene from './scenes/drawer/ChatRoom/ChatRoomScene'
+import HelloChatRoomScene from './scenes/drawer/HelloChatRoom/HelloChatRoomScene'
+import VisitorChatRoomScene from './scenes/drawer/VisitorChatRoom/VisitorChatRoomScene'
+import MatchChatRoomScene from './scenes/drawer/MatchChatRoom/MatchChatRoomScene'
 // fate
-import FateTabScene from './scenes/drawer/Fate/FateTabScene'
-import FateCourtScene from './scenes/drawer/Fate/FateCourtScene'
+import FateTabScene from './scenes/drawer/FateTab/FateTabScene'
 // setting
 import SettingIndexScene from './scenes/drawer/SettingIndex/SettingIndexScene'
 import SettingEditScene from './scenes/drawer/SettingEdit/SettingEditScene'
-// linecollect
-import LineCollectCourtScene from './scenes/drawer/LineCollect/LineCollectCourtScene'
-import LineCollectRoutesScene from './scenes/drawer/LineCollect/LineCollectRoutesScene'
+// court
+import MatchCourtScene from './scenes/drawer/MatchCourt/MatchCourtScene'
+import ChatCourtScene from './scenes/drawer/ChatCourt/ChatCourtScene'
 
-//import UpgradeOneScene from './scenes/drawer/Upgrade/UpgradeOneScene'
-//import BonusOneScene from './scenes/drawer/Bonus/BonusOneScene'
-//import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
 
 // ###############header components################ //
 import BaconTitle from './views/BaconTitle/BaconTitle'
@@ -224,7 +220,7 @@ export default class Routes extends Component {
               </Scene>
 
               <Scene key="LineCollect" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
-                <Scene key="LineCollectCourt" title="LineCollect" renderBackButton={this.baconArrow} component={LineCollectCourtScene} />
+                <Scene key="LineCollectCourt" title="ChatCourtScene" renderBackButton={this.baconArrow} component={ChatCourtScene} />
               </Scene>
 
               <Scene key="ChatTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolChatTab}/>
@@ -235,7 +231,7 @@ export default class Routes extends Component {
               
               <Scene key="Fate" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
                 <Scene key="FateTab" title="緣分" renderLeftButton={this.baconMenu} component={FateTabScene} />
-                <Scene key="FateCourt" title="緣分" renderBackButton={this.baconArrow} component={FateCourtScene} />
+                <Scene key="FateCourt" title="緣分" renderBackButton={this.baconArrow} component={MatchCourtScene} />
               </Scene>
               
             </Scene>

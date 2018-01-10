@@ -9,7 +9,7 @@ import MomentLocale from 'moment/locale/zh-tw'
 import InAppBilling from 'react-native-billing'
 
 // 演算法
-import { calculateAge } from '../../../app/Utils'
+import { calculateAge } from '../../../api/Utils'
 // 頁面
 import Loading from '../../views/Loading/Loading'
 // 設定
