@@ -1,20 +1,18 @@
 import RNFirebase from 'react-native-firebase'
 // Stores Classes
 // control flow
-import ControlStore from '../mobx/stores/ControlStore'
+import ControlStore from '../mobx/ControlStore'
 // data
-import SignUpStore from '../mobx/stores/SignUpStore'
-import SignInStore from '../mobx/stores/SignInStore'
-import PasswordStore from '../mobx/stores/PasswordStore'
-import SubjectStore from '../mobx/stores/SubjectStore'
-import SubjectEditStore from '../mobx/stores/SubjectEditStore'
+import SignUpStore from '../mobx/SignUpStore'
+import SignInStore from '../mobx/SignInStore'
+import PasswordStore from '../mobx/PasswordStore'
+import SubjectStore from '../mobx/SubjectStore'
+import SubjectEditStore from '../mobx/SubjectEditStore'
 
-import MeetCuteStore from '../mobx/stores/MeetCuteStore'
-import MeetChanceStore from '../mobx/stores/MeetChanceStore'
-import FateStore from '../mobx/stores/FateStore'
-import LineStore from '../mobx/stores/LineStore'
-import ChatStore from '../mobx/stores/ChatStore'
-// import SignUpInStore from '../mobx/stores/SignUpInStore'
+import MeetCuteStore from '../mobx/MeetCuteStore'
+import MeetChanceStore from '../mobx/MeetChanceStore'
+import FateStore from '../mobx/FateStore'
+import ChatStore from '../mobx/ChatStore'
 
 const FirebaseConfig = {
   debug: true,
@@ -23,20 +21,15 @@ const FirebaseConfig = {
 const AppInitial = {
   init: () => {
     this.firebase = RNFirebase.initializeApp(FirebaseConfig)
-
     this.ControlStore = new ControlStore()
-
     this.SignUpStore = new SignUpStore(this.firebase)
     this.SignInStore = new SignInStore()
     this.PasswordStore = new PasswordStore()
     this.SubjectStore = new SubjectStore(this.firebase)
     this.SubjectEditStore = new SubjectEditStore()
-
-    // this.SignUpInStore = new SignUpInStore(this.firebase)
     this.MeetCuteStore = new MeetCuteStore(this.firebase)
     this.MeetChanceStore = new MeetChanceStore(this.firebase)
     this.FateStore = new FateStore(this.firebase)
-    this.LineStore = new LineStore(this.firebase)
     this.ChatStore = new ChatStore(this.firebase)
     return this
   },
