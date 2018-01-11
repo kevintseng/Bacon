@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
-import { Button } from 'react-native-elements'
 
 import Wave from '../Wave/Wave'
 
