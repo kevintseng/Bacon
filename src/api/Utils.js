@@ -112,3 +112,18 @@ export function minTime(time_a,time_b) {
     return time_b
   }
 }
+
+export function sortedAlbum(album,avatar) {
+    const key = getKeyByValue(album, avatar)
+    delete album[key]
+    album[0] = avatar
+    return album || new Object
+  }
+
+export function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value)
+}
+
+export function showError(err) {
+  console.log(err)
+}

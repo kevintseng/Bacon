@@ -46,11 +46,6 @@ export default class SubjectStore {
   @observable unhandledPass
   // task 
   @observable tasks
-  @observable meetCuteModal
-  // meetCute
-  @observable meetCutePreys
-  @observable profileModal
-  @observable settingModal
 
   constructor(firebase) {
     this.firebase = firebase
@@ -152,8 +147,6 @@ export default class SubjectStore {
     //
     this.stars = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
     this.onlineDaysMonth = new Object
-    this.meetCuteModal = true
-    this.meetCutePreys = new Array
     this.profileModal = true
     this.settingModal = true
   }
@@ -420,80 +413,6 @@ export default class SubjectStore {
     }     
   }
 
-  // meetCute
-
-  @action setMeetCutePreys = () => {
-    // 先不隨機
-    //alert(this.preySexualOrientation)
-    this.firebase.database().ref('meetCuteList/' + this.preySexualOrientation).limitToLast(100).once('value',snap => {
-      if (snap.val()) {
-        const newPreys = Object.keys(snap.val()).map(uid => 
-          this.firebase.database().ref('users/' + uid).once('value',snap => snap.val())
-        )
-   /*     
-        this.newPreys = Object.keys(snap.val()).map(key => {
-          const albumObject = this.handleNewAlbum(obj[key].album,obj[key].avatar)
-          const album = Object.keys(albumObject).map(key => albumObject[key] ) 
-          return({
-            key: key,
-            nickname: obj[key].nickname,
-            album: album
-          })
-        })
-    */   
-
-    Promise.all(newPreys)
-    .then(results => {
-      this.meetCutePreys = results.map(snap => 
-        {
-          const albumObject = this.sortedAlbum(snap.val().album || new Object,snap.val().avatar)
-          const album = Object.keys(albumObject).map(key => albumObject[key] ) 
-          return({
-            key: snap.key,
-            nickname: snap.val().nickname,
-            album: album
-          })          
-        }
-      )
-      this.meetCuteModal = false
-    }).cacth(err => {
-      console.log('錯誤')
-      //console.warn(err)
-    })
-        
-      } else {
-        console.log('沒資料')
-        //console.log('no data')
-      }
-    })
-
-    // block 0r hiden
-    //console.warn(this.uid)
-    
-    
-  
-
-
-    //const subPhotos = _allPhotos.slice(0, 50)  
-
-    //const imagePrefetch = subPhotos.map(photo => Image.prefetch(photo))
-
-    //const otherPhotos = allPhotos.slice(29, allPhotos.length)
-
-    //Promise.all(imagePrefetch)
-    //.then(results => {
-      //console.warn("All images prefetched in parallel");
-    //  this.modal = false
-      //otherPhotos.forEach(photo => Image.prefetch(photo))
-    //})
-    //this.newPreys = toJS(this.newPreys)
-    //console.log(this.newPreys)
-  }
-
-  @action cleanMeetCuteModal = () => {
-    this.meetCuteModal = true
-  }
-
   @action cleanProfileModal = () => {
     this.profileModal = true
   }
@@ -523,10 +442,6 @@ export default class SubjectStore {
     return Object.keys(object).find(key => object[key] === value)
   }
 
-  setMeetCuteModal = () => {
-    this.meetCuteModal = true
-    this.setMeetCutePreys()
-  }
 
 
 
