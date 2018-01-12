@@ -9,10 +9,13 @@ const { width, height } = Dimensions.get('window')
 const styles = {
   view: {
     backgroundColor: 'white',
+    width,
     height: height - ( Platform.OS === 'ios' ? 64 : 54 )
   },
   info: {
-    marginTop: 40
+    width,
+    marginTop: 40,
+    marginBottom: 40
   },
   dimensions: {
     width, 
