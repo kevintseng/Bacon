@@ -13,6 +13,11 @@ import BioContainer from '../../AboutMeEdit/containers/Bio/BioContainer'
 import LangsContainer from '../../AboutMeEdit/containers/Langs/LangsContainer'
 import InterestsContainer from '../../AboutMeEdit/containers/Interests/InterestsContainer'
 
+const styles = {
+  view: {
+    flex: 1
+  }
+}
 
 @inject('SubjectStore','firebase') @observer
 export default class ProfileContainer extends Component {
@@ -74,7 +79,7 @@ export default class ProfileContainer extends Component {
 
   render() {
     return(
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={styles.view}>
         <Profile
           source={ this.SubjectStore.avatar }
           vip={ this.SubjectStore.vip }

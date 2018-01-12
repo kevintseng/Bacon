@@ -46,6 +46,8 @@ export default class SubjectStore {
   @observable unhandledPass
   // task 
   @observable tasks
+  //
+  @observable loading
 
   constructor(firebase) {
     this.firebase = firebase
@@ -149,6 +151,7 @@ export default class SubjectStore {
     this.onlineDaysMonth = new Object
     this.profileModal = true
     this.settingModal = true
+    this.loading = true
   }
 
   @action setUid = uid => {
@@ -411,6 +414,14 @@ export default class SubjectStore {
         default:
             return ''
     }     
+  }
+
+  @action startLoading = () => {
+    this.loading = true
+  }
+
+  @action finishLoading = () => {
+    this.loading = false
   }
 
   @action cleanProfileModal = () => {
