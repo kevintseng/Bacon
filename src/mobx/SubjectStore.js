@@ -46,7 +46,7 @@ export default class SubjectStore {
   @observable unhandledPass
   // task 
   @observable tasks
-  //
+  // control
   @observable loading
 
   constructor(firebase) {
