@@ -69,29 +69,29 @@ const styles = {
 const Infos = ({verityEmail, verityPhoto, displayName, bio, age, address, langs, distance, showDistance, showBlockade, showReportUser, onReportUserPressed, onPrssBlockade}) => (
   <View style={{width: width*0.8,backgroundColor: 'white'}}>
     <View style={styles.top}>
-      <Image style={{marginRight: 5}} source={verityEmail ? require('./img/ico_meet_email_1.png') : require('./img/ico_aboutme_mail_0.png')}/>
-      <Text style={styles.nameAge}>{ displayName }</Text>
+      <Image style={{marginRight: 5}} source={verityEmail ? require('../../../images/ico_meet_email_1.png') : require('../../../images/ico_aboutme_mail_0.png')}/>
+      <Text style={styles.nameAge}>{ displayName || 'NULL'}</Text>
       <Text style={styles.nameAge}>，</Text>
-      <Text style={styles.nameAge}>{ age }</Text>
+      <Text style={styles.nameAge}>{ age || 'NULL'}</Text>
     </View>
 
-    <View style={styles.bioView}><Text style={styles.text}>{ bio || '?' }</Text></View>
+    <View style={styles.bioView}><Text style={styles.text}>{ bio || 'NULL' }</Text></View>
 
     { showDistance &&
       <View style={styles.distanceView}>
-        <Image style={styles.icon} source={require('./img/ico_meet_locate.png')}/>
+        <Image style={styles.icon} source={require('../../../images/ico_meet_locate.png')}/>
         <Text style={styles.text}>你們距離大約 { distance } 公里</Text>
       </View>
     }
 
     <View style={styles.addressView}>
-      <Image style={styles.icon} source={require('./img/ico_meet_globe.png')}/>
-      <Text style={styles.text}>{ address || '漂無定所' }</Text>
+      <Image style={styles.icon} source={require('../../../images/ico_meet_city.png')}/>
+      <Text style={styles.text}>{ address || 'NULL' }</Text>
     </View>
 
     <View style={styles.langsView}>
-      <Image style={styles.icon} source={require('./img/ico_meet_globe.png')}/>
-      <Text style={styles.text}>{ langs || '?' }</Text>
+      <Image style={styles.icon} source={require('../../../images/ico_meet_globe.png')}/>
+      <Text style={styles.text}>{ langs || 'NULL' }</Text>
     </View>
 
     { showReportUser &&
@@ -113,7 +113,3 @@ const Infos = ({verityEmail, verityPhoto, displayName, bio, age, address, langs,
 )
 
 export default Infos
-
-/*
-      <Image style={{marginRight: 5}} source={verityPhoto ? require('./img/ico_meet_picture_1.png') : require('./img/ico_aboutme_picture_0.png')}/>
-*/
