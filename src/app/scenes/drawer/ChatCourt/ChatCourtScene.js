@@ -3,14 +3,22 @@ import { View, ActivityIndicator, ScrollView, Dimensions, BackHandler, ToastAndr
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
-import CourtContainer from './containers/CourtContainer'
-import InfosContainer from './containers/InfosContainer'
-import BadgeWallContainer from './containers/BadgeWallContainer'
-import CollectionModalContainer from './containers/CollectionModalContainer'
-import LineModalContainer from './containers/LineModalContainer'
-import BaconRadar from '../../../views/BaconRadar'
+//import CourtContainer from './containers/CourtContainer'
+//import InfosContainer from './containers/InfosContainer'
+//import BadgeWallContainer from './containers/BadgeWallContainer'
+//import CollectionModalContainer from './containers/CollectionModalContainer'
+//import LineModalContainer from './containers/LineModalContainer'
+//import BaconRadar from '../../../views/BaconRadar'
+import BaconCard from '../../../views/BaconCard/'
+import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
 
 const { width, height } = Dimensions.get('window')
+
+const styles = {
+  view: {
+    flex: 1
+  }
+}
 
 @inject('firebase','SubjectStore','FateStore','ControlStore','MeetChanceStore') @observer
 export default class ChatCourtScene extends Component {
@@ -29,7 +37,7 @@ export default class ChatCourtScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    //Actions.refresh({ title: this.title })
+    //this.Store.startLoading()
   }
 
   componentWillUnmount() {
@@ -46,7 +54,7 @@ export default class ChatCourtScene extends Component {
   }
 
   indicator = () => (
-    <View style={{flex: 1}}>
+    <View style={styles.view}>
       <ActivityIndicator
         style={{
           flex: 1,
@@ -63,11 +71,29 @@ export default class ChatCourtScene extends Component {
 
   render() {
     return(
-      <View style={{flex: 1}}>
-        { this.Store.loading &&
-          this.indicator()
+      <View style={styles.view}>
+        { this.Store.loading ? <BaconActivityIndicator/> :
+          <BaconCard
+            album={this.Store.albumToArray}
+            //onPressAlbum={this.openAlbum}
+            displayName={ this.Store.nickname }
+            bio={ this.Store.bio }
+            age={ this.Store.age }
+            langs={ this.Store.languagesToString }
+            distance={ this.Store.distance }
+            address={ this.Store.address }
+            showDistance
+            showBlockade
+            showReport    
+          />
         }
-        { !this.Store.loading &&
+      </View>
+    )
+  }
+}
+
+/*
+
           <View style={{flex: 1}}>
             <ScrollView style={{flex: 1}}>
               <CourtContainer title={this.title} Store={this.Store} collection={this.collection}/>
@@ -86,8 +112,5 @@ export default class ChatCourtScene extends Component {
             <CollectionModalContainer/>
             <LineModalContainer/>
           </View>
-        }
-      </View>
-    )
-  }
-}
+
+*/
