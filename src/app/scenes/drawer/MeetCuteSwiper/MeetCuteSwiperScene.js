@@ -35,9 +35,6 @@ export default class MeetCuteSwiperScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.MeetCuteStore = this.props.MeetCuteStore
-    this.state = {
-      albumZoom: false
-    }
     this.cardIndex = 0
   }
 
@@ -49,34 +46,6 @@ export default class MeetCuteSwiperScene extends Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       this.MeetCuteStore.fetchPreys(this.SubjectStore.preySexualOrientation)
-    })
-  }
-
-
-  renderAlbumZoom = (album) => (
-    album.map( photo => (
-      <ImageZoom
-        key={photo}
-        cropWidth={width}
-        cropHeight={height}
-        imageWidth={width}
-        imageHeight={height}
-      >
-        <Image style={{height, width}} resizeMode='contain' source={{uri: photo}} />
-      </ImageZoom>
-    ))
-  )
-
-  openAlbum = index => {
-    this.currentPage = index
-    this.setState({
-      albumZoom: true
-    })
-  }
-
-  closeAlbum = () => {
-    this.setState({
-      albumZoom: false
     })
   }
 
@@ -92,14 +61,10 @@ export default class MeetCuteSwiperScene extends Component {
     this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.SubjectStore.meetCutePreys[this.cardIndex].key).set({wooner: this.SubjectStore.uid, prey: this.SubjectStore.meetCutePreys[this.cardIndex].key, time: Date.now()})    
   }
 
-  onSwipedAll = () => {
-    this.cardIndex = 0
-    this.SubjectStore.setMeetCuteModal()
-  }
-
-  nextPhoto = () => {
-    this.carousel._animateNextPage()
-  }
+  //onSwipedAll = () => {
+  //  this.cardIndex = 0
+  //  this.SubjectStore.setMeetCuteModal()
+  //}
 
   render() {
 
@@ -114,18 +79,16 @@ export default class MeetCuteSwiperScene extends Component {
             return(
               <BaconCard
                 album={card.album}
-                //onPressAlbum={this.openAlbum}
                 displayName={ card.nickname }
                 age={ 20 }
                 showDistance
                 showBlockade
                 showReport
-                
               />
               )
             }}
             onSwiped={(cardIndex) => {this.cardIndex = cardIndex + 1}}
-            onSwipedAll={this.onSwipedAll}
+            //onSwipedAll={this.onSwipedAll}
             cardIndex={this.cardIndex}
             horizontalSwipe={false}
             verticalSwipe={false}
@@ -152,29 +115,3 @@ export default class MeetCuteSwiperScene extends Component {
     )
   }
 }
-
-/*
-
-          <Modal hardwareAccelerated animationType={'none'} onRequestClose={this.closeAlbum} visible={ this.state.albumZoom || false } transparent={false}>
-            <Carousel
-              ref={(carousel) => { this.carousel = carousel }}
-              swipe
-              currentPage={this.currentPage}
-              style={{flex:1,backgroundColor: 'transparent'}}
-              bullets
-              autoplay={false}
-              pageInfoTextStyle={{color: 'red'}}
-              bulletsStyle={{position: 'absolute',bottom: 10}}
-            >
-              { this.renderAlbumZoom( this.MeetCuteStore.preys[this.cardIndex].album ) }
-            </Carousel>
-            <View style={styles.toolView}>
-              <TouchableOpacity onPress={ this.closeAlbum }>
-                <Image source={require('../../../../images/btn_meet_main.png')} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={ this.nextPhoto }>
-                <Image source={require('../../../../images/btn_meet_nextpic.png')}/>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-*/
