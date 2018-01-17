@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import { Modal, View, Text, ScrollView, Dimensions, InteractionManager, Image,TouchableOpacity } from 'react-native'
+import { View, Dimensions, InteractionManager, Image,TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import Swiper from 'react-native-deck-swiper'
-import Carousel from 'react-native-looped-carousel'
-import ImageZoom from 'react-native-image-pan-zoom'
 import { inject, observer } from 'mobx-react'
 import { toJS } from 'mobx'
-import SquareImage from 'react-native-bacon-square-image'
 
 import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
 import BaconCard from '../../../views/BaconCard/'
@@ -17,13 +14,12 @@ const styles = {
   view: {
     flex: 1
   },
-  toolView: {
-    width, 
+  tool : {
+    flexDirection: 'row',
     position: 'absolute', 
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    alignItems: 'center', 
-    padding: 20
+    justifyContent: 'space-around',
+    top: height/2, 
+    width
   }
 }
 
@@ -61,11 +57,6 @@ export default class MeetCuteSwiperScene extends Component {
     this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.SubjectStore.meetCutePreys[this.cardIndex].key).set({wooner: this.SubjectStore.uid, prey: this.SubjectStore.meetCutePreys[this.cardIndex].key, time: Date.now()})    
   }
 
-  //onSwipedAll = () => {
-  //  this.cardIndex = 0
-  //  this.SubjectStore.setMeetCuteModal()
-  //}
-
   render() {
 
     return(
@@ -88,7 +79,6 @@ export default class MeetCuteSwiperScene extends Component {
               )
             }}
             onSwiped={(cardIndex) => {this.cardIndex = cardIndex + 1}}
-            //onSwipedAll={this.onSwipedAll}
             cardIndex={this.cardIndex}
             horizontalSwipe={false}
             verticalSwipe={false}
@@ -98,10 +88,11 @@ export default class MeetCuteSwiperScene extends Component {
             cardHorizontalMargin={0}
             zoomAnimationDuration={0}
             swipeBackCard={false}
+            //onSwipedAll={this.onSwipedAll}
             //showSecondCard={false}
             //infinite={true}
           />
-          <View style={{flexDirection: 'row',position: 'absolute', justifyContent: 'space-around',top: height/2, width}}>
+          <View style={styles.tool}>
             <TouchableOpacity onPress={ this.onPressLeft }>
               <Image source={require('../../../../images/btn_meet_dislike.png')} />
             </TouchableOpacity>

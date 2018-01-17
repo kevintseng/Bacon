@@ -10,6 +10,7 @@ export default class MeetChanceStore {
   // court
   @observable loading
   // user data
+  /*
   @observable nickname
   @observable avatar
   @observable bio
@@ -22,9 +23,10 @@ export default class MeetChanceStore {
   @observable distance
   @observable emailVerified
   @observable photoVerified
+  */
   //
-  @observable notFound
-  @observable meetChanceloading
+  //@observable notFound
+  //@observable meetChanceloading
 
   constructor(firebase) {
     this.firebase = firebase
@@ -32,23 +34,23 @@ export default class MeetChanceStore {
   }
 
   // court
-  @computed get age() {
-    return calculateAge(this.birthday)
-  }
+  //@computed get age() {
+  //  return calculateAge(this.birthday)
+  //}
 
-  @computed get languagesToString() {
-    return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join('，')
+  //@computed get languagesToString() {
+  //  return Object.keys(this.languages).filter(key => this.languages[key] !== 0).map( key => key + this.masterLevel(this.languages[key]) ).join('，')
     //return Object.keys(this.languages).filter(key => this.languages[key] === true).join()
-  }
+  //}
 
-  @computed get albumToArray() {
-    return Object.keys(this.album).map((key) => (this.album[key]))
-  }
+  //@computed get albumToArray() {
+  //  return Object.keys(this.album).map((key) => (this.album[key]))
+  //}
 
-  @computed get hobbiesToFlatList() {
-    return Object.keys(this.hobbies).map((key,index) => ({ key: key, check: this.hobbies[key] }))
+  //@computed get hobbiesToFlatList() {
+  //  return Object.keys(this.hobbies).map((key,index) => ({ key: key, check: this.hobbies[key] }))
     // { 打球: true } -> [{key: 打球, check: true}]
-  }
+  //}
 
   @computed get preysToFlatList() {
     const arr = toJS(this.preys).filter(ele => ele !== null)
@@ -62,104 +64,89 @@ export default class MeetChanceStore {
     this.pool = new Object
     this.preyList = new Array
     this.preys = new Array
-    // court
     this.loading = true
-    // user data
-    this.uid = null
-    this.nickname = null
-    this.avatar = null
-    this.bio = null
-    this.birthday = null
-    this.languages = new Object
-    this.hobbies = new Object
-    this.album = new Object
-    this.vip = false
-    this.address = null
-    this.distance = null
-    this.emailVerified = false
-    this.photoVerified = false
-    this.latitude = null
-    this.longitude = null
-    // config
-    this.meetChanceMinAge = 18
-    this.meetChanceMaxAge = 50
-    this.meetChanceRadar = false
-    //
-    this.fetchPreyQuery
-    // 
-    this.notFound = false
-    // blockade
-    this.blockadePool = new Object
-    this.blockadeList = null
     this.index = 1
-    this.refreshing = false
-    this.meetChanceloading = true
+    // court
+    // user data
+    //this.uid = null
+    //this.nickname = null
+    //this.avatar = null
+    //this.bio = null
+    //this.birthday = null
+    //this.languages = new Object
+    //this.hobbies = new Object
+    //this.album = new Object
+    //this.vip = false
+    //this.address = null
+    //this.distance = null
+    //this.emailVerified = false
+    //this.photoVerified = false
+    //this.latitude = null
+    //this.longitude = null
+    // config
+    //this.meetChanceMinAge = 18
+    //this.meetChanceMaxAge = 50
+    //this.meetChanceRadar = false
+    //
+    //this.fetchPreyQuery
+    // 
+    //this.notFound = false
+    // blockade
+    //this.blockadePool = new Object
+    //this.blockadeList = null
+    //this.index = 1
+    //this.refreshing = false
+    //this.meetChanceloading = true
   }
-
-  @action setLatitude = latitude => {
-    this.latitude = latitude
-  }
-
-  @action setLongitude = longitude => {
-    this.longitude = longitude
-  }
-
-  // pool
 
   @action addPreyToPool = (uid,distance,nickname,avatar,birthday,hideMeetChance,deleted,online) => {
     this.pool[uid] = { key: uid, distance: distance, nickname: nickname, avatar: avatar, birthday: birthday, hideMeetChance: hideMeetChance, deleted: deleted, online: online }
   }
 
-  // preyList
-
-  @action setPreyList = () => {
-    // 過濾名單
+  @action fetchPreys = () => {
     this.blockadeList = this.filterBlockadeList()
     this.preyList = Object.keys(this.pool).filter( 
       key => {
         const value = this.pool[key]
-        if (!(value.hideMeetChance) && !(value.deleted) && !(this.blockadeList.includes(key)) && value.birthday && ((calculateAge(value.birthday) >= this.meetChanceMinAge) && (calculateAge(value.birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(value.online)) {
-          return true
-        } else {
-          return null
-        }
+        //TODO: 過濾
+        //if (!(value.hideMeetChance) && !(value.deleted) && !(this.blockadeList.includes(key)) && value.birthday && ((calculateAge(value.birthday) >= this.meetChanceMinAge) && (calculateAge(value.birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(value.online)) {
+        //  return true
+        //} else {
+        //  return null
+        //}
+        return true
       }
     ).map( key => this.pool[key] )
     // 排距離
     this.preyList.sort((a, b) => {
       return a.distance > b.distance ? 1 : -1
     })
+    this.preys = this.preys.concat(this.preyList.slice(0,12))
+    this.finishLoading()
+  }
+
+  @action addMorePreys = () => {
+    // 沒到12個會出發兩次
+    this.preys = this.preys.concat(this.preyList.slice(0 + 12*this.index,12 + 12*this.index))
+    this.index = this.index + 1
+  }
+
+  @action startLoading = () => {
+    this.preyList = new Array
+    this.preys = new Array
+    this.loading = true
+    this.index = 1
+  }
+
+  @action finishLoading = () => {
+    this.loading = false
   }
 
   @action filterBlockadeList = () => {
     return [] // 放在local
   }
-
-  @action setRealPreys = () => {
-    this.preys = this.preys.concat(this.preyList.slice(0,12))
-    this.meetChanceloading = false
-  }
-
-  @action addMorePreys = () => {
-    // 沒到12個會出發兩次
-    //console.warn(this.index)
-    //this.setPreyList()
-    //if (this.index > 0) {
-    this.preys = this.preys.concat(this.preyList.slice(0 + 12*this.index,12 + 12*this.index))
-    //}
-    this.index = this.index + 1
-  }
-
-  @action setIndex = () => {
-    this.index = 1
-  }
-
-  @action onRefresh = () => {
-    this.MeetChanceStore.refreshing = true
-  }
-
   // LineCollection
-
+/*
   @action setCourtInitialize = uid => {
     this.loading = true
     this.uid = uid
@@ -297,7 +284,7 @@ export default class MeetChanceStore {
   }
 
 }
-
+*/
 /*
   @action updatePreyToPool = (uid,distance) => {
     if (this.pool[uid]) {
@@ -314,3 +301,4 @@ export default class MeetChanceStore {
     this.blockadePool[uid] = time
   }
 */
+}
