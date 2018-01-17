@@ -5,6 +5,7 @@ import { View, FlatList, Dimensions, Text, InteractionManager, ActivityIndicator
 import CircleImage from 'react-native-bacon-circle-image'
 
 import Wave from '../../../views/Wave/Wave'
+import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
 import localdb from '../../../../configs/localdb'
 
 const { width } = Dimensions.get('window')
@@ -48,52 +49,29 @@ export default class MeetChanceWaterFallScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.MeetChanceStore = this.props.MeetChanceStore
-    //console.warn('初始化')
   }
 
   componentWillMount() {
     Actions.refresh({ key: 'Drawer', open: false })
-    this.MeetChanceStore.cleanMeetChanceLoading()
-    //InteractionManager.runAfterInteractions(this.task)
-    //this.MeetChanceStore.setPreyList()
-    //this.task()
-  }
-
-  componentWillUnMount() {
-    //console.warn('解掉了')
-    this.MeetChanceStore.setIndex()
+    this.MeetChanceStore.startLoading()
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(this.task)
+    InteractionManager.runAfterInteractions(() => {
+      this.MeetChanceStore.fetchPreys()
+    })
   }
 
-  task = () => {
-    //console.warn('重抓一次')
-    //await this.sleep(260)
-    this.MeetChanceStore.setPreyList()
-    this.MeetChanceStore.setRealPreys()
-  }
-
-  goToAboutMeTab = () => {
-    Actions.AboutMe({type: 'replace'})
-  }
-
-  onPress = async uid => {
-    //console.log(uid)
-    //alert('轉向聊天收藏頁面')
+  onPress = uid => {
     // 來訪記錄
-    
-    this.firebase.database().ref('visitorList/'  + uid + '/' + this.SubjectStore.uid).set(Date.now())
-    await this.MeetChanceStore.setCourtInitialize(uid)
-    await localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
+    //this.firebase.database().ref('visitorList/'  + uid + '/' + this.SubjectStore.uid).set(Date.now())
+    localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
       if (ids.includes(uid)) {
-        Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇', collection: true})
+        Actions.ChatCourt({ uid: uid, title: '巧遇', collection: true})
       } else {
-        Actions.LineCollect({ Store: this.MeetChanceStore, title: '巧遇', collection: false})
+        Actions.ChatCourt({ uid: uid, title: '巧遇', collection: false})
       }
     }).catch(err => console.log(err))
-    
   }
 
   header = () => (
@@ -103,105 +81,39 @@ export default class MeetChanceWaterFallScene extends Component {
     </View>
   )
 
-  fakeOnPress = () => {
-
-  }
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
+  goToAboutMeTab = () => {
+    Actions.AboutMe({type: 'replace'})
   }
 
   render() {
     return(
-      <View style={{flex: 1}}>
-    { this.MeetChanceStore.meetChanceloading ?
-      <View style={{flex: 1,justifyContent: 'center'}}>
-        <ActivityIndicator
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            alignSelf: 'center',
-            paddingBottom: 110
-          }}
-          size="large"
-          color='#d63768'
-        />
-      </View> :
       <View style={styles.view}>
+      { this.MeetChanceStore.loading ? <BaconActivityIndicator/> :
         <FlatList
           removeClippedSubviews
           onEndReached={this.MeetChanceStore.addMorePreys}
           onEndReachedThreshold={0.1}
           data={ this.MeetChanceStore.preysToFlatList }
           numColumns={3}
-          //contentContainerStyle={styles.container}
           renderItem={({item}) =>
-              <View style={styles.cookie}>
-                <CircleImage
-                  radius={ radius }
-                  onPress={ () => { this.onPress(item.key) } }
-                  placeholderSource={require('../../../../images/ico_qy_head_preload.png')}
-                  loadingStyle={styles.loadingStyle}
-                  source={{uri: item.avatar }}
-                />
-                <Text style={styles.text}>{item.nickname}</Text>
-              </View>
-            }
-            ListHeaderComponent={ this.header }
-            getItemLayout={(data, index) => (
+            <View style={styles.cookie}>
+              <CircleImage
+                radius={ radius }
+                onPress={ () => { this.onPress(item.key) } }
+                placeholderSource={require('../../../../images/ico_qy_head_preload.png')}
+                loadingStyle={styles.loadingStyle}
+                source={{uri: item.avatar }}
+              />
+              <Text style={styles.text}>{item.nickname}</Text>
+            </View>
+          }
+          ListHeaderComponent={ this.header }
+          getItemLayout={(data, index) => (
             {length: itemHight, offset: itemHight * index, index}
           )}
         />
-      </View>
-    }
+      }
     </View>
     )
   }
 }
-/*
-        <FlatList
-          removeClippedSubviews
-          data={ this.MeetChanceStore.preysToFlatList }
-          numColumns={3}
-          renderItem={({item}) =>
-            <Cookie
-              name={ item.nickname }
-              avatar={ item.avatar }
-              onPress={ this.fakeOnPress }
-            /> }
-            ListHeaderComponent={ this.header }
-            getItemLayout={(data, index) => (
-            {length: itemHight, offset: itemHight * index, index}
-          )}
-        />
-*/
-/*
-      {
-        !this.MeetChanceStore.notFound &&
-      {
-        this.MeetChanceStore.notFound &&
-        <View style={{ width: 250, marginTop: 200 }}>
-          <Text style={styles.text}>抱歉, 您所在的位置搜尋不到任何對象</Text>
-        </View>
-      }
-
-    <CircleImage
-      radius={ circleSize/2 }
-      //borderColor={borderColor}
-      //circleBorderWidth={circleBorderWidth}
-      //circleColor={circleColor}
-      onPress={onPress}
-      placeholderSource={require('./img/ico_qy_head_preload.png')}
-      loadingStyle={{ size: 'small', color: '#b3b3b3' }}
-      source={{uri:avatar}}
-      disabled={disabled}
-      //isShowActivity={false}
-    />
-
-                <Cookie
-                  name={ item.nickname }
-                  avatar={ item.avatar }
-                  onPress={ () => { this.onPress(item.key) } }
-                /> 
-*/

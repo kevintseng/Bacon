@@ -1,14 +1,8 @@
 import React, { Component } from 'react'
-import { View, ActivityIndicator, ScrollView, Dimensions, BackHandler, ToastAndroid, Button } from 'react-native'
+import { View, Image, Text, ActivityIndicator, Dimensions, BackHandler, ToastAndroid, TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 
-//import CourtContainer from './containers/CourtContainer'
-//import InfosContainer from './containers/InfosContainer'
-//import BadgeWallContainer from './containers/BadgeWallContainer'
-//import CollectionModalContainer from './containers/CollectionModalContainer'
-//import LineModalContainer from './containers/LineModalContainer'
-//import BaconRadar from '../../../views/BaconRadar'
 import BaconCard from '../../../views/BaconCard/'
 import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
 
@@ -17,27 +11,39 @@ const { width, height } = Dimensions.get('window')
 const styles = {
   view: {
     flex: 1
+  },
+  tool : {
+    flexDirection: 'row',
+    position: 'absolute', 
+    justifyContent: 'space-around',
+    top: height/2, 
+    width
   }
 }
 
-@inject('firebase','SubjectStore','FateStore','ControlStore','MeetChanceStore') @observer
+@inject('firebase','SubjectStore','FateStore','ControlStore','MeetChanceStore','ChatStore') @observer
 export default class ChatCourtScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.title = this.props.title
-    this.collection = this.props.collection
-    this.Store = this.props.Store // MeetChanceStore FateStore
-    this.SubjectStore = this.props.SubjectStore
-    this.FateStore = this.props.FateStore
-    this.ControlStore = this.props.ControlStore
-    this.MeetChanceStore = this.props.MeetChanceStore
+    this.state = {
+      collection: this.props.collection,
+      loading: true
+    }
+    //this.ChatStore = this.props.ChatStore
+    //this.title = this.props.title
+    //this.collection = this.props.collection
+    //this.Store = this.props.Store // MeetChanceStore FateStore
+    //this.SubjectStore = this.props.SubjectStore
+    //this.FateStore = this.props.FateStore
+    //this.ControlStore = this.props.ControlStore
+    //this.MeetChanceStore = this.props.MeetChanceStore
   }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    //this.Store.startLoading()
+    //this.ChatStore.startLoading()
   }
 
   componentWillUnmount() {
@@ -45,7 +51,7 @@ export default class ChatCourtScene extends Component {
   }
 
   componentDidMount() {
-    this.Store.fetchPrey()
+
   }
 
   onBackAndroid = () => {
@@ -53,64 +59,35 @@ export default class ChatCourtScene extends Component {
     return true
   }
 
-  indicator = () => (
-    <View style={styles.view}>
-      <ActivityIndicator
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf: 'center',
-          paddingBottom: 110
-        }}
-        size="large"
-        color='#d63768'
-      />
-    </View>
-  )
-
   render() {
     return(
       <View style={styles.view}>
-        { this.Store.loading ? <BaconActivityIndicator/> :
+        { this.state.loading ? <BaconActivityIndicator/> :
+         <View style={styles.view}>
           <BaconCard
-            album={this.Store.albumToArray}
+            album={this.state.albumToArray}
             //onPressAlbum={this.openAlbum}
-            displayName={ this.Store.nickname }
-            bio={ this.Store.bio }
-            age={ this.Store.age }
-            langs={ this.Store.languagesToString }
-            distance={ this.Store.distance }
-            address={ this.Store.address }
+            displayName={ this.state.nickname }
+            bio={ this.state.bio }
+            age={ this.state.age }
+            langs={ this.state.languagesToString }
+            distance={ this.state.distance }
+            address={ this.state.address }
             showDistance
             showBlockade
             showReport    
           />
+          <View style={styles.tool}>
+            <TouchableOpacity onPress={ this.onPressLeft }>
+              <Image source={require('../../../../images/btn_qy_fav_0.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={ this.onPressRight }>
+              <Image source={require('../../../../images/btn_qy_chat.png')}/>
+            </TouchableOpacity>
+          </View>
+        </View>
         }
       </View>
     )
   }
 }
-
-/*
-
-          <View style={{flex: 1}}>
-            <ScrollView style={{flex: 1}}>
-              <CourtContainer title={this.title} Store={this.Store} collection={this.collection}/>
-              <View style={{alignSelf: 'center',paddingTop: 40}}>
-                <InfosContainer Store={this.Store}/>
-              </View>
-              <View style={{paddingTop: 10}}>
-                <BadgeWallContainer Store={this.Store}/>
-              </View>
-              { this.MeetChanceStore.meetChanceRadar && 
-                <View style={{paddingTop: 10}}>
-                  <BaconRadar/>
-                </View>
-              }
-            </ScrollView>
-            <CollectionModalContainer/>
-            <LineModalContainer/>
-          </View>
-
-*/

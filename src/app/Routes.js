@@ -219,9 +219,8 @@ export default class Routes extends Component {
                 <Scene key="MeetChanceConfig" title="巧遇" renderBackButton={this.baconArrow} component={MeetChanceConfigScene} />
               </Scene>
 
-              <Scene key="LineCollect" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
-                <Scene key="LineCollectCourt" title="ChatCourtScene" renderBackButton={this.baconArrow} component={ChatCourtScene} />
-              </Scene>
+              <Scene key="ChatCourt" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="ChatCourtScene" renderBackButton={this.baconArrow} component={ChatCourtScene} />
+
 
               <Scene key="ChatTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolChatTab}/>
               <Scene key="ChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={ChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
