@@ -107,28 +107,6 @@ export default class MeetCuteSwiperScene extends Component {
       <View style={styles.view}>
         { this.MeetCuteStore.loading ? <BaconActivityIndicator/> :
         <View style={styles.view}>
-          <Modal hardwareAccelerated animationType={'none'} onRequestClose={this.closeAlbum} visible={ this.state.albumZoom || false } transparent={false}>
-            <Carousel
-              ref={(carousel) => { this.carousel = carousel }}
-              swipe
-              currentPage={this.currentPage}
-              style={{flex:1,backgroundColor: 'transparent'}}
-              bullets
-              autoplay={false}
-              pageInfoTextStyle={{color: 'red'}}
-              bulletsStyle={{position: 'absolute',bottom: 10}}
-            >
-              { this.renderAlbumZoom( this.MeetCuteStore.preys[this.cardIndex].album ) }
-            </Carousel>
-            <View style={styles.toolView}>
-              <TouchableOpacity onPress={ this.closeAlbum }>
-                <Image source={require('../../../../images/btn_meet_main.png')} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={ this.nextPhoto }>
-                <Image source={require('../../../../images/btn_meet_nextpic.png')}/>
-              </TouchableOpacity>
-            </View>
-          </Modal>
           <Swiper
             ref={swiper => { this.swiper = swiper}}
             cards={toJS(this.MeetCuteStore.preys)}
@@ -136,7 +114,7 @@ export default class MeetCuteSwiperScene extends Component {
             return(
               <BaconCard
                 album={card.album}
-                onPressAlbum={this.openAlbum}
+                //onPressAlbum={this.openAlbum}
                 displayName={ card.nickname }
                 age={ 20 }
                 showDistance
@@ -177,9 +155,6 @@ export default class MeetCuteSwiperScene extends Component {
 
 /*
 
-      <View style={styles.view}>
-        { this.MeetCuteStore.loading ? <BaconActivityIndicator/> :
-        <View style={styles.view}>
           <Modal hardwareAccelerated animationType={'none'} onRequestClose={this.closeAlbum} visible={ this.state.albumZoom || false } transparent={false}>
             <Carousel
               ref={(carousel) => { this.carousel = carousel }}
@@ -202,46 +177,4 @@ export default class MeetCuteSwiperScene extends Component {
               </TouchableOpacity>
             </View>
           </Modal>
-          <Swiper
-            ref={swiper => { this.swiper = swiper}}
-            cards={toJS(this.MeetCuteStore.preys)}
-            renderCard={(card) => {
-            return(
-              <BaconCard
-                album={card.album}
-                onPressAlbum={this.openAlbum}
-                displayName={ card.nickname }
-                age={ 20 }
-                showDistance
-                showBlockade
-                showReport
-                
-              />
-              )
-            }}
-            onSwiped={(cardIndex) => {this.cardIndex = cardIndex + 1}}
-            onSwipedAll={this.onSwipedAll}
-            cardIndex={this.cardIndex}
-            horizontalSwipe={false}
-            verticalSwipe={false}
-            secondCardZoom={1}
-            backgroundColor={'white'}
-            cardVerticalMargin={0}
-            cardHorizontalMargin={0}
-            zoomAnimationDuration={0}
-            swipeBackCard={false}
-            //showSecondCard={false}
-            //infinite={true}
-          />
-          <View style={{flexDirection: 'row',position: 'absolute', justifyContent: 'space-around',top: height/2, width}}>
-            <TouchableOpacity onPress={ this.onPressLeft }>
-              <Image source={require('../../../../images/btn_meet_dislike.png')} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={ this.onPressRight }>
-              <Image source={require('../../../../images/btn_meet_like.png')}/>
-            </TouchableOpacity>
-          </View>
-        </View>
-        }
-      </View>
 */
