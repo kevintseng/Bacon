@@ -52,44 +52,24 @@ export default class DrawerScene extends Component {
     Actions.MeetChance({type: 'replace'})
   }
 
-  goToChat = () => {
-    Actions.ChatTab({type: 'replace'})
-  }
-
-  //goToLine = () => {
-  //  Actions.LineList({type: 'replace'})
-  //}
-
-  //goToConvs = () => {
-  //  Actions.Convs({type: 'replace'})
-  //}
-
   goToMeetCute = () => {
     Actions.MeetCute({type: 'replace'})
+  }
+  
+  goToChat = () => {
+    Actions.ChatTab({type: 'replace'})
   }
 
   goToFate = () => {
     Actions.Fate({type: 'replace'})
   }
 
-  goToArticle = () => {
-    Actions.Article({type: 'replace'})
-  }
+  //goToArticle = () => {
+  //  Actions.Article({type: 'replace'})
+  //}
 
   goToSetting = () => {
     Actions.Setting({type: 'replace'})
-  }
-
-  gotToMster = () => {
-    Actions.Master({type: 'replace'})
-  }
-
-  goToSwiper = () => {
-    Actions.Swiper({type: 'replace'})
-  }
-
-  goToTest = () => {
-    Actions.Test({type: 'replace'})
   }
 
   render() {
@@ -116,11 +96,9 @@ export default class DrawerScene extends Component {
             meetCuteOnPress={ this.goToMeetCute }
             chatOnPress={ this.goToChat }
             fateOnPress={ this.goToFate }
-            articleOnPress={ this.goToArticle }
+            //articleOnPress={ this.goToArticle }
             settingOnPress={ this.goToSetting }
-            masterOnPress={ this.gotToMster }
-            testOnPress={ this.goToTest }
-            //swiperOnPress={ this.goToSwiper }
+            //masterOnPress={ this.gotToMster }
           />
         }
         tapToClose
