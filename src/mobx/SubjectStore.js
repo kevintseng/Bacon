@@ -1,5 +1,5 @@
 import { useStrict, observable, action, computed } from 'mobx'
-import { calculateAge } from '../api/Utils'
+import { calculateAge, sortedAlbum, showError } from '../api/Utils'
 
 useStrict(true)
 
@@ -100,6 +100,12 @@ export default class SubjectStore {
 
   @computed get onlineDaysMonthLength() {
     return Object.keys(this.onlineDaysMonth).length
+  }
+
+  @computed get getAlbum() {
+    const albumObject =  sortedAlbum(this.album || new Object,this.avatar)
+    const album = Object.keys(albumObject).map(key => albumObject[key] ) 
+    return album
   }
 
   // action
