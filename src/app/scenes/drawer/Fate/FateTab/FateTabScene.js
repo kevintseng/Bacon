@@ -10,43 +10,63 @@ import GoodImpressionTab from './tabs/GoodImpressionTab'
 import MateTab from './tabs/MateTab'
 import CollectionTab from './tabs/CollectionTab'
 
+import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
+
+const styles = {
+  view: {
+    flex: 1
+  },
+  tabBarUnderlineStyle : { 
+    backgroundColor: '#d63768' 
+  }
+}
+
 @inject('firebase','FateStore','SubjectStore') @observer
 export default class FateTabScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
-    this.FateStore = this.props.FateStore
     this.SubjectStore = this.props.SubjectStore
+    this.FateStore = this.props.FateStore
   }
 
   componentWillMount () {
     Actions.refresh({ key: 'Drawer', open: false })
-    this.FateStore.cleanModal()
+    this.FateStore.startVisitorsLoading()
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(this.task)
+    InteractionManager.runAfterInteractions(() => {
+      this.fetchVisitors()
+    })
   }
 
-  task = async () => {
-    await this.fetchVisitors()
-    this.FateStore.setModal()
+  onChangeTab = tab => {
+    this.handleOnChangeTab(tab.i)
   }
 
-  onChangeTab = (index) => {
+  ref = tabView => { this.tabView = tabView }
+
+  default = () => <DefaultTabBar />
+
+  handleOnChangeTab = (index) => {
     switch(index) {
       case 0:
+        this.FateStore.startVisitorsLoading()
         this.fetchVisitors()
         break;
       case 1:
+        this.FateStore.startGoodImpressionLoading()
         this.fetchGoodImpressions()
         break;
       case 2:
+        this.FateStore.startMatchLoading()
         this.fetchMatchs()
         break;
       case 3:
-        //console.warn('抓收藏')
+        this.FateStore.startCollectionLoading()
+        this.fetchtCollections()
         break;
       default:
       //
@@ -132,42 +152,29 @@ export default class FateTabScene extends Component {
     })
   }
 
+  fetchtCollections = () => {
+    this.FateStore.setCollectionPreys(new Array)
+  }
+
   render() {
     return(
-     <View style={{flex: 1}}>
-        { this.FateStore.modal ?
-        <View style={{flex: 1,justifyContent: 'center'}}>
-          <ActivityIndicator
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              paddingBottom: 110
-            }}
-            size="large"
-            color='#d63768'
-          />
-        </View> :
-      <ScrollableTabView
-        initialPage = { this.props.initialPage || 0 }
-        tabBarPosition='top'
-        renderTabBar={() => <DefaultTabBar />}
-        tabBarUnderlineStyle={{ backgroundColor: '#d63768' }}
-        tabBarBackgroundColor='white'
-        tabBarActiveTextColor='#d63768'
-        tabBarInactiveTextColor='#606060'
-        onChangeTab={tab => {
-          this.onChangeTab(tab.i)
-        }}
-        ref={ (tabView) => { this.tabView = tabView } }
-        >
-        <VisitorsTab label='Visitors' tabLabel='來訪' />
-        <GoodImpressionTab label='GoodImpression' tabLabel='好感' />
-        <MateTab label='Mate' tabLabel='配對' />
-        <CollectionTab label='Collection' tabLabel='收藏' />
-      </ScrollableTabView>
-      }
+     <View style={styles.view}>
+        <ScrollableTabView
+          initialPage = { this.props.initialPage || 0 }
+          tabBarPosition='top'
+          renderTabBar={ this.default }
+          tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
+          tabBarBackgroundColor='white'
+          tabBarActiveTextColor='#d63768'
+          tabBarInactiveTextColor='#606060'
+          onChangeTab={this.onChangeTab}
+          ref={ this.ref }
+          >
+          <VisitorsTab label='Visitors' tabLabel='來訪' />
+          <GoodImpressionTab label='GoodImpression' tabLabel='好感' />
+          <MateTab label='Mate' tabLabel='配對' />
+          <CollectionTab label='Collection' tabLabel='收藏' />
+        </ScrollableTabView>
     </View>
     )
   }

@@ -5,9 +5,11 @@ import { Actions } from 'react-native-router-flux'
 
 import { calculateAge, calculateDistance } from '../../../../../../api/Utils'
 import CookieList from '../../../../../views/CookieList'
+import BaconActivityIndicator from '../../../../../views/BaconActivityIndicator'
 
 const styles = {
   view: {
+    flex: 1,
     marginTop: 10
   },
   child: {
@@ -29,49 +31,36 @@ export default class GoodImpressionContainer extends Component {
     this.SubjectStore = this.props.SubjectStore
   }
 
-  componentWillMount() {
-    //this.FateStore.setGoodImpressionFakePreys()
-    this.FateStore.setGoodImpressionPreylist()
-  }
-
-  componentWillUnmount() {
-  }
-
-  componentDidMount = async () => {
-    //await this.sleep(260)
-    this.FateStore.setGoodImpressionRealPreys()
-  }
-
-  onPress = async uid => {
-    await this.FateStore.setCourtInitialize(uid)
-    await this.sleep(200)
-    Actions.FateCourt()
-  }
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
+  onPress = uid => (
+    () => {
+      Actions.FateCourt({ 
+        uid: uid, title: '緣分'
+      })
+    }
+  )
   
   render() {
     return(
       <View style={styles.view}>
+        { this.FateStore.goodImpressionLoading ? <BaconActivityIndicator/> : 
         <FlatList
           removeClippedSubviews
-          data={ this.FateStore.goodImpressionPreys } 
+          data={ this.FateStore.goodImpressionPreysToFlatList } 
           numColumns={1}
           renderItem={({item}) => 
-          (
+            (
               <CookieList
                 name={ item.nickname }
                 avatar={ item.avatar }
                 age={ calculateAge(item.birthday) }
-                onPress={()=>this.onPress(item.key)}
+                onPress={ this.onPress(item.key) }
               >
                 <Text style={styles.child}>{'你們距離大約' + calculateDistance(item.latitude,item.longitude,this.SubjectStore.latitude,this.SubjectStore.longitude) + '公里'}</Text>
               </CookieList>
-           ) 
+            ) 
           } 
         />
+        }
       </View>
     )
   }
