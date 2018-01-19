@@ -34,10 +34,11 @@ import MeetCuteConfigScene from './scenes/drawer/MeetCute/MeetCuteConfig/MeetCut
 import MeetChanceWaterFallScene from './scenes/drawer/MeetChance/MeetChanceWaterFall/MeetChanceWaterFallScene'
 import MeetChanceConfigScene from './scenes/drawer/MeetChance/MeetChanceConfig/MeetChanceConfigScene'
 // chatroom
-import ChatRoomScene from './scenes/drawer/ChatRoom/ChatRoomScene'
-import HelloChatRoomScene from './scenes/drawer/ChatRoom/HelloChatRoom/HelloChatRoomScene'
-import VisitorChatRoomScene from './scenes/drawer/ChatRoom/VisitorChatRoom/VisitorChatRoomScene'
-import MatchChatRoomScene from './scenes/drawer/ChatRoom/MatchChatRoom/MatchChatRoomScene'
+import InitChatRoomScene from './scenes/drawer/ChatRoom/InitChatRoomScene'
+import HelloChatRoomScene from './scenes/drawer/ChatRoom/HelloChatRoomScene'
+import VisitorChatRoomScene from './scenes/drawer/ChatRoom/VisitorChatRoomScene'
+import MatchChatRoomScene from './scenes/drawer/ChatRoom/MatchChatRoomScene'
+import ChatRoomPreviewScene from './scenes/drawer/ChatRoom/ChatRoomPreviewScene'
 // chatlist
 import ChatTabScene from './scenes/drawer/ChatList/ChatTab/ChatTabScene'
 // fate
@@ -138,7 +139,7 @@ export default class Routes extends Component {
   }
 
   goToPreview = () => {
-    alert('預覽')
+    Actions.ChatRoomPreview()
   }
 
   baconMenu = () => <View style={styles.baconMenu}><BaconMenu /></View>
@@ -224,17 +225,15 @@ export default class Routes extends Component {
                 <Scene key="FateCourt" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="緣分" renderBackButton={this.baconArrow} component={FateCourtScene} />
                </Scene>
 
-
-              <Scene key="ChatCourt" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="ChatCourtScene" renderBackButton={this.baconArrow} component={ChatCourtScene} />
-
-
               <Scene key="ChatTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolChatTab}/>
 
-              <Scene key="ChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={ChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
+              <Scene key="InitChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={InitChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="VisitorChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={VisitorChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="HelloChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={HelloChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="MatchChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={MatchChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
-              
+              <Scene key="ChatRoomPreview" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={ChatRoomPreviewScene} />
+              <Scene key="ChatCourt" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="ChatCourtScene" renderBackButton={this.baconArrow} component={ChatCourtScene} />
+
               
             </Scene>
           </Scene>

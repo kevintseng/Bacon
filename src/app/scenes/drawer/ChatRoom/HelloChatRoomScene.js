@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid, ActivityIndicator } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
-import ImagePicker from "react-native-image-picker"
-import ImageResizer from "react-native-image-resizer"
+import ImagePicker from 'react-native-image-picker'
+import ImageResizer from 'react-native-image-resizer'
 
-import BaconChatRoom from '../../../../views/BaconChatRoom/BaconChatRoom'
+import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
 
 const options = {
   title: "傳送照片",
@@ -25,31 +25,41 @@ const metadata = {
 }
 
 @inject('firebase','SubjectStore','ChatStore') @observer
-export default class MatchChatRoomScene extends Component {
+export default class HelloChatRoomScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
-    this.ChatStore = this.props.ChatStore
-    this.messagesQuery = null
+    this.chatRoomQuery = null
     this.imagesQuery = null
+    this.messageSendCount = 0
     this.slefMessagesArray = new Array
-    this.preyMessagesArray = new Array
     this.slefImagesArray = new Array
-    this.preyImagesArray = new Array
     this.MessagesAndImages = new Array
     this.sortedMessagesAndImages = new Array
     this.state = {
       chats: [],
       showLeftFooter: false,
       showRightFooter: false,
-      loading: true 
+      loading: true  
     }
   }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').once('value', child => {
+      this.messageSendCount = child.val()
+    })
+    this.chatRoomQuery = this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested')
+    this.chatRoomQuery.on('value', child => {
+      if (child.val() === 2) {
+        // 轉到配對聊天室
+        //this.ChatStore.setChatSendRealPrey()
+        //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
+        Actions.MatchChatRoom({type: 'replace', chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
+      }
+    })
     this.messagesQuery = this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages')
     this.messagesQuery.on('value', child => {
       this.setMessages(child.val()) // 改成child_added
@@ -62,8 +72,7 @@ export default class MatchChatRoomScene extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-    this.ChatStore.setMatchChatRoomsNonHandleChatCounts(this.props.chatRoomKey,0)
-    this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.props.preyID).set(0)
+    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.messageSendCount)
     this.removeMessagesAndImagesListener()
     this.init()
   }
@@ -85,28 +94,7 @@ export default class MatchChatRoomScene extends Component {
           )
         })
       }
-
-      this.preyMessages = messages[this.props.preyID] // prey
-      if (this.preyMessages) {
-        this.firebase.database().ref('users/' + this.props.preyID + '/avatar').once('value',snap => {
-          this.preyMessagesArray = Object.keys(this.preyMessages).map(time => {
-            return(
-              {
-                _id: time, // 時間越大放越上面
-                text: this.preyMessages[time],
-                createdAt: new Date(parseInt(time)),
-                user: {
-                  _id: time,
-                  avatar: snap.val(), // 補上
-                },
-              }
-            )
-          })
-          this.combineMessagesAndImages()
-        })
-      } else {
-        this.combineMessagesAndImages()
-      } 
+      this.combineMessagesAndImages()
     }
   }
 
@@ -129,35 +117,13 @@ export default class MatchChatRoomScene extends Component {
           )
         })
       }
-
-      this.preyImages = images[this.props.preyID] // prey
-      if (this.preyImages) {
-        this.firebase.database().ref('users/' + this.props.preyID + '/avatar').once('value',snap => {
-          this.preyImagesArray = Object.keys(this.preyImages).map(time => {
-            return(
-              {
-                _id: time, // 時間越大放越上面
-                text: null,
-                createdAt: new Date(parseInt(time)),
-                user: {
-                  _id: time,
-                  avatar: snap.val(), // 補上
-                },
-                image: this.preyImages[time]
-              }
-            )
-          })
-          this.combineMessagesAndImages()
-        })
-      } else {
-        this.combineMessagesAndImages()
-      } 
+      this.combineMessagesAndImages()
     }
   }
 
   combineMessagesAndImages = () => {
-    this.messages = this.slefMessagesArray.concat(this.preyMessagesArray)
-    this.images = this.slefImagesArray.concat(this.preyImagesArray)
+    this.messages = this.slefMessagesArray
+    this.images = this.slefImagesArray
     this.MessagesAndImages = this.messages.concat(this.images)
     this.sortedMessagesAndImages = this.MessagesAndImages.sort((a, b) => {
       return a._id < b._id ? 1 : -1
@@ -194,25 +160,29 @@ export default class MatchChatRoomScene extends Component {
 
   uploadImage = res => {
     if (res.didCancel) {
-        //
+      //
     } else if (res.error) {
-        //console.log(res.error);
+      //console.log(res.error);
     } else {
       ImageResizer.createResizedImage(res.uri, 600, 600, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
         .then(image => {
           //console.log(image.uri)
-        this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
-        .putFile(image.uri.replace('file:/',''), metadata)
-        .then(uploadedFile => {
-          //console.warn(uploadedFile.downloadURL)
-          this.onSendImage(uploadedFile.downloadURL)
+          if (this.messageSendCount > 1) {
+            alert('你已超過兩句限制')
+          } else {
+            this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
+            .putFile(image.uri.replace('file:/',''), metadata)
+            .then(uploadedFile => {
+              //console.warn(uploadedFile.downloadURL)
+              this.onSendImage(uploadedFile.downloadURL)
+            })
+            .catch(err => {
+              alert(err)
+            })
+          }
         })
         .catch(err => {
           alert(err)
-        })
-        })
-        .catch(err => {
-        alert(err)
       })
     }
   }
@@ -220,24 +190,30 @@ export default class MatchChatRoomScene extends Component {
   onSendMessage(messages = []) {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
-      this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
-      .then(() => {
-        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
-        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
-          if (!current) {
-            return 1
-          } else {
-            return current + 1
-          }
-        })
-       }
-      ) 
+      if (this.messageSendCount > 1 ) {
+        alert('你已超過兩句限制')
+      } else {
+        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
+        .then(() => {
+          this.messageSendCount = this.messageSendCount + 1
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
+            if (!current) {
+              return 1
+            } else {
+              return current + 1
+            }
+          })
+         }
+        ) 
+      }
     }
   }
 
   onSendImage = imageURL => {
     this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
     .then(() => {
+        this.messageSendCount = this.messageSendCount + 1
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('傳送了圖片')
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
           if (!current) {
@@ -251,7 +227,7 @@ export default class MatchChatRoomScene extends Component {
   }
 
   onPressAvatar = () => {
-    alert('預覽')
+    Actions.ChatRoomPreview()
   }
 
   removeMessagesAndImagesListener = () => {
@@ -262,16 +238,19 @@ export default class MatchChatRoomScene extends Component {
     if (this.imagesQuery) {
       this.imagesQuery.off()
       this.imagesQuery = null
-    }    
+    }   
+    if (this.chatRoomQuery) {
+      this.chatRoomQuery.off()
+      this.chatRoomQuery = null
+    } 
   }
 
   init = () => {
     this.slefMessagesArray = new Array
-    this.preyMessagesArray = new Array
     this.slefImagesArray = new Array
-    this.preyImagesArray = new Array
     this.MessagesAndImages = new Array
-    this.sortedMessagesAndImages = new Array    
+    this.sortedMessagesAndImages = new Array 
+    this.messageSendCount = 0   
   }
 
   render() {

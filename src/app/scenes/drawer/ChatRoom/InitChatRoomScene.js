@@ -25,7 +25,7 @@ const metadata = {
 }
 
 @inject('firebase','SubjectStore') @observer
-export default class ChatRoomScene extends Component {
+export default class InitChatRoomScene extends Component {
 
   constructor(props) {
     super(props)
@@ -139,7 +139,7 @@ export default class ChatRoomScene extends Component {
   }
 
   onPressAvatar = () => {
-    alert('預覽')
+    Actions.ChatRoomPreview()
   }
 
   onSendMessage(messages = []) {
