@@ -25,6 +25,7 @@
     "react-native": "0.48.4",
     "react-native-animatable": "1.2.4",
     "react-native-bacon-card": "kaymingmobile/react-native-bacon-card#master",
+    "react-native-bacon-badge": "kaymingmobile/react-native-bacon-badge#master",
     "react-native-bacon-circle-image": "kaymingmobile/react-native-bacon-circle-image#master",
     "react-native-bacon-square-image": "kaymingmobile/react-native-bacon-square-image#master",
     "react-native-bacon-circle-cache-image": "kaymingmobile/react-native-bacon-circle-cache-image#master",

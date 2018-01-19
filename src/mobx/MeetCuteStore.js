@@ -1,5 +1,5 @@
 import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx'
-import { sortedAlbum, showError } from '../api/Utils'
+import { sortedAlbum, showError, calculateAge, calculateDistance, languagesToString, hobbiesToFlatList } from '../api/Utils'
 
 useStrict(true)
 
@@ -18,6 +18,16 @@ export default class MeetCuteStore {
   @action initialize = () => {
     this.loading = true
     this.preys = new Array
+    this.latitude = 0
+    this.longitude = 0
+  }
+
+  @action setLatitude = latitude => {
+    this.latitude = latitude
+  }
+
+  @action setLongitude = longitude => {
+    this.longitude = longitude
   }
 
   @action startLoading = () => {
@@ -35,7 +45,13 @@ export default class MeetCuteStore {
       return({
         key: snap.key,
         nickname: snap.val().nickname,
-        album: album
+        album: album,
+        age: calculateAge(snap.val().birthday), 
+        bio: snap.val().bio,
+        distance: calculateDistance(snap.val().latitude,snap.val().longitude,this.latitude,this.longitude),
+        address: snap.val().address,
+        langs: languagesToString(snap.val().languages || new Object),
+        hobbies: hobbiesToFlatList(snap.val().hobbies || new Object)
         })          
       }
     )

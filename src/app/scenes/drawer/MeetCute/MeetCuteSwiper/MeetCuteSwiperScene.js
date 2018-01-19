@@ -71,7 +71,12 @@ export default class MeetCuteSwiperScene extends Component {
               <BaconCard
                 album={card.album}
                 displayName={ card.nickname }
-                age={ 20 }
+                age={ card.age }
+                bio={ card.bio }
+                distance={ card.distance }
+                address={ card.address }
+                langs={ card.langs }
+                hobbies={ card.hobbies }
                 showDistance
                 showBlockade
                 showReport
