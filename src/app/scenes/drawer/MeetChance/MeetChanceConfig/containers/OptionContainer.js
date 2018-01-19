@@ -4,51 +4,57 @@ import { Alert } from 'react-native'
 
 import SwitchLists from '../../../../../views/SwitchLists'
 
-@inject('SubjectStore','ControlStore') @observer
+@inject('SubjectStore','MeetChanceStore') @observer
 export default class OptionContainer extends Component {
 
   constructor(props) {
     super(props)
     this.SubjectStore = this.props.SubjectStore
-    this.ControlStore = this.props.ControlStore
-    //this.state = {
-      // Prompt
-     // vistorPrompt : false,
-     // goodPrompt: false,
-    //}
+    this.MeetChanceStore = this.props.MeetChanceStore
   }
 
   setVistorPrompt = () => {
     if (this.SubjectStore.vip) {
-      this.ControlStore.switchMeetChanceOfflineMember()
+      this.MeetChanceStore.switchNonShowOfflinePrey()
     } else {
-      Alert.alert( 
-        '管理員提示', '此功能僅限高級會員使用', [ 
-        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
-      )
+      this.warning()
     }
   }
 
   setGoodPrompt = () => {
     if (this.SubjectStore.vip) {
-      this.ControlStore.switchMeetChanceRadar()
+      this.MeetChanceStore.switchShowPreyRadar()
     } else {
-      Alert.alert( 
-        '管理員提示', '此功能僅限高級會員使用', [ 
-        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
-      )
+      this.warning()
     }
   }
+
+  warning = () => {
+    Alert.alert( 
+      '管理員提示', '此功能僅限高級會員使用', [ 
+      {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+    )
+  }
+
+  switchOptions = () => (
+    [
+      { key: 0, 
+        switchText: '不顯示離線的會員', 
+        switchValue: this.MeetChanceStore.nonShowOfflinePrey, 
+        switchonValueChange: this.setVistorPrompt 
+      },
+      { key: 1, 
+        switchText: '對方互動狀態分析可見', 
+        switchValue: this.MeetChanceStore.showPreyRadar, 
+        switchonValueChange: this.setGoodPrompt  
+      }
+    ] 
+  )
 
   render() {
     return(
       <SwitchLists
-        flatListData={
-          [
-            { key: 0, switchText: '不顯示離線的會員', switchValue: this.ControlStore.meetChanceOfflineMember, switchonValueChange: this.setVistorPrompt },
-            { key: 1, switchText: '對方互動狀態分析可見', switchValue: this.ControlStore.meetChanceRadar, switchonValueChange:  this.setGoodPrompt }
-          ]          
-        }
+        flatListData={this.switchOptions()}
       />
     )
   }

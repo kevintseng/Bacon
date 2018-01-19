@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { View, Text, Platform, BackHandler, ToastAndroid } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import { inject, observer } from 'mobx-react'
 
-import BaconRoutesContainer from './containers/BaconRoutesContainer'
 import SliderContainer from './containers/SliderContainer'
 import OptionContainer from './containers/OptionContainer'
+
+import BaconRoutes from '../../../../views/BaconRoutes/BaconRoutes'
 
 const styles = {
   ...Platform.select({
@@ -45,20 +45,13 @@ const styles = {
   })
 }
 
-@inject('MeetChanceStore','ControlStore') @observer
 export default class MeetChanceConfigScene extends Component {
 
   constructor(props) {
     super(props)
-    this.ControlStore = this.props.ControlStore
-    this.MeetChanceStore = this.props.MeetChanceStore
   }
 
   componentWillMount() {
-    this.ControlStore.setMeetChanceMinAge(this.MeetChanceStore.meetChanceMinAge)  
-    this.ControlStore.setMeetChanceMaxAge(this.MeetChanceStore.meetChanceMaxAge) 
-    this.ControlStore.setMeetChanceRadar(this.MeetChanceStore.meetChanceRadar) 
-    this.ControlStore.setMeetChanceOfflineMember(this.MeetChanceStore.meetChanceOfflineMember)  
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 
@@ -71,6 +64,11 @@ export default class MeetChanceConfigScene extends Component {
     return true
   }
 
+  buttonOnPress = () => {
+    Actions.MeetChanceWaterFall({
+      type: 'reset'
+    })
+  }
 
   render() {
     return(
@@ -89,7 +87,10 @@ export default class MeetChanceConfigScene extends Component {
         </View>
 
         <View style={ styles.bottom }>
-          <BaconRoutesContainer/>
+          <BaconRoutes
+            routesText='完成'
+            routesOnPress={ this.buttonOnPress } 
+          />
         </View>
 
       </View>
