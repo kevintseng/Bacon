@@ -4,6 +4,14 @@ import { inject, observer } from 'mobx-react'
 import MultiSlider from 'react-native-multi-slider'
 
 const styles = {
+  titleView: {
+    paddingBottom: 10
+  },
+  silderView: {
+    flexDirection: 'row', 
+    justifyContent: 'center',
+    paddingBottom: 10
+  },
   title: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
@@ -24,31 +32,31 @@ const styles = {
   }
 }
 
-@inject('ControlStore') @observer
+@inject('MeetCuteStore') @observer
 export default class SliderContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.ControlStore = this.props.ControlStore
+    this.MeetCuteStore = this.props.MeetCuteStore
   }
 
-  sliderOneValuesChange = values => {
-    this.ControlStore.setMeetCuteMinAge(values[0])
-    this.ControlStore.setMeetCuteMaxAge(values[1])
+  onAgeChange = values => {
+    this.MeetCuteStore.setMinAge(values[0])
+    this.MeetCuteStore.setMaxAge(values[1])
   }
 
   render() {
     return(
       <View>
-        <View style={{paddingBottom: 10}}>
+        <View style={styles.titleView}>
           <Text style={styles.title}>年齡篩選</Text>
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'center',paddingBottom: 10}}>
-          <Text style={styles.text}>{this.ControlStore.meetCuteMinAge}</Text>
+        <View style={styles.silderView}>
+          <Text style={styles.text}>{this.MeetCuteStore.minAge}</Text>
           <Text style={styles.text}> - </Text>
-          <Text style={styles.text}>{this.ControlStore.meetCuteMaxAge === 50 ? '50+': this.ControlStore.meetCuteMaxAge}</Text>
+          <Text style={styles.text}>{this.MeetCuteStore.maxAge === 50 ? '50+': this.MeetCuteStore.maxAge}</Text>
         </View>
-        <MultiSlider step={1} min={18} max={50} values={[this.ControlStore.meetCuteMinAge,this.ControlStore.meetCuteMaxAge]} sliderLength={280} onValuesChange={ this.sliderOneValuesChange }/>
+        <MultiSlider step={1} min={18} max={50} values={[this.MeetCuteStore.minAge,this.MeetCuteStore.maxAge]} sliderLength={280} onValuesChange={ this.onAgeChange }/>
       </View>
     )
   }

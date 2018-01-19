@@ -9,6 +9,10 @@ export default class MeetCuteStore {
 
   @observable loading
   @observable preys
+  @observable maxAge
+  @observable minAge
+  @observable onlyShowThreePhotoPrey
+  @observable showPreyRadar
 
   constructor(firebase) {
     this.firebase = firebase
@@ -20,6 +24,26 @@ export default class MeetCuteStore {
     this.preys = new Array
     this.latitude = 0
     this.longitude = 0
+    this.maxAge = 50
+    this.minAge = 0
+    this.onlyShowThreePhotoPrey = false
+    this.showPreyRadar = false
+  }
+
+  @action switchOnlyShowThreePhotoPrey = () => {
+    this.onlyShowThreePhotoPrey = !this.onlyShowThreePhotoPrey
+  }
+
+  @action switchShowPreyRadar = () => {
+    this.showPreyRadar = !this.showPreyRadar
+  }
+
+  @action setMaxAge = age => {
+    this.maxAge = age
+  }
+
+  @action setMinAge = age => {
+    this.minAge = age
   }
 
   @action setLatitude = latitude => {
@@ -60,6 +84,9 @@ export default class MeetCuteStore {
   fetchPreys = (preySexualOrientation) => {
     // TODO: 隨機
     // TODO: 看過紀錄
+    // TODO: 年紀限制
+    // TODO: 三張照片限制
+    // TODO: 隱藏
     this.firebase.database().ref('meetCuteList/' + preySexualOrientation).limitToLast(maxPreysLimit).once('value',snap => {
       if (snap.val()) {
         const preysPromise = Object.keys(snap.val()).map(uid => this.firebase.database().ref('users/' + uid).once('value'))   

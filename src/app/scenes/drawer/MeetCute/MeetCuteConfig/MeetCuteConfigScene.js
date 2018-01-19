@@ -3,9 +3,10 @@ import { View, Text, Platform, BackHandler, ToastAndroid } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from 'mobx-react'
 
-import BaconRoutesContainer from './containers/BaconRoutesContainer'
 import SliderContainer from './containers/SliderContainer'
 import OptionContainer from './containers/OptionContainer'
+
+import BaconRoutes from '../../../../views/BaconRoutes/BaconRoutes'
 
 const styles = {
   ...Platform.select({
@@ -70,6 +71,10 @@ export default class MeetCuteConfigScene extends Component {
     return true
   }
 
+  buttonOnPress = () => {
+    Actions.MeetCuteSwiper({type: 'replace'})
+  }
+
 
   render() {
     return(
@@ -88,7 +93,10 @@ export default class MeetCuteConfigScene extends Component {
         </View>
 
         <View style={ styles.bottom }>
-          <BaconRoutesContainer/>
+          <BaconRoutes
+            routesText='完成'
+            routesOnPress={ this.buttonOnPress } 
+          />
         </View>
 
       </View>
