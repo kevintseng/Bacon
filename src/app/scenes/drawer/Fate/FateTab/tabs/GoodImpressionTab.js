@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
-import { calculateAge, getDistance } from '../../../../../../api/Utils'
+import { calculateAge, calculateDistance } from '../../../../../../api/Utils'
 import CookieList from '../../../../../views/CookieList'
 
 const styles = {
@@ -35,7 +35,6 @@ export default class GoodImpressionContainer extends Component {
   }
 
   componentWillUnmount() {
-    console.warn('leave')
   }
 
   componentDidMount = async () => {
@@ -68,7 +67,7 @@ export default class GoodImpressionContainer extends Component {
                 age={ calculateAge(item.birthday) }
                 onPress={()=>this.onPress(item.key)}
               >
-                <Text style={styles.child}>{'你們距離大約' + getDistance(item.latitude,item.longitude,this.SubjectStore.latitude,this.SubjectStore.longitude) + '公里'}</Text>
+                <Text style={styles.child}>{'你們距離大約' + calculateDistance(item.latitude,item.longitude,this.SubjectStore.latitude,this.SubjectStore.longitude) + '公里'}</Text>
               </CookieList>
            ) 
           } 
