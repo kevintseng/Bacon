@@ -9,6 +9,8 @@ import CookieList from '../../../../../views/CookieList'
 import { BaconBadgeYes } from '../../../../../views/BaconBadge/BaconBadge'
 import localdb from '../../../../../../configs/localdb'
 
+import BaconActivityIndicator from '../../../../../views/BaconActivityIndicator'
+
 const styles = {
   view: {
     //marginTop: 10
@@ -50,13 +52,10 @@ export default class CollectionContainer extends Component {
 
   componentDidMount = async () => {
     //await this.sleep(260)
-    this.FateStore.setCollectionRealPreys()
+    //this.FateStore.setCollectionRealPreys()
   }
 
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
+/*
   onPress = async uid => {
     await this.FateStore.setCourtInitialize(uid)
     //await this.sleep(200)
@@ -68,13 +67,19 @@ export default class CollectionContainer extends Component {
       }
     }).catch(err => console.log(err)) 
   }
+*/
+
+  onPress = uid => (
+    () => {
+      Actions.ChatCourt({ 
+        uid: uid, title: '緣分'
+      })
+    }
+  )
 
   goToUpgradeMember = () => {
-    Actions.Upgrade()
-  }
-
-  sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
+    //Actions.Upgrade()
+    alert('轉到收藏')
   }
 
   _collections = () => {
@@ -103,25 +108,26 @@ export default class CollectionContainer extends Component {
   render() {
     return(
       <View style={styles.view}>
+      { this.FateStore.collectionLoading ? <BaconActivityIndicator/> :
         <FlatList
           removeClippedSubviews
-          data={ this._collections() } // local 
+          data={ this.FateStore.collectionPreysToFlatList } // local 
           numColumns={1}
           ListHeaderComponent={ this.header }
           renderItem={({item}) => 
-          (
-           
+            (
               <CookieList
                 name={ item.nickname }
                 avatar={ item.avatar }
                 age={ calculateAge(item.birthday) }
-                onPress={()=>this.onPress(item.key)}
+                onPress={ this.onPress(item.key) }
               >
                 <Text style={styles.child}>{this.duration(item.time) + '前收藏'}</Text>
               </CookieList>
-) 
+            ) 
           } 
         />
+        }
       </View>
     )
   }

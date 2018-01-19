@@ -52,7 +52,9 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   componentWillMount() {
-    Actions.refresh({ key: 'Drawer', open: false })
+    Actions.refresh({ 
+      key: 'Drawer', open: false 
+    })
     this.MeetChanceStore.startLoading()
   }
 

@@ -8,12 +8,15 @@ import { calculateAge } from '../../../../../../api/Utils'
 import CookieList from '../../../../../views/CookieList'
 import localdb from '../../../../../../configs/localdb'
 
+import BaconActivityIndicator from '../../../../../views/BaconActivityIndicator'
+
 const styles = {
   content: {
     flexDirection: 'row'
   },
   view: {
-    marginTop: 10
+    marginTop: 10,
+    flex: 1
   },
   text: {
     backgroundColor: 'transparent',
@@ -43,14 +46,14 @@ export default class MateTab extends Component {
 
   componentWillMount() {
     //this.FateStore.setMatchFakePreys()
-    this.FateStore.filterMatchList()
+    //this.FateStore.filterMatchList()
   }
 
   componentDidMount = async () => {
     //await this.sleep(260)
-    this.FateStore.setMatchRealPreys()
+    //this.FateStore.setMatchRealPreys()
   }
-
+/*
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
@@ -70,11 +73,21 @@ export default class MateTab extends Component {
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
+*/
+
+  onPress = uid => (
+    () => {
+      Actions.ChatCourt({ 
+        uid: uid, title: '緣分'
+      })
+    }
+  )
 
   render() {
     return(
       <View style={styles.view}>
-        <FlatList
+        { this.FateStore.matchLoading ? <BaconActivityIndicator/> :
+          <FlatList
           data={ this.FateStore.matchPreysToFlatList } 
           numColumns={1}
           renderItem={({item}) => 
@@ -83,7 +96,7 @@ export default class MateTab extends Component {
                 name={ item.nickname }
                 avatar={ item.avatar }
                 age={ calculateAge(item.birthday) }
-                onPress={()=>this.onPress(item.key)}
+                onPress={ this.onPress(item.key) }
               >
                 <View style={styles.content}>
                   <Text style={styles.text}>你們在</Text>
@@ -91,9 +104,10 @@ export default class MateTab extends Component {
                   <Text style={styles.text}>互有好感</Text>
                 </View>
               </CookieList>
-) 
+          ) 
           } 
         />
+        }
       </View>
     )
   }
