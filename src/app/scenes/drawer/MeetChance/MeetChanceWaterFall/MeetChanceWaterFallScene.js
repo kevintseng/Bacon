@@ -62,18 +62,6 @@ export default class MeetChanceWaterFallScene extends Component {
     })
   }
 
-  onPress = uid => {
-    // 來訪記錄
-    //this.firebase.database().ref('visitorList/'  + uid + '/' + this.SubjectStore.uid).set(Date.now())
-    localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
-      if (ids.includes(uid)) {
-        Actions.ChatCourt({ uid: uid, title: '巧遇', collection: true})
-      } else {
-        Actions.ChatCourt({ uid: uid, title: '巧遇', collection: false})
-      }
-    }).catch(err => console.log(err))
-  }
-
   header = () => (
     <View style={ styles.self }>
       <CircleImage radius={75} source={{uri: this.SubjectStore.avatar}} onPress={ this.goToAboutMeTab } />
@@ -82,7 +70,29 @@ export default class MeetChanceWaterFallScene extends Component {
   )
 
   goToAboutMeTab = () => {
-    Actions.AboutMe({type: 'replace'})
+    Actions.AboutMe({
+      type: 'replace'
+    })
+  }
+
+  getItemLayout = (data, index) => (
+    {
+      length: itemHight, 
+      offset: itemHight * index, index
+    }
+  )
+
+  onPress = uid => (
+    () => {
+      this.updateVistorHistory(uid)
+      Actions.ChatCourt({ 
+        uid: uid, title: '巧遇'
+      })
+    }
+  )
+
+  updateVistorHistory = uid => {
+    this.firebase.database().ref('visitorList/'  + uid + '/' + this.SubjectStore.uid).set(Date.now())
   }
 
   render() {
@@ -95,25 +105,37 @@ export default class MeetChanceWaterFallScene extends Component {
           onEndReachedThreshold={0.1}
           data={ this.MeetChanceStore.preysToFlatList }
           numColumns={3}
-          renderItem={({item}) =>
+          renderItem={({ item }) =>
             <View style={styles.cookie}>
               <CircleImage
                 radius={ radius }
-                onPress={ () => { this.onPress(item.key) } }
-                placeholderSource={require('../../../../../images/ico_qy_head_preload.png')}
-                loadingStyle={styles.loadingStyle}
+                onPress={ this.onPress(item.key) }
+                placeholderSource={ require('../../../../../images/ico_qy_head_preload.png') }
+                loadingStyle={ styles.loadingStyle }
                 source={{uri: item.avatar }}
               />
               <Text style={styles.text}>{item.nickname}</Text>
             </View>
           }
           ListHeaderComponent={ this.header }
-          getItemLayout={(data, index) => (
-            {length: itemHight, offset: itemHight * index, index}
-          )}
+          getItemLayout={ this.getItemLayout }
         />
       }
     </View>
     )
   }
 }
+
+/*
+  handleOnPress = uid => {
+    // 來訪記錄
+    //this.firebase.database().ref('visitorList/'  + uid + '/' + this.SubjectStore.uid).set(Date.now())
+    localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
+      if (ids.includes(uid)) {
+        Actions.ChatCourt({ uid: uid, title: '巧遇', collection: true})
+      } else {
+        Actions.ChatCourt({ uid: uid, title: '巧遇', collection: false})
+      }
+    }).catch(err => console.log(err))
+  }
+*/

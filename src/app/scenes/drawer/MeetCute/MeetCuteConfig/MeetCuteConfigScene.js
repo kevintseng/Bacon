@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, Platform, BackHandler, ToastAndroid } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import { inject, observer } from 'mobx-react'
 
 import SliderContainer from './containers/SliderContainer'
 import OptionContainer from './containers/OptionContainer'
@@ -45,20 +44,13 @@ const styles = {
   })
 }
 
-@inject('MeetCuteStore','ControlStore') @observer
 export default class MeetCuteConfigScene extends Component {
 
   constructor(props) {
     super(props)
-    this.ControlStore = this.props.ControlStore
-    this.MeetCuteStore = this.props.MeetCuteStore
   }
 
-  componentWillMount() {
-    this.ControlStore.setMeetCuteMinAge(this.MeetCuteStore.meetCuteMinAge)  
-    this.ControlStore.setMeetCuteMaxAge(this.MeetCuteStore.meetCuteMaxAge) 
-    this.ControlStore.setMeetCuteRadar(this.MeetCuteStore.meetCuteRadar) 
-    this.ControlStore.setMeetCuteThreePhotos(this.MeetCuteStore.meetCuteThreePhotos)   
+  componentWillMount() { 
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }
 

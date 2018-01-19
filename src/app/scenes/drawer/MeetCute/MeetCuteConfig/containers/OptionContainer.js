@@ -4,9 +4,6 @@ import { Alert } from 'react-native'
 
 import SwitchLists from '../../../../../views/SwitchLists'
 
-
-
-
 @inject('SubjectStore','MeetCuteStore') @observer
 export default class OptionContainer extends Component {
 
@@ -14,11 +11,6 @@ export default class OptionContainer extends Component {
     super(props)
     this.SubjectStore = this.props.SubjectStore
     this.MeetCuteStore = this.props.MeetCuteStore
-    //this.state = {
-      // Prompt
-      //vistorPrompt : false,
-      //goodPrompt: false,
-    //}
   }
 
   setVistorPrompt = () => {

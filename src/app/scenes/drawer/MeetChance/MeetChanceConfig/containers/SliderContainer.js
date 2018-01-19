@@ -4,12 +4,19 @@ import { inject, observer } from 'mobx-react'
 import MultiSlider from 'react-native-multi-slider'
 
 const styles = {
+  titleView: {
+    paddingBottom: 10
+  },
+  silderView: {
+    flexDirection: 'row', 
+    justifyContent: 'center',
+    paddingBottom: 10
+  },
   title: {
     backgroundColor: 'transparent',
     letterSpacing: 3,
     fontFamily: 'NotoSans',  
     textAlign: 'center', 
-    //fontWeight: '500',
     fontSize: 17,
     color: '#606060'
   },
@@ -24,31 +31,31 @@ const styles = {
   }
 }
 
-@inject('ControlStore') @observer
+@inject('MeetChanceStore') @observer
 export default class SliderContainer extends Component {
 
   constructor(props) {
     super(props)
-    this.ControlStore = this.props.ControlStore
+    this.MeetChanceStore = this.props.MeetChanceStore
   }
 
-  sliderOneValuesChange = values => {
-    this.ControlStore.setMeetChanceMinAge(values[0])
-    this.ControlStore.setMeetChanceMaxAge(values[1])
+  onAgeChange = values => {
+    this.MeetChanceStore.setMinAge(values[0])
+    this.MeetChanceStore.setMaxAge(values[1])
   }
 
   render() {
     return(
       <View>
-        <View style={{paddingBottom: 10}}>
+        <View style={styles.titleView}>
           <Text style={styles.title}>年齡篩選</Text>
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'center',paddingBottom: 10}}>
-          <Text style={styles.text}>{this.ControlStore.meetChanceMinAge}</Text>
+        <View style={styles.silderView}>
+          <Text style={styles.text}>{this.MeetChanceStore.minAge}</Text>
           <Text style={styles.text}> - </Text>
-          <Text style={styles.text}>{this.ControlStore.meetChanceMaxAge === 50 ? '50+' : this.ControlStore.meetChanceMaxAge}</Text>
+          <Text style={styles.text}>{this.MeetChanceStore.maxAge === 50 ? '50+' : this.MeetChanceStore.maxAge}</Text>
         </View>
-        <MultiSlider step={1} min={18} max={50} values={[this.ControlStore.meetChanceMinAge,this.ControlStore.meetChanceMaxAge]} sliderLength={280} onValuesChange={ this.sliderOneValuesChange }/>
+        <MultiSlider step={1} min={18} max={50} values={[this.MeetChanceStore.minAge,this.MeetChanceStore.maxAge]} sliderLength={280} onValuesChange={ this.onAgeChange }/>
       </View>
     )
   }
