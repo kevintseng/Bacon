@@ -8,6 +8,13 @@ import MatchChatTab from './tabs/MatchChatTab'
 import VisitorsChatTab from './tabs/VisitorsChatTab'
 import SendChatTab from './tabs/SendChatTab'
 
+
+const styles = {
+  view: {
+    flex: 1
+  }
+}
+
 @inject('ChatStore','SubjectStore','firebase') @observer
 export default class ChatTabScene extends Component {
 
@@ -31,11 +38,12 @@ export default class ChatTabScene extends Component {
 
   componentWillMount () {
     Actions.refresh({ key: 'Drawer', open: false })
-    this.ChatStore.cleanChatModal()
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(this.task)
+    InteractionManager.runAfterInteractions(() => {
+      this.fetchChatMatchRooms()
+    })
   }
 
   componentWillUnmount() {
@@ -52,20 +60,18 @@ export default class ChatTabScene extends Component {
     this.sendChatRoomsChatStatusListener.map(ref => ref.off())
   }
 
-  task = async () => {
-    await this.fetchChatMatchRooms()
-    this.ChatStore.openChatModal()
-  }
-
   onChangeTab = (index) => {
     switch(index) {
       case 0:
+        this.ChatStore.startChatMatchLoading()
         this.fetchChatMatchRooms()
         break;
       case 1:
+        this.ChatStore.startChatVistorLoading()
         this.fetchVistorChatRooms()
         break;
       case 2:
+        this.ChatStore.startChatSendLoading()
         this.fetchChatSendRooms()
         break;
       default:
@@ -324,21 +330,7 @@ export default class ChatTabScene extends Component {
 
   render() {
     return(
-     <View style={{flex: 1}}>
-        { this.ChatStore.chatModal ?
-        <View style={{flex: 1,justifyContent: 'center'}}>
-          <ActivityIndicator
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              paddingBottom: 110
-            }}
-            size="large"
-            color='#d63768'
-          />
-        </View> :
+     <View style={styles.view}>
       <ScrollableTabView
         initialPage = { this.props.initialPage || 0 }
         tabBarPosition='top'
@@ -356,7 +348,6 @@ export default class ChatTabScene extends Component {
         <VisitorsChatTab label='VisitorsChat' tabLabel='來訪訊息' />
         <SendChatTab label='SendChat' tabLabel='已發招呼' />
       </ScrollableTabView>
-      }
     </View>
     )
   }

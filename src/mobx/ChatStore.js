@@ -4,6 +4,10 @@ useStrict(false)
 
 export default class ChatStore {
 
+  @observable chatSendLoading
+  @observable chatMatchLoading
+  @observable chatVistorLoading
+
   @observable chatMatchPrey
   @observable chatSendPrey
   @observable chatVistorPrey
@@ -18,6 +22,10 @@ export default class ChatStore {
   }
 
   @action initialize = () => {
+    /////////loading////////////
+    this.chatSendLoading = true
+    this.chatMatchLoading = true
+    this.chatVistorLoading = true
     /////////chatList////////////
     this.chatSendPrey = new Array
     this.chatMatchPrey = new Array
@@ -34,6 +42,18 @@ export default class ChatStore {
     this.from = null
     this.chatMatchModal = true
     this.chatModal = true
+  }
+
+  @action startChatSendLoading = () => {
+    this.chatSendLoading = true
+  }
+
+  @action startChatMatchLoading = () => {
+    this.chatMatchLoading = true
+  }
+
+  @action startChatVistorLoading = () => {
+    this.chatVistorLoading = true
   }
 
   @action setUid = uid => {
@@ -284,6 +304,7 @@ export default class ChatStore {
   // Match
   @action setMatchChatRooms = arr => {
     this.chatMatchPrey = arr
+    this.chatMatchLoading = false
   }
 
   @action setMatchChatRoomsLastMessage = (chatRoomKey,str) => {
@@ -317,6 +338,7 @@ export default class ChatStore {
   // Vistor
   @action setVistorChatRooms = arr => {
     this.chatVistorPrey = arr
+    this.chatVistorLoading = false
   }
 
   @action setVistorChatRoomsLastMessage = (chatRoomKey,str) => {
@@ -350,6 +372,7 @@ export default class ChatStore {
   // Send
   @action setSendChatRooms = arr => {
     this.chatSendPrey = arr
+    this.chatSendLoading = false
   }
 
   @action setSendChatRoomsLastMessage = (chatRoomKey,str) => {

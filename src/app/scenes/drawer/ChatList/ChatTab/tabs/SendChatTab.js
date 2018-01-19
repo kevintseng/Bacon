@@ -4,9 +4,11 @@ import { observer, inject, Observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 
 import ChatList from '../../../../../views/ChatList/ChatList'
+import BaconActivityIndicator from '../../../../../views/BaconActivityIndicator'
 
 const styles = {
   view: {
+    flex: 1,
     marginTop: 10
   }
 }
@@ -19,13 +21,6 @@ export default class SendChatTab extends Component {
     this.ChatStore = this.props.ChatStore
   }
 
-  componentWillMount() {
-    //this.ChatStore.setChatSendRealPrey()
-  }
-
-  componentDidMount() {
-  }
-
   onPress = (chatRoomKey,preyID,nickname,age) => {
     Actions.HelloChatRoom({ title: nickname + '，' + age, chatRoomKey: chatRoomKey, preyID: preyID })
 
@@ -34,6 +29,7 @@ export default class SendChatTab extends Component {
   render() {
     return(
       <View style={styles.view}>
+        { this.ChatStore.chatSendLoading ? <BaconActivityIndicator/> :
         <FlatList
           removeClippedSubviews
           data={ this.ChatStore.chatSendPrey }
@@ -58,6 +54,7 @@ export default class SendChatTab extends Component {
             </Observer>
            }
         />
+          }
       </View>
     )
   }
