@@ -6,9 +6,11 @@ import { toJS } from 'mobx'
 import { Actions } from 'react-native-router-flux'
 
 import ChatList from '../../../../../views/ChatList/ChatList'
+import BaconActivityIndicator from '../../../../../views/BaconActivityIndicator'
 
 const styles = {
   view: {
+    flex: 1,
     marginTop: 10
   }
 }
@@ -21,18 +23,6 @@ export default class MatchChatTab extends Component {
     this.ChatStore = this.props.ChatStore
   }
 
-  componentWillMount() {
-    //console.warn('開始了A')
-    //this.ChatStore.setChatMatchRealPrey()
-  }
-
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-    //console.warn('解除了A')
-  }
-
   onPress = (chatRoomKey,preyID,nickname,age) => {
     Actions.MatchChatRoom({title: nickname + '，' + age,chatRoomKey: chatRoomKey,preyID: preyID})
   }
@@ -40,11 +30,11 @@ export default class MatchChatTab extends Component {
   render() {
     return(
       <View style={styles.view}>
+        { this.ChatStore.chatMatchLoading ? <BaconActivityIndicator/> :
         <FlatList
           removeClippedSubviews
           data={ this.ChatStore.chatMatchPrey }
           numColumns={1}
-          //extraData={toJS(this.ChatStore.chatMatchPrey)}
           renderItem={({item}) =>
             <Observer>{
               () =>
@@ -65,6 +55,7 @@ export default class MatchChatTab extends Component {
             </Observer>
           }
         />
+        }
       </View>
     )
   }
