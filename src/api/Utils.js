@@ -1,6 +1,7 @@
 import Moment from "moment"
 import geolib from "geolib"
 
+/*
 export function getAge(birthday) {
   if (!birthday) {
     return -1;
@@ -8,6 +9,7 @@ export function getAge(birthday) {
   const age = Moment().diff(birthday, 'years');
   return age;
 }
+*/
 
 export function translateChatStatus(status) {
   switch (status) {
@@ -64,7 +66,7 @@ export function presenceMonitor(user, fb) {
     });
 }
 
-export function getDistance(latitude_A,longitude_A,latitude_B,longitude_B) {
+export function calculateDistance(latitude_A,longitude_A,latitude_B,longitude_B) {
   if (latitude_B && longitude_B && latitude_A && longitude_A) {
       const distance = (geolib.getDistance(
         {latitude: latitude_B, longitude: longitude_B},
@@ -127,3 +129,34 @@ export function getKeyByValue(object, value) {
 export function showError(err) {
   console.log(err)
 }
+
+export function hobbiesToFlatList(hobbies) {
+    return Object.keys(hobbies).map((key, index) => ({ key, check: hobbies[key] }))
+// { 打球: true } -> [{key: 打球, check: true}]
+}
+
+export function languagesToString(languages) {
+  return Object.keys(languages).filter(key => languages[key] !== 0).map( key => key + masterLevel(languages[key]) ).join('，')
+}
+
+export function masterLevel(check) {
+    switch(check) {
+        case 0:
+            return ''
+            break;
+        case 1:
+            return '(一般)'
+            break;
+        case 2:
+            return '(普通)'
+            break;
+        case 3:
+            return '(精通)'
+            break;
+        case true: // 相容性
+            return '(一般)'
+            break;        
+        default:
+            return ''
+    }     
+  }

@@ -344,6 +344,8 @@ export default class SessionCheckScene extends Component {
   setLocation = (latitude,longitude) => {
     this.SubjectStore.setLatitude(latitude)
     this.SubjectStore.setLongitude(longitude)
+    this.MeetCuteStore.setLatitude(latitude)
+    this.MeetCuteStore.setLongitude(longitude)
   }
 
   // removeListener

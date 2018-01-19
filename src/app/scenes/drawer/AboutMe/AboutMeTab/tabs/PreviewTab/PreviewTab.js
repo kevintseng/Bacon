@@ -27,6 +27,8 @@ export default class PreviewTab extends Component {
           age={ this.SubjectStore.age }
           address={ this.SubjectStore.address }
           langs={ this.SubjectStore.languagesToString }
+          hobbies={ this.SubjectStore.hobbiesToFlatList }
+          additionHeight={50}
         />
       </View>
     )
