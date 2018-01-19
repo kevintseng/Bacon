@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux'
 import ImagePicker from "react-native-image-picker"
 import ImageResizer from "react-native-image-resizer"
 
-import BaconChatRoom from '../../../../views/BaconChatRoom/BaconChatRoom'
+import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
 
 const options = {
   title: "傳送照片",
@@ -217,7 +217,7 @@ export default class VisitorChatRoomScene extends Component {
   }
 
   onPressAvatar = () => {
-    alert('預覽')
+    Actions.ChatRoomPreview()
   }
 
   removeMessagesAndImagesListener = () => {
