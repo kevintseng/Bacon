@@ -139,7 +139,7 @@ export default class InitChatRoomScene extends Component {
   }
 
   onPressAvatar = () => {
-    Actions.ChatRoomPreview()
+    Actions.ChatRoomPreview({uid: this.props.preyID})
   }
 
   onSendMessage(messages = []) {

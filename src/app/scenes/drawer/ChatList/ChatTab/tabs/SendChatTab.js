@@ -22,6 +22,7 @@ export default class SendChatTab extends Component {
   }
 
   onPress = (chatRoomKey,preyID,nickname,age) => {
+    this.ChatStore.setChatRoomKey(chatRoomKey,preyID)
     Actions.HelloChatRoom({ title: nickname + '，' + age, chatRoomKey: chatRoomKey, preyID: preyID })
 
   }

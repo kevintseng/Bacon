@@ -251,7 +251,7 @@ export default class MatchChatRoomScene extends Component {
   }
 
   onPressAvatar = () => {
-    Actions.ChatRoomPreview()
+    Actions.ChatRoomPreview({uid: this.props.preyID})
   }
 
   removeMessagesAndImagesListener = () => {

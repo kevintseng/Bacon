@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { View, Image, ActivityIndicator, Dimensions, BackHandler, ToastAndroid, TouchableOpacity, InteractionManager } from 'react-native'
+import { View, Image, Dimensions, BackHandler, ToastAndroid, TouchableOpacity, InteractionManager } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { observer, inject } from 'mobx-react'
 import BaconCard from 'react-native-bacon-card'
 
 import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
+import { sortedAlbum, calculateAge, calculateDistance, languagesToString, hobbiesToFlatList } from '../../../../../api/Utils'
 
 const { width, height } = Dimensions.get('window')
 
@@ -21,29 +22,21 @@ const styles = {
   }
 }
 
-@inject('firebase','SubjectStore','FateStore','ControlStore','MeetChanceStore','ChatStore') @observer
+@inject('firebase','SubjectStore','ChatStore') @observer
 export default class ChatCourtScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
+    this.SubjectStore = this.props.SubjectStore
+    this.ChatStore = this.props.ChatStore
     this.state = {
-      //collection: this.props.collection,
       loading: true
     }
-    //this.ChatStore = this.props.ChatStore
-    //this.title = this.props.title
-    //this.collection = this.props.collection
-    //this.Store = this.props.Store // MeetChanceStore FateStore
-    //this.SubjectStore = this.props.SubjectStore
-    //this.FateStore = this.props.FateStore
-    //this.ControlStore = this.props.ControlStore
-    //this.MeetChanceStore = this.props.MeetChanceStore
   }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    //this.ChatStore.startLoading()
     this.setState({
       loading: true
     })
@@ -54,8 +47,22 @@ export default class ChatCourtScene extends Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
+    InteractionManager.runAfterInteractions(this.fetchData)
+  }
+
+  fetchData = () => {
+    this.firebase.database().ref('users/' + this.props.uid).once('value',snap => {
+      const albumObject = sortedAlbum(snap.val().album || new Object,snap.val().avatar)
+      const album = Object.keys(albumObject).map(key => albumObject[key] )  
       this.setState({
+        nickname: snap.val().nickname,
+        bio: snap.val().bio,
+        album: album,
+        age: calculateAge(snap.val().birthday),
+        distance: calculateDistance(snap.val().latitude,snap.val().longitude,this.SubjectStore.latitude,this.SubjectStore.longitude),
+        address: snap.val().address,
+        langs: languagesToString(snap.val().languages || new Object),
+        hobbies: hobbiesToFlatList(snap.val().hobbies || new Object),
         loading: false
       })
     })
@@ -66,12 +73,31 @@ export default class ChatCourtScene extends Component {
     return true
   }
 
+  onPressRight = () => {
+    const chatRoomKey = this.SubjectStore.uid > this.props.uid ? this.SubjectStore.uid + this.props.uid : this.props.uid + this.SubjectStore.uid
+    const title = this.state.nickname + '，' + this.state.age
+    this.ChatStore.setChatRoomKey(chatRoomKey,this.props.uid)
+    Actions.InitChatRoom({title: title, Title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid})
+  }
+
   render() {
     return(
       <View style={styles.view}> 
       { this.state.loading ? <BaconActivityIndicator/> :
         <View style={styles.view}>
-          <BaconCard/>
+          <BaconCard
+            album={ this.state.album }
+            displayName={ this.state.nickname }
+            age={ this.state.age }
+            bio={ this.state.bio }
+            distance={ this.state.distance }
+            address={  this.state.address }
+            langs={ this.state.langs }
+            hobbies={ this.state.hobbies }
+            showDistance
+            showBlockade
+            showReport
+          />
           <View style={styles.tool}>
             <TouchableOpacity onPress={ this.onPressLeft }>
               <Image source={require('../../../../../images/btn_qy_fav_0.png')} />
@@ -86,25 +112,3 @@ export default class ChatCourtScene extends Component {
     )
   }
 }
-
-/*
-     { this.state.loading ? <BaconActivityIndicator/> :
-        <View style={styles.view}>
-          <BaconCard
-            bio={ 'aaaaa' }
-            age={ 20 }
-            langs={ '中文' }
-            distance={ 30 }
-            address={ '新北市板橋區自強里' }
-          />
-          <View style={styles.tool}>
-            <TouchableOpacity onPress={ this.onPressLeft }>
-              <Image source={require('../../../../../images/btn_qy_fav_0.png')} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={ this.onPressRight }>
-              <Image source={require('../../../../../images/btn_qy_chat.png')}/>
-            </TouchableOpacity>
-          </View>
-        </View>
-      }
-*/

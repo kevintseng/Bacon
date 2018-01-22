@@ -10,7 +10,7 @@ import ProfileBadgeWallContainer from './containers/ProfileBadgeWallContainer'
 import IntroInjection from '../../../AboutMeEdit/injections/IntroInjection/IntroInjection'
 import CityInjection from '../../../AboutMeEdit/injections/CityInjection/CityInjection'
 import BioInjection from '../../../AboutMeEdit/injections/BioInjection/BioInjection'
-import LangsContainer from '../../../AboutMeEdit/injections/LangInjection/LangInjection'
+import LangsInjection from '../../../AboutMeEdit/injections/LangInjection/LangInjection'
 import HobbyInjection from '../../../AboutMeEdit/injections/HobbyInjection/HobbyInjection'
 
 const styles = {
@@ -37,7 +37,7 @@ export default class ProfileTab extends Component {
   }
 
   goToEditBio = () => {
-    Actions.AboutMeEdit({title: '自我介紹',content: <BioContainer/>})
+    Actions.AboutMeEdit({title: '自我介紹',content: <BioInjection/>})
   }
 
   goToEditLangs = () => {
@@ -45,7 +45,7 @@ export default class ProfileTab extends Component {
   }
 
   goToEditInterests = () => {
-    Actions.AboutMeEdit({title: '興趣愛好', content: <HobitInjection/>})
+    Actions.AboutMeEdit({title: '興趣愛好', content: <HobbyInjection/>})
   }
 
   goToMemberUpgrade = () => {
