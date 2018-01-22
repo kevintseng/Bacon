@@ -227,7 +227,7 @@ export default class HelloChatRoomScene extends Component {
   }
 
   onPressAvatar = () => {
-    Actions.ChatRoomPreview()
+    Actions.ChatRoomPreview({uid: this.props.preyID})
   }
 
   removeMessagesAndImagesListener = () => {

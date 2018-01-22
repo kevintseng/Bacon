@@ -22,6 +22,7 @@ export default class VisitorsChatTab extends Component {
   }
 
   onPress = (chatRoomKey,preyID,nickname,age) => {
+    this.ChatStore.setChatRoomKey(chatRoomKey,preyID)
     Actions.VisitorChatRoom({ title: nickname + '，' + age, chatRoomKey: chatRoomKey, preyID: preyID })
   }
 

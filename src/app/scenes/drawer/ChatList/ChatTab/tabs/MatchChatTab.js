@@ -24,6 +24,7 @@ export default class MatchChatTab extends Component {
   }
 
   onPress = (chatRoomKey,preyID,nickname,age) => {
+    this.ChatStore.setChatRoomKey(chatRoomKey,preyID)
     Actions.MatchChatRoom({title: nickname + '，' + age,chatRoomKey: chatRoomKey,preyID: preyID})
   }
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
+import { inject } from 'mobx-react'
 import { Router, Scene, Actions } from 'react-native-router-flux'
 
 // ###############authenticate################ //
@@ -91,7 +92,12 @@ const styles = {
   },
 }
 
+@inject('ChatStore')
 export default class Routes extends Component {
+
+  constructor(props) {
+    super(props)
+  }
 
   getSceneStyle(props, computedProps) {
     const style = {
@@ -139,7 +145,7 @@ export default class Routes extends Component {
   }
 
   goToPreview = () => {
-    Actions.ChatRoomPreview()
+    Actions.ChatRoomPreview({uid: this.props.ChatStore.preyID })
   }
 
   baconMenu = () => <View style={styles.baconMenu}><BaconMenu /></View>
@@ -231,7 +237,7 @@ export default class Routes extends Component {
               <Scene key="VisitorChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={VisitorChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="HelloChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={HelloChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="MatchChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={MatchChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
-              <Scene key="ChatRoomPreview" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={ChatRoomPreviewScene} />
+              <Scene key="ChatRoomPreview" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="預覽" renderBackButton={this.baconArrow} component={ChatRoomPreviewScene} />
               <Scene key="ChatCourt" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="ChatCourtScene" renderBackButton={this.baconArrow} component={ChatCourtScene} />
 
               
