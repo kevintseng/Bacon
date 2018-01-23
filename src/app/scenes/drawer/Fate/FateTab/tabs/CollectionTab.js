@@ -13,7 +13,8 @@ import BaconActivityIndicator from '../../../../../views/BaconActivityIndicator'
 
 const styles = {
   view: {
-    //marginTop: 10
+    marginTop: 10,
+    flex: 1
   },
   child: {
     backgroundColor: 'transparent',
@@ -47,31 +48,12 @@ export default class CollectionContainer extends Component {
   }
 
   componentWillMount() {
-    //this.FateStore.setCollectionFakePreys()
   }
 
-  componentDidMount = async () => {
-    //await this.sleep(260)
-    //this.FateStore.setCollectionRealPreys()
-  }
-
-/*
-  onPress = async uid => {
-    await this.FateStore.setCourtInitialize(uid)
-    //await this.sleep(200)
-    await localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
-      if (ids.includes(uid)) {
-        Actions.ChatCourt({ Store: this.FateStore, title: '緣分', collection: true })
-      } else {
-        Actions.ChatCourt({ Store: this.FateStore, title: '緣分', collection: false })
-      }
-    }).catch(err => console.log(err)) 
-  }
-*/
 
   onPress = uid => (
     () => {
-      Actions.ChatCourt({ 
+      Actions.ChatCard({ 
         uid: uid, title: '緣分'
       })
     }
@@ -82,17 +64,17 @@ export default class CollectionContainer extends Component {
     alert('轉到收藏')
   }
 
-  _collections = () => {
-    return this.collections || this.FateStore.collectionPreysToFlatList
-  }
+  //getCollectNumber = () => {
+  //  return this.FateStore.collectionPreysToFlatList.length
+  //}
 
   header = () => (
     <View style={ styles.headView }>
       <View style={ styles.count }>
         <Text>目前收藏數</Text>
-        <Text>{ this._collections().length }</Text>
+        <Text>{ this.FateStore.collectionPreysToFlatList.length }</Text>
         <Text>/</Text>
-        <Text>{ this.SubjectStore.maxCollect }</Text>
+        <Text>{ this.SubjectStore.maxCollectNumber }</Text>
       </View>
       <BaconBadgeYes
         text='提高我的收藏上限'

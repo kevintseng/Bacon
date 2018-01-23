@@ -6,6 +6,7 @@ import BaconCard from 'react-native-bacon-card'
 
 import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
 import { sortedAlbum, calculateAge, calculateDistance, languagesToString, hobbiesToFlatList } from '../../../../../api/Utils'
+import localdb from '../../../../../configs/localdb'
 
 const { width, height } = Dimensions.get('window')
 
@@ -31,7 +32,8 @@ export default class ChatCardScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.ChatStore = this.props.ChatStore
     this.state = {
-      loading: true
+      loading: true,
+      //collection: false
     }
   }
 
@@ -44,26 +46,48 @@ export default class ChatCardScene extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
+    if (this.state.collection === true) {
+      // 收集此人 加入local db
+      localdb.save({
+        key: 'collection' + this.SubjectStore.uid,
+        id: this.props.uid,
+        data: {
+          time: Date.now(),
+        },
+        expires: null,
+      })
+    } else {
+      // 將此人移出local db
+      localdb.remove({
+        key: 'collection' + this.SubjectStore.uid,
+        id: this.props.uid
+      })
+    }
   }
+
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(this.fetchData)
   }
 
   fetchData = () => {
-    this.firebase.database().ref('users/' + this.props.uid).once('value',snap => {
-      const albumObject = sortedAlbum(snap.val().album || new Object,snap.val().avatar)
-      const album = Object.keys(albumObject).map(key => albumObject[key] )  
-      this.setState({
-        nickname: snap.val().nickname,
-        bio: snap.val().bio,
-        album: album,
-        age: calculateAge(snap.val().birthday),
-        distance: calculateDistance(snap.val().latitude,snap.val().longitude,this.SubjectStore.latitude,this.SubjectStore.longitude),
-        address: snap.val().address,
-        langs: languagesToString(snap.val().languages || new Object),
-        hobbies: hobbiesToFlatList(snap.val().hobbies || new Object),
-        loading: false
+    // TODO: 改成Promise All
+    localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
+      this.firebase.database().ref('users/' + this.props.uid).once('value',snap => {
+        const albumObject = sortedAlbum(snap.val().album || new Object,snap.val().avatar)
+        const album = Object.keys(albumObject).map(key => albumObject[key] )  
+        this.setState({
+          nickname: snap.val().nickname,
+          bio: snap.val().bio,
+          album: album,
+          age: calculateAge(snap.val().birthday),
+          distance: calculateDistance(snap.val().latitude,snap.val().longitude,this.SubjectStore.latitude,this.SubjectStore.longitude),
+          address: snap.val().address,
+          langs: languagesToString(snap.val().languages || new Object),
+          hobbies: hobbiesToFlatList(snap.val().hobbies || new Object),
+          collection: ids.includes(this.props.uid) ? true : false,
+          loading: false
+        })
       })
     })
   }
@@ -78,6 +102,18 @@ export default class ChatCardScene extends Component {
     const title = this.state.nickname + '，' + this.state.age
     this.ChatStore.setChatRoomKey(chatRoomKey,this.props.uid)
     Actions.InitChatRoom({title: title, Title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid})
+  }
+
+  onPressLeft = () => {
+    localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
+      if ((ids.length >= this.SubjectStore.maxCollectNumber) && !ids.includes(this.props.uid)) {
+        alert('已到達您的收藏上限')
+      } else {
+        this.setState({
+          collection: !this.state.collection,
+        })
+      }
+    }).catch(err => console.log(err))
   }
 
   onPressReport = () => {
@@ -110,7 +146,7 @@ export default class ChatCardScene extends Component {
           />
           <View style={styles.tool}>
             <TouchableOpacity onPress={ this.onPressLeft }>
-              <Image source={require('../../../../../images/btn_qy_fav_0.png')} />
+              <Image source={this.state.collection ? require('../../../../../images/btn_qy_fav_1.png') : require('../../../../../images/btn_qy_fav_0.png')} />
             </TouchableOpacity>
             <TouchableOpacity onPress={ this.onPressRight }>
               <Image source={require('../../../../../images/btn_qy_chat.png')}/>

@@ -11,7 +11,8 @@ import MateTab from './tabs/MateTab'
 import CollectionTab from './tabs/CollectionTab'
 
 import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
-
+import localdb from '../../../../../configs/localdb'
+ 
 const styles = {
   view: {
     flex: 1
@@ -153,7 +154,32 @@ export default class FateTabScene extends Component {
   }
 
   fetchtCollections = () => {
-    this.FateStore.setCollectionPreys(new Array)
+    let collections = new Array
+    localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(collectionPreylist => {
+      const collectionPromises = collectionPreylist.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
+      // 等待全部抓完
+      Promise.all(collectionPromises)
+      .then(data => {  
+        localdb.getAllDataForKey('collection' + this.SubjectStore.uid).then(localdata => {
+          collections = data.map((snap,index) => {
+            return {
+              key: snap.key,
+              time: localdata[index].time,
+              nickname: snap.val().nickname,
+              avatar: snap.val().avatar,
+              birthday: snap.val().birthday     
+            }
+          })
+          this.FateStore.setCollectionPreys(collections)
+        })
+      })
+      .catch(err => {
+        //alert(err)
+      })
+
+    }).catch(err => console.log(err))
+
+    //this.FateStore.setCollectionPreys(new Array)
   }
 
   render() {
