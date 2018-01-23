@@ -89,7 +89,7 @@ const Album = ({source, photos, photoOnPress, footerOnPress, visible, onPressLef
         renderItem={({item}) => {
           if (item.avatar) {
             return(
-            <TouchableOpacity onPress={ () => { photoOnPress(item.key) } } onLongPress={ photoOnLongPress } >
+            <View>
               <SquareImage 
                 style={styles.pic} 
                 customImagePlaceholderDefaultStyle={styles.pic} 
@@ -102,10 +102,9 @@ const Album = ({source, photos, photoOnPress, footerOnPress, visible, onPressLef
                 style={styles.avator} 
                 source={require('./img/ico_aboutme_profilepic.png')}
               />
-            </TouchableOpacity>)
+            </View>)
           } else {
             return(
-            <TouchableOpacity onPress={ () => { photoOnPress(item.key) } } onLongPress={ photoOnLongPress } >
               <SquareImage 
                 style={styles.pic} 
                 customImagePlaceholderDefaultStyle={styles.pic} 
@@ -114,7 +113,7 @@ const Album = ({source, photos, photoOnPress, footerOnPress, visible, onPressLef
                 placeholderSource={require('../../../images/ico_qy_head_preload.png')}
                 onPress={() => { photoOnPress(item.key)}}
               />
-            </TouchableOpacity>)
+          )
           }
         }} 
       />

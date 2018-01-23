@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { View, Dimensions, BackHandler, ToastAndroid, TouchableOpacity, InteractionManager } from 'react-native'
 import { observer, inject } from 'mobx-react'
 import BaconCard from 'react-native-bacon-card'
-import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
-import { sortedAlbum, calculateAge, calculateDistance, languagesToString, hobbiesToFlatList } from '../../../../api/Utils'
+import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
+import { sortedAlbum, calculateAge, calculateDistance, languagesToString, hobbiesToFlatList } from '../../../../../api/Utils'
 
 const styles = {
   view: {
@@ -12,7 +12,7 @@ const styles = {
 }
 
 @inject('firebase','SubjectStore') @observer
-export default class ChatRoomPreviewScene extends Component {
+export default class PreviewCardScene extends Component {
 
   constructor(props) {
     super(props)
@@ -61,6 +61,14 @@ export default class ChatRoomPreviewScene extends Component {
     })
   }
 
+  onPressReport = () => {
+    alert('已通知官方檢舉訊息')
+  }
+
+  onPrssBlockade = () => {
+    alert('已封鎖此人')
+  }
+
   render() {
     return(
       <View style={styles.view}> 
@@ -77,6 +85,8 @@ export default class ChatRoomPreviewScene extends Component {
             showDistance
             showBlockade
             showReport
+            onPressReport={ this.onPressReport }
+            onPrssBlockade={ this.onPrssBlockade }
           />
       }    
       </View>

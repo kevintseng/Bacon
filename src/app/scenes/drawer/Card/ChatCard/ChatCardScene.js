@@ -23,7 +23,7 @@ const styles = {
 }
 
 @inject('firebase','SubjectStore','ChatStore') @observer
-export default class ChatCourtScene extends Component {
+export default class ChatCardScene extends Component {
 
   constructor(props) {
     super(props)
@@ -80,6 +80,14 @@ export default class ChatCourtScene extends Component {
     Actions.InitChatRoom({title: title, Title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid})
   }
 
+  onPressReport = () => {
+    alert('已通知官方檢舉訊息')
+  }
+
+  onPrssBlockade = () => {
+    alert('已封鎖此人')
+  }
+
   render() {
     return(
       <View style={styles.view}> 
@@ -97,6 +105,8 @@ export default class ChatCourtScene extends Component {
             showDistance
             showBlockade
             showReport
+            onPressReport={ this.onPressReport }
+            onPrssBlockade={ this.onPrssBlockade }
           />
           <View style={styles.tool}>
             <TouchableOpacity onPress={ this.onPressLeft }>

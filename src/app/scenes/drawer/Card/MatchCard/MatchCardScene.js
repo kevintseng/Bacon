@@ -20,7 +20,7 @@ const styles = {
 }
 
 @inject('firebase','SubjectStore','FateStore','ControlStore') @observer
-export default class MatchCourtScene extends Component {
+export default class MatchCardScene extends Component {
 
   constructor(props) {
     super(props)
