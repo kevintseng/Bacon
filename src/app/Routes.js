@@ -49,6 +49,7 @@ import SettingIndexScene from './scenes/drawer/Setting/SettingIndex/SettingIndex
 import SettingEditScene from './scenes/drawer/Setting/SettingEdit/SettingEditScene'
 // card
 import ChatCardScene from './scenes/drawer/Card/ChatCard/ChatCardScene'
+import MatchCardScene from './scenes/drawer/Card/MatchCard/MatchCardScene'
 import PreviewCardScene from './scenes/drawer/Card/PreviewCard/PreviewCardScene'
 
 // ###############header components################ //
@@ -240,6 +241,7 @@ export default class Routes extends Component {
 
               <Scene key="PreviewCard" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="預覽" renderBackButton={this.baconArrow} component={PreviewCardScene} />
               <Scene key="ChatCard" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="ChatCardScene" renderBackButton={this.baconArrow} component={ChatCardScene} />
+              <Scene key="MatchCard" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="MatchCardScene" renderBackButton={this.baconArrow} component={MatchCardScene} />
 
               
             </Scene>
