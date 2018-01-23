@@ -23,7 +23,7 @@ const styles = {
   }
 }
 
-@inject('firebase','SubjectStore','ChatStore') @observer
+@inject('firebase','SubjectStore','ChatStore','FateStore') @observer
 export default class ChatCardScene extends Component {
 
   constructor(props) {
@@ -31,9 +31,9 @@ export default class ChatCardScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.ChatStore = this.props.ChatStore
+    this.FateStore = this.props.FateStore
     this.state = {
-      loading: true,
-      //collection: false
+      loading: true
     }
   }
 
@@ -62,6 +62,10 @@ export default class ChatCardScene extends Component {
         key: 'collection' + this.SubjectStore.uid,
         id: this.props.uid
       })
+      if (this.props.refreshCollect) {
+        // 將此人移出收藏清單
+        this.FateStore.removeCollectionPrey(this.props.uid)
+      }
     }
   }
 
