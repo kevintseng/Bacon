@@ -56,7 +56,7 @@ const styles = {
   }
 }
 
-const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, visible, onPressLeftButton, onPressMiddleButton, onPressRightButton}) => {
+const Album = ({source, photos, photoOnPress, footerOnPress, visible, onPressLeftButton, onPressMiddleButton, onPressRightButton}) => {
   return(
     <View style={styles.view}>
       <Modal animationType={"fade"} onRequestClose={ onPressLeftButton } visible={ visible } transparent={false}>
@@ -96,6 +96,7 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, v
                 loadingStyle={ styles.loadingStyle } 
                 source={{uri: item.uri}} 
                 placeholderSource={require('../../../images/ico_qy_head_preload.png')}
+                onPress={() => { photoOnPress(item.key)}}
               />
               <Image 
                 style={styles.avator} 
@@ -111,6 +112,7 @@ const Album = ({source, photos, photoOnPress, photoOnLongPress, footerOnPress, v
                 loadingStyle={ styles.loadingStyle } 
                 source={{uri: item.uri}} 
                 placeholderSource={require('../../../images/ico_qy_head_preload.png')}
+                onPress={() => { photoOnPress(item.key)}}
               />
             </TouchableOpacity>)
           }
