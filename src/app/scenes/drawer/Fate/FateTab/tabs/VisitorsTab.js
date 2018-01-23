@@ -35,7 +35,7 @@ export default class VisitorsTab extends Component {
 
   onPress = uid => (
     () => {
-      Actions.ChatCourt({ 
+      Actions.ChatCard({ 
         uid: uid, title: '緣分'
       })
     }

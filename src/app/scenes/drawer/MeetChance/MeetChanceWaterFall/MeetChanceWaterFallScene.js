@@ -87,7 +87,7 @@ export default class MeetChanceWaterFallScene extends Component {
   onPress = uid => (
     () => {
       this.updateVistorHistory(uid)
-      Actions.ChatCourt({ 
+      Actions.ChatCard({ 
         uid: uid, title: '巧遇'
       })
     }

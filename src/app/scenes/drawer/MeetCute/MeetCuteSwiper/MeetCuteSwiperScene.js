@@ -50,7 +50,16 @@ export default class MeetCuteSwiperScene extends Component {
   }
 
   onPressRight = () => {
+    this.updateGoodImpression()
     this.swiper.swipeRight()
+  }
+
+  onPressReport = () => {
+    alert('已通知官方檢舉訊息')
+  }
+
+  onPrssBlockade = () => {
+    alert('已封鎖此人')
   }
 
   updateGoodImpression = () => {
@@ -80,6 +89,8 @@ export default class MeetCuteSwiperScene extends Component {
                 showDistance
                 showBlockade
                 showReport
+                onPressReport={ this.onPressReport }
+                onPrssBlockade={ this.onPrssBlockade }
               />
               )
             }}
