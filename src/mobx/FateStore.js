@@ -84,6 +84,10 @@ export default class FateStore {
      this.collectionPreys = preys
      this.collectionLoading = false
   }
+
+  @action removeCollectionPrey = id => {
+    this.collectionPreys.splice(this.collectionPreys.findIndex(ele => ele.key === id), 1)
+  }
 }
 
 

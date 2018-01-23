@@ -54,7 +54,9 @@ export default class CollectionContainer extends Component {
   onPress = uid => (
     () => {
       Actions.ChatCard({ 
-        uid: uid, title: '緣分'
+        uid: uid, 
+        title: '緣分',
+        refreshCollect: true
       })
     }
   )
