@@ -60,7 +60,7 @@ export default class SubjectStore {
     return calculateAge(this.birthday)
   }
 
-  @computed get maxCollect() {
+  @computed get maxCollectNumber() {
     return this.vip ? 10 : 5
   }
 
