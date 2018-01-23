@@ -82,13 +82,13 @@ export default class MeetCuteStore {
   }
 
   fetchPreys = (preySexualOrientation) => {
-    // TODO: 隨機
-    // TODO: 看過紀錄
-    // TODO: 年紀限制
-    // TODO: 三張照片限制
-    // TODO: 隱藏
-    this.firebase.database().ref('meetCuteList/' + preySexualOrientation).limitToLast(maxPreysLimit).once('value',snap => {
+    const randomIndex = Math.floor(Math.random() * maxPreysLimit) // TODO: 隨機
+    // TODO: 三張照片限制 > 3
+    // TODO: 隱藏 > 0
+    this.firebase.database().ref('meetCuteList/' + preySexualOrientation).limitToFirst(randomIndex).once('value',snap => {
       if (snap.val()) {
+        // TODO: 看過紀錄
+        // TODO: 年紀限制 startAt() endAt()
         const preysPromise = Object.keys(snap.val()).map(uid => this.firebase.database().ref('users/' + uid).once('value'))   
         Promise.all(preysPromise)
         .then(this.setPreys)
