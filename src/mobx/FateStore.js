@@ -26,7 +26,7 @@ export default class FateStore {
   }
 
   @computed get goodImpressionPreysToFlatList() {
-    return toJS(this.collectionPreys)
+    return toJS(this.goodImpressionPreys)
   }
 
   @computed get matchPreysToFlatList() {

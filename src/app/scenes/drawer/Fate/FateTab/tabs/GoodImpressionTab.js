@@ -33,7 +33,7 @@ export default class GoodImpressionContainer extends Component {
 
   onPress = uid => (
     () => {
-      Actions.FateCourt({ 
+      Actions.MatchCard({ 
         uid: uid, title: '緣分'
       })
     }

@@ -63,7 +63,7 @@ export default class MeetCuteSwiperScene extends Component {
   }
 
   updateGoodImpression = () => {
-    this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.SubjectStore.meetCutePreys[this.cardIndex].key).set({wooner: this.SubjectStore.uid, prey: this.SubjectStore.meetCutePreys[this.cardIndex].key, time: Date.now()})    
+    this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.MeetCuteStore.preys[this.cardIndex].key).set({wooner: this.SubjectStore.uid, prey: this.MeetCuteStore.preys[this.cardIndex].key, time: Date.now()})    
   }
 
   render() {
