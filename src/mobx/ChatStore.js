@@ -16,6 +16,8 @@ export default class ChatStore {
   @observable chatMatchModal
   @observable chatModal
 
+  @observable goToChatTab
+
   constructor(firebase) {
     this.firebase = firebase
     this.initialize()
@@ -40,8 +42,13 @@ export default class ChatStore {
     this.MessagesAndImages = new Array
     this.nickname = null
     this.from = null
-    this.chatMatchModal = true
-    this.chatModal = true
+    this.goToChatTab = false
+    //this.chatMatchModal = true
+    //this.chatModal = true
+  }
+
+  @action setGoToChatTab = boolean => {
+    this.goToChatTab = boolean
   }
 
   @action startChatSendLoading = () => {
@@ -402,12 +409,12 @@ export default class ChatStore {
     this.chatVistorPrey = this.chatVistorPrey.filter(ele => ele.key !== chatRoomKey)
   }
 
-  @action cleanChatModal = () => {
-    this.chatModal = true
-  }
+  //@action cleanChatModal = () => {
+  //  this.chatModal = true
+  //}
 
-  @action openChatModal = () => {
-    this.chatModal = false
-  }
+  //@action openChatModal = () => {
+  //  this.chatModal = false
+  //}
 
 }

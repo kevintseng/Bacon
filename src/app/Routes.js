@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
-import { inject } from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 import { Router, Scene, Actions } from 'react-native-router-flux'
 
 // ###############authenticate################ //
@@ -93,11 +93,12 @@ const styles = {
   },
 }
 
-@inject('ChatStore')
+@inject('ChatStore') @observer
 export default class Routes extends Component {
 
   constructor(props) {
     super(props)
+    this.ChatStore = this.props.ChatStore
   }
 
   getSceneStyle(props, computedProps) {
@@ -115,6 +116,10 @@ export default class Routes extends Component {
 
   goback = () => {
     Actions.pop()
+  }
+
+  goToChatTab = () => {
+    Actions.ChatTab({type: 'reset'})
   }
 
   goToWelcome = () => {
@@ -146,7 +151,7 @@ export default class Routes extends Component {
   }
 
   goToPreview = () => {
-    Actions.PreviewCard({uid: this.props.ChatStore.preyID })
+    Actions.PreviewCard({uid: this.ChatStore.preyID })
   }
 
   baconMenu = () => <View style={styles.baconMenu}><BaconMenu /></View>
@@ -233,7 +238,7 @@ export default class Routes extends Component {
               <Scene key="InitChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={InitChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="VisitorChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={VisitorChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
               <Scene key="HelloChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={HelloChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
-              <Scene key="MatchChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={MatchChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
+              <Scene key="MatchChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.ChatStore.goToChatTab ? this.goToChatTab : this.baconArrow} component={MatchChatRoomScene} renderRightButton={this.baconToolChatRoom}/>
 
               <Scene key="PreviewCard" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="預覽" renderBackButton={this.baconArrow} component={PreviewCardScene} />
               <Scene key="ChatCard" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="ChatCardScene" renderBackButton={this.baconArrow} component={ChatCardScene} />

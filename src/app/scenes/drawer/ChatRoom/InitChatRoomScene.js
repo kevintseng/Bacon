@@ -6,6 +6,7 @@ import ImagePicker from "react-native-image-picker"
 import ImageResizer from "react-native-image-resizer"
 
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
+import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
 
 const options = {
   title: "傳送照片",
@@ -22,6 +23,12 @@ const options = {
 
 const metadata = {
   contentType: 'image/jpeg'
+}
+
+const styles = {
+  view: {
+    flex: 1
+  }
 }
 
 @inject('firebase','SubjectStore') @observer
@@ -43,6 +50,9 @@ export default class InitChatRoomScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+    this.setState({
+      loading: true
+    })
     this.chatRoomQuery = this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested')
     this.chatRoomQuery.on('value', child => {
       this.interested = child.val()
@@ -76,8 +86,14 @@ export default class InitChatRoomScene extends Component {
           })
         }
       } else {
-        this.setState({loading: false})
+        //
       }
+    })
+  }
+
+  componentDidMount() {
+    this.setState({
+      loading: false
     })
   }
 
@@ -205,21 +221,8 @@ export default class InitChatRoomScene extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        { this.state.loading ?
-        <View style={{flex: 1,justifyContent: 'center'}}>
-          <ActivityIndicator
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              paddingBottom: 110
-            }}
-            size="large"
-            color='#d63768'
-          />
-        </View> :
+      <View style={styles.view}>
+        { this.state.loading ? <BaconActivityIndicator/> :
         <BaconChatRoom
           messages={[]}
           onSend={messages => this.onSendMessage(messages)}
