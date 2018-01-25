@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react'
 import BaconCard from 'react-native-bacon-card'
 
 import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
+import BaconMatch from '../../../../views/BaconMatch'
 import { sortedAlbum, calculateAge, calculateDistance, languagesToString, hobbiesToFlatList } from '../../../../../api/Utils'
 
 //import MateModalContainer from './containers/MateModalContainer'
@@ -24,22 +25,25 @@ const styles = {
   }
 }
 
-@inject('firebase','SubjectStore') @observer
+@inject('firebase','SubjectStore','ChatStore') @observer
 export default class MatchCardScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    this.ChatStore = this.props.ChatStore
     this.state = {
-      loading: true
+      loading: true,
+      visible: false
     }
   }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     this.setState({
-      loading: true
+      loading: true,
+      visible: false
     })
   }
 
@@ -83,11 +87,43 @@ export default class MatchCardScene extends Component {
   }
 
   onPressRight = () => {
-    // 跳出配對視窗
+    // 上傳goodImpression
+    this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.props.uid).set({wooner: this.SubjectStore.uid, prey: this.props.uid, time: Date.now()}) 
+    // 上傳配對聊天室資料
+    this.ChatStore.removeGoodImpressionsPrey(this.props.uid)
+    this.setState({
+      visible: true
+    })
   }
 
   onPressLeft = () => {
+    this.firebase.database().ref('goodImpressionList/' + this.props.uid + this.SubjectStore.uid).remove()
+    this.ChatStore.removeGoodImpressionsPrey(this.props.uid)
+    Actions.FateTab({type: 'reset'})
     // 沒配對
+  }
+
+  onPressReturn = () => {
+    this.setState({
+      visible: false
+    })    
+  }
+
+  onPressMatchLeft = () => {
+    this.setState({
+      visible: false
+    }) 
+    Actions.FateTab({type: 'reset'})
+  }
+
+  onPressMatchRight = () => {
+    this.setState({
+      visible: false
+    }) 
+    const chatRoomKey = this.SubjectStore.uid > this.props.uid ? this.SubjectStore.uid + this.props.uid : this.props.uid + this.SubjectStore.uid
+    const title = this.state.nickname + '，' + this.state.age
+    this.ChatStore.setChatRoomKey(chatRoomKey,this.props.uid)
+    Actions.InitChatRoom({title: title, Title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid})
   }
 
 
@@ -96,6 +132,12 @@ export default class MatchCardScene extends Component {
       <View style={styles.view}> 
       { this.state.loading ? <BaconActivityIndicator/> :
         <View style={styles.view}>
+          <BaconMatch
+            visible={this.state.visible}
+            onPressReturn={this.onPressReturn}
+            onPressRight={this.onPressMatchRight}
+            onPressLeft={this.onPressMatchLeft}
+          />
           <BaconCard
             album={ this.state.album }
             displayName={ this.state.nickname }
