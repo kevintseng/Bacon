@@ -25,7 +25,7 @@ const styles = {
   }
 }
 
-@inject('firebase','SubjectStore','ChatStore') @observer
+@inject('firebase','SubjectStore','ChatStore','FateStore') @observer
 export default class MatchCardScene extends Component {
 
   constructor(props) {
@@ -33,6 +33,7 @@ export default class MatchCardScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.ChatStore = this.props.ChatStore
+    this.FateStore = this.props.FateStore
     this.state = {
       loading: true,
       visible: false
@@ -90,7 +91,41 @@ export default class MatchCardScene extends Component {
     // 上傳goodImpression
     this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.props.uid).set({wooner: this.SubjectStore.uid, prey: this.props.uid, time: Date.now()}) 
     // 上傳配對聊天室資料
-    this.ChatStore.removeGoodImpressionsPrey(this.props.uid)
+    const chatRoomKey = this.SubjectStore.uid > this.props.uid ? this.SubjectStore.uid + this.props.uid : this.props.uid + this.SubjectStore.uid
+    this.firebase.database().ref('nonHandleChatRooms/' + chatRoomKey).remove()
+    this.firebase.database().ref('matchChatRooms/' + chatRoomKey).once('value',snap => {
+      if (snap.val()) {
+        //console.warn('已有聊天室紀錄')
+      } else {
+        this.firebase.database().ref('matchChatRooms/' + chatRoomKey).set({
+          chatRoomCreater: this.SubjectStore.uid,
+          chatRoomRecipient: this.props.uid
+        })
+      }      
+    })
+    this.firebase.database().ref('chat_rooms/' + chatRoomKey).once('value',snap => {
+      if (snap.val()) {
+        this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/interested').set(2)
+      } else {
+        this.firebase.database().ref('chat_rooms/' + chatRoomKey).set({
+          chatRoomCreater: this.SubjectStore.uid,
+          chatRoomRecipient: this.props.uid,
+          interested: 2
+        })
+      }
+    })
+
+    this.firebase.database().ref('chats/' + chatRoomKey).once('value',snap => {
+      if (snap.val()) {
+        //
+      } else {
+        this.firebase.database().ref('chats/' + chatRoomKey).set({
+          chatRoomCreater: this.SubjectStore.uid,
+        })
+      }
+    })
+
+    this.FateStore.removeGoodImpressionsPrey(this.props.uid)
     this.setState({
       visible: true
     })
@@ -98,7 +133,7 @@ export default class MatchCardScene extends Component {
 
   onPressLeft = () => {
     this.firebase.database().ref('goodImpressionList/' + this.props.uid + this.SubjectStore.uid).remove()
-    this.ChatStore.removeGoodImpressionsPrey(this.props.uid)
+    this.FateStore.removeGoodImpressionsPrey(this.props.uid)
     Actions.FateTab({type: 'reset'})
     // 沒配對
   }
@@ -123,7 +158,8 @@ export default class MatchCardScene extends Component {
     const chatRoomKey = this.SubjectStore.uid > this.props.uid ? this.SubjectStore.uid + this.props.uid : this.props.uid + this.SubjectStore.uid
     const title = this.state.nickname + '，' + this.state.age
     this.ChatStore.setChatRoomKey(chatRoomKey,this.props.uid)
-    Actions.InitChatRoom({title: title, Title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid})
+    this.ChatStore.setGoToChatTab(true)
+    Actions.MatchChatRoom({type: 'reset',title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid})
   }
 
 

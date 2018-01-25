@@ -24,7 +24,7 @@ const metadata = {
   contentType: 'image/jpeg'
 }
 
-@inject('firebase','SubjectStore','ChatStore') @observer
+@inject('firebase','SubjectStore') @observer
 export default class HelloChatRoomScene extends Component {
 
   constructor(props) {
