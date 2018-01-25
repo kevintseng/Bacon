@@ -227,11 +227,7 @@ export default class Routes extends Component {
                 <Scene key="SettingEdit" title="設定" renderBackButton={this.baconArrow} component={SettingEditScene} />
               </Scene>
 
-              <Scene key="Fate" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}>
-                <Scene key="FateTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}  title="緣分" renderLeftButton={this.baconMenu} component={FateTabScene} />
-                <Scene key="FateCourt" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="緣分" renderBackButton={this.baconArrow} component={FateCourtScene} />
-               </Scene>
-
+              <Scene key="FateTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle}  title="緣分" renderLeftButton={this.baconMenu} component={FateTabScene} />
               <Scene key="ChatTab" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderLeftButton={this.baconMenu} component={ChatTabScene} renderRightButton={this.baconToolChatTab}/>
 
               <Scene key="InitChatRoom" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="訊息" renderBackButton={this.baconArrow} component={InitChatRoomScene} renderRightButton={this.baconToolChatRoom}/>

@@ -85,6 +85,10 @@ export default class FateStore {
      this.collectionLoading = false
   }
 
+  @action removeGoodImpressionsPrey = id => {
+    this.goodImpressionPreys.splice(this.goodImpressionPreys.findIndex(ele => ele.key === id), 1)
+  }
+
   @action removeCollectionPrey = id => {
     this.collectionPreys.splice(this.collectionPreys.findIndex(ele => ele.key === id), 1)
   }

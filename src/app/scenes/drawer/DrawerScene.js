@@ -61,7 +61,7 @@ export default class DrawerScene extends Component {
   }
 
   goToFate = () => {
-    Actions.Fate({type: 'replace'})
+    Actions.FateTab({type: 'replace'})
   }
 
   //goToArticle = () => {

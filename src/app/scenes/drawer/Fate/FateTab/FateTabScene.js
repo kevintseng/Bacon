@@ -96,9 +96,16 @@ export default class FateTabScene extends Component {
 
   fetchGoodImpressions = () => {
     let goodImpressions = new Array
-    return this.firebase.database().ref('goodImpressionList').orderByChild('prey').equalTo(this.SubjectStore.uid).once('value',child => {
-      const wooner_uids = Object.keys(child.val()).map(key => child.val()[key].wooner)
-      const usersPromise = wooner_uids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
+    Promise.all([
+      this.firebase.database().ref('goodImpressionList/').orderByChild('wooner').equalTo(this.SubjectStore.uid).once('value'),
+      this.firebase.database().ref('goodImpressionList/').orderByChild('prey').equalTo(this.SubjectStore.uid).once('value')
+    ]).then(snap => {
+      const myLove = snap[0]._value || new Object
+      const loveMe = snap[1]._value || new Object
+      const prey_uids = Object.keys(myLove).map(key => myLove[key].prey)
+      const wooner_uids = Object.keys(loveMe).map(key => loveMe[key].wooner)
+      const wooner_filter_uids = wooner_uids.filter(uid => prey_uids.indexOf(uid) === -1 )
+      const usersPromise = wooner_filter_uids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
       Promise.all(usersPromise)
       .then(data => {
         goodImpressions = data.map(snap => {
