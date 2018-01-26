@@ -159,8 +159,13 @@ export default class MatchCardScene extends Component {
     const title = this.state.nickname + '，' + this.state.age
     this.ChatStore.setChatRoomKey(chatRoomKey,this.props.uid)
     this.ChatStore.setGoToChatTab(true)
-    Actions.MatchChatRoom({type: 'reset',title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid})
+    Actions.ChatTab({type: 'reset'})
+    //Actions.MatchChatRoom({type: 'reset',title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid, renderBackButton: this.goToChatTab})
   }
+
+  //goToChatTab = () => {
+  //  Actions.ChatTab({type: 'reset'})
+  //}
 
 
   render() {
