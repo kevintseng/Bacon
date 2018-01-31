@@ -48,13 +48,19 @@ export default class MeetCuteSwiperScene extends Component {
     })
   }
 
+  onSwipedAll = () => {
+    //this.MeetCuteStore.startLoading()
+    this.cardIndex = 0
+    //this.MeetCuteStore.fetchPreys(this.SubjectStore.preySexualOrientation)
+  }
+
   onPressLeft = () => {
     this.swiper.swipeLeft()
   }
 
   onPressRight = () => {
-    this.updateGoodImpression()
     this.MeetCuteStore.startCheckMatch()
+    this.updateGoodImpression()
     this.firebase.database().ref('goodImpressionList/' + this.MeetCuteStore.preys[this.cardIndex].key + this.SubjectStore.uid).once('value',snap => {
       this.MeetCuteStore.finishCheckMatch()
       if (snap.val()) {
@@ -141,9 +147,9 @@ export default class MeetCuteSwiperScene extends Component {
             cardHorizontalMargin={0}
             zoomAnimationDuration={0}
             swipeBackCard={false}
-            //onSwipedAll={this.onSwipedAll}
+            onSwipedAll={this.onSwipedAll}
             //showSecondCard={false}
-            //infinite={true}
+            infinite={true}
           />
           <View style={styles.tool}>
             <TouchableOpacity onPress={ this.onPressLeft }>
