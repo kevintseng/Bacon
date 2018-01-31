@@ -89,7 +89,7 @@ export default class MeetCuteStore {
       return({
         key: snap.key,
         nickname: snap.val().nickname,
-        album: album,
+        album: album || new Array,
         age: calculateAge(snap.val().birthday), 
         bio: snap.val().bio,
         distance: calculateDistance(snap.val().latitude,snap.val().longitude,this.latitude,this.longitude),
@@ -115,6 +115,7 @@ export default class MeetCuteStore {
         .cacth(showError)  
       } else {
         //
+        console.warn('沒資料')
       }
     })
   }
