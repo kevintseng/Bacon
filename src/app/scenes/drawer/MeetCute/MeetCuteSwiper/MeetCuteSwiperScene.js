@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Dimensions, InteractionManager, Image,TouchableOpacity } from 'react-native'
+import { View, Dimensions, InteractionManager, Image,TouchableOpacity, Modal, Text } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import BaconCard from 'react-native-bacon-card'
 import Swiper from 'react-native-deck-swiper'
@@ -7,6 +7,8 @@ import { inject, observer } from 'mobx-react'
 import { toJS } from 'mobx'
 
 import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
+import BaconCheckMatch from '../../../../views/BaconCheckMatch'
+import BaconMatch from '../../../../views/BaconMatch'
 
 const { width, height } = Dimensions.get('window')
 
@@ -23,7 +25,7 @@ const styles = {
   }
 }
 
-@inject('firebase','SubjectStore','MeetCuteStore') @observer
+@inject('firebase','SubjectStore','MeetCuteStore','ChatStore') @observer
 export default class MeetCuteSwiperScene extends Component {
 
   constructor(props) {
@@ -31,6 +33,7 @@ export default class MeetCuteSwiperScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.MeetCuteStore = this.props.MeetCuteStore
+    this.ChatStore = this.props.ChatStore
     this.cardIndex = 0
   }
 
@@ -51,7 +54,15 @@ export default class MeetCuteSwiperScene extends Component {
 
   onPressRight = () => {
     this.updateGoodImpression()
-    this.swiper.swipeRight()
+    this.MeetCuteStore.startCheckMatch()
+    this.firebase.database().ref('goodImpressionList/' + this.MeetCuteStore.preys[this.cardIndex].key + this.SubjectStore.uid).once('value',snap => {
+      this.MeetCuteStore.finishCheckMatch()
+      if (snap.val()) {
+        this.MeetCuteStore.setMatch()
+      } else {
+        this.swiper.swipeRight()
+      }
+    })
   }
 
   onPressReport = () => {
@@ -60,6 +71,22 @@ export default class MeetCuteSwiperScene extends Component {
 
   onPrssBlockade = () => {
     alert('已封鎖此人')
+  }
+
+  onPressMatchLeft = () => {
+    this.MeetCuteStore.finishMatch()
+    this.swiper.swipeRight()
+  }
+
+  onPressMatchRight = () => {
+    this.MeetCuteStore.finishMatch()
+    this.swiper.swipeRight()
+    const _uid = this.MeetCuteStore.preys[this.cardIndex].key
+    const chatRoomKey = this.SubjectStore.uid > _uid ? this.SubjectStore.uid + _uid : _uid + this.SubjectStore.uid
+    const title = this.MeetCuteStore.preys[this.cardIndex].nickname + '，' + this.MeetCuteStore.preys[this.cardIndex].age
+    this.ChatStore.setChatRoomKey(chatRoomKey,_uid)
+    Actions.InitChatRoom({title: title, Title: title, chatRoomKey: chatRoomKey ,preyID: _uid})
+    //Actions.MatchChatRoom({type: 'reset', title: title, chatRoomKey: chatRoomKey,preyID: _uid})
   }
 
   updateGoodImpression = () => {
@@ -72,6 +99,16 @@ export default class MeetCuteSwiperScene extends Component {
       <View style={styles.view}>
         { this.MeetCuteStore.loading ? <BaconActivityIndicator/> :
         <View style={styles.view}>
+          <BaconCheckMatch
+            visible={this.MeetCuteStore.checking}
+          />
+          <BaconMatch
+            visible={this.MeetCuteStore.match}
+            onPressReturn={()=>{}}
+            leftText={'     繼續邂逅'}
+            onPressRight={this.onPressMatchRight}
+            onPressLeft={this.onPressMatchLeft}
+          />
           <Swiper
             ref={swiper => { this.swiper = swiper}}
             cards={toJS(this.MeetCuteStore.preys)}

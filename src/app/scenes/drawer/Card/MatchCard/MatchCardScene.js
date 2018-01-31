@@ -178,6 +178,7 @@ export default class MatchCardScene extends Component {
             onPressReturn={this.onPressReturn}
             onPressRight={this.onPressMatchRight}
             onPressLeft={this.onPressMatchLeft}
+            leftText={'     回到緣分'}
           />
           <BaconCard
             album={ this.state.album }

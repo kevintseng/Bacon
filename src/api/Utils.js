@@ -26,6 +26,13 @@ export function translateChatStatus(status) {
   }
 }
 
+export function calculateBirthday(age) {
+  const year = new Date().getUTCFullYear() - age
+  const month = new Date().getUTCMonth() + 1
+  const day = new Date().getUTCDate()
+  return year + '-' + month + '-' + day
+}
+
 export function calculateAge(birthday) {
   const ageDifMs = Date.now() - new Date(birthday).getTime()
   const ageDate = new Date(ageDifMs)
