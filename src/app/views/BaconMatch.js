@@ -58,7 +58,7 @@ const styles = {
   }
 }
 
-const BaconMatch = ({visible,onPressReturn,onPressBlank,onPressRight,onPressLeft}) => {
+const BaconMatch = ({leftText,visible,onPressReturn,onPressBlank,onPressRight,onPressLeft}) => {
 
   return(
     <Modal animationType={"fade"} transparent={true} visible={visible} onRequestClose={ onPressReturn } >
@@ -80,7 +80,7 @@ const BaconMatch = ({visible,onPressReturn,onPressBlank,onPressRight,onPressLeft
             <View style={styles.bottom}>
               <TouchableOpacity onPress={ onPressLeft }>
                 <Image style={styles.left} source={require('../../images/btn_meet_keepswiping.png')}>
-                  <Text style={ styles.text }>     回到緣分</Text>
+                  <Text style={ styles.text }>{ leftText }</Text>
                 </Image>
               </TouchableOpacity>
               <TouchableOpacity onPress={ onPressRight }>
