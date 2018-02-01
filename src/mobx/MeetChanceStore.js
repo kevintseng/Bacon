@@ -30,7 +30,7 @@ export default class MeetChanceStore {
     this.loading = true
     this.index = 1
     this.maxAge = 50
-    this.minAge = 0
+    this.minAge = 18
     this.nonShowOfflinePrey = false
     this.showPreyRadar = false
   }
@@ -56,7 +56,7 @@ export default class MeetChanceStore {
   }
 
   @action fetchPreys = () => {
-    this.blockadeList = this.filterBlockadeList()
+    //this.blockadeList = this.filterBlockadeList()
     this.preyList = Object.keys(this.pool).filter( 
       key => {
         const value = this.pool[key]
@@ -68,7 +68,12 @@ export default class MeetChanceStore {
         //} else {
         //  return null
         //}
-        return true
+        if ( (calculateAge(value.birthday) >= this.minAge) && (calculateAge(value.birthday) <= this.maxAge) ) {
+          return true
+        } else {
+          return false
+        }
+        //return true
       }
     ).map( key => this.pool[key] )
     // 排距離

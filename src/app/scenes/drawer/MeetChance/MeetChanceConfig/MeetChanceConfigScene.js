@@ -65,9 +65,7 @@ export default class MeetChanceConfigScene extends Component {
   }
 
   buttonOnPress = () => {
-    Actions.MeetChanceWaterFall({
-      type: 'reset'
-    })
+    Actions.MeetChanceWaterFall({type: 'replace'})
   }
 
   render() {
