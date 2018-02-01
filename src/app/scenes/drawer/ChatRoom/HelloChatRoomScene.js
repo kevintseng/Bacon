@@ -191,7 +191,8 @@ export default class HelloChatRoomScene extends Component {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
       if (this.messageSendCount > 1 ) {
-        alert('你已超過兩句限制')
+        //alert('你已超過兩句限制')
+        Actions.UseBonus({uid: this.props.preyID})
       } else {
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
         .then(() => {
