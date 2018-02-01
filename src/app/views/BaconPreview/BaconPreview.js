@@ -10,7 +10,7 @@ const styles = {
 const BaconPreview = ({ onPress }) => {
   return(
     <TouchableOpacity style={ styles.preview } onPress={ onPress } >
-      <Image source={require('./img/btn_back.png')} />
+      <Image source={require('./img/ico_chat_profile.png')} />
     </TouchableOpacity>
   )
 }

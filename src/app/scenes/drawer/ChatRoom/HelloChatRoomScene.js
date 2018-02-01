@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid, ActivityIndicator } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid, ActivityIndicator, Keyboard } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
 
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
+import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
+
+const styles = {
+  view: {
+    flex: 1
+  }
+}
 
 const options = {
   title: "傳送照片",
@@ -34,6 +41,7 @@ export default class HelloChatRoomScene extends Component {
     this.chatRoomQuery = null
     this.imagesQuery = null
     this.messageSendCount = 0
+    //this.messageSendPeople = 0
     this.slefMessagesArray = new Array
     this.slefImagesArray = new Array
     this.MessagesAndImages = new Array
@@ -47,6 +55,7 @@ export default class HelloChatRoomScene extends Component {
   }
 
   componentWillMount() {
+    // 改寫成全部promise好才把loading轉成false
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').once('value', child => {
       this.messageSendCount = child.val()
@@ -191,21 +200,22 @@ export default class HelloChatRoomScene extends Component {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
       if (this.messageSendCount > 1 ) {
-        //alert('你已超過兩句限制')
-        Actions.UseBonus({uid: this.props.preyID})
+          //alert('你已超過兩句限制')
+        Keyboard.dismiss()
+        Actions.UseBonus({uid: this.props.preyID, _type: 'A'})
       } else {
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
-        .then(() => {
-          this.messageSendCount = this.messageSendCount + 1
-          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
-          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
-            if (!current) {
-              return 1
-            } else {
-              return current + 1
-            }
-          })
-         }
+          .then(() => {
+            this.messageSendCount = this.messageSendCount + 1
+            this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
+            this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
+              if (!current) {
+                return 1
+              } else {
+                return current + 1
+              }
+            })
+          }
         ) 
       }
     }
@@ -256,21 +266,8 @@ export default class HelloChatRoomScene extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        { this.state.loading ?
-        <View style={{flex: 1,justifyContent: 'center'}}>
-          <ActivityIndicator
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              paddingBottom: 110
-            }}
-            size="large"
-            color='#d63768'
-          />
-        </View> :
+      <View style={styles.view}>
+        { this.state.loading ? <BaconActivityIndicator/> :
         <BaconChatRoom
           messages={this.state.chats}
           onSend={messages => this.onSendMessage(messages)}

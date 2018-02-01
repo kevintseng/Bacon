@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native'
 import { Avatar } from 'react-native-elements'
+import CircleImage from 'react-native-bacon-circle-image'
 import BaconRedButton from './BaconRedButton/BaconRedButton'
 
 const { width, height } = Dimensions.get('window')
@@ -43,7 +44,10 @@ const styles = {
   reasonStrView: { 
     marginTop: 20, 
     width: 240, 
-    alignItems: 'center' 
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap' 
   },
   topView: { 
     flexDirection: 'row', 
@@ -73,30 +77,46 @@ const styles = {
     fontWeight: '500',
     color: '#F4A764',  
     paddingBottom: 10  
+  },
+  loadingStyle: { 
+    size: 'small', 
+    color: '#b3b3b3' 
+  },
+  nickname: {
+    backgroundColor: 'transparent',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans', 
+    fontWeight: '500',   
   }
 }
 
 
-const UseBonus = ({bonus, avatar, reasonStr, preStr, cost, postStr,routesText,routesOnPress}) => {
+const UseBonus = ({bonus, avatar, reasonTopStr, nickname, reasonBottomStr, preStr, cost, postStr,routesText,routesOnPress}) => {
   return (
     <View style={styles.View}>
       <View style={styles.view}>
         <View style={styles.topView}>
           <Text style={styles.text}>你目前有 </Text>
           <Text style={styles.colorText}>{bonus}</Text>
-          <Text style={styles.text}> Q點</Text>
+          <Text style={styles.text}> Ｑ點</Text>
         </View>
-        <Avatar
-          xlarge
-          rounded
-          source={{uri: avatar}}
+        <CircleImage
+          radius={ 80 }
+                //onPress={ this.onPress(item.key) }
+          placeholderSource={ require('../../images/ico_qy_head_preload.png') }
+          loadingStyle={ styles.loadingStyle }
+          source={{uri: avatar }}
         />
+
         <View style={styles.reasonStrView}>
-          <Text style={styles.reasonStr}>{reasonStr}</Text>
+          <Text style={styles.reasonStr}>{reasonTopStr}</Text>
+          <Text style={styles.nickname}>{nickname}</Text>
+          <Text style={styles.reasonStr}>{reasonBottomStr}</Text>
         </View>
         <View style={styles.bottom}>
           <Text style={styles.text}>{preStr} </Text>
           <Text style={styles.cost}>{cost}</Text>
+           <Text style={styles.text}> Ｑ點</Text>
           <Text style={styles.text}> {postStr}</Text>
         </View>
       </View>
