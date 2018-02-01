@@ -173,7 +173,7 @@ export default class Routes extends Component {
 
   baconToolAboutMe = () => <View style={styles.baconTool}><BaconNotice onPress={this.goToNotification} /></View>
 
-  baconToolChatRoom = () => <View style={styles.baconTool}><BaconTool onPress={this.goToPreview} /></View>
+  baconToolChatRoom = () => <View style={styles.baconTool}><BaconPreview onPress={this.goToPreview} /></View>
 
   baconToolChatTab = () => <View style={styles.baconTool}><BaconChatStatus /></View>
 

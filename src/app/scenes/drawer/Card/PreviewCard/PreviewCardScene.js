@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Dimensions, BackHandler, ToastAndroid, TouchableOpacity, InteractionManager } from 'react-native'
 import { observer, inject } from 'mobx-react'
+import { Actions } from 'react-native-router-flux'
 import BaconCard from 'react-native-bacon-card'
 import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
 import { sortedAlbum, calculateAge, calculateDistance, languagesToString, hobbiesToFlatList } from '../../../../../api/Utils'

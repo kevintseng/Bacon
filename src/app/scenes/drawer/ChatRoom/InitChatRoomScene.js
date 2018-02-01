@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid, ActivityIndicator } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, BackHandler, ToastAndroid, ActivityIndicator, Keyboard } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import ImagePicker from "react-native-image-picker"
@@ -38,6 +38,7 @@ export default class InitChatRoomScene extends Component {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    this.messageSendPeople = 0
     this.chatRoomQuery = null
     this.interested = null
     this.state = {
@@ -49,9 +50,13 @@ export default class InitChatRoomScene extends Component {
   }
 
   componentWillMount() {
+    // 改寫成全部promise好才把loading轉成false
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     this.setState({
       loading: true
+    })
+    this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid).once('value',snap =>{
+      this.messageSendPeople = Object.keys(snap.val()).length
     })
     this.chatRoomQuery = this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested')
     this.chatRoomQuery.on('value', child => {
@@ -161,21 +166,53 @@ export default class InitChatRoomScene extends Component {
   onSendMessage(messages = []) {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
+      if (this.messageSendPeople < 10) {
+        if (!this.interested) {
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
+            chatRoomCreater: this.SubjectStore.uid,
+            interested: 1, //未處理
+            lastMessage: messages[0].text,
+            chatRoomRecipient: this.props.preyID,
+          })
+          this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).set({
+            chatRoomCreater: this.SubjectStore.uid,
+            //lastMessage: messages[0].text,
+            chatRoomRecipient: this.props.preyID,
+          })
+          this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
+          this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(1)
+          this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
+            if (!current) {
+              return 1
+            } else {
+              return current + 1
+            }
+          })
+        }        
+      } else {
+        Keyboard.dismiss()
+        Actions.UseBonus({uid: this.props.preyID, _type: 'B'})        
+      }
+    }
+  }
+
+  onSendImage = imageURL => {
+    if (this.messageSendPeople < 10) {
       if (!this.interested) {
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
           chatRoomCreater: this.SubjectStore.uid,
           interested: 1, //未處理
-          lastMessage: messages[0].text,
-          chatRoomRecipient: this.props.preyID,
+          lastMessage: '送出一張圖片',
+          chatRoomRecipient: this.props.preyID
         })
         this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).set({
           chatRoomCreater: this.SubjectStore.uid,
-          //lastMessage: messages[0].text,
-          chatRoomRecipient: this.props.preyID,
+          //lastMessage: '送出一張圖片',
+          chatRoomRecipient: this.props.preyID
         })
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
-        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(1)
-        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
+        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
           if (!current) {
             return 1
@@ -184,31 +221,9 @@ export default class InitChatRoomScene extends Component {
           }
         })
       }
-    }
-  }
-
-  onSendImage = imageURL => {
-    if (!this.interested) {
-      this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
-        chatRoomCreater: this.SubjectStore.uid,
-        interested: 1, //未處理
-        lastMessage: '送出一張圖片',
-        chatRoomRecipient: this.props.preyID
-      })
-      this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).set({
-        chatRoomCreater: this.SubjectStore.uid,
-        //lastMessage: '送出一張圖片',
-        chatRoomRecipient: this.props.preyID
-      })
-      this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
-      this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
-      this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
-        if (!current) {
-          return 1
-        } else {
-          return current + 1
-        }
-      })
+    } else {
+      Keyboard.dismiss()
+      Actions.UseBonus({uid: this.props.preyID, _type: 'B'})      
     }
   }
 
