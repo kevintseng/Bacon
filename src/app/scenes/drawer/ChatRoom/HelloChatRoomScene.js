@@ -57,31 +57,35 @@ export default class HelloChatRoomScene extends Component {
   componentWillMount() {
     // 改寫成全部promise好才把loading轉成false
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').once('value', child => {
-      this.messageSendCount = child.val()
+    this.setState({
+      loading: true
     })
+  }
+
+  componentDidMount() {
     this.chatRoomQuery = this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested')
     this.chatRoomQuery.on('value', child => {
       if (child.val() === 2) {
         // 轉到配對聊天室
-        //this.ChatStore.setChatSendRealPrey()
-        //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
         Actions.MatchChatRoom({type: 'replace', chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
+      } else {
+        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').once('value', child => {
+          this.messageSendCount = child.val()
+          this.messagesQuery = this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages')
+          this.imagesQuery = this.firebase.database().ref('chats/' +  this.props.chatRoomKey + '/images')
+          this.messagesQuery.on('value', child => {
+            this.setMessages(child.val()) // 改成child_added
+          })
+          this.imagesQuery.on('value', child => {
+            this.setImages(child.val()) // 改成child_added
+          })
+        })
       }
-    })
-    this.messagesQuery = this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages')
-    this.messagesQuery.on('value', child => {
-      this.setMessages(child.val()) // 改成child_added
-    })
-    this.imagesQuery = this.firebase.database().ref('chats/' +  this.props.chatRoomKey + '/images')
-    this.imagesQuery.on('value', child => {
-      this.setImages(child.val()) // 改成child_added
     })
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.messageSendCount)
     this.removeMessagesAndImagesListener()
     this.init()
   }
@@ -200,13 +204,14 @@ export default class HelloChatRoomScene extends Component {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
       if (this.messageSendCount > 1 ) {
-          //alert('你已超過兩句限制')
+        //alert('你已超過兩句限制')
         Keyboard.dismiss()
         Actions.UseBonus({uid: this.props.preyID, _type: 'A'})
       } else {
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
           .then(() => {
             this.messageSendCount = this.messageSendCount + 1
+            this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.messageSendCount)
             this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
             this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
               if (!current) {
@@ -225,6 +230,7 @@ export default class HelloChatRoomScene extends Component {
     this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
     .then(() => {
         this.messageSendCount = this.messageSendCount + 1
+        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.messageSendCount)
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('傳送了圖片')
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
           if (!current) {

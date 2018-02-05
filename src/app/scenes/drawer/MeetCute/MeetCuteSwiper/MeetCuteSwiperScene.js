@@ -107,6 +107,7 @@ export default class MeetCuteSwiperScene extends Component {
         <View style={styles.view}>
           <BaconCheckMatch
             visible={this.MeetCuteStore.checking}
+            text={'檢查配對中'}
           />
           <BaconMatch
             visible={this.MeetCuteStore.match}

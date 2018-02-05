@@ -6,6 +6,8 @@ import ImagePicker from "react-native-image-picker"
 import ImageResizer from "react-native-image-resizer"
 
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
+import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
+import BaconCheckMatch from '../../../views/BaconCheckMatch'
 
 const options = {
   title: "傳送照片",
@@ -22,6 +24,12 @@ const options = {
 
 const metadata = {
   contentType: 'image/jpeg'
+}
+
+const styles = {
+  view: {
+    flex: 1
+  }
 }
 
 @inject('firebase','SubjectStore','ChatStore') @observer
@@ -42,12 +50,20 @@ export default class VisitorChatRoomScene extends Component {
       chats: [],
       showLeftFooter: false,
       showRightFooter: false,
-      loading: true  
+      loading: true,
+      checking: false,
+      checkingText: ''  
     }
   }
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+    this.setState({
+      loading: true
+    })
+  }
+
+  componentDidMount() {
     this.messagesQuery = this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages')
     this.messagesQuery.on('value', child => {
       this.setMessages(child.val()) // 改成child_added
@@ -60,8 +76,8 @@ export default class VisitorChatRoomScene extends Component {
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-    this.ChatStore.setVistorChatRoomsNonHandleChatCount(this.props.chatRoomKey,0)
-    this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.props.preyID).set(0)
+    this.ChatStore.setVistorChatRoomsNonHandleChatCount(this.props.chatRoomKey,0) // 未讀訊息0
+    this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.props.preyID).set(0) // 未讀訊息0
     this.removeMessagesAndImagesListener()
     this.init()
   }
@@ -185,33 +201,54 @@ export default class VisitorChatRoomScene extends Component {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
       this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
-      .then(() => {
-          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
-          this.removeMessagesAndImagesListener()
-          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2).then(
-            () => {
-              //this.ChatStore.setChatVistorRealPrey()
-              //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
-              Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
-            }
-          )
+        .then(() => {
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
+            lastMessage: messages[0].text,
+            interested: 2
+          }).then(async () => {
+            await this.setState({
+              checking: true,
+              checkingText: '配對中'
+            })
+            await this.removeMessagesAndImagesListener()
+            await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
+              this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set(snap.val())
+            })
+            await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
+            this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
+            await this.setState({
+              checking: false
+            })
+            Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+          })
         }
       ) 
     }
   }
 
   onSendImage = imageURL => {
+    //this.removeMessagesAndImagesListener()
     this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
-    .then(() => {
-        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('傳送了圖片')
-        this.removeMessagesAndImagesListener()
-        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2).then(
-          () => {
-            //this.ChatStore.setChatVistorRealPrey()
-            //this.ChatStore.setChatMatchRealPrey() // 看能不能調成更快的演算法
-            Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
-          }
-        )
+      .then(() => {
+        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
+          lastMessage: '傳送了圖片',
+          interested: 2
+        }).then(async () => {
+          await this.setState({
+            checking: true,
+            checkingText: '配對中'
+          })
+          await this.removeMessagesAndImagesListener()
+          await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
+            this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set(snap.val())
+          })
+          await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
+          this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
+          await this.setState({
+            checking: false
+          })
+          Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+        })
       }
     ) 
   }
@@ -239,6 +276,10 @@ export default class VisitorChatRoomScene extends Component {
   }
 
   match = async () => {
+    await this.setState({
+      checking: true,
+      checkingText: '配對中'
+    })
     await this.removeMessagesAndImagesListener()
     await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2)
     await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
@@ -246,10 +287,17 @@ export default class VisitorChatRoomScene extends Component {
     })
     await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
     this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
+    await this.setState({
+      checking: false
+    })
     Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
   }
 
   noMatch = async () => {
+    await this.setState({
+      checking: true,
+      checkingText: '移除中'
+    })
     await this.removeMessagesAndImagesListener()
     await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(0)
     await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
@@ -257,43 +305,39 @@ export default class VisitorChatRoomScene extends Component {
     })
     await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
     this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
+    await this.setState({
+      checking: false
+    })
     Actions.pop()
   }
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        { this.state.loading ?
-        <View style={{flex: 1,justifyContent: 'center'}}>
-          <ActivityIndicator
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              paddingBottom: 110
-            }}
-            size="large"
-            color='#d63768'
+      <View style={styles.view}>
+        { this.state.loading ? <BaconActivityIndicator/> :
+        <View style={styles.view}>
+          <BaconCheckMatch
+            visible={this.state.checking}
+            text={this.state.checkingText}
           />
-        </View> :
-        <BaconChatRoom
-          messages={this.state.chats}
-          onSend={messages => this.onSendMessage(messages)}
-          user={{
-            _id: this.SubjectStore.uid,
-          }}
-          onPressLeftIcon={this.onPressLeftIcon}
-          onPressRightIcon={this.onPressRightIcon}
-          onPressAvatar={this.onPressAvatar}
-          showChoose
-          chooseTopOnPress={this.match}
-          chooseBottomOnPress={this.noMatch}
-          showLeftFooter={this.state.showLeftFooter}
-          showRightFooter={this.state.showRightFooter}
-          onPressLeftFooterLeftIcon={this.openAlbum}
-          onPressLeftFooterRightIcon={this.openCamera}
-        />
+          <BaconChatRoom
+            messages={this.state.chats}
+            onSend={messages => this.onSendMessage(messages)}
+            user={{
+              _id: this.SubjectStore.uid,
+            }}
+            onPressLeftIcon={this.onPressLeftIcon}
+            onPressRightIcon={this.onPressRightIcon}
+            onPressAvatar={this.onPressAvatar}
+            showChoose
+            chooseTopOnPress={this.match}
+            chooseBottomOnPress={this.noMatch}
+            showLeftFooter={this.state.showLeftFooter}
+            showRightFooter={this.state.showRightFooter}
+            onPressLeftFooterLeftIcon={this.openAlbum}
+            onPressLeftFooterRightIcon={this.openCamera}
+          />
+        </View>
         }
       </View>
     )
