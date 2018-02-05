@@ -42,7 +42,6 @@ export default class InitChatRoomScene extends Component {
     this.chatRoomQuery = null
     this.interested = null
     this.state = {
-      //chats: [],
       showLeftFooter: false,
       showRightFooter: false ,
       loading: true 
@@ -50,62 +49,64 @@ export default class InitChatRoomScene extends Component {
   }
 
   componentWillMount() {
-    // 改寫成全部promise好才把loading轉成false
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     this.setState({
       loading: true
     })
-    this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid).once('value',snap =>{
-      this.messageSendPeople = Object.keys(snap.val()).length
-    })
+  }
+
+  componentDidMount() {
     this.chatRoomQuery = this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested')
     this.chatRoomQuery.on('value', child => {
       this.interested = child.val()
       if (this.interested) {
         if (this.interested === 2) {
-          // 轉到配對聊天室
-          //this.removeChatRoomListener()
+          console.warn('轉到配對聊天室')
           Actions.MatchChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
         } else {
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/chatRoomCreater').once('value',snap => {
             if (this.interested === 1) {
               if (snap.val() === this.SubjectStore.uid) {
-                // 轉到Hello聊天室
-                //this.removeChatRoomListener()
+                //console.warn('轉到Hello聊天室')
                 Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               } else {
-                // 轉到訪客聊天室
-                //this.removeChatRoomListener()
+                console.warn('轉到訪客聊天室')
                 Actions.VisitorChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               }
             } else if (child.val() === 0){
               if (snap.val() === this.SubjectStore.uid) {
-                // 轉到Hello聊天室
-                //this.removeChatRoomListener()
+                //console.warn('轉到Hello聊天室')
                 Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               } else {
-                alert('你已對此會員不感興趣')
-                //Actions.VisitorChatRoom({title: this.props.tiitle,chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
+                console.warn('你已對此會員不感興趣')
               }
             }
           })
         }
       } else {
-        //
+        // 初始聊天室
+        this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid).once('value',snap => {
+          this.messageSendPeople = Object.keys(snap.val() || new Object).length
+          this.interested = null
+          this.setState({
+            loading: false
+          })
+          //console.warn('初始聊天室')
+        })        
       }
-    })
-  }
-
-  componentDidMount() {
-    this.setState({
-      loading: false
     })
   }
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
     this.removeChatRoomListener()
-    this.interested = null
+  }
+
+  removeChatRoomListener = () => {
+    if (this.chatRoomQuery) {
+      this.chatRoomQuery.off()
+      this.chatRoomQuery = null      
+    }
   }
 
   onBackAndroid = () => {
@@ -125,6 +126,10 @@ export default class InitChatRoomScene extends Component {
       showLeftFooter: false,
       showRightFooter: !this.state.showRightFooter,
     })
+  }
+
+  onPressAvatar = () => {
+    Actions.ChatRoomPreview({uid: this.props.preyID})
   }
 
   openAlbum = () => {
@@ -155,12 +160,8 @@ export default class InitChatRoomScene extends Component {
           })
           .catch(err => {
             alert(err)
-          });
+          })
       }   
-  }
-
-  onPressAvatar = () => {
-    Actions.ChatRoomPreview({uid: this.props.preyID})
   }
 
   onSendMessage(messages = []) {
@@ -168,20 +169,26 @@ export default class InitChatRoomScene extends Component {
     if (messages_no_blank.length > 0) {
       if (this.messageSendPeople < 10) {
         if (!this.interested) {
+
+          const _messages = new Object
+          _messages[this.SubjectStore.uid] = new Object 
+          _messages[this.SubjectStore.uid][Date.now()] = messages[0].text
+          // 不知道會不會有非同步bug，還沒全部上傳完就轉跳聊天室
+          this.firebase.database().ref('chats/' + this.props.chatRoomKey).set({
+            chatRoomCreater: this.SubjectStore.uid,
+            messageSendCount: 1,
+            messages: _messages
+          })
+          this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).set({
+            chatRoomCreater: this.SubjectStore.uid,
+            chatRoomRecipient: this.props.preyID,
+          })
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
             chatRoomCreater: this.SubjectStore.uid,
             interested: 1, //未處理
             lastMessage: messages[0].text,
             chatRoomRecipient: this.props.preyID,
           })
-          this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).set({
-            chatRoomCreater: this.SubjectStore.uid,
-            //lastMessage: messages[0].text,
-            chatRoomRecipient: this.props.preyID,
-          })
-          this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
-          this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(1)
-          this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
             if (!current) {
               return 1
@@ -200,19 +207,26 @@ export default class InitChatRoomScene extends Component {
   onSendImage = imageURL => {
     if (this.messageSendPeople < 10) {
       if (!this.interested) {
+
+        const _images = new Object
+        _images[this.SubjectStore.uid] = new Object
+        _images[this.SubjectStore.uid][Date.now()] = imageURL
+        // 不知道會不會有非同步bug，還沒全部上傳完就轉跳聊天室
+        this.firebase.database().ref('chats/' + this.props.chatRoomKey).set({
+          chatRoomCreater: this.SubjectStore.uid,
+          messageSendCount: 1,
+          images: _images
+        })
+        this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).set({
+          chatRoomCreater: this.SubjectStore.uid,
+          chatRoomRecipient: this.props.preyID
+        })
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
           chatRoomCreater: this.SubjectStore.uid,
           interested: 1, //未處理
           lastMessage: '送出一張圖片',
           chatRoomRecipient: this.props.preyID
         })
-        this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).set({
-          chatRoomCreater: this.SubjectStore.uid,
-          //lastMessage: '送出一張圖片',
-          chatRoomRecipient: this.props.preyID
-        })
-        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/chatRoomCreater').set(this.SubjectStore.uid)
-        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
           if (!current) {
             return 1
@@ -227,13 +241,6 @@ export default class InitChatRoomScene extends Component {
     }
   }
 
-  removeChatRoomListener = () => {
-    if (this.chatRoomQuery) {
-      this.chatRoomQuery.off()
-      this.chatRoomQuery = null      
-    }
-  }
-
   render() {
     return (
       <View style={styles.view}>
@@ -242,12 +249,11 @@ export default class InitChatRoomScene extends Component {
           messages={[]}
           onSend={messages => this.onSendMessage(messages)}
           user={{
-            _id: this.SubjectStore.uid, // this.SubjectStore.uid
+            _id: this.SubjectStore.uid,
           }}
           onPressLeftIcon={this.onPressLeftIcon}
           onPressRightIcon={this.onPressRightIcon}
           onPressAvatar={this.onPressAvatar}
-          //showChoose={false}
           showLeftFooter={this.state.showLeftFooter}
           showRightFooter={this.state.showRightFooter}
           onPressLeftFooterLeftIcon={this.openAlbum}

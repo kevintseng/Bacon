@@ -23,7 +23,7 @@ const styles = {
   }
 }
 
-const BaconCheckMatch = ({visible}) => {
+const BaconCheckMatch = ({visible,text}) => {
 
   return(
             <Modal animationType={"fade"} transparent={true} visible={visible} onRequestClose={ () => {} } >
@@ -32,7 +32,7 @@ const BaconCheckMatch = ({visible}) => {
                   color='#d63768'
                 />
               <View style={styles.view}>
-                <Text style={styles.text}>檢查配對中</Text>
+                <Text style={styles.text}>{text}</Text>
               </View>
             </Modal>
   )

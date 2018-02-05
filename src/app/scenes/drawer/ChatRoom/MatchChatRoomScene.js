@@ -57,6 +57,12 @@ export default class MatchChatRoomScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+    this.setState({
+      loading: true
+    })
+  }
+
+  componentDidMount() {
     this.messagesQuery = this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages')
     this.messagesQuery.on('value', child => {
       this.setMessages(child.val()) // 改成child_added
@@ -67,16 +73,10 @@ export default class MatchChatRoomScene extends Component {
     })
   }
 
-  componentDidMount() {
-    this.setState({
-      loading: false
-    })
-  }
-
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
-    this.ChatStore.setMatchChatRoomsNonHandleChatCounts(this.props.chatRoomKey,0)
-    this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.props.preyID).set(0)
+    this.ChatStore.setMatchChatRoomsNonHandleChatCounts(this.props.chatRoomKey,0) // 未讀訊息0
+    this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.props.preyID).set(0) // 未讀訊息0
     this.removeMessagesAndImagesListener()
     this.init()
   }
@@ -175,7 +175,7 @@ export default class MatchChatRoomScene extends Component {
     this.sortedMessagesAndImages = this.MessagesAndImages.sort((a, b) => {
       return a._id < b._id ? 1 : -1
     })
-    this.setState({chats: this.sortedMessagesAndImages})
+    this.setState({chats: this.sortedMessagesAndImages,loading: false})
   }
 
   onBackAndroid = () => {
