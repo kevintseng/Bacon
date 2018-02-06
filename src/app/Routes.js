@@ -53,6 +53,7 @@ import MatchCardScene from './scenes/drawer/Card/MatchCard/MatchCardScene'
 import PreviewCardScene from './scenes/drawer/Card/PreviewCard/PreviewCardScene'
 // usebonus
 import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
+import BonusScene from './scenes/drawer/Bonus/BonusScene'
 // ###############header components################ //
 import BaconTitle from './views/BaconTitle/BaconTitle'
 import BaconMenu from './views/BaconMenu/BaconMenu'
@@ -242,6 +243,7 @@ export default class Routes extends Component {
               <Scene key="MatchCard" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="MatchCardScene" renderBackButton={this.baconArrow} component={MatchCardScene} />
 
               <Scene key="UseBonus" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="使用Ｑ點" renderBackButton={this.baconArrow} component={UseBonusScene} />
+              <Scene key="Bonus" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="Ｑ點儲值" renderBackButton={this.baconArrow} component={BonusScene} />
 
               
             </Scene>

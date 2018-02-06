@@ -60,8 +60,8 @@ export default class ProfileTab extends Component {
   }
 
   goToQUpgrade = () => {
-    //Actions.Bonus()
-    alert('轉到Ｑ點儲值頁')
+    Actions.Bonus()
+    //alert('轉到Ｑ點儲值頁')
   }
 
   verificationEmail = () => {
