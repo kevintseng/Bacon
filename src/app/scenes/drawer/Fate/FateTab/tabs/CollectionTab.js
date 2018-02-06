@@ -62,8 +62,8 @@ export default class CollectionContainer extends Component {
   )
 
   goToUpgradeMember = () => {
-    //Actions.Upgrade()
-    alert('轉到收藏')
+    Actions.Upgrade()
+    //alert('轉到收藏')
   }
 
   //getCollectNumber = () => {
