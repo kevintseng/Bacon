@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import { ScrollView, View, Text, Button, Platform, BackHandler, ToastAndroid, TouchableOpacity } from 'react-native'
-import { inject, observer } from 'mobx-react'
-import { Actions } from 'react-native-router-flux'
+import { View, Text, Platform, BackHandler, ToastAndroid, TouchableOpacity } from 'react-native'
+//import { inject, observer } from 'mobx-react'
+//import { Actions } from 'react-native-router-flux'
 
 import BaconRoutesContainer from './containers/BaconRoutesContainer'
 import BonusContainer from './containers/BonusContainer'
 import BonusTitleContainer from  './containers/BonusTitleContainer/BonusTitleContainer'
-import PolicyModalContainer from './containers/PolicyModalContainer'
+//import PolicyModalContainer from './containers/PolicyModalContainer'
+import PolicyModal from '../../../views/PolicyModal'
+import RuleModal from '../../../views/RuleModal'
 
 const styles = {
   ...Platform.select({
@@ -42,7 +44,7 @@ const styles = {
         alignSelf: 'center',
         position: 'absolute',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
         bottom: 300,
       },
@@ -72,7 +74,6 @@ const styles = {
       },
       text: {
         fontFamily: 'NotoSans',
-        flexWrap: 'wrap',
         color: '#D63768',
         fontSize: 14,
       },
@@ -80,23 +81,26 @@ const styles = {
         alignSelf: 'center',
         position: 'absolute',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
         bottom: 185,
-      },
-      warningTouch : {
-        //marginRight: 5
+        //backgroundColor: 'red',
+        //paddingLeft: 15
       }
-    },
+    }
   })
 }
 
-@inject('ControlStore') @observer
+//@inject('ControlStore') @observer
 export default class BonusScene extends Component {
 
   constructor(props) {
     super(props)
-    this.ControlStore = this.props.ControlStore
+    this.state = {
+      policy: false,
+      rule: false
+    }
+    //this.ControlStore = this.props.ControlStore
   }
 
 
@@ -113,10 +117,41 @@ export default class BonusScene extends Component {
     return true
   }
 
+  openPolicy = () => {
+    this.setState({
+      policy: true
+    })
+  }
+
+  closePolicy = () => {
+    this.setState({
+      policy: false
+    })    
+  }
+
+  openRule = () => {
+    this.setState({
+      rule: true
+    })    
+  }
+
+  closeRule = () => {
+    this.setState({
+      rule: false
+    })    
+  }
+
   render() {
     return(
       <View style={ styles.view }>
-        <PolicyModalContainer/>
+        <PolicyModal
+          visible={this.state.policy}
+          onRequestClose={this.closePolicy}
+        />
+        <RuleModal
+          visible={this.state.rule}
+          onRequestClose={this.closeRule}
+        />
         <View style={ styles.top }>
           <BonusTitleContainer/>
         </View>
@@ -125,14 +160,14 @@ export default class BonusScene extends Component {
           <BonusContainer/>
         </View>
 
-          <View style={ styles.warning }>
-            <TouchableOpacity style={ styles.warningToch } onPress={this.ControlStore.setSettingPolicyModal}>
-              <Text style={ styles.text } onPress={ this.ControlStore.setSettingPolicyModal }>使用條款  </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={ styles.warningToch } onPress={this.ControlStore.setSettingRuleModal}>
-              <Text style={ styles.text } onPress={ this.ControlStore.setSettingRuleModal }>  隱私權政策</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={ styles.warning }>
+          <TouchableOpacity onPress={this.openRule}>
+            <Text style={ styles.text }> 使用條款 </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.openPolicy}>
+            <Text style={ styles.text }> 隱私政策 </Text>
+          </TouchableOpacity>
+        </View>
 
 
         <View style={ styles.bottom }>
