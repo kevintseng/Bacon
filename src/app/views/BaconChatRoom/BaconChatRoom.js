@@ -7,51 +7,83 @@ import Sticker from '../Sticker'
 
 const { width, height } = Dimensions.get("window")
 
-const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,onPressAvatar,showChoose,chooseTopOnPress,chooseBottomOnPress,showLeftFooter,showRightFooter,onPressLeftFooterLeftIcon,onPressLeftFooterRightIcon}) => {
+const styles = {
+  view: {
+    flex: 1
+  },
+  renderActions: {
+    width: 88,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+  },
+  renderActionsImage: {
+    height: 44,
+    width: 44
+  },
+  giftedChat: {
+    backgroundColor: '#F0F0F0',
+    borderBottomWidth: 0.5,
+    borderColor: '#B3B3B3'
+  },
+  bottom: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  renderChatFooter: {
+    alignItems: 'center',
+    marginBottom: 10
+  }
+}
+
+const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,onPressAvatar,showChoose,showCutLine,chooseTopOnPress,chooseBottomOnPress,showLeftFooter,showRightFooter,onPressLeftFooterLeftIcon,onPressLeftFooterRightIcon}) => {
 
   const renderActions = () => {
     return (
       <View
-        style={{
-          width: 88,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          //paddingHorizontal: 10,
-          //paddingVertical: 3,
-          alignSelf: "center",
-          //backgroundColor: 'blue'
-        }}
+        style={styles.renderActions}
       >
       <TouchableOpacity onPress={onPressLeftIcon}>
-        <Image style={{height: 44,width: 44}} source={showLeftFooter ? require('./img/bg_chat_chatbox_orange.png') : require('./img/btn_chat_add.png')} resizeMode={'center'} />
+        <Image style={styles.renderActionsImage} source={showLeftFooter ? require('./img/bg_chat_chatbox_orange.png') : require('./img/btn_chat_add.png')} resizeMode={'center'} />
       </TouchableOpacity>
       <TouchableOpacity onPress={onPressRightIcon}>
-        <Image style={{height: 44,width: 44}} source={showRightFooter ? require('./img/bg_chat_chatbox_orange.png') : require('./img/btn_chat_emoji.png')} resizeMode={'center'} />
+        <Image style={styles.renderActionsImage} source={showRightFooter ? require('./img/bg_chat_chatbox_orange.png') : require('./img/btn_chat_emoji.png')} resizeMode={'center'} />
       </TouchableOpacity>
       </View>
     )
   }
 
   const renderChatFooter = (props) => {
-    return(
-      <View
-        style={{
-          alignItems: 'center',
-          //backgroundColor: 'blue',
-          marginBottom: 10
-        }}
-      >
-        <BaconRedButton
-          routesText={'與他聊聊'} 
-          routesOnPress={ chooseTopOnPress }
-        />
-        <BlankButton
-          text={'不感興趣'} 
-          onPress={ chooseBottomOnPress }
-        />
-      </View>
-    )
+    if (showCutLine) {
+      return(
+        <View
+          style={styles.renderChatFooter}
+        >
+          <BaconRedButton
+            routesText={'插隊'} 
+            routesOnPress={ chooseTopOnPress }
+          />
+        </View>
+      )
+    } else {
+      return(
+        <View
+          style={styles.renderChatFooter}
+        >
+          <BaconRedButton
+            routesText={'與他聊聊'} 
+            routesOnPress={ chooseTopOnPress }
+          />
+          <BlankButton
+            text={'不感興趣'} 
+            onPress={ chooseBottomOnPress }
+          />
+        </View>
+      )
+    }
   }
 
   const renderSend = (props) => {
@@ -59,7 +91,7 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
       <Send
          {...props}
          >
-          <Image style={{height: 44,width: 44}} source={require('./img/btn_chat_send.png')} resizeMode={'center'}/>
+          <Image style={styles.renderActionsImage} source={require('./img/btn_chat_send.png')} resizeMode={'center'}/>
       </Send>
     )    
   }
@@ -72,23 +104,25 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
       rightBgColor = "transparent"
       //console.warn('有圖喔，泡泡要變透明')
     } 
+    const wrapperStyle = {
+      left: {
+        backgroundColor: leftBgColor,
+      },
+      right: {
+        backgroundColor: rightBgColor,
+      } 
+    }
     return (
       <Bubble
         {...props}
-        wrapperStyle={{
-          left: {
-            backgroundColor: leftBgColor,
-          },
-          right: {
-            backgroundColor: rightBgColor,
-          } }}
+        wrapperStyle={wrapperStyle}
       />
     )
   }
 
   return(
-    <View style={{flex: 1}}>
-      <View style={{backgroundColor: '#F0F0F0',flex: showLeftFooter ? 10 : 2,borderBottomWidth: 0.5,borderColor: '#B3B3B3'}}>
+    <View style={styles.view}>
+      <View style={[styles.giftedChat,{flex: showLeftFooter ? 10 : 2,}]}>
         <GiftedChat
           renderActions={renderActions}
           renderBubble={renderBubble}
@@ -111,7 +145,7 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
           //composerHeight={30}
         />
       </View>
-      <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',justifyContent: 'space-around'}, showLeftFooter ? {} : {display: 'none'}]}> 
+      <View style={[styles.bottom, showLeftFooter ? {} : {display: 'none'}]}> 
         <TouchableOpacity onPress={onPressLeftFooterLeftIcon}>
           <Image source={require('./img/btn_chat_album.png')} />
         </TouchableOpacity>
@@ -119,7 +153,7 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
           <Image source={require('./img/btn_chat_shot.png')} />
         </TouchableOpacity>
       </View>
-      <View style={[{flex: 1}, showRightFooter ? {} : {display: 'none'}]}> 
+      <View style={[styles.view, showRightFooter ? {} : {display: 'none'}]}> 
         <Sticker/>
       </View>
     </View>
