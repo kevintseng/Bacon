@@ -68,6 +68,7 @@ export default class SessionCheckScene extends Component {
           //移除所有監聽函數 初始化狀態
           this.initialize()
           this.setOnline(true) // 非同步設置使用者上線
+          this.setVip()
           ///////// 非同步 /////////
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
@@ -286,6 +287,32 @@ export default class SessionCheckScene extends Component {
     this.SubjectStore.setLongitude(longitude)
     this.MeetCuteStore.setLatitude(latitude)
     this.MeetCuteStore.setLongitude(longitude)
+  }
+
+  setVip = () => {
+    if (Platform.OS === "android") {
+      InAppBilling.open().then(() => InAppBilling.getSubscriptionDetailsArray(['3_month', 'premium_3m']).then( productDetailsArray => {
+        console.log(productDetailsArray)
+        //if (productDetailsArray.length > 0) {
+        //  this.SubjectStore.setVip(true)
+        //} else {
+        //  this.SubjectStore.setVip(false)
+        //}
+      }).catch(err => console.log(err)))
+      .catch(err => console.log(err))
+    } else { // iOS
+      /*
+      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/vip').once('value').then((snap)=> {
+        if (snap.exists()) {
+          if (snap.val()) {
+            this.SubjectStore.setVip(true)
+          } else {
+            this.SubjectStore.setVip(false)
+          }
+        }
+      })
+      */
+    }
   }
 
   // removeListener
