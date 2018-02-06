@@ -61,15 +61,6 @@ export default class SessionCheckScene extends Component {
           ///////// 非同步 /////////
           this.uploadSignUpData() // 非同步上傳大頭照
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
-          //this.uploadSignUpProfile() // 非同步上傳註冊資料
-          //this.visitorsListener() // 來訪監聽
-          //this.goodImpressionListener() // 好感監聽
-          //this.matchListener() // 配對
-          //this.initChatRoomListener() // 聊天室配對
-          //this.blockadeListener() // 封鎖
-          
-          ///////// 同步 /////////
-          //this.uploadEmailVerity()
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
           this.uxSignIn(this.SignUpStore.email,this.SignUpStore.password)
         } else { 
@@ -80,17 +71,7 @@ export default class SessionCheckScene extends Component {
           ///////// 非同步 /////////
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
-          //this.initChatRoomListener() // 聊天室配對
           await this.initPreySexualOrientation()
-          //this.setVip()
-          //this.visitorsListener() // 來訪監聽
-          //this.goodImpressionListener() // 好感監聽
-          //this.matchListener() // 配對
-          //this.chatRoomListener() // 聊天室配對
-          //this.blockadeListener() // 封鎖
-          //this.collectionDB() // 從LocalDB抓配對資料
-          ///////// 同步 /////////
-          //this.uploadEmailVerity()
         }
         Actions.Drawer({type: 'reset'}) // 進入 Drawer
       } else {
@@ -109,12 +90,6 @@ export default class SessionCheckScene extends Component {
   initialize = () => {
     AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
     this.removeMeetChanceListener() // 非同步移除地理監聽
-    //this.removeMeetCuteListener() // 移除邂逅監聽
-    //this.removeVisitorsListener() // 移除邂逅監聽
-    //this.removeGoodImpressionListener() // 移除好感監聽
-    //this.removeMatchListener() // 配對
-    //this.removeChatRoomListener() // 聊天室配對
-    //this.removeBlockadeListener() // 封鎖
     this.SignUpStore.initialize() // 初始註冊入狀態
     this.SignInStore.initialize() // 初始化登入狀態
     this.SubjectStore.initialize() // 初始主體入狀態
@@ -122,7 +97,6 @@ export default class SessionCheckScene extends Component {
     this.MeetCuteStore.initialize()
     this.FateStore.initialize()
     this.ChatStore.initialize()
-    //this.LineStore.initialize()
   }
 
   uploadSignUpData = () => {
@@ -132,6 +106,7 @@ export default class SessionCheckScene extends Component {
     .then(uploadedFile => {
       const album = new Object
       album[Object.keys(this.SignUpStore.album)[0]] = uploadedFile.downloadURL
+      this.firebase.database().ref('bonus/' + this.SubjectStore.uid).set(0)
       this.firebase.database().ref('users/' + this.SubjectStore.uid).set({
         avatar: uploadedFile.downloadURL,
         album: album,
@@ -139,20 +114,19 @@ export default class SessionCheckScene extends Component {
         address: this.SignUpStore.address,
         nickname: this.SignUpStore.nickname,
         birthday: this.SignUpStore.birthday,
-        bonus: 0,
         online: true,
         chatStatus: 0
       }).then(() => { 
-        console.log('上傳註冊資料成功')
+        //console.log('上傳註冊資料成功')
         this.firebase.database().ref('meetCuteList/' + this.sexualOrientationToString() + '/' + this.SubjectStore.uid).set(true)
         this.geoUploadFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.sexualOrientationToString()))
         this.geoQueryFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.oppositeSexualOrientationToString()))
         this.uploadLocationWhenSignUp()
       }).catch(() => {
-        console.log('上傳註冊資料失敗')
+        //console.log('上傳註冊資料失敗')
       })
     }).catch(() => {
-      console.log('使用者大頭照上傳失敗')
+      //console.log('使用者大頭照上傳失敗')
     })
   }
 
@@ -259,56 +233,22 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
           this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
           this.SubjectStore.setChatStatus(snap.val().chatStatus || 0)
-          this.SubjectStore.setBonus(parseInt(snap.val().bonus) || 0)
           if (snap.val().preySexualOrientation) {
             // 如果有性別
             this.geoUploadFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + this.reverseString(snap.val().preySexualOrientation)))
             this.geoQueryFire = new GeoFire(this.firebase.database().ref('/meetChanceList/' + snap.val().preySexualOrientation))
             this.uploadLocationWhenSignIn(snap.val().latitude,snap.val().longitude)
           }
-          // Tasks
-          this.SubjectStore.setTask1(snap.val().task1)
-          this.SubjectStore.setTask2(snap.val().task2)
-          this.SubjectStore.setTask3(snap.val().task3)
-          this.SubjectStore.setTask4(snap.val().task4)
-          // hide
-          //this.SubjectStore.setHideMeetCute(snap.val().hideMeetCute || false)
-          //this.SubjectStore.setHideMeetChance(snap.val().hideMeetChance || false)
-          //this.SubjectStore.setHideVister(snap.val().hideVister || false)
-          //this.SubjectStore.setHideMessage(snap.val().hideMessage || false)
-          // stars
-          //this.SubjectStore.setAllArticlesStars(snap.val().stars || { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 })
-          // meetCute config
-          //this.MeetCuteStore.setMeetCuteMinAge(snap.val().meetCuteMinAge || 18)
-          //this.MeetCuteStore.setMeetCuteMaxAge(snap.val().meetCuteMaxAge || 50)
-          //this.MeetCuteStore.setMeetCuteRadar(snap.val().meetCuteRadar)
-          //this.MeetCuteStore.setMeetCuteThreePhotos(snap.val().meetCuteThreePhotos)
-          // meetChance config
-          //this.MeetChanceStore.setMeetChanceMinAge(snap.val().meetChanceMinAge || 18)
-          //this.MeetChanceStore.setMeetChanceMaxAge(snap.val().meetChanceMaxAge || 50)
-          //this.MeetChanceStore.setMeetChanceRadar(snap.val().meetChanceRadar)
-          //this.MeetChanceStore.setMeetChanceOfflineMember(snap.val().meetCuteOfflineMember)
-          // LineStore
-          //this.LineStore.setUid(this.SubjectStore.uid)
-          //this.LineStore.fetchConvList()
-          //
-          //this.SubjectStore.setLatitude(snap.val().latitude || 25.028031)
-          //this.SubjectStore.setLongitude(snap.val().longitude || 121.516815)
-          //this.MeetCuteStore.setLatitude(snap.val().latitude || 25.028031)
-          //this.MeetCuteStore.setLongitude(snap.val().longitude || 121.516815)
-          //this.MeetChanceStore.setLatitude(snap.val().latitude || 25.028031)
-          //this.MeetChanceStore.setLongitude(snap.val().longitude || 121.516815)
-          //this.FateStore.setLatitude(snap.val().latitude || 25.028031)
-          //this.FateStore.setLongitude(snap.val().longitude || 121.516815)
-          //
-          //this.ChatStore.setNickname(snap.val().nickname)
-          //
         } else {
           //
         }
-        //this.ControlStore.setSyncDetector(true) // 同步完成
       }, error => {
-        //this.ControlStore.setSyncDetector(true) // 同步完成
+        console.log(error)
+      })
+      // bonus
+      this.firebase.database().ref('bonus/' + this.SubjectStore.uid).once('value',snap => {
+        this.SubjectStore.setBonus(parseInt(snap.val()) || 0)
+      }, error => {
         console.log(error)
       })
 

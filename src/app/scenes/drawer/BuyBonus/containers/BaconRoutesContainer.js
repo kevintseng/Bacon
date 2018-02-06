@@ -85,7 +85,7 @@ export default class BaconRoutesContainer extends Component {
         this.SubjectStore.addBonus(bonus)
         await this.firebase
           .database()
-          .ref(`users/${this.SubjectStore.uid}/bonus`)
+          .ref(`bonus/${this.SubjectStore.uid}`)
           .set(this.SubjectStore.bonus + bonus)
           .then(() => {
             Actions.AboutMe({ type: 'reset' })
@@ -106,7 +106,7 @@ export default class BaconRoutesContainer extends Component {
           if (this.purchaseState === 'PurchasedSuccessfully') {
             this.firebase
               .database()
-              .ref(`users/${this.SubjectStore.uid}/bonus`)
+              .ref(`bonus/${this.SubjectStore.uid}`)
               .set(this.SubjectStore.bonus + bonus)
             this.SubjectStore.addBonus(bonus)
           }

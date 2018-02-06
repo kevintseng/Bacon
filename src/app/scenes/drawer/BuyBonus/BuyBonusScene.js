@@ -92,7 +92,7 @@ const styles = {
 }
 
 //@inject('ControlStore') @observer
-export default class BonusScene extends Component {
+export default class BuyBonusScene extends Component {
 
   constructor(props) {
     super(props)
