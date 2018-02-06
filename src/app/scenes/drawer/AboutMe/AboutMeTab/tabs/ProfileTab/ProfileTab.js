@@ -60,7 +60,7 @@ export default class ProfileTab extends Component {
   }
 
   goToQUpgrade = () => {
-    Actions.Bonus()
+    Actions.BuyBonus()
     //alert('轉到Ｑ點儲值頁')
   }
 

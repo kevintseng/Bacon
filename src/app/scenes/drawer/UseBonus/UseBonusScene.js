@@ -140,7 +140,7 @@ export default class UseBonusScene extends Component {
 
   goToPay = () => {
     const bonus = this.SubjectStore.bonus - this.cost()
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/bonus').set(bonus).then(() => {
+    this.firebase.database().ref('bonus/' + this.SubjectStore.uid).set(bonus).then(() => {
       this.SubjectStore.setBonus(bonus)
       this.setState({
         visible: false
