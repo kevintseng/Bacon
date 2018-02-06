@@ -4,21 +4,15 @@ import { inject, observer } from 'mobx-react'
 import RNGooglePlaces from 'react-native-google-places'
 
 import Bonus from '../../../../views/Bill/Bonus'
-import PolicyModalContainer from '../../Setting/SettingEdit/containers/SettingAbout/PolicyModalContainer'
-import RuleModalContainer from '../../Setting/SettingEdit/containers/SettingAbout/RuleModalContainer'
+//import PolicyModalContainer from '../../Setting/SettingEdit/containers/SettingAbout/PolicyModalContainer'
+//import RuleModalContainer from '../../Setting/SettingEdit/containers/SettingAbout/RuleModalContainer'
 
 const { InAppUtils } = NativeModules
 
 const styles = {
-  link: {
-    fontFamily: 'NotoSans',
-    flexWrap: "wrap",
-    fontSize: 14,
-  },
-  text: {
-    fontFamily: 'NotoSans',
-    flexWrap: "wrap",
-  },
+  view: { 
+    alignItems: 'center' 
+  }
 }
 
 @inject('ControlStore') @observer
@@ -30,6 +24,7 @@ export default class BonusContainer extends Component {
   }
 
   componentWillMount() {
+/*
     if (Platform.OS === 'ios') {
       const products = [
         'com.kayming.bacon.q_points_200',
@@ -44,13 +39,12 @@ export default class BonusContainer extends Component {
         console.log('Error: ', error)
       })
     }
+*/
   }
 
   render() {
     return(
-      <View style={{ alignItems: "center" }}>
-        <PolicyModalContainer/>
-        <RuleModalContainer/>
+      <View style={styles.view}>
         <Bonus
           topCheck={ this.ControlStore.bonus[200] }
           middleCheck={ this.ControlStore.bonus[600] }

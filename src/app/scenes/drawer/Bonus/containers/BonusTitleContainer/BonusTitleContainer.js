@@ -3,6 +3,15 @@ import { View, Animated } from 'react-native'
 
 import UpgradeTitle from '../../../../../views/UpgradeTitle'
 
+const styles = {
+  view: {
+    alignItems: 'center'
+  },
+  fade: {
+    position: 'absolute'
+  }
+}
+
 export default class BonusTitleContainer extends Component {
 
   constructor(props) {
@@ -16,6 +25,12 @@ export default class BonusTitleContainer extends Component {
 
   componentDidMount() {
     this.cycleAnimation()         
+  }
+
+  componentWillUnmount() {
+    this.state.fadeA.stopAnimation() 
+    this.state.fadeB.stopAnimation()   
+    this.state.fadeC.stopAnimation()     
   }
 
   cycleAnimation = () => {
@@ -63,29 +78,31 @@ export default class BonusTitleContainer extends Component {
         }      
       )    
       ]
-    ).start(() => {
-      this.cycleAnimation()
+    ).start((o) => {
+      if(o.finished) {
+        this.cycleAnimation()
+      }
     }) 
   }
 
   render() {
     return(
-      <View style={{alignItems: 'center'}}>
-        <Animated.View style={{opacity: this.state.fadeA, position: 'absolute'}}>
+      <View style={styles.view}>
+        <Animated.View style={[styles.fade,{opacity: this.state.fadeA}]}>
           <UpgradeTitle
             source={require('./img/ico_deposit_1.png')}
             topText='可用Q點來增加每天巧遇留言的次數'
             upperText='來跟更多新朋友打招呼吧'
           />
         </Animated.View>
-        <Animated.View style={{opacity: this.state.fadeB, position: 'absolute'}}>
+        <Animated.View style={[styles.fade,{opacity: this.state.fadeB}]}>
           <UpgradeTitle
             source={require('./img/ico_deposit_2.png')}
             topText='可用Q點來進行更多的來訪留言'
             upperText='讓對方的印象深刻'
           />
         </Animated.View>
-        <Animated.View style={{opacity: this.state.fadeC, position: 'absolute'}}>
+        <Animated.View style={[styles.fade,{opacity: this.state.fadeC}]}>
           <UpgradeTitle
             source={require('./img/ico_deposit_3.png')}
             topText='可用Q點讓你的來訪留言排在最前面'
