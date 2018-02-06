@@ -270,6 +270,11 @@ export default class HelloChatRoomScene extends Component {
     this.messageSendCount = 0   
   }
 
+  cutLine = () => {
+    //Keyboard.dismiss()
+    Actions.UseBonus({uid: this.props.preyID, _type: 'C'})
+  }
+
   render() {
     return (
       <View style={styles.view}>
@@ -280,6 +285,9 @@ export default class HelloChatRoomScene extends Component {
           user={{
             _id: this.SubjectStore.uid,
           }}
+          showChoose
+          showCutLine
+          chooseTopOnPress={this.cutLine}
           onPressLeftIcon={this.onPressLeftIcon}
           onPressRightIcon={this.onPressRightIcon}
           onPressAvatar={this.onPressAvatar}
