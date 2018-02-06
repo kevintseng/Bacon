@@ -49,13 +49,14 @@ export default class ProfileTab extends Component {
   }
 
   goToMemberUpgrade = () => {
-    if (!this.SubjectStore.vip) {
+    if (this.SubjectStore.vip) {
       Alert.alert(
         '管理員提示', '您已是高級會員', [
         {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false }
       )
     } else {
       Actions.Upgrade()
+      //alert('轉到升級頁')
     }
   }
 

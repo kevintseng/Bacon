@@ -54,6 +54,7 @@ import PreviewCardScene from './scenes/drawer/Card/PreviewCard/PreviewCardScene'
 // usebonus
 import UseBonusScene from './scenes/drawer/UseBonus/UseBonusScene'
 import BuyBonusScene from './scenes/drawer/BuyBonus/BuyBonusScene'
+import UpgradeScene from './scenes/drawer/Upgrade/UpgradeScene'
 // ###############header components################ //
 import BaconTitle from './views/BaconTitle/BaconTitle'
 import BaconMenu from './views/BaconMenu/BaconMenu'
@@ -244,6 +245,7 @@ export default class Routes extends Component {
 
               <Scene key="UseBonus" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="使用Ｑ點" renderBackButton={this.baconArrow} component={UseBonusScene} />
               <Scene key="BuyBonus" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="Ｑ點儲值" renderBackButton={this.baconArrow} component={BuyBonusScene} />
+              <Scene key="Upgrade" hideTabBar navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} title="會員升級" renderBackButton={this.baconArrow} component={UpgradeScene} />
 
               
             </Scene>
