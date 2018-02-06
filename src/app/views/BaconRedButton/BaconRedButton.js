@@ -33,11 +33,11 @@ const styles = {
   }
 }
 
-const BaconRedButton = ({ routesText, routesOnPress, warningText, warningOnPress }) => {
+const BaconRedButton = ({ routesText, routesOnPress, warningText, warningOnPress,confirm }) => {
   return(
     <View style={ styles.view }>
       <TouchableOpacity onPress={ routesOnPress }>
-        <Image style={ styles.routesImage } source={require('./img/btn_gredient.png')}>
+        <Image style={ styles.routesImage } source={confirm ? require('./img/btn_qy_confirm.png') : require('./img/btn_gredient.png')}>
           <Text style={ styles.routesText }>{ routesText }</Text>
         </Image>
       </TouchableOpacity>

@@ -5,6 +5,7 @@ import { Actions } from 'react-native-router-flux'
 
 import UseBonus from '../../../views/UseBonus'
 import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
+import UseBonusModal from '../../../views/UseBonusModal'
 
 const styles = {
   view: {
@@ -20,7 +21,8 @@ export default class UseBonusScene extends Component {
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
     this.state = {
-      loading: true
+      loading: true,
+      visible: false
     }
   }
 
@@ -51,7 +53,13 @@ export default class UseBonusScene extends Component {
   }
 
   routesOnPress = () => {
-    alert('繼續')
+    if (this.SubjectStore.bonus >= this.cost()) {
+      this.setState({
+        visible: true
+      })
+    } else {
+      alert('您的Q點不夠')
+    }
   }
 
   reasonTopStr = () => {
@@ -124,22 +132,50 @@ export default class UseBonusScene extends Component {
     }     
   }
 
+  onRequestClose = () => {
+    this.setState({
+      visible: false
+    })
+  }
+
+  goToPay = () => {
+    const bonus = this.SubjectStore.bonus - this.cost()
+    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/bonus').set(bonus).then(() => {
+      this.SubjectStore.setBonus(bonus)
+      this.setState({
+        visible: false
+      })
+      //Actions.pop()
+    }).catch(() => {
+      alert('失敗')
+    })
+  }
+
   render() {
     return(
       <View style = {styles.view}>
        { this.state.loading ? <BaconActivityIndicator/> :
-        <UseBonus
-          bonus={this.SubjectStore.bonus}
-          avatar={this.state.avatar}
-          reasonTopStr={this.reasonTopStr()}
-          nickname={this.state.nickname}
-          reasonBottomStr={this.reasonBottomStr()}
-          preStr={this.preStr()}
-          cost={this.cost()}
-          postStr={this.postStr()}
-          routesText={'繼續'}
-          routesOnPress={this.routesOnPress}
-        />
+        <View style = {styles.view}>
+          <UseBonusModal
+            visible={this.state.visible}
+            nowBonus={this.SubjectStore.bonus}
+            useBonus={this.cost()}
+            onRequestClose={this.onRequestClose}
+            routesOnPress={this.goToPay}
+          />
+          <UseBonus
+            bonus={this.SubjectStore.bonus}
+            avatar={this.state.avatar}
+            reasonTopStr={this.reasonTopStr()}
+            nickname={this.state.nickname}
+            reasonBottomStr={this.reasonBottomStr()}
+            preStr={this.preStr()}
+            cost={this.cost()}
+            postStr={this.postStr()}
+            routesText={'繼續'}
+            routesOnPress={this.routesOnPress}
+          />
+        </View>
         }
       </View>
     )
