@@ -182,7 +182,9 @@ export default class ChatTabScene extends Component {
     .then(snap => { 
       const chatRoomRecipient = snap[0]._value || new Object
       const chatRoomRecipientKeys = Object.keys(chatRoomRecipient)
+      const cutLine = Object.keys(chatRoomRecipient).map(chatRoomKey => chatRoomRecipient[chatRoomKey].cutLine || false)
       const chatRoomRecipientUids = chatRoomRecipientKeys.map(chatRoomKey => chatRoomRecipient[chatRoomKey].chatRoomCreater)
+      //console.log(cutLine)
       // Promise
       const chatRoomRecipientPromise = chatRoomRecipientUids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
       const chatRoomRecipientLastMessagePromise = chatRoomRecipientKeys.map(chatRoomKey => this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/lastMessage').once('value'))
@@ -204,7 +206,8 @@ export default class ChatTabScene extends Component {
                   lastChatContent: lastMessages[index].val(),
                   chatStatus: data[index].val().chatStatus,
                   online: data[index].val().online,
-                  nonHandleChatCount: nonHandleChatCounts[index].val()
+                  nonHandleChatCount: nonHandleChatCounts[index].val(),
+                  showCutLine: cutLine[index]
                   })              
                 })
 

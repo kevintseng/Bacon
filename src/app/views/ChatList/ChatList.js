@@ -130,7 +130,7 @@ const getUserStateColor = statusCode => {
   } 
 }
 
-const ChatList = ({name, avatar, onPress, online, lastChatContent,nonHandleChatCount,showBadge,showTag,userState,userStateColor, chatStatus }) => {
+const ChatList = ({name, avatar, onPress, online, lastChatContent,nonHandleChatCount,showBadge,showCutLine,userState,userStateColor, chatStatus }) => {
 
   return(
     <TouchableOpacity style={styles.chat} activeOpacity={1} onPress={ onPress }>
@@ -157,7 +157,7 @@ const ChatList = ({name, avatar, onPress, online, lastChatContent,nonHandleChatC
             <Badge value={nonHandleChatCount} containerStyle={ styles.nonHandleChat } textStyle={styles.nonHandleChatText}/>
           </View>
           <View style={styles.image}>
-            { showTag && <Image source={require('./img/ico_chat_flag.png')}/> }
+            { showCutLine && <Image source={require('./img/ico_chat_flag.png')}/> }
           </View>
         </View>
       </View>
