@@ -155,7 +155,10 @@ export default class UseBonusScene extends Component {
   doBenifit = () => {
     switch (this.props._type) {
       case 'A':
-        //return ''
+       this.firebase.database().ref('chats/' + this.ChatStore.chatRoomKey + '/messageSendCount').set(0).then(() => {
+          this.ChatStore.setMessageSendCount(0)
+          Actions.pop()
+       })
         break
       case 'B':
         //return '可以再與10位會員進行來訪留言'
