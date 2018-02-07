@@ -44,7 +44,7 @@ export default class VisitorsChatTab extends Component {
               lastChatContent={item.lastChatContent}
               nonHandleChatCount={item.nonHandleChatCount}
               showBadge={item.nonHandleChatCount > 0}
-              showTag={item.showTag}
+              showCutLine={item.showCutLine}
               online={item.online}
               chatStatus={item.chatStatus}
               //userState={item.userState}

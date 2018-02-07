@@ -17,6 +17,7 @@ export default class ChatStore {
   @observable chatModal
 
   @observable goToChatTab
+  @observable showChoose
 
   constructor(firebase) {
     this.firebase = firebase
@@ -43,8 +44,13 @@ export default class ChatStore {
     this.nickname = null
     this.from = null
     this.goToChatTab = false
+    this.showChoose = true
     //this.chatMatchModal = true
     //this.chatModal = true
+  }
+
+  @action setShowChoose = boolean => {
+    this.showChoose = boolean
   }
 
   @action setGoToChatTab = boolean => {

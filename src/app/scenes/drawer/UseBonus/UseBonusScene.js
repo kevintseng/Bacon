@@ -13,13 +13,14 @@ const styles = {
   }
 }
 
-@inject('firebase','SubjectStore') @observer
+@inject('firebase','SubjectStore','ChatStore') @observer
 export default class UseBonusScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    this.ChatStore = this.props.ChatStore
     this.state = {
       loading: true,
       visible: false
@@ -145,10 +146,28 @@ export default class UseBonusScene extends Component {
       this.setState({
         visible: false
       })
-      //Actions.pop()
+      this.doBenifit()
     }).catch(() => {
       alert('失敗')
     })
+  }
+
+  doBenifit = () => {
+    switch (this.props._type) {
+      case 'A':
+        //return ''
+        break
+      case 'B':
+        //return '可以再與10位會員進行來訪留言'
+        break
+      case 'C':
+        this.firebase.database().ref('nonHandleChatRooms/' + this.ChatStore.chatRoomKey + '/cutLine').set(true)
+        this.firebase.database().ref('chat_rooms/' + this.ChatStore.chatRoomKey + '/cutLine').set(true)
+        this.ChatStore.setShowChoose(false)
+        Actions.pop()
+        //return ''
+        break
+    }
   }
 
   render() {

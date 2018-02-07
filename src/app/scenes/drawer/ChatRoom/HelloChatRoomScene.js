@@ -31,16 +31,18 @@ const metadata = {
   contentType: 'image/jpeg'
 }
 
-@inject('firebase','SubjectStore') @observer
+@inject('firebase','SubjectStore','ChatStore') @observer
 export default class HelloChatRoomScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
+    this.ChatStore = this.props.ChatStore
     this.chatRoomQuery = null
     this.imagesQuery = null
     this.messageSendCount = 0
+    //this.showChoose = true
     //this.messageSendPeople = 0
     this.slefMessagesArray = new Array
     this.slefImagesArray = new Array
@@ -71,13 +73,16 @@ export default class HelloChatRoomScene extends Component {
       } else {
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').once('value', child => {
           this.messageSendCount = child.val()
-          this.messagesQuery = this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages')
-          this.imagesQuery = this.firebase.database().ref('chats/' +  this.props.chatRoomKey + '/images')
-          this.messagesQuery.on('value', child => {
-            this.setMessages(child.val()) // 改成child_added
-          })
-          this.imagesQuery.on('value', child => {
-            this.setImages(child.val()) // 改成child_added
+          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/cutLine').once('value', child => {
+            this.ChatStore.setShowChoose(!(child.val() || false))
+            this.messagesQuery = this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages')
+            this.imagesQuery = this.firebase.database().ref('chats/' +  this.props.chatRoomKey + '/images')
+            this.messagesQuery.on('value', child => {
+              this.setMessages(child.val()) // 改成child_added
+            })
+            this.imagesQuery.on('value', child => {
+              this.setImages(child.val()) // 改成child_added
+            })
           })
         })
       }
@@ -285,7 +290,7 @@ export default class HelloChatRoomScene extends Component {
           user={{
             _id: this.SubjectStore.uid,
           }}
-          showChoose
+          showChoose={this.ChatStore.showChoose}
           showCutLine
           chooseTopOnPress={this.cutLine}
           onPressLeftIcon={this.onPressLeftIcon}
