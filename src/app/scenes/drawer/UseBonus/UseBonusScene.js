@@ -161,6 +161,10 @@ export default class UseBonusScene extends Component {
        })
         break
       case 'B':
+        this.firebase.database().ref('hello_chat_rooms_count/' + this.SubjectStore.uid).set(0).then(() => {
+          this.ChatStore.setMessageSendPeople(0)
+          Actions.pop()
+        })
         //return '可以再與10位會員進行來訪留言'
         break
       case 'C':

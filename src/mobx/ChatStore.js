@@ -19,6 +19,7 @@ export default class ChatStore {
   @observable goToChatTab
   @observable showChoose
   @observable messageSendCount
+  @observable messageSendPeople
 
   constructor(firebase) {
     this.firebase = firebase
@@ -47,6 +48,7 @@ export default class ChatStore {
     this.goToChatTab = false
     this.showChoose = true
     this.messageSendCount = 0
+    this.messageSendPeople = 0
     //this.chatMatchModal = true
     //this.chatModal = true
   }
@@ -57,6 +59,10 @@ export default class ChatStore {
 
   @action setMessageSendCount = count => {
     this.messageSendCount = count
+  }
+
+  @action setMessageSendPeople = count => {
+    this.messageSendPeople = count
   }
 
   @action setGoToChatTab = boolean => {
