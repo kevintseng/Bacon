@@ -41,7 +41,7 @@ export default class HelloChatRoomScene extends Component {
     this.ChatStore = this.props.ChatStore
     this.chatRoomQuery = null
     this.imagesQuery = null
-    this.messageSendCount = 0
+    //this.messageSendCount = 0
     //this.showChoose = true
     //this.messageSendPeople = 0
     this.slefMessagesArray = new Array
@@ -72,7 +72,7 @@ export default class HelloChatRoomScene extends Component {
         Actions.MatchChatRoom({type: 'replace', chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
       } else {
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').once('value', child => {
-          this.messageSendCount = child.val()
+          this.ChatStore.setMessageSendCount(child.val())
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/cutLine').once('value', child => {
             this.ChatStore.setShowChoose(!(child.val() || false))
             this.messagesQuery = this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages')
@@ -185,7 +185,7 @@ export default class HelloChatRoomScene extends Component {
       ImageResizer.createResizedImage(res.uri, 600, 600, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
         .then(image => {
           //console.log(image.uri)
-          if (this.messageSendCount > 1) {
+          if (this.ChatStore.messageSendCount > 1) {
             alert('你已超過兩句限制')
           } else {
             this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
@@ -208,15 +208,15 @@ export default class HelloChatRoomScene extends Component {
   onSendMessage(messages = []) {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
-      if (this.messageSendCount > 1 ) {
+      if (this.ChatStore.messageSendCount > 1 ) {
         //alert('你已超過兩句限制')
         Keyboard.dismiss()
         Actions.UseBonus({uid: this.props.preyID, _type: 'A'})
       } else {
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
           .then(() => {
-            this.messageSendCount = this.messageSendCount + 1
-            this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.messageSendCount)
+            this.ChatStore.setMessageSendCount(this.ChatStore.messageSendCount + 1)
+            this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.ChatStore.messageSendCount)
             this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set(messages[0].text)
             this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
               if (!current) {
@@ -234,8 +234,8 @@ export default class HelloChatRoomScene extends Component {
   onSendImage = imageURL => {
     this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
     .then(() => {
-        this.messageSendCount = this.messageSendCount + 1
-        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.messageSendCount)
+        this.ChatStore.setMessageSendCount(this.ChatStore.messageSendCount + 1)
+        this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.ChatStore.messageSendCount)
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/lastMessage').set('傳送了圖片')
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
           if (!current) {
@@ -272,7 +272,7 @@ export default class HelloChatRoomScene extends Component {
     this.slefImagesArray = new Array
     this.MessagesAndImages = new Array
     this.sortedMessagesAndImages = new Array 
-    this.messageSendCount = 0   
+    //this.messageSendCount = 0   
   }
 
   cutLine = () => {
