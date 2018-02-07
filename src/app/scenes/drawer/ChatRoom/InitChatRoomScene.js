@@ -31,14 +31,15 @@ const styles = {
   }
 }
 
-@inject('firebase','SubjectStore') @observer
+@inject('firebase','SubjectStore','ChatStore') @observer
 export default class InitChatRoomScene extends Component {
 
   constructor(props) {
     super(props)
     this.firebase = this.props.firebase
     this.SubjectStore = this.props.SubjectStore
-    this.messageSendPeople = 0
+    this.ChatStore = this.props.ChatStore
+    //this.messageSendPeople = 0
     this.chatRoomQuery = null
     this.interested = null
     this.state = {
@@ -85,8 +86,10 @@ export default class InitChatRoomScene extends Component {
         }
       } else {
         // 初始聊天室
-        this.firebase.database().ref('chat_rooms').orderByChild('chatRoomCreater').equalTo(this.SubjectStore.uid).once('value',snap => {
-          this.messageSendPeople = Object.keys(snap.val() || new Object).length
+        this.firebase.database().ref('hello_chat_rooms_count/' + this.SubjectStore.uid).once('value',snap => {
+          //this.messageSendPeople = snap.val() || 0
+          this.ChatStore.setMessageSendPeople(snap.val() || 0)
+          //console.warn(this.messageSendPeople)
           this.interested = null
           this.setState({
             loading: false
@@ -167,7 +170,7 @@ export default class InitChatRoomScene extends Component {
   onSendMessage(messages = []) {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
-      if (this.messageSendPeople < 10) {
+      if (this.ChatStore.messageSendPeople < 2) {
         if (!this.interested) {
 
           const _messages = new Object
@@ -189,6 +192,13 @@ export default class InitChatRoomScene extends Component {
             lastMessage: messages[0].text,
             chatRoomRecipient: this.props.preyID,
           })
+          this.firebase.database().ref('hello_chat_rooms_count/' + this.SubjectStore.uid).transaction(current => {
+           if (!current) {
+              return 1
+            } else {
+              return current + 1
+            }
+          })
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
             if (!current) {
               return 1
@@ -205,7 +215,7 @@ export default class InitChatRoomScene extends Component {
   }
 
   onSendImage = imageURL => {
-    if (this.messageSendPeople < 10) {
+    if (this.ChatStore.messageSendPeople < 10) {
       if (!this.interested) {
 
         const _images = new Object
@@ -227,6 +237,13 @@ export default class InitChatRoomScene extends Component {
           lastMessage: '送出一張圖片',
           chatRoomRecipient: this.props.preyID
         })
+          this.firebase.database().ref('hello_chat_rooms_count/' + this.SubjectStore.uid).transaction(current => {
+           if (!current) {
+              return 1
+            } else {
+              return current + 1
+            }
+          })
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/' + this.SubjectStore.uid).transaction(current => {
           if (!current) {
             return 1
