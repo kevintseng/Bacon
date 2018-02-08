@@ -27,6 +27,13 @@ const styles = {
     justifyContent: 'flex-end',
     paddingBottom: 10,
     //backgroundColor: 'red'
+  },
+  titleView: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  titleRedPoint: {
+    marginLeft: 20
   }
 }
 
@@ -42,8 +49,9 @@ const CookieList = ({ name, age, avatar, children, onPress }) => {
         />
       </View>
       <View style={styles.content}>
-        <View>
+        <View style={styles.titleView}>
           <Text style={styles.title}>{ name }，{ age }</Text>
+          <Image style={styles.titleRedPoint} source={require('../../images/ico_meet_age_red.png')}/>
         </View>
         <View>
           { children }
