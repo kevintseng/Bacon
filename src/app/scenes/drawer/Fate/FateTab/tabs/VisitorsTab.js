@@ -59,6 +59,7 @@ export default class VisitorsTab extends Component {
                 avatar={ item.avatar }
                 age={ calculateAge(item.birthday) }
                 onPress={ this.onPress(item.key) }
+                showRedPoint={item.showRedPoint}
               >
                 <Text style={styles.child}>{this.duration(item.time) + '前來訪'}</Text>
               </CookieList>

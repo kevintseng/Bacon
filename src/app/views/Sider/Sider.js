@@ -14,6 +14,16 @@ const { width, height } = Dimensions.get('window')
 const picWidth = (width * 0.8)/3
 
 const styles = {
+  View: {
+    marginLeft:5, 
+    marginRight:5, 
+    marginTop: Platform.OS === 'ios' ? 25 : 10
+  },
+  menu: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center'
+  },
   scrollView: {
     flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 1)'
@@ -35,67 +45,99 @@ const styles = {
   topBlock: {
     //backgroundColor: 'red',
     marginBottom: 7
+  },
+  listItemView: {
+    marginTop: 7
+  },
+  displayNameView: {
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+  menuOpacity : {
+    opacity: 0
+  },
+  avatarView: {
+    alignItems: 'center',
+    marginTop: 10
+  },
+  loadingStyle: { 
+    size: 'small', 
+    color: '#b3b3b3' 
+  },
+  badgeView: {
+    alignItems: 'flex-start',
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+    marginTop: 14, 
+    marginBottom: 7
+  },
+  containerStyle: { 
+    backgroundColor: 'red'
   }
 }
 
-const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetChanceOnPress, meetCuteOnPress, fateOnPress, chatOnPress, settingOnPress, articleOnPress, masterOnPress, testOnPress,swiperOnPress }) => {
+const Drawer = ({ avatar, warningTop, warningBottom, displayName, displayNameOnPress, meetChanceOnPress, meetCuteOnPress, fateOnPress, chatOnPress, settingOnPress, articleOnPress, masterOnPress, testOnPress,swiperOnPress, showFateBadge,fateBadgeCount }) => {
 
   return(
     <ScrollView showsVerticalScrollIndicator={false} style = { styles.scrollView } >
-      <View style={{marginLeft:5, marginRight:5, marginTop: Platform.OS === 'ios' ? 25 : 10}}>
+      <View style={styles.View}>
 
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-          <View style={{opacity: 0}} pointerEvents="none">
-            <BaconMenu/>
+        <View style={styles.menu}>
+          <View style={styles.menuOpacity} pointerEvents="none">
+            <BaconMenu
+              //showRedPoint={showFateBadge}
+            />
           </View>
           <View>
             <BaconTitle/>
           </View>
           <View >
-            <BaconMenu/>
+            <BaconMenu
+              //showRedPoint={showFateBadge}
+            />
           </View>
         </View>
 
         <TouchableOpacity activeOpacity={1} style={styles.topBlock} onPress={ displayNameOnPress }>
-          <View style={{alignItems: 'center',marginTop: 10}}>
+          <View style={styles.avatarView}>
             <CircleImage
               disabled
               radius={75}
               source={{uri: avatar}}
               placeholderSource={require('../../../images/ico_qy_head_preload.png')}
-              loadingStyle={{ size: 'small', color: '#b3b3b3' }}
+              loadingStyle={styles.loadingStyle}
             />
           </View>
-          <View style={{alignItems: 'flex-start',flexDirection: 'row', justifyContent: 'space-between',marginTop: 14, marginBottom: 7}}>
+          <View style={styles.badgeView}>
             <View style={ styles.badge }>
-              <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
+              <Badge value={33} containerStyle={styles.containerStyle}/>
             </View>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <View style={styles.displayNameView}>
               <Text style={styles.displayName}>{displayName || '載入中'}</Text>
             </View>
             <View style={styles.badge}>
-              <Badge value={33} containerStyle={{ backgroundColor: 'red'}}/>
+              <Badge value={33} containerStyle={styles.containerStyle}/>
             </View>
           </View>
         </TouchableOpacity>
 
-        <View style={{marginTop: 7}}>
+        <View style={styles.listItemView}>
           <ListItem listPicSource={require('./img/ico_menu_meet.png')} listTitle='巧遇' showBadge={false} badgeCount={120} listOnPress={ meetChanceOnPress }/>
         </View>
         
-        <View style={{marginTop: 7}}>
+        <View style={styles.listItemView}>
           <ListItem listPicSource={require('./img/ico_menu_qy.png')} listTitle='邂逅' showBadge={false} listOnPress={ meetCuteOnPress }/>
         </View>
 
-        <View style={{marginTop: 7}}>
+        <View style={styles.listItemView}>
           <ListItem listPicSource={require('./img/ico_menu_chat.png')} listTitle='訊息' showBadge={false} badgeCount={6} listOnPress={ chatOnPress }/>
         </View>
 
-        <View style={{marginTop: 7}}>
-          <ListItem listPicSource={require('./img/ico_menu_yf.png')} listTitle='緣分' showBadge={false} badgeCount={9} listOnPress={ fateOnPress }/>
+        <View style={styles.listItemView}>
+          <ListItem listPicSource={require('./img/ico_menu_yf.png')} listTitle='緣分' showBadge={showFateBadge} badgeCount={fateBadgeCount} listOnPress={ fateOnPress }/>
         </View>
                 
-        <View style={{marginTop: 7}}>
+        <View style={styles.listItemView}>
           <ListItem listPicSource={require('./img/ico_menu_setting.png')} listTitle='設定' listOnPress={ settingOnPress }/>
         </View>
 

@@ -1,26 +1,22 @@
 import React from 'react'
 import { Image, TouchableOpacity } from 'react-native'
 import { Actions } from "react-native-router-flux"
+import { observer, inject } from 'mobx-react'
 
 const menuOnPress = () => Actions.refresh({ key: "Drawer", open: value => !value })
 
 const styles = {
   menu: {
-    //paddingLeft: 10,
-    //paddingRight: 10,
-    //paddingBottom: 10,
-    //paddingTop: Platform.OS === 'ios' ? 6 : 3,
     padding : 10, // 加大點擊範圍
-    //backgroundColor: 'yellow'
   }
 }
 
-const BaconMenu = () => {
+const BaconMenu = inject('SubjectStore')(observer(() => {
   return(
     <TouchableOpacity style={ styles.menu } onPress={ menuOnPress } >
-      <Image source={require('./img/btn_menu.png')} />
+      <Image source={this.SubjectStore.showFateBadge ? require('./img/btn_menu_noti.png') : require('./img/btn_menu.png')} />
     </TouchableOpacity>
   )
-}
+}))
 
 export default BaconMenu

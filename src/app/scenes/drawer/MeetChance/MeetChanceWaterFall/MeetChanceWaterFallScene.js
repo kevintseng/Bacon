@@ -92,7 +92,10 @@ export default class MeetChanceWaterFallScene extends Component {
   )
 
   updateVistorHistory = uid => {
-    this.firebase.database().ref('visitorList/'  + uid + '/' + this.SubjectStore.uid).set(Date.now())
+    this.firebase.database().ref('visitorList/'  + uid + '/' + this.SubjectStore.uid).set({
+      time: Date.now(),
+      showRedPoint: true
+    })
   }
 
   render() {

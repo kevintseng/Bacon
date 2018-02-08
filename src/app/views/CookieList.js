@@ -37,7 +37,7 @@ const styles = {
   }
 }
 
-const CookieList = ({ name, age, avatar, children, onPress }) => {
+const CookieList = ({ name, age, avatar, children, onPress, showRedPoint }) => {
 
   return(
     <TouchableOpacity style={styles.view} activeOpacity={1} onPress={ onPress }>
@@ -51,7 +51,7 @@ const CookieList = ({ name, age, avatar, children, onPress }) => {
       <View style={styles.content}>
         <View style={styles.titleView}>
           <Text style={styles.title}>{ name }，{ age }</Text>
-          <Image style={styles.titleRedPoint} source={require('../../images/ico_meet_age_red.png')}/>
+          { showRedPoint && <Image style={styles.titleRedPoint} source={require('../../images/ico_meet_age_red.png')}/>}
         </View>
         <View>
           { children }

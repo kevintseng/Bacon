@@ -48,6 +48,7 @@ export default class SubjectStore {
   @observable tasks
   // control
   @observable loading
+  @observable fateBadgeCount
 
   constructor(firebase) {
     this.firebase = firebase
@@ -55,6 +56,10 @@ export default class SubjectStore {
   }
 
   // String to Value
+
+  @computed get showFateBadge() {
+    return this.fateBadgeCount > 0 ? true : false
+  }
 
   @computed get age() {
     return calculateAge(this.birthday)
@@ -158,6 +163,7 @@ export default class SubjectStore {
     this.profileModal = true
     this.settingModal = true
     this.loading = true
+    this.fateBadgeCount = 0
   }
 
   @action setUid = uid => {
@@ -444,6 +450,10 @@ export default class SubjectStore {
 
   @action openSettingModal = () => {
     this.settingModal = false
+  }
+
+  @action setFateBadgeCount = count => {
+    this.fateBadgeCount = count
   }
 
   // 演算法

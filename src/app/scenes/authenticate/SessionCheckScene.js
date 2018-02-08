@@ -50,6 +50,8 @@ export default class SessionCheckScene extends Component {
     this.matchQuery = null
     this.blockadeQuery_A = null
     this.blockadeQuery_B = null
+    //
+    this.redPointListener = null
   }
 
   componentWillMount() {
@@ -59,6 +61,7 @@ export default class SessionCheckScene extends Component {
         this.SubjectStore.setEmail(user.email) // 設置 email
         if (this.ControlStore.authenticateIndicator == '註冊') {
           ///////// 非同步 /////////
+          this.setRedPointListener()
           this.uploadSignUpData() // 非同步上傳大頭照
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
@@ -67,6 +70,7 @@ export default class SessionCheckScene extends Component {
           // 從登入來的
           //移除所有監聽函數 初始化狀態
           this.initialize()
+          this.setRedPointListener()
           this.setOnline(true) // 非同步設置使用者上線
           this.setVip()
           ///////// 非同步 /////////
@@ -91,6 +95,7 @@ export default class SessionCheckScene extends Component {
   initialize = () => {
     AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
     this.removeMeetChanceListener() // 非同步移除地理監聽
+    this.removeRedPointListener() // 非同步移除紅點監聽
     this.SignUpStore.initialize() // 初始註冊入狀態
     this.SignInStore.initialize() // 初始化登入狀態
     this.SubjectStore.initialize() // 初始主體入狀態
@@ -292,7 +297,7 @@ export default class SessionCheckScene extends Component {
   setVip = () => {
     if (Platform.OS === "android") {
       InAppBilling.open().then(() => InAppBilling.getSubscriptionDetailsArray(['3_month', 'premium_3m']).then( productDetailsArray => {
-        console.log(productDetailsArray)
+        //console.log(productDetailsArray)
         //if (productDetailsArray.length > 0) {
         //  this.SubjectStore.setVip(true)
         //} else {
@@ -315,7 +320,22 @@ export default class SessionCheckScene extends Component {
     }
   }
 
+  setRedPointListener = () => {
+    this.redPointListener = this.firebase.database().ref('visitorList/' + this.SubjectStore.uid).orderByChild('showRedPoint').equalTo(true)
+    this.redPointListener.on('value',child => {
+      this.SubjectStore.setFateBadgeCount(child._childKeys.length)
+    })
+  }
+
   // removeListener
+
+  removeRedPointListener = () => {
+    if (this.redPointListener) {
+      this.redPointListener.off()
+      this.redPointListener = null
+    }
+  }
+
   removeMeetChanceListener = () => {
     if (this.geoUploadFire) {
       this.geoUploadFire = null
