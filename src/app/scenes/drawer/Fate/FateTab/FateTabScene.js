@@ -77,7 +77,8 @@ export default class FateTabScene extends Component {
   fetchVisitors = () => {
     let visitors = new Array
     return this.firebase.database().ref('visitorList/' + this.SubjectStore.uid).once('value',child => {
-      const usersPromise = Object.keys(child.val()).map(uid => this.firebase.database().ref('users/' + uid).once('value'))
+      const visitorUids = Object.keys(child.val() || new Object)
+      const usersPromise = visitorUids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
       Promise.all(usersPromise)
       .then(data => {
         visitors = data.map(snap => {
@@ -86,10 +87,12 @@ export default class FateTabScene extends Component {
             nickname: snap.val().nickname,
             avatar: snap.val().avatar,
             birthday: snap.val().birthday,
-            time: child.val()[snap.key]
+            time: child.val()[snap.key].time,
+            showRedPoint:  child.val()[snap.key].showRedPoint
           }
         })
         this.FateStore.setVisitorsPreys(visitors)
+        visitorUids.map(uid => this.firebase.database().ref('visitorList/' + this.SubjectStore.uid + '/' + uid + '/showRedPoint').set(false))
       })
     })
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Platform, View } from 'react-native'
-import { inject, observer } from 'mobx-react'
+import { observer, inject, Observer } from 'mobx-react'
 import { Router, Scene, Actions } from 'react-native-router-flux'
 
 // ###############authenticate################ //
@@ -96,7 +96,7 @@ const styles = {
   },
 }
 
-@inject('ChatStore') @observer
+@inject('ChatStore') //@observer
 export default class Routes extends Component {
 
   constructor(props) {
@@ -152,6 +152,8 @@ export default class Routes extends Component {
   goToPreview = () => {
     Actions.PreviewCard({uid: this.ChatStore.preyID })
   }
+
+  //baconMenu = () => <Observer>{() => <View style={styles.baconMenu}><BaconMenu showRedPoint={this.SubjectStore.showFateBadge}/></View>}</Observer>
 
   baconMenu = () => <View style={styles.baconMenu}><BaconMenu /></View>
 

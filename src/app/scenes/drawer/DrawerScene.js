@@ -99,6 +99,8 @@ export default class DrawerScene extends Component {
             //articleOnPress={ this.goToArticle }
             settingOnPress={ this.goToSetting }
             //masterOnPress={ this.gotToMster }
+            showFateBadge={this.SubjectStore.showFateBadge}
+            fateBadgeCount={this.SubjectStore.fateBadgeCount}
           />
         }
         tapToClose
