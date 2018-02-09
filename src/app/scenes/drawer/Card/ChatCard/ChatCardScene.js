@@ -147,15 +147,16 @@ export default class ChatCardScene extends Component {
             showReport
             onPressReport={ this.onPressReport }
             onPrssBlockade={ this.onPrssBlockade }
-          />
-          <View style={styles.tool}>
-            <TouchableOpacity onPress={ this.onPressLeft }>
-              <Image source={this.state.collection ? require('../../../../../images/btn_qy_fav_1.png') : require('../../../../../images/btn_qy_fav_0.png')} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={ this.onPressRight }>
-              <Image source={require('../../../../../images/btn_qy_chat.png')}/>
-            </TouchableOpacity>
-          </View>
+          >
+            <View style={styles.tool}>
+              <TouchableOpacity onPress={ this.onPressLeft }>
+                <Image source={this.state.collection ? require('../../../../../images/btn_qy_fav_1.png') : require('../../../../../images/btn_qy_fav_0.png')} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={ this.onPressRight }>
+                <Image source={require('../../../../../images/btn_qy_chat.png')}/>
+              </TouchableOpacity>
+            </View>
+          </BaconCard>
         </View>
       }    
       </View>

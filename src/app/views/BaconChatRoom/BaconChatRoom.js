@@ -63,7 +63,7 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
           style={styles.renderChatFooter}
         >
           <BaconRedButton
-            routesText={'插隊'} 
+            routesText={'留言優先顯示'} 
             routesOnPress={ chooseTopOnPress }
           />
         </View>

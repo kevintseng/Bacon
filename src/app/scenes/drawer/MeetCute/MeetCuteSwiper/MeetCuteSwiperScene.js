@@ -135,7 +135,16 @@ export default class MeetCuteSwiperScene extends Component {
                 showReport
                 onPressReport={ this.onPressReport }
                 onPrssBlockade={ this.onPrssBlockade }
-              />
+              >
+                <View style={styles.tool}>
+                  <TouchableOpacity onPress={ this.onPressLeft }>
+                    <Image source={require('../../../../../images/btn_meet_dislike.png')} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={ this.onPressRight }>
+                    <Image source={require('../../../../../images/btn_meet_like.png')}/>
+                  </TouchableOpacity>
+                </View>
+              </BaconCard>
               )
             }}
             onSwiped={(cardIndex) => {this.cardIndex = cardIndex + 1}}
@@ -152,14 +161,6 @@ export default class MeetCuteSwiperScene extends Component {
             //showSecondCard={false}
             infinite={true}
           />
-          <View style={styles.tool}>
-            <TouchableOpacity onPress={ this.onPressLeft }>
-              <Image source={require('../../../../../images/btn_meet_dislike.png')} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={ this.onPressRight }>
-              <Image source={require('../../../../../images/btn_meet_like.png')}/>
-            </TouchableOpacity>
-          </View>
         </View>
         }
       </View>
