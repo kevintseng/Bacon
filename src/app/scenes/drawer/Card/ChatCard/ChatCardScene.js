@@ -10,6 +10,11 @@ import localdb from '../../../../../configs/localdb'
 
 const { width, height } = Dimensions.get('window')
 
+const pxToDp = (uiElementPx) => {
+  //PixelRatio.get();
+  return uiElementPx*(width/1440)
+}
+
 const styles = {
   view: {
     flex: 1
@@ -18,7 +23,7 @@ const styles = {
     flexDirection: 'row',
     position: 'absolute', 
     justifyContent: 'space-around',
-    top: height/2, 
+    top: width - (pxToDp(312)/2), 
     width
   }
 }
