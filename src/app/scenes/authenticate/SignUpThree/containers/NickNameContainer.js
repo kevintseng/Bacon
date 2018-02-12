@@ -1,8 +1,17 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import { inject, observer } from "mobx-react"
+import { View } from 'react-native'
 
 import BaconForm from '../../../../views/BaconForm'
+import StatesMessage from '../../../../views/StatesMessage'
+
+const styles = {
+  error: {
+    position: 'absolute',
+    left: 20
+  }
+}
 
 @inject('SignUpStore') @observer
 export default class NickNameContainer extends Component {
@@ -19,14 +28,22 @@ export default class NickNameContainer extends Component {
 
   render() {
     return(
-      <BaconForm
-        iconSource={ require('../../../../../images/ico_logo_nn.png') }
-        placeholder='請輸入2~20字的暱稱'
-        value={ this.SignUpStore.nickname }
-        maxLength={ 20 }
-        onChangeText={ this.realTimeCheckNickname }
-        //onBlur={ this.SignUpStore.checkNickname }
-      />
+      <View>
+        <View style={styles.error}>
+          <StatesMessage
+            state={ this.SignUpStore.nicknameDetector }
+            message={ this.SignUpStore.nicknameIndicator }
+          />
+        </View>
+        <BaconForm
+          iconSource={ require('../../../../../images/ico_logo_nn.png') }
+          placeholder='請輸入2~20字的暱稱'
+          value={ this.SignUpStore.nickname }
+          maxLength={ 20 }
+          onChangeText={ this.realTimeCheckNickname }
+          //onBlur={ this.SignUpStore.checkNickname }
+        />
+      </View>
     )
   }
 }
