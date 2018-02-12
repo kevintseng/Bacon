@@ -3,10 +3,22 @@ import { View, Image, Dimensions } from 'react-native'
 
 const { width, height } = Dimensions.get("window") //eslint-disable-line
 
+const pxToDp = (uiElementPx) => {
+  //PixelRatio.get();
+  return uiElementPx*(width/1440)
+}
+
+const styles = {
+  wave: {
+    width: pxToDp(1440), 
+    height: pxToDp(388)
+  }
+}
+
 const Wave = () => {
   return(
-    <View style={{flex:1, width}}>
-      <Image style={{width}} source={require('./img/pic_index_wave.png')} />
+    <View>
+      <Image style={styles.wave} source={require('./img/pic_index_wave.png')} />
     </View>
   )
 }

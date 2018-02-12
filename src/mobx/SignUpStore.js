@@ -37,7 +37,7 @@ export default class SignUpStore {
     this.address = null
     this.email = null
     this.password = null
-    this.nickname = null
+    this.nickname = ''
     this.birthday = null
     this.policyDetector = false
     this.avatar = null

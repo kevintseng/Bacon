@@ -23,13 +23,16 @@ const styles = {
   view: {
     flex: 1
   },
-  middle: {
-    position: 'absolute', 
-    top: 150
+  content: {
+    flex: 1, 
+    justifyContent: 'space-between',
+    marginTop: 20
   },
-  bottom: {
+  fail: {
     position: 'absolute', 
-    bottom: 0
+    bottom: 90, 
+    alignSelf: 'center',
+    alignItems: 'center'
   }
 }
 
@@ -57,42 +60,24 @@ export default class SignUpThreeScene extends Component {
   render() {
     return(
        <View style={ styles.view }>
-
-        <View style={{flex: 1, marginTop: 20}}>
-          <EmailContainer/>
-          <PasswordContainer/>
-          <NickNameContainer/>
-          <BirthdayContainer/>
           <PolicyModalContainer/>
           <RuleModalContainer/>
-
-          <View style={{marginTop: 40}}>
+          <View style={ styles.content }>
+            <EmailContainer/>
+            <PasswordContainer/>
+            <NickNameContainer/>
+            <BirthdayContainer/>
             <PolicyContainer/>
+            <BaconRoutesContainer/>
           </View>
-
-          <View style={{position: 'absolute', top: 2, left: 20}}>
-            <EmailStatesContainer/>
-          </View>
-
-          <View style={{position: 'absolute', top: 70, left: 20}}>
-            <PasswordStatesContainer/>
-          </View>
-
-          <View style={{position: 'absolute', top: 140, left: 20}}>
-            <NickNameStatesContainer/>
-          </View>
-
-          <View style={{position: 'absolute', bottom: 90, alignSelf: 'center',alignItems: 'center'}}>
-            <FailureContainer/>
-          </View>
-
         </View>
-
-        <View style={ styles.bottom }>
-          <BaconRoutesContainer/>
-        </View>
-
-      </View>
     )
   }
 }
+
+/*
+
+          <View style={styles.fail}>
+            <FailureContainer/>
+          </View>
+*/

@@ -1,7 +1,12 @@
 import React from 'react'
-import { View, Image, Text, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Image, Text, TouchableOpacity, Dimensions, PixelRatio } from 'react-native'
 
 const { width, height } = Dimensions.get('window')
+
+const pxToDp = (uiElementPx) => {
+  //PixelRatio.get();
+  return uiElementPx*(width/1440)
+}
 
 const styles = {
   welcomeView: {
@@ -64,8 +69,7 @@ const styles = {
   },
   bottomView: {
     position: 'absolute', 
-    bottom: 0,
-    //marginBottom: 320,
+    bottom: 0    //marginBottom: 320,
     //backgroundColor: 'red'
   },
   buttonContent: {
@@ -107,6 +111,10 @@ const styles = {
     fontWeight: '500',
     color: '#606060',
     textAlign: 'center'
+  },
+  wave: {
+    width: pxToDp(1440), 
+    height: pxToDp(388)
   }
 }
 
@@ -114,7 +122,6 @@ const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bot
 
   return(
     <View style={ styles.welcomeView }>
-
       <View style={ styles.logView }>
         <Image source={require('./img/ic_index_logo.png')} />
       </View>
@@ -150,7 +157,7 @@ const Welcome = ({ title, topButtonText, bottomButtonText, topButtonOnPress, bot
       </View>
 
       <View style={ styles.bottomView }>
-        <Image source={require('./img/pic_index_wave.png')} />
+        <Image style={ styles.wave } source={require('./img/pic_index_wave.png')} />
       </View>
 
     </View>
