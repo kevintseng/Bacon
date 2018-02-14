@@ -4,6 +4,7 @@ import android.app.Application;
 import com.horcrux.svg.SvgPackage;
 import com.idehub.Billing.InAppBillingBridgePackage;
 import com.facebook.react.ReactApplication;
+import com.evollu.react.fcm.FIRMessagingPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import org.wonday.orientation.OrientationPackage;
 import com.rnfs.RNFSPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new FIRMessagingPackage(),
             new VectorIconsPackage(),
             new OrientationPackage(),
             new RNFSPackage(),

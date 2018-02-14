@@ -72,6 +72,7 @@
 		D75B9A4F1FF643178BA6A3B9 /* NotoSansUI-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 966EEDF3903145CDB82AA19F /* NotoSansUI-Italic.ttf */; };
 		E7EEE0BDB96B4DD8869F41B3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 534A64EED61E4B5FBAF1F68E /* Zocial.ttf */; };
 		F74A7C67E577463B9BBCCCB8 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B713065D621140B480796946 /* libRCTActionSheet.a */; };
+		0C60F48908434B6AAB606709 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AB8AFEF6D8241898A42A175 /* libRNFIRMessaging.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -503,6 +504,8 @@
 		FC8BE2FE299548E2A699868C /* libFastImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFastImage.a; sourceTree = "<group>"; };
 		24307E7C478F42C79CE5CB32 /* Exemple.xcodeproj */ = {isa = PBXFileReference; name = "Exemple.xcodeproj"; path = "../node_modules/react-native-deck-swiper/Exemples/ios/Exemple.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		B713065D621140B480796946 /* libRCTActionSheet.a */ = {isa = PBXFileReference; name = "libRCTActionSheet.a"; path = "libRCTActionSheet.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		CD4A5F6630B4486CBCA76B01 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; name = "RNFIRMessaging.xcodeproj"; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		4AB8AFEF6D8241898A42A175 /* libRNFIRMessaging.a */ = {isa = PBXFileReference; name = "libRNFIRMessaging.a"; path = "libRNFIRMessaging.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -544,6 +547,7 @@
 				1919F0C41AFC432899F12E59 /* libRCTOrientation.a in Frameworks */,
 				2C0EAADB4A946C4F62C08DF7 /* libPods-Bacon.a in Frameworks */,
 				F74A7C67E577463B9BBCCCB8 /* libRCTActionSheet.a in Frameworks */,
+				0C60F48908434B6AAB606709 /* libRNFIRMessaging.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -858,6 +862,7 @@
 				6502FC532C544E6D8F19D07F /* InAppUtils.xcodeproj */,
 				54C57F6157E140179AD2224B /* RCTOrientation.xcodeproj */,
 				24307E7C478F42C79CE5CB32 /* Exemple.xcodeproj */,
+				CD4A5F6630B4486CBCA76B01 /* RNFIRMessaging.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1863,12 +1868,14 @@
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
 					"$(SRCROOT)/../node_modules/react-native-orientation-locker/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = BaconTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1901,12 +1908,14 @@
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
 					"$(SRCROOT)/../node_modules/react-native-orientation-locker/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = BaconTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1942,6 +1951,7 @@
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
 					"$(SRCROOT)/../node_modules/react-native-orientation-locker/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = Bacon/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1978,6 +1988,7 @@
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
 					"$(SRCROOT)/../node_modules/react-native-orientation-locker/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = Bacon/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2018,11 +2029,13 @@
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
 					"$(SRCROOT)/../node_modules/react-native-orientation-locker/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = "Bacon-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2063,11 +2076,13 @@
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
 					"$(SRCROOT)/../node_modules/react-native-orientation-locker/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = "Bacon-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2098,6 +2113,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Bacon-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2123,6 +2139,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Bacon-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
