@@ -23,7 +23,6 @@
     "prop-types": "15.6.0",
     "react": "16.0.0-alpha.12",
     "react-native": "0.48.4",
-    "react-native-fcm": "13.3.1",
     "react-native-animatable": "1.2.4",
     "react-native-bacon-badge": "kaymingmobile/react-native-bacon-badge#master",
     "react-native-bacon-card": "kaymingmobile/react-native-bacon-card#master",
