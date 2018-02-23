@@ -112,7 +112,7 @@ PODS:
   - React/RCTWebSocket (0.48.4):
     - React/Core
     - React/RCTBlob
-  - RNFirebase (3.0.5):
+  - RNFirebase (3.1.1):
     - React
   - RNVectorIcons (4.4.2):
     - React
@@ -145,15 +145,15 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   BVLinearGradient:
-    :path: ../node_modules/react-native-linear-gradient
+    :path: "../node_modules/react-native-linear-gradient"
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
   RNFirebase:
-    :path: ../node_modules/react-native-firebase
+    :path: "../node_modules/react-native-firebase"
   RNVectorIcons:
-    :path: ../node_modules/react-native-vector-icons
+    :path: "../node_modules/react-native-vector-icons"
   Yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   BVLinearGradient: e5b57d7ae2011487190ad11ed2e73edccdfc25fa
@@ -175,11 +175,11 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
   React: 6d68659481a8a56e0f6b3dbecd984d5b9bb2d6c5
-  RNFirebase: 7c86b4efd2860700048d927f34db237fbce1d5fc
+  RNFirebase: 30522211772f22affff6f3a61981110852d2668b
   RNVectorIcons: c1821d56c775cc5a3bca66c77dfc8cb4a90d27e2
   SDWebImage: b1189fd85365c18434270a11a5cad13a1e848d53
   Yoga: ccefa1454b2e9825dce3b2df98088b7f0e3c2675
 
 PODFILE CHECKSUM: ab67179469fdc65cd39dd33ecaf2a6bbd4fa5cea
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.2.1
