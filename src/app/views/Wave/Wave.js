@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Dimensions } from 'react-native'
+import { View, Image, Dimensions, Platform } from 'react-native'
 
 const { width, height } = Dimensions.get("window") //eslint-disable-line
 
@@ -10,8 +10,16 @@ const pxToDp = (uiElementPx) => {
 
 const styles = {
   wave: {
-    width: pxToDp(1440), 
-    height: pxToDp(388)
+    ...Platform.select({
+      ios: {
+        //width: pxToDp(1242), 
+        //height: pxToDp(388)
+      },
+      android: {
+        width: pxToDp(1440), 
+        height: pxToDp(388)
+      }
+    })
   }
 }
 

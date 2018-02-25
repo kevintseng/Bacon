@@ -43,6 +43,8 @@
 		2DCD954D1E0B4F2C00145EB5 /* BaconTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BaconTests.m */; };
 		3039C89063DA4FE39460B6A9 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 307514902563454189BA4B12 /* EvilIcons.ttf */; };
 		346BF99F1F27ACB400C7E22D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 346BF99E1F27ACB400C7E22D /* GoogleService-Info.plist */; };
+		34B3C3B6204350C400A940D7 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 34B3C381204350C400A940D7 /* assets */; };
+		34B3C3B7204350C400A940D7 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 34B3C3B5204350C400A940D7 /* index.ios.jsbundle */; };
 		3BB69BC08AA44609A4803F19 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2EE3BE87F0F4C3699CD218E /* libRCTImageResizer.a */; };
 		3ECD7006242D4CC1A52F27FE /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ACB35D3544D4420B7554AAF /* libRNVectorIcons.a */; };
 		459C11C91F558598001A66BF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB61A68108700A75B9A /* Info.plist */; };
@@ -187,6 +189,34 @@
 			proxyType = 2;
 			remoteGlobalIDString = 5D72D2E81C16249000E22EC1;
 			remoteInfo = RCTImageResizer;
+		};
+		34B3C2FE2043500D00A940D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 24307E7C478F42C79CE5CB32 /* Exemple.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 13B07F961A680F5B00A75B9A;
+			remoteInfo = Exemple;
+		};
+		34B3C3002043500D00A940D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 24307E7C478F42C79CE5CB32 /* Exemple.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 00E356EE1AD99517003FC87E;
+			remoteInfo = ExempleTests;
+		};
+		34B3C3022043500D00A940D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 24307E7C478F42C79CE5CB32 /* Exemple.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2D02E47B1E0B4A5D006451C7;
+			remoteInfo = "Exemple-tvOS";
+		};
+		34B3C3042043500D00A940D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 24307E7C478F42C79CE5CB32 /* Exemple.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2D02E4901E0B4A5D006451C7;
+			remoteInfo = "Exemple-tvOSTests";
 		};
 		34BBD13F1F33063400A472F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -448,7 +478,7 @@
 		1ACB35D3544D4420B7554AAF /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		1D2188806F311CD485880710 /* libPods-Bacon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Bacon.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		230034E5355243ADA1A20B77 /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTImageResizer.xcodeproj; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; };
-		24307E7C478F42C79CE5CB32 /* Exemple.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = Exemple.xcodeproj; path = "../node_modules/react-native-deck-swiper/Exemples/ios/Exemple.xcodeproj"; sourceTree = "<group>"; };
+		24307E7C478F42C79CE5CB32 /* Exemple.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = Exemple.xcodeproj; path = "../node_modules/react-native-deck-swiper/Exemples/ios/Exemple.xcodeproj"; sourceTree = "<group>"; };
 		27A3E4ED64BB41A4BB1BF0E6 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
 		2932DFC3B96AABFD918F54CE /* Pods-Bacon-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bacon-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bacon-tvOSTests/Pods-Bacon-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		29BBF463DA2745DE8FB528DC /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -458,6 +488,8 @@
 		307514902563454189BA4B12 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		31EBB4CBA7A94BCEB6F964C8 /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 		346BF99E1F27ACB400C7E22D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Bacon/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		34B3C381204350C400A940D7 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
+		34B3C3B5204350C400A940D7 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = bundle/index.ios.jsbundle; sourceTree = "<group>"; };
 		3FA69EF6C1B24EE3BC5707E4 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		459C11CC1F558F34001A66BF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		459C11CE1F558F3B001A66BF /* Bacon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Bacon.entitlements; path = Bacon/Bacon.entitlements; sourceTree = "<group>"; };
@@ -488,7 +520,7 @@
 		B2EE3BE87F0F4C3699CD218E /* libRCTImageResizer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTImageResizer.a; sourceTree = "<group>"; };
 		B478BF3FC30E4929B32CCF04 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		B5609F7D6709376D41C5AABD /* Pods-Bacon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bacon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bacon/Pods-Bacon.debug.xcconfig"; sourceTree = "<group>"; };
-		B713065D621140B480796946 /* libRCTActionSheet.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = archive.ar; name = libRCTActionSheet.a; path = libRCTActionSheet.a; sourceTree = "<group>"; };
+		B713065D621140B480796946 /* libRCTActionSheet.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTActionSheet.a; sourceTree = "<group>"; };
 		BB69968C62864AFB9194C0CF /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		C0A02AFDFFBA4D8BAE118667 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		C0F585AC0976460FABACFA7D /* NotoSansUI-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NotoSansUI-Bold.ttf"; path = "../src/fonts/NotoSansUI-Bold.ttf"; sourceTree = "<group>"; };
@@ -654,6 +686,8 @@
 		13B07FAE1A68108700A75B9A /* Bacon */ = {
 			isa = PBXGroup;
 			children = (
+				34B3C381204350C400A940D7 /* assets */,
+				34B3C3B5204350C400A940D7 /* index.ios.jsbundle */,
 				459C11CE1F558F3B001A66BF /* Bacon.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -697,6 +731,17 @@
 			isa = PBXGroup;
 			children = (
 				34138C661F27924C00AB9DE0 /* libRCTImageResizer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		34B3C2F82043500D00A940D7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				34B3C2FF2043500D00A940D7 /* Exemple.app */,
+				34B3C3012043500D00A940D7 /* ExempleTests.xctest */,
+				34B3C3032043500D00A940D7 /* Exemple-tvOS.app */,
+				34B3C3052043500D00A940D7 /* Exemple-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -827,6 +872,7 @@
 				B478BF3FC30E4929B32CCF04 /* libRNFS.a */,
 				5818299020DF408DB9C68A3D /* libInAppUtils.a */,
 				1385B4197050463991BFEE40 /* libRCTOrientation.a */,
+				B713065D621140B480796946 /* libRCTActionSheet.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1102,6 +1148,10 @@
 					ProjectRef = 3FA69EF6C1B24EE3BC5707E4 /* BVLinearGradient.xcodeproj */;
 				},
 				{
+					ProductGroup = 34B3C2F82043500D00A940D7 /* Products */;
+					ProjectRef = 24307E7C478F42C79CE5CB32 /* Exemple.xcodeproj */;
+				},
+				{
 					ProductGroup = 34DD47BC1F3A4994006957DE /* Products */;
 					ProjectRef = 31EBB4CBA7A94BCEB6F964C8 /* FastImage.xcodeproj */;
 				},
@@ -1297,6 +1347,34 @@
 			fileType = archive.ar;
 			path = libRCTImageResizer.a;
 			remoteRef = 34138C651F27924C00AB9DE0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		34B3C2FF2043500D00A940D7 /* Exemple.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Exemple.app;
+			remoteRef = 34B3C2FE2043500D00A940D7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		34B3C3012043500D00A940D7 /* ExempleTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ExempleTests.xctest;
+			remoteRef = 34B3C3002043500D00A940D7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		34B3C3032043500D00A940D7 /* Exemple-tvOS.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Exemple-tvOS.app";
+			remoteRef = 34B3C3022043500D00A940D7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		34B3C3052043500D00A940D7 /* Exemple-tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Exemple-tvOSTests.xctest";
+			remoteRef = 34B3C3042043500D00A940D7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		34BBD1401F33063400A472F6 /* libBVLinearGradient.a */ = {
@@ -1545,8 +1623,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34B3C3B7204350C400A940D7 /* index.ios.jsbundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				34B3C3B6204350C400A940D7 /* assets in Resources */,
 				9B1108669315435F8DA027F6 /* NotoSans-Bold.ttf in Resources */,
 				1EF7C079737849C8A9C5F404 /* NotoSans-BoldItalic.ttf in Resources */,
 				A34793E286C04E1D9C2EFF96 /* NotoSans-Italic.ttf in Resources */,
@@ -1941,6 +2021,7 @@
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
 				);
 				INFOPLIST_FILE = Bacon/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1977,6 +2058,7 @@
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
 				);
 				INFOPLIST_FILE = Bacon/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
