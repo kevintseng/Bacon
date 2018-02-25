@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Text, TouchableOpacity, Dimensions, PixelRatio } from 'react-native'
+import { View, Image, Text, TouchableOpacity, Dimensions, PixelRatio, Platform } from 'react-native'
 
 const { width, height } = Dimensions.get('window')
 
@@ -113,8 +113,16 @@ const styles = {
     textAlign: 'center'
   },
   wave: {
-    width: pxToDp(1440), 
-    height: pxToDp(388)
+    ...Platform.select({
+      ios: {
+        //width: pxToDp(1242), 
+        //height: pxToDp(351)
+      },
+      android: {
+        width: pxToDp(1440), 
+        height: pxToDp(388)
+      }
+    })
   }
 }
 

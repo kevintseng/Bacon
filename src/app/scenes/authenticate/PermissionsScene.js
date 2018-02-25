@@ -16,6 +16,8 @@ export default class PermissionsScene extends Component {
     //console.warn(height)
     if (Platform.OS === 'android') {
       this.requestPermission()
+    } else {
+      Actions.SessionCheck({type: 'reset'})
     }
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
   }

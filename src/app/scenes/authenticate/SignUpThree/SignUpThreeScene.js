@@ -21,7 +21,8 @@ import BaconRoutesContainer from './containers/BaconRoutesContainer'
 
 const styles = {
   view: {
-    flex: 1
+    flex: 1,
+    alignItems: 'center'
   },
   content: {
     flex: 1, 

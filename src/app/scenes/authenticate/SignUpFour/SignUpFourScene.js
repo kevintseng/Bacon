@@ -10,7 +10,8 @@ import BigAvatarContainer from './containers/BigAvatarContainer'
 
 const styles = {
   view: {
-    flex: 1
+    flex: 1,
+    alignItems: 'center'
   },
   middle: {
     position: 'absolute', 

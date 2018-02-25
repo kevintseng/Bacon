@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import { inject, observer } from "mobx-react"
-import { View } from 'react-native'
+import { View, Dimensions } from 'react-native'
 
 import BaconForm from '../../../../views/BaconForm'
 import StatesMessage from '../../../../views/StatesMessage'
 
+const { width, height } = Dimensions.get('window')
+
 const styles = {
   error: {
     position: 'absolute',
-    left: 20
+    left: width/10 //android 20
   }
 }
 

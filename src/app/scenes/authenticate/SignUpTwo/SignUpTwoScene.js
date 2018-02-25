@@ -9,7 +9,8 @@ const { width, height } = Dimensions.get('window')
 
 const styles = {
   view: {
-    flex: 1
+    flex: 1,
+    alignItems: 'center', 
   },
   middle: {
     position: 'absolute',
