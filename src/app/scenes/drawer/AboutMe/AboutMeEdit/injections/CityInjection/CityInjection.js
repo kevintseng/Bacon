@@ -5,6 +5,17 @@ import { inject, observer } from 'mobx-react'
 import BaconRoutesContainer from './containers/BaconRoutesContainer'
 import CityChooseContainer from './containers/CityChooseContainer'
 
+const styles = {
+  view: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  routes: {
+    position: 'absolute', 
+    bottom: 0
+  }
+}
+
 @inject('firebase','SubjectEditStore','SubjectStore') @observer
 export default class CityInjection extends Component {
 
@@ -21,9 +32,9 @@ export default class CityInjection extends Component {
 
   render() {
     return(
-      <View style={{flex: 1}}>
+      <View style={styles.view}>
         <CityChooseContainer/>
-        <View style={{ position: 'absolute', bottom: 0}}>
+        <View style={styles.routes}>
           <BaconRoutesContainer/>
         </View>
       </View>

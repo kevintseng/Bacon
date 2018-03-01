@@ -11,12 +11,13 @@ import RuleModalContainer from './RuleModalContainer'
 const styles = {
   text: {
     backgroundColor: 'transparent',
-    letterSpacing: 3,
+    letterSpacing: 0,
     fontFamily: 'NotoSans',
     textAlign: 'left',
     //fontWeight: '500',
     color: '#606060',
-    fontSize: 15
+    fontSize: 15,
+    lineHeight: 18
   }
 }
 

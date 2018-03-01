@@ -21,7 +21,6 @@
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
-		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1919F0C41AFC432899F12E59 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1385B4197050463991BFEE40 /* libRCTOrientation.a */; };
@@ -30,7 +29,6 @@
 		2083006A259B415B85071C41 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AADE89C79C794DF0B40A4E42 /* SimpleLineIcons.ttf */; };
 		2C0EAADB4A946C4F62C08DF7 /* libPods-Bacon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D2188806F311CD485880710 /* libPods-Bacon.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D02E4C21E0B4AEC006451C7 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		2D02E4C31E0B4AEC006451C7 /* libRCTImage-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */; };
@@ -42,9 +40,10 @@
 		2D02E4C91E0B4AEC006451C7 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* BaconTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BaconTests.m */; };
 		3039C89063DA4FE39460B6A9 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 307514902563454189BA4B12 /* EvilIcons.ttf */; };
+		346B8D5B204765A700199C50 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 346B8D27204765A700199C50 /* Images.xcassets */; };
 		346BF99F1F27ACB400C7E22D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 346BF99E1F27ACB400C7E22D /* GoogleService-Info.plist */; };
-		34B3C3B6204350C400A940D7 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 34B3C381204350C400A940D7 /* assets */; };
-		34B3C3B7204350C400A940D7 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 34B3C3B5204350C400A940D7 /* index.ios.jsbundle */; };
+		3499E2772047522A00D529F4 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 3499E2752047522A00D529F4 /* assets */; };
+		3499E2782047522A00D529F4 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 3499E2762047522A00D529F4 /* index.ios.jsbundle */; };
 		3BB69BC08AA44609A4803F19 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2EE3BE87F0F4C3699CD218E /* libRCTImageResizer.a */; };
 		3ECD7006242D4CC1A52F27FE /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ACB35D3544D4420B7554AAF /* libRNVectorIcons.a */; };
 		459C11C91F558598001A66BF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB61A68108700A75B9A /* Info.plist */; };
@@ -452,7 +451,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGeolocation.xcodeproj; path = "../node_modules/react-native/Libraries/Geolocation/RCTGeolocation.xcodeproj"; sourceTree = "<group>"; };
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
@@ -470,7 +468,6 @@
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Bacon/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Bacon/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Bacon/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Bacon/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Bacon/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
@@ -487,9 +484,10 @@
 		2D02E4901E0B4A5D006451C7 /* Bacon-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bacon-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		307514902563454189BA4B12 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		31EBB4CBA7A94BCEB6F964C8 /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
+		346B8D27204765A700199C50 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Bacon/Images.xcassets; sourceTree = "<group>"; };
 		346BF99E1F27ACB400C7E22D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Bacon/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		34B3C381204350C400A940D7 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
-		34B3C3B5204350C400A940D7 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = bundle/index.ios.jsbundle; sourceTree = "<group>"; };
+		3499E2752047522A00D529F4 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
+		3499E2762047522A00D529F4 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = bundle/index.ios.jsbundle; sourceTree = "<group>"; };
 		3FA69EF6C1B24EE3BC5707E4 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		459C11CC1F558F34001A66BF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		459C11CE1F558F3B001A66BF /* Bacon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Bacon.entitlements; path = Bacon/Bacon.entitlements; sourceTree = "<group>"; };
@@ -686,13 +684,12 @@
 		13B07FAE1A68108700A75B9A /* Bacon */ = {
 			isa = PBXGroup;
 			children = (
-				34B3C381204350C400A940D7 /* assets */,
-				34B3C3B5204350C400A940D7 /* index.ios.jsbundle */,
+				346B8D27204765A700199C50 /* Images.xcassets */,
+				3499E2752047522A00D529F4 /* assets */,
+				3499E2762047522A00D529F4 /* index.ios.jsbundle */,
 				459C11CE1F558F3B001A66BF /* Bacon.entitlements */,
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -1623,16 +1620,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34B3C3B7204350C400A940D7 /* index.ios.jsbundle in Resources */,
-				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				3499E2782047522A00D529F4 /* index.ios.jsbundle in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				34B3C3B6204350C400A940D7 /* assets in Resources */,
+				3499E2772047522A00D529F4 /* assets in Resources */,
 				9B1108669315435F8DA027F6 /* NotoSans-Bold.ttf in Resources */,
 				1EF7C079737849C8A9C5F404 /* NotoSans-BoldItalic.ttf in Resources */,
 				A34793E286C04E1D9C2EFF96 /* NotoSans-Italic.ttf in Resources */,
 				20321FB6F1264BD4A2C5AFD4 /* NotoSans-Regular.ttf in Resources */,
 				619C05EAF3E940B3B2C2FBB9 /* NotoSansUI-Bold.ttf in Resources */,
 				4D398B3B15294019A39CC1CB /* NotoSansUI-BoldItalic.ttf in Resources */,
+				346B8D5B204765A700199C50 /* Images.xcassets in Resources */,
 				346BF99F1F27ACB400C7E22D /* GoogleService-Info.plist in Resources */,
 				D75B9A4F1FF643178BA6A3B9 /* NotoSansUI-Italic.ttf in Resources */,
 				6E04C7E022344183B79597CB /* NotoSansUI-Regular.ttf in Resources */,
@@ -1654,7 +1651,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1954,6 +1950,11 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-ObjC",
+					"-lc++",
+					"$(inherited)",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bacon.app/Bacon";
@@ -1990,6 +1991,11 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-ObjC",
+					"-lc++",
+					"$(inherited)",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bacon.app/Bacon";
@@ -2005,6 +2011,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = MJ662F5CV9;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
@@ -2021,7 +2028,7 @@
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
 				);
 				INFOPLIST_FILE = Bacon/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2042,6 +2049,7 @@
 				CODE_SIGN_ENTITLEMENTS = Bacon/Bacon.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MJ662F5CV9;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
@@ -2058,7 +2066,7 @@
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
 				);
 				INFOPLIST_FILE = Bacon/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",

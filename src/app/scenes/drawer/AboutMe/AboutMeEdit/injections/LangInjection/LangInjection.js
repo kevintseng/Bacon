@@ -1,29 +1,26 @@
 import React, { Component } from 'react'
-import { ScrollView, View, Platform } from 'react-native'
+import { ScrollView, View, Platform, Dimensions } from 'react-native'
 import { inject, observer } from 'mobx-react'
 
 import BaconRoutesContainer from './containers/BaconRoutesContainer'
 import LangListContainer from './containers/LangListContainer'
 import MasterModalContainer from './containers/MasterModalContainer'
 
+const { width, height } = Dimensions.get('window')
+
 const styles = {
-  ...Platform.select({
-      ios: {
-        //
-      },
-      android: {
         container: {
-          flex: 1
+          flex: 1,
+          alignItems: 'center'
         },
         bottom: { 
           position: 'absolute', 
           bottom: 0
         },
         languages: {
-          height: 390
+          height: 390,
+          width
         }
-      }
-  })
 }
 
 @inject('firebase','SubjectEditStore','SubjectStore') @observer

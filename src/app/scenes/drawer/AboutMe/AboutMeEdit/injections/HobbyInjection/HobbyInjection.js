@@ -8,13 +8,9 @@ import InputBadgeContainer from './containers/InputBadgeContainer'
 import BadgeWallContainer from './containers/BadgeWallContainer'
 
 const styles = {
-  ...Platform.select({
-      ios: {
-        //
-      },
-      android: {
         container: {
-          flex: 1
+          flex: 1,
+          alignItems: 'center'
         },
         badgeWall: { 
           position: 'absolute', 
@@ -35,8 +31,6 @@ const styles = {
           position: 'absolute', 
           bottom: 0
         }
-      }
-  })
 }
 
 @inject('firebase','SubjectEditStore','SubjectStore') @observer

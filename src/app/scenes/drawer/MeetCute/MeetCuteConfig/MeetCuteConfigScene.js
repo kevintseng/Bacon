@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Platform, BackHandler, ToastAndroid } from 'react-native'
+import { View, Text, Platform, BackHandler, ToastAndroid, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
 import SliderContainer from './containers/SliderContainer'
@@ -7,14 +7,12 @@ import OptionContainer from './containers/OptionContainer'
 
 import BaconRoutes from '../../../../views/BaconRoutes/BaconRoutes'
 
+const { width } = Dimensions.get('window')
+
 const styles = {
-  ...Platform.select({
-      ios: {
-        //
-      },
-      android: {
         view: {
-          flex: 1
+          flex: 1,
+          alignItems: 'center'
         },
         top: {
           flex: 1,
@@ -23,7 +21,8 @@ const styles = {
         },
         middle: {
           flex: 2,
-          marginTop: 10
+          marginTop: 10,
+          width
         },
         bottom: {
           position: 'absolute', 
@@ -40,8 +39,6 @@ const styles = {
           fontSize: 12,
           color: '#606060'
         }
-      }
-  })
 }
 
 export default class MeetCuteConfigScene extends Component {
