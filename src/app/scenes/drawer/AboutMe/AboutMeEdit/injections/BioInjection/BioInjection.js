@@ -6,20 +6,14 @@ import BaconRoutesContainer from './containers/BaconRoutesContainer'
 import BioInputContainer from './containers/BioInputContainer'
 
 const styles = {
-  ...Platform.select({
-      ios: {
-        //
-      },
-      android: {
-        container: {
-          flex: 1
+        view: {
+          flex: 1,
+          alignItems: 'center'
         },
         routes: { 
           position: 'absolute', 
           bottom: 0
         }
-      }
-  })
 }
 
 @inject('firebase','SubjectEditStore','SubjectStore') @observer
@@ -38,7 +32,7 @@ export default class BioInjection extends Component {
 
   render() {
     return(
-      <View style={styles.container}>
+      <View style={styles.view}>
         <BioInputContainer/>
         <View style={styles.routes}>
           <BaconRoutesContainer/>

@@ -8,7 +8,8 @@ import BirthdayContainer from './containers/BirthdayContainer'
 
 const styles = {
   view: {
-    flex: 1
+    flex: 1,
+    alignItems: 'center'
   }
 }
 
