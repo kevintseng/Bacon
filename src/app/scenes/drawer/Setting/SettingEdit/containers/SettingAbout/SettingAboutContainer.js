@@ -44,7 +44,7 @@ export default class SettingAboutContainer extends Component {
 
   version = () => {
     Alert.alert(
-      '目前版本', 'Beta-5.4.0', [
+      '目前版本', 'Beta-5.5.0', [
         {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false }
       )
   }
