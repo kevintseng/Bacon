@@ -139,6 +139,23 @@ export default class HelloChatRoomScene extends Component {
     }
   }
 
+  setFakeImage = timeID => {
+    this.MessagesAndImages = this.MessagesAndImages.concat([{
+      _id: timeID, // 時間越大放越上面
+      text: null,
+      createdAt: new Date(parseInt(timeID)),
+      user: {
+        _id: this.SubjectStore.uid, 
+      },
+      image: require('../../../../images/Loading_icon.gif'),
+      local: true 
+    }])
+    this.sortedMessagesAndImages = this.MessagesAndImages.sort((a, b) => {
+      return a._id < b._id ? 1 : -1
+    })
+    this.setState({chats: this.sortedMessagesAndImages, loading: false})
+  }
+
   combineMessagesAndImages = () => {
     this.messages = this.slefMessagesArray
     this.images = this.slefImagesArray
@@ -177,6 +194,8 @@ export default class HelloChatRoomScene extends Component {
   }
 
   uploadImage = res => {
+    const timeID = Date.now()
+    this.setFakeImage(timeID)
     if (res.didCancel) {
       //
     } else if (res.error) {
@@ -186,13 +205,15 @@ export default class HelloChatRoomScene extends Component {
         .then(image => {
           //console.log(image.uri)
           if (this.ChatStore.messageSendCount > 1) {
-            alert('你已超過兩句限制')
+            Keyboard.dismiss()
+            Actions.UseBonus({uid: this.props.preyID, _type: 'A'})
           } else {
             this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
             .putFile(image.uri.replace('file:/',''), metadata)
             .then(uploadedFile => {
+              
               //console.warn(uploadedFile.downloadURL)
-              this.onSendImage(uploadedFile.downloadURL)
+              this.onSendImage(uploadedFile.downloadURL,timeID)
             })
             .catch(err => {
               alert(err)
@@ -231,8 +252,8 @@ export default class HelloChatRoomScene extends Component {
     }
   }
 
-  onSendImage = imageURL => {
-    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
+  onSendImage = (imageURL,timeID) => {
+    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + timeID).set(imageURL)
     .then(() => {
         this.ChatStore.setMessageSendCount(this.ChatStore.messageSendCount + 1)
         this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messageSendCount').set(this.ChatStore.messageSendCount)
@@ -246,6 +267,16 @@ export default class HelloChatRoomScene extends Component {
         })
       }
     ) 
+  }
+
+  onSendSticker = imageURL => {
+    if (this.ChatStore.messageSendCount > 1 ) {
+        //alert('你已超過兩句限制')
+      Keyboard.dismiss()
+      Actions.UseBonus({uid: this.props.preyID, _type: 'A'})
+    } else {
+      this.onSendImage(imageURL,Date.now())
+    }
   }
 
   onPressAvatar = () => {
@@ -300,6 +331,7 @@ export default class HelloChatRoomScene extends Component {
           showRightFooter={this.state.showRightFooter}
           onPressLeftFooterLeftIcon={this.openAlbum}
           onPressLeftFooterRightIcon={this.openCamera}
+          onPressSticker={this.onSendSticker}
         />
         }
       </View>
