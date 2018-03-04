@@ -39,7 +39,7 @@ const styles = {
   }
 }
 
-const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,onPressAvatar,showChoose,showCutLine,chooseTopOnPress,chooseBottomOnPress,showLeftFooter,showRightFooter,onPressLeftFooterLeftIcon,onPressLeftFooterRightIcon}) => {
+const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,onPressAvatar,showChoose,showCutLine,chooseTopOnPress,chooseBottomOnPress,showLeftFooter,showRightFooter,onPressLeftFooterLeftIcon,onPressLeftFooterRightIcon,onPressSticker}) => {
 
   const renderActions = () => {
     return (
@@ -154,7 +154,7 @@ const BaconChatRoom = ({messages,onSend,user,onPressLeftIcon,onPressRightIcon,on
         </TouchableOpacity>
       </View>
       <View style={[styles.view, showRightFooter ? {} : {display: 'none'}]}> 
-        <Sticker/>
+        <Sticker onPress={onPressSticker}/>
       </View>
     </View>
   )

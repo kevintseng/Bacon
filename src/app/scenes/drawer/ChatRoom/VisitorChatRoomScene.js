@@ -135,6 +135,23 @@ export default class VisitorChatRoomScene extends Component {
     }
   }
 
+  setFakeImage = timeID => {
+    this.MessagesAndImages = this.MessagesAndImages.concat([{
+      _id: timeID, // 時間越大放越上面
+      text: null,
+      createdAt: new Date(parseInt(timeID)),
+      user: {
+        _id: this.SubjectStore.uid, 
+      },
+      image: require('../../../../images/Loading_icon.gif'),
+      local: true 
+    }])
+    this.sortedMessagesAndImages = this.MessagesAndImages.sort((a, b) => {
+      return a._id < b._id ? 1 : -1
+    })
+    this.setState({chats: this.sortedMessagesAndImages, loading: false})
+  }
+
   combineMessagesAndImages = () => {
     this.messages = this.preyMessagesArray
     this.images = this.preyImagesArray
@@ -173,6 +190,8 @@ export default class VisitorChatRoomScene extends Component {
   }
 
   uploadImage = res => {
+    const timeID = Date.now()
+    this.setFakeImage(timeID)
       if (res.didCancel) {
         //
       } else if (res.error) {
@@ -185,7 +204,7 @@ export default class VisitorChatRoomScene extends Component {
             .putFile(image.uri.replace('file:/',''), metadata)
             .then(uploadedFile => {
               //console.warn(uploadedFile.downloadURL)
-              this.onSendImage(uploadedFile.downloadURL)
+              this.onSendImage(uploadedFile.downloadURL,timeID)
             })
             .catch(err => {
               alert(err)
@@ -226,9 +245,9 @@ export default class VisitorChatRoomScene extends Component {
     }
   }
 
-  onSendImage = imageURL => {
+  onSendImage = (imageURL,timeID) => {
     //this.removeMessagesAndImagesListener()
-    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + Date.now()).set(imageURL)
+    this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + timeID).set(imageURL)
       .then(() => {
         this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
           lastMessage: '傳送了圖片',
@@ -311,6 +330,10 @@ export default class VisitorChatRoomScene extends Component {
     Actions.pop()
   }
 
+  onSendSticker = imageURL => {
+    this.onSendImage(imageURL,Date.now())
+  }
+
   render() {
     return (
       <View style={styles.view}>
@@ -336,6 +359,7 @@ export default class VisitorChatRoomScene extends Component {
             showRightFooter={this.state.showRightFooter}
             onPressLeftFooterLeftIcon={this.openAlbum}
             onPressLeftFooterRightIcon={this.openCamera}
+            onPressSticker={this.onSendSticker}
           />
         </View>
         }
