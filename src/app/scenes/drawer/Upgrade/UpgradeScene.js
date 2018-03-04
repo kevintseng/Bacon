@@ -15,6 +15,7 @@ const styles = {
     ios: {
       view: {
         flex: 1,
+        alignItems: 'center'
       },
       top: {
         marginTop: 10,
