@@ -55,11 +55,11 @@ export default class BaconRoutesContainer extends Component {
     if (Platform.OS === "android") {
       const upgrade_way = Object.keys(this.ControlStore.upgrade).find(key => this.ControlStore.upgrade[key] === true)
       if (upgrade_way === '3_month') {
-        const productId = 'com.kayming.bacon.premium_3m' // 'android.test.purchased'
-        this.androidPay(productId)
+        const productId = 'premium_3m' // 'android.test.purchased'
+        this.androidPay(productId,this.SubjectStore.uid)
       } else if (upgrade_way === '1_year') {
-        const productId = 'com.kayming.bacon.premium_1y' // 'android.test.purchased'
-        this.androidPay(productId)
+        const productId = 'premium_1y' // 'android.test.purchased'
+        this.androidPay(productId,this.SubjectStore.uid)
       } else {
         alert('錯誤')
       }
@@ -94,16 +94,17 @@ export default class BaconRoutesContainer extends Component {
     }
   }
 
-  androidPay = async (productId) => {
+  androidPay = async (productId,developerPayload) => {
     await InAppBilling.close()
     try {
       await InAppBilling.open()
       if (!await InAppBilling.isPurchased(productId)) {
-        await InAppBilling.purchase(productId).then( details => {
+        await InAppBilling.subscribe(productId,developerPayload).then( details => {
+          console.log(details)
           this.purchaseState = details.purchaseState
           if (this.purchaseState === 'PurchasedSuccessfully') {
             //this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
-            //this.SubjectStore.setVip(true)
+            this.SubjectStore.setVip(true)
           }
         })
       }
