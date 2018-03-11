@@ -72,10 +72,10 @@ export default class SessionCheckScene extends Component {
           this.initialize()
           this.setRedPointListener()
           this.setOnline(true) // 非同步設置使用者上線
-          this.setVip()
           ///////// 非同步 /////////
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
+          await this.setVip()
           await this.initPreySexualOrientation()
         }
         Actions.Drawer({type: 'reset'}) // 進入 Drawer
@@ -294,17 +294,39 @@ export default class SessionCheckScene extends Component {
     this.MeetCuteStore.setLongitude(longitude)
   }
 
-  setVip = () => {
+  setVip = async () => {
+    let isSubscription_premium_1y = false
+    let isSubscription_premium_3m = false
     if (Platform.OS === "android") {
-      InAppBilling.open().then(() => InAppBilling.getSubscriptionDetailsArray(['3_month', 'premium_3m']).then( productDetailsArray => {
-        //console.log(productDetailsArray)
-        //if (productDetailsArray.length > 0) {
-        //  this.SubjectStore.setVip(true)
-        //} else {
-        //  this.SubjectStore.setVip(false)
-        //}
-      }).catch(err => console.log(err)))
-      .catch(err => console.log(err))
+      await InAppBilling.close()
+      try {
+        await InAppBilling.open()
+        await InAppBilling.getSubscriptionTransactionDetails('premium_1y').then(
+          details => {
+            const subscriptionIdArray = details.developerPayload.split(':')
+            if (subscriptionIdArray[subscriptionIdArray.length -1] === this.SubjectStore.uid) {
+              //this.SubjectStore.setVip(true) // boolean
+              //console.log(details)
+              isSubscription_premium_1y = true
+            }
+          }
+        ).catch(err => console.log(err))
+        await InAppBilling.getSubscriptionTransactionDetails('premium_3m').then(
+          details => {
+            const subscriptionIdArray = details.developerPayload.split(':')
+            if (subscriptionIdArray[subscriptionIdArray.length -1] === this.SubjectStore.uid) {
+              //this.SubjectStore.setVip(true) // boolean
+              //console.log(details)
+              isSubscription_premium_3m = true
+            }
+          }
+        ).catch(err => console.log(err))
+      } catch (err) {
+        console.log(err)      
+      } finally {
+        this.SubjectStore.setVip(isSubscription_premium_1y || isSubscription_premium_3m)
+        await InAppBilling.close()
+      }
     } else { // iOS
       /*
       this.firebase.database().ref('users/' + this.SubjectStore.uid + '/vip').once('value').then((snap)=> {
