@@ -25,6 +25,7 @@ export default class BaconRoutesContainer extends Component {
   }
 
   componentDidMount() {
+    /*
     if (Platform.OS === 'ios') {
       InAppUtils.restorePurchases((error, products) => {
         if (error) {
@@ -37,7 +38,7 @@ export default class BaconRoutesContainer extends Component {
           //unlock store here again.
         }
       })
-    }
+    }*/
   }
 
   async validate(receiptData) {
@@ -64,32 +65,15 @@ export default class BaconRoutesContainer extends Component {
         alert('錯誤')
       }
     } else {
-      console.log('iOS IAP Upgrade #################')
-      InAppUtils.canMakePayments(enabled => {
-        if (enabled) {
-          console.log('IAP enabled')
-        } else {
-          console.log('IAP disabled')
-        }
-      })
-
-      try {
-        console.log(this.ControlStore)
-        let bonus = 0
-        if (this.ControlStore.upgrade['3_months']) {
-          const productIdentifier = 'com.kayming.bacon.q_points_200'
-          this.iOSPay(productIdentifier)
-        }
-        if (this.ControlStore.bonus['1_year']) {
-          const productIdentifier = 'com.kayming.bacon.q_points_600'
-          this.iOSPay(productIdentifier)
-        }
-        this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
-        this.SubjectStore.setVip(true)
-      } catch (err) {
-        console.log(err)
-      } finally {
-        Actions.AboutMe({type: 'reset'})
+      const upgrade_way = Object.keys(this.ControlStore.upgrade).find(key => this.ControlStore.upgrade[key] === true)
+      if (upgrade_way === '3_month') {
+        const productIdentifier = 'com.kayming.bacon.premium_3m'
+        this.iOSPay(productIdentifier)
+      } else if (upgrade_way === '1_year') {
+        const productIdentifier = 'com.kayming.bacon.premium_1y'
+        this.iOSPay(productIdentifier)        
+      } else {
+        alert('錯誤')
       }
     }
   }
@@ -121,25 +105,23 @@ export default class BaconRoutesContainer extends Component {
     }
   }
 
-  iOSPay = async productId => {
-    console.log('Purchasing iOS product: ', productId)
-    try {
-      await InAppUtils.purchaseProduct(productId, (error, response) => {
-        console.log('response: ', response)
-        // NOTE for v3.0: User can cancel the payment which will be available as error object here.
-        if (response && response.productIdentifier) {
-          console.log(
-            'Purchase Successful',
-            'Your Transaction ID is ' + response.transactionIdentifier
-          )
-          //unlock store here.
-        } else {
-          console.log('IAP error: ', error)
-        }
-      })
-    } catch (err) {
-      alert('錯誤')
-    }
+  iOSPay = productId => {
+      InAppUtils.loadProducts([productId], (error, products) => {
+        InAppUtils.canMakePayments((canMakePayments) => {
+           if(!canMakePayments) {
+              Alert.alert('Not Allowed', 'This device is not allowed to make purchases. Please check restrictions on device');
+           } else {
+             InAppUtils.purchaseProductForUser(productId, this.SubjectStore.uid ,(error, response) => {
+              if (response && response.productIdentifier) {
+                this.SubjectStore.setVip(true)
+                Actions.AboutMe({ type: 'reset' })
+              } else {
+                alert('IAP error: ', response)
+              }
+            })
+           }
+        })
+      });
   }
 
   render() {

@@ -68,7 +68,7 @@ const Sticker = ({onPress}) => {
           <Image style={styles.image} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/stickers%2Fgirls%2Fgirl01.png?alt=media&token=bc735425-0a06-4cc4-8587-50478eecbaf7'}} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.TouchableOpacity} onPress={() => {onPress('https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/stickers%2Fgirls%2Fgirl01.png?alt=media&token=bc735425-0a06-4cc4-8587-50478eecbaf7')}}>
-          <Image style={styles.image} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/stickers%2Fgirls%2Fgirl01.png?alt=media&token=bc735425-0a06-4cc4-8587-50478eecbaf7'}} />
+          <Image style={styles.image} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/stickers%2Fgirls%2Fgirl02.png?alt=media&token=bc735425-0a06-4cc4-8587-50478eecbaf7'}} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.TouchableOpacity} onPress={() => {onPress('https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/stickers%2Fgirls%2Fgirl03.png?alt=media&token=2aeeef61-c6ef-4058-abc7-0ba6a2e24c35')}}>
           <Image style={styles.image} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/bacon-fake.appspot.com/o/stickers%2Fgirls%2Fgirl03.png?alt=media&token=2aeeef61-c6ef-4058-abc7-0ba6a2e24c35'}} />

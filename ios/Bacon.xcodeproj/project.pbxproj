@@ -42,8 +42,6 @@
 		3039C89063DA4FE39460B6A9 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 307514902563454189BA4B12 /* EvilIcons.ttf */; };
 		346B8D5B204765A700199C50 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 346B8D27204765A700199C50 /* Images.xcassets */; };
 		346BF99F1F27ACB400C7E22D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 346BF99E1F27ACB400C7E22D /* GoogleService-Info.plist */; };
-		3499E2772047522A00D529F4 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 3499E2752047522A00D529F4 /* assets */; };
-		3499E2782047522A00D529F4 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 3499E2762047522A00D529F4 /* index.ios.jsbundle */; };
 		3BB69BC08AA44609A4803F19 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2EE3BE87F0F4C3699CD218E /* libRCTImageResizer.a */; };
 		3ECD7006242D4CC1A52F27FE /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ACB35D3544D4420B7554AAF /* libRNVectorIcons.a */; };
 		459C11C91F558598001A66BF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB61A68108700A75B9A /* Info.plist */; };
@@ -486,8 +484,6 @@
 		31EBB4CBA7A94BCEB6F964C8 /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 		346B8D27204765A700199C50 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Bacon/Images.xcassets; sourceTree = "<group>"; };
 		346BF99E1F27ACB400C7E22D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Bacon/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		3499E2752047522A00D529F4 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
-		3499E2762047522A00D529F4 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = bundle/index.ios.jsbundle; sourceTree = "<group>"; };
 		3FA69EF6C1B24EE3BC5707E4 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		459C11CC1F558F34001A66BF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		459C11CE1F558F3B001A66BF /* Bacon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Bacon.entitlements; path = Bacon/Bacon.entitlements; sourceTree = "<group>"; };
@@ -685,8 +681,6 @@
 			isa = PBXGroup;
 			children = (
 				346B8D27204765A700199C50 /* Images.xcassets */,
-				3499E2752047522A00D529F4 /* assets */,
-				3499E2762047522A00D529F4 /* index.ios.jsbundle */,
 				459C11CE1F558F3B001A66BF /* Bacon.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1088,6 +1082,7 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = MJ662F5CV9;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
@@ -1620,9 +1615,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3499E2782047522A00D529F4 /* index.ios.jsbundle in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				3499E2772047522A00D529F4 /* assets in Resources */,
 				9B1108669315435F8DA027F6 /* NotoSans-Bold.ttf in Resources */,
 				1EF7C079737849C8A9C5F404 /* NotoSans-BoldItalic.ttf in Resources */,
 				A34793E286C04E1D9C2EFF96 /* NotoSans-Italic.ttf in Resources */,
@@ -1921,7 +1914,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C5375F9A648CFDFD534D0DA7 /* Pods-BaconTests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = MJ662F5CV9;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1945,6 +1938,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1965,8 +1959,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 75F31136BB63362A158624B3 /* Pods-BaconTests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = MJ662F5CV9;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
@@ -1986,6 +1980,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -2028,8 +2023,9 @@
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
 				);
 				INFOPLIST_FILE = Bacon/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2048,6 +2044,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bacon/Bacon.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = MJ662F5CV9;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
@@ -2066,8 +2063,9 @@
 					"$(SRCROOT)/../node_modules/react-native-deck-swiper/Exemples/ios/Exemple/**",
 				);
 				INFOPLIST_FILE = Bacon/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2237,7 +2235,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2255,10 +2253,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Debug;
 		};
@@ -2288,7 +2287,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2299,10 +2298,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Release;
 		};
