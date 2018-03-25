@@ -69,6 +69,14 @@ export default class BaconChatStatus extends Component {
     this.updateChatStatue()
   }
 
+  onPressZero= async () => {
+    await this.setState({
+      visible: false,
+      chatStatus: 0
+    })
+    this.updateChatStatue()
+  }
+
   onPressOne = async () => {
     await this.setState({
       visible: false,
@@ -125,6 +133,15 @@ export default class BaconChatStatus extends Component {
                 borderRadius: 15
               }}
             >
+              <CheckBox
+                fontFamily='NotoSans'
+                containerStyle={{backgroundColor: 'transparent',borderWidth: 0}}
+                textStyle={styles.option}
+                center
+                title='無狀態'
+                checked={ this.state.chatStatus === 0 }
+                onPress={ this.onPressZero }
+              />
               <CheckBox
                 fontFamily='NotoSans'
                 containerStyle={{backgroundColor: 'transparent',borderWidth: 0}}

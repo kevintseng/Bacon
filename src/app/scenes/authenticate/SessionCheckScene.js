@@ -7,7 +7,7 @@ import Geolocation from  'Geolocation'
 import Moment from 'moment'
 import MomentLocale from 'moment/locale/zh-tw'
 import InAppBilling from 'react-native-billing'
-import iapReceiptValidator from 'iap-receipt-validator';
+import iapReceiptValidator from 'iap-receipt-validator'
 // 演算法
 import { calculateAge } from '../../../api/Utils'
 // 頁面
@@ -52,8 +52,9 @@ export default class SessionCheckScene extends Component {
     this.matchQuery = null
     this.blockadeQuery_A = null
     this.blockadeQuery_B = null
-    //
+    // Listener
     this.redPointListener = null
+    this.timestampListener = null
   }
 
   componentWillMount() {
@@ -63,20 +64,22 @@ export default class SessionCheckScene extends Component {
         this.SubjectStore.setEmail(user.email) // 設置 email
         if (this.ControlStore.authenticateIndicator == '註冊') {
           ///////// 非同步 /////////
-          this.setRedPointListener()
+          //this.setRedPointListener()
           this.uploadSignUpData() // 非同步上傳大頭照
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
+          this.setCurrentTimestampListener()
           this.uxSignIn(this.SignUpStore.email,this.SignUpStore.password)
         } else { 
           // 從登入來的
           //移除所有監聽函數 初始化狀態
           this.initialize()
-          this.setRedPointListener()
+          //this.setRedPointListener()
           this.setOnline(true) // 非同步設置使用者上線
           ///////// 非同步 /////////
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
+          this.setCurrentTimestampListener()
           await this.setVip()
           await this.initPreySexualOrientation()
         }
@@ -96,8 +99,9 @@ export default class SessionCheckScene extends Component {
 
   initialize = () => {
     AppState.removeEventListener('change', this.handleAppStateChange ) // 非同步移除 app 狀態監聽
-    this.removeMeetChanceListener() // 非同步移除地理監聽
-    this.removeRedPointListener() // 非同步移除紅點監聽
+    this.removeMeetChanceListener() // 移除地理監聽
+    this.removeRedPointListener() // 移除紅點監聽
+    this.removeTimestampListener() //  移除時間監聽
     this.SignUpStore.initialize() // 初始註冊入狀態
     this.SignInStore.initialize() // 初始化登入狀態
     this.SubjectStore.initialize() // 初始主體入狀態
@@ -378,12 +382,28 @@ export default class SessionCheckScene extends Component {
     })
   }
 
+  setCurrentTimestampListener = () => {
+    this.timestampListener = this.firebase.database().ref('currentTimeStamp')
+    this.firebase.database().ref('currentTimeStamp').on('value',snap => {
+      const currentTimeStamp = snap.val()
+      const dateString = Moment(currentTimeStamp).format("YYYYMMDD")
+      this.SubjectStore.setCurrentDate(dateString)
+    })
+  }
+
   // removeListener
 
   removeRedPointListener = () => {
     if (this.redPointListener) {
       this.redPointListener.off()
       this.redPointListener = null
+    }
+  }
+
+  removeTimestampListener = () => {
+    if (this.timestampListener) {
+      this.timestampListener.off()
+      this.timestampListener = null
     }
   }
 
