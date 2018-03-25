@@ -119,6 +119,7 @@ export default class SubjectStore {
     // user data
     //this.uid = null
     //this.email = null
+    this.currentDate = null
     this.nickname = null
     this.address = null
     this.birthday = null
@@ -164,6 +165,10 @@ export default class SubjectStore {
     this.settingModal = true
     this.loading = true
     this.fateBadgeCount = 0
+  }
+
+  @action setCurrentDate = dateString => {
+    this.currentDate = dateString
   }
 
   @action setUid = uid => {

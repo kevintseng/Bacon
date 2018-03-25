@@ -71,10 +71,10 @@ export default class InitChatRoomScene extends Component {
                 //console.warn('轉到Hello聊天室')
                 Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               } else {
-                console.warn('轉到訪客聊天室')
+                //console.warn('轉到訪客聊天室')
                 Actions.VisitorChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               }
-            } else if (child.val() === 0){
+            } else if (this.interested === 0){
               if (snap.val() === this.SubjectStore.uid) {
                 //console.warn('轉到Hello聊天室')
                 Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
@@ -170,7 +170,7 @@ export default class InitChatRoomScene extends Component {
   onSendMessage(messages = []) {
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
-      if (this.ChatStore.messageSendPeople < 2) {
+      if (this.ChatStore.messageSendPeople < 10) {
         if (!this.interested) {
 
           const _messages = new Object

@@ -109,8 +109,15 @@ export default class ChatCardScene extends Component {
   onPressRight = () => {
     const chatRoomKey = this.SubjectStore.uid > this.props.uid ? this.SubjectStore.uid + this.props.uid : this.props.uid + this.SubjectStore.uid
     const title = this.state.nickname + '，' + this.state.age
-    this.ChatStore.setChatRoomKey(chatRoomKey,this.props.uid)
-    Actions.InitChatRoom({title: title, Title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid})
+    this.firebase.database().ref('hello_chat_rooms_count/' + this.SubjectStore.uid).once('value',snap => {
+      const messageSendPeople = snap.val()
+      if (messageSendPeople >= 10) {
+        Actions.UseBonus({uid: this.props.uid, _type: 'B'})  
+      } else {
+        this.ChatStore.setChatRoomKey(chatRoomKey,this.props.uid)
+        Actions.InitChatRoom({title: title, Title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid})
+      }
+    })
   }
 
   onPressLeft = () => {
