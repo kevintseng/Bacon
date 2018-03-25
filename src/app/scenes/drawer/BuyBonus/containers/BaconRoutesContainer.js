@@ -20,6 +20,7 @@ export default class BaconRoutesContainer extends Component {
   }
 
   componentDidMount() {
+    /*
     if (Platform.OS === 'ios') {
       InAppUtils.restorePurchases((error, products) => {
         if (error) {
@@ -32,7 +33,7 @@ export default class BaconRoutesContainer extends Component {
           //unlock store here again.
         }
       })
-    }
+    }*/
   }
 
   pay = async () => {
@@ -55,43 +56,18 @@ export default class BaconRoutesContainer extends Component {
         alert('錯誤')
       }
     } else {
-      console.log('iOS IAP Bonus #################')
-      InAppUtils.canMakePayments(enabled => {
-        if (enabled) {
-          console.log('IAP enabled')
-        } else {
-          console.log('IAP disabled')
-        }
-      })
-
-      try {
-        console.log(this.ControlStore)
-        let bonus = 0
-        if (this.ControlStore.bonus[200]) {
-          const productIdentifier = 'com.kayming.bacon.q_points_200'
-          this.iOSPay(productIdentifier)
-          bonus = 200
-        }
-        if (this.ControlStore.bonus[600]) {
-          const productIdentifier = 'com.kayming.bacon.q_points_600'
-          this.iOSPay(productIdentifier)
-          bonus = 600
-        }
-        if (this.ControlStore.bonus[1200]) {
-          const productIdentifier = 'com.kayming.bacon.q_points_1200'
-          this.iOSPay(productIdentifier)
-          bonus = 1200
-        }
-        this.SubjectStore.addBonus(bonus)
-        await this.firebase
-          .database()
-          .ref(`bonus/${this.SubjectStore.uid}`)
-          .set(this.SubjectStore.bonus + bonus)
-          .then(() => {
-            Actions.AboutMe({ type: 'reset' })
-          })
-      } catch (err) {
-        console.log(err)
+      //console.log('iOS IAP Bonus #################'
+      if (bonus === 1200) {
+        const productIdentifier = 'com.kayming.bacon.q_points_1200'
+        this.iOSPay(bonus,productIdentifier)
+      } else if (bonus === 600) {
+        const productIdentifier = 'com.kayming.bacon.q_points_600'
+        this.iOSPay(bonus,productIdentifier)
+      } else if (bonus === 200) {
+        const productIdentifier = 'com.kayming.bacon.q_points_200'
+        this.iOSPay(bonus,productIdentifier)
+      } else {
+        alert('error')
       }
     }
   }
@@ -125,25 +101,29 @@ export default class BaconRoutesContainer extends Component {
     }
   }
 
-  iOSPay = async productId => {
-    console.log('Purchasing iOS product: ', productId)
-    try {
-      await InAppUtils.purchaseProduct(productId, (error, response) => {
-        console.log('response: ', response)
-        // NOTE for v3.0: User can cancel the payment which will be available as error object here.
-        if (response && response.productIdentifier) {
-          console.log(
-            'Purchase Successful',
-            'Your Transaction ID is ' + response.transactionIdentifier
-          )
-          //unlock store here.
-        } else {
-          console.log('IAP error: ', error)
-        }
-      })
-    } catch (err) {
-      alert('錯誤')
-    }
+  iOSPay = (bonus,productId) => {
+      InAppUtils.loadProducts([productId], (error, products) => {
+        InAppUtils.canMakePayments((canMakePayments) => {
+           if(!canMakePayments) {
+              Alert.alert('Not Allowed', 'This device is not allowed to make purchases. Please check restrictions on device');
+           } else {
+             InAppUtils.purchaseProduct(productId, (error, response) => {
+              if (response && response.productIdentifier) {
+                //alert('Purchase Successful', 'Your Transaction ID is ' + response.transactionIdentifier);
+                //unlock store here.
+                this.firebase
+                  .database()
+                  .ref(`bonus/${this.SubjectStore.uid}`)
+                  .set(this.SubjectStore.bonus + bonus)
+                this.SubjectStore.addBonus(bonus)
+                Actions.AboutMe({ type: 'reset' })
+              } else {
+                alert('IAP error: ', response)
+              }
+            })
+           }
+        })
+      });
   }
 
   render() {

@@ -1,5 +1,5 @@
 import React, { Component }  from 'react'
-import { AppState, Platform } from 'react-native'
+import { AppState, Platform, NativeModules } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import GeoFire from 'geofire'
@@ -7,13 +7,15 @@ import Geolocation from  'Geolocation'
 import Moment from 'moment'
 import MomentLocale from 'moment/locale/zh-tw'
 import InAppBilling from 'react-native-billing'
-
+import iapReceiptValidator from 'iap-receipt-validator';
 // 演算法
 import { calculateAge } from '../../../api/Utils'
 // 頁面
 import Loading from '../../views/Loading/Loading'
 // 設定
 import DefaultLanguages from '../../../configs/DefaultLanguages'
+
+const { InAppUtils } = NativeModules
 
 const metadata = {
   contentType: 'image/jpeg'
@@ -328,16 +330,43 @@ export default class SessionCheckScene extends Component {
         await InAppBilling.close()
       }
     } else { // iOS
+      const password = 'd882b9dc156a47b4ae2ff9a094fc53c5'; // Shared Secret from iTunes connect
+      const production = false; // use sandbox or production url for validation
+      const validateReceipt = iapReceiptValidator(password, production);
+        //InAppUtils.loadProducts(['com.kayming.bacon.premium_3m','com.kayming.bacon.premium_1y'],(error, products) => {
+          InAppUtils.receiptData(async (error, receiptData)=> {
+            if(receiptData) {
+               try {
+                  const validationData = await validateReceipt(receiptData);
+                  const expires_date = validationData['latest_receipt_info'][0].expires_date.substring(0, 19)
+                  alert(Date.parse(expires_date))
+              //product_id
+              //transaction_id
+                  // check if Auto-Renewable Subscription is still valid
+                  // validationData['latest_receipt_info'][0].expires_date > today
+              } catch(err) {
+                  alert('error : ' + err.message)
+              //    console.log(err.valid, err.error, err.message)
+              }
+            } else {
+              alert('no receiptData')
+            }
+          })
+        //})
+
       /*
-      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/vip').once('value').then((snap)=> {
-        if (snap.exists()) {
-          if (snap.val()) {
-            this.SubjectStore.setVip(true)
-          } else {
-            this.SubjectStore.setVip(false)
+      const password = 'd882b9dc156a47b4ae2ff9a094fc53c5'; // Shared Secret from iTunes connect
+      const production = true; // use sandbox or production url for validation
+      const validateReceipt = iapReceiptValidator(password, production);
+          try {
+              const validationData = await validateReceipt('com.kayming.bacon.premium_3m');
+              alert(validationData['latest_receipt_info'][0].expires_date)
+              // check if Auto-Renewable Subscription is still valid
+              // validationData['latest_receipt_info'][0].expires_date > today
+          } catch(err) {
+              alert('error : ' + err.message)
+          //    console.log(err.valid, err.error, err.message)
           }
-        }
-      })
       */
     }
   }
