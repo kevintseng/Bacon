@@ -301,8 +301,12 @@ export default class VisitorChatRoomScene extends Component {
     })
     await this.removeMessagesAndImagesListener()
     await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2)
-    await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
-      this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set(snap.val())
+    //await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
+    //  this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set(snap.val())
+    //})
+    await this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set({
+      chatRoomCreater: this.props.preyID,
+      chatRoomRecipient: this.SubjectStore.uid 
     })
     await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
     this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
