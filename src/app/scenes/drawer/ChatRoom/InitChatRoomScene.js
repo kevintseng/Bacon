@@ -41,7 +41,7 @@ export default class InitChatRoomScene extends Component {
     this.ChatStore = this.props.ChatStore
     //this.messageSendPeople = 0
     this.chatRoomQuery = null
-    this.interested = null
+    this.interested = false
     this.state = {
       showLeftFooter: false,
       showRightFooter: false ,
@@ -59,14 +59,14 @@ export default class InitChatRoomScene extends Component {
   componentDidMount() {
     this.chatRoomQuery = this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested')
     this.chatRoomQuery.on('value', child => {
-      this.interested = child.val()
+      this.interested = child.val().toString() // javascripr 裡 0 為false
       if (this.interested) {
-        if (this.interested === 2) {
-          console.warn('轉到配對聊天室')
+        if (this.interested === '2') {
+          //console.warn('轉到配對聊天室')
           Actions.MatchChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
         } else {
           this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/chatRoomCreater').once('value',snap => {
-            if (this.interested === 1) {
+            if (this.interested === '1') {
               if (snap.val() === this.SubjectStore.uid) {
                 //console.warn('轉到Hello聊天室')
                 Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
@@ -74,18 +74,19 @@ export default class InitChatRoomScene extends Component {
                 //console.warn('轉到訪客聊天室')
                 Actions.VisitorChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               }
-            } else if (this.interested === 0){
+            } else if (this.interested === '0'){
               if (snap.val() === this.SubjectStore.uid) {
-                //console.warn('轉到Hello聊天室')
                 Actions.HelloChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
               } else {
-                console.warn('你已對此會員不感興趣')
+                Actions.VisitorChatRoom({type: 'replace', title: this.props.Title, chatRoomKey: this.props.chatRoomKey,preyID: this.props.preyID})
+                
               }
             }
           })
         }
       } else {
         // 初始聊天室
+        
         this.firebase.database().ref('hello_chat_rooms_count/' + this.SubjectStore.uid).once('value',snap => {
           //this.messageSendPeople = snap.val() || 0
           this.ChatStore.setMessageSendPeople(snap.val() || 0)
@@ -95,7 +96,7 @@ export default class InitChatRoomScene extends Component {
             loading: false
           })
           //console.warn('初始聊天室')
-        })        
+        })      
       }
     })
   }
