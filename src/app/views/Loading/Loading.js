@@ -20,12 +20,20 @@ const styles = {
     textAlign: 'center', 
     marginTop: 20, 
     color: "red"    
+  },
+  text: {
+    paddingTop: 10,
+    color: 'white',
+    letterSpacing: 3,
+    fontFamily: 'NotoSans', 
+    fontWeight: '500',
+    fontSize: 15    
   }
 }
 
 const colors = ['#f4a764', '#d63768']
 
-const Loading = ({ showWarning, UpInStatus, error }) => {
+const Loading = ({ showWarning, UpInStatus, error, warning }) => {
 
   const success = UpInStatus + '中'
   const failure = UpInStatus + '失敗'
@@ -41,7 +49,9 @@ const Loading = ({ showWarning, UpInStatus, error }) => {
     <LinearGradient colors={colors} style={styles.linearGradient}>
       <View style={styles.linearGradientView}>
         <Image source={require('./img/ico_intro_logo.png')} />
-        { showWarning && renderText() }
+        { showWarning && <Text style={styles.text}>
+          { warning }
+        </Text> }
       </View>
     </LinearGradient>
   )

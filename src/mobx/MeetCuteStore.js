@@ -15,6 +15,7 @@ export default class MeetCuteStore {
   @observable minAge
   @observable onlyShowThreePhotoPrey
   @observable showPreyRadar
+  @observable havepreys
 
   constructor(firebase) {
     this.firebase = firebase
@@ -32,6 +33,7 @@ export default class MeetCuteStore {
     this.minAge = 18
     this.onlyShowThreePhotoPrey = false
     this.showPreyRadar = false
+    this.havepreys = false
   }
 
   @action switchOnlyShowThreePhotoPrey = () => {
@@ -63,7 +65,13 @@ export default class MeetCuteStore {
   }
 
   @action finishLoading = () => {
-    this.loading = false
+    if (this.preys.length != 0) {
+      this.havepreys = true
+      this.loading = false
+    } else {
+      this.havepreys = false
+      this.loading = false      
+    }
   }
 
   @action startCheckMatch = () => {
@@ -101,23 +109,44 @@ export default class MeetCuteStore {
     ).filter(ele => ele.age >= this.minAge && ele.age <= this.maxAge) 
   }
 
-  fetchPreys = (preySexualOrientation) => {
+  fetchPreys = (selfUid,preySexualOrientation) => {
     //const randomIndex = Math.floor(Math.random() * maxPreysLimit) // TODO: 隨機 .limitToFirst(randomIndex)
     // TODO: 三張照片限制 > 3
     // TODO: 隱藏 > 0
-    this.firebase.database().ref('meetCuteList/' + preySexualOrientation).once('value',snap => {
-      if (snap.val()) {
-        // TODO: 看過紀錄
-        const preysPromise = Object.keys(snap.val()).map(uid => this.firebase.database().ref('users/' + uid).once('value'))   
-        Promise.all(preysPromise)
-        .then(this.setPreys)
-        .then(this.finishLoading)
-        .cacth(showError)  
-      } else {
-        //
-        console.warn('沒資料')
-      }
-    })
+    if (preySexualOrientation.charAt(preySexualOrientation.length - 1) === preySexualOrientation.charAt(preySexualOrientation.length - 3)) {
+      this.firebase.database().ref('meetCuteList/' + preySexualOrientation).once('value',snap => {
+        if (snap.val()) {
+          const ids = Object.keys(snap.val())
+          const index = ids.indexOf(selfUid)
+          if (index > -1) {
+            ids.splice(index, 1)
+          }
+          // TODO: 看過紀錄
+          const preysPromise = ids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))   
+          Promise.all(preysPromise)
+          .then(this.setPreys)
+          .then(this.finishLoading)
+          .cacth(showError)  
+        } else {
+          //
+          console.warn('同性戀沒資料')
+        }
+      })    
+    } else {
+      this.firebase.database().ref('meetCuteList/' + preySexualOrientation).once('value',snap => {
+        if (snap.val()) {
+          // TODO: 看過紀錄
+          const preysPromise = Object.keys(snap.val()).map(uid => this.firebase.database().ref('users/' + uid).once('value'))   
+          Promise.all(preysPromise)
+          .then(this.setPreys)
+          .then(this.finishLoading)
+          .cacth(showError)  
+        } else {
+          //
+          console.warn('沒資料')
+        }
+      })
+    }
   }
 
 }
