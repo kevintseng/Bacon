@@ -43,6 +43,7 @@ export default class ControlStore {
   @observable general
   //
   @observable chatMatchModal
+  @observable passwordRsetModal
 
   constructor() {
     this.initialize()
@@ -91,6 +92,7 @@ export default class ControlStore {
     this.general = false
     //
     this.chatMatchModal = true
+    this.passwordRsetModal = false
   }
 
   @action closeChatMatchModal = () => {
@@ -195,6 +197,10 @@ export default class ControlStore {
 
   @action setDeleteAccounrModal = () => {
     this.deleteAccounrModal = !this.deleteAccounrModal
+  }
+
+  @action setPasswordResetModal = () => {
+    this.passwordRsetModal = !this.passwordRsetModal
   }
 
   @action switchMeetCuteRadar = () => {

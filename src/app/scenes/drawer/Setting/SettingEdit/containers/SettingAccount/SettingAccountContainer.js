@@ -6,6 +6,7 @@ import ResetPasswordContainer from './ResetPasswordContainer'
 import LoginOutContainer from './LoginOutContainer'
 import DeleteAccountContainer from './DeleteAccountContainer'
 import DeleteModalContainer from './DeleteModalContainer'
+import ResetPasswordModalContainer from './ResetPasswordModalContainer'
 
 import Knife from '../../../../../../views/Knife/Knife'
 
@@ -28,6 +29,7 @@ export default class SettingAccountContainer extends Component {
     return(
       <View style={{flex: 1,alignItems: 'center'}}>
         <DeleteModalContainer/>
+        <ResetPasswordModalContainer/>
         <View style={{position: 'absolute',top: 30}}>
           <ResetPasswordContainer/>
         </View>
