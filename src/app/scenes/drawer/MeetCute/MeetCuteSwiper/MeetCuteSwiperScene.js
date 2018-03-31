@@ -9,6 +9,7 @@ import { toJS } from 'mobx'
 import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
 import BaconCheckMatch from '../../../../views/BaconCheckMatch'
 import BaconMatch from '../../../../views/BaconMatch'
+import Loading from '../../../../views/Loading/Loading'
 
 const { width, height } = Dimensions.get('window')
 
@@ -49,7 +50,7 @@ export default class MeetCuteSwiperScene extends Component {
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this.MeetCuteStore.fetchPreys(this.SubjectStore.preySexualOrientation)
+      this.MeetCuteStore.fetchPreys(this.SubjectStore.uid,this.SubjectStore.preySexualOrientation)
     })
   }
 
@@ -109,6 +110,7 @@ export default class MeetCuteSwiperScene extends Component {
     return(
       <View style={styles.view}>
         { this.MeetCuteStore.loading ? <BaconActivityIndicator/> :
+          this.MeetCuteStore.havepreys ? 
         <View style={styles.view}>
           <BaconCheckMatch
             visible={this.MeetCuteStore.checking}
@@ -165,6 +167,12 @@ export default class MeetCuteSwiperScene extends Component {
             onSwipedAll={this.onSwipedAll}
             //showSecondCard={false}
             infinite={true}
+          />
+        </View> :
+        <View style={styles.view}>
+          <Loading
+            showWarning
+            warning={'未搜尋到邂逅對象'}
           />
         </View>
         }
