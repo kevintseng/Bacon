@@ -80,13 +80,15 @@ export default class DeleteModalContainer extends Component {
 
   render() {
     return(
-        <Modal animationType={"fade"} transparent={true} visible={this.ControlStore.deleteAccounrModal} onRequestClose={ this.ControlStore.setDeleteAccounrModal  } >
-          <View
+        <Modal animationType={"none"} transparent={true} visible={this.ControlStore.deleteAccounrModal} onRequestClose={ this.ControlStore.setDeleteAccounrModal  } >
+          <TouchableOpacity
+            activeOpacity={1}
             style={{
               backgroundColor: 'rgba(52, 52, 52, 0.4)',
               flex: 1,
               justifyContent: 'center'
             }}
+            onPress={ this.ControlStore.setDeleteAccounrModal  }
           >
             <View
               style={{
@@ -123,7 +125,7 @@ export default class DeleteModalContainer extends Component {
                 </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </Modal>
     )
   }

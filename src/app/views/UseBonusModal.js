@@ -52,7 +52,7 @@ const styles = {
 
 const UseBonusModal = ({visible,nowBonus,useBonus,routesOnPress,onRequestClose}) => {
   return (
-      <Modal animationType={"fade"} transparent={true} visible={visible} onRequestClose={ onRequestClose } >
+      <Modal animationType={"none"} transparent={true} visible={visible} onRequestClose={ onRequestClose } >
           <TouchableOpacity
             activeOpacity={1}
             onPress={ onRequestClose }
