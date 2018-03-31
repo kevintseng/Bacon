@@ -207,12 +207,22 @@ export default class SessionCheckScene extends Component {
       center: [latitude,longitude],
       radius: 394 // 台灣從北到南394公里
     })
-    this.geoQuery.on('key_entered', (uid, location, distance) => {
-      // ToDo: 同性戀要另外演算法
-      this.firebase.database().ref('users/' + uid).once('value').then( snap => {
-        this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online)
+    const str = this.geoQueryFire.ref().path
+    if (str.charAt(str.length - 1) === str.charAt(str.length - 3)) {
+      this.geoQuery.on('key_entered', (uid, location, distance) => {
+        this.firebase.database().ref('users/' + uid).once('value').then( snap => {
+          if (snap.key != this.SubjectStore.uid) {
+            this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online)
+          }
+        })
       })
-    })
+    } else {
+      this.geoQuery.on('key_entered', (uid, location, distance) => {
+        this.firebase.database().ref('users/' + uid).once('value').then( snap => {
+          this.MeetChanceStore.addPreyToPool(uid,distance,snap.val().nickname,snap.val().avatar,snap.val().birthday,snap.val().hideMeetChance,snap.val().deleted,snap.val().online)
+        })
+      })
+    }
   }
 
   initSubjectStoreFromSignUpStore = () => {
