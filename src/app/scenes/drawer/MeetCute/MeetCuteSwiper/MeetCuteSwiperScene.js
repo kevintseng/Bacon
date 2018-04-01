@@ -126,9 +126,8 @@ export default class MeetCuteSwiperScene extends Component {
   onPrssBlockade = () => {
       Alert.alert( 
         '管理員提示', '已封鎖此人', [ 
-        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+        {text: '確認', onPress: () => this.swiper.swipeRight()}, ], { cancelable: false } 
       )
-      this.swiper.swipeRight()
   }
 
   onPressMatchLeft = () => {
