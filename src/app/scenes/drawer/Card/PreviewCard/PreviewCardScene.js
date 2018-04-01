@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Dimensions, BackHandler, ToastAndroid, TouchableOpacity, InteractionManager } from 'react-native'
+import { View, Dimensions, BackHandler, ToastAndroid, TouchableOpacity, InteractionManager, Alert } from 'react-native'
 import { observer, inject } from 'mobx-react'
 import { Actions } from 'react-native-router-flux'
 import BaconCard from 'react-native-bacon-card'
@@ -63,11 +63,17 @@ export default class PreviewCardScene extends Component {
   }
 
   onPressReport = () => {
-    alert('已通知官方檢舉訊息')
+      Alert.alert( 
+        '管理員提示', '已通知官方檢舉訊息', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
   }
 
   onPrssBlockade = () => {
-    alert('已封鎖此人')
+      Alert.alert( 
+        '管理員提示', '已封鎖此人', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
   }
 
   render() {

@@ -1,5 +1,6 @@
 import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx'
 import { sortedAlbum, showError, calculateAge, calculateDistance, languagesToString, hobbiesToFlatList } from '../api/Utils'
+import localdb from '../configs/localdb'
 
 useStrict(true)
 
@@ -138,38 +139,42 @@ export default class MeetCuteStore {
   fetchPreys = (selfUid,preySexualOrientation) => {
     //const randomIndex = Math.floor(Math.random() * maxPreysLimit) // TODO: 隨機 .limitToFirst(randomIndex)
     // TODO: 三張照片限制 > 3
-    // TODO: 隱藏 > 0
+    // TODO: 隱藏
     // TODO: 隨機
-    // TODO: 看過記錄
     // TODO: 封鎖
     if (preySexualOrientation.charAt(preySexualOrientation.length - 1) === preySexualOrientation.charAt(preySexualOrientation.length - 3)) {
       this.firebase.database().ref('meetCuteList/' + preySexualOrientation).once('value',snap => {
         if (snap.val()) {
-          const ids = Object.keys(snap.val())
-          const index = ids.indexOf(selfUid)
-          if (index > -1) {
-            ids.splice(index, 1)
-          }
-          const preysPromise = ids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))   
-          Promise.all(preysPromise)
-          .then(this.setPreys)
-          .then(this.finishLoading)
-          .cacth(showError)  
+          localdb.getIdsForKey('meetCute' + selfUid).then(ids_history => {
+            const ids = Object.keys(snap.val())
+            const index = ids.indexOf(selfUid)
+            if (index > -1) {
+              ids.splice(index, 1)
+            }
+            const filter_ids = ids.filter(id => ids_history.indexOf(id) === -1)
+            const preysPromise = filter_ids.map(uid => this.firebase.database().ref('users/' + uid).once('value')) 
+            Promise.all(preysPromise)
+            .then(this.setPreys)
+            .then(this.finishLoading)
+            .cacth(showError)    
+          })
         } else {
-          //
           console.warn('同性戀沒資料')
         }
       })    
     } else {
       this.firebase.database().ref('meetCuteList/' + preySexualOrientation).once('value',snap => {
         if (snap.val()) {
-          const preysPromise = Object.keys(snap.val()).map(uid => this.firebase.database().ref('users/' + uid).once('value'))   
-          Promise.all(preysPromise)
-          .then(this.setPreys)
-          .then(this.finishLoading)
-          .cacth(showError)  
+          localdb.getIdsForKey('meetCute' + selfUid).then(ids_history => {
+            const ids = Object.keys(snap.val())
+            const filter_ids = ids.filter(id => ids_history.indexOf(id) === -1)
+            const preysPromise = filter_ids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))  
+            Promise.all(preysPromise)
+            .then(this.setPreys)
+            .then(this.finishLoading)
+            .cacth(showError)
+          })
         } else {
-          //
           console.warn('沒資料')
         }
       })
