@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react'
 import BaconCard from 'react-native-bacon-card'
 
 import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
-import BaconMatch from '../../../../views/BaconMatch'
+import BaconMatchContainer from './containers/BaconMatchContainer'
 import { sortedAlbum, calculateAge, calculateDistance, languagesToString, hobbiesToFlatList } from '../../../../../api/Utils'
 
 //import MateModalContainer from './containers/MateModalContainer'
@@ -30,7 +30,7 @@ const styles = {
   }
 }
 
-@inject('firebase','SubjectStore','ChatStore','FateStore') @observer
+@inject('firebase','SubjectStore','ChatStore','FateStore','MeetCuteStore') @observer
 export default class MatchCardScene extends Component {
 
   constructor(props) {
@@ -39,6 +39,7 @@ export default class MatchCardScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.ChatStore = this.props.ChatStore
     this.FateStore = this.props.FateStore
+    this.MeetCuteStore = this.props.MeetCuteStore
     this.state = {
       loading: true,
       visible: false
@@ -93,76 +94,75 @@ export default class MatchCardScene extends Component {
   }
 
   onPressRight = () => {
-    // 上傳goodImpression
-    this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.props.uid).set({wooner: this.SubjectStore.uid, prey: this.props.uid, time: Date.now()}) 
-    // 上傳配對聊天室資料
-    const chatRoomKey = this.SubjectStore.uid > this.props.uid ? this.SubjectStore.uid + this.props.uid : this.props.uid + this.SubjectStore.uid
-    this.firebase.database().ref('nonHandleChatRooms/' + chatRoomKey).remove()
-    this.firebase.database().ref('matchChatRooms/' + chatRoomKey).once('value',snap => {
-      if (snap.val()) {
-        //console.warn('已有聊天室紀錄')
-      } else {
-        this.firebase.database().ref('matchChatRooms/' + chatRoomKey).set({
-          chatRoomCreater: this.SubjectStore.uid,
-          chatRoomRecipient: this.props.uid
-        })
-      }      
-    })
-    this.firebase.database().ref('chat_rooms/' + chatRoomKey).once('value',snap => {
-      if (snap.val()) {
-        this.firebase.database().ref('chat_rooms/' + chatRoomKey + '/interested').set(2)
-      } else {
-        this.firebase.database().ref('chat_rooms/' + chatRoomKey).set({
-          chatRoomCreater: this.SubjectStore.uid,
-          chatRoomRecipient: this.props.uid,
-          interested: 2
-        })
-      }
-    })
-
-    this.firebase.database().ref('chats/' + chatRoomKey).once('value',snap => {
-      if (snap.val()) {
-        //
-      } else {
-        this.firebase.database().ref('chats/' + chatRoomKey).set({
-          chatRoomCreater: this.SubjectStore.uid,
-        })
-      }
-    })
-
+    // TODO: 緩存
+    this.MeetCuteStore.startFateMatch()
+    this.updateGoodImpression()
+    this.chatRoomKey = this.SubjectStore.uid > this.props.uid ? this.SubjectStore.uid + this.props.uid : this.props.uid + this.SubjectStore.uid
+    this.firebase.database().ref('chat_rooms/' + this.chatRoomKey +'/interested').once('value',async snap => {
+      if (snap.val() || snap.val() === 0 ) {
+        if (snap.val() === 2) {
+              //
+            } else if (snap.val() === 1) {
+              this.firebase.database().ref('chat_rooms/' + this.chatRoomKey +'/interested').set(2)
+              await this.firebase.database().ref('nonHandleChatRooms/' + this.chatRoomKey).once('value',snap => {
+                if (snap.val()) {
+                  this.firebase.database().ref('matchChatRooms/' + this.chatRoomKey).set(snap.val())
+                }
+              })
+              await this.firebase.database().ref('nonHandleChatRooms').child(this.chatRoomKey).remove()
+            } else {
+              this.firebase.database().ref('chat_rooms/' + this.chatRoomKey +'/interested').set(2)
+              await this.firebase.database().ref('nonMatchChatRooms/' + this.chatRoomKey).once('value',snap => {
+                if (snap.val()) {
+                  this.firebase.database().ref('matchChatRooms/' + this.chatRoomKey).set(snap.val())
+                }
+              })
+              await this.firebase.database().ref('nonMatchChatRooms').child(this.chatRoomKey).remove()
+            }
+          } else {
+              this.firebase.database().ref('chat_rooms/' + this.chatRoomKey).set({
+                chatRoomCreater: this.SubjectStore.uid,
+                interested: 2, //未處理
+                chatRoomRecipient: this.props.uid,
+              })
+              this.firebase.database().ref('matchChatRooms/' + this.chatRoomKey).set({
+                chatRoomCreater: this.SubjectStore.uid,
+                chatRoomRecipient: this.props.uid 
+              })
+          }
+      })
+  
     this.FateStore.removeGoodImpressionsPrey(this.props.uid)
-    this.setState({
-      visible: true
-    })
   }
 
   onPressLeft = () => {
-    this.firebase.database().ref('goodImpressionList/' + this.props.uid + this.SubjectStore.uid).remove()
+    this.removeGoodImpressions()
     this.FateStore.removeGoodImpressionsPrey(this.props.uid)
     Actions.FateTab({type: 'reset'})
-    // 沒配對
+  }
+
+  updateGoodImpression = () => {
+    this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.props.uid).set({wooner: this.SubjectStore.uid, prey: this.props.uid, time: Date.now()}) 
+  }
+
+  removeGoodImpressions = () => {
+    this.firebase.database().ref('goodImpressionList/' + this.props.uid + this.SubjectStore.uid).remove()
   }
 
   onPressReturn = () => {
-    this.setState({
-      visible: false
-    })    
+    this.MeetCuteStore.finishFateMatch()
   }
 
   onPressMatchLeft = () => {
-    this.setState({
-      visible: false
-    }) 
+    this.MeetCuteStore.finishFateMatch()
     Actions.FateTab({type: 'reset'})
   }
 
   onPressMatchRight = () => {
-    this.setState({
-      visible: false
-    }) 
-    const chatRoomKey = this.SubjectStore.uid > this.props.uid ? this.SubjectStore.uid + this.props.uid : this.props.uid + this.SubjectStore.uid
-    const title = this.state.nickname + '，' + this.state.age
-    this.ChatStore.setChatRoomKey(chatRoomKey,this.props.uid)
+    this.MeetCuteStore.finishFateMatch()
+    //const chatRoomKey = this.SubjectStore.uid > this.props.uid ? this.SubjectStore.uid + this.props.uid : this.props.uid + this.SubjectStore.uid
+    //const title = this.state.nickname + '，' + this.state.age
+    this.ChatStore.setChatRoomKey(this.chatRoomKey,this.props.uid)
     this.ChatStore.setGoToChatTab(true)
     Actions.ChatTab({type: 'reset'})
     //Actions.MatchChatRoom({type: 'reset',title: title, chatRoomKey: chatRoomKey ,preyID: this.props.uid, renderBackButton: this.goToChatTab})
@@ -178,12 +178,10 @@ export default class MatchCardScene extends Component {
       <View style={styles.view}> 
       { this.state.loading ? <BaconActivityIndicator/> :
         <View style={styles.view}>
-          <BaconMatch
-            visible={this.state.visible}
+          <BaconMatchContainer
             onPressReturn={this.onPressReturn}
             onPressRight={this.onPressMatchRight}
             onPressLeft={this.onPressMatchLeft}
-            leftText={'     回到緣分'}
           />
           <BaconCard
             album={ this.state.album }

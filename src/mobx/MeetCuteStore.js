@@ -16,6 +16,8 @@ export default class MeetCuteStore {
   @observable onlyShowThreePhotoPrey
   @observable showPreyRadar
   @observable havepreys
+  @observable gotTochatRoom
+  @observable fateMatch
 
   constructor(firebase) {
     this.firebase = firebase
@@ -34,6 +36,25 @@ export default class MeetCuteStore {
     this.onlyShowThreePhotoPrey = false
     this.showPreyRadar = false
     this.havepreys = false
+    this.gotTochatRoom = false
+    this.fateMatch = false
+  }
+
+  @action startFateMatch = () => {
+    this.fateMatch = true
+  }
+
+  @action finishFateMatch = () => {
+    this.fateMatch = false
+  }
+
+  @action startGotTochatRoom = () => {
+    this.match = false
+    this.gotTochatRoom = true
+  }
+
+  @action finishGotTochatRoom = () => {
+    this.gotTochatRoom = false
   }
 
   @action switchOnlyShowThreePhotoPrey = () => {
@@ -80,6 +101,11 @@ export default class MeetCuteStore {
 
   @action finishCheckMatch = () => {
     this.checking = false
+  }
+
+  @action finishCheckMatchAndSetMatch = () => {
+    this.checking = false
+    this.match = true
   }
 
   @action setMatch = () => {

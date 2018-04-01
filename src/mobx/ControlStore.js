@@ -44,6 +44,7 @@ export default class ControlStore {
   //
   @observable chatMatchModal
   @observable passwordRsetModal
+  @observable gotTochatRoom
 
   constructor() {
     this.initialize()
@@ -94,6 +95,15 @@ export default class ControlStore {
     this.chatMatchModal = true
     this.passwordRsetModal = false
     this.drawer = null
+    this.gotTochatRoom = false
+  }
+
+  @action startGotTochatRoom = () => {
+    this.gotTochatRoom = true
+  }
+
+  @action finishGotTochatRoom = () => {
+    this.gotTochatRoom = false
   }
 
   @action setDrawer = ref => {

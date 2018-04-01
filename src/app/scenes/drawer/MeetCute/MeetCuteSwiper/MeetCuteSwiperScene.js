@@ -10,6 +10,7 @@ import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
 import Loading from '../../../../views/Loading/Loading'
 import BaconCheckMatchContainer from './containers/BaconCheckMatchContainer'
 import BaconMatchContainer from './containers/BaconMatchContainer'
+import BaconGoToChatRoomContainer from './containers/BaconGoToChatRoomContainer'
 
 const { width, height } = Dimensions.get('window')
 
@@ -31,7 +32,7 @@ const styles = {
   }
 }
 
-@inject('firebase','SubjectStore','MeetCuteStore','ChatStore') @observer
+@inject('firebase','SubjectStore','MeetCuteStore','ChatStore','ControlStore') @observer
 export default class MeetCuteSwiperScene extends Component {
 
   constructor(props) {
@@ -40,6 +41,7 @@ export default class MeetCuteSwiperScene extends Component {
     this.SubjectStore = this.props.SubjectStore
     this.MeetCuteStore = this.props.MeetCuteStore
     this.ChatStore = this.props.ChatStore
+    this.ControlStore = this.props.ControlStore
     this.cardIndex = 0
   }
 
@@ -69,11 +71,46 @@ export default class MeetCuteSwiperScene extends Component {
     this.MeetCuteStore.startCheckMatch()
     this.updateGoodImpression()
     this.firebase.database().ref('goodImpressionList/' + this.MeetCuteStore.preys[this.cardIndex].key + this.SubjectStore.uid).once('value',async snap => {
-      await this.sleep(500)
-      this.MeetCuteStore.finishCheckMatch()
       if (snap.val()) {
-        this.MeetCuteStore.setMatch()
+        this._uid = this.MeetCuteStore.preys[this.cardIndex].key
+        this.chatRoomKey = this.SubjectStore.uid > this._uid ? this.SubjectStore.uid + this._uid : this._uid + this.SubjectStore.uid
+        this.firebase.database().ref('chat_rooms/' + this.chatRoomKey +'/interested').once('value',async snap => {
+          if (snap.val() || snap.val() === 0 ) {
+            if (snap.val() === 2) {
+              //
+            } else if (snap.val() === 1) {
+              await this.firebase.database().ref('nonHandleChatRooms/' + this.chatRoomKey).once('value',snap => {
+                if (snap.val()) {
+                  this.firebase.database().ref('matchChatRooms/' + this.chatRoomKey).set(snap.val())
+                }
+              })
+              await this.firebase.database().ref('nonHandleChatRooms').child(this.chatRoomKey).remove()
+              await this.firebase.database().ref('chat_rooms/' + this.chatRoomKey +'/interested').set(2)
+            } else {
+              await this.firebase.database().ref('nonMatchChatRooms/' + this.chatRoomKey).once('value',snap => {
+                if (snap.val()) {
+                  this.firebase.database().ref('matchChatRooms/' + this.chatRoomKey).set(snap.val())
+                }
+              })
+              await this.firebase.database().ref('nonMatchChatRooms').child(this.chatRoomKey).remove()
+              await this.firebase.database().ref('chat_rooms/' + this.chatRoomKey +'/interested').set(2)
+            }
+          } else {
+              await this.firebase.database().ref('chat_rooms/' + this.chatRoomKey).set({
+                chatRoomCreater: this.SubjectStore.uid,
+                interested: 2, //未處理
+                chatRoomRecipient: this._uid,
+              })
+              await this.firebase.database().ref('matchChatRooms/' + this.chatRoomKey).set({
+                chatRoomCreater: this.SubjectStore.uid,
+                chatRoomRecipient: this._uid 
+              })
+          }
+          this.MeetCuteStore.finishCheckMatchAndSetMatch()
+        })
       } else {
+        await this.sleep(500)
+        this.MeetCuteStore.finishCheckMatch()
         this.swiper.swipeRight()
       }
     })
@@ -93,14 +130,11 @@ export default class MeetCuteSwiperScene extends Component {
   }
 
   onPressMatchRight = () => {
+    this.title = this.MeetCuteStore.preys[this.cardIndex].nickname + '，' + this.MeetCuteStore.preys[this.cardIndex].age
+    this.ChatStore.setChatRoomKey(this.chatRoomKey,this._uid)
     this.MeetCuteStore.finishMatch()
+    Actions.InitChatRoom({title: this.title, Title: this.title, chatRoomKey: this.chatRoomKey ,preyID: this._uid})
     this.swiper.swipeRight()
-    const _uid = this.MeetCuteStore.preys[this.cardIndex].key
-    const chatRoomKey = this.SubjectStore.uid > _uid ? this.SubjectStore.uid + _uid : _uid + this.SubjectStore.uid
-    const title = this.MeetCuteStore.preys[this.cardIndex].nickname + '，' + this.MeetCuteStore.preys[this.cardIndex].age
-    this.ChatStore.setChatRoomKey(chatRoomKey,_uid)
-    Actions.InitChatRoom({title: title, Title: title, chatRoomKey: chatRoomKey ,preyID: _uid})
-    //Actions.MatchChatRoom({type: 'reset', title: title, chatRoomKey: chatRoomKey,preyID: _uid})
   }
 
   updateGoodImpression = () => {
@@ -123,6 +157,7 @@ export default class MeetCuteSwiperScene extends Component {
             onPressRight={this.onPressMatchRight}
             onPressLeft={this.onPressMatchLeft}
           />
+          <BaconGoToChatRoomContainer/>
           <Swiper
             ref={swiper => { this.swiper = swiper}}
             cards={toJS(this.MeetCuteStore.preys)}
