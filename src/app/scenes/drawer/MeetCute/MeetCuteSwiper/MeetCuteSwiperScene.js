@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Dimensions, InteractionManager, Image,TouchableOpacity, Modal, Text } from 'react-native'
+import { View, Dimensions, InteractionManager, Image,TouchableOpacity, TouchableWithoutFeedback, Modal, Text } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import BaconCard from 'react-native-bacon-card'
 import Swiper from 'react-native-deck-swiper'
@@ -7,9 +7,9 @@ import { inject, observer } from 'mobx-react'
 import { toJS } from 'mobx'
 
 import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
-import BaconCheckMatch from '../../../../views/BaconCheckMatch'
-import BaconMatch from '../../../../views/BaconMatch'
 import Loading from '../../../../views/Loading/Loading'
+import BaconCheckMatchContainer from './containers/BaconCheckMatchContainer'
+import BaconMatchContainer from './containers/BaconMatchContainer'
 
 const { width, height } = Dimensions.get('window')
 
@@ -44,7 +44,7 @@ export default class MeetCuteSwiperScene extends Component {
   }
 
   componentWillMount() {
-    Actions.refresh({ key: 'Drawer', open: false })
+
     this.MeetCuteStore.startLoading()
   }
 
@@ -65,9 +65,11 @@ export default class MeetCuteSwiperScene extends Component {
   }
 
   onPressRight = () => {
+    // TODO: 緩存
     this.MeetCuteStore.startCheckMatch()
     this.updateGoodImpression()
-    this.firebase.database().ref('goodImpressionList/' + this.MeetCuteStore.preys[this.cardIndex].key + this.SubjectStore.uid).once('value',snap => {
+    this.firebase.database().ref('goodImpressionList/' + this.MeetCuteStore.preys[this.cardIndex].key + this.SubjectStore.uid).once('value',async snap => {
+      await this.sleep(500)
       this.MeetCuteStore.finishCheckMatch()
       if (snap.val()) {
         this.MeetCuteStore.setMatch()
@@ -105,6 +107,10 @@ export default class MeetCuteSwiperScene extends Component {
     this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.MeetCuteStore.preys[this.cardIndex].key).set({wooner: this.SubjectStore.uid, prey: this.MeetCuteStore.preys[this.cardIndex].key, time: Date.now()})    
   }
 
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
   render() {
 
     return(
@@ -112,14 +118,8 @@ export default class MeetCuteSwiperScene extends Component {
         { this.MeetCuteStore.loading ? <BaconActivityIndicator/> :
           this.MeetCuteStore.havepreys ? 
         <View style={styles.view}>
-          <BaconCheckMatch
-            visible={this.MeetCuteStore.checking}
-            text={'檢查配對中'}
-          />
-          <BaconMatch
-            visible={this.MeetCuteStore.match}
-            onPressReturn={()=>{}}
-            leftText={'     繼續邂逅'}
+          <BaconCheckMatchContainer/>
+          <BaconMatchContainer
             onPressRight={this.onPressMatchRight}
             onPressLeft={this.onPressMatchLeft}
           />

@@ -6,7 +6,7 @@ import ImagePicker from "react-native-image-picker"
 import ImageResizer from "react-native-image-resizer"
 
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
-import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
+import BaconCheckChatRoom from '../../../views/BaconCheckChatRoom'
 
 const options = {
   title: "傳送照片",
@@ -51,9 +51,9 @@ export default class InitChatRoomScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    this.setState({
-      loading: true
-    })
+    //this.setState({
+    //  loading: true
+    //})
   }
 
   componentDidMount() {
@@ -95,7 +95,6 @@ export default class InitChatRoomScene extends Component {
           this.setState({
             loading: false
           })
-          //console.warn('初始聊天室')
         })      
       }
     })
@@ -144,7 +143,26 @@ export default class InitChatRoomScene extends Component {
     ImagePicker.launchCamera(options, this.uploadImage)
   }
 
+  setFakeImage = timeID => {
+    this.MessagesAndImages = this.MessagesAndImages.concat([{
+      _id: timeID, // 時間越大放越上面
+      text: null,
+      createdAt: new Date(parseInt(timeID)),
+      user: {
+        _id: this.SubjectStore.uid, 
+      },
+      image: require('../../../../images/Loading_icon.gif'),
+      local: true 
+    }])
+    this.sortedMessagesAndImages = this.MessagesAndImages.sort((a, b) => {
+      return a._id < b._id ? 1 : -1
+    })
+    this.setState({chats: this.sortedMessagesAndImages, loading: false})
+  }
+
   uploadImage = res => {
+      const timeID = Date.now()
+      //this.setFakeImage(timeID)
       if (res.didCancel) {
         //
       } else if (res.error) {
@@ -152,11 +170,13 @@ export default class InitChatRoomScene extends Component {
       } else {
         ImageResizer.createResizedImage(res.uri, 600, 600, "JPEG", 100) // (imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath)
           .then(image => {
-            //console.log(image.uri)
-            this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + Date.now() + '.jpg')
+            this.setState({
+              loading: true
+            })
+            this.firebase.storage().ref('chats/' + this.props.chatRoomKey + '/' + timeID + '.jpg')
             .putFile(image.uri.replace('file:/',''), metadata)
             .then(uploadedFile => {
-              this.onSendImage(uploadedFile.downloadURL)
+              this.onSendImage(uploadedFile.downloadURL,timeID)
             })
             .catch(err => {
               alert(err)
@@ -169,6 +189,9 @@ export default class InitChatRoomScene extends Component {
   }
 
   onSendMessage(messages = []) {
+    this.setState({
+      loading: true
+    })
     const messages_no_blank = messages[0].text.trim()
     if (messages_no_blank.length > 0) {
       if (this.ChatStore.messageSendPeople < 10) {
@@ -215,13 +238,13 @@ export default class InitChatRoomScene extends Component {
     }
   }
 
-  onSendImage = imageURL => {
+  onSendImage = (imageURL,timeID) => {
     if (this.ChatStore.messageSendPeople < 10) {
       if (!this.interested) {
 
         const _images = new Object
         _images[this.SubjectStore.uid] = new Object
-        _images[this.SubjectStore.uid][Date.now()] = imageURL
+        _images[this.SubjectStore.uid][timeID] = imageURL
         // 不知道會不會有非同步bug，還沒全部上傳完就轉跳聊天室
         this.firebase.database().ref('chats/' + this.props.chatRoomKey).set({
           chatRoomCreater: this.SubjectStore.uid,
@@ -259,10 +282,14 @@ export default class InitChatRoomScene extends Component {
     }
   }
 
+  onSendSticker = imageURL => {
+    this.onSendImage(imageURL,Date.now())
+  }
+
   render() {
     return (
       <View style={styles.view}>
-        { this.state.loading ? <BaconActivityIndicator/> :
+        { this.state.loading ? <BaconCheckChatRoom text={'聊天室連接中'}/> :
         <BaconChatRoom
           messages={[]}
           onSend={messages => this.onSendMessage(messages)}
@@ -276,6 +303,7 @@ export default class InitChatRoomScene extends Component {
           showRightFooter={this.state.showRightFooter}
           onPressLeftFooterLeftIcon={this.openAlbum}
           onPressLeftFooterRightIcon={this.openCamera}
+          onPressSticker={this.onSendSticker}
         />
         }
       </View>

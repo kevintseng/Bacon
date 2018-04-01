@@ -113,6 +113,9 @@ export default class MeetCuteStore {
     //const randomIndex = Math.floor(Math.random() * maxPreysLimit) // TODO: 隨機 .limitToFirst(randomIndex)
     // TODO: 三張照片限制 > 3
     // TODO: 隱藏 > 0
+    // TODO: 隨機
+    // TODO: 看過記錄
+    // TODO: 封鎖
     if (preySexualOrientation.charAt(preySexualOrientation.length - 1) === preySexualOrientation.charAt(preySexualOrientation.length - 3)) {
       this.firebase.database().ref('meetCuteList/' + preySexualOrientation).once('value',snap => {
         if (snap.val()) {
@@ -121,7 +124,6 @@ export default class MeetCuteStore {
           if (index > -1) {
             ids.splice(index, 1)
           }
-          // TODO: 看過紀錄
           const preysPromise = ids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))   
           Promise.all(preysPromise)
           .then(this.setPreys)
@@ -135,7 +137,6 @@ export default class MeetCuteStore {
     } else {
       this.firebase.database().ref('meetCuteList/' + preySexualOrientation).once('value',snap => {
         if (snap.val()) {
-          // TODO: 看過紀錄
           const preysPromise = Object.keys(snap.val()).map(uid => this.firebase.database().ref('users/' + uid).once('value'))   
           Promise.all(preysPromise)
           .then(this.setPreys)

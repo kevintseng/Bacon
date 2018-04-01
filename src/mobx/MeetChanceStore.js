@@ -55,14 +55,13 @@ export default class MeetChanceStore {
     this.pool[uid] = { key: uid, distance: distance, nickname: nickname, avatar: avatar, birthday: birthday, hideMeetChance: hideMeetChance, deleted: deleted, online: online }
   }
 
-  @action fetchPreys = () => {
+  @action fetchPreys = async () => {
     //this.blockadeList = this.filterBlockadeList()
     this.preyList = Object.keys(this.pool).filter( 
       key => {
         const value = this.pool[key]
-        //TODO: 年紀過濾
-        //TODO: 隱藏過濾
-        //TODO: 下線
+        //TODO: 隱藏
+        //TODO: 離線過濾
         //if (!(value.hideMeetChance) && !(value.deleted) && !(this.blockadeList.includes(key)) && value.birthday && ((calculateAge(value.birthday) >= this.meetChanceMinAge) && (calculateAge(value.birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(value.online)) {
         //  return true
         //} else {
@@ -81,6 +80,7 @@ export default class MeetChanceStore {
       return a.distance > b.distance ? 1 : -1
     })
     this.preys = this.preys.concat(this.preyList.slice(0,12))
+    await this.sleep(700)
     this.finishLoading()
   }
 
@@ -91,8 +91,8 @@ export default class MeetChanceStore {
   }
 
   @action startLoading = () => {
-    this.preyList = new Array
-    this.preys = new Array
+    //this.preyList = new Array
+    //this.preys = new Array
     this.loading = true
     this.index = 1
   }
@@ -103,6 +103,10 @@ export default class MeetChanceStore {
 
   @action filterBlockadeList = () => {
     return [] // 放在local
+  }
+
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
 }

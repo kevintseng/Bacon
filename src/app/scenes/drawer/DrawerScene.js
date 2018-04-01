@@ -78,11 +78,12 @@ export default class DrawerScene extends Component {
 
     return (
       <Drawer
-        ref='navigation'
+        //ref='navigation'
+        ref={ref => this.ControlStore.setDrawer(ref)}
         type='overlay'
         styles={ drawerStyles }
-        onOpen={() => Actions.refresh({ key: state.key, open: true })}
-        onClose={() => Actions.refresh({ key: state.key, open: false })}
+        //onOpen={() => Actions.refresh({ key: state.key, open: true })}
+        //onClose={() => Actions.refresh({ key: state.key, open: false })}
         open={ state.open }
         useInteractionManager={true}
         content={

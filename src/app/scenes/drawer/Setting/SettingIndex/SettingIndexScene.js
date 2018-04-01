@@ -40,7 +40,7 @@ export default class SettingIndexScene extends Component {
   }
 
   componentWillMount() {
-    Actions.refresh({ key: 'Drawer', open: false })
+    //Actions.refresh({ key: 'Drawer', open: false })
     this.SubjectStore.startLoading()
   }
 

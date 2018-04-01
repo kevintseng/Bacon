@@ -44,9 +44,9 @@ export default class ChatCardScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    this.setState({
-      loading: true
-    })
+    //this.setState({
+    //  loading: true
+    //})
   }
 
   componentWillUnmount() {
