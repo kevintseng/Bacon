@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { View, Dimensions, InteractionManager, Image,TouchableOpacity, TouchableWithoutFeedback, Modal, Text } from 'react-native'
+import { View, Dimensions, InteractionManager, Image,TouchableOpacity, TouchableWithoutFeedback, Modal, Text, Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import BaconCard from 'react-native-bacon-card'
 import Swiper from 'react-native-deck-swiper'
 import { inject, observer } from 'mobx-react'
 import { toJS } from 'mobx'
+import localdb from '../../../../../configs/localdb'
 
 import BaconActivityIndicator from '../../../../views/BaconActivityIndicator'
 import Loading from '../../../../views/Loading/Loading'
@@ -46,7 +47,6 @@ export default class MeetCuteSwiperScene extends Component {
   }
 
   componentWillMount() {
-
     this.MeetCuteStore.startLoading()
   }
 
@@ -117,11 +117,18 @@ export default class MeetCuteSwiperScene extends Component {
   }
 
   onPressReport = () => {
-    alert('已通知官方檢舉訊息')
+      Alert.alert( 
+        '管理員提示', '已通知官方檢舉訊息', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
   }
 
   onPrssBlockade = () => {
-    alert('已封鎖此人')
+      Alert.alert( 
+        '管理員提示', '已封鎖此人', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
+      this.swiper.swipeRight()
   }
 
   onPressMatchLeft = () => {
@@ -139,6 +146,18 @@ export default class MeetCuteSwiperScene extends Component {
 
   updateGoodImpression = () => {
     this.firebase.database().ref('goodImpressionList/' + this.SubjectStore.uid + this.MeetCuteStore.preys[this.cardIndex].key).set({wooner: this.SubjectStore.uid, prey: this.MeetCuteStore.preys[this.cardIndex].key, time: Date.now()})    
+  }
+
+  onSwiped = cardIndex => {
+    localdb.save({
+      key: 'meetCute' + this.SubjectStore.uid,
+      id: this.MeetCuteStore.preys[this.cardIndex].key,
+      data: {
+        time: Date.now(),
+      },
+      expires: null,
+    })
+    this.cardIndex = cardIndex + 1
   }
 
   sleep = ms => {
@@ -189,7 +208,7 @@ export default class MeetCuteSwiperScene extends Component {
               </BaconCard>
               )
             }}
-            onSwiped={(cardIndex) => {this.cardIndex = cardIndex + 1}}
+            onSwiped={this.onSwiped}
             cardIndex={this.cardIndex}
             horizontalSwipe={false}
             verticalSwipe={false}
