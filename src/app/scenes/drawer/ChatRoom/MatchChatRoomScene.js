@@ -120,6 +120,8 @@ export default class MatchChatRoomScene extends Component {
       } else {
         this.combineMessagesAndImages()
       } 
+    } else {
+      this.setState({loading: false})
     }
   }
 
@@ -165,6 +167,8 @@ export default class MatchChatRoomScene extends Component {
       } else {
         this.combineMessagesAndImages()
       } 
+    } else {
+      this.setState({loading: false})
     }
   }
 

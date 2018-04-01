@@ -221,24 +221,28 @@ export default class VisitorChatRoomScene extends Component {
     if (messages_no_blank.length > 0) {
       this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/messages/' + this.SubjectStore.uid + '/' + Date.now()).set(messages[0].text)
         .then(() => {
-          this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
-            lastMessage: messages[0].text,
-            interested: 2
-          }).then(async () => {
-            await this.setState({
+          
+            this.setState({
               checking: true,
               checkingText: '配對中'
-            })
-            await this.removeMessagesAndImagesListener()
-            await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
-              this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set(snap.val())
-            })
-            await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
-            this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
-            await this.setState({
-              checking: false
-            })
-            Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+            }, async () => {
+              await this.removeMessagesAndImagesListener()
+              await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
+                lastMessage: messages[0].text,
+                interested: 2  
+              })
+              await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
+              await this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set({
+                chatRoomCreater: this.props.preyID,
+                chatRoomRecipient: this.SubjectStore.uid 
+              })
+              this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
+              this.setState({
+                checking: false
+              },() => {
+                Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+              })
+            
           })
         }
       ) 
@@ -249,24 +253,28 @@ export default class VisitorChatRoomScene extends Component {
     //this.removeMessagesAndImagesListener()
     this.firebase.database().ref('chats/' + this.props.chatRoomKey + '/images/' + this.SubjectStore.uid + '/' + timeID).set(imageURL)
       .then(() => {
-        this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
-          lastMessage: '傳送了圖片',
-          interested: 2
-        }).then(async () => {
-          await this.setState({
+
+          this.setState({
             checking: true,
             checkingText: '配對中'
-          })
-          await this.removeMessagesAndImagesListener()
-          await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
-            this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set(snap.val())
-          })
-          await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
-          this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
-          await this.setState({
-            checking: false
-          })
-          Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+          },async () => {
+            await this.removeMessagesAndImagesListener()
+            await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey).set({
+              lastMessage: '傳送了圖片',
+              interested: 2  
+            })
+            await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
+            await this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set({
+              chatRoomCreater: this.props.preyID,
+              chatRoomRecipient: this.SubjectStore.uid 
+            })
+            this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
+            this.setState({
+              checking: false
+            },() => {
+              Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+            })
+          
         })
       }
     ) 
@@ -294,44 +302,48 @@ export default class VisitorChatRoomScene extends Component {
     this.sortedMessagesAndImages = new Array    
   }
 
-  match = async () => {
-    await this.setState({
-      checking: true,
-      checkingText: '配對中'
-    })
-    await this.removeMessagesAndImagesListener()
-    await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2)
-    //await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
-    //  this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set(snap.val())
-    //})
-    await this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set({
-      chatRoomCreater: this.props.preyID,
-      chatRoomRecipient: this.SubjectStore.uid 
-    })
-    await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
-    this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
-    await this.setState({
-      checking: false
-    })
-    Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+  match = () => {
+      this.setState({
+        checking: true,
+        checkingText: '配對中'
+      },async () => {
+        await this.removeMessagesAndImagesListener()
+        await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(2)
+        await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
+        await this.firebase.database().ref('matchChatRooms/' + this.props.chatRoomKey).set({
+          chatRoomCreater: this.props.preyID,
+          chatRoomRecipient: this.SubjectStore.uid 
+        })
+        this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
+        this.setState({
+          checking: false
+        },() => {
+          Actions.MatchChatRoom({ type: 'replace', title: this.props.title, chatRoomKey: this.props.chatRoomKey, preyID: this.props.preyID })
+        })
+      })
+  
   }
 
-  noMatch = async () => {
-    await this.setState({
+  noMatch = () => {
+    this.setState({
       checking: true,
       checkingText: '移除中'
+    },async () => {
+      await this.removeMessagesAndImagesListener()
+      await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(0)
+      await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
+      await this.firebase.database().ref('nonMatchChatRooms/' + this.props.chatRoomKey).set({
+        chatRoomCreater: this.props.preyID,
+        chatRoomRecipient: this.SubjectStore.uid 
+      })
+      this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
+      this.setState({
+        checking: false
+      },() => {
+        Actions.pop()
+      })
     })
-    await this.removeMessagesAndImagesListener()
-    await this.firebase.database().ref('chat_rooms/' + this.props.chatRoomKey + '/interested').set(0)
-    await this.firebase.database().ref('nonHandleChatRooms/' + this.props.chatRoomKey).once('value',snap => {
-      this.firebase.database().ref('nonMatchChatRooms/' + this.props.chatRoomKey).set(snap.val())
-    })
-    await this.firebase.database().ref('nonHandleChatRooms').child(this.props.chatRoomKey).remove()
-    this.ChatStore.removeVistorChatRooms(this.props.chatRoomKey)
-    await this.setState({
-      checking: false
-    })
-    Actions.pop()
+
   }
 
   onSendSticker = imageURL => {
