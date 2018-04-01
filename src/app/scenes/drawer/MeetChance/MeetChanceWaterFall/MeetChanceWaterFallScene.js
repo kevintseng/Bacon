@@ -52,7 +52,7 @@ export default class MeetChanceWaterFallScene extends Component {
   }
 
   componentWillMount() {
-    Actions.refresh({ key: 'Drawer', open: false })
+    //Actions.refresh({ key: 'Drawer', open: false })
     this.MeetChanceStore.startLoading()
   }
 
@@ -78,7 +78,8 @@ export default class MeetChanceWaterFallScene extends Component {
   getItemLayout = (data, index) => (
     {
       length: itemHight, 
-      offset: itemHight * index, index
+      offset: itemHight * index, 
+      index
     }
   )
 
@@ -105,7 +106,7 @@ export default class MeetChanceWaterFallScene extends Component {
         <FlatList
           removeClippedSubviews
           onEndReached={this.MeetChanceStore.addMorePreys}
-          onEndReachedThreshold={0.1}
+          //onEndReachedThreshold={0.1}
           data={ this.MeetChanceStore.preysToFlatList }
           numColumns={3}
           renderItem={({ item }) =>
@@ -128,17 +129,3 @@ export default class MeetChanceWaterFallScene extends Component {
     )
   }
 }
-
-/*
-  handleOnPress = uid => {
-    // 來訪記錄
-    //this.firebase.database().ref('visitorList/'  + uid + '/' + this.SubjectStore.uid).set(Date.now())
-    localdb.getIdsForKey('collection' + this.SubjectStore.uid).then(ids => {
-      if (ids.includes(uid)) {
-        Actions.ChatCourt({ uid: uid, title: '巧遇', collection: true})
-      } else {
-        Actions.ChatCourt({ uid: uid, title: '巧遇', collection: false})
-      }
-    }).catch(err => console.log(err))
-  }
-*/

@@ -37,7 +37,7 @@ export default class ChatTabScene extends Component {
   }
 
   componentWillMount () {
-    Actions.refresh({ key: 'Drawer', open: false })
+    //Actions.refresh({ key: 'Drawer', open: false })
   }
 
   componentDidMount() {

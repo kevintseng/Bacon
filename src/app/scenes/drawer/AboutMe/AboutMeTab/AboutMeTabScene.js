@@ -28,13 +28,14 @@ export default class AboutMeTabScene extends Component {
   }
 
   componentWillMount() {
+    /*
     Actions.refresh({
      key: 'Drawer', 
      open: false 
     })
     this.setState({
       loading: true
-    })
+    })*/
   }
 
   componentDidMount() {

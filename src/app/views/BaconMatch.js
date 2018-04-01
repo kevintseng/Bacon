@@ -61,7 +61,7 @@ const styles = {
 const BaconMatch = ({leftText,visible,onPressReturn,onPressBlank,onPressRight,onPressLeft}) => {
 
   return(
-    <Modal animationType={"fade"} transparent={true} visible={visible} onRequestClose={ onPressReturn } >
+    <Modal animationType={"none"} transparent={true} visible={visible} onRequestClose={ onPressReturn } >
       <TouchableOpacity
         activeOpacity={1}
         onPress={ onPressBlank }

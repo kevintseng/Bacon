@@ -93,6 +93,11 @@ export default class ControlStore {
     //
     this.chatMatchModal = true
     this.passwordRsetModal = false
+    this.drawer = null
+  }
+
+  @action setDrawer = ref => {
+    this.drawer = ref
   }
 
   @action closeChatMatchModal = () => {

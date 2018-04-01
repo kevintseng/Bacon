@@ -6,7 +6,7 @@ import ImagePicker from "react-native-image-picker"
 import ImageResizer from "react-native-image-resizer"
 
 import BaconChatRoom from '../../../views/BaconChatRoom/BaconChatRoom'
-import BaconActivityIndicator from '../../../views/BaconActivityIndicator'
+import BaconCheckChatRoom from '../../../views/BaconCheckChatRoom'
 
 const options = {
   title: "傳送照片",
@@ -57,9 +57,9 @@ export default class MatchChatRoomScene extends Component {
 
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
-    this.setState({
-      loading: true
-    })
+    //this.setState({
+    //  loading: true
+    //})
   }
 
   componentDidMount() {
@@ -313,7 +313,7 @@ export default class MatchChatRoomScene extends Component {
   render() {
     return (
       <View style={styles.view}>
-        { this.state.loading ? <BaconActivityIndicator/> :
+        { this.state.loading ? <BaconCheckChatRoom text={'聊天室連接中'}/> :
         <BaconChatRoom
           messages={this.state.chats}
           onSend={messages => this.onSendMessage(messages)}
