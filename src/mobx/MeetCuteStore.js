@@ -96,6 +96,11 @@ export default class MeetCuteStore {
     }
   }
 
+  @action noHavepreys = () => {
+    this.loading = false
+    this.havepreys = false
+  }
+
   @action startCheckMatch = () => {
     this.checking = true
   }
