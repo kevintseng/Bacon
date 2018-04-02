@@ -57,8 +57,9 @@ export default class MeetCuteSwiperScene extends Component {
   }
 
   onSwipedAll = () => {
+    this.MeetCuteStore.noHavepreys()
     //this.MeetCuteStore.startLoading()
-    this.cardIndex = 0
+    //this.cardIndex = 0
     //this.MeetCuteStore.fetchPreys(this.SubjectStore.preySexualOrientation)
   }
 
@@ -231,13 +232,13 @@ export default class MeetCuteSwiperScene extends Component {
             swipeBackCard={false}
             onSwipedAll={this.onSwipedAll}
             //showSecondCard={false}
-            infinite={true}
+            infinite={false}
           />
         </View> :
         <View style={styles.view}>
           <Loading
             showWarning
-            warning={'未搜尋到邂逅對象'}
+            warning={'已無邂逅對象'}
           />
         </View>
         }
