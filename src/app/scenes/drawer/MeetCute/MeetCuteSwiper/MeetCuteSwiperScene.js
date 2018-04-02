@@ -124,6 +124,18 @@ export default class MeetCuteSwiperScene extends Component {
   }
 
   onPrssBlockade = () => {
+      localdb.remove({
+        key: 'collection' + this.SubjectStore.uid,
+        id: this.MeetCuteStore.preys[this.cardIndex].key
+      })
+      localdb.save({
+        key: 'blockade' + this.SubjectStore.uid,
+        id: this.MeetCuteStore.preys[this.cardIndex].key,
+        data: {
+          time: Date.now(),
+        },
+        expires: null,
+      })
       Alert.alert( 
         '管理員提示', '已封鎖此人', [ 
         {text: '確認', onPress: () => this.swiper.swipeRight()}, ], { cancelable: false } 

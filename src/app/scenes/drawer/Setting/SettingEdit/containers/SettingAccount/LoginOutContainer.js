@@ -13,9 +13,12 @@ export default class LoginOutContainer extends Component {
     //this.user = this.firebase.auth().currentUser
   }
 
-  _loginOut = () => {
+  loginOut = () => {
     this.firebase.auth().signOut().catch( err => {
-      alert('登出發生錯誤 :' + err)
+      Alert.alert( 
+        '管理員提示', '登出發生錯誤', [ 
+        {text: '確認', onPress: () => console.log('OK Pressed')}, ], { cancelable: false } 
+      )
     })
     /*
     this.firebase.database().ref('/online/' + this.SubjectStore.uid).once('value',snap => {
@@ -58,7 +61,7 @@ export default class LoginOutContainer extends Component {
     return(
       <GreyButton
         text='登出'
-        onPress={ this._loginOut }
+        onPress={ this.loginOut }
       />
     )
   }

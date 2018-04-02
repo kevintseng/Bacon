@@ -29,8 +29,6 @@ const styles = {
   }
 }
 
-//conform ? '領取' : '未達成'
-
 const showConform = (conform) => {
   if (conform === 0) {
     return '待領取'
@@ -39,7 +37,6 @@ const showConform = (conform) => {
   } else if (conform === 2) {
     return '未達成'
   } else {
-    //console.warn(conform)
     return '錯誤'
   }
 }
@@ -51,9 +48,12 @@ const TaskList = ({taken,task,bonus,onPress,conform}) => {
       <View style={styles.bottom}>
         <Text style={styles.taskText}>{task}</Text>
         <Text style={styles.bonus}>{bonus}點</Text>
-        <BaconBadgeYes text={
-          showConform(conform)
-        }/>
+        <BaconBadgeYes 
+          activeOpacity={1}
+          text={
+            showConform(conform)
+          }
+        />
       </View>
     </TouchableOpacity>
   )

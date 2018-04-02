@@ -1,6 +1,7 @@
 import { observable, action, computed, useStrict, runInAction, toJS } from 'mobx'
 import geolib from 'geolib'
 import { calculateAge } from '../api/Utils'
+import localdb from '../configs/localdb'
 
 useStrict(true)
 
@@ -35,11 +36,11 @@ export default class MeetChanceStore {
     this.showPreyRadar = false
   }
 
-  @action serNonShowOfflinePrey = () => {
+  @action switchNonShowOfflinePrey = () => {
     this.nonShowOfflinePrey = !this.nonShowOfflinePrey
   }
 
-  @action setShowPreyRadar = () => {
+  @action switchShowPreyRadar = () => {
     this.showPreyRadar = !this.showPreyRadar
   }
 
@@ -55,33 +56,29 @@ export default class MeetChanceStore {
     this.pool[uid] = { key: uid, distance: distance, nickname: nickname, avatar: avatar, birthday: birthday, hideMeetChance: hideMeetChance, deleted: deleted, online: online }
   }
 
-  @action fetchPreys = async () => {
-    //this.blockadeList = this.filterBlockadeList()
-    this.preyList = Object.keys(this.pool).filter( 
-      key => {
-        const value = this.pool[key]
-        //TODO: 隱藏
-        //TODO: 離線過濾
-        //if (!(value.hideMeetChance) && !(value.deleted) && !(this.blockadeList.includes(key)) && value.birthday && ((calculateAge(value.birthday) >= this.meetChanceMinAge) && (calculateAge(value.birthday) <= (this.meetChanceMaxAge === 50 ? 99 : this.meetChanceMaxAge) )) && this.checkOnline(value.online)) {
-        //  return true
-        //} else {
-        //  return null
-        //}
-        if ( (calculateAge(value.birthday) >= this.minAge) && (calculateAge(value.birthday) <= this.maxAge) ) {
-          return true
-        } else {
-          return false
+  @action fetchPreys = selfUid => {
+    localdb.getIdsForKey('blockade' + selfUid).then(async blockade_ids => {
+      const uids = Object.keys(this.pool).filter(id => blockade_ids.indexOf(id) === -1)
+      this.preyList = uids.filter( 
+        key => {
+          const value = this.pool[key]
+          //TODO: 隱藏
+          //TODO: 離線過濾
+          if ( (calculateAge(value.birthday) >= this.minAge) && (calculateAge(value.birthday) <= this.maxAge) && this.checkOnline(value.online)) {
+            return true
+          } else {
+            return false
+          }
         }
-        //return true
-      }
-    ).map( key => this.pool[key] )
-    // 排距離
-    this.preyList.sort((a, b) => {
-      return a.distance > b.distance ? 1 : -1
+      ).map( key => this.pool[key] )
+      // 排距離
+      this.preyList.sort((a, b) => {
+        return a.distance > b.distance ? 1 : -1
+      })
+      this.preys = this.preys.concat(this.preyList.slice(0,12))
+      await this.sleep(700)
+      this.finishLoading()
     })
-    this.preys = this.preys.concat(this.preyList.slice(0,12))
-    await this.sleep(700)
-    this.finishLoading()
   }
 
   @action addMorePreys = () => {
@@ -91,8 +88,7 @@ export default class MeetChanceStore {
   }
 
   @action startLoading = () => {
-    //this.preyList = new Array
-    //this.preys = new Array
+    this.preys = new Array
     this.loading = true
     this.index = 1
   }
@@ -107,6 +103,18 @@ export default class MeetChanceStore {
 
   sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  checkOnline = (online) => {
+    if (!this.nonShowOfflinePrey) {
+      return true
+    } else {
+      if (online) {
+        return true
+      } else {
+        return false
+      }
+    }
   }
 
 }

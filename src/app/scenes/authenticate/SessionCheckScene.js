@@ -58,7 +58,7 @@ export default class SessionCheckScene extends Component {
   }
 
   componentWillMount() {
-    this.firebase.auth().onAuthStateChanged( async user => {
+    this.firebase.auth().onAuthStateChanged(async user => {
       if (user) {
         this.SubjectStore.setUid(user.uid) // 設置 uid
         this.SubjectStore.setEmail(user.email) // 設置 email
@@ -66,9 +66,10 @@ export default class SessionCheckScene extends Component {
           ///////// 非同步 /////////
           //this.setRedPointListener()
           this.uploadSignUpData() // 非同步上傳大頭照
+          this.setOnline(true)
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromSignUpStore() // 同步轉移資料
-          this.setCurrentTimestampListener()
+          //this.setCurrentTimestampListener()
           this.uxSignIn(this.SignUpStore.email,this.SignUpStore.password)
         } else { 
           // 從登入來的
@@ -79,15 +80,17 @@ export default class SessionCheckScene extends Component {
           ///////// 非同步 /////////
           AppState.addEventListener('change', this.handleAppStateChange ) // 非同步註冊 app 狀態監聽
           this.initSubjectStoreFromFirebase() // 非同步抓使用者資料 邂逅監聽
-          this.setCurrentTimestampListener()
-          await this.setVip()
+          //this.setCurrentTimestampListener()
+          // 只需要大頭照，暱稱，性向
           await this.initPreySexualOrientation()
+          await this.setVip()
+          await this.setBonus()
         }
         Actions.Drawer({type: 'reset'}) // 進入 Drawer
       } else {
         // 入口點
         // 下線
-        await this.setOnline(false)
+        this.setOnline(false)
         //移除所有監聽函數 初始化狀態
         this.initialize()
         // 沒有使用者登入 user = null
@@ -253,7 +256,7 @@ export default class SessionCheckScene extends Component {
           this.SubjectStore.setAlbum(new Object(snap.val().album)) // Object
           this.SubjectStore.setLanguages(Object.assign({}, DefaultLanguages, snap.val().languages)) // Object
           this.SubjectStore.setHobbies(new Object(snap.val().hobbies)) // Object
-          this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
+          //this.SubjectStore.setCollect(new Object(snap.val().collect)) // Object
           this.SubjectStore.setChatStatus(snap.val().chatStatus || 0)
           if (snap.val().preySexualOrientation) {
             // 如果有性別
@@ -267,13 +270,6 @@ export default class SessionCheckScene extends Component {
       }, error => {
         console.log(error)
       })
-      // bonus
-      this.firebase.database().ref('bonus/' + this.SubjectStore.uid).once('value',snap => {
-        this.SubjectStore.setBonus(parseInt(snap.val()) || 0)
-      }, error => {
-        console.log(error)
-      })
-
   }
 
   initPreySexualOrientation = () => (
@@ -290,7 +286,8 @@ export default class SessionCheckScene extends Component {
 
   setOnline = bollean => {
     if (this.SubjectStore.uid) {
-      this.firebase.database().ref('users/' + this.SubjectStore.uid + '/online').set(bollean)
+      this.firebase.database().ref('users/' + this.SubjectStore.uid  + '/online').set(bollean)
+      //this.firebase.database().ref('online/' + this.SubjectStore.uid).set(bollean)
     }
   }
 
@@ -309,6 +306,12 @@ export default class SessionCheckScene extends Component {
     this.MeetCuteStore.setLatitude(latitude)
     this.MeetCuteStore.setLongitude(longitude)
   }
+
+  setBonus = () => (
+    this.firebase.database().ref('bonus/' + this.SubjectStore.uid).once('value',snap => {
+      this.SubjectStore.setBonus(parseInt(snap.val()) || 0)
+    })    
+  )
 
   setVip = async () => {
     let isSubscription_premium_1y = false

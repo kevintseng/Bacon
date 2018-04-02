@@ -84,10 +84,8 @@ export default class BaconRoutesContainer extends Component {
       await InAppBilling.open()
       if (!await InAppBilling.isPurchased(productId)) {
         await InAppBilling.subscribe(productId,developerPayload).then( details => {
-          console.log(details)
           this.purchaseState = details.purchaseState
           if (this.purchaseState === 'PurchasedSuccessfully') {
-            //this.firebase.database().ref(`users/${this.SubjectStore.uid}/vip`).set(true)
             this.SubjectStore.setVip(true)
           }
         })
@@ -96,7 +94,7 @@ export default class BaconRoutesContainer extends Component {
       alert('錯誤')
     } finally {
       if (this.purchaseState === 'PurchasedSuccessfully') {
-        await InAppBilling.consumePurchase(productId)
+        //await InAppBilling.consumePurchase(productId)
         await InAppBilling.close()
         Actions.AboutMe({type: 'reset'})
       } else {
