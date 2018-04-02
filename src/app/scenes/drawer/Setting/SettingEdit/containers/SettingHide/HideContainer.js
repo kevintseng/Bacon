@@ -13,10 +13,10 @@ export default class HideContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/hideMeetCute').set(this.SubjectStore.hideMeetCute)
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/hideMeetChance').set(this.SubjectStore.hideMeetChance)
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/hideVister').set(this.SubjectStore.hideVister)
-    this.firebase.database().ref('users/' + this.SubjectStore.uid + '/hideMessage').set(this.SubjectStore.hideMessage)
+    //this.firebase.database().ref('users/' + this.SubjectStore.uid + '/hideMeetCute').set(this.SubjectStore.hideMeetCute)
+    //this.firebase.database().ref('users/' + this.SubjectStore.uid + '/hideMeetChance').set(this.SubjectStore.hideMeetChance)
+    //this.firebase.database().ref('users/' + this.SubjectStore.uid + '/hideVister').set(this.SubjectStore.hideVister)
+    //this.firebase.database().ref('users/' + this.SubjectStore.uid + '/hideMessage').set(this.SubjectStore.hideMessage)
   }
 
   render() {

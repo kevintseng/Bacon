@@ -58,13 +58,19 @@ export default class MeetChanceWaterFallScene extends Component {
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this.MeetChanceStore.fetchPreys()
+      this.MeetChanceStore.fetchPreys(this.SubjectStore.uid)
     })
   }
 
   header = () => (
     <View style={ styles.self }>
-      <CircleImage radius={75} source={{uri: this.SubjectStore.avatar}} onPress={ this.goToAboutMeTab } />
+      <CircleImage 
+        radius={75} 
+        source={{uri: this.SubjectStore.avatar}} 
+        onPress={ this.goToAboutMeTab }
+        placeholderSource={ require('../../../../../images/ico_qy_head_preload.png') }
+        loadingStyle={ styles.loadingStyle } 
+      />
       <Text style={styles.text}>{this.SubjectStore.nickname}</Text>
     </View>
   )
@@ -117,6 +123,8 @@ export default class MeetChanceWaterFallScene extends Component {
                 placeholderSource={ require('../../../../../images/ico_qy_head_preload.png') }
                 loadingStyle={ styles.loadingStyle }
                 source={{uri: item.avatar }}
+                circleBorderWidth={item.online ? 2 : 0}
+                circleColor={'rgba(41, 255, 41,1)'}
               />
               <Text style={styles.text}>{item.nickname}</Text>
             </View>

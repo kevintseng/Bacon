@@ -133,15 +133,13 @@ export default class MeetCuteStore {
         hobbies: hobbiesToFlatList(snap.val().hobbies || new Object)
         })       
       }
-    ).filter(ele => ele.age >= this.minAge && ele.age <= this.maxAge) 
+    ).filter(ele => ele.age >= this.minAge && ele.age <= this.maxAge && (!this.onlyShowThreePhotoPrey || (this.onlyShowThreePhotoPrey && ele.album.length > 3))) 
   }
 
   fetchPreys = (selfUid,preySexualOrientation) => {
     //const randomIndex = Math.floor(Math.random() * maxPreysLimit) // TODO: 隨機 .limitToFirst(randomIndex)
-    // TODO: 三張照片限制 > 3
     // TODO: 隱藏
     // TODO: 隨機
-    // TODO: 封鎖
     if (preySexualOrientation.charAt(preySexualOrientation.length - 1) === preySexualOrientation.charAt(preySexualOrientation.length - 3)) {
       this.firebase.database().ref('meetCuteList/' + preySexualOrientation).once('value',snap => {
         if (snap.val()) {
@@ -159,7 +157,7 @@ export default class MeetCuteStore {
             .cacth(showError)    
           })
         } else {
-          console.warn('同性戀沒資料')
+          this.finishLoading()
         }
       })    
     } else {
@@ -175,7 +173,7 @@ export default class MeetCuteStore {
             .cacth(showError)
           })
         } else {
-          console.warn('沒資料')
+          this.finishLoading()
         }
       })
     }

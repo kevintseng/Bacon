@@ -75,91 +75,97 @@ export default class FateTabScene extends Component {
   }
 
   fetchVisitors = () => {
-    let visitors = new Array
-    return this.firebase.database().ref('visitorList/' + this.SubjectStore.uid).once('value',child => {
-      const visitorUids = Object.keys(child.val() || new Object)
-      const usersPromise = visitorUids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
-      Promise.all(usersPromise)
-      .then(data => {
-        visitors = data.map(snap => {
-          return {
-            key: snap.key,
-            nickname: snap.val().nickname,
-            avatar: snap.val().avatar,
-            birthday: snap.val().birthday,
-            time: child.val()[snap.key].time,
-            showRedPoint:  child.val()[snap.key].showRedPoint
-          }
+    localdb.getIdsForKey('blockade' + this.SubjectStore.uid).then(blockade_ids => {
+      let visitors = new Array
+      return this.firebase.database().ref('visitorList/' + this.SubjectStore.uid).once('value',child => {
+        const visitorUids = Object.keys(child.val() || new Object).filter(id => blockade_ids.indexOf(id) === -1)
+        const usersPromise = visitorUids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
+        Promise.all(usersPromise)
+        .then(data => {
+          visitors = data.map(snap => {
+            return {
+              key: snap.key,
+              nickname: snap.val().nickname,
+              avatar: snap.val().avatar,
+              birthday: snap.val().birthday,
+              time: child.val()[snap.key].time,
+              showRedPoint:  child.val()[snap.key].showRedPoint
+            }
+          })
+          this.FateStore.setVisitorsPreys(visitors)
+          visitorUids.map(uid => this.firebase.database().ref('visitorList/' + this.SubjectStore.uid + '/' + uid + '/showRedPoint').set(false))
         })
-        this.FateStore.setVisitorsPreys(visitors)
-        visitorUids.map(uid => this.firebase.database().ref('visitorList/' + this.SubjectStore.uid + '/' + uid + '/showRedPoint').set(false))
       })
-    })
+    }) 
   }
 
   fetchGoodImpressions = () => {
-    let goodImpressions = new Array
-    Promise.all([
-      this.firebase.database().ref('goodImpressionList/').orderByChild('wooner').equalTo(this.SubjectStore.uid).once('value'),
-      this.firebase.database().ref('goodImpressionList/').orderByChild('prey').equalTo(this.SubjectStore.uid).once('value')
-    ]).then(snap => {
-      const myLove = snap[0]._value || new Object
-      const loveMe = snap[1]._value || new Object
-      const prey_uids = Object.keys(myLove).map(key => myLove[key].prey)
-      const wooner_uids = Object.keys(loveMe).map(key => loveMe[key].wooner)
-      const wooner_filter_uids = wooner_uids.filter(uid => prey_uids.indexOf(uid) === -1 )
-      const usersPromise = wooner_filter_uids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
-      Promise.all(usersPromise)
-      .then(data => {
-        goodImpressions = data.map(snap => {
-          return {
-            key: snap.key,
-            nickname: snap.val().nickname,
-            avatar: snap.val().avatar,
-            birthday: snap.val().birthday,
-            latitude: snap.val().latitude,
-            longitude: snap.val().longitude
-          }
+    localdb.getIdsForKey('blockade' + this.SubjectStore.uid).then(blockade_ids => {
+      let goodImpressions = new Array
+      Promise.all([
+        this.firebase.database().ref('goodImpressionList/').orderByChild('wooner').equalTo(this.SubjectStore.uid).once('value'),
+        this.firebase.database().ref('goodImpressionList/').orderByChild('prey').equalTo(this.SubjectStore.uid).once('value')
+      ]).then(snap => {
+        const myLove = snap[0]._value || new Object
+        const loveMe = snap[1]._value || new Object
+        const prey_uids = Object.keys(myLove).map(key => myLove[key].prey)
+        const wooner_uids = Object.keys(loveMe).map(key => loveMe[key].wooner)
+        const wooner_filter_uids = wooner_uids.filter(uid => prey_uids.indexOf(uid) === -1 ).filter(id => blockade_ids.indexOf(id) === -1)
+        const usersPromise = wooner_filter_uids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
+        Promise.all(usersPromise)
+        .then(data => {
+          goodImpressions = data.map(snap => {
+            return {
+              key: snap.key,
+              nickname: snap.val().nickname,
+              avatar: snap.val().avatar,
+              birthday: snap.val().birthday,
+              latitude: snap.val().latitude,
+              longitude: snap.val().longitude
+            }
+          })
+          this.FateStore.setGoodImpressionsPreys(goodImpressions)
         })
-        this.FateStore.setGoodImpressionsPreys(goodImpressions)
       })
     })
   }
 
   fetchMatchs = () => {
-    let matchs = new Array
-    return Promise.all([
-      this.firebase.database().ref('goodImpressionList/').orderByChild('wooner').equalTo(this.SubjectStore.uid).once('value'),
-      this.firebase.database().ref('goodImpressionList/').orderByChild('prey').equalTo(this.SubjectStore.uid).once('value')
-    ]).then(snap => { 
-      const myLove = snap[0]._value || new Object
-      const loveMe = snap[1]._value || new Object
-      const myLove_obj = new Object
-      const loveMe_obj = new Object
+    localdb.getIdsForKey('blockade' + this.SubjectStore.uid).then(blockade_ids => {
+      let matchs = new Array
+      return Promise.all([
+        this.firebase.database().ref('goodImpressionList/').orderByChild('wooner').equalTo(this.SubjectStore.uid).once('value'),
+        this.firebase.database().ref('goodImpressionList/').orderByChild('prey').equalTo(this.SubjectStore.uid).once('value')
+      ]).then(snap => { 
+        const myLove = snap[0]._value || new Object
+        const loveMe = snap[1]._value || new Object
+        const myLove_obj = new Object
+        const loveMe_obj = new Object
 
-      Object.keys(myLove).forEach(key => myLove_obj[myLove[key].prey] = myLove[key].time)
-      Object.keys(loveMe).forEach(key => loveMe_obj[loveMe[key].wooner] = loveMe[key].time)
+        Object.keys(myLove).forEach(key => myLove_obj[myLove[key].prey] = myLove[key].time)
+        Object.keys(loveMe).forEach(key => loveMe_obj[loveMe[key].wooner] = loveMe[key].time)
 
-      const myLove_uids = Object.keys(myLove_obj)
-      const loveMe_uids = Object.keys(loveMe_obj)
+        const myLove_uids = Object.keys(myLove_obj)
+        const loveMe_uids = Object.keys(loveMe_obj)
 
-      const match_uids = intersection(myLove_uids,loveMe_uids)
+        const match_uids = intersection(myLove_uids,loveMe_uids).filter(id => blockade_ids.indexOf(id) === -1)
 
-      const usersPromise = match_uids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
-      Promise.all(usersPromise)
-      .then(data => {
-        matchs = data.map(snap => {
-          return {
-            key: snap.key,
-            nickname: snap.val().nickname,
-            avatar: snap.val().avatar,
-            birthday: snap.val().birthday,
-            time: minTime(myLove_obj[snap.key],loveMe_obj[snap.key])
-          }
+        const usersPromise = match_uids.map(uid => this.firebase.database().ref('users/' + uid).once('value'))
+        Promise.all(usersPromise)
+        .then(data => {
+          matchs = data.map(snap => {
+            return {
+              key: snap.key,
+              nickname: snap.val().nickname,
+              avatar: snap.val().avatar,
+              birthday: snap.val().birthday,
+              time: minTime(myLove_obj[snap.key],loveMe_obj[snap.key])
+            }
+          })
+          this.FateStore.setMatchPreys(matchs)
         })
-        this.FateStore.setMatchPreys(matchs)
-      })
 
+      })
     })
   }
 

@@ -97,6 +97,10 @@ const styles = {
     fontFamily: 'NotoSans',
     backgroundColor: 'transparent',
     fontSize: 11,
+  },
+  loadingStyle: { 
+    size: 'small', 
+    color: '#b3b3b3' 
   }
 }
 
@@ -138,6 +142,8 @@ const ChatList = ({name, avatar, onPress, online, lastChatContent,nonHandleChatC
         <CircleImage 
           disabled 
           //local 
+          placeholderSource={ require('../../../images/ico_qy_head_preload.png') }
+          loadingStyle={ styles.loadingStyle } 
           radius={40} 
           source={avatar}
           circleBorderWidth={online ? 2 : 0}
