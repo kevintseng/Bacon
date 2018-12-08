@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "725652377518",
-    "firebase_url": "https://kjyl-150415.firebaseio.com",
-    "project_id": "kjyl-150415",
-    "storage_bucket": "kjyl-150415.appspot.com"
+    "project_number": "387184474670",
+    "firebase_url": "https://bacon-8ceff.firebaseio.com",
+    "project_id": "bacon-8ceff",
+    "storage_bucket": "bacon-8ceff.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:725652377518:android:502ae573c6eadfec",
+        "mobilesdk_app_id": "1:387184474670:android:502ae573c6eadfec",
         "android_client_info": {
           "package_name": "com.kayming.android.bacon"
         }
       },
       "oauth_client": [
         {
-          "client_id": "725652377518-6hjuvde1dd4lk1d78kjjfn6k4h37d61k.apps.googleusercontent.com",
+          "client_id": "387184474670-ueed1o6cocj5h9tovre8jg9ufgnu5j4a.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBzrr4NVmpxkza8sDzuP0kMrG7FccUHIIE"
+          "current_key": "AIzaSyCnYfTIGYSoLMa2z-0_g_J8zEppQCKIWJs"
         }
       ],
       "services": {
