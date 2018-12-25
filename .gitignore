@@ -42,3 +42,4 @@ buck-out/
 *.keystore
 android/app/google-services.json
 ios/Bacon/GoogleService-Info.plist
+ios/Pods
